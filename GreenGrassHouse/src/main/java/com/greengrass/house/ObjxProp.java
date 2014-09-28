@@ -25,13 +25,19 @@ import javax.persistence.Transient;
 public class ObjxProp implements java.io.Serializable {
 	
 	private ObjxPropId pk = new ObjxPropId();
-	//значение свойства - число
-	private Integer n1;
-	//значение свойства - строка
+	//значение свойства - Float
+	private double n1;
+	//значение свойства - Integer, Boolean
+	private int i1;
+	//значение свойства - String
 	private String s1;
-	//значение свойства -дата
+	//значение свойства - Date
 	private Date d1;
-	
+	//ReadOnly=1, 0
+	private int ro;
+	//CD свойства в owfs (может быть именем файла)
+	private String owfs_cd;
+
 	public ObjxProp() {
 		
 	}
@@ -72,13 +78,41 @@ public class ObjxProp implements java.io.Serializable {
 		this.s1 = s1;
 	}	
 
-	@Column(name = "N1", nullable = true)
-	public Integer getN1() { 
+	@Column(name = "OWFS_CD", nullable = true, length = 256)
+	public String getOwfsCd() {
+		return this.owfs_cd;
+	}
+ 
+	public void setOwfsCd(String owfs_cd) {
+		this.owfs_cd = owfs_cd;
+	}	
+
+	@Column(name = "N1", nullable = false)
+	public double getN1() { 
 		return this.n1;
 	}
  
-	public void setN1(Integer n1) {
+	public void setN1(double n1) {
 		this.n1 = n1;
+	}	
+
+	@Column(name = "I1", nullable = false)
+	public int getI1() { 
+		return this.i1;
+	}
+ 
+	public void setI1(int i1) {
+		this.i1 = i1;
+	}	
+
+	//ReadOnly свойство?
+	@Column(name = "RO", nullable = false)
+	public int getRo() { 
+		return this.ro;
+	}
+ 
+	public void setRo(int ro) {
+		this.ro = ro;
 	}	
 
 	@Column(name = "D1", nullable = true)
