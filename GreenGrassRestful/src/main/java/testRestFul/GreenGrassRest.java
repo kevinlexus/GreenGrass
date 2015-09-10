@@ -14,7 +14,7 @@ public class GreenGrassRest {
     public String test(@RequestParam(value="name", defaultValue="World") String name) {
 	    //GcApp app = new GcApp();
 
-	    String testStr = "Колбасная продукция! test! ";
+	    String testStr = "Колбасная продукция!22222 test! ";
         GsonBuilder builder = new GsonBuilder();    
         Gson gson = builder.create();
         return gson.toJson(testStr);
