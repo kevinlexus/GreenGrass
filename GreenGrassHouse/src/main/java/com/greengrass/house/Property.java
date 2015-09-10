@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -24,44 +25,24 @@ import org.hibernate.annotations.NaturalId;
 @Table(name = "T_PROP")
 public class Property  implements java.io.Serializable {
 	
-	private Integer id;
-	private String name, tpcd, cd;
-	private Set<ObjxProp> objxProp = new HashSet<ObjxProp>(0);
+	private String id, name, tpcd;
+	private Set<ObjxProp> objxprop = new HashSet<ObjxProp>(0);
 	
 	public Property() {
 	}
  
-	public Property(String cd, String name) {
-		this.name = name;
-	}
- 
-	public Property(String name, Set<ObjxProp> objxProp) {
-		this.name = name;
-		this.objxProp = objxProp;
-	}
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ")
-	@SequenceGenerator(name="SEQ", sequenceName="T_SEQ_ID", allocationSize=10)	
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "ID", unique = true, nullable = false)
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
  
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
  
 	
-	@NaturalId
-	public String getCd() {
-		return this.cd;
-	}
- 
-	public void setCd(String cd) {
-		this.cd = cd;
-	}	
-
 	@Column(name = "NAME", nullable = true, length = 64)
 	public String getName() {
 		return this.name;
@@ -80,12 +61,13 @@ public class Property  implements java.io.Serializable {
 		this.tpcd = tpcd;
 	}	
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.property")
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name = "FK_PROP")
 	public Set<ObjxProp> getObjxProp() {
-		return this.objxProp;
+		return this.objxprop;
 	}
- 
+	
 	public void setObjxProp(Set<ObjxProp> objxProp) {
-		this.objxProp = objxProp;
+		this.objxprop = objxProp;
 	}
 }
