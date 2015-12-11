@@ -4,18 +4,12 @@
 package com.greengrass.house;
 
 
-import java.io.UnsupportedEncodingException;
-import java.sql.PreparedStatement;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,23 +20,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-
-import static java.nio.charset.StandardCharsets.*;
 
 @Entity
 @Table(name = "T_OBJXPROP")
 
 public class ObjxProp implements java.io.Serializable {
 	
+	
+    //Внимание! строго соблюдать соответствие getter-setter имени свойства, например Property property - getProperty, setProperty
+	//Иначе в запросах HQL будут проблемы!
+
 	private Integer id;
 	private Obj obj;
-	private Property prop;
+	private Property property;
 	//значение свойства - Double
 	private Double n1;
 	//значение свойства - Integer, Boolean
@@ -59,7 +53,9 @@ public class ObjxProp implements java.io.Serializable {
 	private Date nextacc;
 	//Использовать директорию Alarm, для поиска значений свойства (1-да, 0-нет)
 	private Integer usdiral;
-
+    //Инвертировать ли булевое значение свойства при записи UPD_FROM_GG
+	private Integer invout;
+	
 	private Set<EvxObj> evxobj = new HashSet<EvxObj>();
 	
 	public ObjxProp() {
@@ -101,20 +97,20 @@ public class ObjxProp implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FK_PROP")
 	public Property getProperty() {
-		return this.prop;
+		return this.property;
 	}
-	public void setProperty(Property prop) {
-		this.prop = prop;
+	public void setProperty(Property property) {
+		this.property = property;
 	}
 	
-	@Column(name = "S1", nullable = true, length = 256)
-	public String getS1() {
-		return this.s1;
+	/*@Column(name = "FK_PROP", nullable = false, length = 256)
+	public String getFkProp() {
+		return this.fkProp;
 	}
  
-	public void setS1(String s1) {
-		this.s1 = s1;
-	}	
+	public void setFkProp(String fkProp) {
+		this.fkProp = fkProp;
+	}	*/
 
 	@Column(name = "OWFS_CD", nullable = true, length = 256)
 	public String getOwfsCd() {
@@ -124,6 +120,16 @@ public class ObjxProp implements java.io.Serializable {
 	public void setOwfsCd(String owfs_cd) {
 		this.owfs_cd = owfs_cd;
 	}	
+
+	@Column(name = "S1", nullable = true, length = 256)
+	public String getS1() {
+		return this.s1;
+	}
+ 
+	public void setS1(String s1) {
+		this.s1 = s1;
+	}	
+
 
 	@Column(name = "N1", nullable = true)
 	public Double getN1() { 
@@ -150,6 +156,15 @@ public class ObjxProp implements java.io.Serializable {
  
 	public void setD1(Date d1) {
 		this.d1 = d1;
+	}	
+
+	@Column(name = "INVOUT", nullable = true)
+	public Integer getInvOut() { 
+		return this.invout;
+	}
+ 
+	public void setInvOut(Integer invout) {
+		this.invout = invout;
 	}	
 
 	@Column(name = "UPD_BY1", nullable = false)

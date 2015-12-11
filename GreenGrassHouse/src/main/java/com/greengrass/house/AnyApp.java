@@ -54,6 +54,11 @@ public class AnyApp {
 		this.session.beginTransaction();
 	}
 	
+	//вернуть новую сессию
+	public Session getSession() {
+		return HibernateUtil.getSessionFactory().openSession();
+	}
+
 	//закоммитить транзакцию
 	public void commitTrans() {
 		this.session.getTransaction().commit();

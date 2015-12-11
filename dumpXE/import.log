@@ -1,0 +1,37 @@
+;;; 
+Import: Release 10.2.0.1.0 - Production on Sunday, 08 February, 2015 16:58:33
+
+Copyright (c) 2003, 2005, Oracle.  All rights reserved.
+;;; 
+Connected to: Oracle Database 10g Express Edition Release 10.2.0.1.0 - Production
+Master table "LOADER1"."SYS_IMPORT_FULL_01" successfully loaded/unloaded
+Starting "LOADER1"."SYS_IMPORT_FULL_01":  loader1/******** directory=BACKUP dumpfile=exp_gg.dmp remap_schema=gg:loader1/******** content=all 
+Processing object type SCHEMA_EXPORT/USER
+ORA-31684: Object type USER:"LOADER1" already exists
+Processing object type SCHEMA_EXPORT/SYSTEM_GRANT
+Processing object type SCHEMA_EXPORT/ROLE_GRANT
+Processing object type SCHEMA_EXPORT/DEFAULT_ROLE
+Processing object type SCHEMA_EXPORT/PRE_SCHEMA/PROCACT_SCHEMA
+Processing object type SCHEMA_EXPORT/SEQUENCE/SEQUENCE
+Processing object type SCHEMA_EXPORT/TABLE/TABLE
+Processing object type SCHEMA_EXPORT/TABLE/TABLE_DATA
+. . imported "LOADER1"."T_EVENT"                         5.281 KB       2 rows
+. . imported "LOADER1"."T_EVXOBJ"                        8.484 KB      10 rows
+. . imported "LOADER1"."T_OBJ"                           6.437 KB       6 rows
+. . imported "LOADER1"."T_OBJXPROP"                      8.585 KB       7 rows
+. . imported "LOADER1"."T_OBJ_TP"                        5.320 KB       5 rows
+. . imported "LOADER1"."T_PROP"                          6.140 KB       6 rows
+. . imported "LOADER1"."T_LIST"                              0 KB       0 rows
+. . imported "LOADER1"."T_LIST_TP"                           0 KB       0 rows
+. . imported "LOADER1"."T_OBJXTREE"                          0 KB       0 rows
+Processing object type SCHEMA_EXPORT/TABLE/INDEX/INDEX
+Processing object type SCHEMA_EXPORT/TABLE/CONSTRAINT/CONSTRAINT
+Processing object type SCHEMA_EXPORT/TABLE/INDEX/STATISTICS/INDEX_STATISTICS
+Processing object type SCHEMA_EXPORT/TABLE/COMMENT
+Processing object type SCHEMA_EXPORT/PACKAGE/PACKAGE_SPEC
+Processing object type SCHEMA_EXPORT/PACKAGE/COMPILE_PACKAGE/PACKAGE_SPEC/ALTER_PACKAGE_SPEC
+Processing object type SCHEMA_EXPORT/PACKAGE/PACKAGE_BODY
+Processing object type SCHEMA_EXPORT/TABLE/CONSTRAINT/REF_CONSTRAINT
+Processing object type SCHEMA_EXPORT/TABLE/TRIGGER
+Processing object type SCHEMA_EXPORT/TABLE/STATISTICS/TABLE_STATISTICS
+Job "LOADER1"."SYS_IMPORT_FULL_01" completed with 1 error(s) at 16:58:41

@@ -78,6 +78,14 @@ public class EvApp extends AnyApp {
 		int exRows = query.executeUpdate();		 
 	}
 
+	//отменить очередь событий
+	public void cancelEvents() {
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Query query = s.createSQLQuery(
+				"CALL p_event.cancel_events()");
+		int exRows = query.executeUpdate();		 
+	}
+
 	//Обертка: Создать событие(сообщение, работу) в адрес объекта (обычно модуля) без маркера
 	public void crEvent(
 			String speech,  

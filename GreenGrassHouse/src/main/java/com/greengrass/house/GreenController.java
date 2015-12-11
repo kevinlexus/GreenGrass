@@ -113,7 +113,7 @@ public class GreenController {
 	    		}
 		    	if (app.isEquals(propUpdTp, "UPD_TO_GGH")) {
 			    	//Читать значения из файла, записать в базу
-		    		String ln=null;
+		    		String ln=null,lnChk=null; //первое и контрольное значение
 		    		if (usdiral == 1) { //узнать наличие директории устройства в alarm
 			    		fdir=(usdiral == 1 ? app.diralarm : app.dir1wire);
 			    		fname=o.getOwfsCd();
@@ -121,7 +121,27 @@ public class GreenController {
 			    			//app.mess("DIR EXISTS! "+fdir+fname);
 			        	    rstLatch=true; //установить rstLatch, для свойства-защёлки, если только значение было не null
 			    			fname=fdir+app.slash+fname+app.slash+propOwCd; //есть директория!
-				    		ln=app.readFileLine(fname);
+				    		ln=app.readFileLine(fname);    //Основное чтение
+
+				    		if (prop.equals("COUNTED")) {  //Контрольное чтение (некоторые файлы из owfs считываются неуверенно), пока только свойство "COUNTED"
+				    		lnChk=app.readFileLine(fname);
+
+				    		//ПРОВЕРКА!!!!!!!!!! УБРАТЬ ПОТОМ!!!
+				    		if (dbgLvl !=0) {
+					        	  app.mess("LOG1: fname="+fname, dbgLvl);
+					        	  app.mess("LOG1: Obj="+o.getCd()+" prop="+prop+", ln="+ln, dbgLvl);
+					        	  app.mess("LOG2: Obj="+o.getCd()+" prop="+prop+", ln="+lnChk, dbgLvl);
+				    			
+				    		}
+				    		//ПРОВЕРКА!!!!!!!!!! УБРАТЬ ПОТОМ!!!
+
+				    		if (!app.isEquals(ln, lnChk)) { 
+				    			//Контрольное чтение показало, что файл прочитался по другому, отказаться от обработки
+			        	        app.mess("ERROR WHILE READING: Obj="+o.getCd()+" prop="+prop+", ln="+lnChk, dbgLvl);
+				    			continue;
+				    		}
+				    		}
+
 			    		}
 		    		} else { //узнать не через дир. alarm, там всегда должен быть файл)) 
 			    		fname=app.dir1wire +app.slash+o.getOwfsCd()+app.slash+propOwCd;
@@ -215,6 +235,14 @@ public class GreenController {
 				              break;
 				          case "BL": 
 				        	  val=(o.getBool(propId)==true ? 1: 0);
+				        	  //инвертировать значение, если надо 
+				        	  if (o.getInvOut(propId)) {
+				        		  if (val.equals(1)) {
+				        			val=0;  
+				        		  } else {
+				        			val=1;  
+				        		  }
+				        	  } 
 				              break;
 				        }
 	    	            app.writeFileLine(fname, val);

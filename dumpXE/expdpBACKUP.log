@@ -1,0 +1,44 @@
+;;; 
+Export: Release 10.2.0.1.0 - Production on Tuesday, 07 July, 2015 20:33:53
+
+Copyright (c) 2003, 2005, Oracle.  All rights reserved.
+;;; 
+Connected to: Oracle Database 10g Express Edition Release 10.2.0.1.0 - Production
+Starting "GG"."SYS_EXPORT_SCHEMA_01":  gg/******** content=all directory=BACKUP dumpfile=exp_gg.dmp logfile=expdpBACKUP.log 
+Estimate in progress using BLOCKS method...
+Processing object type SCHEMA_EXPORT/TABLE/TABLE_DATA
+Total estimation using BLOCKS method: 1.312 MB
+Processing object type SCHEMA_EXPORT/USER
+Processing object type SCHEMA_EXPORT/SYSTEM_GRANT
+Processing object type SCHEMA_EXPORT/ROLE_GRANT
+Processing object type SCHEMA_EXPORT/DEFAULT_ROLE
+Processing object type SCHEMA_EXPORT/PRE_SCHEMA/PROCACT_SCHEMA
+Processing object type SCHEMA_EXPORT/TYPE/TYPE_SPEC
+Processing object type SCHEMA_EXPORT/SEQUENCE/SEQUENCE
+Processing object type SCHEMA_EXPORT/TABLE/TABLE
+Processing object type SCHEMA_EXPORT/TABLE/INDEX/INDEX
+Processing object type SCHEMA_EXPORT/TABLE/CONSTRAINT/CONSTRAINT
+Processing object type SCHEMA_EXPORT/TABLE/INDEX/STATISTICS/INDEX_STATISTICS
+Processing object type SCHEMA_EXPORT/TABLE/COMMENT
+Processing object type SCHEMA_EXPORT/PACKAGE/PACKAGE_SPEC
+Processing object type SCHEMA_EXPORT/PACKAGE/COMPILE_PACKAGE/PACKAGE_SPEC/ALTER_PACKAGE_SPEC
+Processing object type SCHEMA_EXPORT/PACKAGE/PACKAGE_BODY
+Processing object type SCHEMA_EXPORT/TABLE/CONSTRAINT/REF_CONSTRAINT
+Processing object type SCHEMA_EXPORT/TABLE/TRIGGER
+Processing object type SCHEMA_EXPORT/TABLE/STATISTICS/TABLE_STATISTICS
+. . exported "GG"."A_OBJXPROP"                           17.62 KB     378 rows
+. . exported "GG"."KMP_T_OPXTREE"                        5.554 KB       2 rows
+. . exported "GG"."T_EVENT"                              5.632 KB       4 rows
+. . exported "GG"."T_EVQUE"                              24.16 KB     286 rows
+. . exported "GG"."T_EVXOBJ"                             5.851 KB       1 rows
+. . exported "GG"."T_OBJ"                                6.664 KB      11 rows
+. . exported "GG"."T_OBJXPROP"                           12.39 KB      44 rows
+. . exported "GG"."T_OBJ_TP"                             5.343 KB       6 rows
+. . exported "GG"."T_PROP"                               7.882 KB      20 rows
+. . exported "GG"."T_LIST"                                   0 KB       0 rows
+. . exported "GG"."T_LIST_TP"                                0 KB       0 rows
+Master table "GG"."SYS_EXPORT_SCHEMA_01" successfully loaded/unloaded
+******************************************************************************
+Dump file set for GG.SYS_EXPORT_SCHEMA_01 is:
+  C:\WORK\GIT\DUMPXE\EXP_GG.DMP
+Job "GG"."SYS_EXPORT_SCHEMA_01" successfully completed at 20:34:10

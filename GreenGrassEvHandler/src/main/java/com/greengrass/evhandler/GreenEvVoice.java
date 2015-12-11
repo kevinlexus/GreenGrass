@@ -108,13 +108,16 @@ public class GreenEvVoice implements Runnable{
 				      break;
 			      }
 
-			      if (preSound.length() > 0){
-				      //предварительный звук
-				      p = Runtime.getRuntime().exec("play /tmp/"+preSound+".wav "+playpar);
+			      if (preSound != null) {
+				      if (preSound.length() > 0){
+					      //предварительный звук
+					      p = Runtime.getRuntime().exec("play /tmp/"+preSound+".wav "+playpar);
+					      //Ожидаем выполнения команды в другом потоке, выводим содержание ответа
+		 		    	  app.mess("execute 1: "+"play /tmp/"+preSound+".wav "+playpar);
+					      waitForThr();
+				      }
 			      }
-			      //Ожидаем выполнения команды в другом потоке, выводим содержание ответа
- 		    	  app.mess("execute 1: "+"play /tmp/"+preSound+".wav "+playpar);
-			      waitForThr();
+ 		    	  
 			      //голосовое сообщение
 			      p = Runtime.getRuntime().exec("play /tmp/temp.wav "+playpar);
 			      //Ожидаем выполнения команды в другом потоке, выводим содержание ответа
@@ -134,7 +137,6 @@ public class GreenEvVoice implements Runnable{
 		
 	}
 	
-	@Override
 	public void run() {
 		try {
 			app = new AnyApp("GGV");

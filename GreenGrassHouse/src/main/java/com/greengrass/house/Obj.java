@@ -25,8 +25,6 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.NaturalId;
-import org.springframework.transaction.annotation.Transactional;
-
 
 @Entity
 @Table(name="T_OBJ", uniqueConstraints = {
@@ -179,9 +177,30 @@ public class Obj implements java.io.Serializable {
 					"', doesn't support type Boolean in object "+this.cd);
 		}
         //Вернуть:
-		//True как 1	
-		//False как 0
+		//1 как True	
+		//0 как False
 		Integer val1 = prop.getI1();
+		Boolean val = null;
+		if (val1==null) {
+ 	  	   val=false;
+		} else if (val1==0) {
+	  	   val=false;
+		} else if (val1==1) {
+ 	  	   val=true;
+		}
+		return val; 
+	}
+
+	@Transient
+	public Boolean getInvOut(String cd) {
+		//Инвертировать ли булевое свойство объекта, узнать по CD свойства
+		ObjxProp prop = getProp(cd); 
+		if (!prop.getProperty().getTpCd().equals("BL")) {
+			throw new IllegalArgumentException("Property '"+prop.getProperty().getId()+
+					"', doesn't support type Boolean in object "+this.cd);
+		}
+        //Вернуть:
+		Integer val1 = prop.getInvOut();
 		Boolean val = null;
 		if (val1==null) {
  	  	   val=false;

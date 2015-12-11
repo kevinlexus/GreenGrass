@@ -1,0 +1,2 @@
+select o.name, o.owfs_cd, t.*, t.rowid from T_OBJXPROP t, t_obj o where t.fk_prop in ('CUR_BIT', 'CUR_VALUE') 
+and t.fk_obj=o.id
