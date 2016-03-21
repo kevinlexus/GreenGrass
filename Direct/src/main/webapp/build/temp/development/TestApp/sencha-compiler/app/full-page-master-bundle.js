@@ -1,2 +1,2 @@
 // @tag full-page
-// @require C:\work\SenchaProj\TestApp\TestApp\app.js
+// @require C:\work\git\Direct\src\main\webapp\app.js
