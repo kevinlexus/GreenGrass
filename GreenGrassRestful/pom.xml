@@ -35,6 +35,13 @@
 		<version>2.3.1</version>
     </dependency>
 
+<!-- Json -->
+<dependency>
+ <groupId>org.json</groupId>
+ <artifactId>json</artifactId>
+ <version>20151123</version>
+</dependency>  
+
 <!-- 	<dependency>  ПОКА ЗАКОММЕНТИРОВАЛ - БЕЗОПАСНОСТЬ 
 	  <groupId>org.springframework.boot</groupId>
 	  <artifactId>spring-boot-starter-security</artifactId>

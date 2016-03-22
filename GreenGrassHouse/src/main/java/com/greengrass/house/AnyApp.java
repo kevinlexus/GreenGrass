@@ -21,33 +21,35 @@ public class AnyApp {
 	public int dbgLvl;
 	
 	public AnyApp(String appCd) throws GGException {
-		this.appCd=appCd;
-
-		beginTrans();
-		System.out.println("3.3.1");
-		appObj = (Obj) this.session.bySimpleNaturalId(Obj.class).load(appCd);
-		System.out.println("3.3.2");
-		mainObj = (Obj) this.session.bySimpleNaturalId(Obj.class).load("GGH");
-		System.out.println("3.3.3");
-		
-		if (appObj ==null){
-			throw new GGException("App CD="+appCd+" doesn't suitable!");
-		}
-
-		//тип операционки
-		this.typeos = mainObj.getStr("TYPEOS");
-		System.out.println("3.3.4");
-
-		//слэш в какую сторону - зависит от типа операционки
-		if (this.typeos.equals("LINUX")) {
-			slash = "/";
-		} else {
-			slash = "\\";
-		}
-		commitTrans();
-		System.out.println("3.3.5");
-        }
-
+	
+		if (appCd != null) { //если определён тип приложения из базы данных
+			this.appCd=appCd;
+	
+			beginTrans();
+			System.out.println("3.3.1");
+			appObj = (Obj) this.session.bySimpleNaturalId(Obj.class).load(appCd);
+			System.out.println("3.3.2");
+			mainObj = (Obj) this.session.bySimpleNaturalId(Obj.class).load("GGH");
+			System.out.println("3.3.3");
+			
+			if (appObj ==null){
+				throw new GGException("App CD="+appCd+" doesn't suitable!");
+			}
+	
+			//тип операционки
+			this.typeos = mainObj.getStr("TYPEOS");
+			System.out.println("3.3.4");
+	
+			//слэш в какую сторону - зависит от типа операционки
+			if (this.typeos.equals("LINUX")) {
+				slash = "/";
+			} else {
+				slash = "\\";
+			}
+			commitTrans();
+			System.out.println("3.3.5");
+	        }
+	}
 	//начать транзакцию, получить текущую сессию
 	public void beginTrans() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();

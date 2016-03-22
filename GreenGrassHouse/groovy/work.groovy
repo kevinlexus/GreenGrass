@@ -22,7 +22,7 @@ void sayAboutThemp() {
 	}
 	//Сделать объявление
 	GGE.crEvent('Самое тёплое место в квартире находится '
-		+mess, 300, 1, 'GGV', 'snd1', 0)
+		+mess, 300, 1, 'GGV', 'snd4', 0)
 	
 	switch (GGE.getMostCoolTherm()) {
 		case 'T_KITCH1':
@@ -43,7 +43,7 @@ void sayAboutThemp() {
 	}
 	//Сделать объявление
 	GGE.crEvent('Самое прохладное место в квартире находится '
-		+mess, 300, 1, 'GGV', 'snd1', 0)
+		+mess, 300, 1, 'GGV', 'snd4', 0)
 
 }
 
@@ -61,13 +61,13 @@ void checkTemp(double val, double minval, double maxval, double diff, com.greeng
 		 //Сделать объявление
 		if (val > maxval) {
 			GGE.crEvent(txtWhere+' стало жарко, '
-				 +ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+				 +ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 		} else if ((val >= minval) && (val <= maxval)) {
 		  GGE.crEvent(txtWhere+' комфортная температура, '
-			+ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+			+ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 		} else {
 			GGE.crEvent(txtWhere+' потеплело и стало, '
-				+ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+				+ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 				}
 	} else if (val-o.getDbl('LATCHED_LAST_VAL') <= diff*-1)
 	{
@@ -76,13 +76,13 @@ void checkTemp(double val, double minval, double maxval, double diff, com.greeng
 		 //Сделать объявление
 		if (val < minval) {
 			GGE.crEvent(txtWhere+' стало холодно, '
-				 +ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+				 +ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 		} else if ((val >= minval) && (val <= maxval)) {
 		  GGE.crEvent(txtWhere+' комфортная температура, '
-			+ival+' градусов', 1, 300, 'GGV', 'snd1', 0)
+			+ival+' градусов', 1, 3600, 'GGV', 'snd4', 0)
 		} else {
 			GGE.crEvent(txtWhere+' похолодало и стало, '
-				+ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+				+ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 		}
 	}
 //	println 'Check:'+txtWhere
@@ -156,13 +156,13 @@ void checkTemp2(Date dt1, double val, com.greengrass.house.Obj o, String txtWher
 		 //Сделать объявление
 		if (val > midval+3) {
 			GGE.crEvent(txtWhere+' стало '+word1+', '
-				 +ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+				 +ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 		} else if ((val >= midval-3) && (val <= midval+3)) {
 		  GGE.crEvent(txtWhere+' средняя температура этого месяца, '
-			+ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+			+ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 		} else {
 			GGE.crEvent(txtWhere+' потеплело и стало, '
-				+ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+				+ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 				}
 	} else if (val-o.getDbl('LATCHED_LAST_VAL') <= -3)
 	{
@@ -171,13 +171,13 @@ void checkTemp2(Date dt1, double val, com.greengrass.house.Obj o, String txtWher
 		 //Сделать объявление
 		if (val < midval-3) {
 			GGE.crEvent(txtWhere+' стало холодно, '
-				 +ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+				 +ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 		} else if ((val >= midval-3) && (val <= midval+3)) {
 		  GGE.crEvent(txtWhere+' средняя температура этого месяца, '
-			+ival+' градусов', 1, 300, 'GGV', 'snd1', 0)
+			+ival+' градусов', 1, 3600, 'GGV', 'snd4', 0)
 		} else {
 			GGE.crEvent(txtWhere+' похолодало и стало, '
-				+ival+' градусов', 300, 1, 'GGV', 'snd1', 0)
+				+ival+' градусов', 3600, 1, 'GGV', 'snd4', 0)
 		}
 	}
 //	println 'Check:'+txtWhere
@@ -193,17 +193,23 @@ GGE.crEvent('Сейчас звучит зона 2', 300, 1, 'GGV', 'snd1', 0)
 	GGE.procScheduler()
 
 	int flag=0
-	double th_kitch1=Math.round(T_KITCH1.getDbl('CELSIUS_VAL') * 100) / 100
-	double th_lvn1=Math.round(T_LVN1.getDbl('CELSIUS_VAL') * 100) / 100
-	double th_bath1=Math.round(T_BATH1.getDbl('CELSIUS_VAL') * 100) / 100
-	double th_bed1=Math.round(T_BEDRM1.getDbl('CELSIUS_VAL') * 100) / 100
-	double th_outd1=Math.round(T_OUTDOOR1.getDbl('CELSIUS_VAL') * 100) / 100
+	int th_kitch1=Math.round(T_KITCH1.getDbl('CELSIUS_VAL') * 100) / 100
+	int th_lvn1=Math.round(T_LVN1.getDbl('CELSIUS_VAL') * 100) / 100
+	int th_bath1=Math.round(T_BATH1.getDbl('CELSIUS_VAL') * 100) / 100
+	int th_bed1=Math.round(T_BEDRM1.getDbl('CELSIUS_VAL') * 100) / 100
+	int th_outd1=Math.round(T_OUTDOOR1.getDbl('CELSIUS_VAL') * 100) / 100
 	int th_i_outd1=Math.round(T_OUTDOOR1.getDbl('CELSIUS_VAL') * 100) / 100
 	
 	
+	//Разбудить утром
 	if (curDate.format("HH:mm")=='07:00') {
 		HOUSE.setBool('NIGHT_MODE', false)
 		GGE.crEvent('MORN_HELLO1', 'Доброе утро!', 65, 1, 'GGV', 'snd3', 0)
+		GGE.crEvent('MORN_HELLO2', 'На улице '+th_i_outd1+' градусов!', 65, 1, 'GGV', 'snd1', 0)
+	}
+
+	//Еще раз повторить температуру, перед выходом
+	if (curDate.format("HH:mm")=='07:20') {
 		GGE.crEvent('MORN_HELLO2', 'На улице '+th_i_outd1+' градусов!', 65, 1, 'GGV', 'snd1', 0)
 	}
 
@@ -223,28 +229,34 @@ GGE.crEvent('Сейчас звучит зона 2', 300, 1, 'GGV', 'snd1', 0)
 	//Реакция на нажатие кнопки у входа 
 	if (TRIGG1.is_on()) {
 		TRIGG1.off()
-		if (!HOUSE.getBool('PEOPLE_EXIST')) {
-			GGE.crEvent('AT_HOME', 'Я рада вас видеть дома!', 10, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('JUST_EVENT1', 'На улице '+th_i_outd1, 0, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('JUST_EVENT2', 'В спальне '+th_bed1, 0, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('JUST_EVENT3', 'В зале '+th_lvn1, 0, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('JUST_EVENT4', 'На кухне '+th_kitch1, 0, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('JUST_EVENT5', 'В ванной '+th_bath1+' градусов!', 0, 1, 'GGV', 'snd1', 0)
+
+		/*if (!HOUSE.getBool('PEOPLE_EXIST')) {
+			GGE.crEvent('AT_HOME', 'Я рада вас видеть дома!', 10, 1, 'GGV', 'snd2', 0)
 			HOUSE.setBool('PEOPLE_EXIST', true)
 		} else {
-			GGE.crEvent('AT_HOME', 'Вы собираетесь покинуть дом? Всего хорошего вам!', 10, 1, 'GGV', 'snd1', 1)
+			GGE.crEvent('AT_HOME', 'Вы собираетесь покинуть дом? Всего хорошего вам!', 10, 1, 'GGV', 'snd2', 1)
 			HOUSE.setBool('PEOPLE_EXIST', false)
-		} 
+		}*/ 
 	}
 	
 	//Реакция на открытие двери
 	if (TRIGG2.is_on()) {
-		GGE.crEvent('DOOR_OPEN', 'Входная дверь открыта!', 300, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('DOOR_OPEN', 'Входная дверь открыта!', 300, 1, 'GGV', 'snd2', 0)
 		TRIGG2.off()
 	}
 	//Реакция вход в подъезд с использованием домофона
 	if (TRIGG3.is_on()) {
-		GGE.crEvent('INTERCOM', 'Кто то звонил в домофон, и я - открыла!', 300, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('INTERCOM', 'Кто то звонил в домофон, и я - открыла!', 300, 1, 'GGV', 'snd2', 0)
 		TRIGG3.off()
 	}
 	//Реакция на пожарную сигнализацию
 	if (TRIGG4.is_on()) {
-		GGE.crEvent('Обнаружено задымление!', 1, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('Обнаружено задымление!', 1, 1, 'GGV', 'snd2', 0)
 		TRIGG4.off()
 	}
 
@@ -261,7 +273,7 @@ GGE.crEvent('Сейчас звучит зона 2', 300, 1, 'GGV', 'snd1', 0)
 		M_EL1.setBool('LATCHED_MAX_VAL', true)
 		M_EL1.setBool('LATCHED_COMFORT_VAL', false)
 		//Сделать объявление
-		GGE.crEvent('Перерасход энергии!', 300, 1, 'GGV', 'snd1', 0)
+		GGE.crEvent('Перерасход энергии!', 300, 1, 'GGV', 'snd2', 0)
 	   
 	   } else if (M_EL1.getDbl('LAST_NMIN_VOL') < 15
 		 && !M_EL1.getBool('LATCHED_COMFORT_VAL')) {
@@ -279,11 +291,11 @@ GGE.crEvent('Сейчас звучит зона 2', 300, 1, 'GGV', 'snd1', 0)
 		  
 		  if (C_FLOOR.getBool('SWITCHED_ON_SCHDL')==true && C_FLOOR.getBool('SWITCHED_ON') == false) {
 			  //Сделать объявление
-			  GGE.crEvent('Я включила тёплый пол, по расписанию', 300, 1, 'GGV', 'snd1', 0)
+			  GGE.crEvent('Я включила тёплый пол', 300, 1, 'GGV', 'snd4', 0)
 			  C_FLOOR.setBool('SWITCHED_ON', true) //вкл. тёплый пол
 		   } else if (C_FLOOR.getBool('SWITCHED_ON_SCHDL')==false && C_FLOOR.getBool('SWITCHED_ON') == true) {
 			  C_FLOOR.setBool('SWITCHED_ON', false) //выкл. тёплый пол
-			  GGE.crEvent('Я выключила тёплый пол!', 300, 1, 'GGV', 'snd1', 0)
+			  GGE.crEvent('Я выключила тёплый пол!', 300, 1, 'GGV', 'snd4', 0)
 		   }
 
 		C_FLOOR.setBool('LATCHED_ON_SCHDL', C_FLOOR.getBool('SWITCHED_ON_SCHDL'))

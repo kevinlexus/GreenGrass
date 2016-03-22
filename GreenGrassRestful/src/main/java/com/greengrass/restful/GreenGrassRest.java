@@ -28,7 +28,7 @@ public class GreenGrassRest {
 
 	RestApp app = null;
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-
+	int a = 0;
 	//Gson gson = new Gson();
 	
 	Integer id; //Id объекта
@@ -120,7 +120,8 @@ public class GreenGrassRest {
 	public String getpage(@RequestParam(value = "page") String page) {
 		List<prepObjProp> lpObj = new ArrayList<prepObjProp>();
 		//gson= new Gson();
-
+		a++;
+		System.out.println("a:" + a);
 		System.out.println("/getpage:" + page);
 
 		switch (page) {

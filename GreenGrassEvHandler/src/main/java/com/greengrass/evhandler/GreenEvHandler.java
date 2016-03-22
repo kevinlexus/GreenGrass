@@ -12,7 +12,11 @@ public class GreenEvHandler {
 
 	public static void main(String[] args) throws GGException {
 		
-//      Подавление логгинга hibernate (+ еще есть в pom.xml)		
+//      Подавление логгинга hibernate (+ еще есть в pom.xml)
+		//В pom.xml надо удалить строки:
+		/*<logback.version>1.0.13</logback.version>
+		<slf4j.version>1.7.5</slf4j.version>*/
+
 		System.out.println("1");
  		@SuppressWarnings("unused")
 	    org.jboss.logging.Logger logger = org.jboss.logging.Logger.getLogger("org.hibernate");
