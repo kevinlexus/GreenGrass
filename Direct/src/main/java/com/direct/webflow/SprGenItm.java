@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 //простой класс строки из справочника spr_gen_itm
 //описывающего шаги выполнения формирования
 
@@ -15,8 +17,9 @@ public class SprGenItm {
 	private int id;
 	private String cd;
 	private String name;
-	private Integer npp, sel;
+	private Integer npp;
 	private Double proc;
+	private Boolean sel;
 
 	
 	@Id
@@ -60,11 +63,20 @@ public class SprGenItm {
 		this.proc = proc;
 	}
 
-	@Column(name = "SEL", nullable = true)
+/*	@Column(name = "SEL", nullable = true)
 	public Integer getSel() {
 		return sel;
 	}
 	public void setSel(Integer sel) {
+		this.sel = sel;
+	}*/
+	@Type(type= "org.hibernate.type.NumericBooleanType")
+	@Column(name = "SEL", nullable = true)
+	public Boolean getSel() {
+		return sel;
+	}
+	
+	public void setSel(Boolean sel) {
 		this.sel = sel;
 	}
 }

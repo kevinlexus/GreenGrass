@@ -1,14 +1,11 @@
 package com.direct.webflow;
 
-import com.greengrass.house.AnyApp;
 
 public class ThrGenHouse extends Thread {
 	   private String threadName;
 	   public boolean stopped=false;
-	   private AnyApp app;
 
-	   ThrGenHouse(AnyApp app, String name){
-	       this.app = app;
+	   ThrGenHouse(String name){
 		   threadName = name;
 	       System.out.println("Creating " +  threadName );
 	   }
