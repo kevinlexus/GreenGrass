@@ -17,5 +17,6 @@
 <property name="use_sql_comments">true</property>
         
         <mapping class="com.direct.webflow.SprGenItm"></mapping>
+        <mapping class="com.direct.webflow.TempObj"></mapping>
     </session-factory>
 </hibernate-configuration>

@@ -1,5 +1,6 @@
 package com.direct.webflow;
 
+import java.sql.CallableStatement;
 import java.util.List;
 
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+/*import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+*/
 /*
 @Configuration
 @EnableWebMvc*/
@@ -59,6 +78,16 @@ public class WebCtrl {
 	@RequestMapping("/startGen")
     @ResponseBody
     String startGen() {
+		
+		
+		List<TempObj> tl = new TempObjDao().findAll();
+		for (TempObj itm : tl) {
+			
+	           System.out.println("OBJECT:"+itm.getId());
+			
+		}
+		
+		
     	if (T1 == null || T1.stopped) {
    	  	   T1= new ThrMain(new SprGenItmDao().findAllChecked());
    	  	   T1.start();
