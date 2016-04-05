@@ -21,12 +21,6 @@ public class DSess {
 		}
 	}
 	
-	//Вернуть новую сессию
-	/*public Session openSess() {
-		sess=HibernateUtil.getSessionFactory().openSession();
-		return sess;
-	}*/
-
 
 	//закрыть сессию
 	public void closeSess() {
