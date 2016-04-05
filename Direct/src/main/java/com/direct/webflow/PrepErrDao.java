@@ -15,7 +15,6 @@ public class PrepErrDao {
     selfSess=false;
     }
 
-
   //конструктор с собственной сессией
   public PrepErrDao() {
 	this.sess =new DSess(true).sess;

@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-//простой класс строки из temp_obj, для хранения id любых объектов, для любых нужд
+//Класс строки из temp_obj, для хранения id любых объектов, для любых нужд
 
 @Entity
 @Table(name = "TEMP_OBJ")

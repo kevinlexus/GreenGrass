@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
 
-//простой класс строки из справочника spr_gen_itm
+//Класс строки из справочника spr_gen_itm
 //описывающего шаги выполнения формирования
 
 @Entity

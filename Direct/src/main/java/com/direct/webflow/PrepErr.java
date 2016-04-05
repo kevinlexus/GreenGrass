@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//простой класс строки из temp_err, для показа сообщений об ошибках, по лиц.счетам и т.п.
+//Класс строки из temp_err, для показа сообщений об ошибках, по лиц.счетам и т.п.
 @Entity
 @Table(name = "PREP_ERR")
 public class PrepErr {
