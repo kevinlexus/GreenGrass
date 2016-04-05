@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WebCtrl {
 
 	ThrMain T1;
+	static String stateGen;//Состояние формирования 0-Выполнено успешно, 1-Формируется, 2-выход, с ошибкой, 
 	
 	@RequestMapping("/greeting")
     public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
@@ -31,11 +32,42 @@ public class WebCtrl {
 	   return new SprGenItmDao().findAll();
     }
 
+   @RequestMapping(value = "/getPrepErr", method = RequestMethod.GET, produces="application/json")
+   @ResponseBody
+   public List<PrepErr> getPrepErr() {
+	   return new PrepErrDao().findAll();
+    }
+
+
+   /*
+    * Вернуть статус текущего формирования
+    */
+   @RequestMapping(value = "/getStateGen", method = RequestMethod.GET)
+   @ResponseBody
+   public String getStateGen() {
+ 	   
+	   return stateGen;
+    }
+
+   /*
+    * Вернуть ошибку, последнего формирования, если есть
+    */
+   @RequestMapping(value = "/getErrGen", method = RequestMethod.GET)
+   @ResponseBody
+   public String getErrGen() {
+ 	   
+	    SprGenItmDao sprgDao = new SprGenItmDao();
+	    SprGenItm menuGenItg;
+		menuGenItg = sprgDao.getByCd("GEN_ITG");
+		
+	   return String.valueOf(menuGenItg.getErr());
+    }
+   
    @RequestMapping(value = "/editSprgenitm", method = RequestMethod.POST, produces="application/json", consumes="application/json")
    @ResponseBody
    public String editSprGenItm(@RequestBody List<SprGenItm> iList) { //использовать List объектов, со стороны ExtJs в Модели сделано allowSingle: false
 
- 	   DSess ds = new DSess();
+ 	   DSess ds = new DSess(false);
 	   ds.beginTrans();
 	   for (SprGenItm itm : iList) {
 		   SprGenItm i= (SprGenItm)ds.sess.load(SprGenItm.class, itm.getId());
@@ -57,8 +89,9 @@ public class WebCtrl {
     @ResponseBody
     String startGen() {
 		
-    	if (T1 == null || T1.stopped) {
-   	  	   T1= new ThrMain(new SprGenItmDao().findAllChecked());
+		if (T1 == null || T1.stopped) {
+		   // Запустить в потоке, чтобы не тормозило request
+   	  	   T1= new ThrMain();
    	  	   T1.start();
     	} else {
            System.out.println("Already started!");

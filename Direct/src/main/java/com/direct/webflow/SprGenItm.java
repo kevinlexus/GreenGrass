@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
 
 //простой класс строки из справочника spr_gen_itm
@@ -15,9 +16,8 @@ import org.hibernate.annotations.Type;
 public class SprGenItm {
 
 	private int id;
-	private String cd;
-	private String name;
-	private Integer npp;
+	private String cd, name, state;
+	private Integer npp, npp2, err;
 	private Double proc;
 	private Boolean sel;
 
@@ -31,7 +31,8 @@ public class SprGenItm {
 		this.id = id;
 	}
 
-	@Column(name = "CD", nullable = false)
+	@NaturalId
+	@Column(name = "CD", unique = true, nullable = false)
 	public String getCd() {
 		return cd;
 	}
@@ -48,11 +49,27 @@ public class SprGenItm {
 	}
 
 	@Column(name = "NPP", nullable = true)
-	public int getNpp() {
+	public Integer getNpp() {
 		return npp;
 	}
-	public void setNpp(int npp) {
+	public void setNpp(Integer npp) {
 		this.npp = npp;
+	}
+
+	@Column(name = "NPP2", nullable = true)
+	public Integer getNpp2() {
+		return npp2;
+	}
+	public void setNpp2(Integer npp2) {
+		this.npp2 = npp2;
+	}
+
+	@Column(name = "ERR", nullable = true)
+	public Integer getErr() {
+		return err;
+	}
+	public void setErr(Integer err) {
+		this.err = err;
 	}
 
 	@Column(name = "PROC", nullable = true)
@@ -63,13 +80,14 @@ public class SprGenItm {
 		this.proc = proc;
 	}
 
-/*	@Column(name = "SEL", nullable = true)
-	public Integer getSel() {
-		return sel;
+	@Column(name = "STATE", nullable = true)
+	public String getState() {
+		return state;
 	}
-	public void setSel(Integer sel) {
-		this.sel = sel;
-	}*/
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Type(type= "org.hibernate.type.NumericBooleanType")
 	@Column(name = "SEL", nullable = true)
 	public Boolean getSel() {

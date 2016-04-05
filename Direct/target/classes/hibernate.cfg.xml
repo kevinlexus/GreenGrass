@@ -18,5 +18,6 @@
         
         <mapping class="com.direct.webflow.SprGenItm"></mapping>
         <mapping class="com.direct.webflow.TempObj"></mapping>
+        <mapping class="com.direct.webflow.PrepErr"></mapping>
     </session-factory>
 </hibernate-configuration>
