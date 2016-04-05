@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WebCtrl {
 
 	ThrMain T1;
-	static String stateGen;//Состояние формирования 0-Выполнено успешно, 1-Формируется, 2-выход, с ошибкой, 
+	static String stateGen;//Состояние формирования 0-Выполнено успешно, 1-Формируется, 2-выход, с ошибкой
 	
 	@RequestMapping("/greeting")
     public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {

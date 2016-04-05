@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.exception.GenericJDBCException;
 import org.hibernate.jdbc.Work;
 
