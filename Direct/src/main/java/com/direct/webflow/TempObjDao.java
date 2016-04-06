@@ -27,11 +27,12 @@ public class TempObjDao {
     selfSess=true;
 	}
 
-public List<TempObj> findAll() {
-
+public List<TempObj> findAll(int var) {
+	final int varArr[]={var};
     sess.doWork(new Work() {
    	 public void execute(Connection connection) throws SQLException {
-   		    CallableStatement call = connection.prepareCall("{ call scott.p_thread.prep_houses() }");
+   		    CallableStatement call = connection.prepareCall("{ call scott.p_thread.prep_obj(?) }");
+   		    call.setInt(1, varArr[0]);
    		    call.execute();
    		  }
     });

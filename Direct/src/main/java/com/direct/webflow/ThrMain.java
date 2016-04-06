@@ -175,6 +175,34 @@ public class ThrMain extends Thread {
 			
 		}
 		
+		case 16: {
+			//установить текущую дату, до формирования
+			ds.sess.doWork(new Work() {
+				public void execute(Connection connection) throws SQLException {
+					CallableStatement call = connection
+							.prepareCall("{ call scott.init.set_date_for_gen() }");
+					call.execute();
+					doWorkRet = 0;
+				}
+			});
+
+			break;
+		}
+		
+		case 17: {
+			//чистить инф, там где ВООБЩЕ нет счетчиков (нет записи в c_vvod)
+			ds.sess.doWork(new Work() {
+				public void execute(Connection connection) throws SQLException {
+					CallableStatement call = connection
+							.prepareCall("{ call scott.p_thread.gen_clear_vol() }");
+					call.execute();
+					doWorkRet = 0;
+				}
+			});
+
+			break;
+		}
+		
 		
 		}
 		
@@ -293,10 +321,12 @@ public class ThrMain extends Thread {
 	//*****************ФОРМИРОВАНИЕ
 	private void gen() {
 		int ret=-1;
-		SprGenItm menuGenItg, menuMonthOver;
+		SprGenItm menuGenItg, menuMonthOver, menuCheckBG;
 		menuGenItg = sprgDao.getByCd("GEN_ITG");
 		menuMonthOver = sprgDao.getByCd("GEN_MONTH_OVER");
+		menuCheckBG = sprgDao.getByCd("GEN_CHECK_BEFORE_GEN");
 
+	
 		//**********почистить ошибку последнего формирования
 		ds.beginTrans();
 		menuGenItg.setErr(0);
@@ -308,6 +338,14 @@ public class ThrMain extends Thread {
 		ds.commitTrans();
 		//**********
 		
+		//**********установить дату формирования
+		ds.beginTrans();
+		 if (execDoWork(16)!=0) {
+			closeGen(menuGenItg, 2, 1, "ThrMain: Некорректная дата формирования!");
+			return; // выходить
+		 }
+		ds.commitTrans();
+
 		//**********(Установить блокировку для итогового формирования)
 		ds.beginTrans();
 		if (menuGenItg.getSel()) {
@@ -345,14 +383,15 @@ public class ThrMain extends Thread {
 		//**********
 
 		//**********Проверки до формирования
-		if (menuGenItg.getSel()) {
-			// если выбрано итоговое формирование
+		if (menuCheckBG.getSel()) {
+			// если выбраны проверки, а они как правило д.б. выбраны при итоговом
 			ds.beginTrans();
 
 			//проверка p_thread.smpl_chk
 			if (check(menuGenItg, 4)) {
 				return;
 			}
+			menuCheckBG.setProc(0.1);			
 			if (check(menuGenItg, 5)) {
 				return;
 			}
@@ -362,12 +401,13 @@ public class ThrMain extends Thread {
 			if (check(menuGenItg, 7)) {
 				return;
 			}
-			
+			menuCheckBG.setProc(0.5);			
 			//**********Проверки gen.gen_check
 			//проверка корректности л.с.
 			if (check2(menuGenItg, 12)) { //5
 				return;
 			}
+			menuCheckBG.setProc(0.7);			
 			//основные проверки
 			if (check2(menuGenItg, 8)) { //1
 				return;
@@ -376,6 +416,7 @@ public class ThrMain extends Thread {
 			if (check2(menuGenItg, 15)) { //8
 				return;
 			}
+			menuCheckBG.setProc(1.0);			
 			ds.commitTrans();
 		}
 
@@ -402,37 +443,72 @@ public class ThrMain extends Thread {
 			
 		}				
 		//**********Начать формирование
-		genLoop: for (SprGenItm itm : sprg) {
+		for (SprGenItm itm : sprg) {
 				System.out.println("Generating menu item: " + itm.getCd());
 				switch (itm.getCd()) {
 
-				case "GEN_CHRG": {
+				case "GEN_DIST_VOLS": {
 					ds.beginTrans();
-					// начисление (по домам)
-					tobj = new TempObjDao().findAll();
+					//чистить инф, там где ВООБЩЕ нет счетчиков (нет записи в c_vvod)
+					ret = execDoWork(17);
+					if (ret==-1) {
+						//Ошибка во время вызова
+						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
+						return; // выходить
+					}
+					itm.setProc(0.2);
+					ds.commitTrans();
+					
+					ds.beginTrans();
+					tobj = new TempObjDao().findAll(2);
 					@SuppressWarnings("unused")
-					SrvThr srv = new SrvThr(10, 0); // запустить N-потоков, var=0 -
+					SrvThr srv = new SrvThr(10, 2); // запустить N-потоков, var=2 -
+													// по вводам, ждать выполнения
+					if (SrvThr.errChild !=0){
+						//произошла ошибка в потоках, записать её
+						itm.setState("Ошибка: "+SrvThr.errTextChild);
+						//выйти из формирования
+						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
+						return;
+					
+					}
+					itm.setProc(1.0);
+					ds.commitTrans();
+					break;
+				}
+				case "GEN_CHRG": {
+					// начисление (по домам)
+					ds.beginTrans();
+					tobj = new TempObjDao().findAll(1);
+					@SuppressWarnings("unused")
+					SrvThr srv = new SrvThr(10, 1); // запустить N-потоков, var=1 -
 													// по домам, ждать выполнения
 					if (SrvThr.errChild !=0){
 						//произошла ошибка в потоках, записать её
 						itm.setState("Ошибка: "+SrvThr.errTextChild);
-						break genLoop; //выйти из цикла (использую label genLoop!!!)
+						//выйти из формирования
+						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
+						return;
 						
 					}
+					ds.commitTrans();
 					break;
 				}
 			}
 
 		}
 		
-		//если была ошибка
-		if (SrvThr.errChild !=0) {
-			closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
-			return;
+		//************ Заключительные проверки, при итоговом формировании
+		if (menuCheckBG.getSel()) {
+			// если выбраны проверки, а они как правило д.б. выбраны при итоговом
+			ds.beginTrans();
+			//окончательная проверка на корректность исх.сальдо
+			if (check(menuGenItg, 11)) {
+				return;
+			}
 		}
 		
 		//************ Завершение
-		
 		menuGenItg.setProc(1.0); //установить 100% выполнения
 		closeGen(menuGenItg, 1, 0, "Выполннено");
 	}
