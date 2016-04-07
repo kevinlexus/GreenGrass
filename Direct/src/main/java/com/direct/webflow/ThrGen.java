@@ -48,12 +48,25 @@ public class ThrGen extends Thread {
 				ds.sess.doWork(new Work() {
 		      	 public void execute(Connection connection) throws SQLException {
 		      		    CallableStatement call = connection.prepareCall("{ call scott.p_vvod.gen_dist_wo_vvod_usl(?) }");
-		      		    call.setInt(4, objId); //id ввода
+		      		    call.setInt(1, objId); //id ввода
 		      		    call.execute();
 		      		  }
 		      	 });
 			break;
 			}
+			
+			case 3:{
+				//вариант 3 - распределить ОДН во вводах, где есть ОДПУ
+				ds.sess.doWork(new Work() {
+		      	 public void execute(Connection connection) throws SQLException {
+		      		    CallableStatement call = connection.prepareCall("{ call scott.p_thread.gen_dist_odpu(?) }");
+		      		    call.setInt(1, objId); //id ввода
+		      		    call.execute();
+		      		  }
+		      	 });
+			break;
+			}
+			
 			}
 		} catch (GenericJDBCException excp) {
 			Throwable cause = excp.getCause();
