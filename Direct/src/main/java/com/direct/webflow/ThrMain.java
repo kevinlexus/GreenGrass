@@ -225,7 +225,8 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ call scott.gen.gen_saldo() }");
+							.prepareCall("{ call scott.gen.gen_saldo(?) }");
+					call.setString(1, "");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -239,7 +240,7 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.c_cpenya.gen_charge_pay_full() }");
+							.prepareCall("{ call scott.c_cpenya.gen_charge_pay_full() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -251,7 +252,7 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.c_penya.gen_charge_pay_pen() }");
+							.prepareCall("{ call scott.c_cpenya.gen_charge_pay_pen() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -265,7 +266,7 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.gen.gen_saldo_houses() }");
+							.prepareCall("{ call scott.gen.gen_saldo_houses() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -279,7 +280,7 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.gen.gen_xito13() }");
+							.prepareCall("{ call scott.gen.gen_xito13() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -293,7 +294,7 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.gen.gen_opl_xito5() }");
+							.prepareCall("{ call scott.gen.gen_opl_xito5() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -307,7 +308,7 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.gen.gen_opl_xito5_() }");
+							.prepareCall("{ call scott.gen.gen_opl_xito5_() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -321,7 +322,7 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.gen.gen_opl_xito10() }");
+							.prepareCall("{ call scott.gen.gen_opl_xito10() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -335,7 +336,7 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.gen.gen_opl_xito3() }");
+							.prepareCall("{ call scott.gen.gen_opl_xito3() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -349,7 +350,8 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.gen.prepare_arch() }");
+							.prepareCall("{ call scott.gen.prepare_arch(?) }");
+					call.setString(1, "");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -363,7 +365,8 @@ public class ThrMain extends Thread {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.gen.gen_debits_lsk_month() }");
+							.prepareCall("{ call scott.gen.gen_debits_lsk_month(?) }");
+					call.setString(1, "");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -371,13 +374,13 @@ public class ThrMain extends Thread {
 
 			break;
 		}
-		
+
 		case 30: {
-		    //Списки
+		    //Списки - privs
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.() }");
+							.prepareCall("{ call scott.c_exp_list.privs_export() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -387,11 +390,11 @@ public class ThrMain extends Thread {
 		}
 
 		case 31: {
-		    //Статистика
+		    //Списки - changes
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.() }");
+							.prepareCall("{ call scott.c_exp_list.changes_export() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -401,11 +404,40 @@ public class ThrMain extends Thread {
 		}
 
 		case 32: {
+		    //Списки - charges
+			ds.sess.doWork(new Work() {
+				public void execute(Connection connection) throws SQLException {
+					CallableStatement call = connection
+							.prepareCall("{ call scott.c_exp_list.charges_export() }");
+					call.execute();
+					doWorkRet = 0;
+				}
+			});
+
+			break;
+		}
+
+		case 33: {
+		    //Статистика
+			ds.sess.doWork(new Work() {
+				public void execute(Connection connection) throws SQLException {
+					CallableStatement call = connection
+							.prepareCall("{ call scott.gen_stat.gen_stat_usl(?) }");
+					call.setString(1, "");
+					call.execute();
+					doWorkRet = 0;
+				}
+			});
+
+			break;
+		}
+
+		case 34: {
 		    //Переход периода
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ scott.() }");
+							.prepareCall("{ call scott.gen.go_next_month_year() }");
 					call.execute();
 					doWorkRet = 0;
 				}
@@ -503,14 +535,14 @@ public class ThrMain extends Thread {
 		case -1: {
 			//Ошибка во время вызова
 			closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-			return true; // выходить с ошибкой
+			return true; // выйти при ошибке с ошибкой
 		}
 		case 1: {
 			closeGen(menuGenItg, 2, 2, "Найдены ошибки до итогового формирования");
-			return true; // выходить с ошибкой
+			return true; // выйти при ошибке с ошибкой
 		}
 		}
-		return false; // выходить без ошибки
+		return false; // выйти при ошибке без ошибки
 	}
 
 	//вынес модуль проверки-2
@@ -521,15 +553,30 @@ public class ThrMain extends Thread {
 		case -1: {
 			//Ошибка во время вызова
 			closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-			return true; // выходить с ошибкой
+			return true; // выйти при ошибке с ошибкой
 		}
 		case 1: {
 			closeGen(menuGenItg, 2, 1, doWorkErrText);
-			return true; // выходить с ошибкой
+			return true; // выйти при ошибке с ошибкой
 		}
 		}
 		
-		return false; // выходить без ошибки
+		return false; // выйти при ошибке без ошибки
+	}
+	
+
+	//вынес модуль простого формирования
+	private boolean smplGen(SprGenItm menuGenItg, SprGenItm itm, int var, Double proc) {
+		ds.beginTrans();
+		int ret = execDoWork(var, 0);
+		if (ret==-1) {
+			//Ошибка во время вызова
+			closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
+			return true; // выйти при ошибке с ошибкой
+		}
+		itm.setProc(proc);
+		ds.commitTrans();
+		return false;
 	}
 	
 	
@@ -557,7 +604,7 @@ public class ThrMain extends Thread {
 		ds.beginTrans();
 		 if (execDoWork(16, 0)!=0) {
 			closeGen(menuGenItg, 2, 1, "ThrMain: Некорректная дата формирования!");
-			return; // выходить
+			return; // выйти при ошибке
 		 }
 		ds.commitTrans();
 
@@ -569,11 +616,11 @@ public class ThrMain extends Thread {
 			if (ret == 1) {
 				//формирование уже запущено
 				closeGen(menuGenItg, 2, 1, "ThrMain: Формирование уже запущено!");
-				return; // выходить
+				return; // выйти при ошибке
 			} else if (ret==-1) {
 				//Ошибка во время вызова
 				closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-				return; // выходить
+				return; // выйти при ошибке
 			}
 			// выполнить проверки
 			System.out.println("ThrMain: Начало формир!");
@@ -586,7 +633,7 @@ public class ThrMain extends Thread {
 		if (ret==-1) {
 			//Ошибка во время вызова
 			closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-			return; // выходить
+			return; // выйти при ошибке
 		}
 		ds.commitTrans();
 		//**********
@@ -599,7 +646,7 @@ public class ThrMain extends Thread {
 		if (ret==-1) {
 			//Ошибка во время вызова
 			closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-			return; // выходить
+			return; // выйти при ошибке
 		}
 		System.out.println("ThrMain: Установлен признак закрытия базы!");
 		ds.commitTrans();
@@ -677,7 +724,7 @@ public class ThrMain extends Thread {
 					if (ret==-1) {
 						//Ошибка во время вызова
 						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+						return; // выйти при ошибке
 					}
 					itm.setProc(0.2);
 					ds.commitTrans();
@@ -738,200 +785,147 @@ public class ThrMain extends Thread {
 					break;
 				}
 				case "GEN_SAL": {
-					ds.beginTrans();
 					//сальдо по лиц счетам
-					ret = execDoWork(19, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 19, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}
 
 				case "GEN_FLOW": {
-					ds.beginTrans();
-					//сальдо по лиц счетам
-					ret = execDoWork(20, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					//движение
+					if (smplGen(menuGenItg, itm, 20, 0.5)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(0.5);
-
-					ret = execDoWork(21, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					//пеня
+					if (smplGen(menuGenItg, itm, 21, 0.8)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(0.8);
 
 					//проверить распр.пени
 					if (check2(menuGenItg, 13)) { //1
 						return;
 					}
-
 					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}
 				
 				
 				case "GEN_SAL_HOUSES": {
-					ds.beginTrans();
-					//сальдо по по домам
-					ret = execDoWork(22, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 22, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}
 
 				case "GEN_XITO14": {
-					ds.beginTrans();
 					//начисление по услугам
-					ret = execDoWork(23, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 23, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}				
 				
 				case "GEN_F3_1": {
-					ds.beginTrans();
 					//оплата по операциям
-					ret = execDoWork(24, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 24, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}				
 				
 				case "GEN_F3_1_2": {
-					ds.beginTrans();
 					//оплата по операциям, для оборотной
-					ret = execDoWork(25, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 25, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}				
 
 				case "GEN_F2_4": {
-					ds.beginTrans();
 					//По УК-организациям Ф.2.4.
-					ret = execDoWork(26, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 26, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}				
 				
 				case "GEN_F1_1": {
-					ds.beginTrans();
 					//По пунктам начисления
-					ret = execDoWork(27, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 27, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}
 				
 				case "GEN_ARCH_BILLS": {
-					ds.beginTrans();
 					//Архив, счета
-					ret = execDoWork(28, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 28, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}				
 				
 				case "GEN_DEBTS": {
-					ds.beginTrans();
-					//Архив, счета
-					ret = execDoWork(29, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					//Задолжники
+					if (smplGen(menuGenItg, itm, 29, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}				
 				
-				case "dd": {
-					ds.beginTrans();
+				case "GEN_EXP_LISTS": {
 					//Списки
-					ret = execDoWork(30, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 30, 0.1)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
+					if (smplGen(menuGenItg, itm, 31, 0.5)) {
+						return; // выйти при ошибке
+					}
+					if (smplGen(menuGenItg, itm, 32, 1.0)) {
+						return; // выйти при ошибке
+					}
 					break;
 				}				
 				
-				case "dd": {
-					ds.beginTrans();
+				case "GEN_STAT": {
 					//Статистика
-					ret = execDoWork(31, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 33, 1.0)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
-					ds.commitTrans();
 					break;
 				}				
 				
-				case "dd": {
-					ds.beginTrans();
+				case "GEN_MONTH_OVER": {
 					//Переход периода
-					ret = execDoWork(32, 0);
-					if (ret==-1) {
-						//Ошибка во время вызова
-						closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-						return; // выходить
+					if (smplGen(menuGenItg, itm, 34, 0.3)) {
+						return; // выйти при ошибке
 					}
-					itm.setProc(1.0);
+					//После перехода - начисление
+					ds.beginTrans();
+					tobj = new TempObjDao().findAll(1); //найти дома
+					@SuppressWarnings("unused")
+					SrvThr srv = new SrvThr(10, 1); // запустить N-потоков, var=1 -
+													// по домам, ждать выполнения
+					if (SrvThr.errChild !=0){
+						//произошла ошибка в потоках, записать её
+						itm.setState("Ошибка: "+SrvThr.errTextChild);
+						//выйти из формирования
+						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
+						return;
+						
+					}
+					itm.setProc(0.5);
 					ds.commitTrans();
+
+					//сальдо по лиц счетам
+					if (smplGen(menuGenItg, itm, 19, 0.8)) {
+						return; // выйти при ошибке
+					}
+					//движение
+					if (smplGen(menuGenItg, itm, 19, 1.0)) {
+						return; // выйти при ошибке
+					}
 					break;
 				}				
 			}
@@ -946,14 +940,14 @@ public class ThrMain extends Thread {
 			if (check(menuGenItg, 11)) {
 				return;
 			}
-		}
 		
-		//установить признак что сформировано итоговое, если дошли до сюда
-		ret = execDoWork(18, 1);
-		if (ret==-1) {
-			//Ошибка во время вызова
-			closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
-			return; // выходить
+			//установить признак что сформировано итоговое, если дошли до сюда
+			ret = execDoWork(18, 1);
+			if (ret==-1) {
+				//Ошибка во время вызова
+				closeGen(menuGenItg, 2, 1, "ThrMain: "+doWorkErrText);
+				return; // выйти при ошибке
+			}
 		}
 
 		//************ Завершение
