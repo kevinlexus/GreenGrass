@@ -18,14 +18,12 @@ public class WebCtrl {
 
 	ThrMain T1;
 	static String stateGen;//Состояние формирования 0-Выполнено успешно, 1-Формируется, 2-выход, с ошибкой
+	static int progressGen=0;//Прогресс формирования от 0 и до кол-во итераций
 	
-	@RequestMapping("/greeting")
-    public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
-    }
-	
-	
+   static void incProgress(){
+	   progressGen++;
+   }
+   
    @RequestMapping(value = "/getSprgenitm", method = RequestMethod.GET, produces="application/json")
    @ResponseBody
    public List<SprGenItm> getSprGenItm() {
@@ -49,6 +47,32 @@ public class WebCtrl {
 	   return stateGen;
     }
 
+   /*
+    * Вернуть прогресс текущего формирования, для обновления грида у клиента
+    */
+   @RequestMapping(value = "/getProgress", method = RequestMethod.GET)
+   @ResponseBody
+   public int getProgress() {
+ 	   
+	   return progressGen;
+    }
+   
+   /*
+    * Проверить состояние пунктов меню
+    */
+   @RequestMapping(value = "/checkItms", method = RequestMethod.POST)
+   @ResponseBody
+   public String checkItms(@RequestParam(value="id") int id ) {
+ 	   DSess ds = new DSess(false);
+	   ExecProc ex =new ExecProc(ds);
+	   ds.beginTrans();
+ 	   ex.runWork(35, id);
+	   ds.commitTrans();
+	   System.out.println("/checkItms?id="+id);
+	   
+	   return null;
+    }   
+   
    /*
     * Вернуть ошибку, последнего формирования, если есть
     */
@@ -80,7 +104,7 @@ public class WebCtrl {
        }
 	   
 	   ds.commitTrans();
-	   System.out.println("Object saved...");
+	   System.out.println("/editSprgenitm");
 	   return null;
     }
 

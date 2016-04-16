@@ -7,7 +7,8 @@ Ext.define('TestApp.Application', {
     extend: 'Ext.app.Application',
     
     name: 'TestApp',
-
+//    controllers: ['TestApp.controller.appCtrl'],
+    controllers: ['appCtrl'],
 //    stores: [
 //    ],
     

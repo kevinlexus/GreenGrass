@@ -99,7 +99,7 @@ public class ThrGen extends Thread {
 
 	public void run() {
 				while ((SrvThr.errChild ==0) && (!stopped)) {
-					TempObj tobj=ThrMain.getNextObj();
+					TempObj tobj=SrvThr.getNextObj();
 					
 					if (tobj == null) {
 						//если вернулся пустой объект - начать останавливаться, - обрабатывать нечего
