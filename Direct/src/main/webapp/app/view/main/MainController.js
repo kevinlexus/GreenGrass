@@ -175,6 +175,8 @@ Ext.define('TestApp.view.main.MainController', {
                         if (refreshFlag) {
                             grid.getStore().reload();
                         }
+                        //console.log("Вызвать callback ret="+ret);
+
                         callback(ret);
                     }
                 });
@@ -189,6 +191,8 @@ Ext.define('TestApp.view.main.MainController', {
     checkState: function() {
         me=this;
         this.ajaxFunction(function(response) {
+            //console.log("response="+response);
+
             if (response==true) {
                 //отменить отложенное задание
                 me.getTask().stop(); //отменить TaskRunner - обращение к локальной переменной контроллера task

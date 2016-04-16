@@ -238,6 +238,7 @@ public class ThrMain extends Thread {
 			menuCheckBG.setProc(1.0);	
 			WebCtrl.incProgress();
 
+			menuGenItg.setProc(0.2); //установить 20% выполнения
 			ds.commitTrans();
 		}
 
@@ -263,6 +264,7 @@ public class ThrMain extends Thread {
 			}
 			
 		}				
+
 		//**********Начать формирование
 		for (SprGenItm itm : sprg) {
 				System.out.println("Generating menu item: " + itm.getCd());
@@ -491,6 +493,10 @@ public class ThrMain extends Thread {
 
 		}
 		
+		ds.beginTrans();
+		menuGenItg.setProc(0.2); //установить 90% выполнения
+		ds.commitTrans();
+
 		//************ Заключительные проверки, при итоговом формировании
 		if (menuCheckBG.getSel()) {
 			// если выбраны проверки, а они как правило д.б. выбраны при итоговом
@@ -511,6 +517,6 @@ public class ThrMain extends Thread {
 
 		//************ Завершение
 		menuGenItg.setProc(1.0); //установить 100% выполнения
-		closeGen(menuGenItg, 1, 0, "Выполннено");
+		closeGen(menuGenItg, 0, 0, "Выполннено");
 	}
 }
