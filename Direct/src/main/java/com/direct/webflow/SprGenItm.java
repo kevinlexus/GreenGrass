@@ -1,5 +1,7 @@
 package com.direct.webflow;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,6 +9,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 //Класс строки из справочника spr_gen_itm
 //описывающего шаги выполнения формирования
@@ -20,6 +24,7 @@ public class SprGenItm {
 	private Integer npp, npp2, err;
 	private Double proc;
 	private Boolean sel;
+	private Date dt1, dt2;
 
 	
 	@Id
@@ -88,6 +93,24 @@ public class SprGenItm {
 		this.state = state;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone = "Asia/Novosibirsk")
+	@Column(name = "DT1", nullable = true)
+	public Date getDt1() {
+		return dt1;
+	}
+	public void setDt1(Date dt1) {
+		this.dt1 = dt1;
+	}
+
+	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone = "Asia/Novosibirsk")
+	@Column(name = "DT2", nullable = true)
+	public Date getDt2() {
+		return dt2;
+	}
+	public void setDt2(Date dt2) {
+		this.dt2 = dt2;
+	}
+	
 	@Type(type= "org.hibernate.type.NumericBooleanType")
 	@Column(name = "SEL", nullable = true)
 	public Boolean getSel() {

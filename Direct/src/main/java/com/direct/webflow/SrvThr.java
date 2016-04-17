@@ -10,8 +10,9 @@ public class SrvThr {
 	public static String errTextChild; // описание ошибки возникшей в порожд.потоках
 	// общий список объектов для выполнения потоками
 	static List<TempObj> tobj;
-	static int progress, initCnt; // прогресс выполнения локальный, начальное кол-во объектов
+	static double progress, initCnt; // прогресс выполнения локальный, начальное кол-во объектов
 	static SprGenItm itm; // пункт меню, который формируется
+	static DSess ds;// сессия из ThrMain
 	// вернуть следующий объект из списка
 	static synchronized TempObj getNextObj() {
 		TempObj retObj = null;
@@ -19,7 +20,7 @@ public class SrvThr {
 			retObj = t;
 			// удалить объект, как "отработанный"
 			tobj.remove(t);
-			//обновить прогресс общий выполнения
+			//обновить общий прогресс выполнения
 			WebCtrl.incProgress();
 			//прогресс локальный
 			if (initCnt != 0){
@@ -27,7 +28,10 @@ public class SrvThr {
 			} else {
 				progress=1;
 			}
-			itm.setProc(Double.valueOf(progress));
+			ds.beginTrans();
+			itm.setProc(progress);
+			ds.commitTrans();
+
 			break;
 		}
 		return retObj; // вернуть или объект или null
@@ -38,12 +42,14 @@ public class SrvThr {
 	 * @param cnt Кол-во потоков
 	 * @param var Вариант формирования
 	 */
-	public SrvThr(List<TempObj> tobj, SprGenItm itm, int cnt, int var) {
+	public SrvThr(DSess ds, List<TempObj> tobj, SprGenItm itm, int cnt, int var) {
 		//добавить необходимое кол-во потоков
-		this.itm=itm;
+		SrvThr.itm=itm;
 		SrvThr.tobj=tobj;
-		errChild=0; //сбросить ошибки потоков
+		SrvThr.ds=ds;
+		errChild=0; // сбросить ошибки потоков
 		List<ThrGen> trl = new ArrayList<ThrGen>();
+		SrvThr.initCnt=tobj.size(); // начальное кол-во объектов
 		for (int a=1; a <=cnt; a++) {
 			
 			ThrGen ttr=new ThrGen("ThrGen-"+a, var);

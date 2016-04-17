@@ -32,7 +32,7 @@ Ext.define('TestApp.view.main.Main', {
         {
             title: 'Home',
             iconCls: 'x-fa fa-home',
-            //layout: 'fit',
+            layout: 'fit',
             items: [
                 {xtype: 'mainlist'},
                 {xtype: 'errlist'}

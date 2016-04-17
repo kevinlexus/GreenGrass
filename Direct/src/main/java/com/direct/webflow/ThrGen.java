@@ -12,10 +12,11 @@ import org.hibernate.jdbc.Work;
 
 //класс формирования объектов (домов например)
 public class ThrGen extends Thread {
-	private boolean stopped = false;
-	private String name;
-    private int var;//вариант формирования (1-начисление по дому, 2-...)
-	private DSess ds;
+	boolean stopped = false;
+	String name;
+    int var;//вариант формирования (1-начисление по дому, 2-...)
+	DSess ds;
+	ExecProc ex;
 	
 	/**
 	 * Формировать по дому
@@ -29,6 +30,7 @@ public class ThrGen extends Thread {
 				//вариант 1 - формирование начисления по дому
 				ds.sess.doWork(new Work() {
 		      	 public void execute(Connection connection) throws SQLException {
+  					    //System.out.println("ThrGen.doWork: call scott.c_charges.gen_charges!"+objId);
 		      		    CallableStatement call = connection.prepareCall("{ ? = call scott.c_charges.gen_charges(?, ?, ?, ?, ?, ?) }");
 		      		    call.registerOutParameter(1, Types.INTEGER);
 		      		    call.setString(2, null);
@@ -47,6 +49,7 @@ public class ThrGen extends Thread {
 				//вариант 2 - распределить ОДН во вводах, где нет ОДПУ
 				ds.sess.doWork(new Work() {
 		      	 public void execute(Connection connection) throws SQLException {
+					    //System.out.println("ThrGen.doWork: call scott.p_vvod.gen_dist_wo_vvod_usl!"+objId);
 		      		    CallableStatement call = connection.prepareCall("{ call scott.p_vvod.gen_dist_wo_vvod_usl(?) }");
 		      		    call.setInt(1, objId); //id ввода
 		      		    call.execute();
@@ -59,6 +62,7 @@ public class ThrGen extends Thread {
 				//вариант 3 - распределить ОДН во вводах, где есть ОДПУ
 				ds.sess.doWork(new Work() {
 		      	 public void execute(Connection connection) throws SQLException {
+					    //System.out.println("ThrGen.doWork: call scott.p_thread.gen_dist_odpu!"+objId);
 		      		    CallableStatement call = connection.prepareCall("{ call scott.p_thread.gen_dist_odpu(?) }");
 		      		    call.setInt(1, objId); //id ввода
 		      		    call.execute();
@@ -66,6 +70,25 @@ public class ThrGen extends Thread {
 		      	 });
 			break;
 			}
+			
+			case 4:{
+				// вариант 4 - начислить пеню по домам
+				ds.sess.doWork(new Work() {
+		      	 public void execute(Connection connection) throws SQLException {
+					    //System.out.println("ThrGen.doWork: call scott.c_cpenya.gen_charge_pay_pen_house!"+objId);
+		      		    CallableStatement call = connection.prepareCall("{ call scott.c_cpenya.gen_charge_pay_pen_house(?, ?) }");
+		      		    call.setNull(1, Types.DATE);// дата, не заполняем, null
+		      		    call.setInt(2, objId); // id дома
+		      		    call.execute();
+		      		  }
+		      	 });
+			break;
+			}
+
+			default: {
+				System.out.println("ThrGen.doWork: не найдено вхождение case!");
+			}
+			
 			
 			}
 		} catch (GenericJDBCException excp) {
@@ -90,11 +113,21 @@ public class ThrGen extends Thread {
 	 * @param var Вариант формирования
 	 */
 	ThrGen(String name, int var) {
+		System.out.println("Creating " + name);
 		ds=new DSess(true);
+		ex = new ExecProc(ds);
+		
+		ds.beginTrans();
+		// установить текущую дату формирования	
+		if (ex.runWork(16, 0)!=0) {
+			return; // выйти при ошибке
+		 }
+		ds.commitTrans();
+		
 		stopped=false;
 		this.name=name;
 		this.var=var;
-		System.out.println("Creating " + name);
+		System.out.println("End of Creating " + name);
 	}
 
 	public void run() {
@@ -109,27 +142,13 @@ public class ThrGen extends Thread {
 					} else {
 						//формирование
 						System.out.println(this.name+" working with:"+tobj.getId());
-						switch (this.var){
-						case 1:{
-							//вариант 1 - формирование начисления по дому
+							// var - варианты формирования
 							ds.beginTrans();
 							GenObj(tobj.getId(), var);
 							ds.commitOpenTrans();
-							break;
-						}
-						case 2:{
-							//вариант 2 - распределить ОДН во вводах, где нет ОДПУ
-							ds.beginTrans();
-							GenObj(tobj.getId(), var);
-							ds.commitOpenTrans();
-							break;
-						}
-						
-						}
 					}
 				}
 		ds.closeSess();
-		System.out.println("Thread "+name+" exiting");
 	}
 
 }

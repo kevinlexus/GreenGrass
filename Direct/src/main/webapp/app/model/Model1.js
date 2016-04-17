@@ -1,6 +1,18 @@
 Ext.define('TestApp.model.Model1', {
     extend: 'Ext.data.Model',
-            fields: ['id', 'name', 'cd', 'proc', 'sel'],
+            fields: ['id', 'name', 'cd', 'proc', 'sel',
+                {
+                    name: 'dt1',
+                    dateFormat: 'Y-m-d H:i:s',
+                    type: 'date'
+                },
+                {
+                    name: 'dt2',
+                    dateFormat: 'Y-m-d H:i:s',
+                    type: 'date'
+                }
+
+            ],
             proxy: {
 		autoSave: true,
                 //autoSync: true,

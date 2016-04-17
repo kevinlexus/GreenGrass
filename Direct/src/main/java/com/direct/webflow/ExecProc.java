@@ -241,11 +241,13 @@ public class ExecProc {
 			break;
 		}
 		case 21: {
-		    //пеня
+		    //распределение начисленной пени по исх.сальдо
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ call scott.c_cpenya.gen_charge_pay_pen() }");
+							.prepareCall("{ call scott.c_cpenya.gen_charge_pay_pen(?, ?) }");
+	      		    call.setNull(1, Types.DATE);
+	      		    call.setInt(2, 0);
 					call.execute();
 					doWorkRet = 0;
 				}

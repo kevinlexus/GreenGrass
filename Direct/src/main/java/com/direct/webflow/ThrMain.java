@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -56,6 +57,7 @@ public class ThrMain extends Thread {
 		System.out.println("ThrMain: "+ErrText);
 		menuGenItg.setErr(err);
 		menuGenItg.setState("ThrMain: "+ErrText);
+		menuGenItg.setDt2(new Date());
 		WebCtrl.stateGen=String.valueOf(stateGen);
 		WebCtrl.incProgress();
 
@@ -105,6 +107,7 @@ public class ThrMain extends Thread {
 	//вынес модуль простого формирования
 	private boolean smplGen(SprGenItm menuGenItg, SprGenItm itm, int var, Double proc) {
 		ds.beginTrans();
+		itm.setDt1(new Date());
 		int ret = ex.runWork(var, 0);
 		if (ret==-1) {
 			//Ошибка во время вызова
@@ -112,6 +115,7 @@ public class ThrMain extends Thread {
 			return true; // выйти при ошибке с ошибкой
 		}
 		itm.setProc(proc);
+		itm.setDt2(new Date());
 		WebCtrl.incProgress();
 		ds.commitTrans();
 		return false;
@@ -130,13 +134,17 @@ public class ThrMain extends Thread {
 		menuCheckBG = sprgDao.getByCd("GEN_CHECK_BEFORE_GEN");
 
 	
-		//**********почистить ошибку последнего формирования
+		//**********почистить ошибку последнего формирования, % выполнения
 		ds.beginTrans();
 		menuGenItg.setErr(0);
+		menuGenItg.setDt1(new Date());
+
 		//почистить % выполнения
 		for (SprGenItm itm : sprg) {
 			itm.setProc((double) 0);
 			itm.setState(null);
+			itm.setDt1(null);
+			itm.setDt2(null);
 		}
 		ds.commitTrans();
 		//**********
@@ -151,9 +159,9 @@ public class ThrMain extends Thread {
 		ds.commitTrans();
 
 		//**********(Установить блокировку для итогового формирования)
-		ds.beginTrans();
 		if (menuGenItg.getSel()) {
 			// выбрано итоговое формирование
+			ds.beginTrans();
 			ret = ex.runWork(1, 0);// Установить блокировку
 			if (ret == 1) {
 				//формирование уже запущено
@@ -168,9 +176,11 @@ public class ThrMain extends Thread {
 			System.out.println("ThrMain: Начало формир!");
 			menuGenItg.setState("Выполняется");
 			menuGenItg.setProc(0.1); //установить 10% выполнения
+			ds.commitTrans();
 		} 
 		
 		//сбросить признак что сформировано итоговое (в конце, если всё успешно - поставить)
+		ds.beginTrans();
 		ret = ex.runWork(18, 0);
 		if (ret==-1) {
 			//Ошибка во время вызова
@@ -184,27 +194,31 @@ public class ThrMain extends Thread {
 		WebCtrl.incProgress();
 
 		//**********Закрыть базу для пользователей
-		ds.beginTrans();
-		ret = ex.runWork(3, 0);
-		if (ret==-1) {
-			//Ошибка во время вызова
-			closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
-			return; // выйти при ошибке
+		if (menuGenItg.getSel()) {
+			ds.beginTrans();
+			ret = ex.runWork(3, 0);
+			if (ret==-1) {
+				//Ошибка во время вызова
+				closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
+				return; // выйти при ошибке
+			}
+			System.out.println("ThrMain: Установлен признак закрытия базы!");
+			ds.commitTrans();
 		}
-		System.out.println("ThrMain: Установлен признак закрытия базы!");
-		ds.commitTrans();
 		//**********
 
 		//**********Проверки до формирования
 		if (menuCheckBG.getSel()) {
 			// если выбраны проверки, а они как правило д.б. выбраны при итоговом
-			ds.beginTrans();
 
 			//проверка p_thread.smpl_chk
 			if (check(menuGenItg, 4)) {
 				return;
 			}
-			menuCheckBG.setProc(0.1);	
+			ds.beginTrans(); 
+			menuCheckBG.setProc(0.1);
+			menuCheckBG.setDt1(new Date());
+			ds.commitTrans();
 			WebCtrl.incProgress();
 
 			if (check(menuGenItg, 5)) {
@@ -216,7 +230,9 @@ public class ThrMain extends Thread {
 			if (check(menuGenItg, 7)) {
 				return;
 			}
+			ds.beginTrans(); 
 			menuCheckBG.setProc(0.5);	
+			ds.commitTrans();
 			WebCtrl.incProgress();
 
 			//**********Проверки gen.gen_check
@@ -224,7 +240,9 @@ public class ThrMain extends Thread {
 			if (check2(menuGenItg, 12)) { //5
 				return;
 			}
+			ds.beginTrans(); 
 			menuCheckBG.setProc(0.7);	
+			ds.commitTrans();
 			WebCtrl.incProgress();
 
 			//основные проверки
@@ -235,11 +253,11 @@ public class ThrMain extends Thread {
 			if (check2(menuGenItg, 15)) { //8
 				return;
 			}
+			ds.beginTrans(); 
 			menuCheckBG.setProc(1.0);	
-			WebCtrl.incProgress();
-
-			menuGenItg.setProc(0.2); //установить 20% выполнения
+			menuCheckBG.setDt2(new Date());
 			ds.commitTrans();
+			WebCtrl.incProgress();
 		}
 
 		if (menuMonthOver.getSel()) {
@@ -272,6 +290,8 @@ public class ThrMain extends Thread {
 
 				case "GEN_DIST_VOLS1": {
 					ds.beginTrans();
+					itm.setDt1(new Date());
+					ds.commitTrans();
 					//чистить инф, там где ВООБЩЕ нет счетчиков (нет записи в c_vvod)
 					ret = ex.runWork(17, 0);
 					if (ret==-1) {
@@ -279,7 +299,9 @@ public class ThrMain extends Thread {
 						closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
 						return; // выйти при ошибке
 					}
+					ds.beginTrans();
 					itm.setProc(1.0);
+					itm.setDt2(new Date());
 					WebCtrl.incProgress();
 					ds.commitTrans();
 					break;
@@ -287,8 +309,10 @@ public class ThrMain extends Thread {
 				case "GEN_DIST_VOLS2": {
 					//распределить где нет ОДПУ
 					ds.beginTrans();
+					itm.setDt1(new Date());
+					ds.commitTrans();
 					tobj = new TempObjDao().findAll(2); //найти вводы
-					srv = new SrvThr(tobj, itm, 10, 2); // запустить N-потоков, var=2 -
+					srv = new SrvThr(ds, tobj, itm, 10, 2); // запустить N-потоков, var=2 -
 													// по вводам, ждать выполнения
 					if (SrvThr.errChild !=0){
 						//произошла ошибка в потоках, записать её
@@ -298,7 +322,9 @@ public class ThrMain extends Thread {
 						return;
 					
 					}
+					ds.beginTrans();
 					itm.setProc(1.0);
+					itm.setDt2(new Date());
 					WebCtrl.incProgress();
 					ds.commitTrans();
 					break;
@@ -307,8 +333,10 @@ public class ThrMain extends Thread {
 				case "GEN_DIST_VOLS3": {
 					//распределить где есть ОДПУ
 					ds.beginTrans();
+					itm.setDt1(new Date());
+					ds.commitTrans();
 					tobj = new TempObjDao().findAll(3); //найти вводы
-					srv = new SrvThr(tobj, itm, 10, 3); // запустить N-потоков, var=3
+					srv = new SrvThr(ds, tobj, itm, 10, 3); // запустить N-потоков, var=3
 													// по вводам, ждать выполнения
 					if (SrvThr.errChild !=0){
 						//произошла ошибка в потоках, записать её
@@ -318,19 +346,22 @@ public class ThrMain extends Thread {
 						return;
 					
 					}
+					ds.beginTrans();
 					itm.setProc(1.0);
+					itm.setDt2(new Date());
 					WebCtrl.incProgress();
-
 					ds.commitTrans();
-					
 					break;
 				}
 				
 				case "GEN_CHRG": {
 					// начисление (по домам)
 					ds.beginTrans();
-					tobj = new TempObjDao().findAll(1); //найти дома
-					srv = new SrvThr(tobj, itm, 10, 1); // запустить N-потоков, var=1 -
+					itm.setDt1(new Date());
+					ds.commitTrans();
+
+					tobj = new TempObjDao().findAll(4); //найти дома
+					srv = new SrvThr(ds, tobj, itm, 10, 1); // запустить N-потоков, var=1 -
 													// по домам, ждать выполнения
 					if (SrvThr.errChild !=0){
 						//произошла ошибка в потоках, записать её
@@ -340,17 +371,19 @@ public class ThrMain extends Thread {
 						return;
 						
 					}
+					ds.beginTrans();
 					itm.setProc(1.0);
+					itm.setDt2(new Date());
 					WebCtrl.incProgress();
-
 					ds.commitTrans();
 					break;
 				}
 				case "GEN_SAL": {
 					//сальдо по лиц счетам
-					if (smplGen(menuGenItg, itm, 19, 1.0)) {
+					if (smplGen(menuGenItg, itm, 19, 1.0)) { 
 						return; // выйти при ошибке
 					}
+					WebCtrl.incProgress();
 					break;
 				}
 
@@ -359,11 +392,39 @@ public class ThrMain extends Thread {
 					if (smplGen(menuGenItg, itm, 20, 0.5)) {
 						return; // выйти при ошибке
 					}
-					//пеня
-					if (smplGen(menuGenItg, itm, 21, 0.8)) {
+					itm.setProc(1.0);
+					break;
+				}
+				
+				case "GEN_PENYA": {
+					// пеня (по лицевым - домам)
+					ds.beginTrans();
+					itm.setDt1(new Date());
+					ds.commitTrans();
+					tobj = new TempObjDao().findAll(4); //найти дома
+					srv = new SrvThr(ds, tobj, itm, 10, 4); // запустить N-потоков, var=4 -
+													// пеня по домам, ждать выполнения
+					if (SrvThr.errChild !=0){
+						//произошла ошибка в потоках, записать её
+						itm.setState("Ошибка: "+SrvThr.errTextChild);
+						//выйти из формирования
+						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
+						return;
+						
+					}
+					ds.beginTrans();
+					itm.setProc(1.0);
+					itm.setDt2(new Date());
+					ds.commitTrans();
+					WebCtrl.incProgress();
+					break;
+				}
+				
+				case "GEN_PENYA_DIST": {
+					//распределение пени по исх сальдо
+					if (smplGen(menuGenItg, itm, 21, 0.5)) {
 						return; // выйти при ошибке
 					}
-
 					//проверить распр.пени
 					if (check2(menuGenItg, 13)) { //1
 						return;
@@ -371,8 +432,7 @@ public class ThrMain extends Thread {
 					itm.setProc(1.0);
 					break;
 				}
-				
-				
+
 				case "GEN_SAL_HOUSES": {
 					if (smplGen(menuGenItg, itm, 22, 1.0)) {
 						return; // выйти при ошибке
@@ -460,14 +520,18 @@ public class ThrMain extends Thread {
 				
 				case "GEN_MONTH_OVER": {
 					//Переход периода
-					if (smplGen(menuGenItg, itm, 34, 0.3)) {
+					ds.beginTrans();
+					itm.setDt1(new Date());
+					ds.commitTrans();
+
+					if (smplGen(menuGenItg, itm, 34, 0.3)) { 
 						return; // выйти при ошибке
 					}
 					//После перехода - начисление
-					ds.beginTrans();
 					tobj = new TempObjDao().findAll(1); //найти дома
-					srv = new SrvThr(tobj, itm, 10, 1); // запустить N-потоков, var=1 -
+					srv = new SrvThr(ds, tobj, itm, 10, 1); // запустить N-потоков, var=1 -
 													// по домам, ждать выполнения
+					ds.beginTrans();
 					if (SrvThr.errChild !=0){
 						//произошла ошибка в потоках, записать её
 						itm.setState("Ошибка: "+SrvThr.errTextChild);
@@ -487,6 +551,10 @@ public class ThrMain extends Thread {
 					if (smplGen(menuGenItg, itm, 19, 1.0)) {
 						return; // выйти при ошибке
 					}
+					ds.beginTrans();
+					itm.setDt2(new Date());
+					ds.commitTrans();
+
 					break;
 				}				
 			}
@@ -500,7 +568,6 @@ public class ThrMain extends Thread {
 		//************ Заключительные проверки, при итоговом формировании
 		if (menuCheckBG.getSel()) {
 			// если выбраны проверки, а они как правило д.б. выбраны при итоговом
-			ds.beginTrans();
 			//окончательная проверка на корректность исх.сальдо
 			if (check(menuGenItg, 11)) {
 				return;
@@ -515,8 +582,12 @@ public class ThrMain extends Thread {
 			}
 		}
 
-		//************ Завершение
-		menuGenItg.setProc(1.0); //установить 100% выполнения
-		closeGen(menuGenItg, 0, 0, "Выполннено");
+		//************ Завершение итогового
+		if (menuGenItg.getSel()) {
+			ds.beginTrans();
+			menuGenItg.setProc(1.0); //установить 100% выполнения
+			menuGenItg.setDt2(new Date());
+			closeGen(menuGenItg, 0, 0, "Выполннено");
+		}
 	}
 }
