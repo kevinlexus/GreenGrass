@@ -6,8 +6,8 @@ import java.util.List;
 
 public class SrvThr {
 
-	public static int errChild; // возникла ли ошибка в порождённых потоках? (0-нет, 1-да)
-	public static String errTextChild; // описание ошибки возникшей в порожд.потоках
+	private static int errChild; // возникла ли ошибка в порождённых потоках? (0-нет, 1-да)
+	private static String errTextChild; // описание ошибки возникшей в порожд.потоках
 	// общий список объектов для выполнения потоками
 	static List<TempObj> tobj;
 	static double progress, initCnt; // прогресс выполнения локальный, начальное кол-во объектов
@@ -47,7 +47,7 @@ public class SrvThr {
 		SrvThr.itm=itm;
 		SrvThr.tobj=tobj;
 		SrvThr.ds=ds;
-		errChild=0; // сбросить ошибки потоков
+		setErrChild(0); // сбросить ошибки потоков
 		List<ThrGen> trl = new ArrayList<ThrGen>();
 		SrvThr.initCnt=tobj.size(); // начальное кол-во объектов
 		for (int a=1; a <=cnt; a++) {
@@ -70,6 +70,22 @@ public class SrvThr {
 		
 		//выход
 		System.out.println("SrvThr - exiting");
+	}
+
+	public static int getErrChild() {
+		return errChild;
+	}
+
+	public static void setErrChild(int errChild) {
+		SrvThr.errChild = errChild;
+	}
+
+	public static String getErrTextChild() {
+		return errTextChild;
+	}
+
+	public static void setErrTextChild(String errTextChild) {
+		SrvThr.errTextChild = errTextChild;
 	}
 
 	

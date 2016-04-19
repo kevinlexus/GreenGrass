@@ -93,14 +93,14 @@ public class ThrGen extends Thread {
 			}
 		} catch (GenericJDBCException excp) {
 			Throwable cause = excp.getCause();
-			SrvThr.errChild=1; //признак ошибки в вызывающем классе (synchronize не нужен)
-			SrvThr.errTextChild=cause.getMessage();
+			SrvThr.setErrChild(1); //признак ошибки в вызывающем классе (synchronize не нужен)
+			SrvThr.setErrTextChild(cause.getMessage());
 			System.out.println("Error while executing "+name+" thread, objId="+objId);
 			System.out.println("ThrGen.doWork: "+cause.getMessage());
 		} catch (HibernateException excp) {
 			Throwable cause = excp.getCause();
-			SrvThr.errChild=1; //признак ошибки в вызывающем классе (synchronize не нужен)
-			SrvThr.errTextChild=cause.getMessage();
+			SrvThr.setErrChild(1); //признак ошибки в вызывающем классе (synchronize не нужен)
+			SrvThr.setErrTextChild(cause.getMessage());
 			System.out.println("Error while executing "+name+" thread, objId="+objId);
 			System.out.println("ThrGen.doWork: "+cause.getMessage());
 		}
@@ -119,7 +119,7 @@ public class ThrGen extends Thread {
 		
 		ds.beginTrans();
 		// установить текущую дату формирования	
-		if (ex.runWork(16, 0)!=0) {
+		if (ex.runWork(16, 0, 0)!=0) {
 			return; // выйти при ошибке
 		 }
 		ds.commitTrans();
@@ -131,7 +131,7 @@ public class ThrGen extends Thread {
 	}
 
 	public void run() {
-				while ((SrvThr.errChild ==0) && (!stopped)) {
+				while ((SrvThr.getErrChild() ==0) && (!stopped)) {
 					TempObj tobj=SrvThr.getNextObj();
 					
 					if (tobj == null) {

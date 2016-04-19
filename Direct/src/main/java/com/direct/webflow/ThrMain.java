@@ -1,15 +1,7 @@
 package com.direct.webflow;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Date;
 import java.util.List;
-
-import org.hibernate.HibernateException;
-import org.hibernate.exception.GenericJDBCException;
-import org.hibernate.jdbc.Work;
 
 public class ThrMain extends Thread {
 	SprGenItmDao sprgDao;
@@ -17,7 +9,7 @@ public class ThrMain extends Thread {
 	String name; // наименование потока
 	ExecProc ex;
 	
-	public boolean stopped = false;
+	private boolean stopped = false;
 	DSess ds;
 
 	// конструктор
@@ -41,7 +33,7 @@ public class ThrMain extends Thread {
 
 		System.out.println("Thread ThrMain exiting.");
 		ds.closeSess();
-		stopped = true;
+		setStopped(true);
 	}
 
 	/**
@@ -49,14 +41,13 @@ public class ThrMain extends Thread {
 	 * @param menuGenItg
 	 */
 	private void closeGen(SprGenItm menuGenItg, int stateGen, int err, String ErrText) {
-		int ret = ex.runWork(2, 0);// Снять блокировку после итогового формирования (можно снимать, даже если его не было)
+		int ret = ex.runWork(2, 0, 0);// Снять блокировку после итогового формирования (можно снимать, даже если его не было)
 		if (ret==-1) {
 			System.out.println("ThrMain.closeGen: Ошибка во время разблокировки итогового формирования!");
 		}
 		
-		System.out.println("ThrMain: "+ErrText);
 		menuGenItg.setErr(err);
-		menuGenItg.setState("ThrMain: "+ErrText);
+		menuGenItg.setState(ErrText);
 		menuGenItg.setDt2(new Date());
 		WebCtrl.stateGen=String.valueOf(stateGen);
 		WebCtrl.incProgress();
@@ -69,7 +60,7 @@ public class ThrMain extends Thread {
 	//вынес модуль проверки-1 (smpl_chk)
 	//проверка 4
 	private boolean check(SprGenItm menuGenItg, int var){
-		int ret = ex.runWork(var, 0);
+		int ret = ex.runWork(var, 0, 0);
 		switch (ret) {
 		case -1: {
 			//Ошибка во время вызова
@@ -87,7 +78,7 @@ public class ThrMain extends Thread {
 	//вынес модуль проверки-2
 	private boolean check2(SprGenItm menuGenItg, int var){
 		//проверка gen_check-1
-		int ret = ex.runWork(var, 0);
+		int ret = ex.runWork(var, 0, 0);
 		switch (ret) {
 		case -1: {
 			//Ошибка во время вызова
@@ -108,7 +99,7 @@ public class ThrMain extends Thread {
 	private boolean smplGen(SprGenItm menuGenItg, SprGenItm itm, int var, Double proc) {
 		ds.beginTrans();
 		itm.setDt1(new Date());
-		int ret = ex.runWork(var, 0);
+		int ret = ex.runWork(var, 0, 0);
 		if (ret==-1) {
 			//Ошибка во время вызова
 			closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
@@ -136,8 +127,6 @@ public class ThrMain extends Thread {
 	
 		//**********почистить ошибку последнего формирования, % выполнения
 		ds.beginTrans();
-		menuGenItg.setErr(0);
-		menuGenItg.setDt1(new Date());
 
 		//почистить % выполнения
 		for (SprGenItm itm : sprg) {
@@ -146,13 +135,17 @@ public class ThrMain extends Thread {
 			itm.setDt1(null);
 			itm.setDt2(null);
 		}
+		menuGenItg.setState(null);
+		menuGenItg.setErr(0);
+		menuGenItg.setState(null);
+		menuGenItg.setDt1(new Date());
 		ds.commitTrans();
 		//**********
 		WebCtrl.incProgress();
 		
 		//**********установить дату формирования
 		ds.beginTrans();
-		 if (ex.runWork(16, 0)!=0) {
+		 if (ex.runWork(16, 0, 0)!=0) {
 			closeGen(menuGenItg, 2, 1, "ThrMain: Некорректная дата формирования!");
 			return; // выйти при ошибке
 		 }
@@ -162,7 +155,7 @@ public class ThrMain extends Thread {
 		if (menuGenItg.getSel()) {
 			// выбрано итоговое формирование
 			ds.beginTrans();
-			ret = ex.runWork(1, 0);// Установить блокировку
+			ret = ex.runWork(1, 0, 0);// Установить блокировку
 			if (ret == 1) {
 				//формирование уже запущено
 				closeGen(menuGenItg, 2, 1, "ThrMain: Формирование уже запущено!");
@@ -181,7 +174,7 @@ public class ThrMain extends Thread {
 		
 		//сбросить признак что сформировано итоговое (в конце, если всё успешно - поставить)
 		ds.beginTrans();
-		ret = ex.runWork(18, 0);
+		ret = ex.runWork(18, 0, 0);
 		if (ret==-1) {
 			//Ошибка во время вызова
 			closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
@@ -196,7 +189,7 @@ public class ThrMain extends Thread {
 		//**********Закрыть базу для пользователей
 		if (menuGenItg.getSel()) {
 			ds.beginTrans();
-			ret = ex.runWork(3, 0);
+			ret = ex.runWork(3, 0, 0);
 			if (ret==-1) {
 				//Ошибка во время вызова
 				closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
@@ -293,7 +286,7 @@ public class ThrMain extends Thread {
 					itm.setDt1(new Date());
 					ds.commitTrans();
 					//чистить инф, там где ВООБЩЕ нет счетчиков (нет записи в c_vvod)
-					ret = ex.runWork(17, 0);
+					ret = ex.runWork(17, 0, 0);
 					if (ret==-1) {
 						//Ошибка во время вызова
 						closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
@@ -314,9 +307,9 @@ public class ThrMain extends Thread {
 					tobj = new TempObjDao().findAll(2); //найти вводы
 					srv = new SrvThr(ds, tobj, itm, 10, 2); // запустить N-потоков, var=2 -
 													// по вводам, ждать выполнения
-					if (SrvThr.errChild !=0){
+					if (SrvThr.getErrChild() !=0){
 						//произошла ошибка в потоках, записать её
-						itm.setState("Ошибка: "+SrvThr.errTextChild);
+						itm.setState("Ошибка: "+SrvThr.getErrTextChild());
 						//выйти из формирования
 						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
 						return;
@@ -338,9 +331,9 @@ public class ThrMain extends Thread {
 					tobj = new TempObjDao().findAll(3); //найти вводы
 					srv = new SrvThr(ds, tobj, itm, 10, 3); // запустить N-потоков, var=3
 													// по вводам, ждать выполнения
-					if (SrvThr.errChild !=0){
+					if (SrvThr.getErrChild() !=0){
 						//произошла ошибка в потоках, записать её
-						itm.setState("Ошибка: "+SrvThr.errTextChild);
+						itm.setState("Ошибка: "+SrvThr.getErrTextChild());
 						//выйти из формирования
 						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
 						return;
@@ -363,9 +356,9 @@ public class ThrMain extends Thread {
 					tobj = new TempObjDao().findAll(4); //найти дома
 					srv = new SrvThr(ds, tobj, itm, 10, 1); // запустить N-потоков, var=1 -
 													// по домам, ждать выполнения
-					if (SrvThr.errChild !=0){
+					if (SrvThr.getErrChild() !=0){
 						//произошла ошибка в потоках, записать её
-						itm.setState("Ошибка: "+SrvThr.errTextChild);
+						itm.setState("Ошибка: "+SrvThr.getErrTextChild());
 						//выйти из формирования
 						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
 						return;
@@ -404,9 +397,9 @@ public class ThrMain extends Thread {
 					tobj = new TempObjDao().findAll(4); //найти дома
 					srv = new SrvThr(ds, tobj, itm, 10, 4); // запустить N-потоков, var=4 -
 													// пеня по домам, ждать выполнения
-					if (SrvThr.errChild !=0){
+					if (SrvThr.getErrChild() !=0){
 						//произошла ошибка в потоках, записать её
-						itm.setState("Ошибка: "+SrvThr.errTextChild);
+						itm.setState("Ошибка: "+SrvThr.getErrTextChild());
 						//выйти из формирования
 						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
 						return;
@@ -532,9 +525,9 @@ public class ThrMain extends Thread {
 					srv = new SrvThr(ds, tobj, itm, 10, 1); // запустить N-потоков, var=1 -
 													// по домам, ждать выполнения
 					ds.beginTrans();
-					if (SrvThr.errChild !=0){
+					if (SrvThr.getErrChild() !=0){
 						//произошла ошибка в потоках, записать её
-						itm.setState("Ошибка: "+SrvThr.errTextChild);
+						itm.setState("Ошибка: "+SrvThr.getErrTextChild());
 						//выйти из формирования
 						closeGen(menuGenItg, 2, 1, "Ошибка в потоке");
 						return;
@@ -574,7 +567,7 @@ public class ThrMain extends Thread {
 			}
 		
 			//установить признак что сформировано итоговое, если дошли до сюда
-			ret = ex.runWork(18, 1);
+			ret = ex.runWork(18, 1, 0);
 			if (ret==-1) {
 				//Ошибка во время вызова
 				closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
@@ -582,12 +575,27 @@ public class ThrMain extends Thread {
 			}
 		}
 
-		//************ Завершение итогового
 		if (menuGenItg.getSel()) {
+			// Завершение итогового
 			ds.beginTrans();
 			menuGenItg.setProc(1.0); //установить 100% выполнения
 			menuGenItg.setDt2(new Date());
-			closeGen(menuGenItg, 0, 0, "Выполннено");
+			closeGen(menuGenItg, 0, 0, "Итоговое формирование выполнено!");
+		} else {
+			// Завершение частичного формирования
+			ds.beginTrans();
+			closeGen(menuGenItg, 0, 0, "Частичное формирование выполнено!");
 		}
+			
+	}
+
+
+	public boolean isStopped() {
+		return stopped;
+	}
+
+
+	public void setStopped(boolean stopped) {
+		this.stopped = stopped;
 	}
 }

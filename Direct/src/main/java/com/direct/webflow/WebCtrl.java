@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,11 +61,11 @@ public class WebCtrl {
     */
    @RequestMapping(value = "/checkItms", method = RequestMethod.POST)
    @ResponseBody
-   public String checkItms(@RequestParam(value="id") int id ) {
+   public String checkItms(@RequestParam(value="id") int id, @RequestParam(value="sel") int sel) {
  	   DSess ds = new DSess(false);
 	   ExecProc ex =new ExecProc(ds);
 	   ds.beginTrans();
- 	   ex.runWork(35, id);
+ 	   ex.runWork(35, id, sel);
 	   ds.commitTrans();
 	   System.out.println("/checkItms?id="+id);
 	   
@@ -113,7 +112,7 @@ public class WebCtrl {
     @ResponseBody
     String startGen() {
 		
-		if (T1 == null || T1.stopped) {
+		if (T1 == null || T1.isStopped()) {
 		   // Запустить в потоке, чтобы не тормозило request
    	  	   T1= new ThrMain();
    	  	   T1.start();
@@ -131,7 +130,7 @@ public class WebCtrl {
     @ResponseBody
     String stopGen() {
     	if (T1 != null) {
-	        T1.stopped=true;
+	        T1.setStopped(true);
             System.out.println("Trying to stop!");
 
 	        return "Ended!";

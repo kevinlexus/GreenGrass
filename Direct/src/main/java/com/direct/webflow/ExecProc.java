@@ -29,10 +29,11 @@ public class ExecProc {
 	 *            
 	 * @return
 	 */
-	public int runWork(int var, int extPar) { //используется массив var[] так как doWork требует final переменную... так обманули
+	public int runWork(int var, int extPar, int extPar2) { //используется массив var[] так как doWork требует final переменную... так обманули
 	doWorkRet =-1;
 	final int varArr[]={var};
 	final int extParArr[]={extPar};
+	final int extParArr2[]={extPar2};
 	try {	
 		switch (varArr[0]) {
 		case 1: {
@@ -446,8 +447,9 @@ public class ExecProc {
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
-							.prepareCall("{ call scott.p_thread.check_itms(?) }");
+							.prepareCall("{ call scott.p_thread.check_itms(?, ?) }");
 					call.setInt(1, extParArr[0]);
+					call.setInt(2, extParArr2[0]);
 					call.execute();
 					doWorkRet = 0;
 				}

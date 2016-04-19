@@ -57,6 +57,19 @@ Ext.define('TestApp.view.main.MainController', {
             interval: 2000
         })
         );
+        //Проверить, идёт ли формирование
+        Ext.Ajax.request({
+            url: 'http://localhost:8090/getStateGen',
+            method: "GET",
+            success: function (response) {
+                state = response.responseText;
+                if (state == '1') {
+                    //Идет формирование, запустить отложенное задание
+                    me.getTask().start();// обращение к локальной переменной контроллера task
+                }
+            }
+        });
+
     },
 
     onCheck1: function () { // проверка
@@ -89,27 +102,32 @@ Ext.define('TestApp.view.main.MainController', {
 
     // Проверка при включении чекбокса
     checkTest: function (comp, rowIndex, checked, eOpts) {
-        //обновить грид, если щелкнули на чекбоксе (выбрали его)
-        if (checked) {
+        //обновить грид, если щелкнули на чекбоксе
             //если выбраны итоговое или переход месяца
             var grid = me.lookupReference('grid1');
             var record = grid.getStore().getAt(rowIndex);
             if (record.get('cd')=='GEN_ITG' || record.get('cd')=='GEN_MONTH_OVER'){
-                me.checkItms(record.get('id'));
+                me.checkItms(record.get('id'), checked);
             }
-        }
     },
 
 
     // Проверить пункты меню через базу, и поставить корректные, если надо
-    checkItms: function (id) {
+    checkItms: function (id, checked) {
+        if (checked) {
+            sel=1;
+        } else {
+            sel=0;
+        }
         Ext.Ajax.request({
             url: 'http://localhost:8090/checkItms',
             success: function (response) {
                 var grid = me.lookupReference('grid1');
                 grid.getStore().load();
             },
-            params :{ id : id },
+            params :{ id : id,
+                      sel: sel
+                      },
             method : 'POST'
         }
 
