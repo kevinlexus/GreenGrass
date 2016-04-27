@@ -93,7 +93,7 @@ public class SprGenItm {
 		this.state = state;
 	}
 
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone = "Asia/Novosibirsk")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Krasnoyarsk")
 	@Column(name = "DT1", nullable = true)
 	public Date getDt1() {
 		return dt1;
@@ -102,7 +102,7 @@ public class SprGenItm {
 		this.dt1 = dt1;
 	}
 
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone = "Asia/Novosibirsk")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Krasnoyarsk")
 	@Column(name = "DT2", nullable = true)
 	public Date getDt2() {
 		return dt2;

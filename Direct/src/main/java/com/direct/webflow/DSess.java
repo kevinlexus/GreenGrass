@@ -1,6 +1,7 @@
 package com.direct.webflow;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.greengrass.house.HibernateUtil;
 
@@ -50,4 +51,9 @@ public class DSess {
 		sess.getTransaction().rollback();
 	}	
 
+	//вернуть наличие транзакции
+	public boolean isActiveTrans() {
+		return sess.getTransaction().isActive();
+	}
+	
 }

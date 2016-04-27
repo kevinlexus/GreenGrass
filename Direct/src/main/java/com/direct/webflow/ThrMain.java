@@ -9,7 +9,7 @@ public class ThrMain extends Thread {
 	String name; // наименование потока
 	ExecProc ex;
 	
-	private boolean stopped = false;
+	static boolean stopped = false;
 	DSess ds;
 
 	// конструктор
@@ -46,6 +46,10 @@ public class ThrMain extends Thread {
 			System.out.println("ThrMain.closeGen: Ошибка во время разблокировки итогового формирования!");
 		}
 		
+		//начать транзакцию, если не начата
+		if (!ds.isActiveTrans()) {
+			ds.beginTrans();
+		}
 		menuGenItg.setErr(err);
 		menuGenItg.setState(ErrText);
 		menuGenItg.setDt2(new Date());
@@ -97,6 +101,11 @@ public class ThrMain extends Thread {
 
 	//вынес модуль простого формирования
 	private boolean smplGen(SprGenItm menuGenItg, SprGenItm itm, int var, Double proc) {
+		if (ThrMain.isStopped()) {
+			//остановиться, если отмена формирования
+			closeGen(menuGenItg, 2, 1, "ThrMain: Формирование остановлено");
+			return true; // выйти
+		}
 		ds.beginTrans();
 		itm.setDt1(new Date());
 		int ret = ex.runWork(var, 0, 0);
@@ -590,12 +599,12 @@ public class ThrMain extends Thread {
 	}
 
 
-	public boolean isStopped() {
+	static boolean isStopped() {
 		return stopped;
 	}
 
 
-	public void setStopped(boolean stopped) {
-		this.stopped = stopped;
+	static void setStopped(boolean stopped) {
+		ThrMain.stopped = stopped;
 	}
 }

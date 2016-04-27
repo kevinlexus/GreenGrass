@@ -52,7 +52,6 @@ public class WebCtrl {
    @RequestMapping(value = "/getProgress", method = RequestMethod.GET)
    @ResponseBody
    public int getProgress() {
- 	   
 	   return progressGen;
     }
    
@@ -112,25 +111,24 @@ public class WebCtrl {
     @ResponseBody
     String startGen() {
 		
-		if (T1 == null || T1.isStopped()) {
+		if (T1 == null || ThrMain.isStopped()) {
 		   // Запустить в потоке, чтобы не тормозило request
    	  	   T1= new ThrMain();
+           ThrMain.setStopped(false); // НЕ ПОНЯЛ, зачем здесь устанавливать false, если ЭТО новый объект и в нём stopped=false при инициализации... 
    	  	   T1.start();
+           System.out.println("Started thread!");
     	} else {
            System.out.println("Already started!");
     	   return "Already started!";
     	}
-
-        System.out.println("Started thread!");
-    	return "Started thread!";
-        
+		return "ok";
     }
 
 	@RequestMapping("/stopGen")
     @ResponseBody
     String stopGen() {
     	if (T1 != null) {
-	        T1.setStopped(true);
+	        ThrMain.setStopped(true);
             System.out.println("Trying to stop!");
 
 	        return "Ended!";

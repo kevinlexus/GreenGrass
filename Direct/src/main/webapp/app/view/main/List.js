@@ -118,14 +118,10 @@ Ext.define('TestApp.view.main.List', {
             handler: 'onStartGen'
         },{
             minWidth: 80,
-            text: 'Отменить'
+            text: 'Отменить',
+            handler: 'onStopGen'
         }]
     }],
-
-            tbar: [{
-                text: 'Test',
-                handler: 'onEdit'
-            }],
     height: 300,
     frame: true,
     listeners: {

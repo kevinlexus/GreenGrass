@@ -103,6 +103,13 @@ public class ThrGen extends Thread {
 			SrvThr.setErrTextChild(cause.getMessage());
 			System.out.println("Error while executing "+name+" thread, objId="+objId);
 			System.out.println("ThrGen.doWork: "+cause.getMessage());
+		} catch (Exception excp) {
+			//прочие ошибки
+			Throwable cause = excp.getCause();
+			SrvThr.setErrChild(1); //признак ошибки в вызывающем классе (synchronize не нужен)
+			SrvThr.setErrTextChild(cause.getMessage());
+			System.out.println("Error while executing "+name+" thread, objId="+objId);
+			System.out.println("ThrGen.doWork: "+cause.getMessage());
 		}
 	}
 		
@@ -131,7 +138,7 @@ public class ThrGen extends Thread {
 	}
 
 	public void run() {
-				while ((SrvThr.getErrChild() ==0) && (!stopped)) {
+				while ((SrvThr.getErrChild() ==0) && (!stopped) && (!ThrMain.isStopped())) {
 					TempObj tobj=SrvThr.getNextObj();
 					
 					if (tobj == null) {

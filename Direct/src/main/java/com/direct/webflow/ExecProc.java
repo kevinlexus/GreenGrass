@@ -1,5 +1,8 @@
 package com.direct.webflow;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -464,10 +467,8 @@ public class ExecProc {
 			doWorkRet=-1;
 		}
 		}
-		
+	
 	} catch (GenericJDBCException excp) {
-		//SQLException cause = (SQLException) excp.getCause();
-		//.SQLGrammarException
 		Throwable cause = excp.getCause();
 		doWorkRet=-1;//признак ошибки
 		doWorkErrText=cause.getMessage();
@@ -486,7 +487,14 @@ public class ExecProc {
 			System.out.println("Next Error while executing doWork with var= "+var);
 			
 		}
-	}	
+	} catch (Exception excp) {
+		//прочие ошибки
+		Throwable cause = excp.getCause();
+		doWorkRet=-1;//признак ошибки
+		doWorkErrText=cause.getMessage();
+		System.out.println("ThrMain.doWork: "+cause.getMessage());
+		System.out.println("Error while executing doWork with var= "+var);
+	}
 	return doWorkRet;
 	
 	}
