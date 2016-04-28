@@ -1,4 +1,4 @@
-package com.ric.bill;
+package com.ric.bill.model;
 
 
 import javax.persistence.Column;
@@ -33,7 +33,7 @@ public class Meter {
 		this.fKlsk = fKlsk;
 	}
 
-	@Column(name = "FK_K_LSK", unique = false, nullable = true)
+	@Column(name = "FK_METER_LOG", unique = false, nullable = true)
 	public Integer getfMLog() {
 		return fMLog;
 	}

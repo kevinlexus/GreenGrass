@@ -7,7 +7,10 @@ public class DSess {
 
 	public Session sess;
 	   
-	//Конструктор
+	/**
+	 * Конструктор 
+	 * @param newSess - создать новую сессию true/false
+	 */
 	DSess(Boolean newSess) {
 		
 		if (newSess) {
