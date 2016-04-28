@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.dao.MeterDao;
+import com.ric.bill.dao.MeterDAO;
 import com.ric.bill.mm.MeterManager;
 import com.ric.bill.model.Meter;
 
@@ -14,7 +14,7 @@ import com.ric.bill.model.Meter;
 public class MeterManagerImpl implements MeterManager {
 
   @Autowired
-  private MeterDao mDao;
+  private MeterDAO mDao;
   
   @Override
   @Transactional

@@ -1,11 +1,12 @@
-package com.mkyong.customer.dao;
+package com.ric.bill.dao;
 
 import java.util.List;
 
 import com.ric.bill.model.Meter;
 
-public interface CustomerDAO {
 
-	public String sayHello();
+public interface MeterDAO {
+
+
 	public List<Meter> findAll();
 }
