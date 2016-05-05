@@ -20,7 +20,7 @@ public class MeterDAOImpl implements MeterDAO {
 	@SuppressWarnings("unchecked")
 	public List<Meter> findAll() {
 		List<Meter> result = (List<Meter>) sessionFactory.getCurrentSession().createQuery(
-				"select t from Meter t where t.id between 22380 and 22405").list();
+				"select t from Meter t where t.klsk between 8796013 and 8796069").list();
 		return result;
 	}
 }

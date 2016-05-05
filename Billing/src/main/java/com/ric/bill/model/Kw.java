@@ -1,29 +1,30 @@
 package com.ric.bill.model;
 
-
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 
+
+/**
+ * Класс Квартиры
+ * @author lev
+ *
+ */
 @Entity
-@Table(name = "METER", schema="MT")
-@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-public class Meter extends Base2  implements Storable {
+@Table(name = "KW", schema="AR")
+public class Kw extends Base2 implements Storable {
 
-	private Integer klsk; //klsk
-	 
+	private Integer klsk; // klsk объекта
+
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка имеет другое название!)
-    @Column(name = "FK_K_LSK", updatable = false, nullable = false)
+	@Column(name = "FK_K_LSK", nullable = true)
 	public Integer getKlsk() {
-		return klsk;
+		return this.klsk;
 	}
-
 	public void setKlsk(Integer klsk) {
 		this.klsk=klsk;
 	}
-
 	
 }
 
