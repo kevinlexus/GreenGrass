@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ric.bill.model.Meter;
 
-public interface MeterManager {
+public interface MeterMng {
 
 	List<Meter> findAll();
 

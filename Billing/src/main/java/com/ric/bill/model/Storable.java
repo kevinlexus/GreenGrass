@@ -5,10 +5,7 @@ package com.ric.bill.model;
  * @author lev
  *
  */
-public interface Storable {
-
-	int getId();
-	void setId(int id);
+public interface Storable extends Simple {
 
 	//параметры объекта
 	Integer getI1(Integer klsk); 

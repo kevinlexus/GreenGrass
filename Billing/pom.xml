@@ -52,12 +52,6 @@
 			<version>${spring-framework.version}</version>
 		</dependency>
 
-	    <dependency>
-	    	<groupId>javax.persistence</groupId>
-	    	<artifactId>persistence-api</artifactId>
-	    	<version>1.0</version>
-	    </dependency>
-    
 		<!-- Logging with SLF4J & LogBack -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

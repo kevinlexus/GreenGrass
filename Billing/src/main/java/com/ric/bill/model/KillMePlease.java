@@ -10,31 +10,31 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 
+/**
+ * Абстрактный базовый класс Base
+ * @author lev
+ *
+ */
+
 @MappedSuperclass
-public abstract class Base implements Storable {
+public abstract class KillMePlease implements Serializable, Storable {
 	
+	private int id; // id записи
+	protected Integer klsk; //klsk
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	protected int id; // id записи
-
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	//вернуть параметр Integer из хранилища
 	@Transient
 	public final Integer getI1(Integer klsk) {
-		/*
-		 * 
-		 * ОСНОВНАЯ ИДЕЯ - ТАКАЯ
-		 * при первом обращении за параметром, узнать в Store о наличии загруженных параметров, если их нет, -
-		 * то загрузить их
-		 * 
-		 */
 		return null;
 	}
 	
@@ -43,8 +43,9 @@ public abstract class Base implements Storable {
 	public final String getS1(Integer klsk) {
 		return null;
 	}
-
-	public abstract Integer getKlsk();
 	
+	//вернуть klsk объекта (в каждом подклассе переписать метод!)
+	public abstract Integer getKlsk();
+
 	public abstract void setKlsk(Integer klsk);	
 }

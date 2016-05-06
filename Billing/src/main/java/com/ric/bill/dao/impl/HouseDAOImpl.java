@@ -6,21 +6,22 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ric.bill.dao.HouseDAO;
 import com.ric.bill.dao.MeterDAO;
+import com.ric.bill.model.House;
 import com.ric.bill.model.Meter;
 
 
 @Service
-public class MeterDAOImpl implements MeterDAO {
+public class HouseDAOImpl implements HouseDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	@Override
 	@SuppressWarnings("unchecked")
-	public List<Meter> findAll() {
-		List<Meter> result = (List<Meter>) sessionFactory.getCurrentSession().createQuery(
-				"select t from Meter t where t.klsk between 8796013 and 8796016").list();
+	public List<House> findAll() {
+		List<House> result = (List<House>) sessionFactory.getCurrentSession().createQuery(
+				"select t from House t where t.klsk = 187025").list();
 		return result;
 	}
 }

@@ -13,11 +13,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "KW", schema="AR")
-public class Kw extends Base2 implements Storable {
+public class Kw extends Base implements Storable {
 
 	private Integer klsk; // klsk объекта
 
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка имеет другое название!)
+	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
 	public Integer getKlsk() {
 		return this.klsk;
