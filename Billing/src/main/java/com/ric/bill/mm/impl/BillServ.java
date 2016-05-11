@@ -29,11 +29,12 @@ public class BillServ {
 		for (House o: houseMng.findAll()) {
 		System.out.println("Дом: id="+o.getId());
 		try {
-			System.out.println("Площадь: "+houseMng.getDbl(o.getDw(), "Площадь.Жилая2"));
+			System.out.println("Площадь: "+houseMng.getDbl(o.getDw(), "Площадь.Жилая"));
 		} catch (WrongGetMethod e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		/*
 		System.out.println("id="+o.getId()+" klsk="+o.getKlsk());
 		System.out.println("тест="+o.getDw());
 		for (Dw dw: o.getDw()) {
@@ -51,7 +52,7 @@ public class BillServ {
 					
 				}
 			}        		
-		}    		
+		}    		*/
 		break;
 		}
 	}

@@ -8,19 +8,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.dao.HouseDAO;
+import com.ric.bill.dao.ParDAO;
 import com.ric.bill.model.House;
+import com.ric.bill.model.Par;
 
 
 @Repository
-public class HouseDAOImpl implements HouseDAO {
+public class ParDAOImpl implements ParDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@SuppressWarnings("unchecked")
-	public List<House> findAll() {
-		List<House> result = (List<House>) sessionFactory.getCurrentSession().createQuery(
-				"select t from House t where t.klsk = 187025").list();
+	public List<Par> findAll() {
+		List<Par> result = (List<Par>) sessionFactory.getCurrentSession().createQuery(
+				"select t from Par t").list();
 		return result;
 	}
 }
