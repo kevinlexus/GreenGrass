@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.dao.HouseDAO;
-import com.ric.bill.dao.MeterDAO;
 import com.ric.bill.model.House;
-import com.ric.bill.model.Meter;
 
 
 @Service

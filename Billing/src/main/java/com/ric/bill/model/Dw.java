@@ -22,15 +22,22 @@ public class Dw implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; // id записи
+	private int id;
 	
     @Column(name = "S1", updatable = true)
-    private String s1; //s1 значения
+    private String s1;
+
+    @Column(name = "NS1", updatable = true)
+    private Double n1;
+
+    /*@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
+	private Lsk lsk;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
+	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
 	private House house;
-	
+*/
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_HFP", referencedColumnName="ID")
 	private Par par; 
@@ -52,7 +59,15 @@ public class Dw implements java.io.Serializable, Simple {
 		this.s1 = s1;
 	}
 
-	public House getHouse() {
+	public Double getN1() {
+		return n1;
+	}
+
+	public void setN1(Double n1) {
+		this.n1 = n1;
+	}	
+
+/*	public House getHouse() {
 		return house;
 	}
 
@@ -60,13 +75,23 @@ public class Dw implements java.io.Serializable, Simple {
 		this.house = house;
 	}
 
+	public Lsk getLsk() {
+		return lsk;
+	}
+
+	public void setLsk(Lsk lsk) {
+		this.lsk = lsk;
+	}
+*/
 	public Par getPar() {
 		return par;
 	}
 
 	public void setPar(Par par) {
 		this.par = par;
-	}	
+	}
+
+
 
 	
 	

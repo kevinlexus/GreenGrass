@@ -1,12 +1,18 @@
 package com.ric.bill.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 
@@ -18,6 +24,12 @@ public abstract class Base implements Storable {
     @Column(name = "ID", updatable = false, nullable = false)
 	protected int id; // id записи
 
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
+	protected Set<Dw> dw = new HashSet<Dw>(0);
+
+	protected Integer klsk;
+
 	public int getId() {
 		return id;
 	}
@@ -25,26 +37,12 @@ public abstract class Base implements Storable {
 		this.id = id;
 	}
 
-	//вернуть параметр Integer из хранилища
-	@Transient
-	public final Integer getI1(Integer klsk) {
-		/*
-		 * 
-		 * ОСНОВНАЯ ИДЕЯ - ТАКАЯ
-		 * при первом обращении за параметром, узнать в Store о наличии загруженных параметров, если их нет, -
-		 * то загрузить их
-		 * 
-		 */
-		return null;
+	public Set<Dw> getDw() {
+		return dw;
+	}
+	public void setDw(Set<Dw> dw) {
+		this.dw = dw;
 	}
 	
-	//вернуть параметр String из хранилища
-	@Transient
-	public final String getS1(Integer klsk) {
-		return null;
-	}
-
-	public abstract Integer getKlsk();
 	
-	public abstract void setKlsk(Integer klsk);	
 }

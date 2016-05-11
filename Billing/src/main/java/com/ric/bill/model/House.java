@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.transaction.annotation.Transactional;
-
 /**
  * Класс - Дом
  * @author lev
@@ -24,29 +22,28 @@ import org.springframework.transaction.annotation.Transactional;
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class House extends Base implements java.io.Serializable, Storable {
 
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_K_LSK", nullable = true)
-	private Integer klsk; // klsk объекта
-
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
-	private Set<Dw> dw = new HashSet<Dw>(0);
 
 	public House() {
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_HOUSE", referencedColumnName="ID")
+	private Set<Kw> kw = new HashSet<Kw>(0);
+
+	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
+	@Column(name = "FK_K_LSK", nullable = true)
 	public Integer getKlsk() {
-		return klsk;
+		return this.klsk;
 	}
 	public void setKlsk(Integer klsk) {
 		this.klsk=klsk;
 	}
-	
-	public Set<Dw> getDw() {
-		return dw;
+	public Set<Kw> getKw() {
+		return kw;
 	}
-	public void setDw(Set<Dw> dw) {
-		this.dw = dw;
+	public void setKw(Set<Kw> kw) {
+		this.kw = kw;
 	}
-	
+
+
 }
