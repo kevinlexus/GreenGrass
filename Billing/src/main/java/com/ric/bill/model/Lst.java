@@ -2,37 +2,43 @@ package com.ric.bill.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Параметр
+ * Элемент списка
  * 
  *
  */
 @Entity
-@Table(name = "U_HFPAR", schema="ORALV")
-public class Par implements java.io.Serializable, Simple {
+@Table(name = "LIST", schema="BS")
+public class Lst implements java.io.Serializable, Simple {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
 	private int id; // id
 
-    @Column(name = "CD", updatable = false, nullable = false)
+	@Id
+    @Column(name = "FK_TP", updatable = false, nullable = false)
+	private int fk_tp; // fk_tp на list_tp
+
+	@Column(name = "CD", updatable = false, nullable = false)
 	private String cd; // cd 
 
     @Column(name = "NAME", updatable = false, nullable = false)
 	private String name; // Наименование 
 
-    @Column(name = "VAL_TP", updatable = false, nullable = true)
-	private String tp; // тип параметра (NM, ST)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_LISTTP", referencedColumnName="ID")
+	private LstTp lstTp ; 
 
-    @Column(name = "DATA_TP", updatable = false, nullable = true)
-	private String dataTp; // тип данного (SI, LI, ID, BL)
-    
+	
     public int getId() {
 		return this.id;
 	}
@@ -46,26 +52,23 @@ public class Par implements java.io.Serializable, Simple {
 	public void setCd(String cd) {
 		this.cd = cd;
 	}
-	
-	public String getTp() {
-		return tp;
-	}
-	public void setTp(String tp) {
-		this.tp = tp;
-	}
-	
-	public String getDataTp() {
-		return dataTp;
-	}
-	public void setDataTp(String dataTp) {
-		this.dataTp = dataTp;
-	}
-	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getFk_tp() {
+		return fk_tp;
+	}
+	public void setFk_tp(int fk_tp) {
+		this.fk_tp = fk_tp;
+	}
+	public LstTp getLstTp() {
+		return lstTp;
+	}
+	public void setLstTp(LstTp lstTp) {
+		this.lstTp = lstTp;
 	}
 
 }

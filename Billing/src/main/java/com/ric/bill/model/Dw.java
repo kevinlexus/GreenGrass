@@ -36,15 +36,7 @@ public class Dw implements java.io.Serializable, Simple {
     @Column(name = "NS1", updatable = true)
     private Double n1;
 
-    /*@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
-	private Lsk lsk;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
-	private House house;
-*/
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_HFP", referencedColumnName="ID")
 	private Par par; 
 
@@ -73,22 +65,6 @@ public class Dw implements java.io.Serializable, Simple {
 		this.n1 = n1;
 	}	
 
-/*	public House getHouse() {
-		return house;
-	}
-
-	public void setHouse(House house) {
-		this.house = house;
-	}
-
-	public Lsk getLsk() {
-		return lsk;
-	}
-
-	public void setLsk(Lsk lsk) {
-		this.lsk = lsk;
-	}
-*/
 	public Par getPar() {
 		return par;
 	}
@@ -97,8 +73,5 @@ public class Dw implements java.io.Serializable, Simple {
 		this.par = par;
 	}
 
-
-
-	
 	
 }

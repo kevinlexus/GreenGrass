@@ -29,7 +29,7 @@ public class Kw extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_HOUSE", referencedColumnName="ID", updatable = false, insertable = false)
 	private House house;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)  //сделал LAZY!
 	@JoinColumn(name="FK_KW", referencedColumnName="ID")
 	private Set<Lsk> lsk = new HashSet<Lsk>(0);
 

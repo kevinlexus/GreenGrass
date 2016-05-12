@@ -19,16 +19,11 @@ import com.ric.bill.model.Dw;
  */
 public abstract class BaseStorableMng {
 
-	@Autowired 
-    private SessionFactory sessionFactory;
-	
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства
 	 */
 	@Transactional
 	public Double getDbl(Set<Dw> dw, String cd) throws WrongGetMethod {
-		Session session = sessionFactory.getCurrentSession();
-		session.enableFilter("FILTER1").setParameter("TESTCASENAME", "1%");
 		
 		for (Dw d: dw) {
 			//проверка, что соответствует CD и Number (NM), Единичное (SI)
