@@ -17,7 +17,9 @@ import com.ric.bill.mm.HouseMng;
 import com.ric.bill.model.Dw;
 import com.ric.bill.model.House;
 import com.ric.bill.model.Meter;
+import com.ric.bill.model.MeterExs;
 import com.ric.bill.model.MeterLog;
+import com.ric.bill.model.MeterLogGraph;
 import com.ric.bill.model.Vol;
 
 /**
@@ -37,7 +39,7 @@ public class BillServ {
 	 * настроить сервис для расчета 
 	 */
 	public void setUpServ() {
-		Calendar calendar = new GregorianCalendar(2016, Calendar.MARCH, 1);
+		Calendar calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
 		BillServ.setGenDt(calendar.getTime());
 
 	}
@@ -78,8 +80,19 @@ public class BillServ {
 			for (Vol v: mLog.getVol()) {
 				System.out.println("лог счетчик:объем="+v.getVol1());
 			}
+			
+			for (MeterLogGraph g: mLog.getDst()) {
+				System.out.println("лог счетчик:связь входящая="+g.getId()+" "+g.getTp().getName());
+			}
+			for (MeterLogGraph g: mLog.getSrc()) {
+				System.out.println("лог счетчик:связь исходящая="+g.getId()+" "+g.getTp().getName());
+			}
+
 			for (Meter m: mLog.getMeter()) {
 				System.out.println("физ счетчик: id="+m.getId());
+				for (MeterExs e: m.getExs()) {
+					System.out.println("физ счетчик: существование="+e.getPrc());
+				}
 				for (Vol v: m.getVol()) {
 					System.out.println("физ счетчик:объем="+v.getVol1());
 				}

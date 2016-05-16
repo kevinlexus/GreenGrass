@@ -14,6 +14,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.ParamDef;
+
 
 /**
  * Физический счетчик
@@ -24,6 +30,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "METER", schema="MT")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
+@FilterDefs({
+    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
+    		parameters = {@ParamDef(name = "DT1", type = "date")
+    		}
+    )
+})
 public class Meter extends Base implements java.io.Serializable, Storable {
 
 	public Meter (){
@@ -42,8 +54,16 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	private MeterLog meterLog ; 
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
+	@JoinColumn(name="FK_METER", referencedColumnName="ID")
+	@Filters({
+	    @Filter(name = "FILTER_GEN_DT")})
 	private Set<Vol> vol = new HashSet<Vol>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_METER", referencedColumnName="ID")
+	@Filters({
+	    @Filter(name = "FILTER_GEN_DT")})
+	private Set<MeterExs> exs = new HashSet<MeterExs>(0);
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
     @Column(name = "FK_K_LSK", updatable = false, nullable = false)
@@ -85,6 +105,14 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 
 	public void setVol(Set<Vol> vol) {
 		this.vol = vol;
+	}
+
+	public Set<MeterExs> getExs() {
+		return exs;
+	}
+
+	public void setExs(Set<MeterExs> exs) {
+		this.exs = exs;
 	}
 	
 }
