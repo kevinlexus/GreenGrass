@@ -12,6 +12,7 @@ import javax.persistence.Table;
  * 
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "U_HFPAR", schema="ORALV")
 public class Par implements java.io.Serializable, Simple {

@@ -1,7 +1,5 @@
 package com.ric.bill.model;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,15 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.FilterDefs;
-import org.hibernate.annotations.Filters;
-import org.hibernate.annotations.ParamDef;
-
 /*
  * Значение параметра объекта
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "U_HFPXKLSK", schema="ORALV")
 public class Dw implements java.io.Serializable, Simple {

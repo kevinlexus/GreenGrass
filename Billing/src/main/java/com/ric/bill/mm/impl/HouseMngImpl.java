@@ -17,7 +17,7 @@ import com.ric.bill.mm.HouseMng;
 import com.ric.bill.model.Dw;
 import com.ric.bill.model.House;
 import com.ric.bill.model.Kw;
-import com.ric.bill.model.Lsk;
+import com.ric.bill.model.Kart;
 
 @Service
 public class HouseMngImpl extends BaseStorableMng implements HouseMng {

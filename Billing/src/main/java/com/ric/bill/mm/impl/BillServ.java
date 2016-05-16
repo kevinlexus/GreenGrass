@@ -16,6 +16,8 @@ import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.model.Dw;
 import com.ric.bill.model.House;
+import com.ric.bill.model.Kart;
+import com.ric.bill.model.Kw;
 import com.ric.bill.model.Meter;
 import com.ric.bill.model.MeterExs;
 import com.ric.bill.model.MeterLog;
@@ -104,10 +106,10 @@ public class BillServ {
 			System.out.println("Params of house:"+dw.getId()+" "+dw.getS1()+" "+dw.getPar().getName());
 		}    		
 		
-/*		for (Kw kw: o.getKw()) {
+		/*for (Kw kw: o.getKw()) {
 			System.out.println("KW="+kw.getId());
 			System.out.println("House of the flat:="+kw.getHouse().getId());
-			for (Lsk lsk: kw.getLsk()) {
+			for (Kart lsk: kw.getLsk()) {
 				System.out.println("Lsk of the flat:="+lsk.getFio()+" Lsk="+lsk.getLs());
 				lsk.getDw();
 				for (Dw dw2: lsk.getDw()) {
@@ -115,7 +117,7 @@ public class BillServ {
 					
 				}
 			}        		
-		}    		*/
+		}    */		
 		break;
 		}
 	}

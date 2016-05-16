@@ -14,6 +14,7 @@ import javax.persistence.Table;
  * @author lev
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "KART", schema="AR")
 @AttributeOverrides({
@@ -21,9 +22,9 @@ import javax.persistence.Table;
 		@AttributeOverride(name = "id", column = @Column(name = "LSK")	)
 		}
 		)
-public class Lsk extends Base implements java.io.Serializable, Storable  {
+public class Kart extends Base implements java.io.Serializable, Storable  {
 
-	public Lsk() {
+	public Kart() {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -51,18 +52,22 @@ public class Lsk extends Base implements java.io.Serializable, Storable  {
 	public Integer getId() {
 		return 0;
 	}
+	
 	public void setId(Integer id) {
 		
 	}
 	public Kw getKw() {
 		return kw;
 	}
+	
 	public void setKw(Kw kw) {
 		this.kw = kw;
 	}
+	
 	public String getFio() {
 		return fio;
 	}
+	
 	public void setFio(String fio) {
 		this.fio = fio;
 	}
@@ -70,6 +75,7 @@ public class Lsk extends Base implements java.io.Serializable, Storable  {
 	public String getLs() {
 		return ls;
 	}
+	
 	public void setLs(String ls) {
 		this.ls = ls;
 	}
