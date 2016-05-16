@@ -48,10 +48,10 @@ public class Lsk extends Base implements java.io.Serializable, Storable  {
 	private String ls;
 
 	@Override
-	public int getId() {
+	public Integer getId() {
 		return 0;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		
 	}
 	public Kw getKw() {

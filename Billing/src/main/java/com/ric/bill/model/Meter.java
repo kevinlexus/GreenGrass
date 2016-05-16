@@ -1,17 +1,25 @@
 package com.ric.bill.model;
 
 
-import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
+/**
+ * Физический счетчик
+ * @author lev
+ *
+ */
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER", schema="MT")
@@ -22,14 +30,21 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		
 	}
 	
-	// даты начала и окончания действия счетчика
+	/* даты начала и окончания действия счетчика - используются ли?
+    @Column(name = "DT1", updatable = false, nullable = true)
 	private Date dt1;
-	private Date dt2;
+
+    @Column(name = "DT2", updatable = false, nullable = true)
+	private Date dt2;*/
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	private MeterLog meterLog ; 
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
+	private Set<Vol> vol = new HashSet<Vol>(0);
+
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
     @Column(name = "FK_K_LSK", updatable = false, nullable = false)
 	public Integer getKlsk() {
@@ -40,7 +55,7 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		this.klsk=klsk;
 	}
 
-	public Date getDt1() {
+/*	public Date getDt1() {
 		return dt1;
 	}
 
@@ -54,7 +69,7 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 
 	public void setDt2(Date dt2) {
 		this.dt2 = dt2;
-	}
+	}*/
 
 	public MeterLog getMeterLog() {
 		return meterLog;
@@ -64,8 +79,13 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		this.meterLog = meterLog;
 	}
 
-	
-	
+	public Set<Vol> getVol() {
+		return vol;
+	}
+
+	public void setVol(Set<Vol> vol) {
+		this.vol = vol;
+	}
 	
 }
 

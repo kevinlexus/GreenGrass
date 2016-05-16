@@ -20,7 +20,7 @@ public class HouseDAOImpl implements HouseDAO {
 	@SuppressWarnings("unchecked")
 	public List<House> findAll() {
 		List<House> result = (List<House>) sessionFactory.getCurrentSession().createQuery(
-				"select t from House t where t.klsk = 187025").list();
+				"select t from House t where t.klsk = 187804").list();
 		return result;
 	}
 }

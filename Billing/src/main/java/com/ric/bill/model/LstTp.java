@@ -12,6 +12,7 @@ import javax.persistence.Table;
  * 
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "LISTTP", schema="BS")
 public class LstTp implements java.io.Serializable, Simple {
@@ -27,10 +28,10 @@ public class LstTp implements java.io.Serializable, Simple {
     @Column(name = "NAME", updatable = false, nullable = false)
 	private String name; // Наименование 
 
-    public int getId() {
+    public Integer getId() {
 		return this.id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

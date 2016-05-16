@@ -36,7 +36,7 @@ public abstract class Base implements Storable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	protected int id; // id записи
+	protected Integer id; // id записи
 
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
@@ -46,10 +46,10 @@ public abstract class Base implements Storable {
 
 	protected Integer klsk;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

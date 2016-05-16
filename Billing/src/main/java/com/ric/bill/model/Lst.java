@@ -15,6 +15,7 @@ import javax.persistence.Table;
  * 
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "LIST", schema="BS")
 public class Lst implements java.io.Serializable, Simple {
@@ -22,11 +23,7 @@ public class Lst implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; // id
-
-	@Id
-    @Column(name = "FK_TP", updatable = false, nullable = false)
-	private int fk_tp; // fk_tp на list_tp
+	private Integer id; // id
 
 	@Column(name = "CD", updatable = false, nullable = false)
 	private String cd; // cd 
@@ -39,10 +36,10 @@ public class Lst implements java.io.Serializable, Simple {
 	private LstTp lstTp ; 
 
 	
-    public int getId() {
+    public Integer getId() {
 		return this.id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -57,12 +54,6 @@ public class Lst implements java.io.Serializable, Simple {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public int getFk_tp() {
-		return fk_tp;
-	}
-	public void setFk_tp(int fk_tp) {
-		this.fk_tp = fk_tp;
 	}
 	public LstTp getLstTp() {
 		return lstTp;

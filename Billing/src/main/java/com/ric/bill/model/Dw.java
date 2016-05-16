@@ -43,10 +43,10 @@ public class Dw implements java.io.Serializable, Simple {
 	public Dw() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

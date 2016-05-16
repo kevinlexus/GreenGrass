@@ -6,7 +6,7 @@ package com.ric.bill.model;
  *
  */
 public interface Simple {
-	int getId();
-	void setId(int id);
+	Integer getId();
+	void setId(Integer id);
 
 }
