@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 
 /**
- * Класс Квартиры
+ * Квартира
  * @author lev
  *
  */

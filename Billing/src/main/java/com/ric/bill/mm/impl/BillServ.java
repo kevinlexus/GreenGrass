@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.Calc;
 import com.ric.bill.Dist;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
@@ -31,28 +32,17 @@ import com.ric.bill.model.Vol;
  */
 @Service
 public class BillServ {
-	static private Date genDt; // рассчитываемая дата
 
 	@Autowired 
     private SessionFactory sessionFactory;
 
-	
-	/**
-	 * настроить сервис для расчета 
-	 */
-	public void setUpServ() {
-		Calendar calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
-		BillServ.setGenDt(calendar.getTime());
-
-	}
-	
 	/**
 	 * Установить фильтры для сессии
 	 */
 	@Transactional(propagation=Propagation.MANDATORY)
 	public void setFilters() {
 		Session session = sessionFactory.getCurrentSession();
-		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", BillServ.getGenDt());
+		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
 	}
 
 	/**
@@ -61,6 +51,9 @@ public class BillServ {
 	@Transactional
 	public void distVols() {
 		
+		Calc calc = new Calc(); // объект для хранения параметров расчета
+		calc.setUp(); //настроить
+		
 		setFilters();// вкл.фильтр
 		
 		HouseMng houseMng = (HouseMng)Dist.ctx.getBean("houseMngImpl");
@@ -68,7 +61,6 @@ public class BillServ {
 		for (House o: houseMng.findAll()) {
 		System.out.println("Дом: id="+o.getId());
 		System.out.println("Дом: klsk="+o.getKlsk());
-		System.out.println(getGenDt());
 		try {
 			System.out.println("Площадь: "+houseMng.getDbl(o.getDw(), "Площадь.Жилая"));
 		} catch (WrongGetMethod e) {
@@ -122,11 +114,4 @@ public class BillServ {
 		}
 	}
 
-	static Date getGenDt() {
-		return BillServ.genDt;
-	}
-
-	static void setGenDt(Date genDt) {
-		BillServ.genDt = genDt;
-	}
 }

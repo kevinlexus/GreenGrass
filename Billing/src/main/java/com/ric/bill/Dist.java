@@ -17,8 +17,6 @@ public class Dist {
 		ctx = new ClassPathXmlApplicationContext("spring.xml");
 		BillServ bs = (BillServ)Dist.ctx.getBean("billServ");
 
-		//настроить сервис
-		bs.setUpServ();
 		// распределить объемы по дому
 		bs.distVols();
 	}
