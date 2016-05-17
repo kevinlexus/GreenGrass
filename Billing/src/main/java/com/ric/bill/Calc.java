@@ -4,14 +4,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import com.ric.bill.mm.HouseMng;
+
 /**
  * Хранилище всех необходимых параметров для расчета
  * @author lev
  *
  */
 public class Calc {
-
 	static private Date genDt; // рассчитываемая дата
+	//менеджер дома
+	private HouseMng houseMng;
+
 	/**
 	 * настроить объект для расчета 
 	 */
@@ -27,6 +31,14 @@ public class Calc {
 
 	public static void setGenDt(Date genDt) {
 		Calc.genDt = genDt;
+	}
+
+	public HouseMng getHouseMng() {
+		return houseMng;
+	}
+
+	public void setHouseMng(HouseMng houseMng) {
+		this.houseMng = houseMng;
 	}
 
 	

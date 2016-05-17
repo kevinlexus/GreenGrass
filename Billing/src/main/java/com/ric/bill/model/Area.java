@@ -1,11 +1,16 @@
 package com.ric.bill.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-
 
 /**
  * Класс Населённого пункта
@@ -23,6 +28,7 @@ public class Area extends Base implements java.io.Serializable, Storable {
 	// CD
 	private String cd; 
 
+
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
 	public Integer getKlsk() {
@@ -32,6 +38,10 @@ public class Area extends Base implements java.io.Serializable, Storable {
 	public void setKlsk(Integer klsk) {
 		this.klsk=klsk;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
+	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
 	public String getName() {
 		return name;
@@ -49,6 +59,13 @@ public class Area extends Base implements java.io.Serializable, Storable {
 		this.cd = cd;
 	}
 
+	public Set<TarifKlsk> getTarklsk() {
+		return tarklsk;
+	}
+
+	public void setTarklsk(Set<TarifKlsk> tarklsk) {
+		this.tarklsk = tarklsk;
+	}
 	
 }
 

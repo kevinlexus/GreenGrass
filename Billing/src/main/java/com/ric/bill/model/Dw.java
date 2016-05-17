@@ -36,6 +36,7 @@ public class Dw implements java.io.Serializable, Simple {
 	public Dw() {
 	}
 
+	
 	public Integer getId() {
 		return id;
 	}
@@ -65,6 +66,6 @@ public class Dw implements java.io.Serializable, Simple {
 	public void setPar(Par par) {
 		this.par = par;
 	}
-
+	
 	
 }

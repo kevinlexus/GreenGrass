@@ -1,12 +1,17 @@
 package com.ric.bill.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -36,9 +41,18 @@ public class Kart extends Base implements java.io.Serializable, Storable  {
 	public Integer getKlsk() {
 		return this.klsk;
 	}
+	
 	public void setKlsk(Integer klsk) {
 		this.klsk=klsk;
 	}
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
+	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
+	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
 	//ФИО владельца
 	@Column(name = "FIO", nullable = true)
@@ -80,5 +94,20 @@ public class Kart extends Base implements java.io.Serializable, Storable  {
 		this.ls = ls;
 	}
 	
+	public Set<MeterLog> getMlog() {
+		return mlog;
+	}
+
+	public void setMlog(Set<MeterLog> mlog) {
+		this.mlog = mlog;
+	}
+
+	public Set<TarifKlsk> getTarklsk() {
+		return tarklsk;
+	}
+
+	public void setTarklsk(Set<TarifKlsk> tarklsk) {
+		this.tarklsk = tarklsk;
+	}
 }
 
