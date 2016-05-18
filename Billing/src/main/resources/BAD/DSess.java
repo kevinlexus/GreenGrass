@@ -52,8 +52,8 @@ public class DSess {
 	}	
 
 	//вернуть наличие транзакции
-	public boolean isActiveTrans() {
-		return sess.getTransaction().isActive();
-	}
+	//public boolean isActiveTrans() {
+//		return sess.getTransaction().isActive();
+//	}
 	
 }

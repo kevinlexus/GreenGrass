@@ -1,22 +1,30 @@
 package com.ric.bill;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@Service
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:spring.xml" })
 public class Dist {
 
 	public static ApplicationContext ctx;
 	
-	public static void main(String[] args) {
+	@Autowired
+    private BillServ bs;
+	
+	@Test
+	public void test1() {
 		//для выключения логгинга, просто выкинул из maven всё что касалось log4j
-		
-		ctx = new ClassPathXmlApplicationContext("spring.xml");
-		BillServ bs = (BillServ)Dist.ctx.getBean("billServ");
-
 		// распределить объемы по дому
+		System.out.println("Begin!");
 		bs.distVols();
+		System.out.println("End!");
 	}
 
 }

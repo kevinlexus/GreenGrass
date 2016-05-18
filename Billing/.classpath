@@ -27,6 +27,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.boris.winrun4j.eclipse.WINRUN4J_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/install/dbms/oracle/JDBC/ojdbc6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

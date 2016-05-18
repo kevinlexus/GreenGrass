@@ -10,6 +10,6 @@ import com.ric.bill.model.House;
 public interface HouseMng {
 	
 	public List<House> findAll();
-	public Double getDbl(Set<Dw> dw, String cd) throws WrongGetMethod;
+	public Double getDbl(Set<Dw> dw, String cd);
 	
 }

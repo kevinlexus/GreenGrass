@@ -1,5 +1,10 @@
 package com.ric.bill;
 
+import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
+import com.ric.bill.mm.ServMng;
 import com.ric.bill.model.Dw;
 import com.ric.bill.model.House;
+import com.ric.bill.model.MeterLog;
+import com.ric.bill.model.Serv;
 import com.ric.bill.model.TarifKlsk;
 
 /**
@@ -21,16 +29,33 @@ import com.ric.bill.model.TarifKlsk;
 @Service
 public class BillServ {
 
-	@Autowired 
-    private SessionFactory sessionFactory;
+//	@Autowired 
+    //private SessionFactory sessionFactory;
 
-	Calc calc;	
+	Calc calc;
+
+	@Autowired
+    private HouseMng houseMng;
+	
+	@Autowired
+    private ServMng servMng;
+
+	protected EntityManager em;
+	 
+    public EntityManager getEntityManager() {
+        return em;
+    }
+    @PersistenceContext
+    public void setEntityManager(EntityManager entityManager) {
+        this.em = entityManager;
+    }
+	
 	/**
 	 * Установить фильтры для сессии
 	 */
 	@Transactional(propagation=Propagation.MANDATORY)
 	public void setFilters() {
-		Session session = sessionFactory.getCurrentSession();
+		Session session = (Session) em.getDelegate();
 		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
 	}
 
@@ -39,43 +64,63 @@ public class BillServ {
 	 */
 	@Transactional
 	public void distVols() {
+		System.out.println("1");
+
 
 		calc = new Calc(); // объект для хранения параметров расчета
+		calc.setUp(); //настроить
+		setFilters();// вкл.фильтр
 		// задать сервис дома
-		calc.setHouseMng((HouseMng)Dist.ctx.getBean("houseMngImpl"));
+		calc.setHouseMng(houseMng);
+		// задать сервис услуг
+		calc.setServMng(servMng);
 		// найти необходимые дома
 		for (House o: calc.getHouseMng().findAll()) {
-			distHouseVols(o);
+			calc.setHouse(o);
+			distHouseVols();
 		}		
+		System.out.println("2");
 	}
+
 	/**
 	 * распределить объем по дому
 	 */
 	@Transactional
-	public void distHouseVols(House house) {
-		
-		calc.setUp(); //настроить
-		
-		setFilters();// вкл.фильтр
-		
-		System.out.println("Дом: id="+house.getId());
-		System.out.println("Дом: klsk="+house.getKlsk());
-		try {
-			System.out.println("Площадь: "+calc.getHouseMng().getDbl(house.getDw(), "Площадь.Жилая"));
-		} catch (WrongGetMethod e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void distHouseVols() {
+		System.out.println("Дом: id="+calc.getHouse().getId());
+		System.out.println("Дом: klsk="+calc.getHouse().getKlsk());
+		System.out.println("Площадь: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
+		//найти все необходимые услуги для распределения
+		for (Serv s : calc.getServMng().findForChrg()) {
+			calc.setServ(s);
+			distHouseServ();
 		}
-
-		for (TarifKlsk tar: house.getTarklsk()) {
-			System.out.println("тариф: "+tar.getId() );
-		}
-
-		System.out.println("id="+house.getId()+" klsk="+house.getKlsk());
-		System.out.println("тест="+house.getDw());
-		for (Dw dw: house.getDw()) {
-			System.out.println("Выбран параметр:"+dw.getPar().getCd());
-			
-		}    		
 	}
+	
+	/**
+	 * распределить объем по услуге данного дома
+	 */
+	@Transactional
+	public void distHouseServ() {
+		System.out.println("Услуга="+calc.getServ().getName());
+		/*distHouseServTp(1);// Расчет площади, кол-во прожив
+		distHouseServTp(0);// Распределение объема
+		distHouseServTp(2);// Расчет ОДН
+		distHouseServTp(3);// Расчет пропорц.площади
+		distHouseServTp(0);// Суммировать счетчики ОДН
+		*/
+	}
+	
+	/**
+	 * Распределить объем по типу обработки связи
+	 * @param serv - услуга, которую распределить 
+	 * @param calcTp - тип обработки
+	 */
+	@Transactional
+	public void distHouseServTp(Serv serv, int calcTp) {
+		System.out.println("Услуга="+calc.getServ().getName());
+		
+		
+	}
+	
 }
