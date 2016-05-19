@@ -1,25 +1,20 @@
 package com.ric.bill;
 
-import java.util.Set;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.excp.WrongGetMethod;
-import com.ric.bill.mm.HouseMng;
-import com.ric.bill.mm.ServMng;
-import com.ric.bill.model.Dw;
 import com.ric.bill.model.House;
 import com.ric.bill.model.MeterLog;
 import com.ric.bill.model.Serv;
-import com.ric.bill.model.TarifKlsk;
 
 /**
  * Главный сервис биллинга
@@ -29,32 +24,18 @@ import com.ric.bill.model.TarifKlsk;
 @Service
 public class BillServ {
 
-//	@Autowired 
-    //private SessionFactory sessionFactory;
-
-	Calc calc;
-
 	@Autowired
-    private HouseMng houseMng;
-	
-	@Autowired
-    private ServMng servMng;
+	private Calc calc;
 
-	protected EntityManager em;
-	 
-    public EntityManager getEntityManager() {
-        return em;
-    }
+	// EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.em = entityManager;
-    }
-	
-	/**
+    private EntityManager em;
+
+    /**
 	 * Установить фильтры для сессии
 	 */
 	@Transactional(propagation=Propagation.MANDATORY)
-	public void setFilters() {
+	private void setFilters() {
 		Session session = (Session) em.getDelegate();
 		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
 	}
@@ -65,21 +46,18 @@ public class BillServ {
 	@Transactional
 	public void distVols() {
 		System.out.println("1");
-
-
-		calc = new Calc(); // объект для хранения параметров расчета
 		calc.setUp(); //настроить
 		setFilters();// вкл.фильтр
-		// задать сервис дома
-		calc.setHouseMng(houseMng);
-		// задать сервис услуг
-		calc.setServMng(servMng);
 		// найти необходимые дома
+		long startTime = System.currentTimeMillis();
+		
 		for (House o: calc.getHouseMng().findAll()) {
 			calc.setHouse(o);
 			distHouseVols();
 		}		
-		System.out.println("2");
+		long endTime   = System.currentTimeMillis();
+		long totalTime = endTime - startTime;
+		System.out.println("Время исполнения:"+totalTime);
 	}
 
 	/**
@@ -101,26 +79,63 @@ public class BillServ {
 	 * распределить объем по услуге данного дома
 	 */
 	@Transactional
-	public void distHouseServ() {
-		System.out.println("Услуга="+calc.getServ().getName());
-		/*distHouseServTp(1);// Расчет площади, кол-во прожив
-		distHouseServTp(0);// Распределение объема
-		distHouseServTp(2);// Расчет ОДН
-		distHouseServTp(3);// Расчет пропорц.площади
-		distHouseServTp(0);// Суммировать счетчики ОДН
-		*/
+	private void distHouseServ() {
+		System.out.println("Услуга="+calc.getServ().getCd());
+		calc.setCalcTp(1);
+		distHouseServTp(calc.getServ());// Расчет площади, кол-во прожив
+		calc.setCalcTp(0);
+		distHouseServTp(calc.getServ());// Распределение объема
+		calc.setCalcTp(2);
+		distHouseServTp(calc.getServ());// Расчет ОДН
+		calc.setCalcTp(3);
+		distHouseServTp(calc.getServ());// Расчет пропорц.площади
+		if (calc.getServOdn() != null){
+			calc.setCalcTp(0);
+			distHouseServTp(calc.getServOdn());// Суммировать счетчики ОДН
+		}
+		
 	}
 	
 	/**
-	 * Распределить объем по типу обработки связи
-	 * @param serv - услуга, которую распределить 
+	 * Распределить объем по вводам дома
 	 * @param calcTp - тип обработки
 	 */
 	@Transactional
-	public void distHouseServTp(Serv serv, int calcTp) {
-		System.out.println("Услуга="+calc.getServ().getName());
-		
-		
+	private void distHouseServTp(Serv serv) {
+		//найти все вводы по дому и по услуге
+		for (int a=0; a<1; a++) {
+
+			for (MeterLog ml : calc.getHouseMng().getMetLogByTp(calc.getHouse(), "Ввод")) {
+				distGraph(ml);
+				break;
+			}
+			/*for (MeterLog ml : calc.getMetLogMng().findByTp(calc.getHouse(), "Ввод")){
+				//System.out.println("Ввод: id="+ml.getId());
+				//distGraph(ml);
+			}*/
+			//System.out.println(a);
+		}
 	}
 	
+	/**
+	 * Распределить граф начиная с mLog
+	 * @param mLog - начальный узел распределения
+	 */
+	private void distGraph (MeterLog mLog) {
+		
+		//перебрать все даты, за период
+		Calendar c = Calendar.getInstance();
+		c.setTime(Calc.getCurDt1());
+		for (c.setTime(Calc.getCurDt1()); !c.getTime().after(Calc.getCurDt2()); c.add(Calendar.DATE, 1)) {
+			System.out.println(c.getTime());
+			
+		}
+		/*while (!c.getTime().after(Calc.getCurDt2()))
+	    {
+			
+			System.out.println(c.getTime());
+			c.add(Calendar.DATE, 1);
+	    }*/
+		
+	}
 }

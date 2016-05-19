@@ -23,7 +23,7 @@ import com.ric.bill.model.Kart;
 import com.ric.bill.model.Serv;
 
 @Service
-public class ServMngImpl extends BaseStorableMng implements ServMng {
+public class ServMngImpl extends BaseStore implements ServMng {
 
 	@Autowired
 	private ServDAO sDao;
@@ -37,6 +37,11 @@ public class ServMngImpl extends BaseStorableMng implements ServMng {
 	@Override
 	public List<Serv> findForChrg() {
 		return sDao.findForChrg();
+	}
+
+	@Override
+	public Serv getMetServ(Serv s) {
+		return sDao.getMetServ(s);
 	}
 
 }

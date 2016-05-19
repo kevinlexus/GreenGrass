@@ -14,8 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.ric.bill.MeterManagable;
+import com.ric.bill.Storable;
+
 /**
- * Класс Лицевого счета
+ * Лицевой счет
  * @author lev
  *
  */
@@ -27,7 +30,7 @@ import javax.persistence.Table;
 		@AttributeOverride(name = "id", column = @Column(name = "LSK")	)
 		}
 		)
-public class Kart extends Base implements java.io.Serializable, Storable  {
+public class Kart extends Base implements java.io.Serializable, MeterManagable  {
 
 	public Kart() {
 	}

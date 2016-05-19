@@ -9,4 +9,5 @@ public interface HouseDAO {
 
 
 	public List<House> findAll();
+	
 }

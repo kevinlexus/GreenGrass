@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Dist;
+import com.ric.bill.MeterManagable;
 import com.ric.bill.dao.HouseDAO;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
@@ -20,7 +21,7 @@ import com.ric.bill.model.Kw;
 import com.ric.bill.model.Kart;
 
 @Service
-public class HouseMngImpl extends BaseStorableMng implements HouseMng {
+public class HouseMngImpl extends MeterStore implements HouseMng {
 
 	@Autowired
 	private HouseDAO hDao;

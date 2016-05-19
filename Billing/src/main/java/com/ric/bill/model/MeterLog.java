@@ -20,6 +20,8 @@ import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
 
+import com.ric.bill.Storable;
+
 
 /**
  * Логический счетчик
@@ -69,6 +71,9 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp; 
 	
+    @Column(name = "FK_TP", updatable = false, nullable = true, insertable = false) //--так странно, попробовал добавить, для HQL
+	private Integer fkTp;
+
 	//klsk объекта, к которому принадлежит данный счетчик
     @Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
 	private Integer klskObj;
@@ -141,6 +146,14 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 
 	public void setDst(Set<MeterLogGraph> dst) {
 		this.dst = dst;
+	}
+
+	public Integer getFkTp() {
+		return fkTp;
+	}
+
+	public void setFkTp(Integer fkTp) {
+		this.fkTp = fkTp;
 	}
 	
 	

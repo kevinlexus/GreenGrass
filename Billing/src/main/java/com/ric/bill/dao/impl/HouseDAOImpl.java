@@ -14,18 +14,14 @@ import com.ric.bill.model.House;
 @Repository
 public class HouseDAOImpl implements HouseDAO {
 
-	protected EntityManager em;
-	 
-    public EntityManager getEntityManager() {
-        return em;
-    }
+	// EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.em = entityManager;
-    }
+    private EntityManager em;
     
 	@SuppressWarnings("unchecked")
 	public List<House> findAll() {
 		return em.createQuery("from House t where t.klsk = 187804").getResultList();
 	}
+
+	
 }

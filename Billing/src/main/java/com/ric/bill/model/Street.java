@@ -12,24 +12,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.ric.bill.MeterManagable;
 import com.ric.bill.Storable;
 
 /**
- * Класс Населённого пункта
+ * Улица
  * @author lev
  *
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "AREA", schema="AR")
+@Table(name = "STREET", schema="AR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-public class Area extends Base implements java.io.Serializable, Storable {
+public class Street extends Base implements java.io.Serializable {
 
-	// наименование
-	private String name; 
-	// CD
-	private String cd; 
+	public Street() {
+	}
 
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_STREET", referencedColumnName="ID")
+	private Set<House> kw = new HashSet<House>(0);
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
@@ -41,33 +43,5 @@ public class Area extends Base implements java.io.Serializable, Storable {
 		this.klsk=klsk;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
-	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCd() {
-		return cd;
-	}
-
-	public void setCd(String cd) {
-		this.cd = cd;
-	}
-
-	public Set<TarifKlsk> getTarklsk() {
-		return tarklsk;
-	}
-
-	public void setTarklsk(Set<TarifKlsk> tarklsk) {
-		this.tarklsk = tarklsk;
-	}
-	
 }
-

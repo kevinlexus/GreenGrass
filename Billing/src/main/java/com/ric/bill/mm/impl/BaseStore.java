@@ -18,12 +18,12 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.Dw;
 
 /**
- * Базовый класс сервиса хранимых объектов 
+ * Базовый класс сервисов, умеющих хранить параметры 
  * @author lev
  *
  */
 @Service
-public abstract class BaseStorableMng {
+public abstract class BaseStore {
 
 
 	@Autowired

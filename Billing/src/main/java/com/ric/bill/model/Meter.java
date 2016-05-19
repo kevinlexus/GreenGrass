@@ -20,6 +20,8 @@ import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
 
+import com.ric.bill.Storable;
+
 
 /**
  * Физический счетчик

@@ -20,6 +20,8 @@ import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
 
+import com.ric.bill.Storable;
+
 /**
  * Базовый класс всех сущностей, параметры которых хранятся в dw
  * @author lev

@@ -6,9 +6,7 @@ import com.ric.bill.model.Par;
 
 public interface ParMng {
 
-	List<Par> findAll();
-
+	public List<Par> findAll();
 	boolean isExByCd(String cd);
-
 
 }

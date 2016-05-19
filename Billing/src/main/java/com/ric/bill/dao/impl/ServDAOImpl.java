@@ -13,16 +13,11 @@ import com.ric.bill.model.Serv;
 @Repository
 public class ServDAOImpl implements ServDAO {
 
-	protected EntityManager em;
-	 
-    public EntityManager getEntityManager() {
-        return em;
-    }
+	// EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.em = entityManager;
-    }	
-	/**
+    private EntityManager em;
+
+    /**
 	 * Найти все услуги
 	 */
 	@Override
@@ -38,7 +33,7 @@ public class ServDAOImpl implements ServDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Serv> findForChrg() {
-		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5)");
+		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2 ");
 		query.setParameter("s1", "Холодная вода (объем)");
 		query.setParameter("s2", "Горячая вода, подогрев");
 		query.setParameter("s3", "Водоотведение");
@@ -57,10 +52,13 @@ public class ServDAOImpl implements ServDAO {
 		return (Serv) query.getSingleResult();
 	}
 
+	/**
+	 * Получить услугу, ссылающуюся на счетчик ОДН
+	 */
 	@Override
-	public Serv getMetServ() {
-		// TODO Auto-generated method stub
-		return null;
+	public Serv getOdnServ(Serv s) {
+		Query query =em.createQuery("from Serv t where t.id = :id");
+		query.setParameter("id",s.getOdn());
+		return (Serv) query.getSingleResult();
 	}
-
 }

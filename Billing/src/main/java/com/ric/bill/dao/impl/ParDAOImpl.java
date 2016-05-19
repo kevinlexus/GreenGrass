@@ -12,15 +12,9 @@ import com.ric.bill.model.Par;
 @Repository
 public class ParDAOImpl implements ParDAO {
 
-	protected EntityManager em;
-	 
-    public EntityManager getEntityManager() {
-        return em;
-    }
+	// EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.em = entityManager;
-    }
+    private EntityManager em;
     
 	@SuppressWarnings("unchecked")
 	public List<Par> findAll() {

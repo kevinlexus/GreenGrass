@@ -8,5 +8,6 @@ public interface ServMng {
 	
 	public List<Serv> findAll();
 	public List<Serv> findForChrg();
+	public Serv getMetServ(Serv s);
 	
 }

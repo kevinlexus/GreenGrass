@@ -32,7 +32,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
         id="transactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
- 
+
   <tx:annotation-driven />
 <!--     <tx:annotation-driven mode="aspectj"
         transaction-manager="transactionManager" /> -->
@@ -40,6 +40,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
     <context:spring-configured />
     <context:annotation-config />
 </beans>
+
 
 <!-- 
 <?xml version="1.0" encoding="UTF-8"?>

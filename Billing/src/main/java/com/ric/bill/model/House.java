@@ -12,8 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.ric.bill.MeterManagable;
+import com.ric.bill.Storable;
+
 /**
- * Класс - Дом
+ * Дом
  * @author lev
  *
  */
@@ -21,7 +24,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "HOUSE", schema="AR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-public class House extends Base implements java.io.Serializable, Storable {
+public class House extends Base implements java.io.Serializable, MeterManagable {
 
 	public House() {
 	}
