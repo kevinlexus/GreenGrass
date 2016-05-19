@@ -71,9 +71,6 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp; 
 	
-    @Column(name = "FK_TP", updatable = false, nullable = true, insertable = false) //--так странно, попробовал добавить, для HQL
-	private Integer fkTp;
-
 	//klsk объекта, к которому принадлежит данный счетчик
     @Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
 	private Integer klskObj;
@@ -148,14 +145,6 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 		this.dst = dst;
 	}
 
-	public Integer getFkTp() {
-		return fkTp;
-	}
-
-	public void setFkTp(Integer fkTp) {
-		this.fkTp = fkTp;
-	}
-	
 	
 }
 

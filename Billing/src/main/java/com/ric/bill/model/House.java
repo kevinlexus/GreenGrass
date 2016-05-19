@@ -9,11 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.ric.bill.MeterManagable;
-import com.ric.bill.Storable;
 
 /**
  * Дом
@@ -40,6 +40,10 @@ public class House extends Base implements java.io.Serializable, MeterManagable 
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_STREET", referencedColumnName="ID", updatable = false)
+	private Street street;
 	
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
@@ -73,6 +77,14 @@ public class House extends Base implements java.io.Serializable, MeterManagable 
 
 	public void setTarklsk(Set<TarifKlsk> tarklsk) {
 		this.tarklsk = tarklsk;
+	}
+
+	public Street getStreet() {
+		return street;
+	}
+
+	public void setStreet(Street street) {
+		this.street = street;
 	}
 	
 

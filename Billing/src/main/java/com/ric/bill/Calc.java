@@ -20,11 +20,11 @@ import com.ric.bill.model.Serv;
  *
  */
 @Service
-public class Calc {
-	static private Date genDt; // рассчитываемая дата
+public final class Calc {
+	private static Date genDt; // рассчитываемая дата
 	// даты текущего периода
-	static private Date curDt1;
-	static private Date curDt2;
+	private static Date curDt1;
+	private static Date curDt2;
 	
 	@Autowired
 	private HouseMng houseMng; //менеджер дома
@@ -33,13 +33,13 @@ public class Calc {
 	@Autowired
 	private MeterLogMng metLogMng; //менеджер счетчика
 
-	private Area area; //текущий город 
-	private House house; //текущий дом (распределяемый, начисляемый)
-	private Serv serv; //текущая услуга (распределяемая, начисляемая)
+	private static Area area; //текущий город 
+	private static House house; //текущий дом (распределяемый, начисляемый)
+	private static Serv serv; //текущая услуга (распределяемая, начисляемая)
 
-	private Serv servMet; //услуга, содержащая счетчик
-	private Serv servOdn; //услуга, содержащая счетчик ОДН
-	private int calcTp; //тип обработки расчёта
+	private static Serv servMet; //услуга, содержащая счетчик
+	private static Serv servOdn; //услуга, содержащая счетчик ОДН
+	private static int calcTp; //тип обработки расчёта
 	// конструктор
 	public Calc() {
 	}
@@ -84,56 +84,56 @@ public class Calc {
 		this.servMng = servMng;
 	}
 
-	public House getHouse() {
+	public static House getHouse() {
 		return house;
 	}
 
-	public void setHouse(House house) {
-		this.house = house;
+	public static void setHouse(House house) {
+		Calc.house = house;
 	}
 
-	public Serv getServ() {
+	public static Serv getServ() {
 		return serv;
 	}
 
-	public void setServ(Serv serv) {
-		this.serv = serv;
+	public static void setServ(Serv serv) {
+		Calc.serv = serv;
 		//задать услугу, содержащую счетчик
 		setServMet(getServMng().getMetServ(serv));
 		//задать услугу, содержащую счетчик ОДН
 		
 	}
 
-	public Serv getServMet() {
+	public static Serv getServMet() {
 		return servMet;
 	}
 
-	public void setServMet(Serv servMet) {
-		this.servMet = servMet;
+	public static void setServMet(Serv servMet) {
+		Calc.servMet = servMet;
 	}
 
-	public int getCalcTp() {
+	public static int getCalcTp() {
 		return calcTp;
 	}
 
-	public void setCalcTp(int calcTp) {
-		this.calcTp = calcTp;
+	public static void setCalcTp(int calcTp) {
+		Calc.calcTp = calcTp;
 	}
 
-	public Serv getServOdn() {
+	public static Serv getServOdn() {
 		return servOdn;
 	}
 
-	public void setServOdn(Serv servOdn) {
-		this.servOdn = servOdn;
+	public static void setServOdn(Serv servOdn) {
+		Calc.servOdn = servOdn;
 	}
 
-	public MeterLogMng getMetLogMng() {
+	public static MeterLogMng getMetLogMng() {
 		return metLogMng;
 	}
 
-	public void setMetLogMng(MeterLogMng metLogMng) {
-		this.metLogMng = metLogMng;
+	public static void setMetLogMng(MeterLogMng metLogMng) {
+		Calc.metLogMng = metLogMng;
 	}
 
 	public static Date getCurDt1() {
@@ -150,6 +150,14 @@ public class Calc {
 
 	public static void setCurDt2(Date curDt2) {
 		Calc.curDt2 = curDt2;
+	}
+
+	public static Area getArea() {
+		return area;
+	}
+
+	public static void setArea(Area area) {
+		Calc.area = area;
 	}
 	
 }

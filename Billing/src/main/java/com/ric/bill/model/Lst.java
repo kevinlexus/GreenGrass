@@ -37,8 +37,6 @@ public class Lst implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_LISTTP", referencedColumnName="ID")
 	private LstTp lstTp ; 
 
-    @Column(name = "FK_LISTTP", updatable = false, nullable = true, insertable = false) //--так странно, попробовал добавить, для HQL
-	private Integer fkTp;
 	
     public Integer getId() {
 		return this.id;
@@ -64,12 +62,6 @@ public class Lst implements java.io.Serializable, Simple {
 	}
 	public void setLstTp(LstTp lstTp) {
 		this.lstTp = lstTp;
-	}
-	public Integer getFkTp() {
-		return fkTp;
-	}
-	public void setFkTp(Integer fkTp) {
-		this.fkTp = fkTp;
 	}
 
 }

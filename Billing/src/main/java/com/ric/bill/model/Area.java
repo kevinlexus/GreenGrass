@@ -30,7 +30,6 @@ public class Area extends Base implements java.io.Serializable, Storable {
 	// CD
 	private String cd; 
 
-
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
 	public Integer getKlsk() {
@@ -40,6 +39,10 @@ public class Area extends Base implements java.io.Serializable, Storable {
 	public void setKlsk(Integer klsk) {
 		this.klsk=klsk;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
+	private Set<Street> street = new HashSet<Street>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
@@ -67,6 +70,14 @@ public class Area extends Base implements java.io.Serializable, Storable {
 
 	public void setTarklsk(Set<TarifKlsk> tarklsk) {
 		this.tarklsk = tarklsk;
+	}
+
+	public Set<Street> getStreet() {
+		return street;
+	}
+
+	public void setStreet(Set<Street> street) {
+		this.street = street;
 	}
 	
 }
