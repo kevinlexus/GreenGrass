@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ric.bill.Storable;
 import com.ric.bill.dao.MeterLogDAO;
-import com.ric.bill.model.MeterLog;
+import com.ric.bill.model.mt.MeterLog;
 
 
 @Repository

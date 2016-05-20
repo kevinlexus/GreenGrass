@@ -15,11 +15,11 @@ import com.ric.bill.MeterManagable;
 import com.ric.bill.dao.HouseDAO;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
-import com.ric.bill.model.Dw;
-import com.ric.bill.model.House;
-import com.ric.bill.model.Kw;
-import com.ric.bill.model.Kart;
-import com.ric.bill.model.MeterLog;
+import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.ar.Kw;
+import com.ric.bill.model.bs.Dw;
+import com.ric.bill.model.mt.MeterLog;
 
 @Service
 public class HouseMngImpl extends MeterStore implements HouseMng {

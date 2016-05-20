@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Repository;
+
 import com.ric.bill.dao.ParDAO;
-import com.ric.bill.model.Par;
+import com.ric.bill.model.bs.Par;
 
 
 @Repository

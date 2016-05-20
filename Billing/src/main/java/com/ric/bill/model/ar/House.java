@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.ar;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.ric.bill.MeterManagable;
+import com.ric.bill.model.bs.Base;
+import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.tr.TarifKlsk;
 
 /**
  * Дом

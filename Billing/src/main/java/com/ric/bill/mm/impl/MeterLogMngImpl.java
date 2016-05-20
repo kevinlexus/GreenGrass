@@ -11,8 +11,8 @@ import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.dao.ParDAO;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ParMng;
-import com.ric.bill.model.MeterLog;
-import com.ric.bill.model.Par;
+import com.ric.bill.model.bs.Par;
+import com.ric.bill.model.mt.MeterLog;
 
 @Service
 public class MeterLogMngImpl implements MeterLogMng {

@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.WrongGetMethod;
-import com.ric.bill.model.House;
-import com.ric.bill.model.Meter;
-import com.ric.bill.model.MeterExs;
-import com.ric.bill.model.MeterLog;
-import com.ric.bill.model.MeterLogGraph;
-import com.ric.bill.model.Serv;
-import com.ric.bill.model.Vol;
+import com.ric.bill.model.ar.House;
+import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.Meter;
+import com.ric.bill.model.mt.MeterExs;
+import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.mt.MeterLogGraph;
+import com.ric.bill.model.mt.Vol;
 
 /**
  * Главный сервис биллинга

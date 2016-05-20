@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.ps;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

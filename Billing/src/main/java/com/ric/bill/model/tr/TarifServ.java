@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.tr;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,14 +21,14 @@ import com.ric.bill.Simple;
 
 
 /**
- * Организации по услуге по тарифу
+ * Услуги по тарифу
  * @author lev
  *
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "TARIF_SERV_ORG", schema="TR")
-public class TarifServOrg implements java.io.Serializable, Simple {
+@Table(name = "TARIF_SERV", schema="TR")
+public class TarifServ implements java.io.Serializable, Simple {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)

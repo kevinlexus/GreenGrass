@@ -15,7 +15,7 @@ import com.ric.bill.Dist;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.ParMng;
-import com.ric.bill.model.Dw;
+import com.ric.bill.model.bs.Dw;
 
 /**
  * Базовый класс сервисов, умеющих хранить параметры 

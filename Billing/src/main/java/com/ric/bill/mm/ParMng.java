@@ -2,7 +2,7 @@ package com.ric.bill.mm;
 
 import java.util.List;
 
-import com.ric.bill.model.Par;
+import com.ric.bill.model.bs.Par;
 
 public interface ParMng {
 

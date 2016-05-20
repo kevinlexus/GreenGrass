@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.bs;
 
 import java.util.HashSet;
 import java.util.Set;

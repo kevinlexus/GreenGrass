@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.dao.ParDAO;
 import com.ric.bill.mm.ParMng;
-import com.ric.bill.model.Par;
+import com.ric.bill.model.bs.Par;
 
 @Service
 public class ParMngImpl implements ParMng {

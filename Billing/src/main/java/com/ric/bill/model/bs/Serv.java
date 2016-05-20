@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.bs;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;

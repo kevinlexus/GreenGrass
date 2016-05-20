@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.mt;
 
 
 import java.util.HashSet;
@@ -21,6 +21,7 @@ import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
+import com.ric.bill.model.bs.Base;
 
 
 /**

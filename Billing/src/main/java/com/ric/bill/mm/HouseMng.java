@@ -5,10 +5,10 @@ import java.util.Set;
 
 import com.ric.bill.MeterManagable;
 import com.ric.bill.excp.WrongGetMethod;
-import com.ric.bill.model.Dw;
-import com.ric.bill.model.House;
-import com.ric.bill.model.MeterLog;
-import com.ric.bill.model.Serv;
+import com.ric.bill.model.ar.House;
+import com.ric.bill.model.bs.Dw;
+import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MeterLog;
 
 public interface HouseMng {
 	

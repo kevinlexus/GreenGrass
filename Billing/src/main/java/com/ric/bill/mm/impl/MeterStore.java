@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ric.bill.MeterManagable;
-import com.ric.bill.model.MeterLog;
-import com.ric.bill.model.Serv;
+import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MeterLog;
 
 /**
  * Абстрактный класс сервисов, умеющих работать со счетчиками

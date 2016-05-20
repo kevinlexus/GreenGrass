@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ServMng;
-import com.ric.bill.model.Area;
-import com.ric.bill.model.House;
-import com.ric.bill.model.Serv;
+import com.ric.bill.model.ar.Area;
+import com.ric.bill.model.ar.House;
+import com.ric.bill.model.bs.Serv;
 
 /**
  * Хранилище всех необходимых параметров для расчета
@@ -22,11 +22,16 @@ import com.ric.bill.model.Serv;
  */
 @Service
 public final class Calc {
-	private Date genDt; // рассчитываемая дата
-	// даты текущего периода
-	private Date curDt1;
-	private Date curDt2;
-	private double cntCurDays; //кол-во дней в периоде 
+	private static Date genDt; // рассчитываемая дата
+	//даты текущего периода
+	private static Date curDt1;
+	private static Date curDt2;
+	//наиболее ранняя и поздние даты в биллинге, константы
+	private final static Date firstDt=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
+	private final static Date lastDt=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
+	//кол-во дней в периоде
+	private double cntCurDays;  
+	private Calendar calendar;
 
 	@Autowired
 	private HouseMng houseMng; //менеджер дома
@@ -52,7 +57,7 @@ public final class Calc {
 	 */
 	public void setUp() {
 		//HARDCODE!! TODO!
-		Calendar calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
+		calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
 		setGenDt(calendar.getTime());
 		// 1 день месяца
 		calendar.set(Calendar.DATE, 1); 
@@ -65,12 +70,12 @@ public final class Calc {
 		
 	}
 	
-	public Date getGenDt() {
+	public static Date getGenDt() {
 		return genDt;
 	}
 
-	public void setGenDt(Date genDt) {
-		this.genDt = genDt;
+	public static void setGenDt(Date genDt) {
+		Calc.genDt = genDt;
 	}
 
 	public HouseMng getHouseMng() {
@@ -141,20 +146,20 @@ public final class Calc {
 		this.metLogMng = metLogMng;
 	}
 
-	public Date getCurDt1() {
+	public static Date getCurDt1() {
 		return curDt1;
 	}
 
-	public void setCurDt1(Date curDt1) {
-		this.curDt1 = curDt1;
+	public static void setCurDt1(Date curDt1) {
+		Calc.curDt1 = curDt1;
 	}
 
-	public Date getCurDt2() {
+	public static Date getCurDt2() {
 		return curDt2;
 	}
 
-	public void setCurDt2(Date curDt2) {
-		this.curDt2 = curDt2;
+	public static void setCurDt2(Date curDt2) {
+		Calc.curDt2 = curDt2;
 	}
 
 	public Area getArea() {
@@ -171,6 +176,14 @@ public final class Calc {
 
 	public void setCntCurDays(double cntCurDays) {
 		this.cntCurDays = cntCurDays;
+	}
+
+	public static Date getFirstDt() {
+		return firstDt;
+	}
+
+	public static Date getLastDt() {
+		return lastDt;
 	}
 	
 }

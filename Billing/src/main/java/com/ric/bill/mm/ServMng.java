@@ -2,7 +2,7 @@ package com.ric.bill.mm;
 
 import java.util.List;
 
-import com.ric.bill.model.Serv;
+import com.ric.bill.model.bs.Serv;
 
 public interface ServMng {
 	

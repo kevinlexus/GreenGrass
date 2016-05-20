@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.ar;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +16,11 @@ import javax.persistence.Table;
 
 import com.ric.bill.MeterManagable;
 import com.ric.bill.Storable;
+import com.ric.bill.model.bs.Base;
+import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.ps.Reg;
+import com.ric.bill.model.ps.RegState;
+import com.ric.bill.model.tr.TarifKlsk;
 
 /**
  * Лицевой счет
@@ -56,6 +61,14 @@ public class Kart extends Base implements java.io.Serializable, MeterManagable  
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="LSK", referencedColumnName="LSK")
+	private Set<Reg> reg = new HashSet<Reg>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="LSK", referencedColumnName="LSK")
+	private Set<RegState> regState = new HashSet<RegState>(0);
 
 	//ФИО владельца
 	@Column(name = "FIO", nullable = true)
@@ -111,6 +124,22 @@ public class Kart extends Base implements java.io.Serializable, MeterManagable  
 
 	public void setTarklsk(Set<TarifKlsk> tarklsk) {
 		this.tarklsk = tarklsk;
+	}
+
+	public Set<Reg> getReg() {
+		return reg;
+	}
+
+	public void setReg(Set<Reg> reg) {
+		this.reg = reg;
+	}
+
+	public Set<RegState> getRegState() {
+		return regState;
+	}
+
+	public void setRegState(Set<RegState> regState) {
+		this.regState = regState;
 	}
 }
 

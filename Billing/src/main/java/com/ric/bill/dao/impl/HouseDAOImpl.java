@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.ric.bill.dao.HouseDAO;
-import com.ric.bill.model.House;
+import com.ric.bill.model.ar.House;
 
 
 @Repository

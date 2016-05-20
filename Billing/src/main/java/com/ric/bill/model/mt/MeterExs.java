@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.mt;
 
 
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.mt;
 
 
 import java.math.BigDecimal;
@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.bs.Lst;
 
 
 /**

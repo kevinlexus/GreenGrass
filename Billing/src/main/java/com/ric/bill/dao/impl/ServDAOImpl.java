@@ -5,9 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
+
 import com.ric.bill.dao.ServDAO;
-import com.ric.bill.model.Serv;
+import com.ric.bill.model.bs.Serv;
 
 
 @Repository

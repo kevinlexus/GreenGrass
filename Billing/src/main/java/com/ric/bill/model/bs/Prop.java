@@ -1,4 +1,4 @@
-package com.ric.bill.model;
+package com.ric.bill.model.bs;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,28 +21,46 @@ import com.ric.bill.Simple;
 
 
 /**
- * Свойство по услуге по тарифу
+ * Свойство услуги в тарифе
  * @author lev
  *
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "TARIF_SERV_PROP", schema="TR")
-public class TarifServProp implements java.io.Serializable, Simple {
+@Table(name = "PROP", schema="TR")
+public class Prop implements java.io.Serializable, Simple {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
 	private Integer id; // id
 
-    public Integer getId() {
+    @Column(name = "CD", updatable = false, nullable = false)
+	private String cd; // cd 
+
+    @Column(name = "NAME", updatable = false, nullable = false)
+	private String name; // Наименование 
+
+	public Integer getId() {
 		return this.id;
 	}
-    
 	public void setId(Integer id) {
 		this.id = id;
 	}
 	
+    public String getCd() {
+		return this.cd;
+	}
+	public void setCd(String cd) {
+		this.cd = cd;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 }
 
