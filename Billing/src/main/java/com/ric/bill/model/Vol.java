@@ -40,7 +40,7 @@ public class Vol implements java.io.Serializable, Simple {
 	private Lst tp; 
 
     @Column(name = "VOL1", updatable = true, nullable = true)
-	private BigDecimal vol1; 
+	private Double vol1; 
 
 	// даты начала и окончания произведенного объема
     @Column(name = "DT1", updatable = false, nullable = true)
@@ -80,11 +80,11 @@ public class Vol implements java.io.Serializable, Simple {
 		this.tp = tp;
 	}
 	
-	public BigDecimal getVol1() {
+	public Double getVol1() {
 		return vol1;
 	}
 	
-	public void setVol1(BigDecimal vol1) {
+	public void setVol1(Double vol1) {
 		this.vol1 = vol1;
 	}
 

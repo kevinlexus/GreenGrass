@@ -1,7 +1,5 @@
 package com.ric.bill;
 
-import java.math.BigDecimal;
-
 /**
  * Текущий расчет по узлу 
  * @author lev
@@ -10,42 +8,63 @@ import java.math.BigDecimal;
 public class NodeVol {
 
 	// значения за расчетный период:
-	private BigDecimal vol;// объем
-	private BigDecimal area;// доля площади
-	private BigDecimal pers;// доля проживающих
+	private Double vol;// объем
+	private Double area;// доля площади
+	private Double pers;// доля проживающих
 	
+	private int recur;// счетчик рекурсии
+
 	public NodeVol(){
-		vol  = new BigDecimal(0);
-		area = new BigDecimal(0);
-		pers = new BigDecimal(0);
+		vol  = new Double(0);
+		area = new Double(0);
+		pers = new Double(0);
+		setRecur(0);
 	}
 	
-	public BigDecimal getVol() {
+	// рекурсия +1
+	public void addRecur() {
+		setRecur(getRecur() + 1);
+	}
+
+	// рекурсия -1
+	public void decRecur() {
+		setRecur(getRecur() - 1);
+	}
+
+	public Double getVol() {
 		return vol;
 	}
 	
-	public void setVol(BigDecimal vol) {
+	public void setVol(Double vol) {
 		this.vol = vol;
 	}
 	
-	public void addVol(BigDecimal vol) {
-		this.vol = this.vol.add(vol);
+	public void addVol(Double vol) {
+		this.vol = this.vol+vol;
 	}
 
-	public BigDecimal getArea() {
+	public Double getArea() {
 		return area;
 	}
 	
-	public void setArea(BigDecimal area) {
+	public void setArea(Double area) {
 		this.area = area;
 	}
 	
-	public BigDecimal getPers() {
+	public Double getPers() {
 		return pers;
 	}
 	
-	public void setPers(BigDecimal pers) {
+	public void setPers(Double pers) {
 		this.pers = pers;
+	}
+
+	public int getRecur() {
+		return recur;
+	}
+
+	public void setRecur(int recur) {
+		this.recur = recur;
 	}
 	
 }

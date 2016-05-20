@@ -33,7 +33,7 @@ public class MeterExs implements java.io.Serializable, Simple {
 	private Integer id; // id
 	
     @Column(name = "PERCENT", updatable = false, nullable = true)
-	private BigDecimal prc; 
+	private Double prc; 
 
 	// даты начала и окончания действия
     @Column(name = "DT1", updatable = false, nullable = true)
@@ -65,11 +65,11 @@ public class MeterExs implements java.io.Serializable, Simple {
 		this.dt2 = dt2;
 	}
 	
-	public BigDecimal getPrc() {
+	public Double getPrc() {
 		return prc;
 	}
 	
-	public void setPrc(BigDecimal prc) {
+	public void setPrc(Double prc) {
 		this.prc = prc;
 	}
 	

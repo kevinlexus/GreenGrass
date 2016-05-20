@@ -1,5 +1,6 @@
 package com.ric.bill;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -21,11 +22,12 @@ import com.ric.bill.model.Serv;
  */
 @Service
 public final class Calc {
-	private static Date genDt; // рассчитываемая дата
+	private Date genDt; // рассчитываемая дата
 	// даты текущего периода
-	private static Date curDt1;
-	private static Date curDt2;
-	
+	private Date curDt1;
+	private Date curDt2;
+	private double cntCurDays; //кол-во дней в периоде 
+
 	@Autowired
 	private HouseMng houseMng; //менеджер дома
 	@Autowired
@@ -33,13 +35,14 @@ public final class Calc {
 	@Autowired
 	private MeterLogMng metLogMng; //менеджер счетчика
 
-	private static Area area; //текущий город 
-	private static House house; //текущий дом (распределяемый, начисляемый)
-	private static Serv serv; //текущая услуга (распределяемая, начисляемая)
+	private Area area; //текущий город 
+	private House house; //текущий дом (распределяемый, начисляемый)
+	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
-	private static Serv servMet; //услуга, содержащая счетчик
-	private static Serv servOdn; //услуга, содержащая счетчик ОДН
-	private static int calcTp; //тип обработки расчёта
+	private Serv servMet; //услуга, содержащая счетчик
+	private Serv servOdn; //услуга, содержащая счетчик ОДН
+	private int calcTp; //тип обработки расчёта
+	
 	// конструктор
 	public Calc() {
 	}
@@ -57,15 +60,17 @@ public final class Calc {
 		// последний день месяца
 		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); 
 		setCurDt2(calendar.getTime());
+		//кол-во дней в месяце
+		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		
 	}
 	
-	public static Date getGenDt() {
+	public Date getGenDt() {
 		return genDt;
 	}
 
-	public static void setGenDt(Date genDt) {
-		Calc.genDt = genDt;
+	public void setGenDt(Date genDt) {
+		this.genDt = genDt;
 	}
 
 	public HouseMng getHouseMng() {
@@ -84,80 +89,88 @@ public final class Calc {
 		this.servMng = servMng;
 	}
 
-	public static House getHouse() {
+	public House getHouse() {
 		return house;
 	}
 
-	public static void setHouse(House house) {
-		Calc.house = house;
+	public void setHouse(House house) {
+		this.house = house;
 	}
 
-	public static Serv getServ() {
+	public Serv getServ() {
 		return serv;
 	}
 
-	public static void setServ(Serv serv) {
-		Calc.serv = serv;
+	public void setServ(Serv serv) {
+		this.serv = serv;
 		//задать услугу, содержащую счетчик
 		setServMet(getServMng().getMetServ(serv));
 		//задать услугу, содержащую счетчик ОДН
 		
 	}
 
-	public static Serv getServMet() {
+	public Serv getServMet() {
 		return servMet;
 	}
 
-	public static void setServMet(Serv servMet) {
-		Calc.servMet = servMet;
+	public void setServMet(Serv servMet) {
+		this.servMet = servMet;
 	}
 
-	public static int getCalcTp() {
+	public int getCalcTp() {
 		return calcTp;
 	}
 
-	public static void setCalcTp(int calcTp) {
-		Calc.calcTp = calcTp;
+	public void setCalcTp(int calcTp) {
+		this.calcTp = calcTp;
 	}
 
-	public static Serv getServOdn() {
+	public Serv getServOdn() {
 		return servOdn;
 	}
 
-	public static void setServOdn(Serv servOdn) {
-		Calc.servOdn = servOdn;
+	public void setServOdn(Serv servOdn) {
+		this.servOdn = servOdn;
 	}
 
-	public static MeterLogMng getMetLogMng() {
+	public MeterLogMng getMetLogMng() {
 		return metLogMng;
 	}
 
-	public static void setMetLogMng(MeterLogMng metLogMng) {
-		Calc.metLogMng = metLogMng;
+	public void setMetLogMng(MeterLogMng metLogMng) {
+		this.metLogMng = metLogMng;
 	}
 
-	public static Date getCurDt1() {
+	public Date getCurDt1() {
 		return curDt1;
 	}
 
-	public static void setCurDt1(Date curDt1) {
-		Calc.curDt1 = curDt1;
+	public void setCurDt1(Date curDt1) {
+		this.curDt1 = curDt1;
 	}
 
-	public static Date getCurDt2() {
+	public Date getCurDt2() {
 		return curDt2;
 	}
 
-	public static void setCurDt2(Date curDt2) {
-		Calc.curDt2 = curDt2;
+	public void setCurDt2(Date curDt2) {
+		this.curDt2 = curDt2;
 	}
 
-	public static Area getArea() {
+	public Area getArea() {
 		return area;
 	}
 
-	public static void setArea(Area area) {
-		Calc.area = area;
+	public void setArea(Area area) {
+		this.area = area;
+	}
+
+	public double getCntCurDays() {
+		return cntCurDays;
+	}
+
+	public void setCntCurDays(double cntCurDays) {
+		this.cntCurDays = cntCurDays;
 	}
 	
 }

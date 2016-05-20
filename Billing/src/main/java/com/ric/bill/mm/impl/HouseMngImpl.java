@@ -19,6 +19,7 @@ import com.ric.bill.model.Dw;
 import com.ric.bill.model.House;
 import com.ric.bill.model.Kw;
 import com.ric.bill.model.Kart;
+import com.ric.bill.model.MeterLog;
 
 @Service
 public class HouseMngImpl extends MeterStore implements HouseMng {
@@ -31,5 +32,6 @@ public class HouseMngImpl extends MeterStore implements HouseMng {
 	public List<House> findAll() {
 		return hDao.findAll();
 	}
+
 
 }

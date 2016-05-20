@@ -71,6 +71,10 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp; 
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
+	private Serv serv; 
+
 	//klsk объекта, к которому принадлежит данный счетчик
     @Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
 	private Integer klskObj;
@@ -143,6 +147,14 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 
 	public void setDst(Set<MeterLogGraph> dst) {
 		this.dst = dst;
+	}
+
+	public Serv getServ() {
+		return serv;
+	}
+
+	public void setServ(Serv serv) {
+		this.serv = serv;
 	}
 
 	

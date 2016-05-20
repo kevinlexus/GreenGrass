@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ric.bill.MeterManagable;
 import com.ric.bill.model.MeterLog;
+import com.ric.bill.model.Serv;
 
 /**
  * Абстрактный класс сервисов, умеющих работать со счетчиками
@@ -22,12 +23,30 @@ public abstract class MeterStore extends BaseStore {
 	public List<MeterLog> getMetLogByTp(MeterManagable mm, String tp) {
 		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
 		for (MeterLog ml : mm.getMlog()) {
-			if (ml.getTp().getCd().equals("Ввод")) {
-				//System.out.println("Ввод: id="+ml.getId());
+			if (ml.getTp().getCd().equals(tp)) {
 				mLog.add(ml);
 			}
 		}
 		return mLog;
 	}
 	
+	/**
+	 * Получить список лог.счетчиков по определённому объекту, типу и услуге
+	 * @param mm - Объект
+	 * @param serv - Услуга
+	 * @param tp - Тип
+	 * @return
+	 */
+	public List<MeterLog> getMetLogByServTp(MeterManagable mm, Serv serv, String tp) {
+		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
+		for (MeterLog ml : mm.getMlog()) {
+			//по типу и услуге
+			if (ml.getTp().getCd().equals(tp)
+					&& ml.getServ().equals(serv)) {
+				mLog.add(ml);
+			}
+		}
+		return mLog;
+	}
+
 }

@@ -39,11 +39,15 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp; 
 
-	@Column(name = "NOD_SRC", updatable = false, nullable = true)
-	private Integer nodsrc; // Узел - источник
+	// Узел - источник
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
+	private MeterLog nodsrc; 
 
-    @Column(name = "NOD_DST", updatable = false, nullable = true)
-	private Integer noddst; // Узел - назначение
+	// Узел - назначение
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
+	private MeterLog noddst; 
 
     @Column(name = "PERCENT", updatable = false, nullable = true)
 	private BigDecimal prc; 
@@ -64,20 +68,8 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 		this.tp = tp;
 	}
 
-    public Integer getNodsrc() {
+    public MeterLog getNodsrc() {
 		return nodsrc;
-	}
-
-	public void setNodsrc(Integer nodsrc) {
-		this.nodsrc = nodsrc;
-	}
-
-	public Integer getNoddst() {
-		return noddst;
-	}
-
-	public void setNoddst(Integer noddst) {
-		this.noddst = noddst;
 	}
 
 	public BigDecimal getPrc() {
@@ -86,6 +78,14 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 	
 	public void setPrc(BigDecimal prc) {
 		this.prc = prc;
+	}
+
+	public void setNodsrc(MeterLog nodsrc) {
+		this.nodsrc = nodsrc;
+	}
+
+	public void setNoddst(MeterLog noddst) {
+		this.noddst = noddst;
 	}
 
 }

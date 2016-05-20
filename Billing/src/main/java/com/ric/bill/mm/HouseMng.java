@@ -8,11 +8,12 @@ import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.model.Dw;
 import com.ric.bill.model.House;
 import com.ric.bill.model.MeterLog;
+import com.ric.bill.model.Serv;
 
 public interface HouseMng {
 	
 	public List<House> findAll();
 	public Double getDbl(Set<Dw> dw, String cd);
-	public List<MeterLog> getMetLogByTp(MeterManagable mm, String tp);
+	public List<MeterLog> getMetLogByServTp(MeterManagable mm, Serv serv, String tp);
 	
 }
