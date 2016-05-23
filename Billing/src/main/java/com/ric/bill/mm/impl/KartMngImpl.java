@@ -15,6 +15,7 @@ import com.ric.bill.mm.KartMng;
 import com.ric.bill.model.ps.Pers;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.RegState;
+import com.ric.bill.model.ps.Registrable;
 
 @Service
 public class KartMngImpl implements KartMng {
@@ -39,11 +40,11 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
-	private boolean checkPersState (/*Set<Reg> reg   ЗДЕСЬ НУЖЕН ИНТЕРФЕЙС регистрации а не класс!*/, Pers p) {
+	private boolean checkPersState (Set<Registrable> reg, Pers p) {
 		Date dt1, dt2;
-		for (Reg r : reg) {
+		for (Registrable r : reg) {
 			if (r.getPers().equals(p)) {
-				if (r.getRegTp().getCd().equals("Постоянная прописка")) {
+				if (r.getTp().getCd().equals("Постоянная прописка")) {
 					if (r.getDtRegTs() == null ||
 					    r.getDtRegTs().before(Calc.getCurDt2())) {
 						dt1=Utl.nvl(r.getDtReg(), Calc.getFirstDt());
@@ -81,7 +82,7 @@ public class KartMngImpl implements KartMng {
 		for (Reg p : reg) {
 			if (!foundPers(counted, p.getPers())) {
 				//проверить постоянную регистрацию
-				if 
+				if //TODO!
 				
 				
 			}

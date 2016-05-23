@@ -24,7 +24,7 @@ import com.ric.bill.model.bs.Lst;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REG", schema="PS")
-public class Reg implements java.io.Serializable, Simple {
+public class Reg implements java.io.Serializable, Registrable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,7 +41,7 @@ public class Reg implements java.io.Serializable, Simple {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_REG_TP", referencedColumnName="ID", updatable = false)
-	private Lst regTp;
+	private Lst tp;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_REG_STATUS", referencedColumnName="ID", updatable = false)
@@ -73,14 +73,6 @@ public class Reg implements java.io.Serializable, Simple {
 
 	public void setPers(Pers pers) {
 		this.pers = pers;
-	}
-
-	public Lst getRegTp() {
-		return regTp;
-	}
-
-	public void setRegTp(Lst regTp) {
-		this.regTp = regTp;
 	}
 
 	public Lst getRegStatus() {
@@ -129,6 +121,14 @@ public class Reg implements java.io.Serializable, Simple {
 
 	public void setDtUnRegTs(Date dtUnRegTs) {
 		this.dtUnRegTs = dtUnRegTs;
+	}
+
+	public Lst getTp() {
+		return tp;
+	}
+
+	public void setTp(Lst tp) {
+		this.tp = tp;
 	}
 	
 }
