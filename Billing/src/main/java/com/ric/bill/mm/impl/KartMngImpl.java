@@ -12,6 +12,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.mm.KartMng;
+import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.ps.Pers;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.RegState;
@@ -40,7 +41,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
-	private boolean checkPersState (Set<Registrable> reg, Pers p) {
+	private boolean checkPersStatus (Set<Registrable> reg, Pers p) {
 		Date dt1, dt2;
 		for (Registrable r : reg) {
 			if (r.getPers().equals(p)) {
@@ -72,19 +73,35 @@ public class KartMngImpl implements KartMng {
 	
 	/**
 	 * Получить кол-во проживающих 
-	 * @param lstReg
+	 * @param serv - Рассчитываемая услуга 
+	 * @param reg - Список дат постоянной регистрации
+	 * @param regSt - Список дат временной регистрации
 	 * @return
 	 */
 	@Override
-	public int getCntPers(Set<Reg> reg, Set<RegState> regSt){
+	public int getCntPers(Serv serv, Set<Registrable> reg, Set<Registrable> regSt){
 		Set<Pers> counted = null;
-		//поиск по постоянной регистрации 
-		for (Reg p : reg) {
+		int cnt=0; //кол-во человек
+		int cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
+		// поиск по постоянной регистрации 
+		for (Registrable p : reg) {
 			if (!foundPers(counted, p.getPers())) {
-				//проверить постоянную регистрацию
-				if //TODO!
-				
-				
+				if (checkPersStatus(reg, p.getPers())) {
+					//постоянная регистрация есть, проверить временное отсутствие, если надо по этой услуге
+					if (!serv.getInclAbsn()) {
+						if (!checkPersStatus(regSt, p.getPers())) {
+							//временного отсутствия нет, считать проживающего
+							cnt++;
+						}
+					} else {
+						//не проверять временное отсутствие, считать проживающего
+						cnt++;
+					}
+					cntEmpt++;
+				} else {
+					//нет постоянной регистрации, поискать временную
+					
+				}
 			}
 			
 		}
