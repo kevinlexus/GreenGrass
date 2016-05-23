@@ -19,7 +19,7 @@ public class Dist {
 	@Test
 	public void test1() {
 		//для выключения логгинга, просто выкинул из maven всё что касалось log4j
-		// распределить объемы по дому
+		//распределить объемы по дому
 		System.out.println("Begin!");
 		bs.distVols();
 		System.out.println("End!");

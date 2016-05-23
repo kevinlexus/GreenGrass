@@ -17,7 +17,7 @@ import com.ric.bill.model.mt.MeterLog;
 @Repository
 public class MeterLogDAOImpl implements MeterLogDAO {
 
-	// EntityManager - EM нужен на каждый DAO или сервис свой!
+	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
 

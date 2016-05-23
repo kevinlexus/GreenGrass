@@ -22,13 +22,13 @@ public class LstTp implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; // id
+	private int id; //id
 
 	@Column(name = "CD", updatable = false, nullable = false)
-	private String cd; // cd 
+	private String cd; //cd 
 
     @Column(name = "NAME", updatable = false, nullable = false)
-	private String name; // Наименование 
+	private String name; //Наименование 
 
     public Integer getId() {
 		return this.id;

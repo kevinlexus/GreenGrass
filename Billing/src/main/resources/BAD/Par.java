@@ -6,19 +6,19 @@ public class Par implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; // id
+	private int id; //id
 
     @Column(name = "CD", updatable = false, nullable = false)
-	private String cd; // cd 
+	private String cd; //cd 
 
     @Column(name = "NAME", updatable = false, nullable = false)
-	private String name; // Наименование 
+	private String name; //Наименование 
 
     @Column(name = "VAL_TP", updatable = false, nullable = true)
-	private String tp; // тип параметра (NM, ST)
+	private String tp; //тип параметра (NM, ST)
 
     @Column(name = "DATA_TP", updatable = false, nullable = true)
-	private String dataTp; // тип данного (SI, LI, ID, BL)
+	private String dataTp; //тип данного (SI, LI, ID, BL)
     
     public Integer getId() {
 		return this.id;

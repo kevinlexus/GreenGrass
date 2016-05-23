@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ServMng;
+import com.ric.bill.mm.impl.HouseMngImpl;
+import com.ric.bill.mm.impl.MeterLogMngImpl;
+import com.ric.bill.mm.impl.ServMngImpl;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.Serv;
@@ -22,7 +25,7 @@ import com.ric.bill.model.bs.Serv;
  */
 @Service
 public final class Calc {
-	private static Date genDt; // рассчитываемая дата
+	private static Date genDt; //рассчитываемая дата
 	//даты текущего периода
 	private static Date curDt1;
 	private static Date curDt2;
@@ -44,11 +47,9 @@ public final class Calc {
 	private House house; //текущий дом (распределяемый, начисляемый)
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
-	private Serv servMet; //услуга, содержащая счетчик
-	private Serv servOdn; //услуга, содержащая счетчик ОДН
 	private int calcTp; //тип обработки расчёта
 	
-	// конструктор
+	//конструктор
 	public Calc() {
 	}
 	
@@ -59,10 +60,10 @@ public final class Calc {
 		//HARDCODE!! TODO!
 		calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
 		setGenDt(calendar.getTime());
-		// 1 день месяца
+		//1 день месяца
 		calendar.set(Calendar.DATE, 1); 
 		setCurDt1(calendar.getTime());
-		// последний день месяца
+		//последний день месяца
 		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); 
 		setCurDt2(calendar.getTime());
 		//кол-во дней в месяце
@@ -82,7 +83,7 @@ public final class Calc {
 		return houseMng;
 	}
 
-	public void setHouseMng(HouseMng houseMng) {
+	public void setHouseMng(HouseMngImpl houseMng) {
 		this.houseMng = houseMng;
 	}
 
@@ -90,7 +91,7 @@ public final class Calc {
 		return servMng;
 	}
 
-	public void setServMng(ServMng servMng) {
+	public void setServMng(ServMngImpl servMng) {
 		this.servMng = servMng;
 	}
 
@@ -108,18 +109,7 @@ public final class Calc {
 
 	public void setServ(Serv serv) {
 		this.serv = serv;
-		//задать услугу, содержащую счетчик
-		setServMet(getServMng().getMetServ(serv));
-		//задать услугу, содержащую счетчик ОДН
 		
-	}
-
-	public Serv getServMet() {
-		return servMet;
-	}
-
-	public void setServMet(Serv servMet) {
-		this.servMet = servMet;
 	}
 
 	public int getCalcTp() {
@@ -130,19 +120,11 @@ public final class Calc {
 		this.calcTp = calcTp;
 	}
 
-	public Serv getServOdn() {
-		return servOdn;
-	}
-
-	public void setServOdn(Serv servOdn) {
-		this.servOdn = servOdn;
-	}
-
 	public MeterLogMng getMetLogMng() {
 		return metLogMng;
 	}
 
-	public void setMetLogMng(MeterLogMng metLogMng) {
+	public void setMetLogMng(MeterLogMngImpl metLogMng) {
 		this.metLogMng = metLogMng;
 	}
 
@@ -185,5 +167,6 @@ public final class Calc {
 	public static Date getLastDt() {
 		return lastDt;
 	}
+
 	
 }

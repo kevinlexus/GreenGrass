@@ -11,7 +11,7 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Par;
 
 @Service
-public class ParMngImpl implements ParMng {
+public class ParMngImpl extends BaseStore implements ParMng {
 
 	@Autowired
 	private ParDAO pDao;

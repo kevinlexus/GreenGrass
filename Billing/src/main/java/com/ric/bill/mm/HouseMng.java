@@ -10,10 +10,9 @@ import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MeterLog;
 
-public interface HouseMng {
+public interface HouseMng extends Manage {
 	
 	public List<House> findAll();
-	public Double getDbl(Set<Dw> dw, String cd);
 	public List<MeterLog> getMetLogByServTp(MeterManagable mm, Serv serv, String tp);
 	
 }

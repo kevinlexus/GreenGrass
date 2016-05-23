@@ -39,7 +39,7 @@ public class Street extends Base implements java.io.Serializable {
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID", updatable = false)
 	private Area area;
 
-	// наименование улицы
+	//наименование улицы
 	@Column(name = "NAME", nullable = true)
 	private String name; 
 	

@@ -4,10 +4,9 @@ import java.util.List;
 
 import com.ric.bill.model.bs.Serv;
 
-public interface ServMng {
+public interface ServMng extends Manage {
 	
 	public List<Serv> findAll();
 	public List<Serv> findForChrg();
-	public Serv getMetServ(Serv s);
 	
 }

@@ -34,7 +34,7 @@ public class Vol implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private Integer id; // id
+	private Integer id; //id
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
@@ -43,7 +43,7 @@ public class Vol implements java.io.Serializable, Simple {
     @Column(name = "VOL1", updatable = true, nullable = true)
 	private Double vol1; 
 
-	// даты начала и окончания произведенного объема
+	//даты начала и окончания произведенного объема
     @Column(name = "DT1", updatable = false, nullable = true)
 	private Date dt1;
 

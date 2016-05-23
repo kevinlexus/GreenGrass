@@ -33,7 +33,7 @@ public class TarifServProp implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private Integer id; // id
+	private Integer id; //id
 
     public Integer getId() {
 		return this.id;

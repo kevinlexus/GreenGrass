@@ -22,16 +22,16 @@ public class Pers implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; // id
+	private int id; //id
 
     @Column(name = "NM_LAST", updatable = false, nullable = false)
-	private String lastname; // Фамилия 
+	private String lastname; //Фамилия 
 
     @Column(name = "NM_FIRST", updatable = false, nullable = false)
-	private String firstname; // Имя 
+	private String firstname; //Имя 
     
     @Column(name = "NM_PATR", updatable = false, nullable = false)
-	private String middlename; // Отчество 
+	private String middlename; //Отчество 
 
     public Integer getId() {
 		return this.id;

@@ -30,7 +30,7 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private Integer id; // id
+	private Integer id; //id
 
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="ID")

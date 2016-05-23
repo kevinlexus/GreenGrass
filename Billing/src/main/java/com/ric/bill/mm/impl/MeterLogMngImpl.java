@@ -15,7 +15,7 @@ import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.mt.MeterLog;
 
 @Service
-public class MeterLogMngImpl implements MeterLogMng {
+public class MeterLogMngImpl extends BaseStore implements MeterLogMng {
 
 	@Autowired
 	private MeterLogDAO mDao;

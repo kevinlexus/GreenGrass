@@ -30,12 +30,12 @@ public class MeterExs implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private Integer id; // id
+	private Integer id; //id
 	
     @Column(name = "PERCENT", updatable = false, nullable = true)
 	private Double prc; 
 
-	// даты начала и окончания действия
+	//даты начала и окончания действия
     @Column(name = "DT1", updatable = false, nullable = true)
 	private Date dt1;
 

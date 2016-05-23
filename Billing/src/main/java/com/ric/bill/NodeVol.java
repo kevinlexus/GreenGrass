@@ -7,12 +7,12 @@ package com.ric.bill;
  */
 public class NodeVol {
 
-	// значения за расчетный период:
-	private Double vol;// объем
-	private Double area;// доля площади
-	private Double pers;// доля проживающих
+	//значения за расчетный период:
+	private Double vol;//объем
+	private Double area;//доля площади
+	private Double pers;//доля проживающих
 	
-	private int recur;// счетчик рекурсии
+	private int recur;//счетчик рекурсии
 
 	public NodeVol(){
 		vol  = new Double(0);
@@ -21,12 +21,12 @@ public class NodeVol {
 		setRecur(0);
 	}
 	
-	// рекурсия +1
+	//рекурсия +1
 	public void addRecur() {
 		setRecur(getRecur() + 1);
 	}
 
-	// рекурсия -1
+	//рекурсия -1
 	public void decRecur() {
 		setRecur(getRecur() - 1);
 	}

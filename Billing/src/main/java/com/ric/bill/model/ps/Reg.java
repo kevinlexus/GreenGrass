@@ -29,7 +29,7 @@ public class Reg implements java.io.Serializable, Registrable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; // id
+	private int id; //id
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
@@ -48,16 +48,16 @@ public class Reg implements java.io.Serializable, Registrable {
 	private Lst regStatus;
 	
     @Column(name = "DT_REG", updatable = false, nullable = true)
-	private Date dtReg; // Дата регистрации
+	private Date dtReg; //Дата регистрации
 	
     @Column(name = "DT_REG_TS", updatable = false, nullable = true)
-	private Date dtRegTs; // Дата регистрации, фактически установлена
+	private Date dtRegTs; //Дата регистрации, фактически установлена
 
     @Column(name = "DT_UNREG", updatable = false, nullable = true)
-	private Date dtUnReg; // Дата снятия с учёта
+	private Date dtUnReg; //Дата снятия с учёта
 
     @Column(name = "DT_UNREG_TS", updatable = false, nullable = true)
-	private Date dtUnRegTs; // Дата снятия с учёта, фактически установлена
+	private Date dtUnRegTs; //Дата снятия с учёта, фактически установлена
     
     public Integer getId() {
 		return this.id;

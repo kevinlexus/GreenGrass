@@ -14,7 +14,7 @@ import com.ric.bill.model.ar.House;
 @Repository
 public class HouseDAOImpl implements HouseDAO {
 
-	// EntityManager - EM нужен на каждый DAO или сервис свой!
+	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
     

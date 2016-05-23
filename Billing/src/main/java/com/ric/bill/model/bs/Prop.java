@@ -33,13 +33,13 @@ public class Prop implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private Integer id; // id
+	private Integer id; //id
 
     @Column(name = "CD", updatable = false, nullable = false)
-	private String cd; // cd 
+	private String cd; //cd 
 
     @Column(name = "NAME", updatable = false, nullable = false)
-	private String name; // Наименование 
+	private String name; //Наименование 
 
 	public Integer getId() {
 		return this.id;

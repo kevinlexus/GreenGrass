@@ -39,9 +39,5 @@ public class ServMngImpl extends BaseStore implements ServMng {
 		return sDao.findForChrg();
 	}
 
-	@Override
-	public Serv getMetServ(Serv s) {
-		return sDao.getMetServ(s);
-	}
 
 }

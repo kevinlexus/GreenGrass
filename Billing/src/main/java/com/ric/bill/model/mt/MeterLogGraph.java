@@ -34,18 +34,18 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; // id
+	private int id; //id
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp; 
 
-	// Узел - источник
+	//Узел - источник
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
 	private MeterLog nodsrc; 
 
-	// Узел - назначение
+	//Узел - назначение
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
 	private MeterLog noddst; 

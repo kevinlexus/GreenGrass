@@ -39,7 +39,7 @@ public abstract class Base implements Storable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	protected Integer id; // id записи
+	protected Integer id; //id записи
 
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")

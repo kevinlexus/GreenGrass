@@ -1,9 +1,6 @@
 package com.ric.bill;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,7 +31,7 @@ public class BillServ {
 	@Autowired
 	private Calc calc;
 
-	// EntityManager - EM нужен на каждый DAO или сервис свой!
+	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
 
@@ -44,7 +41,7 @@ public class BillServ {
 	@Transactional(propagation=Propagation.MANDATORY)
 	private void setFilters() {
 		Session session = (Session) em.getDelegate();
-		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", calc.getGenDt());
+		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
 	}
 
 	/**
@@ -54,8 +51,8 @@ public class BillServ {
 	public void distVols() {
 		System.out.println("1");
 		calc.setUp(); //настроить
-		setFilters();// вкл.фильтр
-		// найти необходимые дома
+		setFilters();//вкл.фильтр
+		//найти необходимые дома
 		long startTime = System.currentTimeMillis();
 		
 		for (House o: calc.getHouseMng().findAll()) {
@@ -92,18 +89,17 @@ public class BillServ {
 	private void distHouseServ() {
 		System.out.println("Услуга="+calc.getServ().getCd());
 		calc.setCalcTp(1);
-		distHouseServTp(calc.getServMet());// Расчет площади, кол-во прожив
+		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);
-		distHouseServTp(calc.getServMet());// Распределение объема
+		distHouseServTp(calc.getServ().getMet());//Распределение объема
 		calc.setCalcTp(2);
-		distHouseServTp(calc.getServMet());// Расчет ОДН
+		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
 		calc.setCalcTp(3);
-		distHouseServTp(calc.getServMet());// Расчет пропорц.площади
-		if (calc.getServOdn() != null){
+		distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
+		if (calc.getServ().getOdn() != null){
 			calc.setCalcTp(0);
-			distHouseServTp(calc.getServOdn());// Суммировать счетчики ОДН
+			distHouseServTp(calc.getServ().getOdn());//Суммировать счетчики ОДН
 		}
-		
 	}
 	
 	/**
@@ -126,9 +122,10 @@ public class BillServ {
 		
 		//перебрать все даты, за период
 		Calendar c = Calendar.getInstance();
-		c.setTime(calc.getCurDt1());
-		for (c.setTime(calc.getCurDt1()); !c.getTime().after(calc.getCurDt2()); c.add(Calendar.DATE, 1)) {
-			calc.setGenDt(c.getTime());
+		c.setTime(Calc.getCurDt1());
+		for (c.setTime(Calc.getCurDt1()); !c.getTime().after(Calc.getCurDt2()); c.add(Calendar.DATE, 1)) {
+			Calc.setGenDt(c.getTime());
+			@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
 				dummy=distNode(mLog, new NodeVol());
@@ -159,16 +156,16 @@ public class BillServ {
 			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
 				//посчитать объемы, по физическим счетчикам, прикрепленным к узлу
 			    //(если такие есть) в пропорции на кол-во дней объема
-				for (Meter m : mLog.getMeter()) { 		// физ.сч
-					for (Vol v : m.getVol()) {    		// фактические объемы
+				for (Meter m : mLog.getMeter()) { 		//физ.сч
+					for (Vol v : m.getVol()) {    		//фактические объемы
 						if (v.getTp().getCd().equals("Фактический объем")) {
-							for (MeterExs e : m.getExs()) { // периоды сущ.
-								// добавить объем в объект объема
-								// умножить объем на процент существования и на долю дня
+							for (MeterExs e : m.getExs()) { //периоды сущ.
+								//добавить объем в объект объема
+								//умножить объем на процент существования и на долю дня
 								Double t=v.getVol1() * e.getPrc() / calc.getCntCurDays();
 								if (t != 0) {
 									//if (m.getId()==821719) {
-									//  System.out.println("Объём по счетчику id="+m.getId()+" доля="+t+" vol="+v.getVol1()+" за дату="+calc.getGenDt());
+									// System.out.println("Объём по счетчику id="+m.getId()+" доля="+t+" vol="+v.getVol1()+" за дату="+calc.getGenDt());
  									nv.addVol( t );
 								}
 								

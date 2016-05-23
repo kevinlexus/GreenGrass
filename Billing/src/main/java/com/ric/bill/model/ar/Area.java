@@ -27,9 +27,9 @@ import com.ric.bill.model.tr.TarifKlsk;
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class Area extends Base implements java.io.Serializable, Storable {
 
-	// наименование
+	//наименование
 	private String name; 
-	// CD
+	//CD
 	private String cd; 
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)

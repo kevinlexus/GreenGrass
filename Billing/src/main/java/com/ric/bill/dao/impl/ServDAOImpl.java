@@ -15,7 +15,7 @@ import com.ric.bill.model.bs.Serv;
 @Repository
 public class ServDAOImpl implements ServDAO {
 
-	// EntityManager - EM нужен на каждый DAO или сервис свой!
+	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
 
@@ -44,23 +44,4 @@ public class ServDAOImpl implements ServDAO {
 		return query.getResultList();
 	}
 
-	/**
-	 * Получить услугу, ссылающуюся на счетчик
-	 */
-	@Override
-	public Serv getMetServ(Serv s) {
-		Query query =em.createQuery("from Serv t where t.id = :id");
-		query.setParameter("id",s.getMet());
-		return (Serv) query.getSingleResult();
-	}
-
-	/**
-	 * Получить услугу, ссылающуюся на счетчик ОДН
-	 */
-	@Override
-	public Serv getOdnServ(Serv s) {
-		Query query =em.createQuery("from Serv t where t.id = :id");
-		query.setParameter("id",s.getOdn());
-		return (Serv) query.getSingleResult();
-	}
 }
