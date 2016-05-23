@@ -15,6 +15,7 @@ import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Pers;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.RegState;
@@ -156,11 +157,12 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	
 	/**
 	 * Получить нормативный объём по лиц.счету
+	 * @param mLog - Расчетный узел 
 	 * @param serv - Рассчитываемая услуга 
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	public Standart getStandart (Calc calc, Serv serv, CntPers cntPers) {
+	public Standart getStandart (MeterLog mLog, Calc calc, Serv serv, CntPers cntPers) {
 		Standart st = new Standart();
 		if (cntPers == null) {
 			//если кол-во проживающих не передано
@@ -168,13 +170,21 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			getCntPers(serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		
-		switch (calc.getServMng().getStr(serv.getDw(), "")) {
-		case "Вариант расчета по общей площади-1" : case "Вариант расчета по объему-2" :
-			break;
-		
+		if (calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по общей площади-1")==1
+				|| calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-2")==1) {
+			if (cntPers.cnt==1) {
+				mLog.getKlskObj().
+			}
+			
+		} else if (calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-1")==1
+				&& serv.getCd().equals("Электроснабжение (объем)")) {
+			
+		} else if (calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-1")==1
+				&& !serv.getCd().equals("Электроснабжение (объем)")) {
+			
 		}
-		
-		
+			
+			
 		
 		return st;
 		

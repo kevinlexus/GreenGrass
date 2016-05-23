@@ -2,18 +2,11 @@ package com.ric.bill.mm.impl;
 
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.Dist;
 import com.ric.bill.excp.WrongGetMethod;
-import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Dw;
 

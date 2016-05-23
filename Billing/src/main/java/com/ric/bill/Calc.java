@@ -1,6 +1,5 @@
 package com.ric.bill;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,6 +15,7 @@ import com.ric.bill.mm.impl.MeterLogMngImpl;
 import com.ric.bill.mm.impl.ServMngImpl;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 
 /**
@@ -36,6 +36,7 @@ public final class Calc {
 	private double cntCurDays;  
 	private Calendar calendar;
 
+	//Здесь привязывать ТОЛЬКО интерфейсы, как best practice!
 	@Autowired
 	private HouseMng houseMng; //менеджер дома
 	@Autowired
@@ -45,6 +46,7 @@ public final class Calc {
 
 	private Area area; //текущий город 
 	private House house; //текущий дом (распределяемый, начисляемый)
+	//private Kart kart; //текущий лиц.счет (распределяемый, начисляемый) - пока не нужен
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
 	private int calcTp; //тип обработки расчёта
@@ -168,5 +170,12 @@ public final class Calc {
 		return lastDt;
 	}
 
+/*	public Kart getKart() {
+		return kart;
+	}
+
+	public void setKart(Kart kart) {
+		this.kart = kart;
+	}*/
 	
 }
