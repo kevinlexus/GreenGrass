@@ -21,6 +21,8 @@ import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
+import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Serv;
@@ -78,7 +80,15 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv; 
 
-	//klsk объекта, к которому принадлежит данный счетчик
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_K_LSK_OBJ", referencedColumnName="FK_K_LSK")
+	private Kart kart; 
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_K_LSK_OBJ", referencedColumnName="FK_K_LSK")
+	private House house; 
+
+	//klsk объекта, к которому принадлежит данный счетчик --нужен ли, если есть на прямую объекты kart, house?
     @Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
 	private Integer klskObj;
 
@@ -158,6 +168,22 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 
 	public void setServ(Serv serv) {
 		this.serv = serv;
+	}
+
+	public Kart getKart() {
+		return kart;
+	}
+
+	public void setKart(Kart kart) {
+		this.kart = kart;
+	}
+
+	public House getHouse() {
+		return house;
+	}
+
+	public void setHouse(House house) {
+		this.house = house;
 	}
 
 	

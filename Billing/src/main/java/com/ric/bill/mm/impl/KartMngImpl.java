@@ -1,8 +1,6 @@
 package com.ric.bill.mm.impl;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +11,15 @@ import com.ric.bill.CntPers;
 import com.ric.bill.Standart;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
-import com.ric.bill.mm.KartMng;
+import com.ric.bill.mm.common.KartMng;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Pers;
-import com.ric.bill.model.ps.Reg;
-import com.ric.bill.model.ps.RegState;
 import com.ric.bill.model.ps.Registrable;
 
 @Service
-public class KartMngImpl extends MeterStore implements KartMng {
+public class KartMngImpl extends TarifStore implements KartMng {
 
 	@Autowired
 	private KartDAO kDao;
@@ -164,6 +161,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 */
 	public Standart getStandart (MeterLog mLog, Calc calc, Serv serv, CntPers cntPers) {
 		Standart st = new Standart();
+		Kart kart = mLog.getKart();
 		if (cntPers == null) {
 			//если кол-во проживающих не передано
 			cntPers= new CntPers();
@@ -173,7 +171,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		if (calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по общей площади-1")==1
 				|| calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-2")==1) {
 			if (cntPers.cnt==1) {
-				mLog.getKlskObj().
+				calc.getKartMng()
 			}
 			
 		} else if (calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-1")==1

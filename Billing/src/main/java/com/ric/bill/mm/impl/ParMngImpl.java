@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.dao.ParDAO;
-import com.ric.bill.mm.ParMng;
+import com.ric.bill.mm.common.ParMng;
 import com.ric.bill.model.bs.Par;
 
 @Service
-public class ParMngImpl extends BaseStore implements ParMng {
+public class ParMngImpl implements ParMng {
 
 	@Autowired
 	private ParDAO pDao;

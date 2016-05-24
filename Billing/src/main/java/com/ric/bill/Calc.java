@@ -7,9 +7,10 @@ import java.util.GregorianCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ric.bill.mm.HouseMng;
-import com.ric.bill.mm.MeterLogMng;
-import com.ric.bill.mm.ServMng;
+import com.ric.bill.mm.common.HouseMng;
+import com.ric.bill.mm.common.KartMng;
+import com.ric.bill.mm.common.MeterLogMng;
+import com.ric.bill.mm.common.ServMng;
 import com.ric.bill.mm.impl.HouseMngImpl;
 import com.ric.bill.mm.impl.MeterLogMngImpl;
 import com.ric.bill.mm.impl.ServMngImpl;
@@ -39,6 +40,8 @@ public final class Calc {
 	//Здесь привязывать ТОЛЬКО интерфейсы, как best practice!
 	@Autowired
 	private HouseMng houseMng; //менеджер дома
+	@Autowired
+	private KartMng kartMng; //менеджер лицевого счета
 	@Autowired
 	private ServMng servMng; //менеджер услуги
 	@Autowired
@@ -168,6 +171,14 @@ public final class Calc {
 
 	public static Date getLastDt() {
 		return lastDt;
+	}
+
+	public KartMng getKartMng() {
+		return kartMng;
+	}
+
+	public void setKartMng(KartMng kartMng) {
+		this.kartMng = kartMng;
 	}
 
 /*	public Kart getKart() {

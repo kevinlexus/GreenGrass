@@ -1,10 +1,5 @@
 package com.ric.bill.model.tr;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
@@ -35,7 +29,14 @@ public class TarifServProp implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private Integer id; //id
 
-    public Integer getId() {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_SERV_PROP", referencedColumnName="ID")
+	private Prop prop ; 
+
+    @Column(name = "N1", updatable = false, nullable = true)
+	private Double n1; //значение n1 
+
+	public Integer getId() {
 		return this.id;
 	}
     
@@ -43,6 +44,22 @@ public class TarifServProp implements java.io.Serializable, Simple {
 		this.id = id;
 	}
 	
+	public Prop getProp() {
+		return prop;
+	}
+
+	public void setProp(Prop prop) {
+		this.prop = prop;
+	}
+
+	public Double getN1() {
+		return n1;
+	}
+
+	public void setN1(Double n1) {
+		this.n1 = n1;
+	}
+
 	
 }
 

@@ -24,13 +24,13 @@ public class Pers implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private int id; //id
 
-    @Column(name = "NM_LAST", updatable = false, nullable = false)
+    @Column(name = "NM_LAST", updatable = false, nullable = true)
 	private String lastname; //Фамилия 
 
-    @Column(name = "NM_FIRST", updatable = false, nullable = false)
+    @Column(name = "NM_FIRST", updatable = false, nullable = true)
 	private String firstname; //Имя 
     
-    @Column(name = "NM_PATR", updatable = false, nullable = false)
+    @Column(name = "NM_PATR", updatable = false, nullable = true)
 	private String middlename; //Отчество 
 
     public Integer getId() {
