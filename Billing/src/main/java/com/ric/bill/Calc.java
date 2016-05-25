@@ -7,16 +7,15 @@ import java.util.GregorianCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ric.bill.mm.common.HouseMng;
-import com.ric.bill.mm.common.KartMng;
-import com.ric.bill.mm.common.MeterLogMng;
-import com.ric.bill.mm.common.ServMng;
+import com.ric.bill.mm.HouseMng;
+import com.ric.bill.mm.KartMng;
+import com.ric.bill.mm.MeterLogMng;
+import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.impl.HouseMngImpl;
 import com.ric.bill.mm.impl.MeterLogMngImpl;
 import com.ric.bill.mm.impl.ServMngImpl;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.ar.House;
-import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 
 /**
@@ -35,6 +34,9 @@ public final class Calc {
 	private final static Date lastDt=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
 	//кол-во дней в периоде
 	private double cntCurDays;  
+	//доля одного дня в периоде
+	private static double partDays;
+
 	private Calendar calendar;
 
 	//Здесь привязывать ТОЛЬКО интерфейсы, как best practice!
@@ -73,7 +75,8 @@ public final class Calc {
 		setCurDt2(calendar.getTime());
 		//кол-во дней в месяце
 		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-		
+		//доля одного дня в периоде
+		setPartDays(1/getCntCurDays());
 	}
 	
 	public static Date getGenDt() {
@@ -179,6 +182,14 @@ public final class Calc {
 
 	public void setKartMng(KartMng kartMng) {
 		this.kartMng = kartMng;
+	}
+
+	public double getPartDays() {
+		return partDays;
+	}
+
+	public void setPartDays(double partDays) {
+		Calc.partDays = partDays;
 	}
 
 /*	public Kart getKart() {

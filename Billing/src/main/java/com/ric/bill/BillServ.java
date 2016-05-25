@@ -134,6 +134,7 @@ public class BillServ {
 			}
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
 			//System.out.println("по дате="+calc.getGenDt());
+			break;
 		}
 		
 	}
@@ -151,6 +152,7 @@ public class BillServ {
 		//System.out.println("Номер итерации:"+nv.getRecur());
 		//System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd());
 		String mLogTp = mLog.getTp().getCd(); //Тип лог счетчика
+		long startTime = System.currentTimeMillis();
 		if (calc.getCalcTp()==0) {
 			//по расчетной связи
 			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
@@ -174,8 +176,8 @@ public class BillServ {
 					}
 				}
 			} else if (mLogTp.equals("ЛНрм")){
-				//TODO сделать обработку норматива
-				
+				//по нормативу
+				nv.addVol(calc.getKartMng().getStandart(mLog, calc, null).partVol);
 			}
 				
 		} if (calc.getCalcTp()==1) {
@@ -185,6 +187,12 @@ public class BillServ {
 		} if (calc.getCalcTp()==3 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи пропорц.площади (Отопление например)
 			
+		}
+
+		long endTime   = System.currentTimeMillis();
+		long totalTime = endTime - startTime;
+		if (mLog.getId()==3683348) {
+			System.out.println("MeterLog.Id="+mLog.getId()+" calc time="+totalTime);
 		}
 		
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы

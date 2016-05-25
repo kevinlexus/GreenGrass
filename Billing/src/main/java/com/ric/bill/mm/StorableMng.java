@@ -9,7 +9,7 @@ import com.ric.bill.model.bs.Dw;
  * @author lev
  *
  */
-public interface Manage {
+public interface StorableMng {
 
 	public Double getDbl(Set<Dw> dw, String cd);
 	public String getStr(Set<Dw> dw, String cd);

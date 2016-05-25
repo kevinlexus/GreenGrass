@@ -81,11 +81,11 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 	private Serv serv; 
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_K_LSK_OBJ", referencedColumnName="FK_K_LSK")
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
 	private Kart kart; 
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_K_LSK_OBJ", referencedColumnName="FK_K_LSK")
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
 	private House house; 
 
 	//klsk объекта, к которому принадлежит данный счетчик --нужен ли, если есть на прямую объекты kart, house?

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.WrongGetMethod;
-import com.ric.bill.mm.common.Manage;
-import com.ric.bill.mm.common.ParMng;
+import com.ric.bill.mm.StorableMng;
+import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Dw;
 
 /**
@@ -17,7 +17,7 @@ import com.ric.bill.model.bs.Dw;
  *
  */
 @Service
-public abstract class BaseStore implements Manage{
+public abstract class BaseStore implements StorableMng{
 
 
 	@Autowired

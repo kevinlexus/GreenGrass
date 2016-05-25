@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.ric.bill.MeterManagable;
+import com.ric.bill.MeterContains;
 import com.ric.bill.Storable;
 import com.ric.bill.model.bs.Base;
 

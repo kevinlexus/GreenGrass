@@ -3,7 +3,7 @@ package com.ric.bill.mm.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ric.bill.MeterManagable;
+import com.ric.bill.MeterContains;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MeterLog;
 
@@ -12,7 +12,7 @@ import com.ric.bill.model.mt.MeterLog;
  * @author lev
  *
  */
-public abstract class MeterStore extends BaseStore {
+public abstract class MeterStore extends TarifStore {
 
 	/**
 	 * Получить список лог.счетчиков по определённому объекту, и типу
@@ -20,7 +20,7 @@ public abstract class MeterStore extends BaseStore {
 	 * @param tp - Тип
 	 * @return
 	 */
-	public List<MeterLog> getMetLogByTp(MeterManagable mm, String tp) {
+	public List<MeterLog> getMetLogByTp(MeterContains mm, String tp) {
 		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
 		for (MeterLog ml : mm.getMlog()) {
 			if (ml.getTp().getCd().equals(tp)) {
@@ -37,7 +37,7 @@ public abstract class MeterStore extends BaseStore {
 	 * @param tp - Тип
 	 * @return
 	 */
-	public List<MeterLog> getMetLogByServTp(MeterManagable mm, Serv serv, String tp) {
+	public List<MeterLog> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
 		for (MeterLog ml : mm.getMlog()) {
 			//по типу и услуге

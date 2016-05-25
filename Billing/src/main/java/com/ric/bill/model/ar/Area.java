@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.ric.bill.Storable;
+import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.tr.TarifKlsk;
 
@@ -25,7 +26,7 @@ import com.ric.bill.model.tr.TarifKlsk;
 @Entity
 @Table(name = "AREA", schema="AR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-public class Area extends Base implements java.io.Serializable, Storable {
+public class Area extends Base implements java.io.Serializable, Storable, TarifContains {
 
 	//наименование
 	private String name; 

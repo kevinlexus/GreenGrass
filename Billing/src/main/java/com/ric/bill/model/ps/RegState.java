@@ -12,18 +12,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import com.ric.bill.Simple;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 
 /**
- * Реестр Регистрационных Действий(РегД)
+ * Пасп стол. Временно отсутствующие, временно присутствующие.
  * 
  *
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "REG", schema="PS")
+@Table(name = "REG_STATE", schema="PS")
 public class RegState implements java.io.Serializable, Registrable {
 
 	@Id

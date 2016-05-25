@@ -106,7 +106,11 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	}
 
 	public Boolean getInclAbsn() {
-		return inclAbsn;
+		if (inclAbsn==null) {
+			return false;
+		} else {
+			return inclAbsn;
+		}
 	}
 
 	public void setInclAbsn(Boolean inclAbsn) {
@@ -114,7 +118,11 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	}
 
 	public Boolean getInclPrsn() {
-		return inclPrsn;
+		if (inclPrsn==null) {
+			return false;
+		} else {
+			return inclPrsn;
+		}
 	}
 
 	public void setInclPrsn(Boolean inclPrsn) {

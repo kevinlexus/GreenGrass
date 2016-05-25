@@ -6,6 +6,6 @@ package com.ric.bill;
  *
  */
 public class Standart {
-	Double vol; //значение норматива
-	Double partVol; //доля норматива в контексте дня
+	public Double vol; //значение норматива
+	public Double partVol; //доля норматива в контексте дня
 }

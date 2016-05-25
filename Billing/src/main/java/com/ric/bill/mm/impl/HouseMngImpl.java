@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.dao.HouseDAO;
-import com.ric.bill.mm.common.HouseMng;
+import com.ric.bill.mm.HouseMng;
 import com.ric.bill.model.ar.House;
 
 @Service
-public class HouseMngImpl extends TarifStore, MeterStore implements HouseMng {
+public class HouseMngImpl extends MeterStore implements HouseMng {
 
 	@Autowired
 	private HouseDAO hDao;
