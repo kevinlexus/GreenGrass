@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -41,10 +44,11 @@ public abstract class Base implements Storable {
     @Column(name = "ID", updatable = false, nullable = false)
 	protected Integer id; //id записи
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
+	@BatchSize(size = 20)
 	protected Set<Dw> dw = new HashSet<Dw>(0);
 
 	protected Integer klsk;

@@ -56,13 +56,13 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	private MeterLog meterLog ; 
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})

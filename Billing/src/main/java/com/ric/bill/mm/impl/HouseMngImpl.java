@@ -1,6 +1,10 @@
 package com.ric.bill.mm.impl;
 
+import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +17,8 @@ import com.ric.bill.model.ar.House;
 @Service
 public class HouseMngImpl extends MeterStore implements HouseMng {
 
-	@Autowired
+
+    @Autowired
 	private HouseDAO hDao;
 
 	@Transactional

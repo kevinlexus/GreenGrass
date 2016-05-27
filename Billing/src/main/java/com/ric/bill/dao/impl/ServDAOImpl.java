@@ -22,7 +22,6 @@ public class ServDAOImpl implements ServDAO {
     /**
 	 * Найти все услуги
 	 */
-	@Override
 	@SuppressWarnings("unchecked")
 	public List<Serv> findAll() {
 		Query query =em.createQuery("from Serv");
@@ -32,7 +31,6 @@ public class ServDAOImpl implements ServDAO {
 	/**
 	 * Найти и отсортировать, все услуги для начисления 
 	 */
-	@Override
 	@SuppressWarnings("unchecked")
 	public List<Serv> findForChrg() {
 		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2 ");

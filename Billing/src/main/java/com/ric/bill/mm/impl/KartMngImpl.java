@@ -1,11 +1,11 @@
 package com.ric.bill.mm.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.Calc;
@@ -109,7 +109,6 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @param tp - Тип вызова (0-для получения нормативного объема, 1-для получения кол-во прож.)
 	 * @return
 	 */
-	@Override
 	public void getCntPers(Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -163,26 +162,26 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
+	@Cacheable("billCache")
 	public Standart getStandart (MeterLog mLog, Calc calc, CntPers cntPers) {
 		long startTime;
 		long endTime;
 		long totalTime;
+		startTime   = System.currentTimeMillis();
+		//получить услугу, по которой записывается норматив (в справочнике 
+		//строго должна быть указана fk_stdt! по услуге счетчика)
+		Serv serv = mLog.getServ().getStdrt(); 
 
-		Serv serv = mLog.getServ().getStdrt(); //получить услугу, по которой записывается норматив
 		Standart st = new Standart();
 		Kart kart = mLog.getKart();
 		Double stVol = 0.0;
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
 			cntPers= new CntPers();
-			startTime   = System.currentTimeMillis();
-				cntPers.reg.addAll(mLog.getKart().getReg());
-				cntPers.regSt.addAll(mLog.getKart().getRegState());
-			endTime   = System.currentTimeMillis();
-			totalTime = endTime - startTime;
-			if (mLog.getId()==3683348) {
-				System.out.println("MeterLog.Id="+mLog.getId()+" cntPers-1 calc time="+totalTime);
-			}
+
+			cntPers.reg.addAll(mLog.getKart().getReg());
+			cntPers.regSt.addAll(mLog.getKart().getRegState());
+
 			getCntPers(serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		
@@ -266,6 +265,11 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		st.vol = stVol;
 		st.partVol = stVol * cntPers.cnt / calc.getCntCurDays();  
 		
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+		if (mLog.getId()==3683348) {
+			System.out.println("Standart: Date="+Calc.getGenDt()+" MeterLog.Id="+mLog.getId()+" cntPers-1 calc time="+totalTime);
+		}
 		return st;
 		
 	}

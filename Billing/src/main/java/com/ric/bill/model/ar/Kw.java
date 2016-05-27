@@ -13,6 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.ric.bill.Storable;
 import com.ric.bill.model.bs.Base;
 
@@ -33,15 +37,20 @@ public class Kw extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_HOUSE", referencedColumnName="ID", updatable = false, insertable = false)
 	private House house;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)  //сделал LAZY!
+	@OneToMany(fetch = FetchType.LAZY)  //сделал LAZY!
 	@JoinColumn(name="FK_KW", referencedColumnName="ID")
-	private Set<Kart> lsk = new HashSet<Kart>(0);
+	@BatchSize(size = 500)
+	private Set<Kart> kart = new HashSet<Kart>(0);
+
+	@Column(name = "FK_HOUSE", nullable = true)
+	private Integer fkHouse;
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
 	public Integer getKlsk() {
 		return this.klsk;
 	}
+
 	public void setKlsk(Integer klsk) {
 		this.klsk=klsk;
 	}
@@ -55,10 +64,18 @@ public class Kw extends Base implements java.io.Serializable, Storable {
 	}
 	
 	public Set<Kart> getLsk() {
-		return lsk;
+		return kart;
 	}
-	public void setLsk(Set<Kart> lsk) {
-		this.lsk = lsk;
+	public void setLsk(Set<Kart> kart) {
+		this.kart = kart;
+	}
+
+	public Integer getFkHouse() {
+		return fkHouse;
+	}
+
+	public void setFkHouse(Integer fkHouse) {
+		this.fkHouse = fkHouse;
 	}
 	
 }

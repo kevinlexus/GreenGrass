@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,19 +53,22 @@ public class BillServ {
 		System.out.println("1");
 		calc.setUp(); //настроить
 		setFilters();//вкл.фильтр
-		//найти необходимые дома
 		long startTime = System.currentTimeMillis();
+		//найти необходимые дома
+		calc.getHouseMng().findAll();
 		
 		for (House o: calc.getHouseMng().findAll()) {
-			//задать текущие дом и город
 			calc.setHouse(o);
 			calc.setArea(calc.getHouse().getStreet().getArea());
+			System.out.println("Дом загружен="+o.getId());
+			
 			//распределить
 			distHouseVols();
-		}		
+		}
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("Время исполнения:"+totalTime);
+
 	}
 
 	/**
@@ -75,6 +79,7 @@ public class BillServ {
 		System.out.println("Дом: id="+calc.getHouse().getId());
 		System.out.println("Дом: klsk="+calc.getHouse().getKlsk());
 		System.out.println("Площадь: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
+
 		//найти все необходимые услуги для распределения
 		for (Serv s : calc.getServMng().findForChrg()) {
 			calc.setServ(s);
@@ -109,6 +114,7 @@ public class BillServ {
 	@Transactional
 	private void distHouseServTp(Serv serv) {
 		//найти все вводы по дому и по услуге
+		System.out.println("Распределение по типу:"+calc.getCalcTp());
 		for (MeterLog ml : calc.getHouseMng().getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
 			distGraph(ml);
 		}
@@ -118,12 +124,14 @@ public class BillServ {
 	 * Распределить граф начиная с mLog
 	 * @param mLog - начальный узел распределения
 	 */
+	@Cacheable("billCache")
 	private void distGraph (MeterLog mLog) {
-		
+		System.out.println("Распределение ввода:"+mLog.getId());
 		//перебрать все даты, за период
 		Calendar c = Calendar.getInstance();
 		c.setTime(Calc.getCurDt1());
 		for (c.setTime(Calc.getCurDt1()); !c.getTime().after(Calc.getCurDt2()); c.add(Calendar.DATE, 1)) {
+			long startTime = System.currentTimeMillis();
 			Calc.setGenDt(c.getTime());
 			@SuppressWarnings("unused")
 			NodeVol dummy;
@@ -133,8 +141,10 @@ public class BillServ {
 				System.out.println("Ошибка при рекурсивном вызове BillServ.distNode()");
 			}
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
-			//System.out.println("по дате="+calc.getGenDt());
-			break;
+			long endTime   = System.currentTimeMillis();
+			long totalTime = endTime - startTime;
+			System.out.println("по дате="+calc.getGenDt()+" потрачено="+totalTime);
+			
 		}
 		
 	}
@@ -144,15 +154,17 @@ public class BillServ {
 	 * @param mLog
 	 * @throws WrongGetMethod 
 	 */
+	@Cacheable("billCache")
 	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod {
+		Double tmpD=0.0; //для каких нить нужд
 		if (nv.getRecur() > 1000) {
 			throw new WrongGetMethod("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружен замкнутый цикл");
 		}
 		nv.addRecur();
 		//System.out.println("Номер итерации:"+nv.getRecur());
 		//System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd());
-		String mLogTp = mLog.getTp().getCd(); //Тип лог счетчика
-		long startTime = System.currentTimeMillis();
+		String mLogTp = mLog.getTp().getCd(); //тип лог счетчика
+		Serv servChrg = mLog.getServ().getChrg(); //получить услугу для начисления
 		if (calc.getCalcTp()==0) {
 			//по расчетной связи
 			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
@@ -180,21 +192,21 @@ public class BillServ {
 				nv.addVol(calc.getKartMng().getStandart(mLog, calc, null).partVol);
 			}
 				
-		} if (calc.getCalcTp()==1) {
-			//по связи по площади и кол.прож.
+		} if (calc.getCalcTp()==1 && mLog.getKart() != null) {
+			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
+			tmpD = calc.getKartMng().getDbl(mLog.getKart().getDw(), "Площадь.Общая") / calc.getCntCurDays(); 
+			nv.setPartArea(tmpD);
+			CntPers cntPers= new CntPers();
+			calc.getKartMng().getCntPers(servChrg, cntPers, 0);
+			tmpD = cntPers.cnt / calc.getCntCurDays();
+			nv.setPartPers(tmpD);
+			
 		} if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
 		} if (calc.getCalcTp()==3 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи пропорц.площади (Отопление например)
 			
 		}
-
-		long endTime   = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
-		if (mLog.getId()==3683348) {
-			System.out.println("MeterLog.Id="+mLog.getId()+" calc time="+totalTime);
-		}
-		
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
 		//System.out.println("Найдено входящих направлений ="+mLog.getDst().size());
 		for (MeterLogGraph g : mLog.getDst()) {

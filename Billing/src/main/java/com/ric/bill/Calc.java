@@ -1,5 +1,6 @@
 package com.ric.bill;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;

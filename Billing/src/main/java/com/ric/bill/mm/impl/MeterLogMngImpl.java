@@ -20,8 +20,7 @@ public class MeterLogMngImpl extends BaseStore implements MeterLogMng {
 	@Autowired
 	private MeterLogDAO mDao;
 
-    @Override
-	public List<MeterLog> findByTp(Storable o, String tp) {
+    public List<MeterLog> findByTp(Storable o, String tp) {
     	return mDao.findByTp(o, tp);
     }
 }

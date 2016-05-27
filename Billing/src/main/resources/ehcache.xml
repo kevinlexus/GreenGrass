@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+    <diskStore path="cacheIO" />
+ 
+    <defaultCache maxElementsInMemory="50000" eternal="true"
+                  overflowToDisk="false" diskPersistent="false"
+                  diskExpiryThreadIntervalSeconds="1800" memoryStoreEvictionPolicy="FIFO">
+    </defaultCache>
+ 
+	<cache name="billCache" 
+		maxEntriesLocalHeap="1000000"
+		maxEntriesLocalDisk="10000" 
+		eternal="false" 
+		diskPersistent="false"
+		diskSpoolBufferSizeMB="100"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" 
+		transactionalMode="off">
+	</cache>
+	
+</ehcache>

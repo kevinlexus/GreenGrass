@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.cache.annotation.Cacheable;
 
 import com.ric.bill.Simple;
@@ -56,6 +58,9 @@ public class RegState implements java.io.Serializable, Registrable {
 
     @Column(name = "DT_UNREG_TS", updatable = false, nullable = true)
 	private Date dtUnRegTs; //Дата снятия с учёта, фактически установлена
+
+	@Column(name = "LSK", updatable = false, insertable = false)
+	private String lsk;
 
 	public Integer getId() {
 		return this.id;
@@ -111,6 +116,14 @@ public class RegState implements java.io.Serializable, Registrable {
 
 	public void setTp(Lst tp) {
 		this.tp = tp;
+	}
+
+	public String getLsk() {
+		return lsk;
+	}
+
+	public void setLsk(String lsk) {
+		this.lsk = lsk;
 	}
 	
 }

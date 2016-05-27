@@ -41,19 +41,24 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	private Integer npp2;//№ п.п. для распределения объема
 
 	// услуга содержащая счётчик
-	@OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_MET", referencedColumnName="ID")
 	private Serv met; 
 	
 	// услуга содержащая счётчик ОДН
-	@OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_ODN", referencedColumnName="ID")
 	private Serv odn; 
 
 	// услуга содержащая норматив
-	@OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_ST_KEEP", referencedColumnName="ID")
 	private Serv stdrt; 
+
+	// основная услуга, для начисления
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_CHRG", referencedColumnName="ID")
+	private Serv chrg; 
 
 	@Type(type= "org.hibernate.type.NumericBooleanType")
 	@Column(name = "INCL_ABSN", nullable = true)
@@ -151,6 +156,14 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 
 	public void setStdrt(Serv stdrt) {
 		this.stdrt = stdrt;
+	}
+
+	public Serv getChrg() {
+		return chrg;
+	}
+
+	public void setChrg(Serv chrg) {
+		this.chrg = chrg;
 	}
 
 

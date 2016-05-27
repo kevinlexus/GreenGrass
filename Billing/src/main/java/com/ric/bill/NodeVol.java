@@ -9,15 +9,15 @@ public class NodeVol {
 
 	//значения за расчетный период:
 	private Double vol;//объем
-	private Double area;//доля площади
-	private Double pers;//доля проживающих
+	private Double partArea;//доля площади
+	private Double partPers;//доля проживающих
 	
 	private int recur;//счетчик рекурсии
 
 	public NodeVol(){
 		vol  = new Double(0);
-		area = new Double(0);
-		pers = new Double(0);
+		partArea = new Double(0);
+		partPers = new Double(0);
 		setRecur(0);
 	}
 	
@@ -43,20 +43,20 @@ public class NodeVol {
 		this.vol = this.vol+vol;
 	}
 
-	public Double getArea() {
-		return area;
+	public Double getPartArea() {
+		return partArea;
 	}
 	
-	public void setArea(Double area) {
-		this.area = area;
+	public void setPartArea(Double partArea) {
+		this.partArea = partArea;
 	}
 	
-	public Double getPers() {
-		return pers;
+	public Double getPartPers() {
+		return partPers;
 	}
 	
-	public void setPers(Double pers) {
-		this.pers = pers;
+	public void setPartPers(Double partPers) {
+		this.partPers = partPers;
 	}
 
 	public int getRecur() {

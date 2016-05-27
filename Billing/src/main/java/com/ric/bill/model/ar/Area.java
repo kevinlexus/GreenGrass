@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,11 +42,11 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 		this.klsk=klsk;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
 	private Set<Street> street = new HashSet<Street>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 

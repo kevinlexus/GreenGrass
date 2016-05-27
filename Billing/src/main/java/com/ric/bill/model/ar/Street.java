@@ -31,7 +31,7 @@ public class Street extends Base implements java.io.Serializable {
 	public Street() {
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_STREET", referencedColumnName="ID")
 	private Set<House> house = new HashSet<House>(0);
 

@@ -16,7 +16,6 @@ public class ParMngImpl implements ParMng {
 	@Autowired
 	private ParDAO pDao;
 
-	@Override
 	@Transactional
 	public List<Par> findAll() {
 		return pDao.findAll();
@@ -25,7 +24,6 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * Узнать существует ли параметр по его CD
 	 */
-	@Override
 	@Transactional
 	public boolean isExByCd(String cd) {
 		for (Par p: findAll()){

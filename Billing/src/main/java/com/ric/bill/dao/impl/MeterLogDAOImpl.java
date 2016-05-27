@@ -29,7 +29,6 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @return
 	 */
     @SuppressWarnings("unchecked")
-	@Override
 	public List<MeterLog> findByTp(Storable o, String tp) {
     	/*Query query =em.createQuery("select m from MeterLog m "
 				+ "join Lst s on m.fkTp=s.id and s.cd=:tp "

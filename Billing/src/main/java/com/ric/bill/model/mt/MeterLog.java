@@ -49,23 +49,23 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 		
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	private Set<Meter> meter = new HashSet<Meter>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
 	private Set<MeterLogGraph> src = new HashSet<MeterLogGraph>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})

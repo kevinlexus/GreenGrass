@@ -10,8 +10,15 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.MeterContains;
 import com.ric.bill.TarifContains;
@@ -33,16 +40,19 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 	public House() {
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_HOUSE", referencedColumnName="ID")
+	@BatchSize(size = 500)
 	private Set<Kw> kw = new HashSet<Kw>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
+	@BatchSize(size = 20)
 	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
+	@BatchSize(size = 20)
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
 	@ManyToOne(fetch = FetchType.LAZY)

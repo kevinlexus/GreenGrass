@@ -28,13 +28,11 @@ public class ServMngImpl extends BaseStore implements ServMng {
 	@Autowired
 	private ServDAO sDao;
 
-	@Override
 	@Transactional
 	public List<Serv> findAll() {
 		return sDao.findAll();
 	}
 
-	@Override
 	public List<Serv> findForChrg() {
 		return sDao.findForChrg();
 	}

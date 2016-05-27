@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+
 import com.ric.bill.Simple;
 
 /*
@@ -34,6 +36,7 @@ public class Dw implements java.io.Serializable, Simple {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_HFP", referencedColumnName="ID")
+	@BatchSize(size = 20)
 	private Par par; 
 
 	public Dw() {
