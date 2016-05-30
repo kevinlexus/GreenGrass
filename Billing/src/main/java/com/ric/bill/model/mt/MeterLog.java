@@ -41,7 +41,13 @@ import com.ric.bill.model.bs.Serv;
     @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
     		parameters = {@ParamDef(name = "DT1", type = "date")
     		}
-    )
+    ), 
+    //фильтр, когда даты внутри диапазона (для объемов по счетчикам)
+    @FilterDef(name = "FILTER_GEN_DT_INNER", defaultCondition = "DT1 BETWEEN :DT1 AND :DT2 AND DT2 BETWEEN :DT1 AND :DT2", 
+	parameters = {@ParamDef(name = "DT1", type = "date"),
+    			  @ParamDef(name = "DT2", type = "date")
+	}
+)   
 })
 public class MeterLog extends Base implements java.io.Serializable, Storable {
 
@@ -56,20 +62,20 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	@Filters({
-	    @Filter(name = "FILTER_GEN_DT")})
+	    @Filter(name = "FILTER_GEN_DT_INNER")})
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
-	private Set<MeterLogGraph> src = new HashSet<MeterLogGraph>(0);
+	private Set<MeterLogGraph> outside = new HashSet<MeterLogGraph>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
-	private Set<MeterLogGraph> dst = new HashSet<MeterLogGraph>(0);
+	private Set<MeterLogGraph> inside = new HashSet<MeterLogGraph>(0);
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -146,22 +152,6 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 		this.vol = vol;
 	}
 
-	public Set<MeterLogGraph> getSrc() {
-		return src;
-	}
-
-	public void setSrc(Set<MeterLogGraph> src) {
-		this.src = src;
-	}
-
-	public Set<MeterLogGraph> getDst() {
-		return dst;
-	}
-
-	public void setDst(Set<MeterLogGraph> dst) {
-		this.dst = dst;
-	}
-
 	public Serv getServ() {
 		return serv;
 	}
@@ -184,6 +174,22 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 
 	public void setHouse(House house) {
 		this.house = house;
+	}
+
+	public Set<MeterLogGraph> getInside() {
+		return inside;
+	}
+
+	public void setInside(Set<MeterLogGraph> inside) {
+		this.inside = inside;
+	}
+
+	public Set<MeterLogGraph> getOutside() {
+		return outside;
+	}
+
+	public void setOutside(Set<MeterLogGraph> outside) {
+		this.outside = outside;
 	}
 
 	

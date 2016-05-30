@@ -43,12 +43,12 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 	//Узел - источник
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
-	private MeterLog nodsrc; 
+	private MeterLog src; 
 
 	//Узел - назначение
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
-	private MeterLog noddst; 
+	private MeterLog dst; 
 
     @Column(name = "PERCENT", updatable = false, nullable = true)
 	private BigDecimal prc; 
@@ -69,8 +69,8 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 		this.tp = tp;
 	}
 
-    public MeterLog getNodsrc() {
-		return nodsrc;
+    public MeterLog getSrc() {
+		return src;
 	}
 
 	public BigDecimal getPrc() {
@@ -81,12 +81,16 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 		this.prc = prc;
 	}
 
-	public void setNodsrc(MeterLog nodsrc) {
-		this.nodsrc = nodsrc;
+	public void setSrc(MeterLog src) {
+		this.src = src;
 	}
 
-	public void setNoddst(MeterLog noddst) {
-		this.noddst = noddst;
+	public void setDst(MeterLog dst) {
+		this.dst = dst;
+	}
+
+	public MeterLog getDst() {
+		return dst;
 	}
 
 }

@@ -12,8 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import antlr.collections.List;
+
+import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.model.ar.House;
+import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.MeterExs;
@@ -43,6 +47,8 @@ public class BillServ {
 	private void setFilters() {
 		Session session = (Session) em.getDelegate();
 		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
+		session.enableFilter("FILTER_GEN_DT_INNER").setParameter("DT1", Calc.getCurDt1())
+												   .setParameter("DT2", Calc.getCurDt2());
 	}
 
 	/**
@@ -111,10 +117,9 @@ public class BillServ {
 	 * Распределить объем по вводам дома
 	 * @param calcTp - тип обработки
 	 */
-	@Transactional
 	private void distHouseServTp(Serv serv) {
-		//найти все вводы по дому и по услуге
 		System.out.println("Распределение по типу:"+calc.getCalcTp());
+		//найти все вводы по дому и по услуге
 		for (MeterLog ml : calc.getHouseMng().getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
 			distGraph(ml);
 		}
@@ -152,7 +157,14 @@ public class BillServ {
 	/**
 	 * Распределить узел, следуя по графу (рекурсивная процедура)
 	 * @param mLog
-	 * @throws WrongGetMethod 
+	 * @param nv
+	 * @return
+	 * @throws WrongGetMethod
+
+	 *	TODO!!!! Приостановил работу 30.05.16, так пока нет времени этим заниматься
+	 *	Сделано: протестирована возможность инсерт в KMP_METER_VOL.
+	 *  начал реализовывать ветку } if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
+	 *  Сделал, но не протестировал ветку вызов метода lnkODNVol = calc.getMetLogMng().getVolPeriod(mLog, "ЛОДН");
 	 */
 	@Cacheable("billCache")
 	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod {
@@ -203,18 +215,39 @@ public class BillServ {
 			
 		} if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
+			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии
+			//сохранить счетчик ЛОДН
+			LinkedNodeVol lnkODNVol = null;
+			try {
+				lnkODNVol = calc.getMetLogMng().getVolPeriod(mLog, "ЛОДН");
+			} catch (NotFoundNode e) {
+				e.printStackTrace();
+				// TODO подумать что делать, если не найден счетчик
+			}
+			
 		} if (calc.getCalcTp()==3 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи пропорц.площади (Отопление например)
 			
 		}
+		
+		/*
+		 * ТЕСТИРОВАНИЕ INSERT  - всё работает!!!
+		Lst tp2 = em.getReference(Lst.class, 1235);
+		Vol vol = new Vol(mLog, tp2, nv.getVol(), nv.getPartArea());
+		vol.setId(null);
+		em.merge(vol);
+
+		 * ТЕСТИРОВАНИЕ
+		 */
+
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
 		//System.out.println("Найдено входящих направлений ="+mLog.getDst().size());
-		for (MeterLogGraph g : mLog.getDst()) {
+		for (MeterLogGraph g : mLog.getInside()) {
 			if (calc.getCalcTp()==0 && g.getTp().getCd().equals("Расчетная связь") 
 			 || calc.getCalcTp()==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 			 || calc.getCalcTp()==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 			 || calc.getCalcTp()==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-					distNode(g.getNodsrc(), nv);
+					distNode(g.getSrc(), nv);
 			}
 		}
 		
