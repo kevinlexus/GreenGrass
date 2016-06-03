@@ -51,12 +51,20 @@ public class NodeVol {
 		this.partArea = partArea;
 	}
 	
+	public void addPartArea(Double partArea) {
+		this.partArea = this.partArea+partArea;
+	}
+
 	public Double getPartPers() {
 		return partPers;
 	}
 	
 	public void setPartPers(Double partPers) {
 		this.partPers = partPers;
+	}
+
+	public void addPartPers(Double partPers) {
+		this.partPers = this.partPers+partPers;
 	}
 
 	public int getRecur() {

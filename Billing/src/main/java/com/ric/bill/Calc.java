@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
+import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.impl.HouseMngImpl;
@@ -49,6 +50,8 @@ public final class Calc {
 	private ServMng servMng; //менеджер услуги
 	@Autowired
 	private MeterLogMng metLogMng; //менеджер счетчика
+	@Autowired
+	private LstMng lstMng; //менеджер списков
 
 	private Area area; //текущий город 
 	private House house; //текущий дом (распределяемый, начисляемый)
@@ -193,12 +196,11 @@ public final class Calc {
 		Calc.partDays = partDays;
 	}
 
-/*	public Kart getKart() {
-		return kart;
+	public LstMng getLstMng() {
+		return lstMng;
 	}
 
-	public void setKart(Kart kart) {
-		this.kart = kart;
-	}*/
-	
+	public void setLstMng(LstMng lstMng) {
+		this.lstMng = lstMng;
+	}
 }

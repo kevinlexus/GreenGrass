@@ -1,20 +1,16 @@
 package com.ric.bill.dao.impl;
 
-import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.ric.bill.LinkedNodeVol;
 import com.ric.bill.Storable;
 import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.excp.NotFoundNode;
-import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
@@ -27,6 +23,14 @@ public class MeterLogDAOImpl implements MeterLogDAO {
     @PersistenceContext
     private EntityManager em;
 
+    
+    
+	//удалить объемы определённого типа по данному счетчику и всем дочерним 
+	public delAllVols(Lst tp) {
+		//TODO!
+		
+	}
+    
 	/**
 	 * Получить объем по связанному прямой связью счетчику за период и сам этот счетчик
 	 * @param lnVol - заполняемый объемами объект
@@ -84,7 +88,6 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @param tp - тип счетчика
 	 * @return
 	 */
-    @SuppressWarnings("unchecked")
 	public List<MeterLog> findByTp(Storable o, String tp) {
     	/*Query query =em.createQuery("select m from MeterLog m "
 				+ "join Lst s on m.fkTp=s.id and s.cd=:tp "

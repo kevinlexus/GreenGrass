@@ -102,7 +102,9 @@ public class BillServ {
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);
-		distHouseServTp(calc.getServ().getMet());//Распределение объема
+		
+		
+/*		distHouseServTp(calc.getServ().getMet());//Распределение объема
 		calc.setCalcTp(2);
 		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
 		calc.setCalcTp(3);
@@ -110,7 +112,7 @@ public class BillServ {
 		if (calc.getServ().getOdn() != null){
 			calc.setCalcTp(0);
 			distHouseServTp(calc.getServ().getOdn());//Суммировать счетчики ОДН
-		}
+		} */
 	}
 	
 	/**
@@ -148,7 +150,7 @@ public class BillServ {
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
-			System.out.println("по дате="+calc.getGenDt()+" потрачено="+totalTime);
+			System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
 			
 		}
 		
@@ -207,11 +209,11 @@ public class BillServ {
 		} if (calc.getCalcTp()==1 && mLog.getKart() != null) {
 			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
 			tmpD = calc.getKartMng().getDbl(mLog.getKart().getDw(), "Площадь.Общая") / calc.getCntCurDays(); 
-			nv.setPartArea(tmpD);
+			nv.addPartArea(tmpD);
 			CntPers cntPers= new CntPers();
 			calc.getKartMng().getCntPers(servChrg, cntPers, 0);
 			tmpD = cntPers.cnt / calc.getCntCurDays();
-			nv.setPartPers(tmpD);
+			nv.addPartPers(tmpD);
 			
 		} if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
@@ -250,6 +252,15 @@ public class BillServ {
 					distNode(g.getSrc(), nv);
 			}
 		}
+		
+		
+		//записать объем или площадь или кол-во прож. в текущий узел (лог.счетчик)
+		if (calc.getCalcTp()==1) {
+			Lst volTp = calc.getLstMng().findByCD("Площадь и проживающие");
+			Vol vol = new Vol(mLog, volTp, nv.getVol(), nv.getPartArea());
+			em.merge(vol);
+		}
+		
 		
 		//счетчик рекурсии на -1
 		nv.decRecur();

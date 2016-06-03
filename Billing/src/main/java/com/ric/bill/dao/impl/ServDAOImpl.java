@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.ric.bill.dao.ServDAO;
@@ -23,6 +24,7 @@ public class ServDAOImpl implements ServDAO {
 	 * Найти все услуги
 	 */
 	@SuppressWarnings("unchecked")
+	@Cacheable("billCache")
 	public List<Serv> findAll() {
 		Query query =em.createQuery("from Serv");
 		return query.getResultList();
