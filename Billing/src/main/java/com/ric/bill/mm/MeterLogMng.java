@@ -9,8 +9,8 @@ import com.ric.bill.model.mt.MeterLog;
 
 public interface MeterLogMng extends StorableMng{
 
-    public LinkedNodeVol getVolPeriod (MeterLog mLog, String tp) throws NotFoundNode;
-	public List<MeterLog> findByTp(Storable o, String tp);
+    public LinkedNodeVol getVolPeriod (MeterLog mLog);
 	public void delNodeVol(MeterLog ml, int tp);
+	public MeterLog getLinkedNode(MeterLog lnkMLog, String string) throws NotFoundNode;
 
 }

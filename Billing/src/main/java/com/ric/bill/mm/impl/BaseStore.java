@@ -3,6 +3,7 @@ package com.ric.bill.mm.impl;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public abstract class BaseStore implements StorableMng{
 	 * получить значение параметра типа Double объекта по CD свойства
 	 */
 	@Transactional
+	@Cacheable("billCache")
 	public Double getDbl(Set<Dw> dw, String cd) {
 		try {
 			for (Dw d: dw) {
@@ -59,6 +61,7 @@ public abstract class BaseStore implements StorableMng{
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
 	@Transactional
+	@Cacheable("billCache")
 	public String getStr(Set<Dw> dw, String cd) {
 		try {
 			for (Dw d: dw) {

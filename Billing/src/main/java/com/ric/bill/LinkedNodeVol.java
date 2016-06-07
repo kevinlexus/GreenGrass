@@ -13,7 +13,6 @@ public class LinkedNodeVol {
 	private Double vol;//объем
 	private Double area;//площадь
 	private Double pers;//проживающие
-	private MeterLog lnkMLog; //найденный счетчик (например ЛОДН)
 	
 	public LinkedNodeVol(){
 		setVol(new Double(0));
@@ -58,14 +57,6 @@ public class LinkedNodeVol {
 	//добавить кол-во проживающих
 	public void addPers(Double pers) {
 		this.pers=this.pers+Utl.nvl(pers, 0.0); 
-	}
-
-	public MeterLog getLnkMLog() {
-		return lnkMLog;
-	}
-
-	public void setLnkMLog(MeterLog lnkMLog) {
-		this.lnkMLog = lnkMLog;
 	}
 
 }

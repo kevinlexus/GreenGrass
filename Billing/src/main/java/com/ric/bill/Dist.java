@@ -20,9 +20,15 @@ public class Dist {
 	public void test1() {
 		//для выключения логгинга, просто выкинул из maven всё что касалось log4j
 		//распределить объемы по дому
+		long startTime = System.currentTimeMillis();
+
 		System.out.println("Begin!");
 		bs.distVols();
 		System.out.println("End!");
+
+		long endTime   = System.currentTimeMillis();
+		long totalTime = endTime - startTime;
+		System.out.println("Время исполнения:"+totalTime);
 	}
 
 }

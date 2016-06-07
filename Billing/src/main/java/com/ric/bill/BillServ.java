@@ -61,7 +61,6 @@ public class BillServ {
 		System.out.println("1");
 		calc.setUp(); //настроить
 		setFilters();//вкл.фильтр
-		long startTime = System.currentTimeMillis();
 		//найти необходимые дома
 		calc.getHouseMng().findAll();
 		
@@ -82,9 +81,6 @@ public class BillServ {
 			//распределить объемы
 			distHouseVol();
 		}
-		long endTime   = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
-		System.out.println("Время исполнения:"+totalTime);
 
 	}
 
@@ -95,8 +91,10 @@ public class BillServ {
 	public void delHouseVol() {
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : calc.getServMng().findForChrg()) {
-			calc.setServ(s);
-			delHouseVolServ();
+			//if (s.getId()==36){  //пока только по горячей воде!
+				calc.setServ(s);
+				delHouseVolServ();
+			//}
 		}
 	}
 	
@@ -139,6 +137,7 @@ public class BillServ {
 		//найти все необходимые услуги для распределения
 		for (Serv s : calc.getServMng().findForChrg()) {
 			calc.setServ(s);
+			System.out.println("Распределение услуги: "+s.getCd());
 			distHouseServ();
 		}
 	}
@@ -150,13 +149,14 @@ public class BillServ {
 	@Transactional
 	private void distHouseServ() {
 		System.out.println("Услуга="+calc.getServ().getCd());
-		calc.setCalcTp(1);
-		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
+		//calc.setCalcTp(1);
+		//distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);
-		
-/*		distHouseServTp(calc.getServ().getMet());//Распределение объема
-		calc.setCalcTp(2);
-		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
+		distHouseServTp(calc.getServ().getMet());//Распределение объема
+		//calc.setCalcTp(2);
+		//distHouseServTp(calc.getServ().getMet());//Расчет ОДН
+
+		/*
 		calc.setCalcTp(3);
 		distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
 		if (calc.getServ().getOdn() != null){
@@ -221,6 +221,7 @@ public class BillServ {
 		//Double tmpD=0.0; //для каких нить нужд
 		Double partArea =0.0; //текущая доля площади, по узлу
 		Double partPers =0.0; //текущая доля кол-ва прожив, по узлу
+		Double vl =0.0; //текущая доля объема, по узлу
 		//получить лицевой счет, к которому привязан счетчик, для убоства
 		Kart kart = mLog.getKart(); 
 		if (nv.getRecur() > 1000) {
@@ -240,6 +241,10 @@ public class BillServ {
 			throw new EmptyServ("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружена пустая услуга для расчета начисления");
 		}
 		if (calc.getCalcTp()==0) {
+			if (mLog.getId()==3685454) {
+				System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
+			}
+			
 			//по расчетной связи
 			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
 				//посчитать объемы, по физическим счетчикам, прикрепленным к узлу
@@ -250,11 +255,9 @@ public class BillServ {
 							for (MeterExs e : m.getExs()) { //периоды сущ.
 								//добавить объем в объект объема
 								//умножить объем на процент существования и на долю дня
-								Double t=v.getVol1() * e.getPrc() / calc.getCntCurDays();
-								if (t != 0) {
-									//if (m.getId()==821719) {
-									// System.out.println("Объём по счетчику id="+m.getId()+" доля="+t+" vol="+v.getVol1()+" за дату="+calc.getGenDt());
- 									nv.addVol( t );
+								vl=v.getVol1() * e.getPrc() / calc.getCntCurDays();
+								if (vl != 0) {
+ 									nv.addVol( vl );
 								}
 								
 							}
@@ -263,23 +266,14 @@ public class BillServ {
 				}
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
-				nv.addVol(calc.getKartMng().getStandart(mLog, calc, null).partVol);
+				vl = calc.getKartMng().getStandart(mLog, calc, null).partVol;
+				nv.addVol(vl);
 			}
 				
 		} if (calc.getCalcTp()==1 && kart != null) {
 			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
 			//площадь
 			partArea = calc.getKartMng().getDbl(kart.getDw(), "Площадь.Общая") / calc.getCntCurDays(); 
-
-			if (kart.getLsk().equals("26074281")) {
-			  System.out.println("Площадь по лицевому:"+mLog.getKart().getLsk()+". S="+calc.getKartMng().getDbl(mLog.getKart().getDw(), "Площадь.Общая"));
-			}			
-			if (kart.getLsk().equals("26074192")) {
-				  System.out.println("Площадь по лицевому 2 :"+partArea);
-			}			
-			if (kart.getLsk().equals("26074192")) {
-				  System.out.println("Площадь по лицевому 3 :"+nv.getPartArea());
-			}			
 			nv.addPartArea(partArea);
 			//проживающие
 			CntPers cntPers= new CntPers(kart.getReg(), kart.getRegState());
@@ -292,12 +286,49 @@ public class BillServ {
 			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии
 			//сохранить счетчик ЛОДН
 			LinkedNodeVol lnkODNVol = null;
+			MeterLog lnkLODN = null;
+			MeterLog lnkSumODPU = null;
+			MeterLog lnkODPU = null;
+			//поиск счетчика ЛОДН
 			try {
-				lnkODNVol = calc.getMetLogMng().getVolPeriod(mLog, "ЛОДН");
+				lnkLODN = calc.getMetLogMng().getLinkedNode(mLog, "ЛОДН");
+		        System.out.println("Счетчик ЛОДН id="+lnkLODN.getId());
 			} catch (NotFoundNode e) {
+				// не найден счетчик
+		        System.out.println("Не найден счетчик ЛОДН, связанный со счетчиком id="+mLog.getId());
 				e.printStackTrace();
-				// TODO подумать что делать, если не найден счетчик
+				return null;
 			}
+			//поиск счетчика ЛСумОдпу
+			try {
+				lnkSumODPU = calc.getMetLogMng().getLinkedNode(lnkLODN, "ЛСумОДПУ");
+		        System.out.println("Счетчик ЛСумОДПУ id="+lnkSumODPU.getId());
+			} catch (NotFoundNode e) {
+				// не найден счетчик
+		        System.out.println("Не найден счетчик ЛСумОДПУ, связанный со счетчиком id="+lnkLODN.getId());
+				e.printStackTrace();
+				return null;
+			}
+			//поиск счетчика Ф/Л ОДПУ
+			try {
+				lnkODPU = calc.getMetLogMng().getLinkedNode(lnkSumODPU, "ЛОДПУ");
+		        System.out.println("Счетчик ЛОДПУ id="+lnkODPU.getId());
+			} catch (NotFoundNode e) {
+				// не найден счетчик
+		        System.out.println("Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId());
+				e.printStackTrace();
+				return null;
+			}
+
+			//получить объем за период по счетчику ЛОДН  
+			lnkODNVol = calc.getMetLogMng().getVolPeriod(lnkLODN);
+
+			//проживающие
+			CntPers cntPers= new CntPers(kart.getReg(), kart.getRegState());
+			calc.getKartMng().getCntPers(servChrg, cntPers, 0);
+			
+			//TODO пока на этом остановился
+			
 			
 		} if (calc.getCalcTp()==3 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи пропорц.площади (Отопление например)
@@ -315,15 +346,22 @@ public class BillServ {
 			}
 		}
 		
-		if (kart!=null) {
-			if (kart.getLsk().equals("26074192")) {
-			  System.out.println("Площадь и кол-во прож: "+partArea+" "+partPers);
-			}
-		}
+		//if (kart!=null) {
+			//if (kart.getLsk().equals("26074281")) {
+			//  System.out.println("Записан счетчик: id="+mLog.getId());
+			//}
+		//}
 
+		Lst volTp=null;
 		//записать объем или площадь или кол-во прож. в текущий узел (лог.счетчик)
-		if (calc.getCalcTp()==1) {
-			Lst volTp = calc.getLstMng().findByCD("Площадь и проживающие");
+		if (calc.getCalcTp()==0) {
+			//расчетная связь
+			volTp = calc.getLstMng().findByCD("Фактический объем");
+			Vol vol = new Vol(mLog, volTp, vl, null, calc.getGenDt(), calc.getGenDt());
+			em.merge(vol);
+		} if (calc.getCalcTp()==1) {
+			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO!!!
+			volTp = calc.getLstMng().findByCD("Площадь и проживающие");
 			Vol vol = new Vol(mLog, volTp, partArea, partPers, calc.getGenDt(), calc.getGenDt());
 			em.merge(vol);
 		}

@@ -22,13 +22,11 @@ public class MeterLogMngImpl extends BaseStore implements MeterLogMng {
 	@Autowired
 	private MeterLogDAO mDao;
 
-    public List<MeterLog> findByTp(Storable o, String tp) {
-    	return mDao.findByTp(o, tp);
-    }
-
-	public LinkedNodeVol getVolPeriod(MeterLog mLog, String tp)
-			throws NotFoundNode {
-		return mDao.getVolPeriod(mLog, tp);
+	public MeterLog getLinkedNode (MeterLog mLog, String tp) throws NotFoundNode {
+		return mDao.getLinkedNode(mLog, tp); 
+	}	
+	public LinkedNodeVol getVolPeriod(MeterLog mLog) {
+		return mDao.getVolPeriod(mLog);
 	}
 
 	public void delNodeVol(MeterLog ml, int tp) {

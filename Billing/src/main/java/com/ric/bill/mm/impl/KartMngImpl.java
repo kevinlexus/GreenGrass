@@ -43,6 +43,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
+	@Cacheable("billCache")
 	private boolean checkPersStatus (Set<Registrable> reg, Pers p, String status) {
 		Date dt1, dt2;
 		for (Registrable r : reg) {
@@ -77,6 +78,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null
 	 */
+	@Cacheable("billCache")
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -112,6 +114,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @param tp - Тип вызова (0-для получения нормативного объема, 1-для получения кол-во прож.)
 	 * @return
 	 */
+	@Cacheable("billCache")
 	public void getCntPers(Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -173,9 +176,14 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		//получить услугу, по которой записывается норматив (в справочнике 
 		//строго должна быть указана fk_stdt! по услуге счетчика)
 		Serv serv = mLog.getServ().getStdrt(); 
+		//получить услугу основную, для начисления
+		Serv servChrg = mLog.getServ().getChrg();
+		
+		System.out.println("===="+servChrg.getId());
 
 		Standart st = new Standart();
 		Kart kart = mLog.getKart();
+		System.out.println("==== kk"+kart.getKlsk());
 		Double stVol = 0.0;
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
@@ -183,8 +191,8 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			cntPers= new CntPers(kart.getReg(), kart.getRegState());
 			getCntPers(serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
-		
-		if (Utl.nvl(calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по общей площади-1"), 0.0)==1
+		System.out.println("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
+		if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по общей площади-1"), 0.0)==1
 				|| Utl.nvl(calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-2"), 0.0)==1) {
 			if (cntPers.cnt==1) {
 				stVol = calc.getKartMng().getServPropByCD(kart.getTarklsk(), serv, "Норматив-1 чел.");
@@ -196,12 +204,12 @@ public class KartMngImpl extends MeterStore implements KartMng {
 				stVol = 0.0;
 			}
 			
-		} else if (Utl.nvl(calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-1"),0.0)==1
-				&& !serv.getCd().equals("Электроснабжение (объем)")) {
+		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"),0.0)==1
+				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = calc.getKartMng().getServPropByCD(kart.getTarklsk(), serv, "Норматив");
-		} else if (Utl.nvl(calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-1"),0.0)==1
-				&& serv.getCd().equals("Электроснабжение (объем)")) {
+		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"),0.0)==1
+				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0.0;
 			String s2;
 			kitchElStv = calc.getKartMng().getDbl(kart.getDw(), "Электроплита. основное количество");

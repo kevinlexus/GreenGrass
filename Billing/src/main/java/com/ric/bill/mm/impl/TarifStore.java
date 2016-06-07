@@ -2,6 +2,8 @@ package com.ric.bill.mm.impl;
 
 import java.util.Set;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 import com.ric.bill.model.tr.TarifServProp;
@@ -20,11 +22,18 @@ public abstract class TarifStore extends BaseStore {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
+	@Cacheable("billCache")
 	public Double getServPropByCD (Set<TarifKlsk> tarKlsk, Serv serv, String cd) {
+
+		
+		TODO
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tarKlsk) {
+			System.out.println("k="+k.getId());
 			//затем по строкам - составляющим тариф 
 			for (TarifServProp t : k.getTarprop()) {
+				System.out.println("t="+k.getId());
+				System.out.println("t2="+t.getProp().getCd());
 				if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
 					return t.getN1();
 				}
