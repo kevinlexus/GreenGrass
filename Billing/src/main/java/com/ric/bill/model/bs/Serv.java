@@ -5,6 +5,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -27,6 +30,18 @@ import com.ric.bill.Storable;
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class Serv extends Base implements java.io.Serializable, Storable {
 
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID", updatable = false, nullable = false)
+	protected Integer id; //id записи
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 	@Column(name = "CD", updatable = false, nullable = false)
     private String cd;//CD 

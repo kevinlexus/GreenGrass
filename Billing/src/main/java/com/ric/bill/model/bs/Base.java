@@ -39,11 +39,6 @@ import com.ric.bill.Storable;
 })
 public abstract class Base implements Storable {
 	
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", updatable = false, nullable = false)
-	protected Integer id; //id записи
-
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
 	@Filters({
@@ -52,13 +47,6 @@ public abstract class Base implements Storable {
 	protected Set<Dw> dw = new HashSet<Dw>(0);
 
 	protected Integer klsk;
-
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Set<Dw> getDw() {
 		return dw;

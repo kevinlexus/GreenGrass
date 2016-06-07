@@ -8,6 +8,9 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,8 +40,7 @@ import com.ric.bill.model.tr.TarifKlsk;
 @Entity
 @Table(name = "KART", schema="AR")
 @AttributeOverrides({
-		@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK")  ),
-		@AttributeOverride(name = "id", column = @Column(name = "LSK")	) //зафигачил KUL, иначе если ставить lsk приводит к неэффективности ВНИМАНИЕ, ВЕРНУЛ LSK, ТАк как приводит к некорректной обработке (kul не уникальный!)
+		@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK")  )//зафигачил KUL, иначе если ставить lsk приводит к неэффективности ВНИМАНИЕ, ВЕРНУЛ LSK, ТАк как приводит к некорректной обработке (kul не уникальный!)
 		}																  //короче KUL не фига не решил проблему, а её усугубил, так как это не уникальный идентификатор не фига
 		)
 public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains  {
@@ -46,6 +48,12 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	public Kart() {
 	}
 
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "lsk", updatable = false, nullable = false)
+	private String id; //id записи
+
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KW", referencedColumnName="ID", updatable = false, insertable = false)
 	private Kw kw;
@@ -91,13 +99,12 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@Column(name = "LSK", nullable = true, updatable = false, insertable = false)
 	private String lsk;
 
-	@Override
-	public Integer getId() {
-		return 0;
+	public String getId() {
+		return this.id;
 	}
 	
-	public void setId(Integer id) {
-		
+	public void setId(String id) {
+		this.id=id;
 	}
 	public Kw getKw() {
 		return kw;

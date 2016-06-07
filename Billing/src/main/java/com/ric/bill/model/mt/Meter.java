@@ -9,6 +9,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -45,6 +48,18 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		
 	}
 	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID", updatable = false, nullable = false)
+	protected Integer id; //id записи
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	/* даты начала и окончания действия счетчика - используются ли?
     @Column(name = "DT1", updatable = false, nullable = true)
 	private Date dt1;
