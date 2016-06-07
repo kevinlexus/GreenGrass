@@ -169,21 +169,21 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 */
 	@Cacheable("billCache")
 	public Standart getStandart (MeterLog mLog, Calc calc, CntPers cntPers) {
-		long startTime;
-		long endTime;
-		long totalTime;
-		startTime   = System.currentTimeMillis();
+		//long startTime;
+		//long endTime;
+		//long totalTime;
+		//startTime   = System.currentTimeMillis();
 		//получить услугу, по которой записывается норматив (в справочнике 
 		//строго должна быть указана fk_stdt! по услуге счетчика)
 		Serv serv = mLog.getServ().getStdrt(); 
 		//получить услугу основную, для начисления
 		Serv servChrg = mLog.getServ().getChrg();
 		
-		System.out.println("===="+servChrg.getId());
+		//System.out.println("===="+servChrg.getId());
 
 		Standart st = new Standart();
 		Kart kart = mLog.getKart();
-		System.out.println("==== kk"+kart.getKlsk());
+		//System.out.println("==== kk"+kart.getKlsk());
 		Double stVol = 0.0;
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
@@ -191,7 +191,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			cntPers= new CntPers(kart.getReg(), kart.getRegState());
 			getCntPers(serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
-		System.out.println("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
+		//System.out.println("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
 		if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по общей площади-1"), 0.0)==1
 				|| Utl.nvl(calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-2"), 0.0)==1) {
 			if (cntPers.cnt==1) {
@@ -270,13 +270,14 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		}
 			
 		st.vol = stVol;
-		st.partVol = stVol * cntPers.cnt / calc.getCntCurDays();  
 		
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		if (mLog.getId()==3683348) {
-			System.out.println("Standart: Date="+Calc.getGenDt()+" MeterLog.Id="+mLog.getId()+" cntPers-1 calc time="+totalTime);
-		}
+		//st.partVol = stVol * cntPers.cnt / calc.getCntCurDays();  TODO Вернуть!  
+		st.partVol=0.0;
+		//endTime   = System.currentTimeMillis();
+		//totalTime = endTime - startTime;
+		//if (mLog.getId()==3683348) {
+		//	System.out.println("Standart: Date="+Calc.getGenDt()+" MeterLog.Id="+mLog.getId()+" cntPers-1 calc time="+totalTime);
+		//}
 		return st;
 		
 	}

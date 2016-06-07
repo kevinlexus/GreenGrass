@@ -26,7 +26,7 @@ public abstract class TarifStore extends BaseStore {
 	public Double getServPropByCD (Set<TarifKlsk> tarKlsk, Serv serv, String cd) {
 
 		
-		TODO
+		//TODO TODOTODOTODOTODOTODOTODOTODOTODO
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tarKlsk) {
 			System.out.println("k="+k.getId());

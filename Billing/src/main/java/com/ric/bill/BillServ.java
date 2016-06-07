@@ -202,7 +202,7 @@ public class BillServ {
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
-			System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
+			//System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
 			
 			//break;
 		}
