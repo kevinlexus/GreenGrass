@@ -30,4 +30,8 @@ public class MeterLogMngImpl extends BaseStore implements MeterLogMng {
 			throws NotFoundNode {
 		return mDao.getVolPeriod(mLog, tp);
 	}
+
+	public void delNodeVol(MeterLog ml, int tp) {
+		mDao.delNodeVol(ml, tp);
+	}
 }

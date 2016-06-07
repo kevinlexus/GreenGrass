@@ -60,6 +60,8 @@ public final class Calc {
 
 	private int calcTp; //тип обработки расчёта
 	
+	public static int kmp=0; //KMP!
+
 	//конструктор
 	public Calc() {
 	}

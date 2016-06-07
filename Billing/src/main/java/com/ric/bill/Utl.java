@@ -27,9 +27,9 @@ public class Utl {
 	 * @return
 	 */
 	public static boolean between(Date checkDt, Date dt1, Date dt2) {
-		if (checkDt.after(dt1) || checkDt.equals(dt1)
+		if ((checkDt.after(dt1) || checkDt.equals(dt1))
 			&&
-			checkDt.before(dt2) || checkDt.equals(dt2)) {
+			(checkDt.before(dt2) || checkDt.equals(dt2))) {
 			return true;
 		} else {
 			return false;

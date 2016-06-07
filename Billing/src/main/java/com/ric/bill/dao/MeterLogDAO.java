@@ -11,5 +11,6 @@ import com.ric.bill.model.mt.MeterLog;
 public interface MeterLogDAO {
 
     public LinkedNodeVol getVolPeriod (MeterLog mLog, String tp) throws NotFoundNode;
-	public List<MeterLog> findByTp(Storable o, String tp); 
+	public List<MeterLog> findByTp(Storable o, String tp);
+	public void delNodeVol(MeterLog ml, int tp); 
 }

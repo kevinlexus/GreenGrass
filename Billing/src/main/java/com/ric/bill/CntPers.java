@@ -20,8 +20,9 @@ public class CntPers {
 	public Set<Registrable> regSt; //временная регистрация-отсутствие
 
 	//конструктор
-	public CntPers() {
-		reg = new HashSet<Registrable>();
-		regSt = new HashSet<Registrable>();
+	@SuppressWarnings("unchecked")
+	public CntPers(Set<? extends Registrable> rr1, Set<? extends Registrable> rr2) {
+		this.reg=(Set<Registrable>) rr1;
+		this.regSt=(Set<Registrable>) rr2;
 	}
 }

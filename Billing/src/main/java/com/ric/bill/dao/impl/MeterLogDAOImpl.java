@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
+import com.ric.bill.Calc;
 import com.ric.bill.LinkedNodeVol;
 import com.ric.bill.Storable;
 import com.ric.bill.dao.MeterLogDAO;
@@ -23,12 +24,25 @@ public class MeterLogDAOImpl implements MeterLogDAO {
     @PersistenceContext
     private EntityManager em;
 
-    
-    
-	//удалить объемы определённого типа по данному счетчику и всем дочерним 
-	public delAllVols(Lst tp) {
-		//TODO!
-		
+    /**
+     * удалить рекурсивно все объемы по всем счетчикам начиная с указанного
+     * @param mLog - начальный счетчик
+     * @param tp - тип расчета
+     * @return 
+     */
+	public void delNodeVol(MeterLog mLog, int tp) {
+		for (Vol v : mLog.getVol()) {
+			em.remove(v);
+		}
+		//найти все направления, с необходимым типом, указывающие в точку из других узлов, удалить их объемы рекурсивно
+		for (MeterLogGraph g : mLog.getInside()) {
+			if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 
+					 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
+					 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
+					 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
+						delNodeVol(g.getSrc(), tp);
+			}
+		}
 	}
     
 	/**

@@ -46,7 +46,8 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	private boolean checkPersStatus (Set<Registrable> reg, Pers p, String status) {
 		Date dt1, dt2;
 		for (Registrable r : reg) {
-			if (r.getPers().equals(p)) {
+			//проверять только у тех, где pers (fk_pers) заполнено!
+			if (r.getPers()!=null && r.getPers().equals(p)) {
 				if (r.getTp().getCd().equals(status)) {
 					if (r.getDtRegTs() == null ||
 					    r.getDtRegTs().before(Calc.getCurDt2())) {
@@ -77,24 +78,26 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * Проверить наличие проживающего при fk_pers = null
 	 */
 	private boolean checkPersNullStatus (Registrable reg) {
-		//статус не проверяется, только даты, и только наличие записи
+		//проверить статус, даты
 		Date dt1, dt2;
-		if (reg.getDtRegTs() == null ||
-				reg.getDtRegTs().before(Calc.getCurDt2())) {
-			dt1=Utl.nvl(reg.getDtReg(), Calc.getFirstDt());
-		} else {
-			dt1=Calc.getLastDt();
-		}
-		
-		if (reg.getDtUnRegTs() == null ||
-				reg.getDtUnRegTs().before(Calc.getCurDt2())) {
-			dt2=Utl.nvl(reg.getDtUnReg(), Calc.getLastDt());
-		} else {
-			dt2=Calc.getLastDt();
-		}
-		if (Utl.between(Calc.getGenDt(), dt1, dt2)) {
-			//наличие статуса подтвердилось
-			return true;
+		if (reg.getTp().getCd().equals("Временное присутствие")) {
+			if (reg.getDtRegTs() == null ||
+					reg.getDtRegTs().before(Calc.getCurDt2())) {
+				dt1=Utl.nvl(reg.getDtReg(), Calc.getFirstDt());
+			} else {
+				dt1=Calc.getLastDt();
+			}
+			
+			if (reg.getDtUnRegTs() == null ||
+					reg.getDtUnRegTs().before(Calc.getCurDt2())) {
+				dt2=Utl.nvl(reg.getDtUnReg(), Calc.getLastDt());
+			} else {
+				dt2=Calc.getLastDt();
+			}
+			if (Utl.between(Calc.getGenDt(), dt1, dt2)) {
+				//наличие статуса подтвердилось
+				return true;
+			}
 		}
 				
 		//статус отсутствует
@@ -113,13 +116,11 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
-		//поиск по постоянной регистрации 
+		//поиск сперва по постоянной регистрации 
 		for (Registrable p : cntPers.reg) {
 			if (p.getPers()!=null && !foundPers(counted, p.getPers())) {
 				if (checkPersStatus(cntPers.reg, p.getPers(), "Постоянная прописка")) {
 					//постоянная регистрация есть, проверить временное отсутствие, если надо по этой услуге
-//					System.out.println("Check1"+serv.getId());
-//					System.out.println("Check1"+serv.getInclAbsn());
 					if (!serv.getInclAbsn()) {
 						if (!checkPersStatus(cntPers.regSt, p.getPers(), "Временное отсутствие")) {
 							//временного отсутствия нет, считать проживающего
@@ -131,8 +132,8 @@ public class KartMngImpl extends MeterStore implements KartMng {
 					}
 					cntPers.cntEmpt++;
 				} else {
-					//нет постоянной регистрации, поискать временную
-					if (checkPersStatus(cntPers.regSt, p.getPers(), "Временное присутствие")) {
+					//нет постоянной регистрации, поискать временную прописку
+					if (checkPersStatus(cntPers.reg, p.getPers(), "Временная прописка")) {
 						//временное присутствие есть, считать проживающего
 						if (serv.getInclPrsn()) {
 							cntPers.cnt++;
@@ -141,17 +142,18 @@ public class KartMngImpl extends MeterStore implements KartMng {
 					}
 					
 				}
-			} else if (p.getPers()==null) {
-				//там где NULL fk_pers,- обычно временно зарег., считать их
+			}
+		}
+		//поиск по временной регистрации 
+		for (Registrable p : cntPers.regSt) {
+			//там где NULL fk_pers,- обычно временно зарег., считать их
+			if (p.getPers()==null) {
 				if (tp==0 && checkPersNullStatus(p)){
 					if (serv.getInclPrsn()) {
 						cntPers.cnt++;
 					}
-					
 				}
-				
-			}
-			
+			}		
 		}
 	}
 	
@@ -177,11 +179,8 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		Double stVol = 0.0;
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
-			cntPers= new CntPers();
 
-			cntPers.reg.addAll(mLog.getKart().getReg());
-			cntPers.regSt.addAll(mLog.getKart().getRegState());
-
+			cntPers= new CntPers(kart.getReg(), kart.getRegState());
 			getCntPers(serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		

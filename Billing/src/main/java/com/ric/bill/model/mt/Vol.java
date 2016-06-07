@@ -1,8 +1,7 @@
 package com.ric.bill.model.mt;
 
 
-import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,11 +31,13 @@ public class Vol implements java.io.Serializable, Simple {
 		
 	}
 
-	public Vol (MeterLog mLog, Lst tp, Double vol1, Double vol2){
+	public Vol (MeterLog mLog, Lst tp, Double vol1, Double vol2, Date date, Date date2){
 		setMLog(mLog);
 		setTp(tp);
 		setVol1(vol1);
 		setVol2(vol2);
+		setDt1(date);
+		setDt2(date2);
 	}
 
 	@Id

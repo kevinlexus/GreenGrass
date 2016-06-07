@@ -14,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import antlr.collections.List;
 
+import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.Meter;
@@ -63,13 +65,22 @@ public class BillServ {
 		//найти необходимые дома
 		calc.getHouseMng().findAll();
 		
+		/*MeterLog gg = em.find(MeterLog.class , 3636525);
+		System.out.println("TEST:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
+
+		gg = em.find(MeterLog.class , 3636530);
+		System.out.println("TEST2:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
+		*/
+		
 		for (House o: calc.getHouseMng().findAll()) {
 			calc.setHouse(o);
 			calc.setArea(calc.getHouse().getStreet().getArea());
 			System.out.println("Дом загружен="+o.getId());
 			
-			//распределить
-			distHouseVols();
+			//удалить объемы по всем услугам дома
+			delHouseVol();
+			//распределить объемы
+			distHouseVol();
 		}
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
@@ -78,10 +89,49 @@ public class BillServ {
 	}
 
 	/**
+	 * удалить объемы по дому
+	 */
+	@Transactional
+	public void delHouseVol() {
+		//найти все необходимые услуги для удаления объемов
+		for (Serv s : calc.getServMng().findForChrg()) {
+			calc.setServ(s);
+			delHouseVolServ();
+		}
+	}
+	
+	/**
+	 * Удалить объем по вводам дома
+	 * 
+	 * @param serv - заданная услуга
+	 */
+	private void delHouseVolServ() {
+		delHouseServVolTp(calc.getServ().getMet(), 1);
+		delHouseServVolTp(calc.getServ().getMet(), 0);
+		delHouseServVolTp(calc.getServ().getMet(), 2);
+		delHouseServVolTp(calc.getServ().getMet(), 3);
+		if (calc.getServ().getOdn() != null){
+			delHouseServVolTp(calc.getServ().getOdn(), 0);//счетчики ОДН
+		} 
+	}
+
+	
+	/**
+	 * Удалить объем по вводу, определённой услуге
+	 * @param serv - услуга
+	 */
+	private void delHouseServVolTp(Serv serv, int tp) {
+		//найти все вводы по дому и по услуге
+		for (MeterLog ml : calc.getHouseMng().getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+			calc.getMetLogMng().delNodeVol(ml, tp);
+		}
+	}
+	
+	/**
 	 * распределить объем по дому
 	 */
 	@Transactional
-	public void distHouseVols() {
+	public void distHouseVol() {
 		System.out.println("Дом: id="+calc.getHouse().getId());
 		System.out.println("Дом: klsk="+calc.getHouse().getKlsk());
 		System.out.println("Площадь: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
@@ -93,6 +143,7 @@ public class BillServ {
 		}
 	}
 	
+	
 	/**
 	 * распределить объем по услуге данного дома
 	 */
@@ -102,7 +153,6 @@ public class BillServ {
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);
-		
 		
 /*		distHouseServTp(calc.getServ().getMet());//Распределение объема
 		calc.setCalcTp(2);
@@ -145,13 +195,16 @@ public class BillServ {
 			try {
 				dummy=distNode(mLog, new NodeVol());
 			} catch (WrongGetMethod e) {
-				System.out.println("Ошибка при рекурсивном вызове BillServ.distNode()");
+				System.out.println("Некорректное получение параметра при вызове BillServ.distNode()");
+			} catch (EmptyServ e) {
+				System.out.println("Пустая услуга при рекурсивном вызове BillServ.distNode()");
 			}
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
 			System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
 			
+			//break;
 		}
 		
 	}
@@ -161,24 +214,31 @@ public class BillServ {
 	 * @param mLog
 	 * @param nv
 	 * @return
-	 * @throws WrongGetMethod
-
-	 *	TODO!!!! Приостановил работу 30.05.16, так пока нет времени этим заниматься
-	 *	Сделано: протестирована возможность инсерт в KMP_METER_VOL.
-	 *  начал реализовывать ветку } if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
-	 *  Сделал, но не протестировал ветку вызов метода lnkODNVol = calc.getMetLogMng().getVolPeriod(mLog, "ЛОДН");
-	 */
+	 * @throws WrongGetMethod*/
+	
 	@Cacheable("billCache")
-	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod {
-		Double tmpD=0.0; //для каких нить нужд
+	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ {
+		//Double tmpD=0.0; //для каких нить нужд
+		Double partArea =0.0; //текущая доля площади, по узлу
+		Double partPers =0.0; //текущая доля кол-ва прожив, по узлу
+		//получить лицевой счет, к которому привязан счетчик, для убоства
+		Kart kart = mLog.getKart(); 
 		if (nv.getRecur() > 1000) {
 			throw new WrongGetMethod("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружен замкнутый цикл");
 		}
 		nv.addRecur();
 		//System.out.println("Номер итерации:"+nv.getRecur());
-		//System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd());
+		/*System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd()+" наименование:"+mLog.getName()+" klsk_obj="+mLog.getKlskObj());
+		if (mLog.getKart()!=null) {
+			System.out.println("KLSK Лиц счет счетчика="+mLog.getKart().getKlsk());
+			System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
+		}*/
+
 		String mLogTp = mLog.getTp().getCd(); //тип лог счетчика
 		Serv servChrg = mLog.getServ().getChrg(); //получить услугу для начисления
+		if (servChrg == null) {
+			throw new EmptyServ("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружена пустая услуга для расчета начисления");
+		}
 		if (calc.getCalcTp()==0) {
 			//по расчетной связи
 			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
@@ -206,15 +266,27 @@ public class BillServ {
 				nv.addVol(calc.getKartMng().getStandart(mLog, calc, null).partVol);
 			}
 				
-		} if (calc.getCalcTp()==1 && mLog.getKart() != null) {
+		} if (calc.getCalcTp()==1 && kart != null) {
 			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
-			tmpD = calc.getKartMng().getDbl(mLog.getKart().getDw(), "Площадь.Общая") / calc.getCntCurDays(); 
-			nv.addPartArea(tmpD);
-			CntPers cntPers= new CntPers();
+			//площадь
+			partArea = calc.getKartMng().getDbl(kart.getDw(), "Площадь.Общая") / calc.getCntCurDays(); 
+
+			if (kart.getLsk().equals("26074281")) {
+			  System.out.println("Площадь по лицевому:"+mLog.getKart().getLsk()+". S="+calc.getKartMng().getDbl(mLog.getKart().getDw(), "Площадь.Общая"));
+			}			
+			if (kart.getLsk().equals("26074192")) {
+				  System.out.println("Площадь по лицевому 2 :"+partArea);
+			}			
+			if (kart.getLsk().equals("26074192")) {
+				  System.out.println("Площадь по лицевому 3 :"+nv.getPartArea());
+			}			
+			nv.addPartArea(partArea);
+			//проживающие
+			CntPers cntPers= new CntPers(kart.getReg(), kart.getRegState());
 			calc.getKartMng().getCntPers(servChrg, cntPers, 0);
-			tmpD = cntPers.cnt / calc.getCntCurDays();
-			nv.addPartPers(tmpD);
-			
+			partPers = cntPers.cnt / calc.getCntCurDays();
+			nv.addPartPers(partPers);
+
 		} if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
 			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии
@@ -232,16 +304,6 @@ public class BillServ {
 			
 		}
 		
-		/*
-		 * ТЕСТИРОВАНИЕ INSERT  - всё работает!!!
-		Lst tp2 = em.getReference(Lst.class, 1235);
-		Vol vol = new Vol(mLog, tp2, nv.getVol(), nv.getPartArea());
-		vol.setId(null);
-		em.merge(vol);
-
-		 * ТЕСТИРОВАНИЕ
-		 */
-
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
 		//System.out.println("Найдено входящих направлений ="+mLog.getDst().size());
 		for (MeterLogGraph g : mLog.getInside()) {
@@ -253,11 +315,16 @@ public class BillServ {
 			}
 		}
 		
-		
+		if (kart!=null) {
+			if (kart.getLsk().equals("26074192")) {
+			  System.out.println("Площадь и кол-во прож: "+partArea+" "+partPers);
+			}
+		}
+
 		//записать объем или площадь или кол-во прож. в текущий узел (лог.счетчик)
 		if (calc.getCalcTp()==1) {
 			Lst volTp = calc.getLstMng().findByCD("Площадь и проживающие");
-			Vol vol = new Vol(mLog, volTp, nv.getVol(), nv.getPartArea());
+			Vol vol = new Vol(mLog, volTp, partArea, partPers, calc.getGenDt(), calc.getGenDt());
 			em.merge(vol);
 		}
 		
