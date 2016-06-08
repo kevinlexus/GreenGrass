@@ -5,7 +5,15 @@
   <artifactId>Billing</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
-            
+  <repositories>
+	<repository>
+	   <id>terracotta-releases</id>
+	   <url>http://www.terracotta.org/download/reflector/releases</url>
+	   <releases><enabled>true</enabled></releases>
+	   <snapshots><enabled>false</enabled></snapshots>
+	</repository>
+  </repositories>
+ 
   <properties>
 
 		<!-- Generic properties -->
@@ -59,11 +67,11 @@
 		</dependency>
 
 		<!-- Support for Ehcache and others -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring-framework.version}</version>
-		</dependency>
+		</dependency> -->
 		
 		<!-- Hibernate -->
 		<dependency>
@@ -120,18 +128,38 @@
 	       <artifactId>slf4j-log4j12</artifactId>
 	       <version>1.7.5</version>
 	   </dependency>
+
+	    <dependency>
+	      <groupId>org.ehcache</groupId>
+	      <artifactId>ehcache</artifactId>
+	      <version>3.0.2</version>
+	    </dependency>
+    
+		<dependency>
+		  <groupId>org.hibernate</groupId>
+		  <artifactId>hibernate-ehcache</artifactId>
+		  <version>${hibernate.version}</version>
+		</dependency>
+			   
 	   
- 		<dependency>
+<!--   		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 			<version>2.9.0</version>
-		</dependency>
+		</dependency>  -->
  
  <!-- <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-ehcache</artifactId>
         <version>4.3.7.Final</version>
     </dependency> -->
+
+<!-- <dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-ehcache</artifactId>
+    <version>4.3.4.Final</version>
+</dependency>  -->
+    
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

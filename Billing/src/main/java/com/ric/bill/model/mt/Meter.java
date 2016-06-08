@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -42,6 +46,8 @@ import com.ric.bill.model.bs.Base;
     		}
     )
 })
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
+@Cacheable
 public class Meter extends Base implements java.io.Serializable, Storable {
 
 	public Meter (){
@@ -75,12 +81,14 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
+	@BatchSize(size = 50)
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
+	@BatchSize(size = 50)
 	private Set<MeterExs> exs = new HashSet<MeterExs>(0);
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)

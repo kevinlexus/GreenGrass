@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -61,8 +63,8 @@ public class BillServ {
 		System.out.println("1");
 		calc.setUp(); //настроить
 		setFilters();//вкл.фильтр
-		//найти необходимые дома
-		calc.getHouseMng().findAll();
+		//прогрузить все элементы Lst (не работает это)
+		//calc.getLstMng().findAll();
 		
 		/*MeterLog gg = em.find(MeterLog.class , 3636525);
 		System.out.println("TEST:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
@@ -149,13 +151,14 @@ public class BillServ {
 	@Transactional
 	private void distHouseServ() {
 		System.out.println("Услуга="+calc.getServ().getCd());
-		//calc.setCalcTp(1);
-		//distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
-		calc.setCalcTp(0);
+		calc.setCalcTp(1);
+		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
+		
+		/*calc.setCalcTp(0);
 		distHouseServTp(calc.getServ().getMet());//Распределение объема
-		//calc.setCalcTp(2);
-		//distHouseServTp(calc.getServ().getMet());//Расчет ОДН
-
+		calc.setCalcTp(2);
+		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
+*/
 		/*
 		calc.setCalcTp(3);
 		distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
@@ -181,7 +184,7 @@ public class BillServ {
 	 * Распределить граф начиная с mLog
 	 * @param mLog - начальный узел распределения
 	 */
-	@Cacheable("billCache")
+	
 	private void distGraph (MeterLog mLog) {
 		System.out.println("Распределение ввода:"+mLog.getId());
 		//перебрать все даты, за период
@@ -202,9 +205,9 @@ public class BillServ {
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
-			//System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
+			System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
 			
-			//break;
+			break;
 		}
 		
 	}
@@ -216,7 +219,7 @@ public class BillServ {
 	 * @return
 	 * @throws WrongGetMethod*/
 	
-	@Cacheable("billCache")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ {
 		//Double tmpD=0.0; //для каких нить нужд
 		Double partArea =0.0; //текущая доля площади, по узлу
@@ -358,12 +361,12 @@ public class BillServ {
 			//расчетная связь
 			volTp = calc.getLstMng().findByCD("Фактический объем");
 			Vol vol = new Vol(mLog, volTp, vl, null, calc.getGenDt(), calc.getGenDt());
-			em.merge(vol);
+			//em.merge(vol);
 		} if (calc.getCalcTp()==1) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO!!!
 			volTp = calc.getLstMng().findByCD("Площадь и проживающие");
 			Vol vol = new Vol(mLog, volTp, partArea, partPers, calc.getGenDt(), calc.getGenDt());
-			em.merge(vol);
+			//em.merge(vol);
 		}
 		
 		

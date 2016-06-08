@@ -1,5 +1,6 @@
 package com.ric.bill.model.bs;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +24,8 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "U_HFPXKLSK", schema="ORALV")
-//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
+@Cacheable
 public class Dw implements java.io.Serializable, Simple {
 
 	@Id
@@ -68,6 +70,7 @@ public class Dw implements java.io.Serializable, Simple {
 		this.n1 = n1;
 	}	
 
+	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public Par getPar() {
 		return par;
 	}

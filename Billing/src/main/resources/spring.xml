@@ -15,16 +15,17 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 	<!-- *******************************
 		 ***** CACHE CONFIGURATION ***** - пока отключил!
 		 ******************************* -->				
-   	<cache:annotation-driven  cache-manager="cacheManager" />
+<!--    	<cache:annotation-driven  cache-manager="cacheManager" />
 
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+ 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache"/>
 	</bean>
 	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation" value="classpath:ehcache.xml"/>
 		<property name="shared" value="true"/>
-	</bean>   
-  
+	</bean>    
+   -->
+   
 	<bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource" destroy-method="close"> 
 	      <property name="URL" value="jdbc:oracle:thin:@192.168.100.92:1521:DEVDB" /> 
 	      <property name="user" value="oralv"/> 
@@ -32,6 +33,21 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 	      <property name="connectionCachingEnabled" value="true"/> 
 	</bean>
  
+	 <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	    <property name="dataSource" ref="dataSource"/>
+	    <property name="hibernateProperties">
+	        <value>
+	            hibernate.format_sql=true
+	            hibernate.show_sql=true
+	            hibernate.cache.use_second_level_cache=true
+	            hibernate.cache.use_query_cache=true
+	            hibernate.generate_statistics=true
+	            org.hibernate.cache.ehcache.configurationResourceName=classpath:ehcache.xml
+	            hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+	        </value>
+	    </property>
+	</bean>
+
     <bean
         class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
         id="entityManagerFactory">

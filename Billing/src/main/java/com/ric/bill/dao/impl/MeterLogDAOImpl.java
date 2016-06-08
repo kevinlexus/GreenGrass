@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
@@ -53,7 +55,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @param tp - тип счетчика
 	 * @return лог.счетчик
 	 */
-	@Cacheable("billCache")
+	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public MeterLog getLinkedNode (MeterLog mLog, String tp) throws NotFoundNode {
 		MeterLog lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
@@ -84,7 +86,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @param mLog - лог.счетчик
 	 * @throws NotFoundNode - если не найден счетчик (узел)
 	 */
-	@Cacheable("billCache")
+	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
     public LinkedNodeVol getVolPeriod (MeterLog mLog) {
     	LinkedNodeVol lnkVol = new LinkedNodeVol();
     	//период будет опеределён фильтром FILTER_GEN_DT_INNER
