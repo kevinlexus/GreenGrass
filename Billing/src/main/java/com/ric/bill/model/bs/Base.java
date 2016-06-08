@@ -15,6 +15,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Filter;
@@ -22,6 +24,7 @@ import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
+import org.springframework.cache.annotation.Cacheable;
 
 import com.ric.bill.Storable;
 
@@ -37,6 +40,8 @@ import com.ric.bill.Storable;
     		}
     )
 })
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
+@Cacheable
 public abstract class Base implements Storable {
 	
 	@OneToMany(fetch = FetchType.LAZY)

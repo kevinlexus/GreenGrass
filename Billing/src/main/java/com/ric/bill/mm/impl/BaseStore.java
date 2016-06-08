@@ -30,7 +30,8 @@ public abstract class BaseStore implements StorableMng{
 	 * получить значение параметра типа Double объекта по CD свойства
 	 */
 	@Transactional
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
+	@Cacheable
 	public Double getDbl(Set<Dw> dw, String cd) {
 		try {
 			for (Dw d: dw) {
