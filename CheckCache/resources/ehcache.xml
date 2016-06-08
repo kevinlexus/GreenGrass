@@ -5,7 +5,7 @@
  
     <diskStore path="java.io.tmpdir/ehcache" />
  
-    <defaultCache maxEntriesLocalHeap="10000" eternal="false"
+    <defaultCache maxEntriesLocalHeap="5000" eternal="true"
         timeToIdleSeconds="120" timeToLiveSeconds="120" diskSpoolBufferSizeMB="30"
         maxEntriesLocalDisk="10000000" diskExpiryThreadIntervalSeconds="120"
         memoryStoreEvictionPolicy="LRU" statistics="true">
@@ -18,7 +18,7 @@
     </cache>
  
     <cache name="org.hibernate.cache.internal.StandardQueryCache"
-        maxEntriesLocalHeap="5" eternal="false" timeToLiveSeconds="120">
+        maxEntriesLocalHeap="5000" eternal="false" timeToLiveSeconds="120">
         <persistence strategy="localTempSwap" />
     </cache>
  

@@ -9,25 +9,24 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		SessionFactory sf = HibernateUtil.getSessionFactory();
-		Session sess = sf.getCurrentSession();
+		Session sess = sf.openSession();
 		sess.beginTransaction();
 		
 		for (int a=1401; a<=1452; a++) {
 			Lst lst = (Lst) sess.load(Lst.class, a);
 			System.out.println(lst.getName());
 		}
-
 		for (int a=1401; a<=1452; a++) {
 			Lst lst = (Lst) sess.load(Lst.class, a);
 			System.out.println(lst.getName());
 		}
+		Statistics stats = sf.getStatistics();
+		printStats(stats, 0);
 		
 		sess.getTransaction().commit();
 		
-		System.out.println("Started!");
+		System.out.println("Complete!");
 		
-		Statistics stats = sf.getStatistics();
-		printStats(stats, 0);
 	}
 
 	
