@@ -151,10 +151,10 @@ public class BillServ {
 		System.out.println("Услуга="+calc.getServ().getCd());
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
-		calc.setCalcTp(0);
-		distHouseServTp(calc.getServ().getMet());//Распределение объема
-		calc.setCalcTp(2);
-		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
+		//calc.setCalcTp(0);
+		//distHouseServTp(calc.getServ().getMet());//Распределение объема
+		//calc.setCalcTp(2);
+		//distHouseServTp(calc.getServ().getMet());//Расчет ОДН
 
 		/*
 		calc.setCalcTp(3);
@@ -181,14 +181,13 @@ public class BillServ {
 	 * Распределить граф начиная с mLog
 	 * @param mLog - начальный узел распределения
 	 */
-	
+	@Cacheable("billCache")
 	private void distGraph (MeterLog mLog) {
 		System.out.println("Распределение ввода:"+mLog.getId());
 		//перебрать все даты, за период
 		Calendar c = Calendar.getInstance();
 		c.setTime(Calc.getCurDt1());
 		for (c.setTime(Calc.getCurDt1()); !c.getTime().after(Calc.getCurDt2()); c.add(Calendar.DATE, 1)) {
-			System.out.println("Распределение даты:"+c.getTime());
 			long startTime = System.currentTimeMillis();
 			Calc.setGenDt(c.getTime());
 			@SuppressWarnings("unused")
@@ -203,9 +202,9 @@ public class BillServ {
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
-			//System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
+			System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
 			
-			break;
+			//break;
 		}
 		
 	}
@@ -217,7 +216,7 @@ public class BillServ {
 	 * @return
 	 * @throws WrongGetMethod*/
 	
-	
+	@Cacheable("billCache")
 	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ {
 		//Double tmpD=0.0; //для каких нить нужд
 		Double partArea =0.0; //текущая доля площади, по узлу
@@ -293,7 +292,7 @@ public class BillServ {
 			//поиск счетчика ЛОДН
 			try {
 				lnkLODN = calc.getMetLogMng().getLinkedNode(mLog, "ЛОДН");
-		        //System.out.println("Счетчик ЛОДН id="+lnkLODN.getId());
+		        System.out.println("Счетчик ЛОДН id="+lnkLODN.getId());
 			} catch (NotFoundNode e) {
 				// не найден счетчик
 		        System.out.println("Не найден счетчик ЛОДН, связанный со счетчиком id="+mLog.getId());
@@ -303,7 +302,7 @@ public class BillServ {
 			//поиск счетчика ЛСумОдпу
 			try {
 				lnkSumODPU = calc.getMetLogMng().getLinkedNode(lnkLODN, "ЛСумОДПУ");
-		        //System.out.println("Счетчик ЛСумОДПУ id="+lnkSumODPU.getId());
+		        System.out.println("Счетчик ЛСумОДПУ id="+lnkSumODPU.getId());
 			} catch (NotFoundNode e) {
 				// не найден счетчик
 		        System.out.println("Не найден счетчик ЛСумОДПУ, связанный со счетчиком id="+lnkLODN.getId());
@@ -313,7 +312,7 @@ public class BillServ {
 			//поиск счетчика Ф/Л ОДПУ
 			try {
 				lnkODPU = calc.getMetLogMng().getLinkedNode(lnkSumODPU, "ЛОДПУ");
-		        //System.out.println("Счетчик ЛОДПУ id="+lnkODPU.getId());
+		        System.out.println("Счетчик ЛОДПУ id="+lnkODPU.getId());
 			} catch (NotFoundNode e) {
 				// не найден счетчик
 		        System.out.println("Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId());

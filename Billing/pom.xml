@@ -120,8 +120,7 @@
 	       <artifactId>slf4j-log4j12</artifactId>
 	       <version>1.7.5</version>
 	   </dependency>
-
-
+	   
         <!-- EHCache Core APIs -->
 		<!-- http://mvnrepository.com/artifact/net.sf.ehcache/ehcache-core -->
 		<dependency>
@@ -136,14 +135,8 @@
 		    <artifactId>hibernate-ehcache</artifactId>
 		    <version>5.2.0.Final</version>
 		</dependency>
-	   
- <!--		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-			<version>2.9.0</version>
-		</dependency>
  
-   <dependency>
+ <!-- <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-ehcache</artifactId>
         <version>4.3.7.Final</version>

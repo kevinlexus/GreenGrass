@@ -10,9 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Serv;
 
@@ -26,7 +23,6 @@ import com.ric.bill.model.bs.Serv;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "TARIF_SERV_PROP", schema="TR")
-//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class TarifServProp implements java.io.Serializable, Simple {
 
 	@Id

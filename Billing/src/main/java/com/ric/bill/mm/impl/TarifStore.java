@@ -22,7 +22,7 @@ public abstract class TarifStore extends BaseStore {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
-	
+	@Cacheable("billCache")
 	public Double getServPropByCD (Set<TarifKlsk> tarKlsk, Serv serv, String cd) {
 
 		

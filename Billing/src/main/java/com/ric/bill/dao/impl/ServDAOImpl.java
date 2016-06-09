@@ -24,7 +24,7 @@ public class ServDAOImpl implements ServDAO {
 	 * Найти все услуги
 	 */
 	@SuppressWarnings("unchecked")
-	
+	@Cacheable("billCache")
 	public List<Serv> findAll() {
 		Query query =em.createQuery("from Serv");
 		return query.getResultList();
