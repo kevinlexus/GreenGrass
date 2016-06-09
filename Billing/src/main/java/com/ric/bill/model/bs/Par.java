@@ -21,8 +21,7 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "U_HFPAR", schema="ORALV")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
-@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Par implements java.io.Serializable, Simple {
 
 	@Id

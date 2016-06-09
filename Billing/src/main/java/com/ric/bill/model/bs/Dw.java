@@ -24,7 +24,7 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "U_HFPXKLSK", schema="ORALV")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Dw implements java.io.Serializable, Simple {
 
 	@Id
@@ -69,6 +69,7 @@ public class Dw implements java.io.Serializable, Simple {
 		this.n1 = n1;
 	}	
 
+	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public Par getPar() {
 		return par;
 	}

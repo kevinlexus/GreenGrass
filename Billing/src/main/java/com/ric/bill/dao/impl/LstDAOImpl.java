@@ -27,8 +27,7 @@ public class LstDAOImpl implements LstDAO {
     /**
 	 * Найти все элементы (для тестирования) 
 	 */
-	@Cacheable
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")	
     public List<Lst> findAll() {
 		Query query =em.createQuery("from Lst t");
 		return query.getResultList();
@@ -37,8 +36,7 @@ public class LstDAOImpl implements LstDAO {
     /**
 	 * Найти элемент списка по CD 
 	 */
-	@Cacheable
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
     public Lst findByCD(String cd) {
 		Query query =em.createQuery("from Lst t where t.cd in (:cd)");
 		query.setParameter("cd", cd);

@@ -26,6 +26,10 @@ public class Dist {
 		bs.distVols();
 		System.out.println("End!");
 
+		System.out.println("Begin2!");
+		bs.distVols();
+		System.out.println("End2!");
+
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("Время исполнения:"+totalTime);

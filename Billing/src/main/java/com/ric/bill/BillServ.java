@@ -21,7 +21,6 @@ import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.Meter;
@@ -135,7 +134,7 @@ public class BillServ {
 	public void distHouseVol() {
 		System.out.println("Дом: id="+calc.getHouse().getId());
 		System.out.println("Дом: klsk="+calc.getHouse().getKlsk());
-	//	System.out.println("Площадь: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
+		System.out.println("Площадь: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
 
 		//найти все необходимые услуги для распределения
 		for (Serv s : calc.getServMng().findForChrg()) {
@@ -152,57 +151,8 @@ public class BillServ {
 	@Transactional
 	private void distHouseServ() {
 		System.out.println("Услуга="+calc.getServ().getCd());
-		
-		//TEST
-		long startTime;
-		long endTime;
-		long totalTime; 
-		Dw dd;
-		startTime = System.currentTimeMillis();
-		
-		System.out.println("Площадь дома: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
-		//Session sess=(Session) em.getDelegate();
-		for (Dw d: calc.getHouse().getDw()) {
-		  //dd=sess.load(Dw.class, d.getId());
-		  dd=em.find(Dw.class, d.getId());
- 		  System.out.println("Параметр:"+dd.getN1());
-		}
-		
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		System.out.println("Время исполнения:"+totalTime);
-
-		startTime = System.currentTimeMillis();
-		System.out.println("Площадь дома2: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
-		for (Dw d: calc.getHouse().getDw()) {
-			  dd=em.find(Dw.class, d.getId());
-	 		  System.out.println("Параметр:"+dd.getN1());
-			}
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		System.out.println("Время исполнения2:"+totalTime);
-
-		startTime = System.currentTimeMillis();
-		System.out.println("Площадь дома3: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
-		for (Dw d: calc.getHouse().getDw()) {
-			  dd=em.find(Dw.class, d.getId());
-	 		  System.out.println("Параметр:"+dd.getN1());
-			}
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		System.out.println("Время исполнения3:"+totalTime);
-		
-	/*	for (MeterLog ml : calc.getHouseMng().getMetLogByServTp(calc.getHouse(), calc.getServ().getMet(), "Ввод")) {
-			System.out.println("Ввод id="+ml.getId());
-		}*/
-		
-		
-		//TEST
-
-		
-		
-		//calc.setCalcTp(1);
-		//distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
+		calc.setCalcTp(1);
+		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
 		
 		/*calc.setCalcTp(0);
 		distHouseServTp(calc.getServ().getMet());//Распределение объема

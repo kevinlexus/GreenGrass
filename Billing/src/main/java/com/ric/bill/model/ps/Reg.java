@@ -33,8 +33,7 @@ import com.ric.bill.model.bs.Lst;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REG", schema="PS")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
-@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Reg implements java.io.Serializable, Registrable {
 
 	@Id

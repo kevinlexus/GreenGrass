@@ -45,7 +45,7 @@ import com.ric.bill.model.tr.TarifKlsk;
 		@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK")  )//зафигачил KUL, иначе если ставить lsk приводит к неэффективности ВНИМАНИЕ, ВЕРНУЛ LSK, ТАк как приводит к некорректной обработке (kul не уникальный!)
 		}																  //короче KUL не фига не решил проблему, а её усугубил, так как это не уникальный идентификатор не фига
 		)
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains  {
 
 	public Kart() {

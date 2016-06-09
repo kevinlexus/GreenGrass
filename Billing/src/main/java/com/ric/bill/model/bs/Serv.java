@@ -31,8 +31,7 @@ import com.ric.bill.Storable;
 @Entity
 @Table(name = "SERV", schema="TR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
-@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Serv extends Base implements java.io.Serializable, Storable {
 
 	

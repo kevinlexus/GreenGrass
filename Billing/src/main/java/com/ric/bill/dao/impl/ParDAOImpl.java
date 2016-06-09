@@ -21,7 +21,7 @@ public class ParDAOImpl implements ParDAO {
     private EntityManager em;
     
 	@SuppressWarnings("unchecked")
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")	
 	public List<Par> findAll() {
 		return em.createQuery("from Par").getResultList();
 	}

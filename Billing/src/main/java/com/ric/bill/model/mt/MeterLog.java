@@ -55,8 +55,7 @@ import com.ric.bill.model.bs.Serv;
 	}
 )   
 })
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
-@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class MeterLog extends Base implements java.io.Serializable, Storable {
 
 	public MeterLog (){
