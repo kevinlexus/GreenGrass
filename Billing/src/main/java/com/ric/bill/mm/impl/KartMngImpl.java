@@ -43,7 +43,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
-	//@Cacheable("billCache")
+	@Cacheable("billCache")
 	private boolean checkPersStatus (Set<Registrable> reg, Pers p, String status) {
 		Date dt1, dt2;
 		for (Registrable r : reg) {

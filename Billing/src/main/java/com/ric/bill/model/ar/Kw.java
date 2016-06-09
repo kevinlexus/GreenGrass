@@ -17,8 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -36,7 +34,6 @@ import com.ric.bill.model.bs.Base;
 @Entity
 @Table(name = "KW", schema="AR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Kw extends Base implements java.io.Serializable, Storable {
 
 

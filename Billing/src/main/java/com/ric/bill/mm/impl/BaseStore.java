@@ -28,7 +28,7 @@ public abstract class BaseStore implements StorableMng{
 	 * получить значение параметра типа Double объекта по CD свойства
 	 */
 	@Transactional
-	//@Cacheable("billCache")
+	@Cacheable("billCache")
 	public Double getDbl(Set<Dw> dw, String cd) {
 		try {
 			for (Dw d: dw) {

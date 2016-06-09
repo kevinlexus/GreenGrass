@@ -6,8 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
-import org.hibernate.stat.SessionStatistics;
-import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -60,9 +58,19 @@ public class BillServ {
 	 */
 	@Transactional
 	public void distVols() {
+		System.out.println("1");
 		calc.setUp(); //настроить
 		setFilters();//вкл.фильтр
 		//найти необходимые дома
+		calc.getHouseMng().findAll();
+		
+		/*MeterLog gg = em.find(MeterLog.class , 3636525);
+		System.out.println("TEST:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
+
+		gg = em.find(MeterLog.class , 3636530);
+		System.out.println("TEST2:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
+		*/
+		
 		for (House o: calc.getHouseMng().findAll()) {
 			calc.setHouse(o);
 			calc.setArea(calc.getHouse().getStreet().getArea());
@@ -73,9 +81,7 @@ public class BillServ {
 			//распределить объемы
 			distHouseVol();
 		}
-		//Session sess = (Session)em.getDelegate();
-		//SessionStatistics stats = sess .getStatistics();
-		//System.out.println(stats.);
+
 	}
 
 	/**
@@ -175,7 +181,7 @@ public class BillServ {
 	 * Распределить граф начиная с mLog
 	 * @param mLog - начальный узел распределения
 	 */
-	//@Cacheable("billCache")
+	@Cacheable("billCache")
 	private void distGraph (MeterLog mLog) {
 		System.out.println("Распределение ввода:"+mLog.getId());
 		//перебрать все даты, за период
@@ -352,12 +358,12 @@ public class BillServ {
 			//расчетная связь
 			volTp = calc.getLstMng().findByCD("Фактический объем");
 			Vol vol = new Vol(mLog, volTp, vl, null, calc.getGenDt(), calc.getGenDt());
-			em.merge(vol);
+			//em.merge(vol);
 		} if (calc.getCalcTp()==1) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO!!!
 			volTp = calc.getLstMng().findByCD("Площадь и проживающие");
 			Vol vol = new Vol(mLog, volTp, partArea, partPers, calc.getGenDt(), calc.getGenDt());
-			em.merge(vol);
+			//em.merge(vol);
 		}
 		
 		

@@ -25,7 +25,7 @@ public class LstDAOImpl implements LstDAO {
 	/**
 	 * Найти элемент списка по CD 
 	 */
-	//@Cacheable("billCache")
+	@Cacheable("billCache")
 	public Lst findByCD(String cd) {
 		Query query =em.createQuery("from Lst t where t.cd in (:cd)");
 		query.setParameter("cd", cd);

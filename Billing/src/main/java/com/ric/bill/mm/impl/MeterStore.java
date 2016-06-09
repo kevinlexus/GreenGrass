@@ -22,7 +22,7 @@ public abstract class MeterStore extends TarifStore {
 	 * @param tp - Тип
 	 * @return
 	 */
-	//@Cacheable("billCache")
+	@Cacheable("billCache")
 	public List<MeterLog> getMetLogByTp(MeterContains mm, String tp) {
 		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
 		for (MeterLog ml : mm.getMlog()) {
