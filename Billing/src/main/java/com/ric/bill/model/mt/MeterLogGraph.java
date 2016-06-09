@@ -3,6 +3,7 @@ package com.ric.bill.model.mt;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
@@ -25,6 +29,7 @@ import com.ric.bill.model.bs.Lst;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER_LOG_GRAPH", schema="MT")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class MeterLogGraph implements java.io.Serializable, Simple {
 
 	public MeterLogGraph (){
@@ -61,6 +66,7 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 		this.id = id;
 	}
 
+	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public Lst getTp() {
 		return tp;
 	}

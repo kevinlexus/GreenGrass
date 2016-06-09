@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.ric.bill.Simple;
 
 /**
@@ -21,6 +24,7 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER_EXS", schema="MT")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class MeterExs implements java.io.Serializable, Simple {
 
 	public MeterExs (){

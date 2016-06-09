@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -61,8 +63,8 @@ public class BillServ {
 		System.out.println("1");
 		calc.setUp(); //настроить
 		setFilters();//вкл.фильтр
-		//найти необходимые дома
-		calc.getHouseMng().findAll();
+		//прогрузить все элементы Lst (не работает это)
+		//calc.getLstMng().findAll();
 		
 		/*MeterLog gg = em.find(MeterLog.class , 3636525);
 		System.out.println("TEST:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
@@ -149,21 +151,12 @@ public class BillServ {
 	@Transactional
 	private void distHouseServ() {
 		System.out.println("Услуга="+calc.getServ().getCd());
-
-		Calc.beginTimer();
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
-		Calc.showTimer("1 тип");
-
-		Calc.beginTimer();
 		calc.setCalcTp(0);
 		distHouseServTp(calc.getServ().getMet());//Распределение объема
-		Calc.showTimer("0 тип");
-
-		Calc.beginTimer();
 		calc.setCalcTp(2);
 		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
-		Calc.showTimer("2 тип");
 
 		/*
 		calc.setCalcTp(3);
@@ -190,13 +183,14 @@ public class BillServ {
 	 * Распределить граф начиная с mLog
 	 * @param mLog - начальный узел распределения
 	 */
-	@Cacheable("billCache")
+	
 	private void distGraph (MeterLog mLog) {
 		System.out.println("Распределение ввода:"+mLog.getId());
 		//перебрать все даты, за период
 		Calendar c = Calendar.getInstance();
 		c.setTime(Calc.getCurDt1());
 		for (c.setTime(Calc.getCurDt1()); !c.getTime().after(Calc.getCurDt2()); c.add(Calendar.DATE, 1)) {
+			long startTime = System.currentTimeMillis();
 			Calc.setGenDt(c.getTime());
 			@SuppressWarnings("unused")
 			NodeVol dummy;
@@ -208,9 +202,11 @@ public class BillServ {
 				System.out.println("Пустая услуга при рекурсивном вызове BillServ.distNode()");
 			}
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
-			//System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
+			long endTime   = System.currentTimeMillis();
+			long totalTime = endTime - startTime;
+			System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
 			
-			//break;
+			break;
 		}
 		
 	}
@@ -222,7 +218,7 @@ public class BillServ {
 	 * @return
 	 * @throws WrongGetMethod*/
 	
-	@Cacheable("billCache")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ {
 		//Double tmpD=0.0; //для каких нить нужд
 		Double partArea =0.0; //текущая доля площади, по узлу
@@ -247,9 +243,9 @@ public class BillServ {
 			throw new EmptyServ("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружена пустая услуга для расчета начисления");
 		}
 		if (calc.getCalcTp()==0) {
-			//if (mLog.getId()==3685454) {
-				//System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
-			//}
+			if (mLog.getId()==3685454) {
+				System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
+			}
 			
 			//по расчетной связи
 			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {

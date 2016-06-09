@@ -31,7 +31,10 @@ public class LstMngImpl extends BaseStore implements LstMng {
 	@Autowired
 	private LstDAO lstDao;
 
-	public Lst findByCD(String cd) {
+    public List<Lst> findAll() {
+    	return lstDao.findAll();
+    }
+    public Lst findByCD(String cd) {
 		return lstDao.findByCD(cd);
 	}
 
