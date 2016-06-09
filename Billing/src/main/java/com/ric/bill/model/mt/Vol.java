@@ -3,7 +3,6 @@ package com.ric.bill.model.mt;
 
 import java.util.Date;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,8 +28,7 @@ import com.ric.bill.model.bs.Lst;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "KMP_METER_VOL", schema="MT")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
-@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Vol implements java.io.Serializable, Simple {
 
 	public Vol (){
@@ -100,7 +98,6 @@ public class Vol implements java.io.Serializable, Simple {
 		this.dt2 = dt2;
 	}
 	
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public Lst getTp() {
 		return tp;
 	}

@@ -1,7 +1,6 @@
 package com.ric.bill.model.bs;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

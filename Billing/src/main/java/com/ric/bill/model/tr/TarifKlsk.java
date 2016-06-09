@@ -28,7 +28,7 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "TARIFXKLSK", schema="TR")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class TarifKlsk implements java.io.Serializable, Simple {
 
 	@Id

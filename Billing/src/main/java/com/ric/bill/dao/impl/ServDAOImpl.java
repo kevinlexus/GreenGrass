@@ -6,8 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +24,7 @@ public class ServDAOImpl implements ServDAO {
 	 * Найти все услуги
 	 */
 	@SuppressWarnings("unchecked")
+	//@Cacheable("billCache")
 	public List<Serv> findAll() {
 		Query query =em.createQuery("from Serv");
 		return query.getResultList();
@@ -35,7 +34,6 @@ public class ServDAOImpl implements ServDAO {
 	 * Найти и отсортировать, все услуги для начисления 
 	 */
 	@SuppressWarnings("unchecked")
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")	
 	public List<Serv> findForChrg() {
 		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2 ");
 		query.setParameter("s1", "Холодная вода (объем)");

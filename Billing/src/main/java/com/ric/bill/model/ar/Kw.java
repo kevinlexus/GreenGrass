@@ -36,7 +36,7 @@ import com.ric.bill.model.bs.Base;
 @Entity
 @Table(name = "KW", schema="AR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Kw extends Base implements java.io.Serializable, Storable {
 
 

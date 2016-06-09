@@ -3,7 +3,6 @@ package com.ric.bill.model.mt;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -66,7 +65,6 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 		this.id = id;
 	}
 
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public Lst getTp() {
 		return tp;
 	}

@@ -74,25 +74,21 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 20)
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 20)
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK")
 	@BatchSize(size = 500)
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<Reg> reg = new HashSet<Reg>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK")
 	@BatchSize(size = 500)
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<RegState> regState = new HashSet<RegState>(0);
 
 	@Column(name = "FK_KW", nullable = true)

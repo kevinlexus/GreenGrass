@@ -3,8 +3,6 @@ package com.ric.bill.mm.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.cache.annotation.Cacheable;
 
 import com.ric.bill.MeterContains;
@@ -24,7 +22,7 @@ public abstract class MeterStore extends TarifStore {
 	 * @param tp - Тип
 	 * @return
 	 */
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	//@Cacheable("billCache")
 	public List<MeterLog> getMetLogByTp(MeterContains mm, String tp) {
 		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
 		for (MeterLog ml : mm.getMlog()) {
@@ -42,7 +40,7 @@ public abstract class MeterStore extends TarifStore {
 	 * @param tp - Тип
 	 * @return
 	 */
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cacheable("billCache")
 	public List<MeterLog> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
 		for (MeterLog ml : mm.getMlog()) {

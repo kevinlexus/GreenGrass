@@ -9,24 +9,6 @@
                   diskExpiryThreadIntervalSeconds="1800" memoryStoreEvictionPolicy="FIFO">
     </defaultCache>
  
- 	<cache name="org.hibernate.cache.internal.StandardQueryCache"
-        maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="120"
-        overflowToDisk="true" />
-	<cache
-	name="org.hibernate.cache.UpdateTimestampsCache"
-	maxEntriesLocalHeap="5000"
-	eternal="true"/>
-
-	<cache name="com.ric.bill.model.bs.Dw"
-		maxEntriesLocalHeap="1450"
-		eternal="false"
-		timeToLiveSeconds="600" />
-        
-	<cache name="com.ric.bill.model.bs.Lst"
-		maxEntriesLocalHeap="1450"
-		eternal="false"
-		timeToLiveSeconds="600" />
-
 	<cache name="billCache" 
 		maxEntriesLocalHeap="1000000"
 		maxEntriesLocalDisk="10000" 

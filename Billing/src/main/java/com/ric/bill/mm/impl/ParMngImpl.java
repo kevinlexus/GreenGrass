@@ -2,8 +2,6 @@ package com.ric.bill.mm.impl;
 
 import java.util.List;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +17,6 @@ public class ParMngImpl implements ParMng {
 	private ParDAO pDao;
 
 	@Transactional
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public List<Par> findAll() {
 		return pDao.findAll();
 	}
@@ -28,7 +25,6 @@ public class ParMngImpl implements ParMng {
 	 * Узнать существует ли параметр по его CD
 	 */
 	@Transactional
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public boolean isExByCd(String cd) {
 		for (Par p: findAll()){
 			if (p.getCd().equals(cd)){
