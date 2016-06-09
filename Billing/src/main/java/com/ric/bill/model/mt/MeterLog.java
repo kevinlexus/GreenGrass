@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -55,7 +52,6 @@ import com.ric.bill.model.bs.Serv;
 	}
 )   
 })
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class MeterLog extends Base implements java.io.Serializable, Storable {
 
 	public MeterLog (){
@@ -76,28 +72,24 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<Meter> meter = new HashSet<Meter>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT_INNER")})
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<MeterLogGraph> outside = new HashSet<MeterLogGraph>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<MeterLogGraph> inside = new HashSet<MeterLogGraph>(0);
 	
 	
@@ -159,7 +151,6 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 		this.meter = meter;
 	}
 
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	public Lst getTp() {
 		return tp;
 	}

@@ -4,40 +4,20 @@
          updateCheck="false">
     <diskStore path="cacheIO" />
  
-    <defaultCache maxElementsInMemory="50000" eternal="true"
+    <defaultCache maxElementsInMemory="50000" eternal="false"
                   overflowToDisk="false" diskPersistent="false"
-                  timeToIdleSeconds="0" timeToLiveSeconds="0"
                   diskExpiryThreadIntervalSeconds="1800" memoryStoreEvictionPolicy="FIFO">
     </defaultCache>
  
- 	<cache name="org.hibernate.cache.internal.StandardQueryCache"
-        maxElementsInMemory="10000" eternal="true" timeToIdleSeconds="0" timeToLiveSeconds="0"
-        overflowToDisk="true" />
-	<cache
-	name="org.hibernate.cache.UpdateTimestampsCache"
-	maxEntriesLocalHeap="5000"
-	eternal="true"/>
-
-	<cache name="com.ric.bill.model.ar.Kart.reg" 
-		maxEntriesLocalHeap="5000"
-		maxEntriesLocalDisk="100000" 
-		eternal="true" 
-		diskPersistent="false"
-		diskSpoolBufferSizeMB="100"
-		timeToIdleSeconds="0" timeToLiveSeconds="0"
-		memoryStoreEvictionPolicy="LFU" 
-		transactionalMode="off">
-	</cache>
-
 	<cache name="billCache" 
-		maxEntriesLocalHeap="10000"
-		maxEntriesLocalDisk="100000" 
-		eternal="true" 
+		maxEntriesLocalHeap="1000000"
+		maxEntriesLocalDisk="10000" 
+		eternal="false" 
 		diskPersistent="false"
 		diskSpoolBufferSizeMB="100"
-		timeToIdleSeconds="0" timeToLiveSeconds="0"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" 
 		transactionalMode="off">
 	</cache>
-	
+		
 </ehcache>

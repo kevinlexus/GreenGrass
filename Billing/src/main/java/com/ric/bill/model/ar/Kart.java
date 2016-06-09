@@ -17,11 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Immutable;
 
 import lombok.ToString;
 
@@ -46,7 +43,6 @@ import com.ric.bill.model.tr.TarifKlsk;
 		@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK")  )//зафигачил KUL, иначе если ставить lsk приводит к неэффективности ВНИМАНИЕ, ВЕРНУЛ LSK, ТАк как приводит к некорректной обработке (kul не уникальный!)
 		}																  //короче KUL не фига не решил проблему, а её усугубил, так как это не уникальный идентификатор не фига
 		)
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
 public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains  {
 
 	public Kart() {
@@ -75,25 +71,21 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 20)
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 20)
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK")
 	@BatchSize(size = 500)
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<Reg> reg = new HashSet<Reg>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK")
 	@BatchSize(size = 500)
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
 	private Set<RegState> regState = new HashSet<RegState>(0);
 
 	@Column(name = "FK_KW", nullable = true)

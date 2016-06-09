@@ -1,6 +1,5 @@
 package com.ric.bill.model.bs;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.ric.bill.Simple;
 
@@ -24,7 +20,6 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "LIST", schema="BS")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Lst implements java.io.Serializable, Simple {
 
 	@Id

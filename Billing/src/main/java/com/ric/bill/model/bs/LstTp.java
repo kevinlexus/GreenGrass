@@ -1,15 +1,11 @@
 package com.ric.bill.model.bs;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.ric.bill.Simple;
 
@@ -21,7 +17,6 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "LISTTP", schema="BS")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class LstTp implements java.io.Serializable, Simple {
 
 	@Id

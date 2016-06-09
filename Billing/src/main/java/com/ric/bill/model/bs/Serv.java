@@ -1,7 +1,6 @@
 package com.ric.bill.model.bs;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 
 import com.ric.bill.Storable;
@@ -31,7 +28,6 @@ import com.ric.bill.Storable;
 @Entity
 @Table(name = "SERV", schema="TR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Serv extends Base implements java.io.Serializable, Storable {
 
 	

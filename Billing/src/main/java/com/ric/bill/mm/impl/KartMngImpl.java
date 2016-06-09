@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -45,8 +43,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
-	
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
+	@Cacheable("billCache")
 	private boolean checkPersStatus (Set<Registrable> reg, Pers p, String status) {
 		Date dt1, dt2;
 		for (Registrable r : reg) {
@@ -81,8 +78,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null
 	 */
-	
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
+	@Cacheable("billCache")
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -118,8 +114,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @param tp - Тип вызова (0-для получения нормативного объема, 1-для получения кол-во прож.)
 	 * @return
 	 */
-	
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
+	@Cacheable("billCache")
 	public void getCntPers(Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -172,8 +167,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
+	@Cacheable("billCache")
 	public Standart getStandart (MeterLog mLog, Calc calc, CntPers cntPers) {
 		//long startTime;
 		//long endTime;
