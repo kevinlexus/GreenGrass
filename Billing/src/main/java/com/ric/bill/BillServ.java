@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -61,8 +63,8 @@ public class BillServ {
 		System.out.println("1");
 		calc.setUp(); //настроить
 		setFilters();//вкл.фильтр
-		//найти необходимые дома
-		calc.getHouseMng().findAll();
+		//прогрузить все элементы Lst (не работает это)
+		//calc.getLstMng().findAll();
 		
 		/*MeterLog gg = em.find(MeterLog.class , 3636525);
 		System.out.println("TEST:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
@@ -151,11 +153,12 @@ public class BillServ {
 		System.out.println("Услуга="+calc.getServ().getCd());
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
-		//calc.setCalcTp(0);
-		//distHouseServTp(calc.getServ().getMet());//Распределение объема
-		//calc.setCalcTp(2);
-		//distHouseServTp(calc.getServ().getMet());//Расчет ОДН
-
+		
+		/*calc.setCalcTp(0);
+		distHouseServTp(calc.getServ().getMet());//Распределение объема
+		calc.setCalcTp(2);
+		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
+*/
 		/*
 		calc.setCalcTp(3);
 		distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
@@ -181,7 +184,7 @@ public class BillServ {
 	 * Распределить граф начиная с mLog
 	 * @param mLog - начальный узел распределения
 	 */
-	@Cacheable("billCache")
+	
 	private void distGraph (MeterLog mLog) {
 		System.out.println("Распределение ввода:"+mLog.getId());
 		//перебрать все даты, за период
@@ -216,7 +219,7 @@ public class BillServ {
 	 * @return
 	 * @throws WrongGetMethod*/
 	
-	@Cacheable("billCache")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ {
 		//Double tmpD=0.0; //для каких нить нужд
 		Double partArea =0.0; //текущая доля площади, по узлу

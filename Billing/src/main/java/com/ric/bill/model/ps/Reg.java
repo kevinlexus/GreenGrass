@@ -12,10 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.ParamDef;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -31,6 +34,7 @@ import com.ric.bill.model.bs.Lst;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REG", schema="PS")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region="billCache")
 public class Reg implements java.io.Serializable, Registrable {
 
 	@Id

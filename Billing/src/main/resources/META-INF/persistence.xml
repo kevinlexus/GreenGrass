@@ -6,19 +6,14 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
     <persistence-unit name="JpaPersistenceUnit"
         transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<properties>
- 		 <property name="hibernate.generate_statistics" value="true"/>
-		 <property name="hibernate.cache.use_second_level_cache" value="true"/>      
-		 <property name="hibernate.cache.use_query_cache" value="true"/>
-         <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/> 
-        </properties>
 
-<!--         <properties>
-         <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
-		 <property name="hibernate.cache.use_second_level_cache" value="true"/>      
-		 <property name="hibernate.cache.use_query_cache" value="true"/>
-         <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/> 
-         </properties>
- -->    </persistence-unit>
+         <properties>
+		<property name="hibernate.cache.use_second_level_cache" value="true"/>
+		<property name="hibernate.cache.use_query_cache" value="true"/>
+		<property name="hibernate.cache.provider_class" value="org.hibernate.cache.EhCacheProvider"/>
+		<property name="hibernate.generate_statistics" value="true"/>
+		<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>		
+         </properties> 
+     </persistence-unit>
 </persistence>
 
