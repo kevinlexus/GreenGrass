@@ -43,6 +43,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
+	
 	@Cacheable("billCache")
 	private boolean checkPersStatus (Set<Registrable> reg, Pers p, String status) {
 		Date dt1, dt2;
@@ -78,6 +79,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null
 	 */
+	
 	@Cacheable("billCache")
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты

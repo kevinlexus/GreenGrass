@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Serv;
 
 @Service
+@Cacheable("billCache")
 public class ServMngImpl extends BaseStore implements ServMng {
 
 	@Autowired

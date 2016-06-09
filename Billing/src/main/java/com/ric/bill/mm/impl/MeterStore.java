@@ -22,6 +22,7 @@ public abstract class MeterStore extends TarifStore {
 	 * @param tp - Тип
 	 * @return
 	 */
+	
 	@Cacheable("billCache")
 	public List<MeterLog> getMetLogByTp(MeterContains mm, String tp) {
 		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
@@ -40,6 +41,7 @@ public abstract class MeterStore extends TarifStore {
 	 * @param tp - Тип
 	 * @return
 	 */
+	
 	@Cacheable("billCache")
 	public List<MeterLog> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MeterLog> mLog = new ArrayList<MeterLog>(); 

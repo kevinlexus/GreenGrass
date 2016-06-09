@@ -4,7 +4,7 @@
          updateCheck="false">
     <diskStore path="cacheIO" />
  
-    <defaultCache maxElementsInMemory="50000" eternal="true"
+    <defaultCache maxElementsInMemory="10000" eternal="true"
                   overflowToDisk="false" diskPersistent="false"
                   diskExpiryThreadIntervalSeconds="1800" memoryStoreEvictionPolicy="FIFO">
     </defaultCache>

@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.ric.bill.Simple;
 
 /**
@@ -20,6 +23,7 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "LIST", schema="BS")
+////@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Lst implements java.io.Serializable, Simple {
 
 	@Id

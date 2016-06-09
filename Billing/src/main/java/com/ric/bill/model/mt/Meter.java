@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -42,6 +44,7 @@ import com.ric.bill.model.bs.Base;
     		}
     )
 })
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Meter extends Base implements java.io.Serializable, Storable {
 
 	public Meter (){

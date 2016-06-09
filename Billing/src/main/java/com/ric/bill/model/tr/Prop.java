@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.ric.bill.Simple;
 
 /**
@@ -17,6 +20,7 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "PROP", schema="TR")
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Prop implements java.io.Serializable, Simple {
 
 	@Id

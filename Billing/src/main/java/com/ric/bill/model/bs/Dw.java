@@ -23,7 +23,6 @@ import com.ric.bill.Simple;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "U_HFPXKLSK", schema="ORALV")
-//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Dw implements java.io.Serializable, Simple {
 
 	@Id

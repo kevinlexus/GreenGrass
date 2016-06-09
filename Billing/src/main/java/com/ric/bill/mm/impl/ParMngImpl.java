@@ -3,6 +3,7 @@ package com.ric.bill.mm.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Par;
 
 @Service
+@Cacheable("billCache")
 public class ParMngImpl implements ParMng {
 
 	@Autowired
