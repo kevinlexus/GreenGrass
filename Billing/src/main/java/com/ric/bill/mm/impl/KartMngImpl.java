@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,6 +19,7 @@ import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Pers;
 import com.ric.bill.model.ps.Registrable;
+import com.ric.bill.model.tr.TarifKlsk;
 
 @Service
 public class KartMngImpl extends MeterStore implements KartMng {
@@ -45,9 +44,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
-	
-	@Cacheable
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cacheable("billCache")
 	private boolean checkPersStatus (Set<Registrable> reg, Pers p, String status) {
 		Date dt1, dt2;
 		for (Registrable r : reg) {
@@ -79,12 +76,11 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		return false;
 	}
 	
+	
 	/**
 	 * Проверить наличие проживающего при fk_pers = null
 	 */
-	
-	@Cacheable
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cacheable("billCache")
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -120,9 +116,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @param tp - Тип вызова (0-для получения нормативного объема, 1-для получения кол-во прож.)
 	 * @return
 	 */
-	
-	@Cacheable
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cacheable("billCache")
 	public void getCntPers(Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -175,9 +169,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	
-	@Cacheable
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cacheable("billCache")
 	public Standart getStandart (MeterLog mLog, Calc calc, CntPers cntPers) {
 		//long startTime;
 		//long endTime;
@@ -205,11 +197,11 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по общей площади-1"), 0.0)==1
 				|| Utl.nvl(calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-2"), 0.0)==1) {
 			if (cntPers.cnt==1) {
-				stVol = calc.getKartMng().getServPropByCD(kart.getTarklsk(), serv, "Норматив-1 чел.");
+				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.");
 			} else if (cntPers.cnt==2) {
-				stVol = calc.getKartMng().getServPropByCD(kart.getTarklsk(), serv, "Норматив-2 чел.");
+				stVol = getServPropByCD(kart, serv, "Норматив-2 чел.");
 			} else if (cntPers.cnt >= 3) {
-				stVol = calc.getKartMng().getServPropByCD(kart.getTarklsk(), serv, "Норматив-3 и более чел.");
+				stVol = getServPropByCD(kart, serv, "Норматив-3 и более чел.");
 			} else {
 				stVol = 0.0;
 			}
@@ -217,7 +209,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"),0.0)==1
 				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
-			stVol = calc.getKartMng().getServPropByCD(kart.getTarklsk(), serv, "Норматив");
+			stVol = getServPropByCD(kart, serv, "Норматив");
 		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"),0.0)==1
 				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0.0;
@@ -293,4 +285,33 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	}
 
 
+	/**
+	 * Найти значение свойства услуги
+	 * @param tarKlskArea - Город
+	 * @param tarKlskHouse - Дом
+	 * @param tarKlskKart - Лиц.счет
+	 * @param serv -Услуга
+	 * @param cd - CD свойства
+	 * @return
+	 */
+	@Cacheable("billCache")
+	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
+		Double val;
+		//в начале ищем по лиц. счету 
+		val=getServPropByCD(kart.getTarklsk(), serv, cd);
+		System.out.println("======");
+		if (val==null) {
+			//потом ищем по дому
+			val=getServPropByCD(kart.getKw().getHouse().getTarklsk(), serv, cd);
+			System.out.println("======================");
+		}
+		if (val==null) {
+			//потом ищем по городу
+			val=getServPropByCD(kart.getKw().getHouse().getStreet().getArea().getTarklsk(), serv, cd);
+			System.out.println("===================================================");
+		}
+		return val;
+	}
+	
+	
 }

@@ -14,9 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
@@ -31,7 +28,6 @@ import com.ric.bill.model.tr.TarifKlsk;
 @Entity
 @Table(name = "AREA", schema="AR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public class Area extends Base implements java.io.Serializable, Storable, TarifContains {
 
 	//наименование

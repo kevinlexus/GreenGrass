@@ -40,6 +40,10 @@ public final class Calc {
 	private static double partDays;
 
 	private Calendar calendar;
+	
+	//для отладки
+	public static long startTime;
+	public static long endTime;
 
 	//Здесь привязывать ТОЛЬКО интерфейсы, как best practice!
 	@Autowired
@@ -204,5 +208,14 @@ public final class Calc {
 
 	public void setLstMng(LstMng lstMng) {
 		this.lstMng = lstMng;
+	}
+	
+	public static void beginTimer() {
+		Calc.startTime=System.currentTimeMillis();
+	}
+	
+	public static void showTimer(String mess) {
+		Calc.endTime=System.currentTimeMillis();
+		System.out.println("************ "+mess+" затрачено="+Long.toString(Calc.endTime-Calc.startTime));
 	}
 }

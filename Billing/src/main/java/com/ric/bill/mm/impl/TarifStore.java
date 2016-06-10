@@ -2,8 +2,6 @@ package com.ric.bill.mm.impl;
 
 import java.util.Set;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.cache.annotation.Cacheable;
 
 import com.ric.bill.model.bs.Serv;
@@ -24,11 +22,8 @@ public abstract class TarifStore extends BaseStore {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
-	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)	
+	@Cacheable("billCache")
 	public Double getServPropByCD (Set<TarifKlsk> tarKlsk, Serv serv, String cd) {
-
-		
-		//TODO TODOTODOTODOTODOTODOTODOTODOTODO
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tarKlsk) {
 			System.out.println("k="+k.getId());

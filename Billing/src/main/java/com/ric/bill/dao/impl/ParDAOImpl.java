@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.stereotype.Repository;
 
 import com.ric.bill.dao.ParDAO;
@@ -21,7 +19,6 @@ public class ParDAOImpl implements ParDAO {
     private EntityManager em;
     
 	@SuppressWarnings("unchecked")
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")	
 	public List<Par> findAll() {
 		return em.createQuery("from Par").getResultList();
 	}

@@ -15,8 +15,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Filter;
@@ -39,7 +37,6 @@ import com.ric.bill.Storable;
     		}
     )
 })
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="billCache")
 public abstract class Base implements Storable {
 	
 	@OneToMany(fetch = FetchType.LAZY)
