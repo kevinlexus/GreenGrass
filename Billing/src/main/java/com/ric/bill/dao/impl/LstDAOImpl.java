@@ -1,7 +1,5 @@
 package com.ric.bill.dao.impl;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -10,9 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.ric.bill.dao.LstDAO;
-import com.ric.bill.dao.ServDAO;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.bs.Serv;
 
 
 @Repository
@@ -25,7 +21,7 @@ public class LstDAOImpl implements LstDAO {
 	/**
 	 * Найти элемент списка по CD 
 	 */
-	@Cacheable("billCache")
+	@Cacheable("billCache") //здесь кэш работает очень эффективно!
 	public Lst findByCD(String cd) {
 		Query query =em.createQuery("from Lst t where t.cd in (:cd)");
 		query.setParameter("cd", cd);

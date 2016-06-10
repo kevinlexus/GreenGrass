@@ -7,9 +7,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
 import com.ric.bill.CntPers;
+import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
@@ -18,8 +20,10 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Pers;
+import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.Registrable;
 import com.ric.bill.model.tr.TarifKlsk;
+import com.ric.bill.model.tr.TarifServOrg;
 
 @Service
 public class KartMngImpl extends MeterStore implements KartMng {
@@ -30,6 +34,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	/**
 	 * Проверить, считали ли персону
 	 */
+	@Cacheable("billCache")
 	private boolean foundPers (Set<Pers> counted, Pers p) {
 		if (counted.contains(p)) {
 			//уже считали персону
@@ -45,9 +50,15 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
 	@Cacheable("billCache")
-	private boolean checkPersStatus (Set<Registrable> reg, Pers p, String status) {
+	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp) {
 		Date dt1, dt2;
-		for (Registrable r : reg) {
+		Set<? extends Registrable> rg;
+		if (tp==0) {
+			rg = reg.getReg();
+		} else {
+			rg = reg.getRegState();
+		}
+		for (Registrable r : rg) {
 			//проверять только у тех, где pers (fk_pers) заполнено!
 			if (r.getPers()!=null && r.getPers().equals(p)) {
 				if (r.getTp().getCd().equals(status)) {
@@ -117,17 +128,17 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @return
 	 */
 	@Cacheable("billCache")
-	public void getCntPers(Serv serv, CntPers cntPers, int tp){
+	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
 		//поиск сперва по постоянной регистрации 
-		for (Registrable p : cntPers.reg) {
+		for (Registrable p : rc.getReg()) {
 			if (p.getPers()!=null && !foundPers(counted, p.getPers())) {
-				if (checkPersStatus(cntPers.reg, p.getPers(), "Постоянная прописка")) {
+				if (checkPersStatus(rc, p.getPers(), "Постоянная прописка", 0)) {
 					//постоянная регистрация есть, проверить временное отсутствие, если надо по этой услуге
 					if (!serv.getInclAbsn()) {
-						if (!checkPersStatus(cntPers.regSt, p.getPers(), "Временное отсутствие")) {
+						if (!checkPersStatus(rc, p.getPers(), "Временное отсутствие", 1)) {
 							//временного отсутствия нет, считать проживающего
 							cntPers.cnt++;
 						}
@@ -138,7 +149,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 					cntPers.cntEmpt++;
 				} else {
 					//нет постоянной регистрации, поискать временную прописку
-					if (checkPersStatus(cntPers.reg, p.getPers(), "Временная прописка")) {
+					if (checkPersStatus(rc, p.getPers(), "Временная прописка", 0)) {
 						//временное присутствие есть, считать проживающего
 						if (serv.getInclPrsn()) {
 							cntPers.cnt++;
@@ -150,7 +161,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			}
 		}
 		//поиск по временной регистрации 
-		for (Registrable p : cntPers.regSt) {
+		for (Registrable p : rc.getRegState()) {
 			//там где NULL fk_pers,- обычно временно зарег., считать их
 			if (p.getPers()==null) {
 				if (tp==0 && checkPersNullStatus(p)){
@@ -180,8 +191,9 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		Serv serv = mLog.getServ().getStdrt(); 
 		//получить услугу основную, для начисления
 		Serv servChrg = mLog.getServ().getChrg();
-		
-		//System.out.println("===="+servChrg.getId());
+		if (mLog.getId()==3685454) {
+			System.out.println("Найден счетчик");
+		}
 
 		Standart st = new Standart();
 		Kart kart = mLog.getKart();
@@ -190,12 +202,13 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
 
-			cntPers= new CntPers(kart.getReg(), kart.getRegState());
-			getCntPers(serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+			cntPers= new CntPers();
+			getCntPers(kart, serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
+		
 		//System.out.println("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
-		if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по общей площади-1"), 0.0)==1
-				|| Utl.nvl(calc.getServMng().getDbl(serv.getDw(), "Вариант расчета по объему-2"), 0.0)==1) {
+		if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по общей площади-1"), 0.0)==1.0
+				|| Utl.nvl(calc.getServMng().getDbl(serv, "Вариант расчета по объему-2"), 0.0)==1.0) {
 			if (cntPers.cnt==1) {
 				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.");
 			} else if (cntPers.cnt==2) {
@@ -206,16 +219,16 @@ public class KartMngImpl extends MeterStore implements KartMng {
 				stVol = 0.0;
 			}
 			
-		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"),0.0)==1
+		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по объему-1"),0.0)==1.0
 				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, serv, "Норматив");
-		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"),0.0)==1
+		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по объему-1"),0.0)==1.0
 				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0.0;
 			String s2;
-			kitchElStv = calc.getKartMng().getDbl(kart.getDw(), "Электроплита. основное количество");
-			if (Utl.nvl(kitchElStv, 0.0) != 0) {
+			kitchElStv = calc.getKartMng().getDbl(kart, "Электроплита. основное количество");
+			if (Utl.nvl(kitchElStv, 0.0) != 0.0) {
 				//с эл.плитой
 				switch (cntPers.cnt) {
 					case 0 : 
@@ -298,17 +311,38 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
 		Double val;
 		//в начале ищем по лиц. счету 
+		System.out.println("===лс===");
 		val=getServPropByCD(kart.getTarklsk(), serv, cd);
-		System.out.println("======");
 		if (val==null) {
 			//потом ищем по дому
+			System.out.println("=========дом=============");
 			val=getServPropByCD(kart.getKw().getHouse().getTarklsk(), serv, cd);
-			System.out.println("======================");
 		}
 		if (val==null) {
 			//потом ищем по городу
+			System.out.println("===============город====================================");
+			for (TarifKlsk tt: kart.getKw().getHouse().getStreet().getArea().getTarklsk()) {
+				System.out.println("===============город====================================tt"+tt.getId());
+			}
+				
+	/*		Set<TarifKlsk> ttt = kart.getKw().getHouse().getStreet().getArea().getTarklsk();
+			for (TarifKlsk k : ttt) {
+				System.out.println("k2="+k.getId());
+				//затем по строкам - составляющим тариф 
+
+				for (TarifServOrg t : k.getTarorg()) {
+					System.out.println("t2="+k.getId());
+					//System.out.println("t2="+t.getId());
+					//System.out.println("t2="+t.getProp().getCd());
+			//		if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
+				//		return t.getN1();
+					//}
+				}
+
+			}*/
+
+			
 			val=getServPropByCD(kart.getKw().getHouse().getStreet().getArea().getTarklsk(), serv, cd);
-			System.out.println("===================================================");
 		}
 		return val;
 	}

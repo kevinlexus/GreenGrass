@@ -1,6 +1,7 @@
 package com.ric.bill;
 
 import java.util.Calendar;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,9 @@ import com.ric.bill.model.mt.MeterExs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.tr.TarifKlsk;
+import com.ric.bill.model.tr.TarifServOrg;
+import com.ric.bill.model.tr.TarifServProp;
 
 /**
  * Главный сервис биллинга
@@ -61,8 +65,7 @@ public class BillServ {
 		System.out.println("1");
 		calc.setUp(); //настроить
 		setFilters();//вкл.фильтр
-		//найти необходимые дома
-		calc.getHouseMng().findAll();
+		
 		
 		/*MeterLog gg = em.find(MeterLog.class , 3636525);
 		System.out.println("TEST:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
@@ -76,6 +79,23 @@ public class BillServ {
 			calc.setArea(calc.getHouse().getStreet().getArea());
 			System.out.println("Дом загружен="+o.getId());
 			
+			 //TarifKlsk k = em.find(TarifKlsk.class , 548342);
+			 Set<TarifKlsk> ttt = calc.getHouse().getStreet().getArea().getTarklsk();
+				for (TarifKlsk k : ttt) {
+					System.out.println("k2="+k.getId());
+					//затем по строкам - составляющим тариф 
+
+					for (TarifServOrg t : k.getTarorg()) {
+						System.out.println("t2="+k.getId());
+						//System.out.println("t2="+t.getId());
+						//System.out.println("t2="+t.getProp().getCd());
+				//		if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
+					//		return t.getN1();
+						//}
+					}
+
+				}		
+
 			//удалить объемы по всем услугам дома
 			delHouseVol();
 			//распределить объемы
@@ -132,7 +152,7 @@ public class BillServ {
 	public void distHouseVol() {
 		System.out.println("Дом: id="+calc.getHouse().getId());
 		System.out.println("Дом: klsk="+calc.getHouse().getKlsk());
-		System.out.println("Площадь: "+calc.getHouseMng().getDbl(calc.getHouse().getDw(), "Площадь.Жилая"));
+		System.out.println("Площадь: "+calc.getHouseMng().getDbl(calc.getHouse(), "Площадь.Жилая"));
 
 		//найти все необходимые услуги для распределения
 		for (Serv s : calc.getServMng().findForChrg()) {
@@ -229,7 +249,9 @@ public class BillServ {
 		Double partPers =0.0; //текущая доля кол-ва прожив, по узлу
 		Double vl =0.0; //текущая доля объема, по узлу
 		//получить лицевой счет, к которому привязан счетчик, для убоства
-		Kart kart = mLog.getKart(); 
+		Kart kart = mLog.getKart();
+		calc.setKart(kart); 
+		
 		if (nv.getRecur() > 1000) {
 			throw new WrongGetMethod("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружен замкнутый цикл");
 		}
@@ -279,11 +301,11 @@ public class BillServ {
 		} if (calc.getCalcTp()==1 && kart != null) {
 			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
 			//площадь
-			partArea = calc.getKartMng().getDbl(kart.getDw(), "Площадь.Общая") / calc.getCntCurDays(); 
+			partArea = calc.getKartMng().getDbl(kart, "Площадь.Общая") / calc.getCntCurDays(); 
 			nv.addPartArea(partArea);
 			//проживающие
-			CntPers cntPers= new CntPers(kart.getReg(), kart.getRegState());
-			calc.getKartMng().getCntPers(servChrg, cntPers, 0);
+			CntPers cntPers= new CntPers();
+			calc.getKartMng().getCntPers(kart, servChrg, cntPers, 0);
 			partPers = cntPers.cnt / calc.getCntCurDays();
 			nv.addPartPers(partPers);
 
@@ -330,8 +352,8 @@ public class BillServ {
 			lnkODNVol = calc.getMetLogMng().getVolPeriod(lnkLODN);
 
 			//проживающие
-			CntPers cntPers= new CntPers(kart.getReg(), kart.getRegState());
-			calc.getKartMng().getCntPers(servChrg, cntPers, 0);
+			CntPers cntPers= new CntPers();
+			calc.getKartMng().getCntPers(kart, servChrg, cntPers, 0);
 			
 			//TODO пока на этом остановился
 			
@@ -363,12 +385,12 @@ public class BillServ {
 		if (calc.getCalcTp()==0) {
 			//расчетная связь
 			volTp = calc.getLstMng().findByCD("Фактический объем");
-			Vol vol = new Vol(mLog, volTp, vl, null, calc.getGenDt(), calc.getGenDt());
+			Vol vol = new Vol(mLog, volTp, vl, null, Calc.getGenDt(), Calc.getGenDt());
 			em.merge(vol);
 		} if (calc.getCalcTp()==1) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO!!!
 			volTp = calc.getLstMng().findByCD("Площадь и проживающие");
-			Vol vol = new Vol(mLog, volTp, partArea, partPers, calc.getGenDt(), calc.getGenDt());
+			Vol vol = new Vol(mLog, volTp, partArea, partPers, Calc.getGenDt(), Calc.getGenDt());
 			//em.merge(vol);
 		}
 		

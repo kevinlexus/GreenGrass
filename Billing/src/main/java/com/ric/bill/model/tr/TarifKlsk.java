@@ -3,7 +3,6 @@ package com.ric.bill.model.tr;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.BatchSize;
 
 import com.ric.bill.Simple;
 
@@ -33,18 +34,21 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 	private Integer id; //id
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_TARIF", referencedColumnName="ID")
+	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private Set<TarifServ> tarserv = new HashSet<TarifServ>(0);
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_TARIF", referencedColumnName="ID")
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private Set<TarifServOrg> tarorg = new HashSet<TarifServOrg>(0);
 	
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_TARIF", referencedColumnName="ID")
+	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private Set<TarifServProp> tarprop = new HashSet<TarifServProp>(0);
 
-	public Integer getId() {
+    @Column(name = "FK_TARIF", updatable = false, nullable = false)
+	private Integer fktarif;
+
+    public Integer getId() {
 		return this.id;
 	}
     
@@ -75,7 +79,14 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 	public void setTarprop(Set<TarifServProp> tarprop) {
 		this.tarprop = tarprop;
 	}
-	
+
+	public Integer getFktarif() {
+		return fktarif;
+	}
+
+	public void setFktarif(Integer fktarif) {
+		this.fktarif = fktarif;
+	}
 	
 }
 

@@ -67,7 +67,7 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
-	@BatchSize(size = 20)
+	@BatchSize(size = 50)
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
 	@ManyToOne(fetch = FetchType.LAZY)

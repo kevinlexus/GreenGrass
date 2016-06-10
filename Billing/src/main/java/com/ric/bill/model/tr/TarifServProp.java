@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Serv;
 
-
-
 /**
  * Свойство по услуге по тарифу
  * @author lev
@@ -41,7 +39,10 @@ public class TarifServProp implements java.io.Serializable, Simple {
 	@Column(name = "N1", updatable = false, nullable = true)
 	private Double n1; //значение n1 
 
-	public Integer getId() {
+    @Column(name = "FK_TARIF", updatable = false, nullable = false)
+	private Integer fkTarif;
+
+    public Integer getId() {
 		return this.id;
 	}
     
@@ -73,6 +74,13 @@ public class TarifServProp implements java.io.Serializable, Simple {
 		this.serv = serv;
 	}
 
+	public Integer getFkTarif() {
+		return fkTarif;
+	}
+
+	public void setFkTarif(Integer fkTarif) {
+		this.fkTarif = fkTarif;
+	}
 	
 }
 

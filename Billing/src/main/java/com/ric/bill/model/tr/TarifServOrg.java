@@ -34,7 +34,10 @@ public class TarifServOrg implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv ; 
 
-	public Integer getId() {
+    @Column(name = "FK_TARIF", updatable = false, nullable = false)
+	private Integer fkTarif;
+
+    public Integer getId() {
 		return this.id;
 	}
     
@@ -50,6 +53,13 @@ public class TarifServOrg implements java.io.Serializable, Simple {
 		this.serv = serv;
 	}
 	
+	public Integer getFkTarif() {
+		return fkTarif;
+	}
+
+	public void setFkTarif(Integer fkTarif) {
+		this.fkTarif = fkTarif;
+	}
 	
 }
 

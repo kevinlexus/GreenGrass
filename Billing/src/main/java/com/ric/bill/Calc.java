@@ -1,6 +1,5 @@
 package com.ric.bill;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -18,6 +17,7 @@ import com.ric.bill.mm.impl.MeterLogMngImpl;
 import com.ric.bill.mm.impl.ServMngImpl;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 
 /**
@@ -59,7 +59,7 @@ public final class Calc {
 
 	private Area area; //текущий город 
 	private House house; //текущий дом (распределяемый, начисляемый)
-	//private Kart kart; //текущий лиц.счет (распределяемый, начисляемый) - пока не нужен
+	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
 	private int calcTp; //тип обработки расчёта
@@ -217,5 +217,13 @@ public final class Calc {
 	public static void showTimer(String mess) {
 		Calc.endTime=System.currentTimeMillis();
 		System.out.println("************ "+mess+" затрачено="+Long.toString(Calc.endTime-Calc.startTime));
+	}
+
+	public static Kart getKart() {
+		return kart;
+	}
+
+	public void setKart(Kart kart) {
+		Calc.kart = kart;
 	}
 }

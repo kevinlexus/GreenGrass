@@ -16,13 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import lombok.ToString;
 
+import org.hibernate.annotations.BatchSize;
+
 import com.ric.bill.MeterContains;
+import com.ric.bill.RegContains;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.mt.MeterLog;
@@ -43,7 +42,7 @@ import com.ric.bill.model.tr.TarifKlsk;
 		@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK")  )//зафигачил KUL, иначе если ставить lsk приводит к неэффективности ВНИМАНИЕ, ВЕРНУЛ LSK, ТАк как приводит к некорректной обработке (kul не уникальный!)
 		}																  //короче KUL не фига не решил проблему, а её усугубил, так как это не уникальный идентификатор не фига
 		)
-public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains  {
+public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
 
 	public Kart() {
 	}
@@ -70,12 +69,12 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
-	@BatchSize(size = 20)
+	@BatchSize(size = 50)
 	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
-	@BatchSize(size = 20)
+	@BatchSize(size = 50)
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)

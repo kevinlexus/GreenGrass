@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+
 import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
@@ -61,8 +63,9 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
 	private Set<Street> street = new HashSet<Street>(0);
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
+	@BatchSize(size = 50)
 	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
 
 	public String getName() {

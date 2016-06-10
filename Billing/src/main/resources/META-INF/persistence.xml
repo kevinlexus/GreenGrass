@@ -6,6 +6,7 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
     <persistence-unit name="JpaPersistenceUnit"
         transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+	
 <!--		<properties>
  		 <property name="hibernate.generate_statistics" value="true"/>
 		 <property name="hibernate.cache.use_second_level_cache" value="true"/>      

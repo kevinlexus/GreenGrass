@@ -2,6 +2,7 @@ package com.ric.bill.mm;
 
 import java.util.Set;
 
+import com.ric.bill.Storable;
 import com.ric.bill.model.bs.Dw;
 
 /**
@@ -11,7 +12,7 @@ import com.ric.bill.model.bs.Dw;
  */
 public interface StorableMng {
 
-	public Double getDbl(Set<Dw> dw, String cd);
-	public String getStr(Set<Dw> dw, String cd);
+	public Double getDbl(Storable st, String cd);
+	public String getStr(Storable st, String cd);
 
 }

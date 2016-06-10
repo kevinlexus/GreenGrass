@@ -16,13 +16,4 @@ public class CntPers {
 	
 	public int cnt; //кол-во проживающих
 	public int cntEmpt; //кол-во проживающих для анализа пустых квартир
-	public Set<Registrable> reg; //постоянная регистрация 
-	public Set<Registrable> regSt; //временная регистрация-отсутствие
-
-	//конструктор
-	@SuppressWarnings("unchecked")
-	public CntPers(Set<? extends Registrable> rr1, Set<? extends Registrable> rr2) {
-		this.reg=(Set<Registrable>) rr1;
-		this.regSt=(Set<Registrable>) rr2;
-	}
 }
