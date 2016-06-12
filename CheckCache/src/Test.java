@@ -16,22 +16,29 @@ public class Test {
 			Lst lst = (Lst) sess.load(Lst.class, a);
 			System.out.println(lst.getName());
 		}
+
+		sess.getTransaction().commit();
+		sess.close();	
+		
+		
+		sess = sf.openSession();
+		sess.beginTransaction();
 		for (int a=1401; a<=1452; a++) {
 			Lst lst = (Lst) sess.load(Lst.class, a);
 			System.out.println(lst.getName());
 		}
 		Statistics stats = sf.getStatistics();
-		printStats(stats, 0);
+		printStats(stats);
 		
-		sess.getTransaction().commit();
+		
 		
 		System.out.println("Complete!");
 		
 	}
 
 	
-    private static void printStats(Statistics stats, int i) {
-        System.out.println("***** " + i + " *****");
+    private static void printStats(Statistics stats) {
+        System.out.println("***** " + " *****");
         System.out.println("Fetch Count="
                 + stats.getEntityFetchCount());
         System.out.println("Second Level Hit Count="
