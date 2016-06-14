@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import lombok.ToString;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import com.ric.bill.MeterContains;
 import com.ric.bill.RegContains;
@@ -72,10 +74,11 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@BatchSize(size = 50)
 	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
-	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
+	@NotFound(action=NotFoundAction.IGNORE)
+	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK")
@@ -137,12 +140,12 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 		this.mlog = mlog;
 	}
 
-	public Set<TarifKlsk> getTarklsk() {
-		return tarklsk;
+	public Set<TarifKlsk> getTarifklsk() {
+		return tarifklsk;
 	}
 
-	public void setTarklsk(Set<TarifKlsk> tarklsk) {
-		this.tarklsk = tarklsk;
+	public void setTarifklsk(Set<TarifKlsk> tarifklsk) {
+		this.tarifklsk = tarifklsk;
 	}
 
 	public Set<Reg> getReg() {

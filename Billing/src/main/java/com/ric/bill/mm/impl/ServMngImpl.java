@@ -28,7 +28,7 @@ public class ServMngImpl extends BaseStore implements ServMng {
 	@Autowired
 	private ServDAO sDao;
 
-	@Transactional
+	
 	public List<Serv> findAll() {
 		return sDao.findAll();
 	}

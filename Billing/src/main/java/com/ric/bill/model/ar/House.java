@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,15 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.MeterContains;
 import com.ric.bill.TarifContains;
@@ -68,7 +62,7 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
-	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
+	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_STREET", referencedColumnName="ID", updatable = false)
@@ -100,12 +94,12 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 		this.mlog = mlog;
 	}
 
-	public Set<TarifKlsk> getTarklsk() {
-		return tarklsk;
+	public Set<TarifKlsk> getTarifklsk() {
+		return tarifklsk;
 	}
 
-	public void setTarklsk(Set<TarifKlsk> tarklsk) {
-		this.tarklsk = tarklsk;
+	public void setTarifklsk(Set<TarifKlsk> tarifklsk) {
+		this.tarifklsk = tarifklsk;
 	}
 
 	public Street getStreet() {

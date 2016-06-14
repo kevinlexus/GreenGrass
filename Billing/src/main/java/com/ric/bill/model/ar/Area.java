@@ -66,7 +66,7 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
-	private Set<TarifKlsk> tarklsk = new HashSet<TarifKlsk>(0);
+	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
 
 	public String getName() {
 		return name;
@@ -84,12 +84,12 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 		this.cd = cd;
 	}
 
-	public Set<TarifKlsk> getTarklsk() {
-		return tarklsk;
+	public Set<TarifKlsk> getTarifklsk() {
+		return tarifklsk;
 	}
 
-	public void setTarklsk(Set<TarifKlsk> tarklsk) {
-		this.tarklsk = tarklsk;
+	public void setTarifklsk(Set<TarifKlsk> tarifklsk) {
+		this.tarifklsk = tarifklsk;
 	}
 
 	public Set<Street> getStreet() {

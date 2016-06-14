@@ -49,7 +49,6 @@ public class BillServ {
     /**
 	 * Установить фильтры для сессии
 	 */
-	@Transactional(propagation=Propagation.MANDATORY)
 	private void setFilters() {
 		Session session = (Session) em.getDelegate();
 		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
@@ -80,21 +79,16 @@ public class BillServ {
 			System.out.println("Дом загружен="+o.getId());
 			
 			 //TarifKlsk k = em.find(TarifKlsk.class , 548342);
-			 Set<TarifKlsk> ttt = calc.getHouse().getStreet().getArea().getTarklsk();
+			 /*Set<TarifKlsk> ttt = calc.getHouse().getStreet().getArea().getTarklsk();
 				for (TarifKlsk k : ttt) {
 					System.out.println("k2="+k.getId());
 					//затем по строкам - составляющим тариф 
 
 					for (TarifServOrg t : k.getTarorg()) {
 						System.out.println("t2="+k.getId());
-						//System.out.println("t2="+t.getId());
-						//System.out.println("t2="+t.getProp().getCd());
-				//		if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
-					//		return t.getN1();
-						//}
 					}
 
-				}		
+				}		*/
 
 			//удалить объемы по всем услугам дома
 			delHouseVol();
@@ -107,6 +101,7 @@ public class BillServ {
 	/**
 	 * удалить объемы по дому
 	 */
+	
 	@Transactional
 	public void delHouseVol() {
 		//найти все необходимые услуги для удаления объемов
@@ -123,6 +118,7 @@ public class BillServ {
 	 * 
 	 * @param serv - заданная услуга
 	 */
+	
 	private void delHouseVolServ() {
 		delHouseServVolTp(calc.getServ().getMet(), 1);
 		delHouseServVolTp(calc.getServ().getMet(), 0);
@@ -138,6 +134,7 @@ public class BillServ {
 	 * Удалить объем по вводу, определённой услуге
 	 * @param serv - услуга
 	 */
+	
 	private void delHouseServVolTp(Serv serv, int tp) {
 		//найти все вводы по дому и по услуге
 		for (MeterLog ml : calc.getHouseMng().getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
@@ -166,7 +163,7 @@ public class BillServ {
 	/**
 	 * распределить объем по услуге данного дома
 	 */
-	@Transactional
+	
 	private void distHouseServ() {
 		System.out.println("Услуга="+calc.getServ().getCd());
 
@@ -198,6 +195,7 @@ public class BillServ {
 	 * Распределить объем по вводам дома
 	 * @param calcTp - тип обработки
 	 */
+	
 	private void distHouseServTp(Serv serv) {
 		System.out.println("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
@@ -211,6 +209,7 @@ public class BillServ {
 	 * @param mLog - начальный узел распределения
 	 */
 	@Cacheable("billCache")
+	
 	private void distGraph (MeterLog mLog) {
 		System.out.println("Распределение ввода:"+mLog.getId());
 		//перебрать все даты, за период
@@ -228,9 +227,9 @@ public class BillServ {
 				System.out.println("Пустая услуга при рекурсивном вызове BillServ.distNode()");
 			}
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
-			//System.out.println("по дате="+Calc.getGenDt()+" потрачено="+totalTime);
+			System.out.println("по дате="+Calc.getGenDt());
 			
-			//break;
+			break;
 		}
 		
 	}
@@ -243,6 +242,7 @@ public class BillServ {
 	 * @throws WrongGetMethod*/
 	
 	@Cacheable("billCache")
+	
 	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ {
 		//Double tmpD=0.0; //для каких нить нужд
 		Double partArea =0.0; //текущая доля площади, по узлу
@@ -256,12 +256,12 @@ public class BillServ {
 			throw new WrongGetMethod("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружен замкнутый цикл");
 		}
 		nv.addRecur();
-		//System.out.println("Номер итерации:"+nv.getRecur());
-		/*System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd()+" наименование:"+mLog.getName()+" klsk_obj="+mLog.getKlskObj());
-		if (mLog.getKart()!=null) {
-			System.out.println("KLSK Лиц счет счетчика="+mLog.getKart().getKlsk());
+		System.out.println("Номер итерации:"+nv.getRecur());
+		System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd()+" наименование:"+mLog.getName()+" klsk_obj="+mLog.getKlskObj());
+		if (mLog.getKart()!=null && mLog.getKart().getLsk().equals("26074208")) {
+			//System.out.println("KLSK Лиц счет счетчика="+mLog.getKart().getKlsk());
 			System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
-		}*/
+		}
 
 		String mLogTp = mLog.getTp().getCd(); //тип лог счетчика
 		Serv servChrg = mLog.getServ().getChrg(); //получить услугу для начисления
@@ -294,6 +294,7 @@ public class BillServ {
 				}
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
+				System.out.println("before:");
 				vl = calc.getKartMng().getStandart(mLog, calc, null).partVol;
 				nv.addVol(vl);
 			}
@@ -386,7 +387,7 @@ public class BillServ {
 			//расчетная связь
 			volTp = calc.getLstMng().findByCD("Фактический объем");
 			Vol vol = new Vol(mLog, volTp, vl, null, Calc.getGenDt(), Calc.getGenDt());
-			em.merge(vol);
+			//em.merge(vol);
 		} if (calc.getCalcTp()==1) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO!!!
 			volTp = calc.getLstMng().findByCD("Площадь и проживающие");

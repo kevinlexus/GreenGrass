@@ -9,15 +9,15 @@
   <properties>
 
 		<!-- Generic properties -->
-		<java.version>1.8</java.version>
+		<java.version>1.7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Spring -->
-		<spring-framework.version>4.2.1.RELEASE</spring-framework.version>
+		<spring-framework.version>4.2.5.RELEASE</spring-framework.version>
 
 		<!-- Hibernate / JPA -->
-		<hibernate.version>5.1.0.Final</hibernate.version>
+		<hibernate.version>4.1.9.Final</hibernate.version>
 
 		<!-- Test -->
 		<junit.version>4.11</junit.version>
@@ -37,13 +37,13 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>4.2.5.RELEASE</version>
+			<version>${spring-framework.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>4.2.5.RELEASE</version>
+			<version>${spring-framework.version}</version>
 		</dependency>
     
 		<!-- Spring and Transactions -->
@@ -72,12 +72,12 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 
-	    <dependency>
+<!--  	    <dependency>
 	       <groupId>org.hibernate</groupId>
 	       <artifactId>hibernate-core</artifactId>
 	       <version>5.1.0.Final</version>
 	    </dependency>
-    
+ -->
 	    <dependency>
 	      <groupId>commons-dbcp</groupId>
 	      <artifactId>commons-dbcp</artifactId>
@@ -122,11 +122,11 @@
 	   </dependency>
 	   
 		<!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
-		<dependency>
+ 		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-ehcache</artifactId>
 		    <version>5.2.0.Final</version>
-		</dependency>
+		</dependency> 
  
 		<dependency>
 			<groupId>org.projectlombok</groupId>

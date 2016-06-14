@@ -2,10 +2,12 @@ package com.ric.bill.mm.impl;
 
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 import com.ric.bill.model.tr.TarifServ;
@@ -27,19 +29,20 @@ public abstract class TarifStore extends BaseStore {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
-	public Double getServPropByCD (Set<TarifKlsk> tarKlsk, Serv serv, String cd) {
+	public Double findProp(TarifContains tc, Serv serv, String cd) {
 		//искать сперва по наборам тарифа объекта 
-		for (TarifKlsk k : tarKlsk) {
+		//Hibernate.initialize(tc.getTarklsk()); 
+		System.out.println("CHECK5");
+		System.out.println("CHECK6");
+		for (TarifKlsk k : tc.getTarifklsk()) {
 			System.out.println("k="+k.getId());
 			//затем по строкам - составляющим тариф 
 
-			for (TarifServOrg t : k.getTarorg()) {
+			for (TarifServProp t : k.getTarprop()) {
 				System.out.println("t="+k.getId());
-				//System.out.println("t2="+t.getId());
-				//System.out.println("t2="+t.getProp().getCd());
-		//		if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
-			//		return t.getN1();
-				//}
+				if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
+					return t.getN1();
+				}
 			}
 
 		}

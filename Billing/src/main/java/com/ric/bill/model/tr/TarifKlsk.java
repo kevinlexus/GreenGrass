@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import com.ric.bill.Simple;
 
@@ -33,15 +35,15 @@ public class TarifKlsk implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private Integer id; //id
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private Set<TarifServ> tarserv = new HashSet<TarifServ>(0);
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
-	private Set<TarifServOrg> tarorg = new HashSet<TarifServOrg>(0);
+	private Set<TarifServOrg> tarifservorg = new HashSet<TarifServOrg>(0);
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private Set<TarifServProp> tarprop = new HashSet<TarifServProp>(0);
 
@@ -64,12 +66,12 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 		this.tarserv = tarserv;
 	}
 
-	public Set<TarifServOrg> getTarorg() {
-		return tarorg;
+	public Set<TarifServOrg> getTarifservorg() {
+		return tarifservorg;
 	}
 
-	public void setTarorg(Set<TarifServOrg> tarorg) {
-		this.tarorg = tarorg;
+	public void setTarifservorg(Set<TarifServOrg> tarifservorg) {
+		this.tarifservorg = tarifservorg;
 	}
 
 	public Set<TarifServProp> getTarprop() {

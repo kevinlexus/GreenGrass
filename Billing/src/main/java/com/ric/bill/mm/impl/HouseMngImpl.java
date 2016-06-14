@@ -21,7 +21,7 @@ public class HouseMngImpl extends MeterStore implements HouseMng {
     @Autowired
 	private HouseDAO hDao;
 
-	@Transactional
+	
 	public List<House> findAll() {
 		return hDao.findAll();
 	}

@@ -6,7 +6,7 @@ import com.ric.bill.model.tr.TarifKlsk;
 
 public interface TarifContains extends Storable {
 
-	public Set<TarifKlsk> getTarklsk();
-	public void setTarklsk(Set<TarifKlsk> tarklsk);
+	public Set<TarifKlsk> getTarifklsk();
+	public void setTarifklsk(Set<TarifKlsk> tarifklsk);
 
 }

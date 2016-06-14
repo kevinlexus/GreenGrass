@@ -26,7 +26,7 @@ import com.ric.bill.model.bs.Serv;
 public class TarifServOrg implements java.io.Serializable, Simple {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", updatable = false, nullable = false)
 	private Integer id; //id
 

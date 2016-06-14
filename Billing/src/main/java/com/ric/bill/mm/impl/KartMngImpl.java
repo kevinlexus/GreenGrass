@@ -13,6 +13,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.CntPers;
 import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
+import com.ric.bill.TarifContains;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.mm.KartMng;
@@ -35,6 +36,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * Проверить, считали ли персону
 	 */
 	@Cacheable("billCache")
+	
 	private boolean foundPers (Set<Pers> counted, Pers p) {
 		if (counted.contains(p)) {
 			//уже считали персону
@@ -50,6 +52,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
 	@Cacheable("billCache")
+	
 	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp) {
 		Date dt1, dt2;
 		Set<? extends Registrable> rg;
@@ -92,6 +95,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * Проверить наличие проживающего при fk_pers = null
 	 */
 	@Cacheable("billCache")
+	
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -128,6 +132,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @return
 	 */
 	@Cacheable("billCache")
+	
 	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -195,6 +200,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			System.out.println("Найден счетчик");
 		}
 
+		System.out.println("CHECK1");
 		Standart st = new Standart();
 		Kart kart = mLog.getKart();
 		//System.out.println("==== kk"+kart.getKlsk());
@@ -206,6 +212,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			getCntPers(kart, serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		
+		System.out.println("CHECK2");
 		//System.out.println("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
 		if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по общей площади-1"), 0.0)==1.0
 				|| Utl.nvl(calc.getServMng().getDbl(serv, "Вариант расчета по объему-2"), 0.0)==1.0) {
@@ -280,7 +287,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			}
 			}
 			//получить норматив, зависящий от проживающих
-			stVol = calc.getKartMng().getServPropByCD(kart.getTarklsk(), serv, s2);
+			stVol = calc.getKartMng().getServPropByCD(kart, serv, s2);
 			
 		}
 			
@@ -308,44 +315,24 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @return
 	 */
 	@Cacheable("billCache")
+	
 	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
 		Double val;
 		//в начале ищем по лиц. счету 
-		System.out.println("===лс===");
-		val=getServPropByCD(kart.getTarklsk(), serv, cd);
+		System.out.println("===лс==="+kart.getLsk());
+		val=findProp(kart, serv, cd);
 		if (val==null) {
 			//потом ищем по дому
 			System.out.println("=========дом=============");
-			val=getServPropByCD(kart.getKw().getHouse().getTarklsk(), serv, cd);
+			val=findProp(kart.getKw().getHouse(), serv, cd);
 		}
 		if (val==null) {
 			//потом ищем по городу
 			System.out.println("===============город====================================");
-			for (TarifKlsk tt: kart.getKw().getHouse().getStreet().getArea().getTarklsk()) {
-				System.out.println("===============город====================================tt"+tt.getId());
-			}
-				
-	/*		Set<TarifKlsk> ttt = kart.getKw().getHouse().getStreet().getArea().getTarklsk();
-			for (TarifKlsk k : ttt) {
-				System.out.println("k2="+k.getId());
-				//затем по строкам - составляющим тариф 
-
-				for (TarifServOrg t : k.getTarorg()) {
-					System.out.println("t2="+k.getId());
-					//System.out.println("t2="+t.getId());
-					//System.out.println("t2="+t.getProp().getCd());
-			//		if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
-				//		return t.getN1();
-					//}
-				}
-
-			}*/
-
-			
-			val=getServPropByCD(kart.getKw().getHouse().getStreet().getArea().getTarklsk(), serv, cd);
+			val=findProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd);
 		}
 		return val;
 	}
-	
+
 	
 }
