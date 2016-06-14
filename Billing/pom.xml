@@ -17,7 +17,7 @@
 		<spring-framework.version>4.2.5.RELEASE</spring-framework.version>
 
 		<!-- Hibernate / JPA -->
-		<hibernate.version>4.1.9.Final</hibernate.version>
+		<hibernate.version>5.1.0.Final</hibernate.version>
 
 		<!-- Test -->
 		<junit.version>4.11</junit.version>

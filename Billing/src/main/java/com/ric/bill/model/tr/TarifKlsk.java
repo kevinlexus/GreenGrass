@@ -35,15 +35,15 @@ public class TarifKlsk implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private Integer id; //id
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private Set<TarifServ> tarserv = new HashSet<TarifServ>(0);
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private Set<TarifServOrg> tarifservorg = new HashSet<TarifServOrg>(0);
 	
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private Set<TarifServProp> tarprop = new HashSet<TarifServProp>(0);
 

@@ -229,7 +229,7 @@ public class BillServ {
 			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
 			System.out.println("по дате="+Calc.getGenDt());
 			
-			break;
+			//break;
 		}
 		
 	}
@@ -258,7 +258,7 @@ public class BillServ {
 		nv.addRecur();
 		System.out.println("Номер итерации:"+nv.getRecur());
 		System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd()+" наименование:"+mLog.getName()+" klsk_obj="+mLog.getKlskObj());
-		if (mLog.getKart()!=null && mLog.getKart().getLsk().equals("26074208")) {
+		if (mLog.getKart()!=null && mLog.getKart().getLsk().equals("26074287") && calc.getCalcTp()==0) {
 			//System.out.println("KLSK Лиц счет счетчика="+mLog.getKart().getKlsk());
 			System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
 		}
@@ -387,7 +387,7 @@ public class BillServ {
 			//расчетная связь
 			volTp = calc.getLstMng().findByCD("Фактический объем");
 			Vol vol = new Vol(mLog, volTp, vl, null, Calc.getGenDt(), Calc.getGenDt());
-			//em.merge(vol);
+			em.merge(vol);
 		} if (calc.getCalcTp()==1) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO!!!
 			volTp = calc.getLstMng().findByCD("Площадь и проживающие");

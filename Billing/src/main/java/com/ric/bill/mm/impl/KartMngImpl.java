@@ -36,7 +36,6 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * Проверить, считали ли персону
 	 */
 	@Cacheable("billCache")
-	
 	private boolean foundPers (Set<Pers> counted, Pers p) {
 		if (counted.contains(p)) {
 			//уже считали персону
@@ -52,7 +51,6 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
 	 */
 	@Cacheable("billCache")
-	
 	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp) {
 		Date dt1, dt2;
 		Set<? extends Registrable> rg;
@@ -95,7 +93,6 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * Проверить наличие проживающего при fk_pers = null
 	 */
 	@Cacheable("billCache")
-	
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -132,7 +129,6 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @return
 	 */
 	@Cacheable("billCache")
-	
 	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -202,6 +198,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 
 		System.out.println("CHECK1");
 		Standart st = new Standart();
+		
 		Kart kart = mLog.getKart();
 		//System.out.println("==== kk"+kart.getKlsk());
 		Double stVol = 0.0;
@@ -288,18 +285,13 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			}
 			//получить норматив, зависящий от проживающих
 			stVol = calc.getKartMng().getServPropByCD(kart, serv, s2);
+
+			//stVol=0.0;
 			
 		}
 			
 		st.vol = stVol;
-		
-		//st.partVol = stVol * cntPers.cnt / calc.getCntCurDays();  TODO Вернуть!  
-		st.partVol=0.0;
-		//endTime   = System.currentTimeMillis();
-		//totalTime = endTime - startTime;
-		//if (mLog.getId()==3683348) {
-		//	System.out.println("Standart: Date="+Calc.getGenDt()+" MeterLog.Id="+mLog.getId()+" cntPers-1 calc time="+totalTime);
-		//}
+		st.partVol=stVol/calc.getCntCurDays();
 		return st;
 		
 	}
@@ -315,7 +307,6 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @return
 	 */
 	@Cacheable("billCache")
-	
 	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
 		Double val;
 		//в начале ищем по лиц. счету 
@@ -328,7 +319,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		}
 		if (val==null) {
 			//потом ищем по городу
-			System.out.println("===============город====================================");
+			System.out.println("===============город===================================="+kart.getKw().getHouse().getStreet().getArea().getKlsk());
 			val=findProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd);
 		}
 		return val;
