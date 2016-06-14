@@ -1,36 +1,26 @@
+import java.util.Set;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 
-import com.ric.bill.model.bs.Lst;
-
 public class Test {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session sess = sf.openSession();
 		sess.beginTransaction();
 		
-		for (int a=1401; a<=1452; a++) {
-			Lst lst = (Lst) sess.load(Lst.class, a);
-			System.out.println(lst.getName());
-		}
-
-		sess.getTransaction().commit();
-		sess.close();	
+  	    Master k2=(Master) sess.get(Master.class, 1027303);
 		
-		
-		sess = sf.openSession();
-		sess.beginTransaction();
-		for (int a=1401; a<=1452; a++) {
-			Lst lst = (Lst) sess.load(Lst.class, a);
-			System.out.println(lst.getName());
+  		System.out.println(k2.getDetail());
+ 		
+  	    for (Detail t : k2.getDetail()) {
+			 System.out.println("Tar="+t.getN1());
 		}
+	
 		Statistics stats = sf.getStatistics();
 		printStats(stats);
-		
-		
 		
 		System.out.println("Complete!");
 		
