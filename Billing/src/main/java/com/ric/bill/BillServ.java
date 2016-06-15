@@ -281,10 +281,10 @@ public class BillServ {
 	@Cacheable("billCache")
 	
 	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
-		//Double tmpD=0.0; //для каких нить нужд
-		Double partArea =0.0; //текущая доля площади, по узлу
-		Double partPers =0.0; //текущая доля кол-ва прожив, по узлу
-		Double vl =0.0; //текущая доля объема, по узлу
+		//Double tmpD=0d; //для каких нить нужд
+		Double partArea =0d; //текущая доля площади, по узлу
+		Double partPers =0d; //текущая доля кол-ва прожив, по узлу
+		Double vl =0d; //текущая доля объема, по узлу
 		//получить лицевой счет, к которому привязан счетчик, для убоства
 		Kart kart = mLog.getKart();
 		calc.setKart(kart); 
@@ -301,10 +301,11 @@ public class BillServ {
 		}
 
 		String mLogTp = mLog.getTp().getCd(); //тип лог счетчика
-		Serv servChrg = mLog.getServ().getChrg(); //получить услугу для начисления
+		Serv servChrg = mLog.getServ().getChrg(); //получить основную услугу, для начисления
 		if (servChrg == null) {
 			throw new EmptyServ("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружена пустая услуга для расчета начисления");
 		}
+		
 		if (calc.getCalcTp()==0) {
 			//if (mLog.getId()==3685454) {
 				//System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
@@ -336,7 +337,7 @@ public class BillServ {
 				nv.addVol(vl);
 			}
 				
-		} if (calc.getCalcTp()==1 && kart != null) {
+		} else if (calc.getCalcTp()==1 && kart != null) {
 			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
 			//площадь
 			partArea = calc.getKartMng().getDbl(kart, "Площадь.Общая") / calc.getCntCurDays(); 
@@ -347,7 +348,7 @@ public class BillServ {
 			partPers = cntPers.cnt / calc.getCntCurDays();
 			nv.addPartPers(partPers);
 
-		} if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
+		} else if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
 			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии
 			//сохранить счетчик ЛОДН
@@ -380,16 +381,16 @@ public class BillServ {
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
 			SumNodeVol sumVol = calc.getMetLogMng().getVolPeriod(mLog);
 
-			if (lnkODNVol.getExs() && lnkODNVol.getVol() > 0.0) {
-				//при наличии счетчика ОДПУ и объема по нему
+			if (lnkODNVol.getExs() && lnkODNVol.getVol() > 0d) {
+				//при наличии счетчика(ков) ОДПУ и объема по нему
 				if (lnkODNVol.getVol() > 0 && lnkODNVol.getArea() > 0) {
 					//ПЕРЕРАСХОД
 					vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
 					//применить лимит по ОДН
-					Double limit = calc.getMetLogMng().getDbl((Storable)lnkODNVol, "Лимит по ОДН");
+					Double limit = calc.getMetLogMng().getDbl((Storable)lnkLODN, "Лимит по ОДН");
 					Double limitVol = lnkODNVol.getLimit();
 					if (limit == null) {
-						throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkODPU.getId());
+						throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
 					} else if (limit == 1 && limitVol > 0) {
 						//если больше лимита - ограничить лимит * площадь
 						if (vl > limitVol * sumVol.getArea()) {
@@ -398,15 +399,45 @@ public class BillServ {
 					}
 				} else {
 					//ЭКОНОМИЯ
-					
+					//экономия, но в пределах потреблённого по основной услуге объема. Внимание! в квартплате решили так не учитывать, а учитывать в контексте услуги ОДН!
+
+					//получить основную услугу
+					Serv mainServ = calc.getServMng().findMain(servChrg);
+					//получить счетчик основной услуги
+					MeterLog mlMain = calc.getKartMng().getFirstMetLogByServTp(kart, mainServ, "ЛИПУ");
+					//получить объем за период, по лог счетчику основной услуги
+					SumNodeVol sumMainVol = calc.getMetLogMng().getVolPeriod(mlMain);
+					//если есть проживающие по узлу ОДН
+					if (lnkODNVol.getPers() > 0 ) {
+						vl = lnkODNVol.getVol() * sumVol.getPers() / lnkODNVol.getPers();  
+						//округлить до 4 знаков
+						vl = (double)Math.round(vl * 10000d) / 10000d;
+					}
+					//ограничить экономию текущим потреблением по основному счетчику
+					if (Math.abs(vl) > sumMainVol.getVol() && sumMainVol.getVol() > 0) {
+						vl = -1 * sumMainVol.getVol();
+					}
 				}
 				
+			} else if (calc.getMetLogMng().getDbl((Storable)lnkLODN, "Доначисление по ОДН") > 0d) {
+				//если есть объем дораспределения ОДН на м2 - то использовать его
+				vl = calc.getMetLogMng().getDbl((Storable)lnkLODN, "Доначисление по ОДН") * sumVol.getArea();
+			} else {
+				//не найден счётчик ОДПУ (должно начислиться по лимиту ОДН (Нормативу) * площадь л.с.)
+				//или нет объема по ОДПУ
+				Double limit = calc.getMetLogMng().getDbl((Storable)lnkLODN, "Лимит по ОДН");
+				if (limit == null) {
+					throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
+				} else if (limit == 1) {
+					//если больше лимита - ограничить лимит * площадь
+					Double limitVol = lnkODNVol.getLimit();
+					vl = limitVol * sumVol.getArea();
+				}
 			}
 			
-			//TODO пока на этом остановился
 			
 			
-		} if (calc.getCalcTp()==3 && mLogTp.equals("Лсчетчик")) {
+		} else if (calc.getCalcTp()==3 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи пропорц.площади (Отопление например)
 			
 		}

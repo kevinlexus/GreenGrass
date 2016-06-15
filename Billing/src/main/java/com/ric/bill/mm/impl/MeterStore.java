@@ -34,6 +34,25 @@ public abstract class MeterStore extends TarifStore {
 	}
 	
 	/**
+	 * Получить один (первый который найден) лог.счетчик по определённому объекту, типу и услуге
+	 * @param mm - Объект
+	 * @param serv - Услуга
+	 * @param tp - Тип
+	 * @return
+	 */
+	@Cacheable("billCache")
+	public MeterLog getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+		for (MeterLog ml : mm.getMlog()) {
+			//по типу и услуге
+			if (ml.getTp().getCd().equals(tp)
+					&& ml.getServ().equals(serv)) {
+				return ml;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Получить список лог.счетчиков по определённому объекту, типу и услуге
 	 * @param mm - Объект
 	 * @param serv - Услуга

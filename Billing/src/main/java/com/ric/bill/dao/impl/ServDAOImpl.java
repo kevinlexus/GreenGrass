@@ -31,11 +31,24 @@ public class ServDAOImpl implements ServDAO {
 	}
 
 	/**
+	 * Найти основную услугу по линии основная - ОДН
+	 * @param serv - услуга ОДН
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@Cacheable("billCache")
+	public Serv findMain(Serv serv) {
+		Query query =em.createQuery("from Serv t where t.odn=:id");
+		query.setParameter("id", serv.getId());
+		return (Serv) query.getSingleResult();
+	}
+
+    /**
 	 * Найти и отсортировать, все услуги для начисления 
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Serv> findForChrg() {
-		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2 ");
+		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2");
 		query.setParameter("s1", "Холодная вода (объем)");
 		query.setParameter("s2", "Горячая вода, подогрев");
 		query.setParameter("s3", "Водоотведение#");

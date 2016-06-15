@@ -9,6 +9,7 @@ import com.ric.bill.model.bs.Serv;
 public interface ServDAO {
 
 	public List<Serv> findAll();
+	public Serv findMain(Serv serv);
 	public List<Serv> findForChrg();
 	
 }

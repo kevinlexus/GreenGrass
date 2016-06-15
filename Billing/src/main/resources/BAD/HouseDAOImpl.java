@@ -64,7 +64,7 @@ public class HouseDAOImpl implements HouseDAO {
 	2609 [main] DEBUG org.hibernate.SQL  - select kw0_.FK_HOUSE as FK_HOUSE3_3_0_, kw0_.ID as ID1_3_0_, kw0_.ID as ID1_3_1_, kw0_.FK_K_LSK as FK_K_LSK2_3_1_, kw0_.FK_HOUSE as FK_HOUSE3_3_1_ from AR.KW kw0_ where kw0_.FK_HOUSE=?
 	2655 [main] DEBUG org.hibernate.SQL  - select kart0_.FK_KW as FK_KW4_2_0_, kart0_.LSK as LSK1_2_0_, kart0_.LSK as LSK1_2_1_, kart0_.FK_K_LSK as FK_K_LSK2_2_1_, kart0_.FIO as FIO3_2_1_, kart0_.FK_KW as FK_KW4_2_1_ from AR.KART kart0_ where kart0_.FK_KW=?
 	2657 [main] DEBUG org.hibernate.SQL  - select reg0_.LSK as LSK6_15_0_, reg0_.ID as ID1_15_0_, reg0_.ID as ID1_15_1_, reg0_.DT_REG as DT_REG2_15_1_, reg0_.DT_REG_TS as DT_REG_TS3_15_1_, reg0_.DT_UNREG as DT_UNREG4_15_1_, reg0_.DT_UNREG_TS as DT_UNREG_TS5_15_1_, reg0_.LSK as LSK6_15_1_, reg0_.FK_PERS as FK_PERS7_15_1_, reg0_.FK_REG_STATUS as FK_REG_STATUS8_15_1_, reg0_.FK_REG_TP as FK_REG_TP9_15_1_ from PS.REG reg0_ where reg0_.LSK=?
-	Reg=1996-03-12 00:00:00.0Check 4
+	Reg=1996-03-12 00:00:00dCheck 4
 	3382 [main] DEBUG org.hibernate.SQL  - select distinct house0_.ID as ID1_1_, house0_.FK_K_LSK as FK_K_LSK2_1_, house0_.FK_STREET as FK_STREET3_1_ from AR.HOUSE house0_ left outer join AR.KW kw1_ on (house0_.ID=kw1_.FK_HOUSE)left outer join AR.KART kart2_ on (kw1_.ID=kart2_.FK_KW)left outer join PS.REG reg3_ on (kart2_.LSK=reg3_.LSK)left outer join PS.REG_STATE regstate4_ on (kart2_.LSK=regstate4_.LSK) where house0_.FK_K_LSK=187804
 	
 }

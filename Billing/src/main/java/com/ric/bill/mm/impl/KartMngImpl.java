@@ -202,7 +202,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		
 		Kart kart = mLog.getKart();
 		//System.out.println("==== kk"+kart.getKlsk());
-		Double stVol = 0.0;
+		Double stVol = 0d;
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
 
@@ -212,8 +212,8 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		
 		System.out.println("CHECK2");
 		//System.out.println("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
-		if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по общей площади-1"), 0.0)==1.0
-				|| Utl.nvl(calc.getServMng().getDbl(serv, "Вариант расчета по объему-2"), 0.0)==1.0) {
+		if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
+				|| Utl.nvl(calc.getServMng().getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
 			if (cntPers.cnt==1) {
 				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.");
 			} else if (cntPers.cnt==2) {
@@ -221,19 +221,19 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			} else if (cntPers.cnt >= 3) {
 				stVol = getServPropByCD(kart, serv, "Норматив-3 и более чел.");
 			} else {
-				stVol = 0.0;
+				stVol = 0d;
 			}
 			
-		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по объему-1"),0.0)==1.0
+		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, serv, "Норматив");
-		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по объему-1"),0.0)==1.0
+		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
-			Double kitchElStv = 0.0;
+			Double kitchElStv = 0d;
 			String s2;
 			kitchElStv = calc.getKartMng().getDbl(kart, "Электроплита. основное количество");
-			if (Utl.nvl(kitchElStv, 0.0) != 0.0) {
+			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
 				switch (cntPers.cnt) {
 					case 0 : 
@@ -287,7 +287,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			//получить норматив, зависящий от проживающих
 			stVol = calc.getKartMng().getServPropByCD(kart, serv, s2);
 
-			//stVol=0.0;
+			//stVol=0d;
 			
 		}
 			

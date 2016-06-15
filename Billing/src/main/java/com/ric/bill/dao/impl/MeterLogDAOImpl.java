@@ -106,7 +106,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 		lnkVol.setExs(false);
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
-    			if (e.getPrc() != 0.0) {
+    			if (e.getPrc() != 0d) {
     				lnkVol.setExs(true);
     			}
     		}

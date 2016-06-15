@@ -34,7 +34,7 @@ public class SumNodeVol {
 
 	//добавить объем
 	public void addVol(Double vol) {
-		this.vol=this.vol+Utl.nvl(vol, 0.0); 
+		this.vol=this.vol+Utl.nvl(vol, 0d); 
 	}
 
 	public Double getArea() {
@@ -47,7 +47,7 @@ public class SumNodeVol {
 
 	//добавить площадь
 	public void addArea(Double area) {
-		this.area=this.area+Utl.nvl(area, 0.0); 
+		this.area=this.area+Utl.nvl(area, 0d); 
 	}
 
 	public Double getPers() {
@@ -60,7 +60,7 @@ public class SumNodeVol {
 	
 	//добавить кол-во проживающих
 	public void addPers(Double pers) {
-		this.pers=this.pers+Utl.nvl(pers, 0.0); 
+		this.pers=this.pers+Utl.nvl(pers, 0d); 
 	}
 
 	public Boolean getExs() {

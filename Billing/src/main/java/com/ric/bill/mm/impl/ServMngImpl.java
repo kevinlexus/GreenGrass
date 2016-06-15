@@ -33,6 +33,10 @@ public class ServMngImpl extends BaseStore implements ServMng {
 		return sDao.findAll();
 	}
 
+	public Serv findMain(Serv serv) {
+		return sDao.findMain(serv);
+	}
+
 	public List<Serv> findForChrg() {
 		return sDao.findForChrg();
 	}
