@@ -74,7 +74,7 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@BatchSize(size = 50)
 	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
 	@NotFound(action=NotFoundAction.IGNORE)

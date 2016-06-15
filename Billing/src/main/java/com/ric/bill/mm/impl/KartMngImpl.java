@@ -136,6 +136,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		//поиск сперва по постоянной регистрации 
 		for (Registrable p : rc.getReg()) {
 			if (p.getPers()!=null && !foundPers(counted, p.getPers())) {
+				System.out.println("проживающий id="+p.getPers().getId());
 				if (checkPersStatus(rc, p.getPers(), "Постоянная прописка", 0)) {
 					//постоянная регистрация есть, проверить временное отсутствие, если надо по этой услуге
 					if (!serv.getInclAbsn()) {
@@ -206,7 +207,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			//если кол-во проживающих не передано, получить его
 
 			cntPers= new CntPers();
-			getCntPers(kart, serv, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+			getCntPers(kart, servChrg, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		
 		System.out.println("CHECK2");
@@ -291,7 +292,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		}
 			
 		st.vol = stVol;
-		st.partVol=stVol/calc.getCntCurDays();
+		st.partVol=cntPers.cnt * stVol/calc.getCntCurDays();
 		return st;
 		
 	}

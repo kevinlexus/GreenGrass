@@ -258,7 +258,7 @@ public class BillServ {
 		nv.addRecur();
 		System.out.println("Номер итерации:"+nv.getRecur());
 		System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd()+" наименование:"+mLog.getName()+" klsk_obj="+mLog.getKlskObj());
-		if (mLog.getKart()!=null && mLog.getKart().getLsk().equals("26074287") && calc.getCalcTp()==0) {
+		if (mLog.getKart()!=null && mLog.getId()==3683347 && calc.getCalcTp()==0) {
 			//System.out.println("KLSK Лиц счет счетчика="+mLog.getKart().getKlsk());
 			System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
 		}

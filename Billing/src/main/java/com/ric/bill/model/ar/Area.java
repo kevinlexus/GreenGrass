@@ -63,7 +63,7 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
 	private Set<Street> street = new HashSet<Street>(0);
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
 	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
