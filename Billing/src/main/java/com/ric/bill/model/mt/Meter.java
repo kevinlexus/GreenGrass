@@ -40,7 +40,12 @@ import com.ric.bill.model.bs.Base;
     @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
     		parameters = {@ParamDef(name = "DT1", type = "date")
     		}
+    ),
+    @FilterDef(name = "FILTER_GEN_EX_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", //фильтр наличия ПУ (отдельно) 
+	parameters = {@ParamDef(name = "DT1", type = "date")
+	}
     )
+    
 })
 public class Meter extends Base implements java.io.Serializable, Storable {
 
@@ -80,7 +85,7 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
-	    @Filter(name = "FILTER_GEN_DT")})
+	    @Filter(name = "FILTER_GEN_EX_DT")})
 	private Set<MeterExs> exs = new HashSet<MeterExs>(0);
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)

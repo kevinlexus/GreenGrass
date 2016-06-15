@@ -1,6 +1,7 @@
 package com.ric.bill;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -16,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import antlr.collections.List;
 
 import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.excp.NotFoundNode;
+import com.ric.bill.excp.NotFoundODNLimit;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
@@ -54,8 +57,19 @@ public class BillServ {
 		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
 		session.enableFilter("FILTER_GEN_DT_INNER").setParameter("DT1", Calc.getCurDt1())
 												   .setParameter("DT2", Calc.getCurDt2());
+		//отдельно установить фильтр существования счетчиков
+		setExFilter(Calc.getGenDt());
 	}
 
+	/**
+	 * Фильтр существования счетчиков (сделал отдельно но не стал применять, так как в ОДН считается наличие хотя бы 1 дня сущ.счетчика ОДПУ)
+	 * @param date
+	 */
+	private void setExFilter(Date date) {
+		Session session = (Session) em.getDelegate();
+		session.enableFilter("FILTER_GEN_EX_DT").setParameter("DT1", date);
+	}
+	
 	/**
 	 * распределить объем по фонду
 	 */
@@ -63,8 +77,6 @@ public class BillServ {
 	public void distVols() {
 		System.out.println("1");
 		calc.setUp(); //настроить
-		setFilters();//вкл.фильтр
-		
 		
 		/*MeterLog gg = em.find(MeterLog.class , 3636525);
 		System.out.println("TEST:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
@@ -167,6 +179,8 @@ public class BillServ {
 	private void distHouseServ() {
 		System.out.println("Услуга="+calc.getServ().getCd());
 
+		setFilters();//вкл.фильтр
+
 		Calc.beginTimer();
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
@@ -179,6 +193,7 @@ public class BillServ {
 
 		Calc.beginTimer();
 		calc.setCalcTp(2);
+		
 		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
 		Calc.showTimer("2 тип");
 
@@ -200,33 +215,54 @@ public class BillServ {
 		System.out.println("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
 		for (MeterLog ml : calc.getHouseMng().getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-			distGraph(ml);
+			try {
+				distGraph(ml);
+			} catch (ErrorWhileDist e) {
+				e.printStackTrace();
+				return;
+			}
 		}
 	}
 	
 	/**
 	 * Распределить граф начиная с mLog
 	 * @param mLog - начальный узел распределения
+	 * @throws ErrorWhileDist 
 	 */
 	@Cacheable("billCache")
 	
-	private void distGraph (MeterLog mLog) {
+	private void distGraph (MeterLog mLog) throws ErrorWhileDist {
 		System.out.println("Распределение ввода:"+mLog.getId());
-		//перебрать все даты, за период
+		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
-		c.setTime(Calc.getCurDt1());
-		for (c.setTime(Calc.getCurDt1()); !c.getTime().after(Calc.getCurDt2()); c.add(Calendar.DATE, 1)) {
+		//необходимый для формирования диапазон дат
+		Date dt1, dt2;
+		if (calc.getCalcTp()==2) {
+			//формирование по ОДН - задать последнюю дату
+			dt1 = Calc.getCurDt2();
+			dt2 = Calc.getCurDt2();
+		} else {
+			//прочее формирование
+			dt1 = Calc.getCurDt1();
+			dt2 = Calc.getCurDt2();
+		}
+		
+		//c.setTime(Calc.getCurDt1());
+		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
 			@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
 				dummy=distNode(mLog, new NodeVol());
 			} catch (WrongGetMethod e) {
-				System.out.println("Некорректное получение параметра при вызове BillServ.distNode()");
+				throw new ErrorWhileDist("При расчете счетчика MeterLog.Id="+mLog.getId()+" , обнаружен замкнутый цикл");  
 			} catch (EmptyServ e) {
-				System.out.println("Пустая услуга при рекурсивном вызове BillServ.distNode()");
+				throw new ErrorWhileDist("Пустая услуга при рекурсивном вызове BillServ.distNode()");
+			} catch (NotFoundODNLimit e) {
+				throw new ErrorWhileDist("Не найден лимит ОДН в счетчике ОДН, при вызове BillServ.distNode()");
+			} catch (NotFoundNode e) {
+				throw new ErrorWhileDist("Не найден нужный счетчик, при вызове BillServ.distNode()");
 			}
-			//System.out.println("Объём в итоге="+dummy.getVol()+" по типу="+calc.getCalcTp());
 			System.out.println("по дате="+Calc.getGenDt());
 			
 			//break;
@@ -239,11 +275,12 @@ public class BillServ {
 	 * @param mLog
 	 * @param nv
 	 * @return
-	 * @throws WrongGetMethod*/
+	 * @throws WrongGetMethod
+	 * @throws NotFoundODNLimit */
 	
 	@Cacheable("billCache")
 	
-	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ {
+	private NodeVol distNode (MeterLog mLog, NodeVol nv) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		//Double tmpD=0.0; //для каких нить нужд
 		Double partArea =0.0; //текущая доля площади, по узлу
 		Double partPers =0.0; //текущая доля кол-ва прожив, по узлу
@@ -258,7 +295,7 @@ public class BillServ {
 		nv.addRecur();
 		System.out.println("Номер итерации:"+nv.getRecur());
 		System.out.println("Счетчик:id="+mLog.getId()+" тип="+mLog.getTp().getCd()+" наименование:"+mLog.getName()+" klsk_obj="+mLog.getKlskObj());
-		if (mLog.getKart()!=null && mLog.getId()==3683347 && calc.getCalcTp()==0) {
+		if (mLog.getKart()!=null && mLog.getKart().getLsk().equals("26074190") && calc.getCalcTp()==0 && mLog.getServ().getId()==79) {
 			//System.out.println("KLSK Лиц счет счетчика="+mLog.getKart().getKlsk());
 			System.out.println("Лиц счет счетчика="+mLog.getKart().getLsk());
 		}
@@ -314,47 +351,57 @@ public class BillServ {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
 			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии
 			//сохранить счетчик ЛОДН
-			LinkedNodeVol lnkODNVol = null;
+			SumNodeVol lnkODNVol = null;
 			MeterLog lnkLODN = null;
 			MeterLog lnkSumODPU = null;
 			MeterLog lnkODPU = null;
 			//поиск счетчика ЛОДН
-			try {
-				lnkLODN = calc.getMetLogMng().getLinkedNode(mLog, "ЛОДН");
-		        //System.out.println("Счетчик ЛОДН id="+lnkLODN.getId());
-			} catch (NotFoundNode e) {
+			lnkLODN = calc.getMetLogMng().getLinkedNode(mLog, "ЛОДН");
+			if (lnkLODN == null) {
 				// не найден счетчик
-		        System.out.println("Не найден счетчик ЛОДН, связанный со счетчиком id="+mLog.getId());
-				e.printStackTrace();
-				return null;
+		        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+mLog.getId());  
 			}
 			//поиск счетчика ЛСумОдпу
-			try {
-				lnkSumODPU = calc.getMetLogMng().getLinkedNode(lnkLODN, "ЛСумОДПУ");
-		        //System.out.println("Счетчик ЛСумОДПУ id="+lnkSumODPU.getId());
-			} catch (NotFoundNode e) {
+			lnkSumODPU = calc.getMetLogMng().getLinkedNode(lnkLODN, "ЛСумОДПУ");
+			if (lnkSumODPU == null) {
 				// не найден счетчик
-		        System.out.println("Не найден счетчик ЛСумОДПУ, связанный со счетчиком id="+lnkLODN.getId());
-				e.printStackTrace();
-				return null;
+		        throw new NotFoundNode("Не найден счетчик ЛСумОДПУ, связанный со счетчиком id="+lnkLODN.getId());  
 			}
 			//поиск счетчика Ф/Л ОДПУ
-			try {
-				lnkODPU = calc.getMetLogMng().getLinkedNode(lnkSumODPU, "ЛОДПУ");
-		        //System.out.println("Счетчик ЛОДПУ id="+lnkODPU.getId());
-			} catch (NotFoundNode e) {
+			lnkODPU = calc.getMetLogMng().getLinkedNode(lnkSumODPU, "ЛОДПУ");
+			if (lnkODPU == null) {
 				// не найден счетчик
-		        System.out.println("Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId());
-				e.printStackTrace();
-				return null;
+		        throw new NotFoundNode("Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId());  
 			}
 
-			//получить объем за период по счетчику ЛОДН  
+			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
 			lnkODNVol = calc.getMetLogMng().getVolPeriod(lnkLODN);
 
-			//проживающие
-			CntPers cntPers= new CntPers();
-			calc.getKartMng().getCntPers(kart, servChrg, cntPers, 0);
+			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
+			SumNodeVol sumVol = calc.getMetLogMng().getVolPeriod(mLog);
+
+			if (lnkODNVol.getExs() && lnkODNVol.getVol() > 0.0) {
+				//при наличии счетчика ОДПУ и объема по нему
+				if (lnkODNVol.getVol() > 0 && lnkODNVol.getArea() > 0) {
+					//ПЕРЕРАСХОД
+					vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+					//применить лимит по ОДН
+					Double limit = calc.getMetLogMng().getDbl((Storable)lnkODNVol, "Лимит по ОДН");
+					Double limitVol = lnkODNVol.getLimit();
+					if (limit == null) {
+						throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkODPU.getId());
+					} else if (limit == 1 && limitVol > 0) {
+						//если больше лимита - ограничить лимит * площадь
+						if (vl > limitVol * sumVol.getArea()) {
+							vl = limitVol * sumVol.getArea();
+						}
+					}
+				} else {
+					//ЭКОНОМИЯ
+					
+				}
+				
+			}
 			
 			//TODO пока на этом остановился
 			

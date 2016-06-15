@@ -3,21 +3,25 @@ package com.ric.bill;
 import com.ric.bill.model.mt.MeterLog;
 
 /**
- * Объем по связанному узлу 
+ * Объем по связанному узлу за период
  * @author lev
  *
  */
-public class LinkedNodeVol {
+public class SumNodeVol {
 
 	//значения за расчетный период:
 	private Double vol;//объем
 	private Double area;//площадь
 	private Double pers;//проживающие
+	private Double limit;//лимит ОДН (где есть)
+	private Boolean exs; //существование счетчика
 	
-	public LinkedNodeVol(){
+	public SumNodeVol(){
 		setVol(new Double(0));
 		setArea(new Double(0));
 		setPers(new Double(0));
+		setLimit(new Double(0));
+		setExs(false);
 	}
 
 	public Double getVol() {
@@ -57,6 +61,22 @@ public class LinkedNodeVol {
 	//добавить кол-во проживающих
 	public void addPers(Double pers) {
 		this.pers=this.pers+Utl.nvl(pers, 0.0); 
+	}
+
+	public Boolean getExs() {
+		return exs;
+	}
+
+	public void setExs(Boolean exs) {
+		this.exs = exs;
+	}
+
+	public Double getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Double limit) {
+		this.limit = limit;
 	}
 
 }

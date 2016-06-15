@@ -5,6 +5,7 @@ package com.ric.bill.excp;
  * @author lev
  *
  */
+@SuppressWarnings("serial")
 public class TooManyRecursiveCalls  extends Exception {
 
 	public TooManyRecursiveCalls(String message) {

@@ -5,6 +5,7 @@ package com.ric.bill.excp;
  * @author lev
  *
  */
+@SuppressWarnings("serial")
 public class NotFoundNode  extends Exception {
 
 	public NotFoundNode(String message) {

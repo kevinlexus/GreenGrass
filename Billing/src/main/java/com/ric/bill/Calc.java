@@ -131,7 +131,7 @@ public final class Calc {
 	}
 
 	public int getCalcTp() {
-		return calcTp;
+		return this.calcTp;
 	}
 
 	public void setCalcTp(int calcTp) {

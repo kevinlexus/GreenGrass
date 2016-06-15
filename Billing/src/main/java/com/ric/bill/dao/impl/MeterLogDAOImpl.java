@@ -9,10 +9,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.ric.bill.Calc;
-import com.ric.bill.LinkedNodeVol;
+import com.ric.bill.SumNodeVol;
 import com.ric.bill.Storable;
 import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.excp.NotFoundNode;
+import com.ric.bill.excp.NotFoundODNLimit;
+import com.ric.bill.model.mt.Meter;
+import com.ric.bill.model.mt.MeterExs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
@@ -54,7 +57,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @return лог.счетчик
 	 */
 	@Cacheable("billCache")
-	public MeterLog getLinkedNode (MeterLog mLog, String tp) throws NotFoundNode {
+	public MeterLog getLinkedNode (MeterLog mLog, String tp) {
 		MeterLog lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
     	//сперва направленные внутрь
@@ -79,14 +82,14 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	}
 	
 	/**
-	 * Получить объем по связанному прямой связью счетчику за период и сам этот счетчик
+	 * Получить объем, по счетчику за период и сам этот счетчик и признак существования его физ сч.
 	 * @param lnVol - заполняемый объемами объект
 	 * @param mLog - лог.счетчик
 	 * @throws NotFoundNode - если не найден счетчик (узел)
 	 */
 	@Cacheable("billCache")
-    public LinkedNodeVol getVolPeriod (MeterLog mLog) {
-    	LinkedNodeVol lnkVol = new LinkedNodeVol();
+    public SumNodeVol getVolPeriod (MeterLog mLog) {
+    	SumNodeVol lnkVol = new SumNodeVol();
     	//период будет опеределён фильтром FILTER_GEN_DT_INNER
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
@@ -96,9 +99,19 @@ public class MeterLogDAOImpl implements MeterLogDAO {
     			lnkVol.addArea(v.getVol1());
     			lnkVol.addPers(v.getVol2());
     		} else if (v.getTp().getCd().equals("Лимит ОДН") ){
-    			lnkVol.addPers(v.getVol1());
+    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение)
     		}
     	}
+    	//установить период существования хотя бы одного из его физ счетчиков
+		lnkVol.setExs(false);
+    	for (Meter m: mLog.getMeter()) {
+    		for (MeterExs e: m.getExs()) {
+    			if (e.getPrc() != 0.0) {
+    				lnkVol.setExs(true);
+    			}
+    		}
+    	}
+    	
 		return lnkVol;
 	}
 

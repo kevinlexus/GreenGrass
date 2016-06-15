@@ -6,9 +6,9 @@ package com.ric.bill.excp;
  *
  */
 @SuppressWarnings("serial")
-public class EmptyServ  extends Exception {
+public class ErrorWhileDist  extends Exception {
 
-	public EmptyServ(String message) {
+	public ErrorWhileDist(String message) {
         super(message);
     }
 }

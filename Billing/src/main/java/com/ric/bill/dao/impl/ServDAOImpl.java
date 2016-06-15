@@ -40,7 +40,7 @@ public class ServDAOImpl implements ServDAO {
 		query.setParameter("s2", "Горячая вода, подогрев");
 		query.setParameter("s3", "Водоотведение#");
 		query.setParameter("s4", "Отопление(объем)#");
-		query.setParameter("s5", "Электроснабжение (объем)#");
+		query.setParameter("s5", "Электроснабжение (объем)");
 		return query.getResultList();
 	}
 

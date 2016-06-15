@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import com.ric.bill.Simple;
 
 /**
- * Существование счетчика 
+ * Существование физического счетчика 
  * @author lev
  *
  */

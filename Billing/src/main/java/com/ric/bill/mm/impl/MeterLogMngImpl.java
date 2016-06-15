@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.LinkedNodeVol;
+import com.ric.bill.SumNodeVol;
 import com.ric.bill.Storable;
 import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.dao.ParDAO;
@@ -22,10 +22,10 @@ public class MeterLogMngImpl extends BaseStore implements MeterLogMng {
 	@Autowired
 	private MeterLogDAO mDao;
 
-	public MeterLog getLinkedNode (MeterLog mLog, String tp) throws NotFoundNode {
+	public MeterLog getLinkedNode (MeterLog mLog, String tp) {
 		return mDao.getLinkedNode(mLog, tp); 
 	}	
-	public LinkedNodeVol getVolPeriod(MeterLog mLog) {
+	public SumNodeVol getVolPeriod(MeterLog mLog) {
 		return mDao.getVolPeriod(mLog);
 	}
 

@@ -48,7 +48,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	}
 	
 	/**
-	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию
+	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 */
 	@Cacheable("billCache")
 	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp) {
@@ -90,7 +90,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	
 	
 	/**
-	 * Проверить наличие проживающего при fk_pers = null
+	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
 	@Cacheable("billCache")
 	private boolean checkPersNullStatus (Registrable reg) {
@@ -121,11 +121,11 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	}
 
 	/**
-	 * Получить кол-во проживающих 
+	 * Получить кол-во проживающих  на дату формирования! (на Calc.getGenDt())
 	 * @param serv - Рассчитываемая услуга 
-	 * @param reg - Список дат постоянной регистрации
-	 * @param regSt - Список дат временной регистрации
+	 * @param rc - Список дат регистрации
 	 * @param tp - Тип вызова (0-для получения нормативного объема, 1-для получения кол-во прож.)
+	 * @param cntPers - объект для заполнения
 	 * @return
 	 */
 	@Cacheable("billCache")
