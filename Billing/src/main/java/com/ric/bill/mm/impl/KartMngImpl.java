@@ -19,6 +19,7 @@ import com.ric.bill.dao.KartDAO;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Pers;
 import com.ric.bill.model.ps.Reg;
@@ -183,7 +184,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
 	@Cacheable("billCache")
-	public Standart getStandart (MeterLog mLog, Calc calc, CntPers cntPers) {
+	public Standart getStandart (MLogs mLog, Calc calc, CntPers cntPers) {
 		//long startTime;
 		//long endTime;
 		//long totalTime;

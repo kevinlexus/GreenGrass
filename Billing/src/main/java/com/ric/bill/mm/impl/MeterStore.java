@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 
 import com.ric.bill.MeterContains;
+import com.ric.bill.mm.BaseMeterLogMng;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 
 /**
@@ -14,7 +16,7 @@ import com.ric.bill.model.mt.MeterLog;
  * @author lev
  *
  */
-public abstract class MeterStore extends TarifStore {
+public abstract class MeterStore extends TarifStore implements BaseMeterLogMng {
 
 	/**
 	 * Получить список лог.счетчиков по определённому объекту, и типу
@@ -41,8 +43,8 @@ public abstract class MeterStore extends TarifStore {
 	 * @return
 	 */
 	@Cacheable("billCache")
-	public MeterLog getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp) {
-		for (MeterLog ml : mm.getMlog()) {
+	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+		for (MLogs ml : mm.getMlog()) {
 			//по типу и услуге
 			if (ml.getTp().getCd().equals(tp)
 					&& ml.getServ().equals(serv)) {
@@ -60,9 +62,9 @@ public abstract class MeterStore extends TarifStore {
 	 * @return
 	 */
 	@Cacheable("billCache")
-	public List<MeterLog> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
-		List<MeterLog> mLog = new ArrayList<MeterLog>(); 
-		for (MeterLog ml : mm.getMlog()) {
+	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+		List<MLogs> mLog = new ArrayList<MLogs>(); 
+		for (MLogs ml : mm.getMlog()) {
 			//по типу и услуге
 			if (ml.getTp().getCd().equals(tp)
 					&& ml.getServ().equals(serv)) {

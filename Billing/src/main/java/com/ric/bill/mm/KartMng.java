@@ -10,14 +10,14 @@ import com.ric.bill.Standart;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.tr.TarifKlsk;
 
-public interface KartMng extends StorableMng {
+public interface KartMng  extends BaseMeterLogMng {
 
-	void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp);
-	Double getServPropByCD(Kart kart, Serv serv, String string);
-	Standart getStandart(MeterLog mLog, Calc calc, CntPers cntPers);
-	MeterLog getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp);
+	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp);
+	public abstract Double getServPropByCD(Kart kart, Serv serv, String string);
+	public abstract Standart getStandart(MLogs mLog, Calc calc, CntPers cntPers);
 
 }

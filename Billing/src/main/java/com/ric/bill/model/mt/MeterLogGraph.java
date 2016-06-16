@@ -89,7 +89,7 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 		this.dst = dst;
 	}
 
-	public MeterLog getDst() {
+	public MLogs getDst() {
 		return dst;
 	}
 

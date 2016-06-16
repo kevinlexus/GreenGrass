@@ -4,20 +4,39 @@
          updateCheck="false">
     <diskStore path="cacheIO" />
  
-    <defaultCache maxElementsInMemory="50000" eternal="false"
+    <defaultCache maxElementsInMemory="50000" eternal="true"
                   overflowToDisk="false" diskPersistent="false"
+			      timeToIdleSeconds="0" timeToLiveSeconds="0"
                   diskExpiryThreadIntervalSeconds="1800" memoryStoreEvictionPolicy="FIFO">
     </defaultCache>
  
+ 	<cache name="org.hibernate.cache.internal.StandardQueryCache"
+        maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="120"
+        overflowToDisk="true" />
+	<cache
+	name="org.hibernate.cache.UpdateTimestampsCache"
+	maxEntriesLocalHeap="5000"
+	eternal="true"/>
+
+	<cache name="com.ric.bill.model.bs.Dw"
+		maxEntriesLocalHeap="1450"
+		timeToIdleSeconds="0" timeToLiveSeconds="0"
+		eternal="true" />
+        
+	<cache name="com.ric.bill.model.bs.Lst"
+		maxEntriesLocalHeap="1450"
+		timeToIdleSeconds="0" timeToLiveSeconds="0"
+		eternal="true" />
+
 	<cache name="billCache" 
 		maxEntriesLocalHeap="1000000"
 		maxEntriesLocalDisk="10000" 
-		eternal="false" 
+		eternal="true" 
 		diskPersistent="false"
 		diskSpoolBufferSizeMB="100"
-		timeToIdleSeconds="300" timeToLiveSeconds="600"
+		timeToIdleSeconds="0" timeToLiveSeconds="0"
 		memoryStoreEvictionPolicy="LFU" 
 		transactionalMode="off">
 	</cache>
-		
+	
 </ehcache>

@@ -1,9 +1,9 @@
 
-<project xmlns="http://maven.apache.org/POM/4.0d" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0d http://maven.apache.org/xsd/maven-4.0d.xsd">
-  <modelVersion>4.0d</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>Billing</artifactId>
-  <version>0d.1-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
   
             
   <properties>
@@ -30,7 +30,7 @@
 		<dependency>
 		    <groupId>org.hibernate.javax.persistence</groupId>
 		    <artifactId>hibernate-jpa-2.1-api</artifactId>
-		    <version>1.0d.Final</version>
+		    <version>1.0.0.Final</version>
 		</dependency>
 
 

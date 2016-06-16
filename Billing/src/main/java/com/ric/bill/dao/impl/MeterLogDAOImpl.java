@@ -89,10 +89,12 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 */
 	@Cacheable("billCache")
     public SumNodeVol getVolPeriod (MeterLog mLog) {
-    	SumNodeVol lnkVol = new SumNodeVol();
+    	System.out.println("проверка сч id="+mLog.getId());
+		SumNodeVol lnkVol = new SumNodeVol();
     	//период будет опеределён фильтром FILTER_GEN_DT_INNER
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
+        	System.out.println("проверка объема id="+v.getId()+" vol="+v.getVol1());
     		if (v.getTp().getCd().equals("Фактический объем") ){
     			lnkVol.addVol(v.getVol1());
     		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){

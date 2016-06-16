@@ -9,7 +9,7 @@ import com.ric.bill.model.bs.Dw;
  * @author lev
  *
  */
-public interface Storable extends Simple {
+public interface Storable  {
 	//klsk объекта (в каждом подклассе переписать методы!)
 	Integer getKlsk();
 	void setKlsk(Integer klsk);

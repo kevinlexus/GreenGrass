@@ -114,7 +114,7 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		this.dt2 = dt2;
 	}*/
 
-	public MeterLog getMeterLog() {
+	public MLogs getMeterLog() {
 		return meterLog;
 	}
 

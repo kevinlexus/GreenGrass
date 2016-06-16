@@ -52,7 +52,7 @@ import com.ric.bill.model.bs.Serv;
 	}
 )   
 })
-public class MeterLog extends Base implements java.io.Serializable, Storable {
+public class MeterLog extends Base implements java.io.Serializable, MLogs {
 
 	public MeterLog (){
 		
@@ -135,58 +135,100 @@ public class MeterLog extends Base implements java.io.Serializable, Storable {
 		this.klskObj=klskObj;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#getName()
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#setName(java.lang.String)
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#getMeter()
+	 */
 	public Set<Meter> getMeter() {
 		return meter;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#setMeter(java.util.Set)
+	 */
 	public void setMeter(Set<Meter> meter) {
 		this.meter = meter;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#getTp()
+	 */
 	public Lst getTp() {
 		return tp;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#setTp(com.ric.bill.model.bs.Lst)
+	 */
 	public void setTp(Lst tp) {
 		this.tp = tp;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#getVol()
+	 */
 	public Set<Vol> getVol() {
 		return vol;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#setVol(java.util.Set)
+	 */
 	public void setVol(Set<Vol> vol) {
 		this.vol = vol;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#getServ()
+	 */
 	public Serv getServ() {
 		return serv;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#setServ(com.ric.bill.model.bs.Serv)
+	 */
 	public void setServ(Serv serv) {
 		this.serv = serv;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#getKart()
+	 */
 	public Kart getKart() {
 		return kart;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#setKart(com.ric.bill.model.ar.Kart)
+	 */
 	public void setKart(Kart kart) {
 		this.kart = kart;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#getHouse()
+	 */
 	public House getHouse() {
 		return house;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ric.bill.model.mt.MLogs#setHouse(com.ric.bill.model.ar.House)
+	 */
 	public void setHouse(House house) {
 		this.house = house;
 	}

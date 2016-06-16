@@ -25,6 +25,7 @@ import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.MeterExs;
 import com.ric.bill.model.mt.MeterLog;
@@ -355,9 +356,13 @@ public class BillServ {
 			SumNodeVol lnkODNVol = null;
 			MeterLog lnkLODN = null;
 			MeterLog lnkSumODPU = null;
-			MeterLog lnkODPU = null;
+			MLogs lnkODPU = null;
 			//поиск счетчика ЛОДН
 			lnkLODN = calc.getMetLogMng().getLinkedNode(mLog, "ЛОДН");
+			//параметр Доначисление по ОДН
+			Double parAddODN = Utl.nvl(calc.getMetLogMng().getDbl((Storable)lnkLODN, "Доначисление по ОДН"), 0d);
+			Double parLimitODN = calc.getMetLogMng().getDbl((Storable)lnkLODN, "Лимит по ОДН");
+			
 			if (lnkLODN == null) {
 				// не найден счетчик
 		        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+mLog.getId());  
@@ -387,11 +392,10 @@ public class BillServ {
 					//ПЕРЕРАСХОД
 					vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
 					//применить лимит по ОДН
-					Double limit = calc.getMetLogMng().getDbl((Storable)lnkLODN, "Лимит по ОДН");
 					Double limitVol = lnkODNVol.getLimit();
-					if (limit == null) {
+					if (parLimitODN == null) {
 						throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
-					} else if (limit == 1 && limitVol > 0) {
+					} else if (parLimitODN == 1 && limitVol > 0) {
 						//если больше лимита - ограничить лимит * площадь
 						if (vl > limitVol * sumVol.getArea()) {
 							vl = limitVol * sumVol.getArea();
@@ -419,13 +423,13 @@ public class BillServ {
 					}
 				}
 				
-			} else if (calc.getMetLogMng().getDbl((Storable)lnkLODN, "Доначисление по ОДН") > 0d) {
+			} else if (parAddODN > 0d) {
 				//если есть объем дораспределения ОДН на м2 - то использовать его
-				vl = calc.getMetLogMng().getDbl((Storable)lnkLODN, "Доначисление по ОДН") * sumVol.getArea();
+				vl = parAddODN * sumVol.getArea();
 			} else {
 				//не найден счётчик ОДПУ (должно начислиться по лимиту ОДН (Нормативу) * площадь л.с.)
 				//или нет объема по ОДПУ
-				Double limit = calc.getMetLogMng().getDbl((Storable)lnkLODN, "Лимит по ОДН");
+				Double limit = parLimitODN;
 				if (limit == null) {
 					throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
 				} else if (limit == 1) {
@@ -461,16 +465,16 @@ public class BillServ {
 
 		Lst volTp=null;
 		//записать объем или площадь или кол-во прож. в текущий узел (лог.счетчик)
-		if (calc.getCalcTp()==0) {
-			//расчетная связь
+		if (calc.getCalcTp()==0 ||calc.getCalcTp()==2) {
+			//расчетная связь, расчетная связь ОДН
 			volTp = calc.getLstMng().findByCD("Фактический объем");
 			Vol vol = new Vol(mLog, volTp, vl, null, Calc.getGenDt(), Calc.getGenDt());
 			em.merge(vol);
 		} if (calc.getCalcTp()==1) {
-			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO!!!
+			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = calc.getLstMng().findByCD("Площадь и проживающие");
 			Vol vol = new Vol(mLog, volTp, partArea, partPers, Calc.getGenDt(), Calc.getGenDt());
-			//em.merge(vol);
+			em.merge(vol);
 		}
 		
 		
