@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -72,24 +73,28 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
+	@BatchSize(size = 50)
 	private Set<Meter> meter = new HashSet<Meter>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT_INNER")})
+	@BatchSize(size = 50)
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
+	@BatchSize(size = 50)
 	private Set<MeterLogGraph> outside = new HashSet<MeterLogGraph>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
+	@BatchSize(size = 50)
 	private Set<MeterLogGraph> inside = new HashSet<MeterLogGraph>(0);
 	
 	
@@ -135,100 +140,58 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 		this.klskObj=klskObj;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#getName()
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#setName(java.lang.String)
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#getMeter()
-	 */
 	public Set<Meter> getMeter() {
 		return meter;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#setMeter(java.util.Set)
-	 */
 	public void setMeter(Set<Meter> meter) {
 		this.meter = meter;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#getTp()
-	 */
 	public Lst getTp() {
 		return tp;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#setTp(com.ric.bill.model.bs.Lst)
-	 */
 	public void setTp(Lst tp) {
 		this.tp = tp;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#getVol()
-	 */
 	public Set<Vol> getVol() {
 		return vol;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#setVol(java.util.Set)
-	 */
 	public void setVol(Set<Vol> vol) {
 		this.vol = vol;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#getServ()
-	 */
 	public Serv getServ() {
 		return serv;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#setServ(com.ric.bill.model.bs.Serv)
-	 */
 	public void setServ(Serv serv) {
 		this.serv = serv;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#getKart()
-	 */
 	public Kart getKart() {
 		return kart;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#setKart(com.ric.bill.model.ar.Kart)
-	 */
 	public void setKart(Kart kart) {
 		this.kart = kart;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#getHouse()
-	 */
 	public House getHouse() {
 		return house;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.MLogs#setHouse(com.ric.bill.model.ar.House)
-	 */
 	public void setHouse(House house) {
 		this.house = house;
 	}

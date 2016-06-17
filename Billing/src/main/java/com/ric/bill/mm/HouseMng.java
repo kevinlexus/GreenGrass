@@ -7,7 +7,7 @@ import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MeterLog;
 
-public interface HouseMng extends BaseMeterLogMng {
+public interface HouseMng {
 	
 	public List<House> findAll();
 	

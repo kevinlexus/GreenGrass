@@ -2,15 +2,21 @@ package com.ric.bill.mm;
 
 import java.util.List;
 
+import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Storable;
 import com.ric.bill.excp.NotFoundNode;
+import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 
-public interface MeterLogMng extends StorableMng{
+public interface MeterLogMng {
 
-    public SumNodeVol getVolPeriod (MeterLog mLog);
-	public void delNodeVol(MeterLog ml, int tp);
-	public MeterLog getLinkedNode(MeterLog lnkMLog, String string);
+    public SumNodeVol getVolPeriod (MLogs mLog);
+	public void delNodeVol(MLogs ml, int tp);
+	public MLogs getLinkedNode(MLogs lnkMLog, String string);
+	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp);
+	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp);
+	public boolean checkExsMet(MLogs mLog);
 
 }

@@ -14,6 +14,7 @@ import com.ric.bill.Storable;
 import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.NotFoundODNLimit;
+import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.MeterExs;
 import com.ric.bill.model.mt.MeterLog;
@@ -28,93 +29,5 @@ public class MeterLogDAOImpl implements MeterLogDAO {
     @PersistenceContext
     private EntityManager em;
 
-    /**
-     * удалить рекурсивно все объемы по всем счетчикам начиная с указанного
-     * @param mLog - начальный счетчик
-     * @param tp - тип расчета
-     * @return 
-     */
-	public void delNodeVol(MeterLog mLog, int tp) {
-		for (Vol v : mLog.getVol()) {
-			em.remove(v);
-		}
-		//найти все направления, с необходимым типом, указывающие в точку из других узлов, удалить их объемы рекурсивно
-		for (MeterLogGraph g : mLog.getInside()) {
-			if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 
-					 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
-					 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
-					 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-						delNodeVol(g.getSrc(), tp);
-			}
-		}
-	}
-    
-	/**
-	 * Вернуть логический счетчик определенного типа, связанный с заданным
-	 * Если связано несколько - будет возвращён первый
-	 * @param mLog - тестируемый лог.счетчик
-	 * @param tp - тип счетчика
-	 * @return лог.счетчик
-	 */
-	@Cacheable("billCache")
-	public MeterLog getLinkedNode (MeterLog mLog, String tp) {
-		MeterLog lnkMLog = null;
-		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
-    	//сперва направленные внутрь
-    	for (MeterLogGraph g : mLog.getInside()) {
-    		if (g.getSrc().getTp().getCd().equals(tp)) {
-    			//найдено
-    			lnkMLog = g.getSrc();
-    			break;
-    		}
-    	}
-    	//потом направленные наружу, если не найдено
-    	if (lnkMLog == null) {
-	    	for (MeterLogGraph g : mLog.getOutside()) {
-	    		if (g.getDst().getTp().getCd().equals(tp)) {
-	    			//найдено
-	    			lnkMLog = g.getSrc();
-	    			break;
-	    		}
-	    	}
-		}
-		return lnkMLog;
-	}
-	
-	/**
-	 * Получить объем, по счетчику за период и сам этот счетчик и признак существования его физ сч.
-	 * @param lnVol - заполняемый объемами объект
-	 * @param mLog - лог.счетчик
-	 * @throws NotFoundNode - если не найден счетчик (узел)
-	 */
-	@Cacheable("billCache")
-    public SumNodeVol getVolPeriod (MeterLog mLog) {
-    	System.out.println("проверка сч id="+mLog.getId());
-		SumNodeVol lnkVol = new SumNodeVol();
-    	//период будет опеределён фильтром FILTER_GEN_DT_INNER
-    	//так что, простая итерация
-    	for (Vol v: mLog.getVol()) {
-        	System.out.println("проверка объема id="+v.getId()+" vol="+v.getVol1());
-    		if (v.getTp().getCd().equals("Фактический объем") ){
-    			lnkVol.addVol(v.getVol1());
-    		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
-    			lnkVol.addArea(v.getVol1());
-    			lnkVol.addPers(v.getVol2());
-    		} else if (v.getTp().getCd().equals("Лимит ОДН") ){
-    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение)
-    		}
-    	}
-    	//установить период существования хотя бы одного из его физ счетчиков
-		lnkVol.setExs(false);
-    	for (Meter m: mLog.getMeter()) {
-    		for (MeterExs e: m.getExs()) {
-    			if (e.getPrc() != 0d) {
-    				lnkVol.setExs(true);
-    			}
-    		}
-    	}
-    	
-		return lnkVol;
-	}
 
 }

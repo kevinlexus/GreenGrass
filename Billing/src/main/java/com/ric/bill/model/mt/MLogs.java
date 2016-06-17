@@ -39,4 +39,9 @@ public interface MLogs extends Storable, Simple {
 
 	public abstract void setHouse(House house);
 
+	public abstract Set<MeterLogGraph> getInside();
+
+	public abstract Set<MeterLogGraph> getOutside();
+
+
 }

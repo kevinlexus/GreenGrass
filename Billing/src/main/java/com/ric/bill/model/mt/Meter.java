@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -80,12 +81,14 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
+	@BatchSize(size = 50)
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_EX_DT")})
+	@BatchSize(size = 50)
 	private Set<MeterExs> exs = new HashSet<MeterExs>(0);
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
@@ -114,7 +117,7 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		this.dt2 = dt2;
 	}*/
 
-	public MLogs getMeterLog() {
+	public MeterLog getMeterLog() {
 		return meterLog;
 	}
 

@@ -31,8 +31,8 @@ public class Vol implements java.io.Serializable, Simple {
 		
 	}
 
-	public Vol (MeterLog mLog, Lst tp, Double vol1, Double vol2, Date date, Date date2){
-		setMLog(mLog);
+	public Vol (MeterLog ml, Lst tp, Double vol1, Double vol2, Date date, Date date2){
+		setMLog(ml);
 		setTp(tp);
 		setVol1(vol1);
 		setVol2(vol2);
@@ -42,8 +42,8 @@ public class Vol implements java.io.Serializable, Simple {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ")
-	@SequenceGenerator(name="SEQ", sequenceName="MT.SEQ_METER_VOL", allocationSize=1) //если сделать allocationSize>1 то появляется javax.persistence.EntityExistsException	
-    @Column(name = "ID", updatable = false, nullable = false)
+	@SequenceGenerator(name="SEQ", sequenceName="MT.SEQ_METER_VOL", allocationSize=100000) //если сделать allocationSize>1 то появляется javax.persistence.EntityExistsException	
+    @Column(name = "ID", updatable = false, nullable = false)								//пока сделал 100тыс, тормозить стало меньше
 	private Integer id; //id
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -116,12 +116,12 @@ public class Vol implements java.io.Serializable, Simple {
 		this.vol2 = vol2;
 	}
 
-	public MeterLog getMLog() {
+	public MLogs getMLog() {
 		return mLog;
 	}
 
-	public void setMLog(MeterLog mLog) {
-		this.mLog = mLog;
+	public void setMLog(MeterLog ml) {
+		this.mLog = ml;
 	}
 
 	public Meter getMet() {

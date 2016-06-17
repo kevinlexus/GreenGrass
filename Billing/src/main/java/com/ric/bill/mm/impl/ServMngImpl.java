@@ -23,7 +23,7 @@ import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Serv;
 
 @Service
-public class ServMngImpl extends BaseStore implements ServMng {
+public class ServMngImpl implements ServMng {
 
 	@Autowired
 	private ServDAO sDao;

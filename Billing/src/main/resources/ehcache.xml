@@ -18,7 +18,7 @@
 	maxEntriesLocalHeap="5000"
 	eternal="true"/>
 
-	<cache name="com.ric.bill.model.bs.Dw"
+<!-- 	<cache name="com.ric.bill.model.bs.Dw"
 		maxEntriesLocalHeap="1450"
 		timeToIdleSeconds="0" timeToLiveSeconds="0"
 		eternal="true" />
@@ -28,7 +28,8 @@
 		timeToIdleSeconds="0" timeToLiveSeconds="0"
 		eternal="true" />
 
-	<cache name="billCache" 
+ -->	
+ 	<cache name="billCache" 
 		maxEntriesLocalHeap="1000000"
 		maxEntriesLocalDisk="10000" 
 		eternal="true" 
@@ -39,4 +40,15 @@
 		transactionalMode="off">
 	</cache>
 	
+ 	<cache name="billCache2" 
+		maxEntriesLocalHeap="1000000"
+		maxEntriesLocalDisk="10000" 
+		eternal="true" 
+		diskPersistent="false"
+		diskSpoolBufferSizeMB="100"
+		timeToIdleSeconds="0" timeToLiveSeconds="0"
+		memoryStoreEvictionPolicy="LFU" 
+		transactionalMode="off">
+	</cache>
+
 </ehcache>

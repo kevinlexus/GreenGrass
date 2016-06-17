@@ -26,7 +26,7 @@ import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Serv;
 
 @Service
-public class LstMngImpl extends BaseStore implements LstMng {
+public class LstMngImpl implements LstMng {
 
 	@Autowired
 	private LstDAO lstDao;

@@ -15,7 +15,7 @@ import com.ric.bill.mm.HouseMng;
 import com.ric.bill.model.ar.House;
 
 @Service
-public class HouseMngImpl extends MeterStore implements HouseMng {
+public class HouseMngImpl implements HouseMng {
 
 
     @Autowired

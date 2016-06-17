@@ -14,7 +14,7 @@ import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.tr.TarifKlsk;
 
-public interface KartMng  extends BaseMeterLogMng {
+public interface KartMng  {
 
 	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp);
 	public abstract Double getServPropByCD(Kart kart, Serv serv, String string);

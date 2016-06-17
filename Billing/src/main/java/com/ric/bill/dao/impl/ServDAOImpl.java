@@ -36,10 +36,10 @@ public class ServDAOImpl implements ServDAO {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	@Cacheable("billCache")
+	//@Cacheable("billCache")
 	public Serv findMain(Serv serv) {
-		Query query =em.createQuery("from Serv t where t.odn=:id");
-		query.setParameter("id", serv.getId());
+		Query query =em.createQuery("from Serv t where t.odn=:serv");
+		query.setParameter("serv", serv);
 		return (Serv) query.getSingleResult();
 	}
 

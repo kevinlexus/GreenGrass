@@ -11,7 +11,9 @@ import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.MeterLogMng;
+import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
+import com.ric.bill.mm.TarifMng;
 import com.ric.bill.mm.impl.HouseMngImpl;
 import com.ric.bill.mm.impl.MeterLogMngImpl;
 import com.ric.bill.mm.impl.ServMngImpl;
@@ -45,8 +47,8 @@ public final class Calc {
 	public static long startTime;
 	public static long endTime;
 
-	//Здесь привязывать ТОЛЬКО интерфейсы, как best practice!
-	@Autowired
+	//Здесь привязывать ТОЛЬКО интерфейсы, как best practice! - везде свои привязки через Autowired!
+	/*@Autowired
 	private HouseMng houseMng; //менеджер дома
 	@Autowired
 	private KartMng kartMng; //менеджер лицевого счета
@@ -56,7 +58,11 @@ public final class Calc {
 	private MeterLogMng metLogMng; //менеджер счетчика
 	@Autowired
 	private LstMng lstMng; //менеджер списков
-
+	@Autowired
+	private ParMng parMng; //менеджер параметров
+	@Autowired
+	private TarifMng tarMng; //менеджер тарифов*/
+	
 	private Area area; //текущий город 
 	private House house; //текущий дом (распределяемый, начисляемый)
 	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
@@ -97,22 +103,6 @@ public final class Calc {
 		Calc.genDt = genDt;
 	}
 
-	public HouseMng getHouseMng() {
-		return houseMng;
-	}
-
-	public void setHouseMng(HouseMngImpl houseMng) {
-		this.houseMng = houseMng;
-	}
-
-	public ServMng getServMng() {
-		return servMng;
-	}
-
-	public void setServMng(ServMngImpl servMng) {
-		this.servMng = servMng;
-	}
-
 	public House getHouse() {
 		return house;
 	}
@@ -136,14 +126,6 @@ public final class Calc {
 
 	public void setCalcTp(int calcTp) {
 		this.calcTp = calcTp;
-	}
-
-	public MeterLogMng getMetLogMng() {
-		return metLogMng;
-	}
-
-	public void setMetLogMng(MeterLogMngImpl metLogMng) {
-		this.metLogMng = metLogMng;
 	}
 
 	public static Date getCurDt1() {
@@ -186,14 +168,6 @@ public final class Calc {
 		return lastDt;
 	}
 
-	public KartMng getKartMng() {
-		return kartMng;
-	}
-
-	public void setKartMng(KartMng kartMng) {
-		this.kartMng = kartMng;
-	}
-
 	public double getPartDays() {
 		return partDays;
 	}
@@ -202,14 +176,6 @@ public final class Calc {
 		Calc.partDays = partDays;
 	}
 
-	public LstMng getLstMng() {
-		return lstMng;
-	}
-
-	public void setLstMng(LstMng lstMng) {
-		this.lstMng = lstMng;
-	}
-	
 	public static void beginTimer() {
 		Calc.startTime=System.currentTimeMillis();
 	}

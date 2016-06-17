@@ -51,7 +51,7 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 	private MeterLog dst; 
 
     @Column(name = "PERCENT", updatable = false, nullable = true)
-	private BigDecimal prc; 
+	private Double prc; 
 
     public Integer getId() {
 		return this.id;
@@ -73,11 +73,11 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 		return src;
 	}
 
-	public BigDecimal getPrc() {
+	public Double getPrc() {
 		return prc;
 	}
 	
-	public void setPrc(BigDecimal prc) {
+	public void setPrc(Double prc) {
 		this.prc = prc;
 	}
 

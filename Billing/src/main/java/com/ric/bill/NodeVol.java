@@ -18,19 +18,8 @@ public class NodeVol {
 		vol  = new Double(0);
 		partArea = new Double(0);
 		partPers = new Double(0);
-		setRecur(0);
 	}
 	
-	//рекурсия +1
-	public void addRecur() {
-		setRecur(getRecur() + 1);
-	}
-
-	//рекурсия -1
-	public void decRecur() {
-		setRecur(getRecur() - 1);
-	}
-
 	public Double getVol() {
 		return vol;
 	}
@@ -67,12 +56,5 @@ public class NodeVol {
 		this.partPers = this.partPers+partPers;
 	}
 
-	public int getRecur() {
-		return recur;
-	}
-
-	public void setRecur(int recur) {
-		this.recur = recur;
-	}
 	
 }

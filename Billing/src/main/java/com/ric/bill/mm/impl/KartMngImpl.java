@@ -13,10 +13,14 @@ import com.ric.bill.Calc;
 import com.ric.bill.CntPers;
 import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
+import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.mm.KartMng;
+import com.ric.bill.mm.ParMng;
+import com.ric.bill.mm.ServMng;
+import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
@@ -28,10 +32,14 @@ import com.ric.bill.model.tr.TarifKlsk;
 import com.ric.bill.model.tr.TarifServOrg;
 
 @Service
-public class KartMngImpl extends MeterStore implements KartMng {
+public class KartMngImpl implements KartMng {
 
 	@Autowired
 	private KartDAO kDao;
+	@Autowired
+	private ParMng parMng;
+	@Autowired
+	private TarifMng tarMng;
 
 	/**
 	 * Проверить, считали ли персону
@@ -137,7 +145,6 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		//поиск сперва по постоянной регистрации 
 		for (Registrable p : rc.getReg()) {
 			if (p.getPers()!=null && !foundPers(counted, p.getPers())) {
-				System.out.println("проживающий id="+p.getPers().getId());
 				if (checkPersStatus(rc, p.getPers(), "Постоянная прописка", 0)) {
 					//постоянная регистрация есть, проверить временное отсутствие, если надо по этой услуге
 					if (!serv.getInclAbsn()) {
@@ -194,11 +201,6 @@ public class KartMngImpl extends MeterStore implements KartMng {
 		Serv serv = mLog.getServ().getStdrt(); 
 		//получить услугу основную, для начисления
 		Serv servChrg = mLog.getServ().getChrg();
-		if (mLog.getId()==3685454) {
-			System.out.println("Найден счетчик");
-		}
-
-		System.out.println("CHECK1");
 		Standart st = new Standart();
 		
 		Kart kart = mLog.getKart();
@@ -210,11 +212,9 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			cntPers= new CntPers();
 			getCntPers(kart, servChrg, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
-		
-		System.out.println("CHECK2");
 		//System.out.println("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
-		if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
-				|| Utl.nvl(calc.getServMng().getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
+		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
+				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
 			if (cntPers.cnt==1) {
 				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.");
 			} else if (cntPers.cnt==2) {
@@ -225,15 +225,15 @@ public class KartMngImpl extends MeterStore implements KartMng {
 				stVol = 0d;
 			}
 			
-		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, serv, "Норматив");
-		} else if (Utl.nvl(calc.getServMng().getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0d;
 			String s2;
-			kitchElStv = calc.getKartMng().getDbl(kart, "Электроплита. основное количество");
+			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество");
 			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
 				switch (cntPers.cnt) {
@@ -286,9 +286,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 			}
 			}
 			//получить норматив, зависящий от проживающих
-			stVol = calc.getKartMng().getServPropByCD(kart, serv, s2);
-
-			//stVol=0d;
+			stVol = getServPropByCD(kart, serv, s2);
 			
 		}
 			
@@ -300,7 +298,7 @@ public class KartMngImpl extends MeterStore implements KartMng {
 
 
 	/**
-	 * Найти значение свойства услуги
+	 * Найти значение свойства услуги (по лиц.счету!)
 	 * @param tarKlskArea - Город
 	 * @param tarKlskHouse - Дом
 	 * @param tarKlskKart - Лиц.счет
@@ -312,17 +310,14 @@ public class KartMngImpl extends MeterStore implements KartMng {
 	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
 		Double val;
 		//в начале ищем по лиц. счету 
-		System.out.println("===лс==="+kart.getLsk());
-		val=findProp(kart, serv, cd);
+		val=tarMng.findProp(kart, serv, cd);
 		if (val==null) {
 			//потом ищем по дому
-			System.out.println("=========дом=============");
-			val=findProp(kart.getKw().getHouse(), serv, cd);
+			val=tarMng.findProp(kart.getKw().getHouse(), serv, cd);
 		}
 		if (val==null) {
 			//потом ищем по городу
-			System.out.println("===============город===================================="+kart.getKw().getHouse().getStreet().getArea().getKlsk());
-			val=findProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd);
+			val=tarMng.findProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd);
 		}
 		return val;
 	}
