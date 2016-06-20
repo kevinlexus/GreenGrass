@@ -125,7 +125,7 @@ I have to do it by iteration through dw:
 
 	for (Dw dw: dwMng.findAll()) {
 		if (dw.getPar().getCd()=="TEST1") {
-		 System.out.println("Found row with par.cd:"+dw.getPar().getCd()+" value of S1="+dw.getS1);
+		 Calc.mess("Found row with par.cd:"+dw.getPar().getCd()+" value of S1="+dw.getS1);
 		}
 	}    		
 		
@@ -138,7 +138,7 @@ For example (without using dw.getPar() ):
 
 	for (Dw dw: dwMng.findAll()) {
 		if (dw.getCdOfPar("Test1")=="TEST1") {
-		 System.out.println("Found row with par.cd:"+dw.getPar().getCd()+" value of S1="+dw.getS1);
+		 Calc.mess("Found row with par.cd:"+dw.getPar().getCd()+" value of S1="+dw.getS1);
 		}
 	}    		
 

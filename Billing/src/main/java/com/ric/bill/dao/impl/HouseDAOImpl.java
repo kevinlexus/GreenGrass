@@ -28,7 +28,7 @@ public class HouseDAOImpl implements HouseDAO {
     @PersistenceContext
     private EntityManager em;
     
-	@Cacheable("billCache")
+	@Cacheable("readWriteCache")
 	public List<House> findAll() {
 		return em.createQuery("select t from House t "
 				+ " "

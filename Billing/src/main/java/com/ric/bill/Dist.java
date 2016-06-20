@@ -22,14 +22,18 @@ public class Dist {
 	public void test1() {
 		//для выключения логгинга, просто выкинул из maven всё что касалось log4j
 		//распределить объемы по дому
-		long startTime = System.currentTimeMillis();
-
+		long startTime;
+		long endTime;
+		long totalTime;
+		
+		startTime = System.currentTimeMillis();
 		System.out.println("Begin!");
+		Calc.setDbgLvl(0);
 		bs.distVols();
 		System.out.println("End!");
-
-		long endTime   = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
+			
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
 		System.out.println("Время исполнения-1:"+totalTime);
 
 		startTime = System.currentTimeMillis();
@@ -40,6 +44,16 @@ public class Dist {
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		System.out.println("Время исполнения-2:"+totalTime);
+
+		startTime = System.currentTimeMillis();
+		System.out.println("Begin!");
+		//bs.distVols();
+		System.out.println("End!");
+
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+		System.out.println("Время исполнения-3:"+totalTime);
+		
 	}
 
 }

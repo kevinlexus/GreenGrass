@@ -29,17 +29,17 @@ public class HouseDAOImpl implements HouseDAO {
 	
 	public void checkAll() {
 		Session sess = (Session) em.getDelegate();
-		System.out.println("Check 1");
+		Calc.mess("Check 1");
 		Query query = sess.createQuery("select distinct t from House t left join fetch Kw k on t.id=k.fkHouse "
 				+ "left join fetch Kart a on k.id=a.fkKw "
 				+ "left join fetch Reg r on a.lsk=r.lsk "
 				+ "left join fetch RegState s on a.lsk=s.lsk "
 				+ " "
 				+ "where t.klsk = 187804");
-		System.out.println("Check 2");
+		Calc.mess("Check 2");
 		List<House> lst =query.list(); 
 		for (House o : lst) {
-			System.out.println("Check 3");
+			Calc.mess("Check 3");
 			for (Kw kw : o.getKw()) {
 				for (Kart kart : kw.getLsk()) {
 					for (Reg reg : kart.getReg()) {
@@ -52,7 +52,7 @@ public class HouseDAOImpl implements HouseDAO {
 			}
 			break;
 		}
-		System.out.println("Check 4");
+		Calc.mess("Check 4");
 	}
 
 	

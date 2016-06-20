@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.Calc;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Storable;
@@ -28,6 +29,7 @@ import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
 
+//включил кэш - стало хуже, по скорости - 61 сек.
 @Service
 public class MeterLogMngImpl implements MeterLogMng {
 
@@ -43,7 +45,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	public List<MLogs> getMetLogByTp(MeterContains mm, String tp) {
 		List<MLogs> mLog = new ArrayList<MLogs>(); 
 		for (MLogs ml : mm.getMlog()) {
@@ -61,7 +63,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		for (MLogs ml : mm.getMlog()) {
 			//по типу и услуге
@@ -80,7 +82,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MLogs> mLog = new ArrayList<MLogs>(); 
 		for (MLogs ml : mm.getMlog()) {
@@ -98,7 +100,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * проверить существование физ.счетчика
 	 * @param mLog
 	 */
-	@Cacheable("billCache2")
+	@Cacheable("readOnlyCache2") //здесь без отдельного кэша не работает...
 	public boolean checkExsMet(MLogs mLog) {
     	//установить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
@@ -111,28 +113,20 @@ public class MeterLogMngImpl implements MeterLogMng {
 		return false;
 	}
 	
-	/* TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO   
-	
-		ВНИМАНИЕ! ПЕРЕНЕСТИ ВСЕ МЕТОДЫ ВО ВСЕХ СЕРВИСАХ ИЗ DAO! В DAO ОСТАВИТЬ ТОЛЬКО НИЗКИЙ УРОВЕНЬ!
-		ВНИМАНИЕ! ПЕРЕНЕСТИ ВСЕ МЕТОДЫ ВО ВСЕХ СЕРВИСАХ ИЗ DAO! В DAO ОСТАВИТЬ ТОЛЬКО НИЗКИЙ УРОВЕНЬ!
-		ВНИМАНИЕ! ПЕРЕНЕСТИ ВСЕ МЕТОДЫ ВО ВСЕХ СЕРВИСАХ ИЗ DAO! В DAO ОСТАВИТЬ ТОЛЬКО НИЗКИЙ УРОВЕНЬ!
-		ВНИМАНИЕ! ПЕРЕНЕСТИ ВСЕ МЕТОДЫ ВО ВСЕХ СЕРВИСАХ ИЗ DAO! В DAO ОСТАВИТЬ ТОЛЬКО НИЗКИЙ УРОВЕНЬ!
-		ВНИМАНИЕ! ПЕРЕНЕСТИ ВСЕ МЕТОДЫ ВО ВСЕХ СЕРВИСАХ ИЗ DAO! В DAO ОСТАВИТЬ ТОЛЬКО НИЗКИЙ УРОВЕНЬ!
-	*/
 	/**
 	 * Получить объем, по счетчику за период и сам этот счетчик и признак существования его физ сч.
 	 * @param lnVol - заполняемый объемами объект
 	 * @param mLog - лог.счетчик
 	 * @throws NotFoundNode - если не найден счетчик (узел)
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readWriteCache")
     public SumNodeVol getVolPeriod (MLogs mLog) {
-    	System.out.println("проверка сч id="+mLog.getId());
+		Calc.mess("проверка сч id="+mLog.getId());
 		SumNodeVol lnkVol = new SumNodeVol();
     	//период будет опеределён фильтром FILTER_GEN_DT_INNER
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
-        	//System.out.println("проверка объема id="+v.getId()+" vol="+v.getVol1());
+        	//Calc.mess("проверка объема id="+v.getId()+" vol="+v.getVol1());
     		if (v.getTp().getCd().equals("Фактический объем") ){
     			lnkVol.addVol(v.getVol1());
     		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
@@ -154,7 +148,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - тип счетчика
 	 * @return лог.счетчик
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readWriteCache")
 	public MLogs getLinkedNode (MLogs mLog, String tp) {
 		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 

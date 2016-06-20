@@ -44,7 +44,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить, считали ли персону
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	private boolean foundPers (Set<Pers> counted, Pers p) {
 		if (counted.contains(p)) {
 			//уже считали персону
@@ -59,7 +59,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp) {
 		Date dt1, dt2;
 		Set<? extends Registrable> rg;
@@ -101,7 +101,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -137,7 +137,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cntPers - объект для заполнения
 	 * @return
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -190,7 +190,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	public Standart getStandart (MLogs mLog, Calc calc, CntPers cntPers) {
 		//long startTime;
 		//long endTime;
@@ -204,7 +204,7 @@ public class KartMngImpl implements KartMng {
 		Standart st = new Standart();
 		
 		Kart kart = mLog.getKart();
-		//System.out.println("==== kk"+kart.getKlsk());
+		//Calc.mess("==== kk"+kart.getKlsk());
 		Double stVol = 0d;
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
@@ -212,7 +212,7 @@ public class KartMngImpl implements KartMng {
 			cntPers= new CntPers();
 			getCntPers(kart, servChrg, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
-		//System.out.println("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
+		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
 		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
 				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
 			if (cntPers.cnt==1) {
@@ -306,7 +306,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cd - CD свойства
 	 * @return
 	 */
-	@Cacheable("billCache")
+	@Cacheable("readOnlyCache")
 	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
 		Double val;
 		//в начале ищем по лиц. счету 

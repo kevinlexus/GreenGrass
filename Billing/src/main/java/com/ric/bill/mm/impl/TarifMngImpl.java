@@ -38,6 +38,18 @@ public class TarifMngImpl implements TarifMng {
 	 * @return - свойство
 	 */
 	public Double findProp(TarifContains tc, Serv serv, String cd) {
-		return tDao.findProp(tc, serv, cd);
+		//искать сперва по наборам тарифа объекта 
+		for (TarifKlsk k : tc.getTarifklsk()) {
+			//затем по строкам - составляющим тариф 
+			for (TarifServProp t : k.getTarprop()) {
+				if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
+					return t.getN1();
+				}
+			}
+		}
+		return null;
+		
 	}
+
+	
 }

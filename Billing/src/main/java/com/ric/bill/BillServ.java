@@ -10,6 +10,8 @@ import javax.persistence.PersistenceContext;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,34 +95,18 @@ public class BillServ {
 	 * распределить объем по фонду
 	 */
 	@Transactional
+	@Caching(evict = {@CacheEvict(cacheNames="readOnlyCache2", allEntries=true),
+			@CacheEvict(cacheNames="readWriteCache", allEntries=true)
+	})
+	@Cacheable("readWriteCache")	
 	public void distVols() {
-		System.out.println("1");
 		calc.setUp(); //настроить
-		
-		/*MeterLog gg = em.find(MeterLog.class , 3636525);
-		System.out.println("TEST:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
-
-		gg = em.find(MeterLog.class , 3636530);
-		System.out.println("TEST2:"+gg.getName()+" klsk_obj:"+gg.getKlskObj()+" lsk:"+gg.getKart().getLsk()+" fio="+gg.getKart().getFio());
-		*/
 		
 		for (House o: houseMng.findAll()) {
 			calc.setHouse(o);
 			calc.setArea(calc.getHouse().getStreet().getArea());
-			System.out.println("Дом загружен="+o.getId());
+		    Calc.mess("Дом загружен="+o.getId());
 			
-			 //TarifKlsk k = em.find(TarifKlsk.class , 548342);
-			 /*Set<TarifKlsk> ttt = calc.getHouse().getStreet().getArea().getTarklsk();
-				for (TarifKlsk k : ttt) {
-					System.out.println("k2="+k.getId());
-					//затем по строкам - составляющим тариф 
-
-					for (TarifServOrg t : k.getTarorg()) {
-						System.out.println("t2="+k.getId());
-					}
-
-				}		*/
-
 			//удалить объемы по всем услугам дома
 			delHouseVol();
 			//распределить объемы
@@ -132,8 +118,6 @@ public class BillServ {
 	/**
 	 * удалить объемы по дому
 	 */
-	
-	@Transactional
 	public void delHouseVol() {
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : servMng.findForChrg()) {
@@ -176,16 +160,15 @@ public class BillServ {
 	/**
 	 * распределить объем по дому
 	 */
-	@Transactional
+	@Cacheable("readWriteCache")	
 	public void distHouseVol() {
-		System.out.println("Дом: id="+calc.getHouse().getId());
-		System.out.println("Дом: klsk="+calc.getHouse().getKlsk());
-		System.out.println("Площадь: "+parMng.getDbl(calc.getHouse(), "Площадь.Жилая"));
-
+		Calc.mess("Дом: id="+calc.getHouse().getId());
+		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
+		Calc.mess("Площадь: "+parMng.getDbl(calc.getHouse(), "Площадь.Жилая"));
 		//найти все необходимые услуги для распределения
 		for (Serv s : servMng.findForChrg()) {
 			calc.setServ(s);
-			System.out.println("Распределение услуги: "+s.getCd());
+			Calc.mess("Распределение услуги: "+s.getCd());
 			distHouseServ();
 		}
 	}
@@ -195,9 +178,9 @@ public class BillServ {
 	 * распределить объем по услуге данного дома
 	 */
 	
+	@Cacheable("readWriteCache")	
 	private void distHouseServ() {
-		System.out.println("Услуга="+calc.getServ().getCd());
-
+		Calc.mess("Услуга="+calc.getServ().getCd());
 		setFilters();//вкл.фильтр
 
 		Calc.beginTimer();
@@ -229,9 +212,9 @@ public class BillServ {
 	 * Распределить объем по вводам дома
 	 * @param calcTp - тип обработки
 	 */
-	
+	@Cacheable("readWriteCache")	
 	private void distHouseServTp(Serv serv) {
-		System.out.println("Распределение по типу:"+calc.getCalcTp());
+		Calc.mess("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
 			try {
@@ -248,10 +231,9 @@ public class BillServ {
 	 * @param ml - начальный узел распределения
 	 * @throws ErrorWhileDist 
 	 */
-	@Cacheable("billCache")
-	
+	@Cacheable("readWriteCache")	
 	private void distGraph (MLogs ml) throws ErrorWhileDist {
-		System.out.println("Распределение ввода:"+ml.getId());
+		Calc.mess("Распределение ввода:"+ml.getId());
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
@@ -282,7 +264,7 @@ public class BillServ {
 			} catch (NotFoundNode e) {
 				throw new ErrorWhileDist("Не найден нужный счетчик, при вызове BillServ.distNode()");
 			}
-			System.out.println("по дате="+Calc.getGenDt());
+			Calc.mess("по дате="+Calc.getGenDt());
 			
 			//break;
 		}
@@ -296,9 +278,7 @@ public class BillServ {
 	 * @return
 	 * @throws WrongGetMethod
 	 * @throws NotFoundODNLimit */
-	
-	@Cacheable("billCache")
-	
+	@Cacheable("readWriteCache")	
 	private NodeVol distNode (MLogs ml, int rec) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		//Double tmpD=0d; //для каких нить нужд
 		Double partArea =0d; //текущая доля площади, по узлу
@@ -314,9 +294,8 @@ public class BillServ {
 			throw new WrongGetMethod("При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружен замкнутый цикл");
 		}
 		rec++;
-		//System.out.println("Номер итерации:"+rec);
 		if (!ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
-			System.out.println("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
+			Calc.mess("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
 		}
 
 		String mLogTp = ml.getTp().getCd(); //тип лог счетчика
@@ -325,13 +304,10 @@ public class BillServ {
 			throw new EmptyServ("При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружена пустая услуга для расчета начисления");
 		}
 
-		if (calc.getCalcTp()==0 && ml.getId()==3603444) {
-			System.out.println("стоп");
+		if (calc.getCalcTp()==2 && ml.getId()==3625190) {
+			Calc.mess("стоп");
 		}
-
-		if (calc.getCalcTp()==2 && ml.getId()==3625271) {
-			System.out.println("стоп");
-		}
+		
 		
 		if (calc.getCalcTp()==0) {
 			//по расчетной связи
@@ -351,7 +327,7 @@ public class BillServ {
 				}
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
-				//System.out.println("before:");
+				//Calc.mess("before:");
 				vl = kartMng.getStandart(ml, calc, null).partVol;
 			}
 				
@@ -397,11 +373,9 @@ public class BillServ {
 			SumNodeVol lnkODPUVol = metMng.getVolPeriod(lnkODPU);
 
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
-	    	System.out.println("check id="+lnkLODN.getId());
-
+	    	Calc.mess("check id="+lnkLODN.getId());
 			lnkODNVol = metMng.getVolPeriod(lnkLODN);
-        	System.out.println("объем по ЛОДН id="+lnkLODN.getId()+" vol="+lnkODNVol.getVol()+" pers="+lnkODNVol.getPers()+" area="+lnkODNVol.getArea());
-			
+			Calc.mess("объем по ЛОДН id="+lnkLODN.getId()+" vol="+lnkODNVol.getVol()+" pers="+lnkODNVol.getPers()+" area="+lnkODNVol.getArea());
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
 			SumNodeVol sumVol = metMng.getVolPeriod(ml);
 			
@@ -428,10 +402,10 @@ public class BillServ {
 					Serv mainServ = servMng.findMain(servChrg);
 					//получить счетчик основной услуги
 					MLogs mlMain = metMng.getFirstMetLogByServTp(kart, mainServ.getMet(), "ЛИПУ");
-			    	System.out.println("check main id="+mlMain.getId());
+					Calc.mess("check main id="+mlMain.getId());
 					//получить объем за период, по лог счетчику основной услуги
 					SumNodeVol sumMainVol = metMng.getVolPeriod(mlMain);
-			    	System.out.println("check main vol ="+sumMainVol.getVol());
+					Calc.mess("check main vol ="+sumMainVol.getVol());
 
 					//если есть проживающие по узлу ОДН
 					if (lnkODNVol.getPers() > 0 ) {
@@ -473,9 +447,9 @@ public class BillServ {
 		nv.addVol(vl);
 
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
-		//System.out.println("Найдено входящих направлений ="+mLog.getDst().size());
+		//Calc.mess("Найдено входящих направлений ="+mLog.getDst().size());
 		if (ml.getInside().size() > 0) {
-			System.out.println("{");
+			Calc.mess("{");
 		}
 		for (MeterLogGraph g : ml.getInside()) {
 			if (calc.getCalcTp()==0 && g.getTp().getCd().equals("Расчетная связь") 
@@ -490,12 +464,12 @@ public class BillServ {
 			}
 		}
 		if (ml.getInside().size() > 0) {
-			System.out.println("}");
+			Calc.mess("}");
 		}
 		
 		if (ml.getId()==3625218 && calc.getCalcTp()==0) {
-			System.out.println("счетчик!");
-			//System.out.println("Лиц счет счетчика="+ml.getKart().getLsk());
+			Calc.mess("счетчик!");
+			//Calc.mess("Лиц счет счетчика="+ml.getKart().getLsk());
 		}
 
 		Lst volTp=null;
@@ -506,7 +480,7 @@ public class BillServ {
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, Calc.getGenDt(), Calc.getGenDt());
 			em.merge(vol);
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
-				System.out.println("записан объем по счетчику id="+ml.getId()+" vol="+vol.getVol1());
+				Calc.mess("записан объем по счетчику id="+ml.getId()+" vol="+vol.getVol1());
 			}
 		} if (calc.getCalcTp()==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
@@ -514,7 +488,7 @@ public class BillServ {
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), Calc.getGenDt(), Calc.getGenDt());
 			em.merge(vol);
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
-				System.out.println("записана площадь по счетчику id="+ml.getId()+" area="+nv.getPartArea()+" pers="+nv.getPartPers());
+				Calc.mess("записана площадь по счетчику id="+ml.getId()+" area="+nv.getPartArea()+" pers="+nv.getPartPers());
 			}
 		}
 		

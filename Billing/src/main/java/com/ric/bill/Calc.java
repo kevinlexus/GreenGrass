@@ -1,5 +1,7 @@
 package com.ric.bill;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -47,28 +49,14 @@ public final class Calc {
 	public static long startTime;
 	public static long endTime;
 
-	//Здесь привязывать ТОЛЬКО интерфейсы, как best practice! - везде свои привязки через Autowired!
-	/*@Autowired
-	private HouseMng houseMng; //менеджер дома
-	@Autowired
-	private KartMng kartMng; //менеджер лицевого счета
-	@Autowired
-	private ServMng servMng; //менеджер услуги
-	@Autowired
-	private MeterLogMng metLogMng; //менеджер счетчика
-	@Autowired
-	private LstMng lstMng; //менеджер списков
-	@Autowired
-	private ParMng parMng; //менеджер параметров
-	@Autowired
-	private TarifMng tarMng; //менеджер тарифов*/
-	
 	private Area area; //текущий город 
 	private House house; //текущий дом (распределяемый, начисляемый)
 	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
 	private int calcTp; //тип обработки расчёта
+	//уровень отладки
+	private static int dbgLvl;
 	
 	public static int kmp=0; //KMP!
 
@@ -182,7 +170,9 @@ public final class Calc {
 	
 	public static void showTimer(String mess) {
 		Calc.endTime=System.currentTimeMillis();
-		System.out.println("************ "+mess+" затрачено="+Long.toString(Calc.endTime-Calc.startTime));
+		if (Calc.getDbgLvl() > 1) {
+			Calc.mess("************ "+mess+" затрачено="+Long.toString(Calc.endTime-Calc.startTime));
+		}
 	}
 
 	public static Kart getKart() {
@@ -192,4 +182,23 @@ public final class Calc {
 	public void setKart(Kart kart) {
 		Calc.kart = kart;
 	}
+
+	//Отправить в консоль сообщение
+	public static void mess(String txt) {
+			DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			ZonedDateTime dt = ZonedDateTime.now();
+			if (getDbgLvl() > 0 ) {
+				System.out.println(dt.format(frmt)+' '+txt);
+			}
+		}
+
+	public static int getDbgLvl() {
+		return dbgLvl;
+	}
+
+	public static void setDbgLvl(int dbgLvl) {
+		Calc.dbgLvl = dbgLvl;
+	}
+
+	
 }
