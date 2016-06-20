@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.Dist;
+import com.ric.bill.BillServ;
 import com.ric.bill.dao.HouseDAO;
 import com.ric.bill.dao.ServDAO;
 import com.ric.bill.excp.WrongGetMethod;
