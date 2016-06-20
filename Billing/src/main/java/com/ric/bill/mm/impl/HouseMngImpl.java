@@ -21,7 +21,6 @@ public class HouseMngImpl implements HouseMng {
     @Autowired
 	private HouseDAO hDao;
 
-	
 	public List<House> findAll() {
 		return hDao.findAll();
 	}

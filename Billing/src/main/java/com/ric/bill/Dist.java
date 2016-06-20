@@ -44,7 +44,7 @@ import com.ric.bill.model.tr.TarifServOrg;
 import com.ric.bill.model.tr.TarifServProp;
 
 /**
- * Главный сервис биллинга
+ * Сервис распределения объемов
  * @author lev
  *
  */
@@ -83,7 +83,7 @@ public class Dist {
 	}
 
 	/**
-	 * Фильтр существования счетчиков (сделал отдельно но не стал применять, так как в ОДН считается наличие хотя бы 1 дня сущ.счетчика ОДПУ)
+	 * Фильтр существования счетчиков (сделал отдельно, но не стал применять, так как в ОДН считается наличие хотя бы 1 дня сущ.счетчика ОДПУ)
 	 * @param date
 	 */
 	private void setExFilter(Date date) {
@@ -92,32 +92,33 @@ public class Dist {
 	}
 	
 	/**
-	 * распределить объем по фонду
+	 * сформировать по фонду
 	 */
-	@Transactional
 	@Caching(evict = {@CacheEvict(cacheNames="readOnlyCache2", allEntries=true),
-			@CacheEvict(cacheNames="readWriteCache", allEntries=true)
+			@CacheEvict(cacheNames="readWriteCache", allEntries=true),
+			@CacheEvict(cacheNames="readOnlyCache", allEntries=true)
 	})
-	@Cacheable("readWriteCache")	
-	public void distVols() {
-		calc.setUp(); //настроить
-		
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void gen() {
 		for (House o: houseMng.findAll()) {
 			calc.setHouse(o);
 			calc.setArea(calc.getHouse().getStreet().getArea());
-		    Calc.mess("Дом загружен="+o.getId());
-			
-			//удалить объемы по всем услугам дома
-			delHouseVol();
-			//распределить объемы
-			distHouseVol();
-		}
+		    Calc.mess("Дом="+o.getId());
+			calc.setUp(); //настроить даты и т.п.
 
+			//распределить объемы
+		    distHouseVol();
+		    
+		    //TODO - начислить
+			
+		}
 	}
 
+	
 	/**
 	 * удалить объемы по дому
 	 */
+	@Cacheable("readWriteCache")	
 	public void delHouseVol() {
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : servMng.findForChrg()) {
@@ -133,7 +134,6 @@ public class Dist {
 	 * 
 	 * @param serv - заданная услуга
 	 */
-	
 	private void delHouseVolServ() {
 		delHouseServVolTp(calc.getServ().getMet(), 1);
 		delHouseServVolTp(calc.getServ().getMet(), 0);
@@ -160,11 +160,14 @@ public class Dist {
 	/**
 	 * распределить объем по дому
 	 */
-	@Cacheable("readWriteCache")	
 	public void distHouseVol() {
 		Calc.mess("Дом: id="+calc.getHouse().getId());
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
 		Calc.mess("Площадь: "+parMng.getDbl(calc.getHouse(), "Площадь.Жилая"));
+
+		//удалить объемы по всем услугам дома
+	    delHouseVol();
+
 		//найти все необходимые услуги для распределения
 		for (Serv s : servMng.findForChrg()) {
 			calc.setServ(s);
@@ -177,8 +180,6 @@ public class Dist {
 	/**
 	 * распределить объем по услуге данного дома
 	 */
-	
-	@Cacheable("readWriteCache")	
 	private void distHouseServ() {
 		Calc.mess("Услуга="+calc.getServ().getCd());
 		setFilters();//вкл.фильтр
@@ -212,7 +213,6 @@ public class Dist {
 	 * Распределить объем по вводам дома
 	 * @param calcTp - тип обработки
 	 */
-	@Cacheable("readWriteCache")	
 	private void distHouseServTp(Serv serv) {
 		Calc.mess("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге

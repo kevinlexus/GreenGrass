@@ -3,12 +3,17 @@ package com.ric.bill;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.mm.HouseMng;
+
+/**
+ * Главный сервис биллинга
+ * @author lev
+ *
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring.xml" })
 public class BillServ {
@@ -16,7 +21,11 @@ public class BillServ {
 	public static ApplicationContext ctx;
 	
 	@Autowired
-    private Dist bs;
+	private Calc calc;
+	@Autowired
+    private Dist dist;
+	@Autowired
+	private HouseMng houseMng;
 	
 	@Test
 	public void test1() {
@@ -28,32 +37,16 @@ public class BillServ {
 		
 		startTime = System.currentTimeMillis();
 		System.out.println("Begin!");
-		Calc.setDbgLvl(0);
-		bs.distVols();
+		Calc.setDbgLvl(2);
+		dist.gen();
 		System.out.println("End!");
 			
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		System.out.println("Время исполнения-1:"+totalTime);
 
-		startTime = System.currentTimeMillis();
-		System.out.println("Begin!");
-		//bs.distVols();
-		System.out.println("End!");
-
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		System.out.println("Время исполнения-2:"+totalTime);
-
-		startTime = System.currentTimeMillis();
-		System.out.println("Begin!");
-		//bs.distVols();
-		System.out.println("End!");
-
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		System.out.println("Время исполнения-3:"+totalTime);
 		
 	}
 
+	
 }

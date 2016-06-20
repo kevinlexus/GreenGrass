@@ -119,7 +119,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog - лог.счетчик
 	 * @throws NotFoundNode - если не найден счетчик (узел)
 	 */
-	@Cacheable("readWriteCache")
+	//@Cacheable("readWriteCache")
     public SumNodeVol getVolPeriod (MLogs mLog) {
 		Calc.mess("проверка сч id="+mLog.getId());
 		SumNodeVol lnkVol = new SumNodeVol();
