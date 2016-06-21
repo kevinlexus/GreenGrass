@@ -43,8 +43,8 @@ public class Vol implements java.io.Serializable, Simple {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ")
-	@SequenceGenerator(name="SEQ", sequenceName="MT.SEQ_METER_VOL", allocationSize=1) //если сделать allocationSize>1 то появляется javax.persistence.EntityExistsException	
-    @Column(name = "ID", updatable = false, nullable = false)								//пока сделал 100тыс, тормозить стало меньше
+	@SequenceGenerator(name="SEQ", sequenceName="MT.KMP_METER_VOL_ID", allocationSize=10) //если сделать allocationSize>1 то появляется javax.persistence.EntityExistsException	
+    @Column(name = "ID", unique=true, updatable = false, nullable = false)								//пока сделал 100тыс, тормозить стало меньше
 	private Integer id; //id
 	
 	@ManyToOne(fetch = FetchType.LAZY)

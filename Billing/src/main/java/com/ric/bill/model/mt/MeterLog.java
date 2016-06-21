@@ -77,7 +77,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	private Set<Meter> meter = new HashSet<Meter>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
-	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
+	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID", updatable = false) //внимание! если здесь убрать updatable = false то будет update kmp_meter_vol fk_meter_log!
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT_INNER")})
 	@BatchSize(size = 50)
