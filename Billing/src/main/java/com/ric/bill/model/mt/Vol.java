@@ -3,6 +3,7 @@ package com.ric.bill.model.mt;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,7 +43,7 @@ public class Vol implements java.io.Serializable, Simple {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ")
-	@SequenceGenerator(name="SEQ", sequenceName="MT.SEQ_METER_VOL", allocationSize=100000) //если сделать allocationSize>1 то появляется javax.persistence.EntityExistsException	
+	@SequenceGenerator(name="SEQ", sequenceName="MT.SEQ_METER_VOL", allocationSize=1) //если сделать allocationSize>1 то появляется javax.persistence.EntityExistsException	
     @Column(name = "ID", updatable = false, nullable = false)								//пока сделал 100тыс, тормозить стало меньше
 	private Integer id; //id
 	

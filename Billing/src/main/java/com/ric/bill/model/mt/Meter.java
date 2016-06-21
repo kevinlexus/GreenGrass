@@ -77,7 +77,7 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	private MeterLog meterLog ; 
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})

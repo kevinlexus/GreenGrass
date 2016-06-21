@@ -170,9 +170,7 @@ public final class Calc {
 	
 	public static void showTimer(String mess) {
 		Calc.endTime=System.currentTimeMillis();
-		if (Calc.getDbgLvl() > 1) {
-			Calc.mess("************ "+mess+" затрачено="+Long.toString(Calc.endTime-Calc.startTime));
-		}
+		System.out.println("************ "+mess+" затрачено="+Long.toString(Calc.endTime-Calc.startTime));
 	}
 
 	public static Kart getKart() {

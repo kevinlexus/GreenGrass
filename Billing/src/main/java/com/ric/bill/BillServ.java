@@ -37,7 +37,7 @@ public class BillServ {
 		
 		startTime = System.currentTimeMillis();
 		System.out.println("Begin!");
-		Calc.setDbgLvl(2);
+		Calc.setDbgLvl(0);
 		dist.gen();
 		System.out.println("End!");
 			

@@ -1,6 +1,7 @@
 package com.ric.bill.mm.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -180,11 +181,16 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @return 
      */
 	public void delNodeVol(MLogs mLog, int tp) {
-		for (Vol v : mLog.getVol()) {
-			if (v.getTp().getCd().equals("Фактический объем") || v.getTp().getCd().equals("Площадь и проживающие")) {
-			  em.remove(v);
+		Calc.mess("Del MLog vols: id="+mLog.getId());
+		//удалять итератором, иначе java.util.ConcurrentModificationException
+		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
+		    Vol vol = iterator.next();
+			if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие")) {
+				Calc.mess("Del vol: id="+vol.getId());
+				iterator.remove();
 			}
 		}
+
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, удалить их объемы рекурсивно
 		for (MeterLogGraph g : mLog.getInside()) {
 			if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 

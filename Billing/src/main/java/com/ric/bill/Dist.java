@@ -2,6 +2,7 @@ package com.ric.bill;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -29,6 +30,7 @@ import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
+import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
@@ -65,6 +67,8 @@ public class Dist {
 	private ServMng servMng;
 	@Autowired
 	private HouseMng houseMng;
+	@Autowired
+	private VolMng volMng;
 
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
@@ -94,11 +98,11 @@ public class Dist {
 	/**
 	 * сформировать по фонду
 	 */
-	@Caching(evict = {@CacheEvict(cacheNames="readOnlyCache2", allEntries=true),
+	/*@Caching(evict = {@CacheEvict(cacheNames="readOnlyCache2", allEntries=true),
 			@CacheEvict(cacheNames="readWriteCache", allEntries=true),
 			@CacheEvict(cacheNames="readOnlyCache", allEntries=true)
-	})
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	})*/
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void gen() {
 		for (House o: houseMng.findAll()) {
 			calc.setHouse(o);
@@ -106,6 +110,17 @@ public class Dist {
 		    Calc.mess("Дом="+o.getId());
 			calc.setUp(); //настроить даты и т.п.
 
+			/*MeterLog ml = em.find(MeterLog.class, 3625268);
+			Lst volTp = lstMng.findByCD("Фактический объем");
+		    Calc.mess("Check1");
+			metMng.delNodeVol(ml, 0);
+		    Calc.mess("Check2");
+			Vol vol = new Vol((MeterLog) ml, volTp, 77777.11d, null, Calc.getGenDt(), Calc.getGenDt());
+		    Calc.mess("Check3");
+			ml.getVol().add(vol);
+		    Calc.mess("Check4");*/
+			
+			
 			//распределить объемы
 		    distHouseVol();
 		    
@@ -114,20 +129,6 @@ public class Dist {
 		}
 	}
 
-	
-	/**
-	 * удалить объемы по дому
-	 */
-	@Cacheable("readWriteCache")	
-	public void delHouseVol() {
-		//найти все необходимые услуги для удаления объемов
-		for (Serv s : servMng.findForChrg()) {
-			//if (s.getId()==36){  //пока только по горячей воде!
-				calc.setServ(s);
-				delHouseVolServ();
-			//}
-		}
-	}
 	
 	/**
 	 * Удалить объем по вводам дома
@@ -149,7 +150,6 @@ public class Dist {
 	 * Удалить объем по вводу, определённой услуге
 	 * @param serv - услуга
 	 */
-	
 	private void delHouseServVolTp(Serv serv, int tp) {
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
@@ -165,8 +165,11 @@ public class Dist {
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
 		Calc.mess("Площадь: "+parMng.getDbl(calc.getHouse(), "Площадь.Жилая"));
 
-		//удалить объемы по всем услугам дома
-	    delHouseVol();
+		//найти все необходимые услуги для удаления объемов
+		for (Serv s : servMng.findForChrg()) {
+				calc.setServ(s);
+				delHouseVolServ();
+		}
 
 		//найти все необходимые услуги для распределения
 		for (Serv s : servMng.findForChrg()) {
@@ -304,7 +307,8 @@ public class Dist {
 			throw new EmptyServ("При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружена пустая услуга для расчета начисления");
 		}
 
-		if (calc.getCalcTp()==2 && ml.getId()==3625190) {
+		if (calc.getCalcTp()==1 && ml.getId()==3625190) {
+			Calc.mess("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
 			Calc.mess("стоп");
 		}
 		
@@ -478,7 +482,9 @@ public class Dist {
 			//расчетная связь, расчетная связь ОДН
 			volTp = lstMng.findByCD("Фактический объем");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, Calc.getGenDt(), Calc.getGenDt());
-			em.merge(vol);
+			
+			ml.getVol().add(vol);
+			
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
 				Calc.mess("записан объем по счетчику id="+ml.getId()+" vol="+vol.getVol1());
 			}
@@ -486,7 +492,9 @@ public class Dist {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.findByCD("Площадь и проживающие");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), Calc.getGenDt(), Calc.getGenDt());
-			em.merge(vol);
+
+			ml.getVol().add(vol);
+			
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
 				Calc.mess("записана площадь по счетчику id="+ml.getId()+" area="+nv.getPartArea()+" pers="+nv.getPartPers());
 			}

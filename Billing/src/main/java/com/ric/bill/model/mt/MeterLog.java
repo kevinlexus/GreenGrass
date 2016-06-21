@@ -76,7 +76,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@BatchSize(size = 50)
 	private Set<Meter> meter = new HashSet<Meter>(0);
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT_INNER")})

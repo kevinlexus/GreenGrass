@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class LstMngImpl implements LstMng {
 	@Autowired
 	private LstDAO lstDao;
 
+	@Cacheable("readOnlyCache") //здесь кэш работает очень эффективно!
 	public Lst findByCD(String cd) {
 		return lstDao.findByCD(cd);
 	}
