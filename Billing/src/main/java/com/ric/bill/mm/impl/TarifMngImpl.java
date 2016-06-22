@@ -1,5 +1,6 @@
 package com.ric.bill.mm.impl;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.Hibernate;
@@ -33,7 +34,7 @@ public class TarifMngImpl implements TarifMng {
 
 	/**
 	 * Получить значение типа Double тарифа по CD 
-	 * @param tar - список записей тарифа по свойствам
+	 * @param tc - объект
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
@@ -51,5 +52,21 @@ public class TarifMngImpl implements TarifMng {
 		
 	}
 
+	/**
+	 * Получить список всех услуг по тарифу данного объекта
+	 * @param tc - объект
+	 * @return
+	 */
+	public Set<Serv> getAllServ(TarifContains tc) {
+		Set<Serv> lst = new HashSet<Serv>();
+		//искать сперва по наборам тарифа объекта 
+		for (TarifKlsk k : tc.getTarifklsk()) {
+			//затем по строкам - составляющим тариф 
+			for (TarifServProp t : k.getTarprop()) {
+				lst.add(t.getServ());
+			}
+		}
+		return lst;
+	}
 	
 }

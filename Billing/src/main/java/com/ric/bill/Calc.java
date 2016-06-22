@@ -54,6 +54,9 @@ public final class Calc {
 	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
+	//установлены ли параметры расчета дома, даты фильтра и т.п.
+	private static boolean init = false;
+	
 	private int calcTp; //тип обработки расчёта
 	//уровень отладки
 	private static int dbgLvl;
@@ -196,6 +199,14 @@ public final class Calc {
 
 	public static void setDbgLvl(int dbgLvl) {
 		Calc.dbgLvl = dbgLvl;
+	}
+
+	public static boolean isInit() {
+		return init;
+	}
+
+	public static void setInit(boolean init) {
+		Calc.init = init;
 	}
 
 	

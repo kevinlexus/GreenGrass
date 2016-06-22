@@ -8,6 +8,6 @@ public interface ServMng {
 	
 	public List<Serv> findAll();
 	public Serv findMain(Serv serv);
-	public List<Serv> findForChrg();
+	public List<Serv> findForDistVol();
 	
 }

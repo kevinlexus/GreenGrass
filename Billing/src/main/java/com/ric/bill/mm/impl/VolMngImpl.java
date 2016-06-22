@@ -13,32 +13,23 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ric.bill.BillServ;
 import com.ric.bill.dao.HouseDAO;
 import com.ric.bill.dao.ServDAO;
+import com.ric.bill.dao.VolDAO;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.ServMng;
+import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.Vol;
 
 @Service
-public class ServMngImpl implements ServMng {
+public class VolMngImpl implements VolMng {
 
 	@Autowired
-	private ServDAO sDao;
+	private VolDAO vDao;
 
-	
-	public List<Serv> findAll() {
-		return sDao.findAll();
-	}
-
-	public Serv findMain(Serv serv) {
-		return sDao.findMain(serv);
-	}
-
-	public List<Serv> findForDistVol() {
-		return sDao.findForDistVol();
-	}
 
 }

@@ -3,11 +3,14 @@ package com.ric.bill;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.mm.HouseMng;
+import com.ric.bill.model.ar.House;
 
 /**
  * Главный сервис биллинга
@@ -21,11 +24,13 @@ public class BillServ {
 	public static ApplicationContext ctx;
 	
 	@Autowired
+	private HouseMng houseMng;
+	@Autowired
 	private Calc calc;
 	@Autowired
     private Dist dist;
 	@Autowired
-	private HouseMng houseMng;
+    private ChrgServ chrg;
 	
 	@Test
 	public void test1() {
@@ -35,18 +40,36 @@ public class BillServ {
 		long endTime;
 		long totalTime;
 		
-		startTime = System.currentTimeMillis();
 		System.out.println("Begin!");
-		Calc.setDbgLvl(0);
-		dist.gen();
+		Calc.setDbgLvl(1);
+		//dist.gen();
+
+		for (House o: houseMng.findAll()) {
+			System.out.println("ДОМ:"+o.getId());
+			dist.clearCache();
+			//распределить объемы
+			startTime = System.currentTimeMillis();
+
+			//dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется
+			endTime   = System.currentTimeMillis();
+			totalTime = endTime - startTime;
+			System.out.println("Время исполнения-1:"+totalTime);
+			
+			
+			startTime = System.currentTimeMillis();
+		    //начисление
+			chrg.chrgHouse(o.getId()); //передать по ID иначе кэшируется
+			endTime   = System.currentTimeMillis();
+			totalTime = endTime - startTime;
+			System.out.println("Время исполнения-2:"+totalTime);
+			
+		}
+
 		System.out.println("End!");
 			
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		System.out.println("Время исполнения-1:"+totalTime);
-
 		
 	}
 
+	
 	
 }

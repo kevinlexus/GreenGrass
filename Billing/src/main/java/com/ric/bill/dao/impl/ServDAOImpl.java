@@ -43,11 +43,11 @@ public class ServDAOImpl implements ServDAO {
 	}
 
     /**
-	 * Найти и отсортировать, все услуги для начисления 
+	 * Найти и отсортировать, все услуги для распределения объемов 
 	 */
-	@SuppressWarnings("unchecked") //удалить коммент, всё работает нормально--->почему то если кэшировать в том же кэше - будет экспешн:
-	@Cacheable("readOnlyCache") //удалить коммент, всё работает нормально---> то происходит java.lang.ClassCastException: com.ric.bill.model.ar.House cannot be cast to com.ric.bill.model.bs.Serv
-	public List<Serv> findForChrg() {
+	@SuppressWarnings("unchecked")
+	@Cacheable("readOnlyCache")
+	public List<Serv> findForDistVol() {
 		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2");
 		query.setParameter("s1", "Холодная вода (объем)");
 		query.setParameter("s2", "Горячая вода, подогрев");

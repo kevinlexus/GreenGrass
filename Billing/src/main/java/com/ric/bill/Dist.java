@@ -96,41 +96,6 @@ public class Dist {
 	}
 	
 	/**
-	 * сформировать по фонду
-	 */
-	/*@Caching(evict = {@CacheEvict(cacheNames="readOnlyCache2", allEntries=true),
-			@CacheEvict(cacheNames="readWriteCache", allEntries=true),
-			@CacheEvict(cacheNames="readOnlyCache", allEntries=true)
-	})*/
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void gen() {
-		for (House o: houseMng.findAll()) {
-			calc.setHouse(o);
-			calc.setArea(calc.getHouse().getStreet().getArea());
-		    Calc.mess("Дом="+o.getId());
-			calc.setUp(); //настроить даты и т.п.
-
-			/*MeterLog ml = em.find(MeterLog.class, 3625268);
-			Lst volTp = lstMng.findByCD("Фактический объем");
-		    Calc.mess("Check1");
-			metMng.delNodeVol(ml, 0);
-		    Calc.mess("Check2");
-			Vol vol = new Vol((MeterLog) ml, volTp, 77777.11d, null, Calc.getGenDt(), Calc.getGenDt());
-		    Calc.mess("Check3");
-			ml.getVol().add(vol);
-		    Calc.mess("Check4");*/
-			
-			
-			//распределить объемы
-		    distHouseVol();
-		    
-		    //TODO - начислить
-			
-		}
-	}
-
-	
-	/**
 	 * Удалить объем по вводам дома
 	 * 
 	 * @param serv - заданная услуга
@@ -158,21 +123,42 @@ public class Dist {
 	}
 	
 	/**
-	 * распределить объем по дому
+	 * Очистить кэш
 	 */
-	public void distHouseVol() {
+	@Caching(evict = {
+			@CacheEvict(cacheNames="readWriteCache", allEntries=true),
+			@CacheEvict(cacheNames="readOnlyCache", allEntries=true)
+	})
+	public void clearCache(){
+		
+	}
+
+	/**
+	 * распределить объем по дому
+	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void distHouseVol(int houseId) {
+		
+		House h = em.find(House.class, houseId);
+		if (!Calc.isInit()) {
+			calc.setHouse(h);
+			calc.setArea(calc.getHouse().getStreet().getArea());
+			calc.setUp(); //настроить даты и т.п.
+			Calc.setInit(true);
+		}
+		Calc.mess("Распределение объемов");
 		Calc.mess("Дом: id="+calc.getHouse().getId());
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
-		Calc.mess("Площадь: "+parMng.getDbl(calc.getHouse(), "Площадь.Жилая"));
 
 		//найти все необходимые услуги для удаления объемов
-		for (Serv s : servMng.findForChrg()) {
+		for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
 				delHouseVolServ();
 		}
 
 		//найти все необходимые услуги для распределения
-		for (Serv s : servMng.findForChrg()) {
+		for (Serv s : servMng.findForDistVol()) {
 			calc.setServ(s);
 			Calc.mess("Распределение услуги: "+s.getCd());
 			distHouseServ();

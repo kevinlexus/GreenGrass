@@ -40,17 +40,6 @@
 		transactionalMode="off">
 	</cache>
 	
- 	<cache name="readOnlyCache2" 
-		maxEntriesLocalHeap="10000"
-		maxEntriesLocalDisk="10000" 
-		eternal="true" 
-		diskPersistent="false"
-		diskSpoolBufferSizeMB="100"
-		timeToIdleSeconds="0" timeToLiveSeconds="0"
-		memoryStoreEvictionPolicy="LFU" 
-		transactionalMode="off">
-	</cache>
-
  	<cache name="readOnlyCache" 
 		maxEntriesLocalHeap="1000000"
 		maxEntriesLocalDisk="10000" 
