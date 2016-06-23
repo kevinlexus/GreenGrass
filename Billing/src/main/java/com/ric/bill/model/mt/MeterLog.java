@@ -42,12 +42,12 @@ import com.ric.bill.model.bs.Serv;
 @Table(name = "METER_LOG", schema="MT")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 @FilterDefs({
-    @FilterDef(name = "FILTER_XXX", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
+    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
     		parameters = {@ParamDef(name = "DT1", type = "date")
     		}
     ), 
     //фильтр, когда даты внутри диапазона (для объемов по счетчикам)
-    @FilterDef(name = "FILTER_XXX2", defaultCondition = "DT1 BETWEEN :DT1 AND :DT2 AND DT2 BETWEEN :DT1 AND :DT2", 
+    @FilterDef(name = "FILTER_GEN_DT_INNER", defaultCondition = "DT1 BETWEEN :DT1 AND :DT2 AND DT2 BETWEEN :DT1 AND :DT2", 
 	parameters = {@ParamDef(name = "DT1", type = "date"),
     			  @ParamDef(name = "DT2", type = "date")
 	}
@@ -79,21 +79,21 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID", updatable = false) //внимание! если здесь убрать updatable = false то будет update kmp_meter_vol fk_meter_log!
 	@Filters({
-	    @Filter(name = "FILTER_XXX2")})
+	    @Filter(name = "FILTER_GEN_DT_INNER")})
 	@BatchSize(size = 50)
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
 	@Filters({
-	    @Filter(name = "FILTER_XXX")})
+	    @Filter(name = "FILTER_GEN_DT")})
 	@BatchSize(size = 50)
 	private Set<MeterLogGraph> outside = new HashSet<MeterLogGraph>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
 	@Filters({
-	    @Filter(name = "FILTER_XXX")})
+	    @Filter(name = "FILTER_GEN_DT")})
 	@BatchSize(size = 50)
 	private Set<MeterLogGraph> inside = new HashSet<MeterLogGraph>(0);
 	

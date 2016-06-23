@@ -3,13 +3,18 @@ package com.ric.bill.mm.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.Calc;
 import com.ric.bill.TarifContains;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.dao.TarifDAO;
@@ -31,7 +36,7 @@ public class TarifMngImpl implements TarifMng {
 	@Autowired
 	private TarifDAO tDao;
 
-
+    
 	/**
 	 * Получить значение типа Double тарифа по CD 
 	 * @param tc - объект
@@ -39,6 +44,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @return - свойство
 	 */
 	public Double findProp(TarifContains tc, Serv serv, String cd) {
+
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//затем по строкам - составляющим тариф 

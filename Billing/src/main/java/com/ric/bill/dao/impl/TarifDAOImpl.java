@@ -26,7 +26,7 @@ public class TarifDAOImpl implements TarifDAO {
 	/**
 	 * Найти элемент списка по CD 
 	 */
-    //@Cacheable("readOnlyCache")
+    @Cacheable("readOnlyCache")
 	public Lst findByCD(String cd) {
 		Query query =em.createQuery("from Lst t where t.cd in (:cd)");
 		query.setParameter("cd", cd);

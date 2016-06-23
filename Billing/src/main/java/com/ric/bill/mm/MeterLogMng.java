@@ -18,6 +18,5 @@ public interface MeterLogMng {
 	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp);
 	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp);
 	public boolean checkExsMet(MLogs mLog);
-	public void setflt();
 
 }

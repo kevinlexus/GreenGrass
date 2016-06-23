@@ -72,7 +72,7 @@ public final class Calc {
 	 */
 	public void setUp() {
 		//HARDCODE!! TODO!
-		calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 2);
+		calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
 		setGenDt(calendar.getTime());
 		//1 день месяца
 		calendar.set(Calendar.DATE, 1); 

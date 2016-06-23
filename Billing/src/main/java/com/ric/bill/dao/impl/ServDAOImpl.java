@@ -24,7 +24,7 @@ public class ServDAOImpl implements ServDAO {
 	 * Найти все услуги
 	 */
 	@SuppressWarnings("unchecked")
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public List<Serv> findAll() {
 		Query query =em.createQuery("from Serv");
 		return query.getResultList();
@@ -35,7 +35,7 @@ public class ServDAOImpl implements ServDAO {
 	 * @param serv - услуга ОДН
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public Serv findMain(Serv serv) {
 		Query query =em.createQuery("from Serv t where t.odn=:serv");
 		query.setParameter("serv", serv);
@@ -46,7 +46,7 @@ public class ServDAOImpl implements ServDAO {
 	 * Найти и отсортировать, все услуги для распределения объемов 
 	 */
 	@SuppressWarnings("unchecked")
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public List<Serv> findForDistVol() {
 		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2");
 		query.setParameter("s1", "Холодная вода (объем)");

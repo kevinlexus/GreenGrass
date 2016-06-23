@@ -38,10 +38,10 @@ import com.ric.bill.model.tr.TarifKlsk;
 @Table(name = "HOUSE", schema="AR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 @FilterDefs({
-    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", //фильтр для тарифов 
+    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
     		parameters = {@ParamDef(name = "DT1", type = "date")
     		}
-    )
+    )  
 })
 public class House extends Base implements java.io.Serializable, MeterContains, TarifContains {
 

@@ -7,11 +7,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
@@ -32,6 +30,7 @@ import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
 
+//включил кэш - стало хуже, по скорости - 61 сек.
 @Service
 public class MeterLogMngImpl implements MeterLogMng {
 
@@ -41,22 +40,13 @@ public class MeterLogMngImpl implements MeterLogMng {
 	@PersistenceContext
     private EntityManager em;
 
-	
-	public void setflt() {
-		Session session = em.unwrap(Session.class);
-		//Calc.mess("sess2="+session.getTenantIdentifier());
-		session.enableFilter("FILTER_XXX").setParameter("DT1", Calc.getGenDt());
-		session.enableFilter("FILTER_XXX2").setParameter("DT1", Calc.getCurDt1())
-												   .setParameter("DT2", Calc.getCurDt2());
-
-	}
 	/**
 	 * Получить список лог.счетчиков по определённому объекту, и типу
 	 * @param mm - Объект
 	 * @param tp - Тип
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public List<MLogs> getMetLogByTp(MeterContains mm, String tp) {
 		List<MLogs> mLog = new ArrayList<MLogs>(); 
 		for (MLogs ml : mm.getMlog()) {
@@ -74,7 +64,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		for (MLogs ml : mm.getMlog()) {
 			//по типу и услуге
@@ -93,7 +83,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MLogs> mLog = new ArrayList<MLogs>(); 
 		for (MLogs ml : mm.getMlog()) {
@@ -111,7 +101,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * проверить существование физ.счетчика
 	 * @param mLog
 	 */
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public boolean checkExsMet(MLogs mLog) {
     	//установить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
@@ -130,7 +120,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog - лог.счетчик
 	 * @throws NotFoundNode - если не найден счетчик (узел)
 	 */
-	////@Cacheable("readWriteCache")
+	//@Cacheable("readWriteCache")
     public SumNodeVol getVolPeriod (MLogs mLog) {
 		Calc.mess("проверка сч id="+mLog.getId());
 		SumNodeVol lnkVol = new SumNodeVol();
@@ -159,7 +149,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - тип счетчика
 	 * @return лог.счетчик
 	 */
-	//@Cacheable("readWriteCache")
+	@Cacheable("readWriteCache")
 	public MLogs getLinkedNode (MLogs mLog, String tp) {
 		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
@@ -201,7 +191,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 			}
 		}
 
-	
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, удалить их объемы рекурсивно
 		for (MeterLogGraph g : mLog.getInside()) {
 			if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 

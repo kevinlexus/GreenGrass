@@ -50,10 +50,10 @@ import com.ric.bill.model.tr.TarifKlsk;
 		}																  //короче KUL не фига не решил проблему, а её усугубил, так как это не уникальный идентификатор не фига
 		)
 @FilterDefs({
-    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", //фильтр для тарифов 
+    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
     		parameters = {@ParamDef(name = "DT1", type = "date")
     		}
-    )
+    )  
 })
 public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
 
@@ -85,10 +85,10 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@BatchSize(size = 50)
 	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
 
+	//@NotFound(action=NotFoundAction.IGNORE)
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
-	@NotFound(action=NotFoundAction.IGNORE)
 	@Filters({
 	    @Filter(name = "FILTER_GEN_DT")})
 	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
