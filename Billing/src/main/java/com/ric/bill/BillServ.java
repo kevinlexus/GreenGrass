@@ -15,7 +15,7 @@ import com.ric.bill.model.ar.House;
 /**
  * Главный сервис биллинга
  * @author lev
- *
+ * Check!
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring.xml" })
