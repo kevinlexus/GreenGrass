@@ -29,7 +29,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * Узнать существует ли параметр по его CD
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	public boolean isExByCd(String cd) {
 		for (Par p: findAll()){
 			if (p.getCd().equals(cd)){
@@ -42,7 +42,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	public Double getDbl(Storable st, String cd) {
 		try {
 			for (Dw d: st.getDw()) {
@@ -74,7 +74,7 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
 	
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	public String getStr(Storable st, String cd) {
 		try {
 			for (Dw d: st.getDw()) {

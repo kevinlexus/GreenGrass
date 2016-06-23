@@ -44,7 +44,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить, считали ли персону
 	 */
-	@Cacheable("readOnlyCache")
+	////@Cacheable("readOnlyCache")
 	private boolean foundPers (Set<Pers> counted, Pers p) {
 		if (counted.contains(p)) {
 			//уже считали персону
@@ -59,7 +59,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("readOnlyCache")
+	////@Cacheable("readOnlyCache")
 	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp) {
 		Date dt1, dt2;
 		Set<? extends Registrable> rg;
@@ -101,7 +101,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -137,7 +137,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cntPers - объект для заполнения
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+	////@Cacheable("readOnlyCache")
 	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -190,7 +190,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	@Cacheable("readOnlyCache")
+	////@Cacheable("readOnlyCache")
 	public Standart getStandart (MLogs mLog, Calc calc, CntPers cntPers) {
 		//long startTime;
 		//long endTime;
@@ -290,8 +290,13 @@ public class KartMngImpl implements KartMng {
 			
 		}
 			
-		st.vol = stVol;
-		st.partVol=cntPers.cnt * stVol/calc.getCntCurDays();
+		if (stVol !=null) {
+			st.vol = stVol;
+			st.partVol=cntPers.cnt * stVol/calc.getCntCurDays();
+		} else {
+			st.vol = 0d;
+			st.partVol = 0d;
+		}
 		return st;
 		
 	}
@@ -306,7 +311,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cd - CD свойства
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+	////@Cacheable("readOnlyCache")
 	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
 		Double val;
 		//в начале ищем по лиц. счету 

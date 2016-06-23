@@ -78,10 +78,10 @@ public class Dist {
 	 * Установить фильтры для сессии
 	 */
 	private void setFilters() {
-		Session session = (Session) em.getDelegate();
+		Session session = em.unwrap(Session.class);
 		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
-		session.enableFilter("FILTER_GEN_DT_INNER").setParameter("DT1", Calc.getCurDt1())
-												   .setParameter("DT2", Calc.getCurDt2());
+		//session.enableFilter("FILTER_GEN_DT_INNER").setParameter("DT1", Calc.getCurDt1())
+		//										   .setParameter("DT2", Calc.getCurDt2());
 		//отдельно установить фильтр существования счетчиков
 		setExFilter(Calc.getGenDt());
 	}
@@ -91,7 +91,7 @@ public class Dist {
 	 * @param date
 	 */
 	private void setExFilter(Date date) {
-		Session session = (Session) em.getDelegate();
+		Session session = em.unwrap(Session.class);
 		session.enableFilter("FILTER_GEN_EX_DT").setParameter("DT1", date);
 	}
 	
@@ -119,6 +119,7 @@ public class Dist {
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
 			metMng.delNodeVol(ml, tp);
+			
 		}
 	}
 	
@@ -133,6 +134,25 @@ public class Dist {
 		
 	}
 
+	private void check(){
+		Session session = em.unwrap(Session.class);
+		session.enableFilter("FILTER_XXX").setParameter("DT1", Calc.getGenDt());
+		session.enableFilter("FILTER_XXX2").setParameter("DT1", Calc.getCurDt1())
+												   .setParameter("DT2", Calc.getCurDt2());
+		
+		MeterLog mLog = em.find(MeterLog.class, 3685463);
+		
+		for (MeterLogGraph g : mLog.getInside()) {
+			Calc.mess("вх: id="+g.getId());
+		}
+		
+		for (MeterLogGraph g : mLog.getOutside()) {
+			Calc.mess("исх: id="+g.getId());
+			
+		}			
+
+	}
+	
 	/**
 	 * распределить объем по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
@@ -151,12 +171,35 @@ public class Dist {
 		Calc.mess("Дом: id="+calc.getHouse().getId());
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
 
+	
+/*		Session session = em.unwrap(Session.class);
+		session.enableFilter("FILTER_XXX").setParameter("DT1", Calc.getGenDt());
+		session.enableFilter("FILTER_XXX2").setParameter("DT1", Calc.getCurDt1())
+												   .setParameter("DT2", Calc.getCurDt2());
+		MeterLog mLog = em.find(MeterLog.class, 3685463);
+		
+		for (MeterLogGraph g : mLog.getInside()) {
+			Calc.mess("вх: id="+g.getId());
+		}
+		
+		for (MeterLogGraph g : mLog.getOutside()) {
+			Calc.mess("исх: id="+g.getId());
+			
+		}*/
 		//найти все необходимые услуги для удаления объемов
+
+		
+//		metMng.setflt();
+		
+//		Session session = em.unwrap(Session.class);
+		//Calc.mess("sess3="+session.get);
 		for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
 				delHouseVolServ();
 		}
 
+		check();
+		
 		//найти все необходимые услуги для распределения
 		for (Serv s : servMng.findForDistVol()) {
 			calc.setServ(s);
@@ -203,6 +246,7 @@ public class Dist {
 	 * @param calcTp - тип обработки
 	 */
 	private void distHouseServTp(Serv serv) {
+		
 		Calc.mess("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
@@ -220,7 +264,7 @@ public class Dist {
 	 * @param ml - начальный узел распределения
 	 * @throws ErrorWhileDist 
 	 */
-	@Cacheable("readWriteCache")	
+	////@Cacheable("readWriteCache")	
 	private void distGraph (MLogs ml) throws ErrorWhileDist {
 		Calc.mess("Распределение ввода:"+ml.getId());
 		//перебрать все необходимые даты, за период
@@ -240,7 +284,14 @@ public class Dist {
 		//c.setTime(Calc.getCurDt1());
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
-			@SuppressWarnings("unused")
+			
+			Calc calc2 = new Calc();
+			calc2.beginTimer();
+			System.out.println("###***### распределение по дате="+Calc.getGenDt());
+			setFilters();//установить.фильтр TODO! перенести
+
+		
+			/*@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
 				dummy=distNode(ml, 0);
@@ -253,8 +304,8 @@ public class Dist {
 			} catch (NotFoundNode e) {
 				throw new ErrorWhileDist("Не найден нужный счетчик, при вызове BillServ.distNode()");
 			}
-			Calc.mess("по дате="+Calc.getGenDt());
-			
+			calc2.showTimer("закончено выполнение распр.дня");
+			*/
 			//break;
 		}
 		
@@ -267,7 +318,6 @@ public class Dist {
 	 * @return
 	 * @throws WrongGetMethod
 	 * @throws NotFoundODNLimit */
-	@Cacheable("readWriteCache")	
 	private NodeVol distNode (MLogs ml, int rec) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		//Double tmpD=0d; //для каких нить нужд
 		Double partArea =0d; //текущая доля площади, по узлу

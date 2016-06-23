@@ -15,6 +15,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
@@ -30,6 +35,12 @@ import com.ric.bill.model.tr.TarifKlsk;
 @Entity
 @Table(name = "AREA", schema="AR")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
+@FilterDefs({
+    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", //фильтр для тарифов 
+    		parameters = {@ParamDef(name = "DT1", type = "date")
+    		}
+    )
+})
 public class Area extends Base implements java.io.Serializable, Storable, TarifContains {
 
 	//наименование
@@ -66,6 +77,8 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
+	@Filters({
+	    @Filter(name = "FILTER_GEN_DT")})
 	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
 
 	public String getName() {
