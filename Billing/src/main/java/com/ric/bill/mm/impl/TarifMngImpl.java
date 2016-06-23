@@ -48,10 +48,13 @@ public class TarifMngImpl implements TarifMng {
 
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
-			//затем по строкам - составляющим тариф 
-			for (TarifServProp t : k.getTarprop()) {
-				if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
-					return t.getN1();
+			//по соотв.периоду
+			if (Utl.between(Calc.getGenDt(), k.getDt1(), k.getDt2())) {
+				//затем по строкам - составляющим тариф 
+				for (TarifServProp t : k.getTarprop()) {
+					if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
+						return t.getN1();
+					}
 				}
 			}
 		}

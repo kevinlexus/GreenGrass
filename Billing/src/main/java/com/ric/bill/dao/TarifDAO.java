@@ -10,5 +10,4 @@ import com.ric.bill.model.bs.Serv;
 
 public interface TarifDAO {
 
-	public Lst findByCD(String cd);	
 }

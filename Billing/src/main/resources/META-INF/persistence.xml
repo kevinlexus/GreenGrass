@@ -8,7 +8,7 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
 		<property name="hibernate.enable_lazy_load_no_trans" value="true" />	
-		<property name="hibernate.id.new_generator_mappings" value="false" />
+<!--		<property name="hibernate.id.new_generator_mappings" value="false" />-->
         </properties>
 <!--		<properties>
  		 <property name="hibernate.generate_statistics" value="true"/>

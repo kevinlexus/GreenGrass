@@ -32,7 +32,7 @@ public class LstMngImpl implements LstMng {
 	@Autowired
 	private LstDAO lstDao;
 
-	//@Cacheable("readOnlyCache") //здесь кэш работает очень эффективно!
+	@Cacheable("readOnlyCache") //здесь кэш работает очень эффективно!
 	public Lst findByCD(String cd) {
 		return lstDao.findByCD(cd);
 	}

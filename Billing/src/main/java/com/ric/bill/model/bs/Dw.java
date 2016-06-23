@@ -1,5 +1,7 @@
 package com.ric.bill.model.bs;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +27,9 @@ import com.ric.bill.Simple;
 @Table(name = "U_HFPXKLSK", schema="ORALV")
 public class Dw implements java.io.Serializable, Simple {
 
+	public Dw() {
+	}
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
@@ -41,10 +46,13 @@ public class Dw implements java.io.Serializable, Simple {
 	@BatchSize(size = 20)
 	private Par par; 
 
-	public Dw() {
-	}
+    //даты начала и окончания произведенного объема
+    @Column(name = "DT1", updatable = false, nullable = true)
+	private Date dt1;
 
-	
+    @Column(name = "DT2", updatable = false, nullable = true)
+	private Date dt2;
+
 	public Integer getId() {
 		return id;
 	}
@@ -75,5 +83,20 @@ public class Dw implements java.io.Serializable, Simple {
 		this.par = par;
 	}
 	
+	public Date getDt1() {
+		return dt1;
+	}
+
+	public void setDt1(Date dt1) {
+		this.dt1 = dt1;
+	}
+
+	public Date getDt2() {
+		return dt2;
+	}
+
+	public void setDt2(Date dt2) {
+		this.dt2 = dt2;
+	}
 	
 }

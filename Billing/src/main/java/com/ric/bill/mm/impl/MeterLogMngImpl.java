@@ -47,7 +47,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public List<MLogs> getMetLogByTp(MeterContains mm, String tp) {
 		List<MLogs> mLog = new ArrayList<MLogs>(); 
 		for (MLogs ml : mm.getMlog()) {
@@ -65,7 +65,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		for (MLogs ml : mm.getMlog()) {
 			//по типу и услуге
@@ -84,7 +84,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
+	@Cacheable("readOnlyCache")
 	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MLogs> mLog = new ArrayList<MLogs>(); 
 		for (MLogs ml : mm.getMlog()) {
@@ -128,18 +128,22 @@ public class MeterLogMngImpl implements MeterLogMng {
     public SumNodeVol getVolPeriod (MLogs mLog) {
 		Calc.mess("проверка сч id="+mLog.getId());
 		SumNodeVol lnkVol = new SumNodeVol();
-    	//период будет опеределён фильтром FILTER_GEN_DT_INNER
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
-        	//Calc.mess("проверка объема id="+v.getId()+" vol="+v.getVol1());
-    		if (v.getTp().getCd().equals("Фактический объем") ){
-    			lnkVol.addVol(v.getVol1());
-    		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
-    			lnkVol.addArea(v.getVol1());
-    			lnkVol.addPers(v.getVol2());
-    		} else if (v.getTp().getCd().equals("Лимит ОДН") ){
-    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение)
-    		}
+			//по всему соотв.периоду 
+			if (Utl.between(v.getDt1(), Calc.getCurDt1(), Calc.getCurDt2()) && //внимание! здесь фильтр берет даты снаружи!
+				Utl.between(v.getDt2(), Calc.getCurDt1(), Calc.getCurDt2())	
+					) {
+		        	//Calc.mess("проверка объема id="+v.getId()+" vol="+v.getVol1());
+		    		if (v.getTp().getCd().equals("Фактический объем") ){
+		    			lnkVol.addVol(v.getVol1());
+		    		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
+		    			lnkVol.addArea(v.getVol1());
+		    			lnkVol.addPers(v.getVol2());
+		    		} else if (v.getTp().getCd().equals("Лимит ОДН") ){
+		    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение)
+		    		}
+			}
     	}
     	
     	

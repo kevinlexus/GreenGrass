@@ -68,15 +68,16 @@ public class Dist {
     private EntityManager em;
 
     /**
-	 * Установить фильтры для сессии
+	 * Установить фильтры для сессии -убрал пока
+	 * 
 	 */
-	private void setFilters() {
+/*	private void setFilters() {
 		Session session = em.unwrap(Session.class);
-		Calc.mess("Установлен фильтр:"+Calc.getGenDt());
+		Calc.mess("Установлен фильтр: c:"+Calc.getCurDt1()+" по:"+Calc.getCurDt2());
 		session.enableFilter("FILTER_GEN_DT_OUTER").setParameter("DT1", Calc.getCurDt1())
 		   .setParameter("DT2", Calc.getCurDt2());
 		//отдельно установить фильтр существования счетчиков
-	}
+	}*/
 
 	/**
 	 * Удалить объем по вводам дома
@@ -142,13 +143,13 @@ public class Dist {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distHouseVol(int houseId) {
 		
-		setFilters();//установить.фильтр
+		calc.setUp(); //настроить даты и т.п.
+		//setFilters();//установить.фильтр
 
 		House h = em.find(House.class, houseId);
 		if (!Calc.isInit()) {
 			calc.setHouse(h);
 			calc.setArea(calc.getHouse().getStreet().getArea());
-			calc.setUp(); //настроить даты и т.п.
 			Calc.setInit(true);
 		}
 		Calc.mess("Распределение объемов");
@@ -242,6 +243,7 @@ public class Dist {
 		
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
+			Calc.mess("по дате="+Calc.getGenDt());
 			@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
@@ -255,7 +257,6 @@ public class Dist {
 			} catch (NotFoundNode e) {
 				throw new ErrorWhileDist("Не найден нужный счетчик, при вызове BillServ.distNode()");
 			}
-			Calc.mess("по дате="+Calc.getGenDt());
 			
 			//break;
 		}
