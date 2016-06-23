@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
 import com.ric.bill.TarifContains;
+import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.dao.TarifDAO;
 import com.ric.bill.mm.TarifMng;
@@ -67,9 +68,12 @@ public class TarifMngImpl implements TarifMng {
 		Set<Serv> lst = new HashSet<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
-			//затем по строкам - составляющим тариф 
-			for (TarifServProp t : k.getTarprop()) {
-				lst.add(t.getServ());
+			//по соотв.периоду
+			if (Utl.between(Calc.getGenDt(), k.getDt1(), k.getDt2())) {
+				//затем по строкам - составляющим тариф 
+				for (TarifServProp t : k.getTarprop()) {
+					lst.add(t.getServ());
+				}
 			}
 		}
 		return lst;

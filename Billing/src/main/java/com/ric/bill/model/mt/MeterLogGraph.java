@@ -2,6 +2,7 @@ package com.ric.bill.model.mt;
 
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,7 +53,14 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 
     @Column(name = "PERCENT", updatable = false, nullable = true)
 	private Double prc; 
+	
+	//даты начала и окончания действия
+    @Column(name = "DT1", updatable = false, nullable = true)
+	private Date dt1;
 
+    @Column(name = "DT2", updatable = false, nullable = true)
+	private Date dt2;
+	
     public Integer getId() {
 		return this.id;
 	}
@@ -93,5 +101,21 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 		return dst;
 	}
 
+	public Date getDt1() {
+		return dt1;
+	}
+
+	public void setDt1(Date dt1) {
+		this.dt1 = dt1;
+	}
+	
+	public Date getDt2() {
+		return dt2;
+	}
+	
+	public void setDt2(Date dt2) {
+		this.dt2 = dt2;
+	}
+	
 }
 

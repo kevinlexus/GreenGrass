@@ -1,5 +1,6 @@
 package com.ric.bill.model.tr;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +51,13 @@ public class TarifKlsk implements java.io.Serializable, Simple {
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
 	private Integer fktarif;
 
+	//даты начала и окончания действия
+    @Column(name = "DT1", updatable = false, nullable = true)
+	private Date dt1;
+
+    @Column(name = "DT2", updatable = false, nullable = true)
+	private Date dt2;
+
     public Integer getId() {
 		return this.id;
 	}
@@ -88,6 +96,22 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 
 	public void setFktarif(Integer fktarif) {
 		this.fktarif = fktarif;
+	}
+
+	public Date getDt1() {
+		return dt1;
+	}
+
+	public void setDt1(Date dt1) {
+		this.dt1 = dt1;
+	}
+	
+	public Date getDt2() {
+		return dt2;
+	}
+	
+	public void setDt2(Date dt2) {
+		this.dt2 = dt2;
 	}
 	
 }

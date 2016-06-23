@@ -32,9 +32,11 @@ import com.ric.bill.Storable;
  */
 @MappedSuperclass
 @FilterDefs({
-    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
-    		parameters = {@ParamDef(name = "DT1", type = "date")
-    		}
+	//фильтр, когда одна из дат входит в диапазон
+    @FilterDef(name = "FILTER_GEN_DT_OUTER", defaultCondition = "(:DT1 BETWEEN DT1 AND DT2 OR :DT2 BETWEEN DT1 AND DT2)", 
+	parameters = {@ParamDef(name = "DT1", type = "date"),
+    			  @ParamDef(name = "DT2", type = "date")
+	}
     )
 })
 public abstract class Base implements Storable {
@@ -42,7 +44,7 @@ public abstract class Base implements Storable {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
 	@Filters({
-	    @Filter(name = "FILTER_GEN_DT")})
+	    @Filter(name = "FILTER_GEN_DT_OUTER")})
 	@BatchSize(size = 20)
 	protected Set<Dw> dw = new HashSet<Dw>(0);
 

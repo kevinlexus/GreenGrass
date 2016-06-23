@@ -71,23 +71,13 @@ public class Dist {
 	 * Установить фильтры для сессии
 	 */
 	private void setFilters() {
-		Session session = em.unwrap(Session.class);;
-		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
-		session.enableFilter("FILTER_GEN_DT_INNER").setParameter("DT1", Calc.getCurDt1())
-												   .setParameter("DT2", Calc.getCurDt2());
+		Session session = em.unwrap(Session.class);
+		Calc.mess("Установлен фильтр:"+Calc.getGenDt());
+		session.enableFilter("FILTER_GEN_DT_OUTER").setParameter("DT1", Calc.getCurDt1())
+		   .setParameter("DT2", Calc.getCurDt2());
 		//отдельно установить фильтр существования счетчиков
-		setExFilter(Calc.getGenDt());
 	}
 
-	/**
-	 * Фильтр существования счетчиков (сделал отдельно, но не стал применять, так как в ОДН считается наличие хотя бы 1 дня сущ.счетчика ОДПУ)
-	 * @param date
-	 */
-	private void setExFilter(Date date) {
-		Session session = em.unwrap(Session.class);;
-		session.enableFilter("FILTER_GEN_EX_DT").setParameter("DT1", date);
-	}
-	
 	/**
 	 * Удалить объем по вводам дома
 	 * 
@@ -126,7 +116,6 @@ public class Dist {
 		//найти все вводы по дому и по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
-			setFilters();//установить.фильтр
 			for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
 				metMng.delNodeVol(ml, tp);
 			}
@@ -153,6 +142,8 @@ public class Dist {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distHouseVol(int houseId) {
 		
+		setFilters();//установить.фильтр
+
 		House h = em.find(House.class, houseId);
 		if (!Calc.isInit()) {
 			calc.setHouse(h);
@@ -232,7 +223,7 @@ public class Dist {
 	 * @param ml - начальный узел распределения
 	 * @throws ErrorWhileDist 
 	 */
-	@Cacheable("readWriteCache")	
+	//@Cacheable("readWriteCache")	
 	private void distGraph (MLogs ml) throws ErrorWhileDist {
 		Calc.mess("Распределение ввода:"+ml.getId());
 		//перебрать все необходимые даты, за период
@@ -251,7 +242,6 @@ public class Dist {
 		
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
-			setFilters();//установить.фильтр
 			@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
@@ -279,7 +269,7 @@ public class Dist {
 	 * @return
 	 * @throws WrongGetMethod
 	 * @throws NotFoundODNLimit */
-	//@Cacheable("readWriteCache")	
+	////@Cacheable("readWriteCache")	
 	private NodeVol distNode (MLogs ml, int rec) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		//Double tmpD=0d; //для каких нить нужд
 		Double partArea =0d; //текущая доля площади, по узлу

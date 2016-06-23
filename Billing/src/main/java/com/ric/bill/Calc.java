@@ -78,7 +78,8 @@ public final class Calc {
 		calendar.set(Calendar.DATE, 1); 
 		setCurDt1(calendar.getTime());
 		//последний день месяца
-		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); 
+		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		
 		setCurDt2(calendar.getTime());
 		//кол-во дней в месяце
 		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));

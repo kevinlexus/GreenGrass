@@ -38,15 +38,12 @@ import com.ric.bill.model.bs.Base;
 @Table(name = "METER", schema="MT")
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 @FilterDefs({
-    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
-    		parameters = {@ParamDef(name = "DT1", type = "date")
-    		}
-    ),
-    @FilterDef(name = "FILTER_GEN_EX_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", //фильтр наличия ПУ (отдельно) 
-	parameters = {@ParamDef(name = "DT1", type = "date")
+	//фильтр, когда одна из дат входит в диапазон
+    @FilterDef(name = "FILTER_GEN_DT_OUTER", defaultCondition = "(:DT1 BETWEEN DT1 AND DT2 OR :DT2 BETWEEN DT1 AND DT2)", 
+	parameters = {@ParamDef(name = "DT1", type = "date"),
+    			  @ParamDef(name = "DT2", type = "date")
 	}
     )
-    
 })
 public class Meter extends Base implements java.io.Serializable, Storable {
 
@@ -80,14 +77,14 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
-	    @Filter(name = "FILTER_GEN_DT")})
+	    @Filter(name = "FILTER_GEN_DT_OUTER")})
 	@BatchSize(size = 50)
 	private Set<Vol> vol = new HashSet<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@Filters({
-	    @Filter(name = "FILTER_GEN_EX_DT")})
+	    @Filter(name = "FILTER_GEN_DT_OUTER")})
 	@BatchSize(size = 50)
 	private Set<MeterExs> exs = new HashSet<MeterExs>(0);
 
