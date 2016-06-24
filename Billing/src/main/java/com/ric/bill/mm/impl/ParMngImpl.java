@@ -17,7 +17,6 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Par;
 
-//включил кэш - ничего не изменилось по скорости - 55 сек.
 @Service
 public class ParMngImpl implements ParMng {
 
@@ -46,7 +45,10 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа Double объекта по CD свойства
 	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
 	 */
-	@Cacheable("readOnlyCache")
+	//В кэшах не почувствовал разницы:
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }") --58153 мс
+	//@Cacheable("readOnlyCache") --58876 мс
+	@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }") 
 	public Double getDbl(Storable st, String cd, Date genDt) {
 		try {
 			for (Dw d: st.getDw()) {

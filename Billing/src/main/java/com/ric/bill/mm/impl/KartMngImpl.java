@@ -190,8 +190,9 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	@Cacheable("readOnlyCache")
-	public Standart getStandart (MLogs mLog, Calc calc, CntPers cntPers, Date genDt) {
+	//@Cacheable("readOnlyCache")
+	@Cacheable(cacheNames="readOnlyCache", key="{ #mLog.getId(), #genDt }") 
+	public Standart getStandart (MLogs mLog, CntPers cntPers, Date genDt) {
 		//long startTime;
 		//long endTime;
 		//long totalTime;
@@ -291,7 +292,7 @@ public class KartMngImpl implements KartMng {
 		}
 		if (stVol!=null) {	
 			st.vol = stVol;
-			st.partVol=cntPers.cnt * stVol/calc.getCntCurDays();
+			st.partVol=cntPers.cnt * stVol/Calc.getCntCurDays();
 		} else {
 			st.vol = 0d;
 			st.partVol= 0d;
@@ -310,7 +311,8 @@ public class KartMngImpl implements KartMng {
 	 * @param cd - CD свойства
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
+	@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
 	public Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
 		Double val;
 		//в начале ищем по лиц. счету 

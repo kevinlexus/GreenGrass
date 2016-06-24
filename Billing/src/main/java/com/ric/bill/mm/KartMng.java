@@ -19,6 +19,6 @@ public interface KartMng  {
 
 	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt);
 	public abstract Double getServPropByCD(Kart kart, Serv serv, String string, Date genDt);
-	public abstract Standart getStandart(MLogs mLog, Calc calc, CntPers cntPers, Date genDt);
+	public abstract Standart getStandart(MLogs mLog, CntPers cntPers, Date genDt);
 
 }

@@ -45,7 +45,8 @@ public class TarifMngImpl implements TarifMng {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
+	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #cd, #genDt }") 
 	public Double findProp(TarifContains tc, Serv serv, String cd, Date genDt) {
 
 		//искать сперва по наборам тарифа объекта 

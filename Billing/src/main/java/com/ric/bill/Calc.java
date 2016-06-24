@@ -39,7 +39,7 @@ public final class Calc {
 	private static Date firstDt;//=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
 	private static Date lastDt;//=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
 	//кол-во дней в периоде
-	private double cntCurDays;  
+	private static double cntCurDays;  
 	//доля одного дня в периоде
 	private static double partDays;
 
@@ -87,6 +87,7 @@ public final class Calc {
 		setCurDt1(calendar.getTime());
 		//последний день месяца
 		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		//calendar.set(Calendar.DATE, 2); 
 		
 		setCurDt2(calendar.getTime());
 		//кол-во дней в месяце
@@ -152,7 +153,7 @@ public final class Calc {
 		this.area = area;
 	}
 
-	public double getCntCurDays() {
+	public static double getCntCurDays() {
 		return cntCurDays;
 	}
 
@@ -198,6 +199,15 @@ public final class Calc {
 			DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			ZonedDateTime dt = ZonedDateTime.now();
 			if (getDbgLvl() > 0 ) {
+				System.out.println(dt.format(frmt)+' '+txt);
+			}
+		}
+
+	//Отправить в консоль сообщение с уровнем выше dbgLvl
+	public static void mess(String txt, int dbgLvl) {
+			DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			ZonedDateTime dt = ZonedDateTime.now();
+			if (dbgLvl >= getDbgLvl()) {
 				System.out.println(dt.format(frmt)+' '+txt);
 			}
 		}

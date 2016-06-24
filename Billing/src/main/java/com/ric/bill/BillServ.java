@@ -1,5 +1,8 @@
 package com.ric.bill;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,27 +44,34 @@ public class BillServ {
 		long totalTime;
 		
 		System.out.println("Begin!");
-		Calc.setDbgLvl(1);
-		//dist.gen();
+		Calc.setDbgLvl(0);
 
+		//Logger.getRootLogger().setLevel(Level.ERROR);
+		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
+		
 		for (House o: houseMng.findAll()) {
 			System.out.println("ДОМ:"+o.getId());
 			dist.clearCache();
 			//распределить объемы
 			startTime = System.currentTimeMillis();
-
 			dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется
 			endTime   = System.currentTimeMillis();
 			totalTime = endTime - startTime;
 			System.out.println("Время исполнения-1:"+totalTime);
 			
+			//распределить объемы
+			/*startTime = System.currentTimeMillis();
+			dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется
+			endTime   = System.currentTimeMillis();
+			totalTime = endTime - startTime;
+			System.out.println("Время исполнения-2:"+totalTime);*/
 			
 			startTime = System.currentTimeMillis();
 		    //начисление
 			//chrg.chrgHouse(o.getId()); //передать по ID иначе кэшируется
 			endTime   = System.currentTimeMillis();
 			totalTime = endTime - startTime;
-			System.out.println("Время исполнения-2:"+totalTime);
+			System.out.println("Время исполнения-3:"+totalTime);
 			
 		}
 
