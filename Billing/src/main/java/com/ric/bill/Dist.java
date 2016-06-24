@@ -120,7 +120,7 @@ public class Dist {
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
 			for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-				metMng.delNodeVol(ml, tp);
+				metMng.delNodeVol(ml, tp, Calc.getGenDt());
 			}
 		}
 		
@@ -325,7 +325,7 @@ public class Dist {
 		Kart kart = ml.getKart();
 		calc.setKart(kart); 
 
-		if (ml.getId()==3636522 && calc.getCalcTp()==2) {
+		if (ml.getId()==3647714/* && calc.getCalcTp()==0*/) {
 			Calc.mess("stop");
 		}
 		
@@ -368,16 +368,16 @@ public class Dist {
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
 				//Calc.mess("before:");
-				vl = kartMng.getStandart(ml, calc, null).partVol;
+				vl = kartMng.getStandart(ml, calc, null, Calc.getGenDt()).partVol;
 			}
 				
 		} else if (calc.getCalcTp()==1 && kart != null) {
 			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
 			//площадь
-			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая"), 0d) / calc.getCntCurDays(); 
+			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", Calc.getGenDt()), 0d) / calc.getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
-			kartMng.getCntPers(kart, servChrg, cntPers, 0);
+			kartMng.getCntPers(kart, servChrg, cntPers, 0, Calc.getGenDt());
 			partPers = cntPers.cnt / calc.getCntCurDays();
 
 		} else if (calc.getCalcTp()==2 && mLogTp.equals("Лсчетчик")) {
@@ -389,23 +389,23 @@ public class Dist {
 			MLogs lnkSumODPU = null;
 			MLogs lnkODPU = null;
 			//поиск счетчика ЛОДН
-			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН");
+			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН", Calc.getGenDt());
 			//параметр Доначисление по ОДН
-			Double parAddODN = Utl.nvl(parMng.getDbl((Storable)lnkLODN, "Доначисление по ОДН"), 0d);
-			Double parLimitODN = parMng.getDbl((Storable)lnkLODN, "Лимит по ОДН");
+			Double parAddODN = Utl.nvl(parMng.getDbl((Storable)lnkLODN, "Доначисление по ОДН", Calc.getGenDt()), 0d);
+			Double parLimitODN = parMng.getDbl((Storable)lnkLODN, "Лимит по ОДН", Calc.getGenDt());
 			
 			if (lnkLODN == null) {
 				// не найден счетчик
 		        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+ml.getId());  
 			}
 			//поиск счетчика ЛСумОдпу
-			lnkSumODPU = metMng.getLinkedNode(lnkLODN, "ЛСумОДПУ");
+			lnkSumODPU = metMng.getLinkedNode(lnkLODN, "ЛСумОДПУ", Calc.getGenDt());
 			if (lnkSumODPU == null) {
 				// не найден счетчик
 		        throw new NotFoundNode("Не найден счетчик ЛСумОДПУ, связанный со счетчиком id="+lnkLODN.getId());  
 			}
 			//поиск счетчика Ф/Л ОДПУ
-			lnkODPU = metMng.getLinkedNode(lnkSumODPU, "ЛОДПУ");
+			lnkODPU = metMng.getLinkedNode(lnkSumODPU, "ЛОДПУ", Calc.getGenDt());
 			if (lnkODPU == null) {
 				// не найден счетчик (лог.счетчик должен быть обязательно, а физ.сч. к нему привязанных, может и не быть!)
 		        throw new NotFoundNode("Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId());  
@@ -419,7 +419,7 @@ public class Dist {
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
 			SumNodeVol sumVol = metMng.getVolPeriod(ml);
 			
-			if (metMng.checkExsMet(lnkODPU) && lnkODPUVol.getVol() >= 0d) {
+			if (metMng.checkExsMet(lnkODPU, Calc.getGenDt()) && lnkODPUVol.getVol() >= 0d) {
 				//при наличии счетчика(ков) ОДПУ и объема по нему
 				if (lnkODNVol.getVol() > 0 && lnkODNVol.getArea() > 0) {
 					//ПЕРЕРАСХОД
@@ -480,9 +480,9 @@ public class Dist {
 			//по расчетной связи пропорц.площади (Отопление например)
 			MLogs lnkLODN = null;
 			//поиск счетчика ЛОДН
-			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН");
+			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН", Calc.getGenDt());
 			//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
-			Double tmp =parMng.getDbl(lnkLODN, "VOL_SQ_MT");
+			Double tmp =parMng.getDbl(lnkLODN, "VOL_SQ_MT", Calc.getGenDt());
 			
 		}
 		

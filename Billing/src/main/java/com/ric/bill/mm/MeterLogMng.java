@@ -1,5 +1,6 @@
 package com.ric.bill.mm;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ric.bill.MeterContains;
@@ -12,11 +13,11 @@ import com.ric.bill.model.mt.MeterLog;
 
 public interface MeterLogMng {
 
-    public SumNodeVol getVolPeriod (MLogs mLog);
-	public void delNodeVol(MLogs ml, int tp);
-	public MLogs getLinkedNode(MLogs lnkMLog, String string);
-	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp);
 	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp);
-	public boolean checkExsMet(MLogs mLog);
+	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp);
+	public boolean checkExsMet(MLogs mLog, Date genDt);
+    public SumNodeVol getVolPeriod (MLogs mLog);
+	public MLogs getLinkedNode(MLogs lnkMLog, String string, Date genDt);
+	public void delNodeVol(MLogs ml, int tp, Date genDt);
 
 }

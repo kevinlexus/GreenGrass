@@ -44,13 +44,14 @@ public class ParMngImpl implements ParMng {
 
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства
+	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
 	 */
 	@Cacheable("readOnlyCache")
-	public Double getDbl(Storable st, String cd) {
+	public Double getDbl(Storable st, String cd, Date genDt) {
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
-    			if (Utl.between(Calc.getGenDt(), d.getDt1(), d.getDt2())) {
+    			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI)
 					if (d.getPar().getCd().equals(cd)) {
 						if (d.getPar().getTp().equals("NM")) {
@@ -80,12 +81,12 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
 	
-	//@Cacheable("readOnlyCache")
-	public String getStr(Storable st, String cd) {
+	@Cacheable("readOnlyCache")
+	public String getStr(Storable st, String cd, Date genDt) {
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
-    			if (Utl.between(Calc.getGenDt(), d.getDt1(), d.getDt2())) {
+    			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI)
 					if (d.getPar().getCd().equals(cd)) {
 						if (d.getPar().getTp().equals("ST")) {

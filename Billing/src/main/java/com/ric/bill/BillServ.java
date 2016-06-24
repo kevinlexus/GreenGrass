@@ -41,7 +41,7 @@ public class BillServ {
 		long totalTime;
 		
 		System.out.println("Begin!");
-		Calc.setDbgLvl(0);
+		Calc.setDbgLvl(1);
 		//dist.gen();
 
 		for (House o: houseMng.findAll()) {

@@ -81,7 +81,7 @@ public class ChrgServ {
 		//перенести в архив предыдущий расчет
 		archPrev();
 		//получить все необходимые услуги для начисления из тарифа по дому
-		for (Serv serv : tarMng.getAllServ(calc.getHouse())) {
+		for (Serv serv : tarMng.getAllServ(calc.getHouse(), Calc.getGenDt())) {
 			Calc.mess("Услуга:"+serv.getCd());
 			calc.setServ(serv);
 			//начислить услугу

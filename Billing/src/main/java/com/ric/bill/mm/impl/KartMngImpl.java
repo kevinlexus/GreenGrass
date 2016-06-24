@@ -43,8 +43,8 @@ public class KartMngImpl implements KartMng {
 
 	/**
 	 * Проверить, считали ли персону
+	 * нельзя кэшировать!
 	 */
-	//@Cacheable("readOnlyCache")
 	private boolean foundPers (Set<Pers> counted, Pers p) {
 		if (counted.contains(p)) {
 			//уже считали персону
@@ -59,8 +59,8 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 */
-	//@Cacheable("readOnlyCache")
-	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp) {
+	@Cacheable("readOnlyCache")
+	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp, Date genDt) {
 		Date dt1, dt2;
 		Set<? extends Registrable> rg;
 		if (tp==0) {
@@ -85,7 +85,7 @@ public class KartMngImpl implements KartMng {
 					} else {
 						dt2=Calc.getLastDt();
 					}
-					if (Utl.between(Calc.getGenDt(), dt1, dt2)) {
+					if (Utl.between(genDt, dt1, dt2)) {
 						//наличие статуса подтвердилось
 						return true;
 					}
@@ -101,8 +101,8 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
-	//@Cacheable("readOnlyCache")
-	private boolean checkPersNullStatus (Registrable reg) {
+	@Cacheable("readOnlyCache")
+	private boolean checkPersNullStatus (Registrable reg, Date genDt) {
 		//проверить статус, даты
 		Date dt1, dt2;
 		if (reg.getTp().getCd().equals("Временное присутствие")) {
@@ -119,7 +119,7 @@ public class KartMngImpl implements KartMng {
 			} else {
 				dt2=Calc.getLastDt();
 			}
-			if (Utl.between(Calc.getGenDt(), dt1, dt2)) {
+			if (Utl.between(genDt, dt1, dt2)) {
 				//наличие статуса подтвердилось
 				return true;
 			}
@@ -137,18 +137,18 @@ public class KartMngImpl implements KartMng {
 	 * @param cntPers - объект для заполнения
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
-	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp){
+	@Cacheable("readOnlyCache")
+	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
 		//поиск сперва по постоянной регистрации 
 		for (Registrable p : rc.getReg()) {
 			if (p.getPers()!=null && !foundPers(counted, p.getPers())) {
-				if (checkPersStatus(rc, p.getPers(), "Постоянная прописка", 0)) {
+				if (checkPersStatus(rc, p.getPers(), "Постоянная прописка", 0, genDt)) {
 					//постоянная регистрация есть, проверить временное отсутствие, если надо по этой услуге
 					if (!serv.getInclAbsn()) {
-						if (!checkPersStatus(rc, p.getPers(), "Временное отсутствие", 1)) {
+						if (!checkPersStatus(rc, p.getPers(), "Временное отсутствие", 1, genDt)) {
 							//временного отсутствия нет, считать проживающего
 							cntPers.cnt++;
 						}
@@ -159,7 +159,7 @@ public class KartMngImpl implements KartMng {
 					cntPers.cntEmpt++;
 				} else {
 					//нет постоянной регистрации, поискать временную прописку
-					if (checkPersStatus(rc, p.getPers(), "Временная прописка", 0)) {
+					if (checkPersStatus(rc, p.getPers(), "Временная прописка", 0, genDt)) {
 						//временное присутствие есть, считать проживающего
 						if (serv.getInclPrsn()) {
 							cntPers.cnt++;
@@ -174,7 +174,7 @@ public class KartMngImpl implements KartMng {
 		for (Registrable p : rc.getRegState()) {
 			//там где NULL fk_pers,- обычно временно зарег., считать их
 			if (p.getPers()==null) {
-				if (tp==0 && checkPersNullStatus(p)){
+				if (tp==0 && checkPersNullStatus(p, genDt)){
 					if (serv.getInclPrsn()) {
 						cntPers.cnt++;
 					}
@@ -190,8 +190,8 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	//@Cacheable("readOnlyCache")
-	public Standart getStandart (MLogs mLog, Calc calc, CntPers cntPers) {
+	@Cacheable("readOnlyCache")
+	public Standart getStandart (MLogs mLog, Calc calc, CntPers cntPers, Date genDt) {
 		//long startTime;
 		//long endTime;
 		//long totalTime;
@@ -210,30 +210,30 @@ public class KartMngImpl implements KartMng {
 			//если кол-во проживающих не передано, получить его
 
 			cntPers= new CntPers();
-			getCntPers(kart, servChrg, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+			getCntPers(kart, servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
-		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
-				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
+		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1", genDt), 0d)==1d
+				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2", genDt), 0d)==1d) {
 			if (cntPers.cnt==1) {
-				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.");
+				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.", genDt);
 			} else if (cntPers.cnt==2) {
-				stVol = getServPropByCD(kart, serv, "Норматив-2 чел.");
+				stVol = getServPropByCD(kart, serv, "Норматив-2 чел.", genDt);
 			} else if (cntPers.cnt >= 3) {
-				stVol = getServPropByCD(kart, serv, "Норматив-3 и более чел.");
+				stVol = getServPropByCD(kart, serv, "Норматив-3 и более чел.", genDt);
 			} else {
 				stVol = 0d;
 			}
 			
-		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1", genDt),0d)==1d
 				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
-			stVol = getServPropByCD(kart, serv, "Норматив");
-		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
+			stVol = getServPropByCD(kart, serv, "Норматив", genDt);
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1", genDt),0d)==1d
 				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0d;
 			String s2;
-			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество");
+			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество", genDt);
 			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
 				switch (cntPers.cnt) {
@@ -286,7 +286,7 @@ public class KartMngImpl implements KartMng {
 			}
 			}
 			//получить норматив, зависящий от проживающих
-			stVol = getServPropByCD(kart, serv, s2);
+			stVol = getServPropByCD(kart, serv, s2, genDt);
 			
 		}
 		if (stVol!=null) {	
@@ -310,18 +310,18 @@ public class KartMngImpl implements KartMng {
 	 * @param cd - CD свойства
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
-	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
+	@Cacheable("readOnlyCache")
+	public Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
 		Double val;
 		//в начале ищем по лиц. счету 
-		val=tarMng.findProp(kart, serv, cd);
+		val=tarMng.findProp(kart, serv, cd, genDt);
 		if (val==null) {
 			//потом ищем по дому
-			val=tarMng.findProp(kart.getKw().getHouse(), serv, cd);
+			val=tarMng.findProp(kart.getKw().getHouse(), serv, cd, genDt);
 		}
 		if (val==null) {
 			//потом ищем по городу
-			val=tarMng.findProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd);
+			val=tarMng.findProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
 		}
 		return val;
 	}

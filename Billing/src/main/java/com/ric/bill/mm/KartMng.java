@@ -1,5 +1,6 @@
 package com.ric.bill.mm;
 
+import java.util.Date;
 import java.util.Set;
 
 import com.ric.bill.Calc;
@@ -16,8 +17,8 @@ import com.ric.bill.model.tr.TarifKlsk;
 
 public interface KartMng  {
 
-	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp);
-	public abstract Double getServPropByCD(Kart kart, Serv serv, String string);
-	public abstract Standart getStandart(MLogs mLog, Calc calc, CntPers cntPers);
+	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt);
+	public abstract Double getServPropByCD(Kart kart, Serv serv, String string, Date genDt);
+	public abstract Standart getStandart(MLogs mLog, Calc calc, CntPers cntPers, Date genDt);
 
 }

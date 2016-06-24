@@ -1,6 +1,7 @@
 package com.ric.bill.mm.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+	/*@Cacheable("readOnlyCache")
 	public List<MLogs> getMetLogByTp(MeterContains mm, String tp) {
 		List<MLogs> mLog = new ArrayList<MLogs>(); 
 		for (MLogs ml : mm.getMlog()) {
@@ -56,7 +57,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 			}
 		}
 		return mLog;
-	}
+	}*/
 	
 	/**
 	 * Получить один (первый который найден) лог.счетчик по определённому объекту, типу и услуге
@@ -102,13 +103,13 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * проверить существование физ.счетчика
 	 * @param mLog
 	 */
-	//@Cacheable("readOnlyCache")
-	public boolean checkExsMet(MLogs mLog) {
+	@Cacheable("readOnlyCache")
+	public boolean checkExsMet(MLogs mLog, Date genDt) {
     	//установить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
     			//по соотв.периоду
-    			if (Utl.between(Calc.getGenDt(), e.getDt1(), e.getDt2())) {
+    			if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
 	    			if (e.getPrc() > 0d) {
 	    				return true;
 	    			}
@@ -124,26 +125,11 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog - лог.счетчик
 	 * @throws NotFoundNode - если не найден счетчик (узел)
 	 */
-	////@Cacheable("readWriteCache")
+	@Cacheable("readWriteCache")
     public SumNodeVol getVolPeriod (MLogs mLog) {
 		SumNodeVol lnkVol = new SumNodeVol();
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
-    		if (v.getTp().getCd().equals("Лимит ОДН")) {
-    		  Calc.mess("проверка сч id="+v.getVol1()+" "+v.getTp().getName()+" "+v.getDt1()+" "+v.getDt2());
-    		  if (Utl.between(v.getDt1(), Calc.getCurDt1(), Calc.getCurDt2())) {
-        		  Calc.mess("check1");
-    		  } else {
-        		  Calc.mess("check2");
-    		  }
-    		  
-    		  if (Utl.between(v.getDt2(), Calc.getCurDt1(), Calc.getCurDt2())	) {
-        		  Calc.mess("check3");
-    		  } else {
-        		  Calc.mess("check4");
-    		  }
-    		  
-    		}
 			//по всему соотв.периоду 
 			if (Utl.between(v.getDt1(), Calc.getCurDt1(), Calc.getCurDt2()) && //внимание! здесь фильтр берет даты снаружи!
 				Utl.between(v.getDt2(), Calc.getCurDt1(), Calc.getCurDt2())	
@@ -171,26 +157,30 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - тип счетчика
 	 * @return лог.счетчик
 	 */
-	//@Cacheable("readWriteCache")
-	public MLogs getLinkedNode (MLogs mLog, String tp) {
+	@Cacheable("readWriteCache") 
+	public MLogs getLinkedNode(MLogs mLog, String tp, Date genDt) {
 		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
     	//сперва направленные внутрь
     	for (MeterLogGraph g : mLog.getInside()) {
-    		if (g.getSrc().getTp().getCd().equals(tp)) {
-    			//найдено
-    			lnkMLog = g.getSrc();
-    			break;
-    		}
-    	}
-    	//потом направленные наружу, если не найдено
-    	if (lnkMLog == null) {
-	    	for (MeterLogGraph g : mLog.getOutside()) {
-	    		if (g.getDst().getTp().getCd().equals(tp)) {
+			if (Utl.between(genDt, g.getDt1(), g.getDt2())) {
+	    		if (g.getSrc().getTp().getCd().equals(tp)) {
 	    			//найдено
 	    			lnkMLog = g.getSrc();
 	    			break;
 	    		}
+			}
+    	}
+    	//потом направленные наружу, если не найдено
+    	if (lnkMLog == null) {
+	    	for (MeterLogGraph g : mLog.getOutside()) {
+				if (Utl.between(genDt, g.getDt1(), g.getDt2())) {
+		    		if (g.getDst().getTp().getCd().equals(tp)) {
+		    			//найдено
+		    			lnkMLog = g.getSrc();
+		    			break;
+		    		}
+				}
 	    	}
 		}
 		return lnkMLog;
@@ -202,7 +192,8 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @param tp - тип расчета
      * @return 
      */
-	public void delNodeVol(MLogs mLog, int tp) {
+	@Cacheable("readWriteCache") 
+	public void delNodeVol(MLogs mLog, int tp, Date genDt) {
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();
@@ -214,15 +205,16 @@ public class MeterLogMngImpl implements MeterLogMng {
 
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, удалить их объемы рекурсивно
 		for (MeterLogGraph g : mLog.getInside()) {
-			if (Utl.between(Calc.getGenDt(), g.getDt1(), g.getDt2())) {
+			if (Utl.between(genDt, g.getDt1(), g.getDt2())) {
 				if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 
 						 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 						 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 						 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-							delNodeVol(g.getSrc(), tp);
+							delNodeVol(g.getSrc(), tp, genDt);
 				}
 			}
 		}
 	}
+
 	
 }

@@ -1,5 +1,6 @@
 package com.ric.bill.mm.impl;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,12 +45,13 @@ public class TarifMngImpl implements TarifMng {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
-	public Double findProp(TarifContains tc, Serv serv, String cd) {
+	@Cacheable("readOnlyCache")
+	public Double findProp(TarifContains tc, Serv serv, String cd, Date genDt) {
 
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//по соотв.периоду
-			if (Utl.between(Calc.getGenDt(), k.getDt1(), k.getDt2())) {
+			if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
@@ -67,12 +69,13 @@ public class TarifMngImpl implements TarifMng {
 	 * @param tc - объект
 	 * @return
 	 */
-	public Set<Serv> getAllServ(TarifContains tc) {
+	@Cacheable("readOnlyCache")
+	public Set<Serv> getAllServ(TarifContains tc, Date genDt) {
 		Set<Serv> lst = new HashSet<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//по соотв.периоду
-			if (Utl.between(Calc.getGenDt(), k.getDt1(), k.getDt2())) {
+			if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					lst.add(t.getServ());
