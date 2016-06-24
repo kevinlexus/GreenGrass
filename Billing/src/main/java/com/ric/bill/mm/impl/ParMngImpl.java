@@ -46,11 +46,11 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа Double объекта по CD свойства
 	 */
 	@Cacheable("readOnlyCache")
-	public Double getDbl(Storable st, String cd, Date dt1) {
+	public Double getDbl(Storable st, String cd) {
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
-    			if (Utl.between(dt1/*Calc.getGenDt()*/, d.getDt1(), d.getDt2())) {
+    			if (Utl.between(Calc.getGenDt(), d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI)
 					if (d.getPar().getCd().equals(cd)) {
 						if (d.getPar().getTp().equals("NM")) {

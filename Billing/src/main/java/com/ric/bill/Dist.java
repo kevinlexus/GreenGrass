@@ -374,7 +374,7 @@ public class Dist {
 		} else if (calc.getCalcTp()==1 && kart != null) {
 			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
 			//площадь
-			partArea = parMng.getDbl(kart, "Площадь.Общая", calc.getGenDt()) / calc.getCntCurDays(); 
+			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая"), 0d) / calc.getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
 			kartMng.getCntPers(kart, servChrg, cntPers, 0);
@@ -391,8 +391,8 @@ public class Dist {
 			//поиск счетчика ЛОДН
 			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН");
 			//параметр Доначисление по ОДН
-			Double parAddODN = Utl.nvl(parMng.getDbl((Storable)lnkLODN, "Доначисление по ОДН", calc.getGenDt()), 0d);
-			Double parLimitODN = parMng.getDbl((Storable)lnkLODN, "Лимит по ОДН", calc.getGenDt());
+			Double parAddODN = Utl.nvl(parMng.getDbl((Storable)lnkLODN, "Доначисление по ОДН"), 0d);
+			Double parLimitODN = parMng.getDbl((Storable)lnkLODN, "Лимит по ОДН");
 			
 			if (lnkLODN == null) {
 				// не найден счетчик
@@ -482,7 +482,7 @@ public class Dist {
 			//поиск счетчика ЛОДН
 			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН");
 			//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
-			Double tmp =parMng.getDbl(lnkLODN, "VOL_SQ_MT", calc.getGenDt());
+			Double tmp =parMng.getDbl(lnkLODN, "VOL_SQ_MT");
 			
 		}
 		

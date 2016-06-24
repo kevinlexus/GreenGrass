@@ -10,7 +10,7 @@ public interface ParMng {
 
 	public List<Par> findAll();
 	boolean isExByCd(String cd);
-	public Double getDbl(Storable st, String cd, Date dt1);
+	public Double getDbl(Storable st, String cd);
 	public String getStr(Storable st, String cd);
 	
 

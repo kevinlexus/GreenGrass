@@ -213,8 +213,8 @@ public class KartMngImpl implements KartMng {
 			getCntPers(kart, servChrg, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
-		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1", calc.getGenDt()), 0d)==1d
-				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2", calc.getGenDt()), 0d)==1d) {
+		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
+				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
 			if (cntPers.cnt==1) {
 				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.");
 			} else if (cntPers.cnt==2) {
@@ -225,15 +225,15 @@ public class KartMngImpl implements KartMng {
 				stVol = 0d;
 			}
 			
-		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1", calc.getGenDt()),0d)==1d
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, serv, "Норматив");
-		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1", calc.getGenDt()),0d)==1d
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0d;
 			String s2;
-			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество", calc.getGenDt());
+			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество");
 			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
 				switch (cntPers.cnt) {
