@@ -10,4 +10,5 @@ public interface ParDAO {
 
 
 	public List<Par> findAll();
+	public Par findByCd(String cd);
 }

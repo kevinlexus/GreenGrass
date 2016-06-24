@@ -214,7 +214,10 @@ public class KartMngImpl implements KartMng {
 			getCntPers(kart, servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
-		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1", genDt), 0d)==1d
+		
+		Calc.mess("===="+Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1", genDt), 0d));
+		
+		/*if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1", genDt), 0d)==1d
 				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2", genDt), 0d)==1d) {
 			if (cntPers.cnt==1) {
 				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.", genDt);
@@ -289,7 +292,7 @@ public class KartMngImpl implements KartMng {
 			//получить норматив, зависящий от проживающих
 			stVol = getServPropByCD(kart, serv, s2, genDt);
 			
-		}
+		}*/
 		if (stVol!=null) {	
 			st.vol = stVol;
 			st.partVol=cntPers.cnt * stVol/Calc.getCntCurDays();

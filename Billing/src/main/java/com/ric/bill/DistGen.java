@@ -63,7 +63,7 @@ public class DistGen {
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }")
 	//ВНИМАНИЕ! Пришлось вынести в отдельный сервис (не хотел кэш включаться на private методе!!!):
 	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
-	@Cacheable(cacheNames="readWriteCache", key="{ #ml.getId(), #tp, #genDt }") 
+	@Cacheable(cacheNames="rrr2", key="{ #ml.getId(), #tp, #genDt }") 
 	public NodeVol distNode (MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		Double partArea =0d; //текущая доля площади, по узлу
 		Double partPers =0d; //текущая доля кол-ва прожив, по узлу
@@ -109,7 +109,9 @@ public class DistGen {
 							for (MeterExs e : m.getExs()) { //периоды сущ.
 								//добавить объем в объект объема
 								//умножить объем на процент существования и на долю дня
-								vl=v.getVol1() * e.getPrc() / calc.getCntCurDays();
+								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
+									vl=v.getVol1() * e.getPrc() / calc.getCntCurDays();
+								}
 							}
 						}
 					}

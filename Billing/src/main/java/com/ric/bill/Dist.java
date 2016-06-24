@@ -196,7 +196,7 @@ public class Dist {
 	 * распределить объем по услуге данного дома
 	 */
 	private void distHouseServ() {
-		Calc.mess("Услуга="+calc.getServ().getCd(), 2);
+		Calc.mess("******************Услуга*************="+calc.getServ().getCd(), 2);
 
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
