@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
@@ -43,7 +45,7 @@ public class Vol implements java.io.Serializable, Simple {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VOL")
-	@SequenceGenerator(name="SEQ_VOL", sequenceName="MT.KMP_METER_VOL_ID", allocationSize=10000) 	
+	@SequenceGenerator(name="SEQ_VOL", sequenceName="MT.KMP_METER_VOL_ID", allocationSize=100) 	
     @Column(name = "ID", unique=true, updatable = false, nullable = false)					
 	private Integer id; //id
 	
@@ -67,10 +69,10 @@ public class Vol implements java.io.Serializable, Simple {
 
     //даты начала и окончания произведенного объема
     @Column(name = "DT1", updatable = false, nullable = true)
-	private Date dt1;
+    private Date dt1;
 
     @Column(name = "DT2", updatable = false, nullable = true)
-	private Date dt2;
+    private Date dt2;
 
     public Integer getId() {
 		return this.id;

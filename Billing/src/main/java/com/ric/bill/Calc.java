@@ -36,8 +36,8 @@ public final class Calc {
 	private static Date curDt1;
 	private static Date curDt2;
 	//наиболее ранняя и поздние даты в биллинге, константы
-	private final static Date firstDt=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
-	private final static Date lastDt=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
+	private static Date firstDt;//=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
+	private static Date lastDt;//=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
 	//кол-во дней в периоде
 	private double cntCurDays;  
 	//доля одного дня в периоде
@@ -65,6 +65,12 @@ public final class Calc {
 
 	//конструктор
 	public Calc() {
+		calendar = new GregorianCalendar(1940, Calendar.JANUARY, 1);
+		calendar.clear(Calendar.ZONE_OFFSET);
+		firstDt = calendar.getTime();
+		calendar = new GregorianCalendar(2940, Calendar.JANUARY, 1);
+		calendar.clear(Calendar.ZONE_OFFSET);
+		lastDt = calendar.getTime();
 	}
 	
 	/**
@@ -73,12 +79,15 @@ public final class Calc {
 	public void setUp() {
 		//HARDCODE!! TODO!
 		calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
+		calendar.clear(Calendar.ZONE_OFFSET);
+		
 		setGenDt(calendar.getTime());
 		//1 день месяца
 		calendar.set(Calendar.DATE, 1); 
 		setCurDt1(calendar.getTime());
 		//последний день месяца
-		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); 
+		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		
 		setCurDt2(calendar.getTime());
 		//кол-во дней в месяце
 		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));

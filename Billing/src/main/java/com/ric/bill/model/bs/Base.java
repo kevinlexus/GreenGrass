@@ -31,18 +31,10 @@ import com.ric.bill.Storable;
  *
  */
 @MappedSuperclass
-@FilterDefs({
-    @FilterDef(name = "FILTER_GEN_DT", defaultCondition = ":DT1 BETWEEN DT1 AND DT2", 
-    		parameters = {@ParamDef(name = "DT1", type = "date")
-    		}
-    )
-})
 public abstract class Base implements Storable {
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
-	@Filters({
-	    @Filter(name = "FILTER_GEN_DT")})
 	@BatchSize(size = 20)
 	protected Set<Dw> dw = new HashSet<Dw>(0);
 

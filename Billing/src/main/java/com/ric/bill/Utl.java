@@ -27,13 +27,31 @@ public class Utl {
 	 * @return
 	 */
 	public static boolean between(Date checkDt, Date dt1, Date dt2) {
+		if (dt1 == null) {
+			dt1 = Calc.getFirstDt();
+		}
+		if (dt2 == null) {
+			dt2 = Calc.getLastDt();
+		}
+		
+		if (checkDt.getTime() >= dt1.getTime() &&
+				checkDt.getTime() <= dt2.getTime()) {
+			return true;
+		} else {
+			return false;
+		}
+/*		Calc.mess("1 "+dt1);
+		Calc.mess("2 "+dt2);
+		Calc.mess("3 "+checkDt);
 		if ((checkDt.after(dt1) || checkDt.equals(dt1))
 			&&
 			(checkDt.before(dt2) || checkDt.equals(dt2))) {
 			return true;
 		} else {
 			return false;
-		}
+		}*/
+		
+		
 	}
 	
 }

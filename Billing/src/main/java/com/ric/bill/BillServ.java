@@ -15,7 +15,7 @@ import com.ric.bill.model.ar.House;
 /**
  * Главный сервис биллинга
  * @author lev
- * Check!
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring.xml" })
@@ -41,7 +41,7 @@ public class BillServ {
 		long totalTime;
 		
 		System.out.println("Begin!");
-		Calc.setDbgLvl(1);
+		Calc.setDbgLvl(0);
 		//dist.gen();
 
 		for (House o: houseMng.findAll()) {
@@ -50,7 +50,7 @@ public class BillServ {
 			//распределить объемы
 			startTime = System.currentTimeMillis();
 
-			//dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется
+			dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется
 			endTime   = System.currentTimeMillis();
 			totalTime = endTime - startTime;
 			System.out.println("Время исполнения-1:"+totalTime);
@@ -58,7 +58,7 @@ public class BillServ {
 			
 			startTime = System.currentTimeMillis();
 		    //начисление
-			chrg.chrgHouse(o.getId()); //передать по ID иначе кэшируется
+			//chrg.chrgHouse(o.getId()); //передать по ID иначе кэшируется
 			endTime   = System.currentTimeMillis();
 			totalTime = endTime - startTime;
 			System.out.println("Время исполнения-2:"+totalTime);

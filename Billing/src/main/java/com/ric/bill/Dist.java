@@ -1,23 +1,21 @@
 package com.ric.bill;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import antlr.collections.List;
 
 import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.ErrorWhileDist;
@@ -41,9 +39,6 @@ import com.ric.bill.model.mt.MeterExs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
-import com.ric.bill.model.tr.TarifKlsk;
-import com.ric.bill.model.tr.TarifServOrg;
-import com.ric.bill.model.tr.TarifServProp;
 
 /**
  * Сервис распределения объемов
@@ -75,26 +70,17 @@ public class Dist {
     private EntityManager em;
 
     /**
-	 * Установить фильтры для сессии
+	 * Установить фильтры для сессии -убрал пока
+	 * 
 	 */
-	private void setFilters() {
-		Session session = (Session) em.getDelegate();
-		session.enableFilter("FILTER_GEN_DT").setParameter("DT1", Calc.getGenDt());
-		session.enableFilter("FILTER_GEN_DT_INNER").setParameter("DT1", Calc.getCurDt1())
-												   .setParameter("DT2", Calc.getCurDt2());
+/*	private void setFilters() {
+		Session session = em.unwrap(Session.class);
+		Calc.mess("Установлен фильтр: c:"+Calc.getCurDt1()+" по:"+Calc.getCurDt2());
+		session.enableFilter("FILTER_GEN_DT_OUTER").setParameter("DT1", Calc.getCurDt1())
+		   .setParameter("DT2", Calc.getCurDt2());
 		//отдельно установить фильтр существования счетчиков
-		setExFilter(Calc.getGenDt());
-	}
+	}*/
 
-	/**
-	 * Фильтр существования счетчиков (сделал отдельно, но не стал применять, так как в ОДН считается наличие хотя бы 1 дня сущ.счетчика ОДПУ)
-	 * @param date
-	 */
-	private void setExFilter(Date date) {
-		Session session = (Session) em.getDelegate();
-		session.enableFilter("FILTER_GEN_EX_DT").setParameter("DT1", date);
-	}
-	
 	/**
 	 * Удалить объем по вводам дома
 	 * 
@@ -116,10 +102,29 @@ public class Dist {
 	 * @param serv - услуга
 	 */
 	private void delHouseServVolTp(Serv serv, int tp) {
-		//найти все вводы по дому и по услуге
-		for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-			metMng.delNodeVol(ml, tp);
+		//перебрать все необходимые даты, за период
+		Calendar c = Calendar.getInstance();
+		//необходимый для формирования диапазон дат
+		Date dt1, dt2;
+		if (calc.getCalcTp()==2) {
+			//формирование по ОДН - задать последнюю дату
+			dt1 = Calc.getCurDt2();
+			dt2 = Calc.getCurDt2();
+		} else {
+			//прочее формирование
+			dt1 = Calc.getCurDt1();
+			dt2 = Calc.getCurDt2();
 		}
+
+		//найти все вводы по дому и по услуге
+		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
+			Calc.setGenDt(c.getTime());
+			for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+				metMng.delNodeVol(ml, tp);
+			}
+		}
+		
+		
 	}
 	
 	/**
@@ -140,17 +145,60 @@ public class Dist {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distHouseVol(int houseId) {
 		
+		calc.setUp(); //настроить даты и т.п.
+
 		House h = em.find(House.class, houseId);
 		if (!Calc.isInit()) {
 			calc.setHouse(h);
 			calc.setArea(calc.getHouse().getStreet().getArea());
-			calc.setUp(); //настроить даты и т.п.
 			Calc.setInit(true);
 		}
 		Calc.mess("Распределение объемов");
 		Calc.mess("Дом: id="+calc.getHouse().getId());
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
 
+		
+		/*Vol vol = em.find(Vol.class, 1017764);
+		
+		Calc.mess("========================");
+		Calc.mess(vol.getDt1().toString());
+		Calc.mess(vol.getDt2().toString());
+		*/
+		
+		//перебрать все необходимые даты, за период
+		//Calendar c = Calendar.getInstance();
+		//необходимый для формирования диапазон дат
+		//Date dt1 = null, dt2 = null;
+		//прочее формирование
+		//dt1 = Calc.getCurDt1();
+		//dt2 = Calc.getCurDt2();
+		
+		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+		try {
+			String dateInString = "2015-10-01 00:00:00:000";
+			dt1 = sdf.parse(dateInString);
+			dateInString = "2015-10-31 00:00:00:000";
+			dt2 = sdf.parse(dateInString);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+			if (Utl.between(vol.getDt1(), dt1, dt2)) {
+				Calc.mess("===1");
+			} else {
+				Calc.mess("===2");
+			}
+			
+			if (vol.getDt1().getTime() >= dt1.getTime() &&
+					vol.getDt1().getTime() <= dt2.getTime()
+					) {
+				Calc.mess("===11");
+			} else {
+				Calc.mess("===22");
+			}*/
+
+		
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
@@ -171,7 +219,6 @@ public class Dist {
 	 */
 	private void distHouseServ() {
 		Calc.mess("Услуга="+calc.getServ().getCd());
-		setFilters();//вкл.фильтр
 
 		Calc.beginTimer();
 		calc.setCalcTp(1);
@@ -220,7 +267,7 @@ public class Dist {
 	 * @param ml - начальный узел распределения
 	 * @throws ErrorWhileDist 
 	 */
-	@Cacheable("readWriteCache")	
+	//@Cacheable("readWriteCache")	
 	private void distGraph (MLogs ml) throws ErrorWhileDist {
 		Calc.mess("Распределение ввода:"+ml.getId());
 		//перебрать все необходимые даты, за период
@@ -237,9 +284,9 @@ public class Dist {
 			dt2 = Calc.getCurDt2();
 		}
 		
-		//c.setTime(Calc.getCurDt1());
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
+			Calc.mess("по дате="+Calc.getGenDt());
 			@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
@@ -253,7 +300,6 @@ public class Dist {
 			} catch (NotFoundNode e) {
 				throw new ErrorWhileDist("Не найден нужный счетчик, при вызове BillServ.distNode()");
 			}
-			Calc.mess("по дате="+Calc.getGenDt());
 			
 			//break;
 		}
@@ -267,7 +313,7 @@ public class Dist {
 	 * @return
 	 * @throws WrongGetMethod
 	 * @throws NotFoundODNLimit */
-	@Cacheable("readWriteCache")	
+	////@Cacheable("readWriteCache")	
 	private NodeVol distNode (MLogs ml, int rec) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		//Double tmpD=0d; //для каких нить нужд
 		Double partArea =0d; //текущая доля площади, по узлу
@@ -278,6 +324,10 @@ public class Dist {
 		//получить лицевой счет, к которому привязан счетчик, для убоства
 		Kart kart = ml.getKart();
 		calc.setKart(kart); 
+
+		if (ml.getId()==3636522 && calc.getCalcTp()==2) {
+			Calc.mess("stop");
+		}
 		
 		if (rec > 1000) {
 			throw new WrongGetMethod("При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружен замкнутый цикл");
@@ -324,7 +374,7 @@ public class Dist {
 		} else if (calc.getCalcTp()==1 && kart != null) {
 			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
 			//площадь
-			partArea = parMng.getDbl(kart, "Площадь.Общая") / calc.getCntCurDays(); 
+			partArea = parMng.getDbl(kart, "Площадь.Общая", calc.getGenDt()) / calc.getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
 			kartMng.getCntPers(kart, servChrg, cntPers, 0);
@@ -341,8 +391,8 @@ public class Dist {
 			//поиск счетчика ЛОДН
 			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН");
 			//параметр Доначисление по ОДН
-			Double parAddODN = Utl.nvl(parMng.getDbl((Storable)lnkLODN, "Доначисление по ОДН"), 0d);
-			Double parLimitODN = parMng.getDbl((Storable)lnkLODN, "Лимит по ОДН");
+			Double parAddODN = Utl.nvl(parMng.getDbl((Storable)lnkLODN, "Доначисление по ОДН", calc.getGenDt()), 0d);
+			Double parLimitODN = parMng.getDbl((Storable)lnkLODN, "Лимит по ОДН", calc.getGenDt());
 			
 			if (lnkLODN == null) {
 				// не найден счетчик
@@ -428,6 +478,11 @@ public class Dist {
 			
 		} else if (calc.getCalcTp()==3 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи пропорц.площади (Отопление например)
+			MLogs lnkLODN = null;
+			//поиск счетчика ЛОДН
+			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН");
+			//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
+			Double tmp =parMng.getDbl(lnkLODN, "VOL_SQ_MT", calc.getGenDt());
 			
 		}
 		

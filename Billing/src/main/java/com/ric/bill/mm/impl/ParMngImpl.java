@@ -1,5 +1,6 @@
 package com.ric.bill.mm.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.Calc;
 import com.ric.bill.Storable;
+import com.ric.bill.Utl;
 import com.ric.bill.dao.ParDAO;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.ParMng;
@@ -43,21 +46,24 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа Double объекта по CD свойства
 	 */
 	@Cacheable("readOnlyCache")
-	public Double getDbl(Storable st, String cd) {
+	public Double getDbl(Storable st, String cd, Date dt1) {
 		try {
 			for (Dw d: st.getDw()) {
-				//проверка, что соответствует CD и Number (NM), Единичное (SI)
-				if (d.getPar().getCd().equals(cd)) {
-					if (d.getPar().getTp().equals("NM")) {
-						if (d.getPar().getDataTp().equals("SI")) {
-							return d.getN1();
+    			//по соотв.периоду
+    			if (Utl.between(dt1/*Calc.getGenDt()*/, d.getDt1(), d.getDt2())) {
+					//проверка, что соответствует CD и Number (NM), Единичное (SI)
+					if (d.getPar().getCd().equals(cd)) {
+						if (d.getPar().getTp().equals("NM")) {
+							if (d.getPar().getDataTp().equals("SI")) {
+								return d.getN1();
+							} else {
+									throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+							}
 						} else {
-								throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+							throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом NM завершилась ошибкой");
 						}
-					} else {
-						throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом NM завершилась ошибкой");
 					}
-				}
+    			}
 			}
 			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
 			if (!isExByCd(cd)) {
@@ -74,22 +80,25 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
 	
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	public String getStr(Storable st, String cd) {
 		try {
 			for (Dw d: st.getDw()) {
-				//проверка, что соответствует CD и Number (NM), Единичное (SI)
-				if (d.getPar().getCd().equals(cd)) {
-					if (d.getPar().getTp().equals("ST")) {
-						if (d.getPar().getDataTp().equals("SI")) {
-							return d.getS1();
+    			//по соотв.периоду
+    			if (Utl.between(Calc.getGenDt(), d.getDt1(), d.getDt2())) {
+					//проверка, что соответствует CD и Number (NM), Единичное (SI)
+					if (d.getPar().getCd().equals(cd)) {
+						if (d.getPar().getTp().equals("ST")) {
+							if (d.getPar().getDataTp().equals("SI")) {
+								return d.getS1();
+							} else {
+									throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+							}
 						} else {
-								throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+							throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом ST завершилась ошибкой");
 						}
-					} else {
-						throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом ST завершилась ошибкой");
 					}
-				}
+    			}
 			}
 			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
 			if (!isExByCd(cd)) {

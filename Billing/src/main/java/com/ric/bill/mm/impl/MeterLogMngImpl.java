@@ -16,6 +16,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Storable;
+import com.ric.bill.Utl;
 import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.dao.ParDAO;
 import com.ric.bill.excp.NotFoundNode;
@@ -101,13 +102,16 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * проверить существование физ.счетчика
 	 * @param mLog
 	 */
-	@Cacheable("readOnlyCache2") //здесь без отдельного кэша не работает...
+	//@Cacheable("readOnlyCache")
 	public boolean checkExsMet(MLogs mLog) {
     	//установить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
-    			if (e.getPrc() > 0d) {
-    				return true;
+    			//по соотв.периоду
+    			if (Utl.between(Calc.getGenDt(), e.getDt1(), e.getDt2())) {
+	    			if (e.getPrc() > 0d) {
+	    				return true;
+	    			}
     			}
     		}
     	}
@@ -120,22 +124,40 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog - лог.счетчик
 	 * @throws NotFoundNode - если не найден счетчик (узел)
 	 */
-	//@Cacheable("readWriteCache")
+	////@Cacheable("readWriteCache")
     public SumNodeVol getVolPeriod (MLogs mLog) {
-		Calc.mess("проверка сч id="+mLog.getId());
 		SumNodeVol lnkVol = new SumNodeVol();
-    	//период будет опеределён фильтром FILTER_GEN_DT_INNER
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
-        	//Calc.mess("проверка объема id="+v.getId()+" vol="+v.getVol1());
-    		if (v.getTp().getCd().equals("Фактический объем") ){
-    			lnkVol.addVol(v.getVol1());
-    		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
-    			lnkVol.addArea(v.getVol1());
-    			lnkVol.addPers(v.getVol2());
-    		} else if (v.getTp().getCd().equals("Лимит ОДН") ){
-    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение)
+    		if (v.getTp().getCd().equals("Лимит ОДН")) {
+    		  Calc.mess("проверка сч id="+v.getVol1()+" "+v.getTp().getName()+" "+v.getDt1()+" "+v.getDt2());
+    		  if (Utl.between(v.getDt1(), Calc.getCurDt1(), Calc.getCurDt2())) {
+        		  Calc.mess("check1");
+    		  } else {
+        		  Calc.mess("check2");
+    		  }
+    		  
+    		  if (Utl.between(v.getDt2(), Calc.getCurDt1(), Calc.getCurDt2())	) {
+        		  Calc.mess("check3");
+    		  } else {
+        		  Calc.mess("check4");
+    		  }
+    		  
     		}
+			//по всему соотв.периоду 
+			if (Utl.between(v.getDt1(), Calc.getCurDt1(), Calc.getCurDt2()) && //внимание! здесь фильтр берет даты снаружи!
+				Utl.between(v.getDt2(), Calc.getCurDt1(), Calc.getCurDt2())	
+					) {
+		        	//Calc.mess("проверка объема id="+v.getId()+" vol="+v.getVol1());
+		    		if (v.getTp().getCd().equals("Фактический объем") ){
+		    			lnkVol.addVol(v.getVol1());
+		    		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
+		    			lnkVol.addArea(v.getVol1());
+		    			lnkVol.addPers(v.getVol2());
+		    		} else if (v.getTp().getCd().equals("Лимит ОДН") ){
+		    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение)
+		    		}
+			}
     	}
     	
     	
@@ -149,7 +171,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - тип счетчика
 	 * @return лог.счетчик
 	 */
-	@Cacheable("readWriteCache")
+	//@Cacheable("readWriteCache")
 	public MLogs getLinkedNode (MLogs mLog, String tp) {
 		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
@@ -181,7 +203,6 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @return 
      */
 	public void delNodeVol(MLogs mLog, int tp) {
-		Calc.mess("Del MLog vols: id="+mLog.getId());
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();
@@ -193,11 +214,13 @@ public class MeterLogMngImpl implements MeterLogMng {
 
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, удалить их объемы рекурсивно
 		for (MeterLogGraph g : mLog.getInside()) {
-			if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 
-					 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
-					 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
-					 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-						delNodeVol(g.getSrc(), tp);
+			if (Utl.between(Calc.getGenDt(), g.getDt1(), g.getDt2())) {
+				if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 
+						 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
+						 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
+						 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
+							delNodeVol(g.getSrc(), tp);
+				}
 			}
 		}
 	}

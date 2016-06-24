@@ -44,7 +44,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить, считали ли персону
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	private boolean foundPers (Set<Pers> counted, Pers p) {
 		if (counted.contains(p)) {
 			//уже считали персону
@@ -59,7 +59,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	private boolean checkPersStatus (RegContains reg, Pers p, String status, int tp) {
 		Date dt1, dt2;
 		Set<? extends Registrable> rg;
@@ -101,7 +101,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	private boolean checkPersNullStatus (Registrable reg) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -137,7 +137,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cntPers - объект для заполнения
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp){
 		Set<Pers> counted = new HashSet<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -190,7 +190,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	public Standart getStandart (MLogs mLog, Calc calc, CntPers cntPers) {
 		//long startTime;
 		//long endTime;
@@ -213,8 +213,8 @@ public class KartMngImpl implements KartMng {
 			getCntPers(kart, servChrg, cntPers, 0); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
-		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
-				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
+		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1", calc.getGenDt()), 0d)==1d
+				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2", calc.getGenDt()), 0d)==1d) {
 			if (cntPers.cnt==1) {
 				stVol = getServPropByCD(kart, serv, "Норматив-1 чел.");
 			} else if (cntPers.cnt==2) {
@@ -225,15 +225,15 @@ public class KartMngImpl implements KartMng {
 				stVol = 0d;
 			}
 			
-		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1", calc.getGenDt()),0d)==1d
 				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, serv, "Норматив");
-		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1", calc.getGenDt()),0d)==1d
 				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0d;
 			String s2;
-			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество");
+			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество", calc.getGenDt());
 			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
 				switch (cntPers.cnt) {
@@ -289,9 +289,13 @@ public class KartMngImpl implements KartMng {
 			stVol = getServPropByCD(kart, serv, s2);
 			
 		}
-			
-		st.vol = stVol;
-		st.partVol=cntPers.cnt * stVol/calc.getCntCurDays();
+		if (stVol!=null) {	
+			st.vol = stVol;
+			st.partVol=cntPers.cnt * stVol/calc.getCntCurDays();
+		} else {
+			st.vol = 0d;
+			st.partVol= 0d;
+		}
 		return st;
 		
 	}
@@ -306,7 +310,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cd - CD свойства
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+	//@Cacheable("readOnlyCache")
 	public Double getServPropByCD(Kart kart, Serv serv, String cd) {
 		Double val;
 		//в начале ищем по лиц. счету 

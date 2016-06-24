@@ -19,8 +19,13 @@ import javax.persistence.Table;
 import lombok.ToString;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.MeterContains;
 import com.ric.bill.RegContains;
@@ -74,10 +79,10 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@BatchSize(size = 50)
 	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
 
+	//@NotFound(action=NotFoundAction.IGNORE)
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
-	@NotFound(action=NotFoundAction.IGNORE)
 	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
