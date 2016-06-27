@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,10 +62,58 @@ public final class Calc {
 	//уровень отладки
 	private static int dbgLvl;
 	
-	public static int kmp=0; //KMP!
+	private HashSet<Check> lstCheck;
+	
+	/**
+	 * внутренний класс, для проверок расчета узлов
+	 * @author lev
+	 *
+	 */
+	private class Check {
+		private int id; //ID объекта
+		private int tp; //тип расчета
+		private Date genDt; //дата расчета
+		private NodeVol nodeVol;//рассчитанные объемы
+		
+		public Check(int id, int tp, Date genDt, NodeVol nodeVol) {
+			setId(id);
+			setTp(tp);
+			setGenDt(genDt);
+			setNodeVol(nodeVol);
+		}
+		
+		public int getId() {
+			return id;
+		}
+		public void setId(int id) {
+			this.id = id;
+		}
+		public int getTp() {
+			return tp;
+		}
+		public void setTp(int tp) {
+			this.tp = tp;
+		}
+		public Date getGenDt() {
+			return genDt;
+		}
+		public void setGenDt(Date genDt) {
+			this.genDt = genDt;
+		}
 
+		public NodeVol getNodeVol() {
+			return nodeVol;
+		}
+
+		public void setNodeVol(NodeVol nodeVol) {
+			this.nodeVol = nodeVol;
+		}
+		
+	}
+	
 	//конструктор
 	public Calc() {
+		lstCheck = new HashSet<Check>();
 		calendar = new GregorianCalendar(1940, Calendar.JANUARY, 1);
 		calendar.clear(Calendar.ZONE_OFFSET);
 		firstDt = calendar.getTime();
@@ -228,5 +277,44 @@ public final class Calc {
 		Calc.init = init;
 	}
 
+	/**
+	 * Поиск расчитанного объема заданного по ID объекта
+	 * @param id - ID
+	 * @param tp - тип расчета
+	 * @param genDt - дата расчета
+	 * @return - найденный объем
+	 */
+	public NodeVol findLstCheck(int id, int tp, Date genDt) {
+		for (Check c : lstCheck) {
+			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
+				if (id==3670885) {
+				  Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString(), 2);
+				}
+				return c.getNodeVol();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Добавление расчитанного объекта
+	 * @param id - ID
+	 * @param tp - тип расчета
+	 * @param genDt - дата расчета
+	 */
+	public void addLstCheck(int id, int tp, Date genDt, NodeVol nodeVol) {
+		  lstCheck.add(new Check(id, tp, genDt, nodeVol));
+/*		  if (id==3670885) {
+			  Calc.mess("Записано id="+id+" tp="+tp+" genDt="+genDt.toLocaleString(), 2);
+		  }*/
+	}
+
+	/**
+	 * Почистить коллекцию, содержащую расчитанные объемы
+	 */
+	public void clearLstChecks() {
+		lstCheck.clear();
+	}
+	
 	
 }

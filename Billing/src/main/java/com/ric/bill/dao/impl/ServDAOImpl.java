@@ -20,41 +20,40 @@ public class ServDAOImpl implements ServDAO {
     @PersistenceContext
     private EntityManager em;
 
-    /**
-	 * Найти все услуги
-	 */
-	@SuppressWarnings("unchecked")
-	//@Cacheable("readOnlyCache")
-	public List<Serv> findAll() {
-		Query query =em.createQuery("from Serv");
-		return query.getResultList();
-	}
-
 	/**
 	 * Найти основную услугу по линии основная - ОДН
 	 * @param serv - услуга ОДН
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
 	public Serv findMain(Serv serv) {
 		Query query =em.createQuery("from Serv t where t.odn=:serv");
 		query.setParameter("serv", serv);
 		return (Serv) query.getSingleResult();
 	}
 
-    /**
+	/**
 	 * Найти и отсортировать, все услуги для распределения объемов 
 	 */
 	@SuppressWarnings("unchecked")
-	//@Cacheable("readOnlyCache")
 	public List<Serv> findForDistVol() {
 		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2");
 		query.setParameter("s1", "Холодная вода (объем)");
 		query.setParameter("s2", "Горячая вода, подогрев");
-		query.setParameter("s3", "Водоотведение#");
+		query.setParameter("s3", "Водоотведение");
 		query.setParameter("s4", "Отопление(объем)#");
 		query.setParameter("s5", "Электроснабжение (объем)");
 		return query.getResultList();
+	}
+
+	/**
+	 * Найти услугу по CD
+	 * @param cd - услуги
+	 * @return
+	 */
+	public Serv findByCd(String cd){
+		Query query =em.createQuery("from Serv t where t.cd=:cd");
+		query.setParameter("cd", cd);
+		return (Serv) query.getSingleResult();
 	}
 
 }

@@ -6,11 +6,13 @@ import java.util.Set;
 import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.BillServ;
+import com.ric.bill.Calc;
 import com.ric.bill.dao.HouseDAO;
 import com.ric.bill.dao.ServDAO;
 import com.ric.bill.excp.WrongGetMethod;
@@ -29,16 +31,20 @@ public class ServMngImpl implements ServMng {
 	private ServDAO sDao;
 
 	
-	public List<Serv> findAll() {
-		return sDao.findAll();
-	}
-
+	@Cacheable(cacheNames="readOnlyCache", key="{ #serv.getId() }")
 	public Serv findMain(Serv serv) {
 		return sDao.findMain(serv);
 	}
 
+	@Cacheable(cacheNames="readOnlyCache")
 	public List<Serv> findForDistVol() {
 		return sDao.findForDistVol();
+	}
+
+	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
+	public Serv findByCd(String cd) {
+		//Calc.mess("################### ПРОВЕРКА КЭША ####################",2);
+		return sDao.findByCd(cd);
 	}
 
 }

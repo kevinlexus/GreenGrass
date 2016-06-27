@@ -59,17 +59,22 @@ public class DistGen {
 	 * @throws NotFoundODNLimit
 	 * @throws NotFoundNode
 	 */
-	//@Cacheable("readWriteCache23")	
-	//@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }")
 	//ВНИМАНИЕ! Пришлось вынести в отдельный сервис (не хотел кэш включаться на private методе!!!):
 	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
-	@Cacheable(cacheNames="rrr2", key="{ #ml.getId(), #tp, #genDt }") 
+	@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
 	public NodeVol distNode (MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
+		
+		NodeVol nv = calc.findLstCheck(ml.getId(), tp, genDt); 
+		//если рассчитанный узел найден, вернуть готовый объем
+		if (nv != null) { 
+			return nv; 
+		}
+		
 		Double partArea =0d; //текущая доля площади, по узлу
 		Double partPers =0d; //текущая доля кол-ва прожив, по узлу
 		Double vl =0d; //текущая доля объема, по узлу
 		//занулить текущие, расчетные объемы
-		NodeVol nv = new NodeVol();
+		nv = new NodeVol();
 		//получить лицевой счет, к которому привязан счетчик, для убоства
 		Kart kart = ml.getKart();
 		calc.setKart(kart); 
@@ -285,8 +290,9 @@ public class DistGen {
 			
 			ml.getVol().add(vol);
 			
-			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
-				Calc.mess("записан объем по счетчику id="+ml.getId()+" vol="+vol.getVol1());
+			//if (ml.getId()==3670885 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
+			if (ml.getId()==3670885) {
+				Calc.mess("записан объем по счетчику id="+ml.getId()+" по типу tp="+tp+" по дате genDt="+genDt.toLocaleString()+" vol="+vol.getVol1(),2);
 			}
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
@@ -301,6 +307,8 @@ public class DistGen {
 		}
 		
 		
+		//добавить в список рассчитанных узлов
+		calc.addLstCheck(ml.getId(), tp, genDt, nv);
 		//счетчик рекурсии на -1
 		//rec--;
 		return nv;

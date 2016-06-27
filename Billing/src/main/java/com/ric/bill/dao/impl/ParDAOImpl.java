@@ -23,17 +23,10 @@ public class ParDAOImpl implements ParDAO {
     private EntityManager em;
     
 	@SuppressWarnings("unchecked")
-	public List<Par> findAll() {
-		return em.createQuery("from Par").getResultList();
-	}
-
-	@SuppressWarnings("unchecked")
 	public Par findByCd(String cd) {
 		Query query =em.createQuery("from Par t where t.cd in (:cd)");
 		query.setParameter("cd", cd);
 		return (Par) query.getSingleResult();
-	
-	//	return em.createQuery("from Par").getResultList();
 	}
 	
 }

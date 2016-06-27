@@ -40,20 +40,9 @@
 		transactionalMode="off">
 	</cache>
 	
- 	<cache name="rrr2" 
-		maxEntriesLocalHeap="100000000"
-		maxEntriesLocalDisk="100000000" 
-		eternal="true" 
-		diskPersistent="false"
-		diskSpoolBufferSizeMB="1000"
-		timeToIdleSeconds="0" timeToLiveSeconds="0"
-		memoryStoreEvictionPolicy="LFU" 
-		transactionalMode="off">
-	</cache>
-
  	<cache name="readOnlyCache" 
-		maxEntriesLocalHeap="1000000"
-		maxEntriesLocalDisk="10000" 
+		maxEntriesLocalHeap="10000000"
+		maxEntriesLocalDisk="10000000" 
 		eternal="true" 
 		diskPersistent="false"
 		diskSpoolBufferSizeMB="100"

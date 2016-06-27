@@ -51,7 +51,7 @@ public class BillServ {
 		
 		for (House o: houseMng.findAll()) {
 			System.out.println("ДОМ:"+o.getId());
-			dist.clearCache();
+			//dist.clearCache();
 			//распределить объемы
 			startTime = System.currentTimeMillis();
 			dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется

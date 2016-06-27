@@ -47,7 +47,7 @@ public class Vol implements java.io.Serializable, Simple {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VOL")
 	@SequenceGenerator(name="SEQ_VOL", sequenceName="MT.KMP_METER_VOL_ID", allocationSize=100) 	
     @Column(name = "ID", unique=true, updatable = false, nullable = false)					
-	private Integer id; //id
+	private Integer id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")

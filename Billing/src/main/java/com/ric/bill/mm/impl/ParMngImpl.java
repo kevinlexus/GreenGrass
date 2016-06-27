@@ -24,11 +24,7 @@ public class ParMngImpl implements ParMng {
 	private ParDAO pDao;
 
 	
-	public List<Par> findAll() {
-		return pDao.findAll();
-	}
-
-	@Cacheable("rrr2")
+	@Cacheable("readOnlyCache")
 	public Par findByCD(String cd) {
 		return pDao.findByCd(cd);
 	}
@@ -36,7 +32,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * Узнать существует ли параметр по его CD
 	 */
-	@Cacheable(cacheNames="rrr2", key="{ #cd }")
+	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
 	public boolean isExByCd(String cd) {
 		Par p = findByCD(cd);
 		if (p != null) {
@@ -53,7 +49,7 @@ public class ParMngImpl implements ParMng {
 	//В кэшах не почувствовал разницы:
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }") --58153 мс
 	//@Cacheable("readOnlyCache") --58876 мс
-	@Cacheable(cacheNames="rrr2", key="{ #st.getKlsk(), #cd, #genDt }")
+	@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }")
 	public Double getDbl(Storable st, String cd, Date genDt) {
 		try {
 			for (Dw d: st.getDw()) {

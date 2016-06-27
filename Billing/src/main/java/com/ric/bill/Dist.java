@@ -135,13 +135,13 @@ public class Dist {
 	/**
 	 * Очистить кэш
 	 */
-	@Caching(evict = {
+	/*@Caching(evict = {
 			@CacheEvict(cacheNames="readWriteCache", allEntries=true),
 			@CacheEvict(cacheNames="readOnlyCache", allEntries=true)
 	})
 	public void clearCache(){
 		
-	}
+	}*/
 
 	/**
 	 * распределить объем по дому
@@ -151,6 +151,7 @@ public class Dist {
 	public void distHouseVol(int houseId) {
 		
 		calc.setUp(); //настроить даты и т.п.
+		calc.clearLstChecks();//почистить рассчитанные объемы
 
 		House h = em.find(House.class, houseId);
 		if (!Calc.isInit()) {
@@ -163,19 +164,12 @@ public class Dist {
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
 
 		
-		/*MeterLog mLog = em.find(MeterLog.class, 3625254);
-		
-		for (int i=0; i<100; i++) {
-			for (Vol v: mLog.getVol()) {
-				Calc.mess("vol="+v.getId()+" "+v.getTp().getCd()+" vol="+v.getVol1(),2);
-				Calc.mess("par="+parMng.getDbl(v.getMLog().getKart(), "Площадь.Общая", Calc.getGenDt()),2);
-			}
-		}*/
-
-		/*for (Par p : parMng.findAll()) {
-			Calc.mess("P=: "+p.getCd(),2);
-		}*/
-		
+		/*Serv serv = servMng.findByCd("Холодная вода (объем)");	
+		Calc.mess("услуга 1:"+serv.getName(), 2);
+		serv = servMng.findByCd("Отопление ОДН");	
+		Calc.mess("услуга 2:"+serv.getName(), 2);
+		serv = servMng.findByCd("Холодная вода (объем)");	
+		Calc.mess("услуга 3:"+serv.getName(), 2);*/
 		
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : servMng.findForDistVol()) {
@@ -189,6 +183,9 @@ public class Dist {
 			Calc.mess("Распределение услуги: "+s.getCd());
 			distHouseServ();
 		}
+		
+		//calc.showAllChecks();
+		
 	}
 	
 	
@@ -252,8 +249,8 @@ public class Dist {
 		
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
-			Calc.beginTimer();
-			Calc.mess("по дате="+Calc.getGenDt(), 2);
+			//Calc.beginTimer();
+			//Calc.mess("по дате="+Calc.getGenDt(), 2);
 			@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
@@ -267,7 +264,7 @@ public class Dist {
 			} catch (NotFoundNode e) {
 				throw new ErrorWhileDist("Не найден нужный счетчик, при вызове BillServ.distNode()");
 			}
-			Calc.showTimer(calc.getCalcTp()+" тип");
+			//Calc.showTimer(calc.getCalcTp()+" тип");
 			
 			//break;
 		}

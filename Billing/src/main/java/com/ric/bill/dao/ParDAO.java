@@ -9,6 +9,5 @@ import com.ric.bill.model.bs.Par;
 public interface ParDAO {
 
 
-	public List<Par> findAll();
 	public Par findByCd(String cd);
 }
