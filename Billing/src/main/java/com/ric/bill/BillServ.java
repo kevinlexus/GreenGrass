@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.model.ar.House;
 
@@ -49,30 +50,36 @@ public class BillServ {
 		//Logger.getRootLogger().setLevel(Level.ERROR);
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		
-		for (House o: houseMng.findAll()) {
-			System.out.println("ДОМ:"+o.getId());
-			//dist.clearCache();
-			//распределить объемы
-			startTime = System.currentTimeMillis();
-			dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется
-			endTime   = System.currentTimeMillis();
-			totalTime = endTime - startTime;
-			System.out.println("Время исполнения-1:"+totalTime);
-			
-			//распределить объемы
-			/*startTime = System.currentTimeMillis();
-			dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется
-			endTime   = System.currentTimeMillis();
-			totalTime = endTime - startTime;
-			System.out.println("Время исполнения-2:"+totalTime);*/
-			
-			startTime = System.currentTimeMillis();
-		    //начисление
-			//chrg.chrgHouse(o.getId()); //передать по ID иначе кэшируется
-			endTime   = System.currentTimeMillis();
-			totalTime = endTime - startTime;
-			System.out.println("Время исполнения-3:"+totalTime);
-			
+		try {
+			for (House o: houseMng.findAll()) {
+				System.out.println("ДОМ:"+o.getId());
+				//dist.clearCache();
+				//распределить объемы
+				startTime = System.currentTimeMillis();
+					dist.distHouseVol(o.getId());
+				//передать по ID иначе кэшируется
+				endTime   = System.currentTimeMillis();
+				totalTime = endTime - startTime;
+				System.out.println("Время исполнения-1:"+totalTime);
+				
+				//распределить объемы
+				/*startTime = System.currentTimeMillis();
+				dist.distHouseVol(o.getId()); //передать по ID иначе кэшируется
+				endTime   = System.currentTimeMillis();
+				totalTime = endTime - startTime;
+				System.out.println("Время исполнения-2:"+totalTime);*/
+				
+				startTime = System.currentTimeMillis();
+			    //начисление
+				//chrg.chrgHouse(o.getId()); //передать по ID иначе кэшируется
+				endTime   = System.currentTimeMillis();
+				totalTime = endTime - startTime;
+				System.out.println("Время исполнения-3:"+totalTime);
+				
+			}
+		} catch (ErrorWhileDist e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		System.out.println("End!");

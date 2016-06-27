@@ -287,9 +287,9 @@ public final class Calc {
 	public NodeVol findLstCheck(int id, int tp, Date genDt) {
 		for (Check c : lstCheck) {
 			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
-				if (id==3670885) {
+				/*if (id==3670885) {
 				  Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString(), 2);
-				}
+				}*/
 				return c.getNodeVol();
 			}
 		}
@@ -316,5 +316,118 @@ public final class Calc {
 		lstCheck.clear();
 	}
 	
-	
+	/**
+	 * таблица для возврата норматива потребления (в литрах) по соотв.площади на человека
+	 * @param oplMan - площадь на человека
+	 * @return
+	 */
+	public double oplLiter(Double oplMan) {
+		int inVal = (int) Math.round(oplMan);
+		double val=0d;
+		
+		switch (inVal) {
+		case 1: val = 2;
+		break;
+		case 2: val = 2;
+		break;
+		case 3: val = 2;
+		break;
+		case 4: val = 10;
+		break;
+		case 5: val = 10;
+		break;
+		case 6: val = 10;
+		break;
+		case 7: val = 10;
+		break;
+		case 8: val = 10;
+		break;
+		case 9: val = 10;
+		break;
+		case 10: val = 9;
+		break;
+		case 11: val = 8.2;
+		break;
+		case 12: val = 7.5;
+		break;
+		case 13: val = 6.9;
+		break;
+		case 14: val = 6.4;
+		break;
+		case 15: val = 6.0;
+		break;
+		case 16: val = 5.6;
+		break;
+		case 17: val = 5.3;
+		break;
+		case 18: val = 5.0;
+		break;
+		case 19: val = 4.7;
+		break;
+		case 20: val = 4.5;
+		break;
+		case 21: val = 4.3;
+		break;
+		case 22: val = 4.1;
+		break;
+		case 23: val = 3.9;
+		break;
+		case 24: val = 3.8;
+		break;
+		case 25: val = 3.6;
+		break;
+		case 26: val = 3.5;
+		break;
+		case 27: val = 3.3;
+		break;
+		case 28: val = 3.2;
+		break;
+		case 29: val = 3.1;
+		break;
+		case 30: val = 3.0;
+		break;
+		case 31: val = 2.9;
+		break;
+		case 32: val = 2.8;
+		break;
+		case 33: val = 2.7;
+		break;
+		case 34: val = 2.6;
+		break;
+		case 35: val = 2.6;
+		break;
+		case 36: val = 2.5;
+		break;
+		case 37: val = 2.4;
+		break;
+		case 38: val = 2.4;
+		break;
+		case 39: val = 2.3;
+		break;
+		case 40: val = 2.3;
+		break;
+		case 41: val = 2.2;
+		break;
+		case 42: val = 2.1;
+		break;
+		case 43: val = 2.1;
+		break;
+		case 44: val = 2;
+		break;
+		case 45: val = 2;
+		break;
+		case 46: val = 2;
+		break;
+		case 47: val = 1.9;
+		break;
+		case 48: val = 1.9;
+		break;
+		case 49: val = 1.8;
+		break;
+		default: val = 1.8;
+		
+		}
+		
+		return val;
+	}
 }

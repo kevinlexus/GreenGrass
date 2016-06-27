@@ -126,13 +126,13 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @throws NotFoundNode - если не найден счетчик (узел)
 	 */
 	@Cacheable("readWriteCache")
-    public SumNodeVol getVolPeriod (MLogs mLog) {
+    public SumNodeVol getVolPeriod (MLogs mLog, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
 			//по всему соотв.периоду 
-			if (Utl.between(v.getDt1(), Calc.getCurDt1(), Calc.getCurDt2()) && //внимание! здесь фильтр берет даты снаружи!
-				Utl.between(v.getDt2(), Calc.getCurDt1(), Calc.getCurDt2())	
+			if (Utl.between(v.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
+				Utl.between(v.getDt2(), dt1, dt2)	
 					) {
 		        	//Calc.mess("проверка объема id="+v.getId()+" vol="+v.getVol1());
 		    		if (v.getTp().getCd().equals("Фактический объем") ){
@@ -141,7 +141,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		    			lnkVol.addArea(v.getVol1());
 		    			lnkVol.addPers(v.getVol2());
 		    		} else if (v.getTp().getCd().equals("Лимит ОДН") ){
-		    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение)
+		    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение) (как правило для ЛОДН счетчиков)
 		    		}
 			}
     	}

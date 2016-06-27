@@ -79,7 +79,7 @@ public class DistGen {
 		Kart kart = ml.getKart();
 		calc.setKart(kart); 
 
-		if (ml.getId()==3661161/* && tp==0*/) {
+		if (ml.getId()==3647765 && tp==3) {
 			Calc.mess("stop");
 		}
 		
@@ -102,7 +102,6 @@ public class DistGen {
 			Calc.mess("стоп");
 		}
 		
-		
 		if (tp==0) {
 			//по расчетной связи
 			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
@@ -115,7 +114,7 @@ public class DistGen {
 								//добавить объем в объект объема
 								//умножить объем на процент существования и на долю дня
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=v.getVol1() * e.getPrc() / calc.getCntCurDays();
+									vl=v.getVol1() * e.getPrc() / Calc.getCntCurDays();
 								}
 							}
 						}
@@ -127,15 +126,14 @@ public class DistGen {
 				vl = kartMng.getStandart(ml, null, genDt).partVol;
 			}
 				
-		} else if (tp==1 && kart != null) {
-			//по связи по площади и кол.прож. (только по Лиц.счёту) в доле 1 дня
+		} else if (tp==1 && (mLogTp.equals("ЛНрм") || mLogTp.equals("ЛИПУ"))) {
+			//по связи по площади и кол.прож. (только по Лнрм, ЛИПУ) в доле 1 дня
 			//площадь
-			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", genDt), 0d) / calc.getCntCurDays(); 
+			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", genDt), 0d) / Calc.getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
 			kartMng.getCntPers(kart, servChrg, cntPers, 0, genDt);
-			partPers = cntPers.cnt / calc.getCntCurDays();
-
+			partPers = cntPers.cnt / Calc.getCntCurDays();
 		} else if (tp==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
 			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии
@@ -166,14 +164,14 @@ public class DistGen {
 				// не найден счетчик (лог.счетчик должен быть обязательно, а физ.сч. к нему привязанных, может и не быть!)
 		        throw new NotFoundNode("Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId());  
 			}
-			SumNodeVol lnkODPUVol = metMng.getVolPeriod(lnkODPU);
+			SumNodeVol lnkODPUVol = metMng.getVolPeriod(lnkODPU, Calc.getCurDt1(), Calc.getCurDt2());
 
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
 	    	Calc.mess("check id="+lnkLODN.getId());
-			lnkODNVol = metMng.getVolPeriod(lnkLODN);
+			lnkODNVol = metMng.getVolPeriod(lnkLODN, Calc.getCurDt1(), Calc.getCurDt2());
 			Calc.mess("объем по ЛОДН id="+lnkLODN.getId()+" vol="+lnkODNVol.getVol()+" pers="+lnkODNVol.getPers()+" area="+lnkODNVol.getArea());
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
-			SumNodeVol sumVol = metMng.getVolPeriod(ml);
+			SumNodeVol sumVol = metMng.getVolPeriod(ml, Calc.getCurDt1(), Calc.getCurDt2());
 			
 			if (metMng.checkExsMet(lnkODPU, genDt) && lnkODPUVol.getVol() >= 0d) {
 				//при наличии счетчика(ков) ОДПУ и объема по нему
@@ -200,7 +198,7 @@ public class DistGen {
 					MLogs mlMain = metMng.getFirstMetLogByServTp(kart, mainServ.getMet(), "ЛИПУ");
 					Calc.mess("check main id="+mlMain.getId());
 					//получить объем за период, по лог счетчику основной услуги
-					SumNodeVol sumMainVol = metMng.getVolPeriod(mlMain);
+					SumNodeVol sumMainVol = metMng.getVolPeriod(mlMain, Calc.getCurDt1(), Calc.getCurDt2());
 					Calc.mess("check main vol ="+sumMainVol.getVol());
 
 					//если есть проживающие по узлу ОДН
@@ -237,9 +235,24 @@ public class DistGen {
 			MLogs lnkLODN = null;
 			//поиск счетчика ЛОДН
 			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН", genDt);
+			if (lnkLODN == null) {
+				// не найден счетчик
+		        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+ml.getId());  
+			}
+			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
+	    	Calc.mess("check id="+lnkLODN.getId());
+			SumNodeVol lnkODNVol = metMng.getVolPeriod(lnkLODN, genDt, genDt);
+			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
+			SumNodeVol sumVol = metMng.getVolPeriod(ml, genDt, genDt);
 			//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
 			Double tmp =parMng.getDbl(lnkLODN, "VOL_SQ_MT", genDt);
-			
+			if (tmp != null) {
+				//установлено значение "Введено гкал." 
+				vl = tmp * sumVol.getArea();
+			} else {
+				//НЕ установлено значение "Введено гкал."
+				vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+			}
 		}
 		
 		//добавить собственные объемы
@@ -281,9 +294,26 @@ public class DistGen {
 			//Calc.mess("Лиц счет счетчика="+ml.getKart().getLsk());
 		}
 
+		//после рекурсивного расчета дочерних узлов, выполнить расчет Лимита ОДН
+		if (tp==1 && mLogTp.equals("ЛОДН")) {
+			//по связи по площади и кол.прож. и только по ЛОДН счетчику
+			if (servChrg.getCd().equals("Холодная вода (объем)") || servChrg.getCd().equals("Горячая вода, подогрев")) {
+				SumNodeVol lnkODNVol = null;
+				//получить площадь и кол-во прожив по дому, за месяц  
+				lnkODNVol = metMng.getVolPeriod(ml, Calc.getCurDt1(), Calc.getCurDt2());
+				//рассчитать лимит кубов TODO
+				
+				
+			} else if (servChrg.getCd().equals("Электроснабжение (объем)")) {
+				
+			}
+		
+		}
+
+		
 		Lst volTp=null;
 		//записать объем или площадь или кол-во прож. в текущий узел (лог.счетчик)
-		if ((tp==0 ||tp==2) && nv.getVol() != 0d) {
+		if ((tp==0||tp==2||tp==3) && nv.getVol() != 0d) {
 			//расчетная связь, расчетная связь ОДН
 			volTp = lstMng.findByCD("Фактический объем");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt);
@@ -292,7 +322,7 @@ public class DistGen {
 			
 			//if (ml.getId()==3670885 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
 			if (ml.getId()==3670885) {
-				Calc.mess("записан объем по счетчику id="+ml.getId()+" по типу tp="+tp+" по дате genDt="+genDt.toLocaleString()+" vol="+vol.getVol1(),2);
+				Calc.mess("записан объем по счетчику id="+ml.getId()+" по типу tp="+tp+" по дате genDt="+genDt.toLocaleString()+" vol="+vol.getVol1());
 			}
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
@@ -314,5 +344,7 @@ public class DistGen {
 		return nv;
 	}
 	
+	
+	 
 }
 

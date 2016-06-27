@@ -146,9 +146,10 @@ public class Dist {
 	/**
 	 * распределить объем по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
+	 * @throws ErrorWhileDist 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void distHouseVol(int houseId) {
+	public void distHouseVol(int houseId) throws ErrorWhileDist {
 		
 		calc.setUp(); //настроить даты и т.п.
 		calc.clearLstChecks();//почистить рассчитанные объемы
@@ -178,10 +179,15 @@ public class Dist {
 		}
 
 		//найти все необходимые услуги для распределения
-		for (Serv s : servMng.findForDistVol()) {
-			calc.setServ(s);
-			Calc.mess("Распределение услуги: "+s.getCd());
-			distHouseServ();
+		try {
+			for (Serv s : servMng.findForDistVol()) {
+				calc.setServ(s);
+				Calc.mess("Распределение услуги: "+s.getCd());
+				  distHouseServ();
+			}
+		} catch (ErrorWhileDist e) {
+			e.printStackTrace();
+			throw new ErrorWhileDist("Dist.distHouseVol: ");
 		}
 		
 		//calc.showAllChecks();
@@ -191,38 +197,45 @@ public class Dist {
 	
 	/**
 	 * распределить объем по услуге данного дома
+	 * @throws ErrorWhileDist 
 	 */
-	private void distHouseServ() {
+	private void distHouseServ() throws ErrorWhileDist {
 		Calc.mess("******************Услуга*************="+calc.getServ().getCd(), 2);
 
-		calc.setCalcTp(1);
-		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
-		calc.setCalcTp(0);
-		distHouseServTp(calc.getServ().getMet());//Распределение объема
-		calc.setCalcTp(2);
-		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
-		calc.setCalcTp(3);
-		distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
-		if (calc.getServ().getOdn() != null){
+		try { 
+			calc.setCalcTp(1);
+			distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
 			calc.setCalcTp(0);
-			distHouseServTp(calc.getServ().getOdn());//Суммировать счетчики ОДН
+			distHouseServTp(calc.getServ().getMet());//Распределение объема
+			calc.setCalcTp(2);
+			distHouseServTp(calc.getServ().getMet());//Расчет ОДН
+			calc.setCalcTp(3);
+			distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
+			if (calc.getServ().getOdn() != null){
+				calc.setCalcTp(0);
+				distHouseServTp(calc.getServ().getOdn());//Суммировать счетчики ОДН
+			}
+		} catch (ErrorWhileDist e) {
+			e.printStackTrace();
+			throw new ErrorWhileDist("Dist.distHouseServ: ");
 		}
 	}
 	
 	/**
 	 * Распределить объем по вводам дома
 	 * @param calcTp - тип обработки
+	 * @throws ErrorWhileDist 
 	 */
-	private void distHouseServTp(Serv serv) {
+	private void distHouseServTp(Serv serv) throws ErrorWhileDist {
 		Calc.mess("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
-		for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-			try {
-				distGraph(ml);
-			} catch (ErrorWhileDist e) {
-				e.printStackTrace();
-				return;
+		try {
+			for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+					distGraph(ml);
 			}
+		} catch (ErrorWhileDist e) {
+			e.printStackTrace();
+			throw new ErrorWhileDist("Dist.distHouseServTp: ");
 		}
 	}
 	
@@ -256,13 +269,17 @@ public class Dist {
 			try {
 				dummy=distGen.distNode(ml, calc.getCalcTp(), Calc.getGenDt());
 			} catch (WrongGetMethod e) {
-				throw new ErrorWhileDist("При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружен замкнутый цикл");  
+				e.printStackTrace();
+				throw new ErrorWhileDist("Dist.distGraph: При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружен замкнутый цикл");  
 			} catch (EmptyServ e) {
-				throw new ErrorWhileDist("Пустая услуга при рекурсивном вызове BillServ.distNode()");
+				e.printStackTrace();
+				throw new ErrorWhileDist("Dist.distGraph: Пустая услуга при рекурсивном вызове BillServ.distNode()");
 			} catch (NotFoundODNLimit e) {
-				throw new ErrorWhileDist("Не найден лимит ОДН в счетчике ОДН, при вызове BillServ.distNode()");
+				e.printStackTrace();
+				throw new ErrorWhileDist("Dist.distGraph: Не найден лимит ОДН в счетчике ОДН, при вызове BillServ.distNode()");
 			} catch (NotFoundNode e) {
-				throw new ErrorWhileDist("Не найден нужный счетчик, при вызове BillServ.distNode()");
+				e.printStackTrace();
+				throw new ErrorWhileDist("Dist.distGraph: Не найден нужный счетчик, при вызове BillServ.distNode(): ");
 			}
 			//Calc.showTimer(calc.getCalcTp()+" тип");
 			

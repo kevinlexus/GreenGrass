@@ -16,7 +16,7 @@ public interface MeterLogMng {
 	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp);
 	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp);
 	public boolean checkExsMet(MLogs mLog, Date genDt);
-    public SumNodeVol getVolPeriod (MLogs mLog);
+    public SumNodeVol getVolPeriod (MLogs mLog, Date dt1, Date dt2);
 	public MLogs getLinkedNode(MLogs lnkMLog, String string, Date genDt);
 	public void delNodeVol(MLogs ml, int tp, Date genDt);
 
