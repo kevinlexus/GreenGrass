@@ -121,12 +121,18 @@ public class MeterLogMngImpl implements MeterLogMng {
 	
 	/**
 	 * Получить объем, по счетчику за период и сам этот счетчик и признак существования его физ сч.
-	 * @param lnVol - заполняемый объемами объект
-	 * @param mLog - лог.счетчик
-	 * @throws NotFoundNode - если не найден счетчик (узел)
+	 * @param mLog - узел
+	 * @param tp - тип распределения (здесь ТОЛЬКО для КЭША!)
+	 * @param dt1 - нач.период
+	 * @param dt2 - кон.период
+	 * @return - возвращаемый объем
 	 */
-	@Cacheable("readWriteCache")
-    public SumNodeVol getVolPeriod (MLogs mLog, Date dt1, Date dt2) {
+	//@Cacheable("readWriteCache")
+	@Cacheable(cacheNames="readWriteCache", key="{ #mLog.getId(), #tp, #dt1, #dt2 }")
+    public SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2) {
+		/*if (mLog.getId()==3603274) {
+			Calc.mess("########### tp = "+tp+" mLog.id="+mLog.getId()+" dt1="+dt1.toLocaleString()+" dt2="+dt2.toLocaleString(), 2);
+		}*/
 		SumNodeVol lnkVol = new SumNodeVol();
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
@@ -197,7 +203,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();
-			if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие")) {
+			if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН") ) {
 				Calc.mess("Del vol: id="+vol.getId());
 				iterator.remove();
 			}
