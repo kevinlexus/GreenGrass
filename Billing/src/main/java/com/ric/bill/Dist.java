@@ -124,7 +124,7 @@ public class Dist {
 		//найти все вводы по дому и по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
-			for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+			for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
 				metMng.delNodeVol(ml, tp, Calc.getGenDt());
 			}
 		}
@@ -160,9 +160,8 @@ public class Dist {
 			calc.setArea(calc.getHouse().getStreet().getArea());
 			Calc.setInit(true);
 		}
-		Calc.mess("Распределение объемов");
-		Calc.mess("Дом: id="+calc.getHouse().getId());
-		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
+		Calc.mess("Дом: id="+calc.getHouse().getId(), 2);
+		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk(), 2);
 
 		
 		/*Serv serv = servMng.findByCd("Холодная вода (объем)");	
@@ -172,12 +171,14 @@ public class Dist {
 		serv = servMng.findByCd("Холодная вода (объем)");	
 		Calc.mess("услуга 3:"+serv.getName(), 2);*/
 		
+		Calc.mess("Очистка объемов");
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
 				delHouseVolServ();
 		}
 
+		Calc.mess("Распределение объемов");
 		//найти все необходимые услуги для распределения
 		try {
 			for (Serv s : servMng.findForDistVol()) {
@@ -230,10 +231,12 @@ public class Dist {
 		Calc.mess("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
 		try {
-			for (MLogs ml : metMng.getMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+			for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+					Calc.mess("Вызов distGraph c id="+ml.getId());
 					distGraph(ml);
 			}
 		} catch (ErrorWhileDist e) {
+			Calc.mess("ОШИБКА в distGraph!");
 			e.printStackTrace();
 			throw new ErrorWhileDist("Dist.distHouseServTp: ");
 		}

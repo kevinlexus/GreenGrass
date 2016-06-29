@@ -56,11 +56,15 @@ public class BillServ {
 				//dist.clearCache();
 				//распределить объемы
 				startTime = System.currentTimeMillis();
-					dist.distHouseVol(o.getId());
+				Calc.setInit(false);
+				dist.distHouseVol(o.getId());
 				//передать по ID иначе кэшируется
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
 				System.out.println("Время исполнения-1:"+totalTime);
+				
+				Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
+				Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
 				
 				//распределить объемы
 				/*startTime = System.currentTimeMillis();

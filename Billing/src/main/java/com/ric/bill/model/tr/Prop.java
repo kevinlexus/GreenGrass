@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.bs.Par;
 
 /**
  * Свойство для "тарифа по свойствам"
@@ -60,5 +61,20 @@ public class Prop implements java.io.Serializable, Simple {
 	public void setNpp(String npp) {
 		this.npp = npp;
 	}
+	
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Prop)) return false;
+     
+       Prop otherProp = (Prop) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherProp.getId()) : otherProp.getId() != null)
+           return false;
+     
+       return true;
+   }
+	
 }
 

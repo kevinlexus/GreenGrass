@@ -29,6 +29,7 @@ import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.Serv;
 
 
@@ -194,6 +195,19 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 		this.outside = outside;
 	}
 
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof MeterLog)) return false;
+     
+       MeterLog otherMeterLog = (MeterLog) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherMeterLog.getId()) : otherMeterLog.getId() != null)
+           return false;
+     
+       return true;
+   }
 	
 }
 

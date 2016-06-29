@@ -2,8 +2,10 @@ package com.ric.bill.mm.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -60,22 +62,33 @@ public class MeterLogMngImpl implements MeterLogMng {
 	}*/
 	
 	/**
-	 * Получить один (первый который найден) лог.счетчик по определённому объекту, типу и услуге
-	 * @param mm - Объект
+	 * Получить все лог.счетчики по определённому объекту, типу и услуге
+	 * @param - Объект
 	 * @param serv - Услуга
-	 * @param tp - Тип
-	 * @return
+	 * @param tp - Тип, если не указан - по всем
+	 * @return - искомый список
 	 */
-	@Cacheable("readOnlyCache")
-	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+	@Cacheable(cacheNames="readOnlyCache", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
+	public Set<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+		Set<MLogs> lstMlg = new HashSet<MLogs>(0); 
+		Calc.mess("getAllMetLogByServTp задано:"+serv.getCd()+" "+serv.getId()+" "+tp);
 		for (MLogs ml : mm.getMlog()) {
-			//по типу и услуге
-			if (ml.getTp().getCd().equals(tp)
-					&& ml.getServ().equals(serv)) {
-				return ml;
+			//Calc.mess("getAllMetLogByServTp НАЙДЕНО:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getCd());
+			//по типу, если указано
+			if (tp == null || ml.getTp().getCd().equals(tp)) {
+				Calc.mess("getAllMetLogByServTp ТИП:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getId());
+				//и услуге
+				Serv sss = ml.getServ();
+				if (ml.getId() == 3602003) {
+					Calc.mess("stop");	
+				}
+				if (ml.getServ().equals(serv)) {
+					Calc.mess("getAllMetLogByServTp Соответствует:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd());
+					lstMlg.add(ml);
+				}
 			}
 		}
-		return null;
+		return lstMlg;
 	}
 
 	/**
@@ -85,7 +98,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+	/*@Cacheable("readOnlyCache")
 	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MLogs> mLog = new ArrayList<MLogs>(); 
 		for (MLogs ml : mm.getMlog()) {
@@ -96,7 +109,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 			}
 		}
 		return mLog;
-	}
+	}*/
 	
 	
 	/**

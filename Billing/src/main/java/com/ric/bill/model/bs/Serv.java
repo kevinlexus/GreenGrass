@@ -181,6 +181,19 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 		this.chrg = chrg;
 	}
 
-
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Serv)) return false;
+     
+       Serv otherServ = (Serv) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherServ.getId()) : otherServ.getId() != null)
+           return false;
+     
+       return true;
+   }
+	   
 }
 

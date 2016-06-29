@@ -126,5 +126,19 @@ public class RegState implements java.io.Serializable, Registrable {
 		this.lsk = lsk;
 	}
 	
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof RegState)) return false;
+     
+       RegState otherRegState = (RegState) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherRegState.getId()) : otherRegState.getId() != null)
+           return false;
+     
+       return true;
+   }
+	
 }
 

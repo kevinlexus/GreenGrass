@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.bs.Lst;
 
 /**
  * Персона
@@ -65,5 +66,19 @@ public class Pers implements java.io.Serializable, Simple {
 		this.middlename = middlename;
 	}
 
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Pers)) return false;
+     
+       Pers otherPers = (Pers) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherPers.getId()) : otherPers.getId() != null)
+           return false;
+     
+       return true;
+   }
+	
 }
 

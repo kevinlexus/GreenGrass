@@ -22,6 +22,7 @@ import org.springframework.cache.annotation.Cacheable;
 import com.ric.bill.Simple;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.bs.Par;
 
 /**
  * Паспортный стол. реестр Регистрационных Действий(РегД)
@@ -148,6 +149,20 @@ public class Reg implements java.io.Serializable, Registrable {
 	public void setLsk(String lsk) {
 		this.lsk = lsk;
 	}
+
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Reg)) return false;
+     
+       Reg otherReg = (Reg) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherReg.getId()) : otherReg.getId() != null)
+           return false;
+     
+       return true;
+   }
 	
 }
 

@@ -2,6 +2,7 @@ package com.ric.bill.mm;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
@@ -13,8 +14,7 @@ import com.ric.bill.model.mt.MeterLog;
 
 public interface MeterLogMng {
 
-	public List<MLogs> getMetLogByServTp(MeterContains mm, Serv serv, String tp);
-	public MLogs getFirstMetLogByServTp(MeterContains mm, Serv serv, String tp);
+	public Set<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp);
 	public boolean checkExsMet(MLogs mLog, Date genDt);
     public SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2);
 	public MLogs getLinkedNode(MLogs lnkMLog, String string, Date genDt);

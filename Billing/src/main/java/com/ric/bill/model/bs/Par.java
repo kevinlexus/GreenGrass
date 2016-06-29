@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.ps.Pers;
 
 /**
  * Параметр
@@ -71,5 +72,19 @@ public class Par implements java.io.Serializable, Simple {
 		this.name = name;
 	}
 
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Par)) return false;
+     
+       Par otherPar = (Par) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherPar.getId()) : otherPar.getId() != null)
+           return false;
+     
+       return true;
+   }
+	
 }
 

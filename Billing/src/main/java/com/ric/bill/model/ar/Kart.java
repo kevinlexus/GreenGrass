@@ -31,6 +31,7 @@ import com.ric.bill.MeterContains;
 import com.ric.bill.RegContains;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
+import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.RegState;
@@ -177,5 +178,19 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 		this.fkKw = fkKw;
 	}
 
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Kart)) return false;
+     
+       Kart otherKart = (Kart) o;
+     
+       if (getLsk() != null ?
+           !getLsk().equals(otherKart.getLsk()) : otherKart.getLsk() != null)
+           return false;
+     
+       return true;
+   }
+	
 }
 

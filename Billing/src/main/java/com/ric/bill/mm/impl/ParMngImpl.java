@@ -48,7 +48,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	//В кэшах не почувствовал разницы:
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }") --58153 мс
-	//@Cacheable("readOnlyCache") --58876 мс
+	//@Cacheable("readOnlyCache")
 	@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }")
 	public Double getDbl(Storable st, String cd, Date genDt) {
 		try {

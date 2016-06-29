@@ -64,5 +64,20 @@ public class Lst implements java.io.Serializable, Simple {
 		this.lstTp = lstTp;
 	}
 
+	
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Lst)) return false;
+     
+       Lst otherLst = (Lst) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherLst.getId()) : otherLst.getId() != null)
+           return false;
+     
+       return true;
+   }
+	
 }
 

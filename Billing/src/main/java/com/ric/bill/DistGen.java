@@ -1,6 +1,7 @@
 package com.ric.bill;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -79,7 +80,7 @@ public class DistGen {
 		Kart kart = ml.getKart();
 		calc.setKart(kart); 
 
-		if (ml.getId()==3625297 && tp==2) {
+		if (ml.getId()==3650165) {
 			Calc.mess("stop");
 		}
 		
@@ -196,12 +197,16 @@ public class DistGen {
 					//получить основную услугу
 					Serv mainServ = servMng.findMain(servChrg);
 					//получить счетчик основной услуги
-					MLogs mlMain = metMng.getFirstMetLogByServTp(kart, mainServ.getMet(), "ЛИПУ");
-					Calc.mess("check main id="+mlMain.getId());
-					//получить объем за период, по лог счетчику основной услуги
-					SumNodeVol sumMainVol = metMng.getVolPeriod(mlMain, tp, Calc.getCurDt1(), Calc.getCurDt2());
-					Calc.mess("check main vol ="+sumMainVol.getVol());
-
+					Calc.mess("check serv="+mainServ.getMet().getId());
+					double tmpVol=0d;
+					SumNodeVol sumMainVol;
+					Set<MLogs> lstMain = metMng.getAllMetLogByServTp(kart, mainServ.getMet(), null);
+					for (MLogs mLog2 : lstMain) {
+						//получить объем за период, по лог счетчику основной услуги, если найден
+						sumMainVol = metMng.getVolPeriod(mLog2, tp, Calc.getCurDt1(), Calc.getCurDt2());
+						tmpVol = tmpVol + sumMainVol.getVol();
+					}
+					
 					//если есть проживающие по узлу ОДН
 					if (lnkODNVol.getPers() > 0 ) {
 						vl = lnkODNVol.getVol() * sumVol.getPers() / lnkODNVol.getPers();  
@@ -209,8 +214,8 @@ public class DistGen {
 						vl = (double)Math.round(vl * 10000d) / 10000d;
 					}
 					//ограничить экономию текущим потреблением по основному счетчику
-					if (Math.abs(vl) > sumMainVol.getVol() && sumMainVol.getVol() > 0) {
-						vl = -1 * sumMainVol.getVol();
+					if (Math.abs(vl) > tmpVol && tmpVol > 0) {
+						vl = -1 * tmpVol;
 					}
 				}
 				

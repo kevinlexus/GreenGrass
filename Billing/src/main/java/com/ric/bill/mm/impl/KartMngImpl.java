@@ -190,7 +190,6 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	//@Cacheable("readOnlyCache")
 	@Cacheable(cacheNames="readOnlyCache", key="{ #mLog.getId(), #genDt }") 
 	public Standart getStandart (MLogs mLog, CntPers cntPers, Date genDt) {
 		//long startTime;
@@ -314,7 +313,6 @@ public class KartMngImpl implements KartMng {
 	 * @param cd - CD свойства
 	 * @return
 	 */
-	//@Cacheable("readOnlyCache")
 	@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
 	public Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
 		Double val;

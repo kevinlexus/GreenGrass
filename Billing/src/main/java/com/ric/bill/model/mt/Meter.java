@@ -26,6 +26,7 @@ import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
 import com.ric.bill.model.bs.Base;
+import com.ric.bill.model.bs.Par;
 
 
 /**
@@ -125,6 +126,20 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	public void setExs(Set<MeterExs> exs) {
 		this.exs = exs;
 	}
+
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Meter)) return false;
+     
+       Meter otherMeter = (Meter) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherMeter.getId()) : otherMeter.getId() != null)
+           return false;
+     
+       return true;
+   }
 	
 }
 
