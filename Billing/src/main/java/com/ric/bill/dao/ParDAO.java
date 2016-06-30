@@ -10,4 +10,6 @@ public interface ParDAO {
 
 
 	public Par findByCd(String cd);
+
+	public boolean checkPar(int id, String cd, String dataTp);
 }

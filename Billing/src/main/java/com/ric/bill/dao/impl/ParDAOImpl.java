@@ -3,6 +3,7 @@ package com.ric.bill.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.dao.ParDAO;
+import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Par;
 
@@ -27,6 +29,21 @@ public class ParDAOImpl implements ParDAO {
 		Query query =em.createQuery("from Par t where t.cd in (:cd)");
 		query.setParameter("cd", cd);
 		return (Par) query.getSingleResult();
+	}
+
+	//работает это медленнее чем была итерация по всем параметрам объекта!
+	@Cacheable(cacheNames="readOnlyCache", key="{ #id, #cd, #dataTp }")
+	public boolean checkPar(int id, String cd, String dataTp) {
+		Query query =em.createQuery("from Par t where t.id = :id and t.cd=:cd and t.dataTp=:dataTp");
+		query.setParameter("id", id);
+		query.setParameter("cd", cd);
+		query.setParameter("dataTp", dataTp);
+		try {
+			Par p = (Par) query.getSingleResult();
+		} catch (NoResultException e) {
+			return false;
+		}
+		return true;
 	}
 	
 }

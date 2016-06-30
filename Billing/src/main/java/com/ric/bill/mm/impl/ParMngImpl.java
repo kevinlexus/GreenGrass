@@ -42,6 +42,13 @@ public class ParMngImpl implements ParMng {
 		}
 	}
 
+	
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #id, #cd, #dataTp }") --как будто здесь кэш не применяется, а применяется в слое DAO
+	//УДАЛИТЬ ПОТОМ!!! (медленно работает)
+	public boolean checkPar(int id, String cd, String dataTp) {
+		return pDao.checkPar(id, cd, dataTp);
+	}
+	
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства
 	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
@@ -56,7 +63,11 @@ public class ParMngImpl implements ParMng {
     			//по соотв.периоду
     			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI)
-					if (d.getPar().getCd().equals(cd)) {
+
+    				/*if (checkPar(d.getFkHfp(), cd, "SI")) {
+						return d.getN1();
+    				}*/
+    				if (d.getPar().getCd().equals(cd)) {
 						if (d.getPar().getTp().equals("NM")) {
 							if (d.getPar().getDataTp().equals("SI")) {
 								return d.getN1();

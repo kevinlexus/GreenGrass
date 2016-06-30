@@ -11,6 +11,7 @@ import com.ric.bill.model.mt.MLogs;
 public interface ParMng {
 
 	boolean isExByCd(String cd);
+	public boolean checkPar(int id, String cd, String dataTp);
 	public Double getDbl(Storable st, String cd, Date dt1);
 	public String getStr(Storable st, String cd, Date dt1);
 

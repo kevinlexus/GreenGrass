@@ -41,7 +41,7 @@ public class Dw implements java.io.Serializable, Simple {
     @Column(name = "NS1", updatable = true)
     private Double n1;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY) //если LAZY заменить EAGER, то будут джойниться все параметры и экстрактиться тоже!(замедление) 
 	@JoinColumn(name="FK_HFP", referencedColumnName="ID")
 	@BatchSize(size = 20)
 	private Par par; 
@@ -53,7 +53,7 @@ public class Dw implements java.io.Serializable, Simple {
     @Column(name = "DT2", updatable = false, nullable = true)
 	private Date dt2;
 
-	public Integer getId() {
+    public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {

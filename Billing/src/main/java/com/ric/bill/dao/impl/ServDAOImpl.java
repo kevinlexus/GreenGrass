@@ -25,6 +25,7 @@ public class ServDAOImpl implements ServDAO {
 	 * @param serv - услуга ОДН
 	 * @return
 	 */
+	@Cacheable(cacheNames="readOnlyCache", key="{ #serv.getId() }")
 	public Serv findMain(Serv serv) {
 		Query query =em.createQuery("from Serv t where t.odn=:serv");
 		query.setParameter("serv", serv);
@@ -50,6 +51,7 @@ public class ServDAOImpl implements ServDAO {
 	 * @param cd - услуги
 	 * @return
 	 */
+	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
 	public Serv findByCd(String cd){
 		Query query =em.createQuery("from Serv t where t.cd=:cd");
 		query.setParameter("cd", cd);

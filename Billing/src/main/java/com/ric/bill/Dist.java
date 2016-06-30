@@ -33,6 +33,7 @@ import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.Serv;
@@ -91,7 +92,7 @@ public class Dist {
 	 * 
 	 * @param serv - заданная услуга
 	 */
-	private void delHouseVolServ() {
+    private void delHouseVolServ() {
 		delHouseServVolTp(calc.getServ().getMet(), 1);
 		delHouseServVolTp(calc.getServ().getMet(), 0);
 		delHouseServVolTp(calc.getServ().getMet(), 2);
@@ -143,12 +144,53 @@ public class Dist {
 		
 	}*/
 
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void distAll() {
+		long startTime;
+		long endTime;
+		long totalTime;
+		try {
+			for (House o: houseMng.findAll()) {
+				System.out.println("ДОМ:"+o.getId());
+				//dist.clearCache();
+				//распределить объемы
+				startTime = System.currentTimeMillis();
+				Calc.setInit(false);
+				
+				distHouseVol(o.getId());
+				//System.out.println("------------------------------------------");
+				//dist.distHouseVol(o.getId());
+
+				//передать по ID иначе кэшируется
+				endTime   = System.currentTimeMillis();
+				totalTime = endTime - startTime;
+				System.out.println("Время исполнения-1:"+totalTime);
+				
+				//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
+				//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
+				
+				startTime = System.currentTimeMillis();
+			    //начисление
+				//chrg.chrgHouse(o.getId()); //передать по ID иначе кэшируется
+				endTime   = System.currentTimeMillis();
+				totalTime = endTime - startTime;
+				System.out.println("Время исполнения-3:"+totalTime);
+				
+			}
+		} catch (ErrorWhileDist e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+    }
+	
 	/**
 	 * распределить объем по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 * @throws ErrorWhileDist 
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    //@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distHouseVol(int houseId) throws ErrorWhileDist {
 		
 		calc.setUp(); //настроить даты и т.п.
@@ -164,12 +206,23 @@ public class Dist {
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk(), 2);
 
 		
+		//Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));
 		/*Serv serv = servMng.findByCd("Холодная вода (объем)");	
 		Calc.mess("услуга 1:"+serv.getName(), 2);
 		serv = servMng.findByCd("Отопление ОДН");	
 		Calc.mess("услуга 2:"+serv.getName(), 2);
 		serv = servMng.findByCd("Холодная вода (объем)");	
 		Calc.mess("услуга 3:"+serv.getName(), 2);*/
+		
+		/*Calc.mess("Дом: 1============================================================",2);
+		h = em.find(House.class, 1737);
+		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
+		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));
+
+		Calc.mess("Дом: 2============================================================",2);
+		h = em.find(House.class, 1744);
+		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
+		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));*/
 		
 		Calc.mess("Очистка объемов");
 		//найти все необходимые услуги для удаления объемов
@@ -190,7 +243,7 @@ public class Dist {
 			e.printStackTrace();
 			throw new ErrorWhileDist("Dist.distHouseVol: ");
 		}
-		
+
 		//calc.showAllChecks();
 		
 	}

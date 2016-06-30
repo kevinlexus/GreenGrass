@@ -3,9 +3,14 @@ package com.ric.bill;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.NotFoundNode;
@@ -49,7 +54,11 @@ public class DistGen {
 	@Autowired
 	private VolMng volMng;
 	
-	/**
+	//EntityManager - EM нужен на каждый DAO или сервис свой!
+    @PersistenceContext
+    private EntityManager em;
+
+    /**
 	 * Распределить узел, следуя по графу (рекурсивная процедура)
 	 * @param ml - вх.узел
 	 * @param tp - тип распределения
@@ -62,7 +71,7 @@ public class DistGen {
 	 */
 	//ВНИМАНИЕ! Пришлось вынести в отдельный сервис (не хотел кэш включаться на private методе!!!):
 	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
-	@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
 	public NodeVol distNode (MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		
 		NodeVol nv = calc.findLstCheck(ml.getId(), tp, genDt); 
@@ -316,7 +325,9 @@ public class DistGen {
 					Lst volTp = lstMng.findByCD("Лимит ОДН");
 					Calc.mess("volTp "+volTp.getCd(),2);
 					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, Calc.getCurDt1(), Calc.getCurDt2());
+					
 					ml.getVol().add(vol);
+					
 					Calc.mess("записан объем по счетчику id="+ml.getId()+" по типу tp="+tp+" по дате genDt="+genDt.toLocaleString()+" vol="+vol.getVol1(),2);
 				}
 				

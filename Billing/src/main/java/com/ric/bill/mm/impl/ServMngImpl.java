@@ -31,7 +31,8 @@ public class ServMngImpl implements ServMng {
 	private ServDAO sDao;
 
 	
-	@Cacheable(cacheNames="readOnlyCache", key="{ #serv.getId() }")
+	//да, да, кэш на уровне DAO! (быстрее работает)
+	@Cacheable(cacheNames="readOnlyCache", key="{ #serv.getId() }") 
 	public Serv findMain(Serv serv) {
 		return sDao.findMain(serv);
 	}
