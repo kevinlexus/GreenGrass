@@ -217,9 +217,12 @@ public class MeterLogMngImpl implements MeterLogMng {
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();
-			if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН") ) {
-				Calc.mess("Del vol: id="+vol.getId());
-				iterator.remove();
+		    if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН") ) {
+		    	//проверить период
+		    	if (Calc.getCurDt1().getTime() <= vol.getDt1().getTime() && Calc.getCurDt2().getTime() >= vol.getDt2().getTime()) {
+			    	Calc.mess("Del vol: id="+vol.getId());
+					iterator.remove();
+		    	}
 			}
 		}
 
