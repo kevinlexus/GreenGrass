@@ -223,7 +223,7 @@ public class DistGen {
 						vl = (double)Math.round(vl * 10000d) / 10000d;
 					}
 					//ограничить экономию текущим потреблением по основному счетчику
-					if (Math.abs(vl) > tmpVol && tmpVol > 0) {
+					if (Math.abs(vl) > tmpVol) {
 						vl = -1 * tmpVol;
 					}
 				}
