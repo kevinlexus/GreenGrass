@@ -36,6 +36,8 @@ public final class Calc {
 	//даты текущего периода
 	private static Date curDt1;
 	private static Date curDt2;
+	//период для партицирования
+	private static String period;
 	//наиболее ранняя и поздние даты в биллинге, константы
 	private static Date firstDt;//=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
 	private static Date lastDt;//=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
@@ -137,8 +139,14 @@ public final class Calc {
 		//последний день месяца
 		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		//calendar.set(Calendar.DATE, 2); 
-		
 		setCurDt2(calendar.getTime());
+		
+		//задать период для партицирования
+		String yy = String.valueOf(calendar.get(Calendar.YEAR));
+		String mm = String.valueOf(calendar.get(Calendar.MONTH)+1);
+		mm = "0"+mm;
+		mm = mm.substring(mm.length()-2, mm.length());
+		setPeriod(yy+mm);
 		//кол-во дней в месяце
 		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		//доля одного дня в периоде
@@ -316,6 +324,14 @@ public final class Calc {
 		lstCheck.clear();
 	}
 	
+	public static String getPeriod() {
+		return period;
+	}
+
+	public static void setPeriod(String period) {
+		Calc.period = period;
+	}
+
 	/**
 	 * таблица для возврата норматива потребления (в литрах) по соотв.площади на человека
 	 * @param oplMan - площадь на человека
@@ -430,4 +446,5 @@ public final class Calc {
 		
 		return val;
 	}
+
 }

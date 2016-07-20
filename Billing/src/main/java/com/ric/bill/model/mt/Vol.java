@@ -45,7 +45,7 @@ public class Vol implements java.io.Serializable, Simple {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VOL")
-	@SequenceGenerator(name="SEQ_VOL", sequenceName="MT.KMP_METER_VOL_ID", allocationSize=100) 	
+	@SequenceGenerator(name="SEQ_VOL", sequenceName="MT.KMP_METER_VOL_ID", allocationSize=10) //делал allocationSize=100 тогда надо increment by делать 100, работает быстрее, на 10%.. но тогда гэп большой от других инсертов 	
     @Column(name = "ID", unique=true, updatable = false, nullable = false)					
 	private Integer id;
 	

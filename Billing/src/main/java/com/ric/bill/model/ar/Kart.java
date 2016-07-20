@@ -32,6 +32,7 @@ import com.ric.bill.RegContains;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.bs.Par;
+import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.RegState;
@@ -107,6 +108,12 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@Column(name = "LSK", nullable = true, updatable = false, insertable = false)
 	private String lsk;
 
+	//Записи начисления
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="LSK", referencedColumnName="LSK")
+	@BatchSize(size = 500)
+	private Set<Chrg> chrg = new HashSet<Chrg>(0);
+
 	public String getId() {
 		return this.id;
 	}
@@ -178,6 +185,14 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 		this.fkKw = fkKw;
 	}
 
+	public Set<Chrg> getChrg() {
+		return chrg;
+	}
+
+	public void setChrg(Set<Chrg> chrg) {
+		this.chrg = chrg;
+	}
+
    @Override
    public boolean equals(Object o) {
        if (this == o) return true;
@@ -191,6 +206,7 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
      
        return true;
    }
+
 	
 }
 

@@ -1,10 +1,8 @@
 package com.ric.bill.mm.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -13,25 +11,17 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
-import com.ric.bill.Storable;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.MeterLogDAO;
-import com.ric.bill.dao.ParDAO;
-import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.mm.MeterLogMng;
-import com.ric.bill.mm.ParMng;
-import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.MeterExs;
-import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
 

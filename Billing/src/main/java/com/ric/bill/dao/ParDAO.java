@@ -9,7 +9,7 @@ import com.ric.bill.model.bs.Par;
 public interface ParDAO {
 
 
-	public Par findByCd(String cd);
+	public Par getByCd(String cd);
 
 	public boolean checkPar(int id, String cd, String dataTp);
 }

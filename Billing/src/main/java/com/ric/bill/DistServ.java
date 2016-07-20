@@ -1,20 +1,12 @@
 package com.ric.bill;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,17 +24,8 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.House;
-import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Dw;
-import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
-import com.ric.bill.model.mt.Meter;
-import com.ric.bill.model.mt.MeterExs;
-import com.ric.bill.model.mt.MeterLog;
-import com.ric.bill.model.mt.MeterLogGraph;
-import com.ric.bill.model.mt.Vol;
 
 /**
  * Сервис распределения объемов
@@ -50,7 +33,7 @@ import com.ric.bill.model.mt.Vol;
  *
  */
 @Service
-public class Dist {
+public class DistServ {
 
 	@Autowired
 	private Calc calc;
@@ -178,7 +161,6 @@ public class Dist {
 				
 			}
 		} catch (ErrorWhileDist e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -255,23 +237,17 @@ public class Dist {
 	 */
 	private void distHouseServ() throws ErrorWhileDist {
 		Calc.mess("******************Услуга*************="+calc.getServ().getCd(), 2);
-
-		try { 
-			calc.setCalcTp(1);
-			distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
+		calc.setCalcTp(1);
+		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
+		calc.setCalcTp(0);
+		distHouseServTp(calc.getServ().getMet());//Распределение объема
+		calc.setCalcTp(2);
+		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
+		calc.setCalcTp(3);
+		distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
+		if (calc.getServ().getOdn() != null){
 			calc.setCalcTp(0);
-			distHouseServTp(calc.getServ().getMet());//Распределение объема
-			calc.setCalcTp(2);
-			distHouseServTp(calc.getServ().getMet());//Расчет ОДН
-			calc.setCalcTp(3);
-			distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
-			if (calc.getServ().getOdn() != null){
-				calc.setCalcTp(0);
-				distHouseServTp(calc.getServ().getOdn());//Суммировать счетчики ОДН
-			}
-		} catch (ErrorWhileDist e) {
-			e.printStackTrace();
-			throw new ErrorWhileDist("Dist.distHouseServ: ");
+			distHouseServTp(calc.getServ().getOdn());//Суммировать счетчики ОДН
 		}
 	}
 	
@@ -283,15 +259,9 @@ public class Dist {
 	private void distHouseServTp(Serv serv) throws ErrorWhileDist {
 		Calc.mess("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
-		try {
-			for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-					Calc.mess("Вызов distGraph c id="+ml.getId());
-					distGraph(ml);
-			}
-		} catch (ErrorWhileDist e) {
-			Calc.mess("ОШИБКА в distGraph!");
-			e.printStackTrace();
-			throw new ErrorWhileDist("Dist.distHouseServTp: ");
+		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+				Calc.mess("Вызов distGraph c id="+ml.getId());
+				distGraph(ml);
 		}
 	}
 	

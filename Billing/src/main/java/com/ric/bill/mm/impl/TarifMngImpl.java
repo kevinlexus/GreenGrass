@@ -65,11 +65,12 @@ public class TarifMngImpl implements TarifMng {
 	}
 
 	/**
-	 * Получить список всех услуг по тарифу данного объекта
+	 * Получить список всех услуг по тарифу данного объекта на заданную дату
 	 * @param tc - объект
+	 * @param genDt - дата выборки
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #genDt }") 
 	public Set<Serv> getAllServ(TarifContains tc, Date genDt) {
 		Set<Serv> lst = new HashSet<Serv>();
 		//искать сперва по наборам тарифа объекта 
@@ -77,7 +78,7 @@ public class TarifMngImpl implements TarifMng {
 			//по соотв.периоду
 			if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
-				for (TarifServProp t : k.getTarprop()) {
+				for (TarifServ t : k.getTarserv()) {
 					lst.add(t.getServ());
 				}
 			}

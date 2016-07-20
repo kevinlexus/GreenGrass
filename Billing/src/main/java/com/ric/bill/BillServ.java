@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.model.ar.House;
@@ -32,13 +33,12 @@ public class BillServ {
 	@Autowired
 	private Calc calc;
 	@Autowired
-    private Dist dist;
+    private DistServ dist;
 	@Autowired
     private ChrgServ chrg;
 
 	@Test
 	public void test1() {
-		//для выключения логгинга, просто выкинул из maven всё что касалось log4j
 		//распределить объемы по дому
 		//long startTime;
 		long startTime2;
@@ -46,7 +46,7 @@ public class BillServ {
 		long totalTime;
 		
 		System.out.println("Begin!");
-		Calc.setDbgLvl(0);
+		Calc.setDbgLvl(2);
 
 		//Logger.getRootLogger().setLevel(Level.ERROR);
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
@@ -84,7 +84,14 @@ public class BillServ {
 			e.printStackTrace();
 		}*/
 		
-		dist.distAll();
+		//dist.distAll();
+		
+		try {
+			chrg.chrgAll();
+		} catch (ErrorWhileChrg e) {
+			e.printStackTrace();
+		}
+		
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;
 		System.out.println("ОБЩЕЕ время исполнения:"+totalTime);

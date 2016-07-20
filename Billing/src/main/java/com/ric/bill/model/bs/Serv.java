@@ -70,6 +70,11 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_ST_KEEP", referencedColumnName="ID")
 	private Serv stdrt; 
 
+	// услуга свыше соцнормы, к данной 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_UPST", referencedColumnName="ID")
+	private Serv upst; 
+
 	// основная услуга, для начисления
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHRG", referencedColumnName="ID")
@@ -179,6 +184,13 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 
 	public void setChrg(Serv chrg) {
 		this.chrg = chrg;
+	}
+
+	public Serv getUpst() {
+		return upst;
+	}
+	public void setUpst(Serv upst) {
+		this.upst = upst;
 	}
 
    @Override

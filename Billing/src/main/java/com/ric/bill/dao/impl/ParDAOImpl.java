@@ -25,7 +25,8 @@ public class ParDAOImpl implements ParDAO {
     private EntityManager em;
     
 	@SuppressWarnings("unchecked")
-	public Par findByCd(String cd) {
+	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
+	public Par getByCd(String cd) {
 		Query query =em.createQuery("from Par t where t.cd in (:cd)");
 		query.setParameter("cd", cd);
 		return (Par) query.getSingleResult();

@@ -24,9 +24,10 @@ public class ParMngImpl implements ParMng {
 	private ParDAO pDao;
 
 	
-	@Cacheable("readOnlyCache")
-	public Par findByCD(String cd) {
-		return pDao.findByCd(cd);
+	//получить параметр по его CD
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
+	public Par getByCD(String cd) {
+		return pDao.getByCd(cd);
 	}
 
 	/**
@@ -34,7 +35,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
 	public boolean isExByCd(String cd) {
-		Par p = findByCD(cd);
+		Par p = getByCD(cd);
 		if (p != null) {
 			return true;
 		} else {
@@ -42,12 +43,6 @@ public class ParMngImpl implements ParMng {
 		}
 	}
 
-	
-	//@Cacheable(cacheNames="readOnlyCache", key="{ #id, #cd, #dataTp }") --как будто здесь кэш не применяется, а применяется в слое DAO
-	//УДАЛИТЬ ПОТОМ!!! (медленно работает)
-	public boolean checkPar(int id, String cd, String dataTp) {
-		return pDao.checkPar(id, cd, dataTp);
-	}
 	
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства
@@ -58,6 +53,7 @@ public class ParMngImpl implements ParMng {
 	//@Cacheable("readOnlyCache")
 	@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }")
 	public Double getDbl(Storable st, String cd, Date genDt) {
+		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
@@ -67,7 +63,8 @@ public class ParMngImpl implements ParMng {
     				/*if (checkPar(d.getFkHfp(), cd, "SI")) {
 						return d.getN1();
     				}*/
-    				if (d.getPar().getCd().equals(cd)) {
+//    				if (d.getPar().getCd().equals(cd)) {
+       				if (d.getPar().equals(par)) {
 						if (d.getPar().getTp().equals("NM")) {
 							if (d.getPar().getDataTp().equals("SI")) {
 								return d.getN1();
@@ -92,22 +89,53 @@ public class ParMngImpl implements ParMng {
 	}
 
 	/**
+	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
+	 */
+	@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd }")
+	public Double getDbl(Storable st, String cd) {
+		Par par = getByCD(cd);
+		try {
+			for (Dw d: st.getDw()) {
+				if (d.getPar().equals(par)) {
+					if (d.getPar().getTp().equals("NM")) {
+						if (d.getPar().getDataTp().equals("SI")) {
+							return d.getN1();
+						} else {
+								throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+						}
+					} else {
+						throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом NM завершилась ошибкой");
+					}
+				}
+			}
+			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
+			if (!isExByCd(cd)) {
+				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
+			};
+		} catch (WrongGetMethod e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
-	
 	@Cacheable("readOnlyCache")
 	public String getStr(Storable st, String cd, Date genDt) {
+		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
     			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI)
-					if (d.getPar().getCd().equals(cd)) {
+    				if (d.getPar().equals(par)) {
 						if (d.getPar().getTp().equals("ST")) {
-							if (d.getPar().getDataTp().equals("SI")) {
+							if (d.getPar().getDataTp().equals("SI") || d.getPar().getDataTp().equals("CD")) {
 								return d.getS1();
 							} else {
-									throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+									throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI или CD завершилась ошибкой");
 							}
 						} else {
 							throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом ST завершилась ошибкой");
@@ -126,4 +154,35 @@ public class ParMngImpl implements ParMng {
 		return null;
 	}
 	
+	/**
+	 * получить значение параметра типа String объекта по CD свойства, без указания даты
+	 */
+	@Cacheable("readOnlyCache")
+	public String getStr(Storable st, String cd) {
+		Par par = getByCD(cd);
+		try {
+			for (Dw d: st.getDw()) {
+					//проверка, что соответствует CD и Number (NM), Единичное (SI)
+				if (d.getPar().equals(par)) {
+						if (d.getPar().getTp().equals("ST")) {
+							if (d.getPar().getDataTp().equals("SI") || d.getPar().getDataTp().equals("CD")) {
+								return d.getS1();
+							} else {
+									throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI или CD завершилась ошибкой");
+							}
+						} else {
+							throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом ST завершилась ошибкой");
+						}
+    			}
+			}
+			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
+			if (!isExByCd(cd)) {
+				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
+			};
+		} catch (WrongGetMethod e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
