@@ -17,9 +17,11 @@ import com.ric.bill.excp.EmptyOrg;
 import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
+import com.ric.bill.excp.InvalidServ;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
+import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
@@ -51,7 +53,10 @@ public class ChrgServ {
 	private HouseMng houseMng;
 	@Autowired
 	private KartMng kartMng;
+	@Autowired
+	private MeterLogMng metMng;
 
+	
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
@@ -161,6 +166,9 @@ public class ChrgServ {
 				} catch (EmptyOrg e) {
 					e.printStackTrace();
 					throw new ErrorWhileChrg("ChrgServ.chrgLsk: Пустая организация!");
+				} catch (InvalidServ e) {
+					e.printStackTrace();
+					throw new ErrorWhileChrg("ChrgServ.chrgLsk: Некорректна услуга!");
 				}
 			}
 		}
@@ -170,12 +178,13 @@ public class ChrgServ {
 	/**
 	 * расчитать начисление по услуге
 	 * @param serv - услуга
+	 * @throws InvalidServ 
 	 */
-	private void chrgServ(Kart kart, Serv serv, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg {
+	private void chrgServ(Kart kart, Serv serv, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg, InvalidServ {
 		//услуги по норме, свыше и без проживающих
 		Serv stServ, upStServ, woKprServ;
 		//нормативный объем, доля норматива
-		Standart stdt;
+		Standart stdt = null;
 		//расценки
 		BigDecimal stPrice, upStPrice, woKprPrice;
 		//организация
@@ -184,6 +193,8 @@ public class ChrgServ {
 		String baseCD;
 		//объем
 		Double vol;
+		//доля площади в день
+		Double sqr;
 		
 		//получить необходимые услуги
 		stServ = serv.getServSt();
@@ -252,28 +263,58 @@ public class ChrgServ {
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d ||
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d) {
 			//получить объем одного дня
-			vol = parMng.getDbl(kart, baseCD, genDt);
+			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
+			vol = vol / Calc.getCntCurDays();
 			//проверить по капремонту, чтобы не была квартира муниципальной
-			if (serv.getCd().equals("Взносы на кап.рем.") && !(tpOwn.equals("Подсобное помещение")  
-					|| tpOwn.equals("Приватизированная") || tpOwn.equals("Собственная"))) {
-				//не начислять, выход
-				return;
+			if (serv.getCd().equals("Взносы на кап.рем.")) {
+				if (!(tpOwn.equals("Подсобное помещение") || tpOwn.equals("Приватизированная") || tpOwn.equals("Собственная"))) {
+					//не начислять, выход
+					return;
+				} else {
+					//применить льготу по капремонту по 70 - летним
+					vol = vol * kartMng.getCapPrivs(kart, genDt);
+				}
 			}
 			
-			
-			
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
+			//получить объем за месяц
+			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
+			//получить долю объема за день HARD CODE
+			//площадь полива (в доле 1 дня)/100 * 60 дней / 12мес * норматив / среднее кол-во дней в месяце
+			vol = vol/100d*60d/12d*stdt.partVol/30.4d/Calc.getCntCurDays();
 			
-		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d) {
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d ||
+				   Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
+			//Вариант подразумевает объём по лог.счётчику, РАспределённый по дням
+			if (serv.getServMet() == null) {
+				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
+			}
+			//получить объем по лицевому счету и услуге за ДЕНЬ
+			SumNodeVol tmpNodeVol = metMng.getVolPeriod(kart, serv.getServMet(), genDt, genDt);
+			vol = tmpNodeVol.getVol();
 			
-		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
-
+			if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
+				//доля площади в день
+				sqr = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d) / Calc.getCntCurDays();
+			}
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему без исп.норматива-1"), 0d) == 1d) {
-
+			//Вариант подразумевает объём по лог.счётчику, НЕ распределённый по дням,
+			//а записанный одной строкой (одним периодом дата нач.-дата кон.)
+			if (serv.getServMet() == null) {
+				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
+			}
+			//получить объем по услуге за период
+			SumNodeVol tmpNodeVol = metMng.getVolPeriod(kart, serv.getServMet(), Calc.getCurDt1(), Calc.getCurDt2());
+			vol = tmpNodeVol.getVol();
+			vol = vol / Calc.getCntCurDays();
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
-
+			vol = 1 / Calc.getCntCurDays();
 		}
 	}
+	
+	//ВЫПОЛНИТЬ РАСЧЕТ
+	
+	
 	
 	/**
 	 * перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)

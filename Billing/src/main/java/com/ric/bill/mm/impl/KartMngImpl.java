@@ -377,21 +377,52 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt
 	 */
 	public double getCapPrivs(RegContains rc, Date genDt) {
+		boolean above70owner=false;
+		boolean above70=false;
+		boolean under70=false;
 		Set<Pers> counted = new HashSet<Pers>();
 		for (Registrable p : rc.getReg()) {
-			if (p.getPers()!=null && !foundPers(counted, p.getPers())) {
-				if (checkPersStatus(rc, p.getPers(), "Постоянная прописка", 0, genDt)) {
-					//постоянная регистрация есть, проверить временное отсутствие, если надо по этой услуге
-					
+			Pers pers = p.getPers();
+			if (pers!=null && !foundPers(counted, pers)) {
+				PersStatus ps = checkPersStatusExt(rc, pers, "Постоянная прописка", 0, genDt);
+				if (ps.exist) {
+					//постоянная регистрация есть
+					if (Utl.getDiffYears(pers.getDtBorn(), genDt) >= 70) {
+						//если 70 летний
+						if (ps.kinShip.equals("Собственник") || ps.kinShip.equals("Наниматель")) {
+							//да еще и Наниматель (Собственник)
+							above70owner = true;
+						} else {
+							//но не Наниматель (Собственник)
+							above70 = true;
+						}
+					} else {
+						//если постоянно прож., но не 70 летний
+						under70 = true;
+					}
 				} else {
 					//нет постоянной регистрации, поискать временную прописку
-					if (checkPersStatus(rc, p.getPers(), "Временная прописка", 0, genDt)) {
-						//временное присутствие есть, считать проживающего
-
+					ps = checkPersStatusExt(rc, pers, "Временная прописка", 0, genDt);
+					if (ps.exist) {
+						//временное присутствие есть
+						if (Utl.getDiffYears(pers.getDtBorn(), genDt) < 70) {
+							//временно зарег <70 лет
+							under70 = true;
+						}						
 					}
 				}
 			}
 		}
+		
+		if (above70owner && !above70 && !under70) {
+			return 0d; //льгота
+		} else if (above70owner && above70 && !under70) {
+			return 0d; //льгота
+		} else {
+			return 1d; //нет льготы
+		}
+	                
 	}
+
 	
 }

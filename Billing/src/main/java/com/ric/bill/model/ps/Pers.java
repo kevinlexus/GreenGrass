@@ -1,5 +1,7 @@
 package com.ric.bill.model.ps;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
-import com.ric.bill.model.bs.Lst;
 
 /**
  * Персона
@@ -33,6 +34,9 @@ public class Pers implements java.io.Serializable, Simple {
     
     @Column(name = "NM_PATR", updatable = false, nullable = true)
 	private String middlename; //Отчество 
+
+    @Column(name = "DT_BORN")
+	private Date dtBorn; //дата рождения 
 
     public Integer getId() {
 		return this.id;
@@ -66,7 +70,15 @@ public class Pers implements java.io.Serializable, Simple {
 		this.middlename = middlename;
 	}
 
-   @Override
+	public Date getDtBorn() {
+		return dtBorn;
+	}
+
+	public void setDtBorn(Date dtBorn) {
+		this.dtBorn = dtBorn;
+	}
+
+@Override
    public boolean equals(Object o) {
        if (this == o) return true;
        if (!(o instanceof Pers)) return false;

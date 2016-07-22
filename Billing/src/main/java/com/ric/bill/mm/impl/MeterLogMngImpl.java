@@ -22,6 +22,7 @@ import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.MeterExs;
+import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
 
@@ -126,17 +127,13 @@ public class MeterLogMngImpl implements MeterLogMng {
 	/**
 	 * Получить объем, по счетчику за период и сам этот счетчик и признак существования его физ сч.
 	 * @param mLog - узел
-	 * @param tp - тип распределения (здесь ТОЛЬКО для КЭША!)
+	 * @param tp - тип распределения (здесь ТОЛЬКО для КЭША!) TODO!!!!!!!!! Разобраться что значит "только для Кэша". зачем нужен неиспользуемый параметр?
 	 * @param dt1 - нач.период
 	 * @param dt2 - кон.период
 	 * @return - возвращаемый объем
 	 */
-	//@Cacheable("readWriteCache")
 	@Cacheable(cacheNames="readWriteCache", key="{ #mLog.getId(), #tp, #dt1, #dt2 }")
     public SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2) {
-		/*if (mLog.getId()==3603274) {
-			Calc.mess("########### tp = "+tp+" mLog.id="+mLog.getId()+" dt1="+dt1.toLocaleString()+" dt2="+dt2.toLocaleString(), 2);
-		}*/
 		SumNodeVol lnkVol = new SumNodeVol();
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
@@ -160,6 +157,35 @@ public class MeterLogMngImpl implements MeterLogMng {
 		return lnkVol;
 	}
 
+
+	/**
+	 * получить совокупный объем по объекту, содержащему счетчики, по услуге, за период
+	 * @param mc - Объект, содержащий объемы
+	 * @param serv - Услуга, по которой искать
+	 * @param dt1 - нач.период
+	 * @param dt2 - кон.период
+	 * @return - возвращаемый объем
+	 */
+	@Cacheable(cacheNames="readWriteCache", key="{ #mc.getId(), #serv.getId(), #dt1, #dt2 }")
+	public SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2) {
+		SumNodeVol amntSum = new SumNodeVol();
+		
+		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
+		for (MeterLog mLog: mc.getMlog()) {
+			//по заданной услуге
+			if (mLog.getServ().equals(serv)) {
+				SumNodeVol tmp = getVolPeriod(mLog, 0, dt1, dt2);
+				amntSum.addArea(tmp.getArea());
+				amntSum.addPers(tmp.getPers());
+				amntSum.addVol(tmp.getVol());
+			}
+		}
+		
+		//вернуть объект, содержащий объемы
+		return amntSum;
+		
+	}
+	
 	/**
 	 * Вернуть логический счетчик определенного типа, связанный с заданным
 	 * Если связано несколько - будет возвращён первый
@@ -229,5 +255,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		}
 	}
 
+
+	
 	
 }
