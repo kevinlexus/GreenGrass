@@ -21,7 +21,10 @@ import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.dao.TarifDAO;
 import com.ric.bill.mm.TarifMng;
+import com.ric.bill.model.bs.Org;
+import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Prop;
 import com.ric.bill.model.tr.TarifKlsk;
 import com.ric.bill.model.tr.TarifServ;
 import com.ric.bill.model.tr.TarifServOrg;
@@ -39,6 +42,12 @@ public class TarifMngImpl implements TarifMng {
 	private TarifDAO tDao;
 
     
+	//получить свойство тарифа по его CD
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
+	public Prop getPropByCD(String cd) {
+		return tDao.getPropByCD(cd);
+	}
+
 	/**
 	 * Получить значение типа Double тарифа по CD 
 	 * @param tc - объект
@@ -46,8 +55,8 @@ public class TarifMngImpl implements TarifMng {
 	 * @return - свойство
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #cd, #genDt }") 
-	public Double findProp(TarifContains tc, Serv serv, String cd, Date genDt) {
-
+	public Double getProp(TarifContains tc, Serv serv, String cd, Date genDt) {
+		//Prop prop = getPropByCD(cd);//так и не понял, как быстрее, искать тариф предварительно getPropByCD, или непосредственно через.getCd()
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//по соотв.периоду
@@ -55,7 +64,33 @@ public class TarifMngImpl implements TarifMng {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
+					//if (t.getServ().equals(serv) && t.getProp().equals(prop)) { //так и не понял, как быстрее, искать тариф предварительно getPropByCD, или непосредственно через.getCd() 
 						return t.getN1();
+					}
+				}
+			}
+		}
+		return null;
+		
+	}
+
+	/**
+	 * Получить организацию по услуге в тарифе 
+	 * @param tc - объект
+	 * @param cd - код свойства
+	 * @return - свойство
+	 */
+	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
+	public Org getOrg(TarifContains tc, Serv serv, Date genDt) {
+
+		//искать сперва по наборам тарифа объекта 
+		for (TarifKlsk k : tc.getTarifklsk()) {
+			//по соотв.периоду
+			if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
+				//затем по строкам - составляющим тариф 
+				for (TarifServOrg t : k.getTarifservorg()) {
+					if (t.getServ().equals(serv)) {
+						return t.getOrg();
 					}
 				}
 			}

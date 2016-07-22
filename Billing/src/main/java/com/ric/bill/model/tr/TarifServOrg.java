@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 
 
@@ -37,6 +38,10 @@ public class TarifServOrg implements java.io.Serializable, Simple {
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
 	private Integer fkTarif;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
+	private Org org; 
+	
     public Integer getId() {
 		return this.id;
 	}
@@ -59,6 +64,14 @@ public class TarifServOrg implements java.io.Serializable, Simple {
 
 	public void setFkTarif(Integer fkTarif) {
 		this.fkTarif = fkTarif;
+	}
+
+	public Org getOrg() {
+		return org;
+	}
+
+	public void setOrg(Org org) {
+		this.org = org;
 	}
 	
 }

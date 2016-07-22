@@ -1,5 +1,6 @@
 package com.ric.bill;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,17 +13,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.excp.EmptyOrg;
 import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
+import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.Chrg;
 
@@ -45,6 +49,8 @@ public class ChrgServ {
 	private TarifMng tarMng;
 	@Autowired
 	private HouseMng houseMng;
+	@Autowired
+	private KartMng kartMng;
 
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
@@ -134,7 +140,7 @@ public class ChrgServ {
 				continue;
 			}
 			
-			/*String tpOwn = parMng.getStr(kart, "FORM_S", genDt); 
+			String tpOwn = parMng.getStr(kart, "FORM_S", genDt); 
 			//где лиц.счет является нежилым помещением, не начислять за данный день
 			if (tpOwn.equals("Нежилое собственное") || tpOwn.equals("Нежилое муниципальное")
 				|| tpOwn.equals("Аренда некоммерч.") || tpOwn.equals("Для внутр. пользования")) {
@@ -148,12 +154,15 @@ public class ChrgServ {
 				calc.setServ(serv);
 				//начислить услугу
 				try {
-				  chrgServ(serv, kart);
+				  chrgServ(kart, serv, tpOwn, genDt);
 				} catch (EmptyServ e) {
 					e.printStackTrace();
 					throw new ErrorWhileChrg("ChrgServ.chrgLsk: Пустая услуга!");
+				} catch (EmptyOrg e) {
+					e.printStackTrace();
+					throw new ErrorWhileChrg("ChrgServ.chrgLsk: Пустая организация!");
 				}
-			}*/
+			}
 		}
 		
 	}
@@ -162,13 +171,108 @@ public class ChrgServ {
 	 * расчитать начисление по услуге
 	 * @param serv - услуга
 	 */
-	private void chrgServ(Serv serv, Kart kart) throws EmptyServ {
+	private void chrgServ(Kart kart, Serv serv, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg {
+		//услуги по норме, свыше и без проживающих
+		Serv stServ, upStServ, woKprServ;
+		//нормативный объем, доля норматива
+		Standart stdt;
+		//расценки
+		BigDecimal stPrice, upStPrice, woKprPrice;
+		//организация
+		Org org;
+		//база для начисления
+		String baseCD;
+		//объем
+		Double vol;
+		
+		//получить необходимые услуги
+		stServ = serv.getServSt();
+		upStServ = serv.getServUpst();
+		woKprServ = serv.getServWokpr();
+		//если услуга по соцнорме пустая, присвоить изначальную услугу
+		if (stServ == null) {
+			stServ = serv;
+		}
+		
+		
 		//контроль наличия услуги св.с.нормы (по ряду услуг)
 		if ((Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
-				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d) && serv.getUpst() == null) {
+				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d) && serv.getServUpst() == null) {
 			throw new EmptyServ("По услуге Id="+serv.getId()+" обнаружена пустая услуга свыше соц.нормы");
 		}
 		
+		calc.mess("Kart.klsk="+kart.getKlsk(), 2);
+		calc.mess("Kart.lsk="+kart.getLsk()+" SERV="+stServ.getCd()+" SERV ID="+stServ.getId(), 2);
+		
+		//получить расценку по норме	
+		stPrice = BigDecimal.valueOf(kartMng.getServPropByCD(kart, stServ, "Цена", genDt));
+		if (stPrice == null) {
+			stPrice = BigDecimal.ZERO;
+		}
+
+		//получить нормативный объем
+		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
+				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d ||
+				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d ||
+				Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
+			stdt = kartMng.getStandart(kart, serv, null, genDt);
+			//здесь же получить расценки по свыше соц.нормы и без проживающих 
+			if (serv.getServUpst() != null) {
+				upStPrice = BigDecimal.valueOf(kartMng.getServPropByCD(kart, serv.getServUpst(), "Цена", genDt));
+				if (upStPrice == null) {
+					upStPrice = BigDecimal.ZERO;
+				}
+			} else {
+				upStPrice = BigDecimal.ZERO;
+			}
+			
+			if (serv.getServWokpr() != null) {
+				woKprPrice = BigDecimal.valueOf(kartMng.getServPropByCD(kart, serv.getServWokpr(), "Цена", genDt));
+				if (woKprPrice == null) {
+					woKprPrice = BigDecimal.ZERO;
+				}
+			} else {
+				woKprPrice = BigDecimal.ZERO;
+			}
+		}
+	
+		//получить организацию
+		if (serv.getCheckOrg()) {
+		  org = kartMng.getOrg(kart, serv.getServOrg(), genDt);
+		  if (org == null) {
+				throw new EmptyOrg("При расчете л.с.="+kart.getLsk()+" , обнаружена пустая организция по услуге Id="+serv.getServOrg().getId());
+		  }
+		}
+		
+		//получить базу для начисления
+		baseCD = parMng.getStr(serv, "Name_CD_par_base_charge");
+		
+		//получить объем для начисления
+		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по кол-ву точек-1"), 0d) == 1d || 
+				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d ||
+				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d) {
+			//получить объем одного дня
+			vol = parMng.getDbl(kart, baseCD, genDt);
+			//проверить по капремонту, чтобы не была квартира муниципальной
+			if (serv.getCd().equals("Взносы на кап.рем.") && !(tpOwn.equals("Подсобное помещение")  
+					|| tpOwn.equals("Приватизированная") || tpOwn.equals("Собственная"))) {
+				//не начислять, выход
+				return;
+			}
+			
+			
+			
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
+			
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d) {
+			
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
+
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему без исп.норматива-1"), 0d) == 1d) {
+
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
+
+		}
 	}
 	
 	/**

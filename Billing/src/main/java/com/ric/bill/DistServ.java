@@ -76,12 +76,12 @@ public class DistServ {
 	 * @param serv - заданная услуга
 	 */
     private void delHouseVolServ() {
-		delHouseServVolTp(calc.getServ().getMet(), 1);
-		delHouseServVolTp(calc.getServ().getMet(), 0);
-		delHouseServVolTp(calc.getServ().getMet(), 2);
-		delHouseServVolTp(calc.getServ().getMet(), 3);
-		if (calc.getServ().getOdn() != null){
-			delHouseServVolTp(calc.getServ().getOdn(), 0);//счетчики ОДН
+		delHouseServVolTp(calc.getServ().getServMet(), 1);
+		delHouseServVolTp(calc.getServ().getServMet(), 0);
+		delHouseServVolTp(calc.getServ().getServMet(), 2);
+		delHouseServVolTp(calc.getServ().getServMet(), 3);
+		if (calc.getServ().getServOdn() != null){
+			delHouseServVolTp(calc.getServ().getServOdn(), 0);//счетчики ОДН
 		} 
 	}
 
@@ -238,16 +238,16 @@ public class DistServ {
 	private void distHouseServ() throws ErrorWhileDist {
 		Calc.mess("******************Услуга*************="+calc.getServ().getCd(), 2);
 		calc.setCalcTp(1);
-		distHouseServTp(calc.getServ().getMet());//Расчет площади, кол-во прожив
+		distHouseServTp(calc.getServ().getServMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);
-		distHouseServTp(calc.getServ().getMet());//Распределение объема
+		distHouseServTp(calc.getServ().getServMet());//Распределение объема
 		calc.setCalcTp(2);
-		distHouseServTp(calc.getServ().getMet());//Расчет ОДН
+		distHouseServTp(calc.getServ().getServMet());//Расчет ОДН
 		calc.setCalcTp(3);
-		distHouseServTp(calc.getServ().getMet());//Расчет пропорц.площади
-		if (calc.getServ().getOdn() != null){
+		distHouseServTp(calc.getServ().getServMet());//Расчет пропорц.площади
+		if (calc.getServ().getServOdn() != null){
 			calc.setCalcTp(0);
-			distHouseServTp(calc.getServ().getOdn());//Суммировать счетчики ОДН
+			distHouseServTp(calc.getServ().getServOdn());//Суммировать счетчики ОДН
 		}
 	}
 	

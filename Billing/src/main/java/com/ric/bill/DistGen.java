@@ -107,7 +107,7 @@ public class DistGen {
 		}
 
 		String mLogTp = ml.getTp().getCd(); //тип лог счетчика
-		Serv servChrg = ml.getServ().getChrg(); //получить основную услугу, для начисления
+		Serv servChrg = ml.getServ().getServChrg(); //получить основную услугу, для начисления
 		if (servChrg == null) {
 			throw new EmptyServ("При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружена пустая услуга для расчета начисления");
 		}
@@ -134,7 +134,7 @@ public class DistGen {
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
 				//Calc.mess("before:");
-				vl = kartMng.getStandart(ml, null, genDt).partVol;
+				vl = kartMng.getStandart(kart, ml.getServ(), null, genDt).partVol;
 			}
 				
 		} else if (tp==1 && (mLogTp.equals("ЛНрм") || mLogTp.equals("ЛИПУ") || mLogTp.equals("Лсчетчик"))) {
@@ -206,10 +206,10 @@ public class DistGen {
 					//получить основную услугу
 					Serv mainServ = servMng.findMain(servChrg);
 					//получить счетчик основной услуги
-					Calc.mess("check serv="+mainServ.getMet().getId());
+					Calc.mess("check serv="+mainServ.getServMet().getId());
 					double tmpVol=0d;
 					SumNodeVol sumMainVol;
-					Set<MLogs> lstMain = metMng.getAllMetLogByServTp(kart, mainServ.getMet(), null);
+					Set<MLogs> lstMain = metMng.getAllMetLogByServTp(kart, mainServ.getServMet(), null);
 					for (MLogs mLog2 : lstMain) {
 						//получить объем за период, по лог счетчику основной услуги, если найден
 						sumMainVol = metMng.getVolPeriod(mLog2, tp, Calc.getCurDt1(), Calc.getCurDt2());

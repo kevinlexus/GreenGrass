@@ -27,7 +27,7 @@ public class ServDAOImpl implements ServDAO {
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #serv.getId() }")
 	public Serv findMain(Serv serv) {
-		Query query =em.createQuery("from Serv t where t.odn=:serv");
+		Query query =em.createQuery("from Serv t where t.servOdn=:serv");
 		query.setParameter("serv", serv);
 		return (Serv) query.getSingleResult();
 	}

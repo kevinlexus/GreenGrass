@@ -55,7 +55,11 @@ public class Reg implements java.io.Serializable, Registrable {
 	@JoinColumn(name="FK_REG_STATUS", referencedColumnName="ID", updatable = false)
 	private Lst regStatus;
 	
-    @Column(name = "DT_REG", updatable = false, nullable = true)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_KINSHIP", referencedColumnName="ID", updatable = false)
+	private Lst kinship;
+
+	@Column(name = "DT_REG", updatable = false, nullable = true)
 	private Date dtReg; //Дата регистрации
 	
     @Column(name = "DT_REG_TS", updatable = false, nullable = true)
@@ -150,7 +154,15 @@ public class Reg implements java.io.Serializable, Registrable {
 		this.lsk = lsk;
 	}
 
-   @Override
+   public Lst getKinship() {
+		return kinship;
+	}
+
+	public void setKinship(Lst kinship) {
+		this.kinship = kinship;
+	}
+
+@Override
    public boolean equals(Object o) {
        if (this == o) return true;
        if (!(o instanceof Reg)) return false;

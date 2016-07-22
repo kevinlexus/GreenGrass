@@ -55,30 +55,49 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	@Column(name = "NPP2", updatable = false, nullable = true)
 	private Integer npp2;//№ п.п. для распределения объема
 
-	// услуга содержащая счётчик
+	@Type(type= "org.hibernate.type.NumericBooleanType")
+	@Column(name = "CHECK_ORG", updatable = false, nullable = true)
+	private Boolean checkOrg;//проверять наличие организации в тарифе (да/нет)
+	
+	//услуга содержащая счётчик
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_MET", referencedColumnName="ID")
-	private Serv met; 
+	private Serv servMet; 
 	
-	// услуга содержащая счётчик ОДН
+	//услуга содержащая счётчик ОДН
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_ODN", referencedColumnName="ID")
-	private Serv odn; 
+	private Serv servOdn; 
 
-	// услуга содержащая норматив
+	//услуга содержащая норматив в тарифе
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_ST_KEEP", referencedColumnName="ID")
-	private Serv stdrt; 
+	private Serv servStKeep; 
 
-	// услуга свыше соцнормы, к данной 
+	//услуга по соцнорме
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_ST", referencedColumnName="ID")
+	private Serv servSt; 
+
+	//услуга свыше соцнормы, к данной 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_UPST", referencedColumnName="ID")
-	private Serv upst; 
+	private Serv servUpst; 
 
-	// основная услуга, для начисления
+	//услуга без проживающих, к данной 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_WOKPR", referencedColumnName="ID")
+	private Serv servWokpr; 
+
+	//услуга содержащая организацию 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_FORG", referencedColumnName="ID")
+	private Serv servOrg; 
+
+	//основная услуга, для начисления
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHRG", referencedColumnName="ID")
-	private Serv chrg; 
+	private Serv servChrg; 
 
 	@Type(type= "org.hibernate.type.NumericBooleanType")
 	@Column(name = "INCL_ABSN", nullable = true)
@@ -154,58 +173,91 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 		this.inclPrsn = inclPrsn;
 	}
 
-	public Serv getMet() {
-		return met;
+	public Serv getServMet() {
+		return servMet;
 	}
 
-	public void setMet(Serv met) {
-		this.met = met;
+	public void setServMet(Serv met) {
+		this.servMet = met;
 	}
 
-	public Serv getOdn() {
-		return odn;
+	public Serv getServOdn() {
+		return servOdn;
 	}
 
-	public void setOdn(Serv odn) {
-		this.odn = odn;
+	public void setServOdn(Serv odn) {
+		this.servOdn = odn;
 	}
 
-	public Serv getStdrt() {
-		return stdrt;
+	public Serv getServChrg() {
+		return servChrg;
 	}
 
-	public void setStdrt(Serv stdrt) {
-		this.stdrt = stdrt;
+	public void setServChrg(Serv chrg) {
+		this.servChrg = chrg;
 	}
 
-	public Serv getChrg() {
-		return chrg;
+	public Serv getServUpst() {
+		return servUpst;
+	}
+	public void setServUpst(Serv upst) {
+		this.servUpst = upst;
 	}
 
-	public void setChrg(Serv chrg) {
-		this.chrg = chrg;
+	public Serv getServWokpr() {
+		return servWokpr;
+	}
+	
+	public void setServWokpr(Serv wokpr) {
+		this.servWokpr = wokpr;
 	}
 
-	public Serv getUpst() {
-		return upst;
+	public Serv getServOrg() {
+		return servOrg;
 	}
-	public void setUpst(Serv upst) {
-		this.upst = upst;
+	
+	public void setServOrg(Serv org) {
+		this.servOrg = org;
 	}
 
-   @Override
-   public boolean equals(Object o) {
-       if (this == o) return true;
-       if (!(o instanceof Serv)) return false;
-     
-       Serv otherServ = (Serv) o;
-     
-       if (getId() != null ?
-           !getId().equals(otherServ.getId()) : otherServ.getId() != null)
-           return false;
-     
-       return true;
-   }
-	   
+	public Boolean getCheckOrg() {
+		if (checkOrg==null) {
+			return false;
+		} else {
+			return checkOrg;
+		}
+	}
+	
+	public void setCheckOrg(Boolean checkOrg) {
+		this.checkOrg = checkOrg;
+	}
+	
+	public Serv getServStKeep() {
+		return servStKeep;
+	}
+	public void setServStKeep(Serv servStKeep) {
+		this.servStKeep = servStKeep;
+	}
+	public Serv getServSt() {
+		return servSt;
+	}
+	public void setServSt(Serv servSt) {
+		this.servSt = servSt;
+	}
+	@Override
+	   public boolean equals(Object o) {
+	       if (this == o) return true;
+	       if (!(o instanceof Serv)) return false;
+	     
+	       Serv otherServ = (Serv) o;
+	     
+	       if (getId() != null ?
+	           !getId().equals(otherServ.getId()) : otherServ.getId() != null)
+	           return false;
+	     
+	       return true;
+	   }
+		
+
 }
 

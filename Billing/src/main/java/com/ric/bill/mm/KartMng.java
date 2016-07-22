@@ -10,6 +10,7 @@ import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
@@ -19,6 +20,6 @@ public interface KartMng  {
 
 	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt);
 	public abstract Double getServPropByCD(Kart kart, Serv serv, String string, Date genDt);
-	public abstract Standart getStandart(MLogs mLog, CntPers cntPers, Date genDt);
-
+	public abstract Standart getStandart(Kart kart, Serv serv, CntPers cntPers, Date genDt);
+	public Org getOrg(Kart kart, Serv serv, Date genDt);
 }

@@ -1,21 +1,14 @@
 package com.ric.bill;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.excp.ErrorWhileChrg;
-import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
-import com.ric.bill.model.ar.House;
 
 /**
  * Главный сервис биллинга
@@ -46,7 +39,7 @@ public class BillServ {
 		long totalTime;
 		
 		System.out.println("Begin!");
-		Calc.setDbgLvl(2);
+		Calc.setDbgLvl(0);
 
 		//Logger.getRootLogger().setLevel(Level.ERROR);
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
