@@ -31,7 +31,7 @@ public class HouseDAOImpl implements HouseDAO {
 	public List<House> findAll() {
 		return em.createQuery("select t from House t "
 				+ " "
-				+ "where t.klsk in (187804,187797)").getResultList();
+				+ "where t.klsk in (187804)").getResultList(); //,187797
 
 	}
 

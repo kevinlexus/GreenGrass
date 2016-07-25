@@ -18,6 +18,8 @@ import com.ric.bill.SumNodeVol;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.mm.MeterLogMng;
+import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.Meter;
@@ -171,7 +173,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		SumNodeVol amntSum = new SumNodeVol();
 		
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
-		for (MeterLog mLog: mc.getMlog()) {
+		for (MeterLog mLog: mc.getMlog()) {     // <-------ТОРМОЗИТ из за обращения к house TODO
 			//по заданной услуге
 			if (mLog.getServ().equals(serv)) {
 				SumNodeVol tmp = getVolPeriod(mLog, 0, dt1, dt2);
@@ -179,7 +181,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 				amntSum.addPers(tmp.getPers());
 				amntSum.addVol(tmp.getVol());
 			}
-		}
+		} 
 		
 		//вернуть объект, содержащий объемы
 		return amntSum;
@@ -254,6 +256,30 @@ public class MeterLogMngImpl implements MeterLogMng {
 			}
 		}
 	}
+	
+	
+	
+	/**
+	 * Получить лиц.счет, содержащий указанный счетчик
+	 * @param mLog - Счетчик
+	 * @return
+	 */
+	/* НЕ ВЗЛЕТЕЛО, медленно выполняется, чем mLog.getKart()
+	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
+	public Kart getKart(MLogs mLog) {
+		return mDao.getKart(mLog);
+	}
+	*/
+	/**
+	 * Получить дом, содержащий указанный счетчик
+	 * @param mLog - Счетчик
+	 * @return
+	 */
+	/* НЕ ВЗЛЕТЕЛО, медленно выполняется, чем mLog.getHouse()
+	public House getHouse(MLogs mLog) {
+		return mDao.getHouse(mLog);
+	}
+	*/
 
 
 	

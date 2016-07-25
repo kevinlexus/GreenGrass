@@ -15,13 +15,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
@@ -89,6 +96,12 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv; 
 
+	/*	УБРАЛ связи с kart, house, так как Hibernate пытается их запрашивать каждый раз, даже если они не нужны,
+	 *  (так как нет foreign key сразу на MeterLog, а только через klsk) - НЕ УБИРАТЬ КОММЕНТ! - НЕ ВЗЛЕТЕЛО! (Вернул обратно, описано в MeterLogMngImpl)
+	 * 
+	 *
+	 * 
+	 * */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
 	private Kart kart; 
@@ -97,7 +110,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
 	private House house; 
 
-	//klsk объекта, к которому принадлежит данный счетчик --нужен ли, если есть на прямую объекты kart, house?
+	//klsk объекта, к которому принадлежит данный счетчик
     @Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
 	private Integer klskObj;
 

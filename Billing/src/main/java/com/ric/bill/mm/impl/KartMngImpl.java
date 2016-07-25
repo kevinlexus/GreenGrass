@@ -103,7 +103,7 @@ public class KartMngImpl implements KartMng {
 					if (Utl.between(genDt, dt1, dt2)) {
 						//наличие статуса подтвердилось,  - проживающий присутствует
 						if (tp==0) {
-							Reg reg = (Reg) rg;
+							Reg reg = (Reg) r;
 							return new PersStatus(true, reg.getKinship().getCd());
 						} else {
 							return new PersStatus(true, null);

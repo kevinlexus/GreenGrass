@@ -21,6 +21,7 @@ import com.ric.bill.excp.InvalidServ;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
+import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
@@ -28,9 +29,11 @@ import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
+import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.Chrg;
+import com.ric.bill.model.mt.MeterLog;
 
 /**
  * Сервис формирования начисления
@@ -55,6 +58,8 @@ public class ChrgServ {
 	private KartMng kartMng;
 	@Autowired
 	private MeterLogMng metMng;
+	@Autowired
+	private LstMng lstMng;
 
 	
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
@@ -102,11 +107,20 @@ public class ChrgServ {
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
 		
 		//перебрать все квартиры и лиц.счета в них
+		int aaa=1;
 		for (Kw kw : h.getKw()) {
 			for (Kart kart : kw.getLsk()) {
+				aaa++;
+				if (aaa > 5) {
+					//break;
+				}
+				for (MeterLog mLog: kart.getMlog()) {
+					Calc.mess("сч="+mLog.getId());
+					//Calc.mess("Дом в сч.: klsk="+mLog.getHouse().getKlsk());
+				} 
 
 				chrgLsk(kart); //рассчитать начисление
-
+				
 			}
 		}
 	}
@@ -120,7 +134,7 @@ public class ChrgServ {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void chrgLsk(Kart kart) throws ErrorWhileChrg {
 
-		Calc.mess("ЛС:"+kart.getLsk());
+		//Calc.mess("ЛС:"+kart.getLsk());
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
 			calc.setArea(calc.getHouse().getStreet().getArea());
@@ -158,6 +172,8 @@ public class ChrgServ {
 				//Calc.mess("Услуга:"+serv.getCd());
 				calc.setServ(serv);
 				//начислить услугу
+				//Calc.mess("дом="+kart.getKw().getHouse().getId());
+				
 				try {
 				  chrgServ(kart, serv, tpOwn, genDt);
 				} catch (EmptyServ e) {
@@ -171,6 +187,7 @@ public class ChrgServ {
 					throw new ErrorWhileChrg("ChrgServ.chrgLsk: Некорректна услуга!");
 				}
 			}
+			//break;
 		}
 		
 	}
@@ -192,10 +209,18 @@ public class ChrgServ {
 		//база для начисления
 		String baseCD;
 		//объем
-		Double vol;
+		Double vol = 0d;
 		//доля площади в день
 		Double sqr;
+		//№ порядк.записи
+		int npp;
+		//Временная сумма
+		BigDecimal tmpSum;
 		
+		//типы записей начисления
+		Lst chrgTpDet = lstMng.findByCD("Начислено детально, по дням");
+		Lst chrgTpRnd = lstMng.findByCD("Начислено свернуто, округлено");
+
 		//получить необходимые услуги
 		stServ = serv.getServSt();
 		upStServ = serv.getServUpst();
@@ -212,8 +237,8 @@ public class ChrgServ {
 			throw new EmptyServ("По услуге Id="+serv.getId()+" обнаружена пустая услуга свыше соц.нормы");
 		}
 		
-		calc.mess("Kart.klsk="+kart.getKlsk(), 2);
-		calc.mess("Kart.lsk="+kart.getLsk()+" SERV="+stServ.getCd()+" SERV ID="+stServ.getId(), 2);
+		//calc.mess("Kart.klsk="+kart.getKlsk(), 2);
+		//calc.mess("Kart.lsk="+kart.getLsk()+" SERV="+stServ.getCd()+" SERV ID="+stServ.getId(), 2);
 		
 		//получить расценку по норме	
 		stPrice = BigDecimal.valueOf(kartMng.getServPropByCD(kart, stServ, "Цена", genDt));
@@ -229,7 +254,7 @@ public class ChrgServ {
 			stdt = kartMng.getStandart(kart, serv, null, genDt);
 			//здесь же получить расценки по свыше соц.нормы и без проживающих 
 			if (serv.getServUpst() != null) {
-				upStPrice = BigDecimal.valueOf(kartMng.getServPropByCD(kart, serv.getServUpst(), "Цена", genDt));
+				upStPrice = BigDecimal.valueOf(kartMng.getServPropByCD(kart, upStServ, "Цена", genDt));
 				if (upStPrice == null) {
 					upStPrice = BigDecimal.ZERO;
 				}
@@ -238,7 +263,7 @@ public class ChrgServ {
 			}
 			
 			if (serv.getServWokpr() != null) {
-				woKprPrice = BigDecimal.valueOf(kartMng.getServPropByCD(kart, serv.getServWokpr(), "Цена", genDt));
+				woKprPrice = BigDecimal.valueOf(kartMng.getServPropByCD(kart, woKprServ, "Цена", genDt));
 				if (woKprPrice == null) {
 					woKprPrice = BigDecimal.ZERO;
 				}
@@ -246,7 +271,7 @@ public class ChrgServ {
 				woKprPrice = BigDecimal.ZERO;
 			}
 		}
-	
+			
 		//получить организацию
 		if (serv.getCheckOrg()) {
 		  org = kartMng.getOrg(kart, serv.getServOrg(), genDt);
@@ -264,6 +289,7 @@ public class ChrgServ {
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d) {
 			//получить объем одного дня
 			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
+			
 			vol = vol / Calc.getCntCurDays();
 			//проверить по капремонту, чтобы не была квартира муниципальной
 			if (serv.getCd().equals("Взносы на кап.рем.")) {
@@ -285,6 +311,7 @@ public class ChrgServ {
 			
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d ||
 				   Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
+			
 			//Вариант подразумевает объём по лог.счётчику, РАспределённый по дням
 			if (serv.getServMet() == null) {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
@@ -297,6 +324,8 @@ public class ChrgServ {
 				//доля площади в день
 				sqr = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d) / Calc.getCntCurDays();
 			}
+			
+			
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему без исп.норматива-1"), 0d) == 1d) {
 			//Вариант подразумевает объём по лог.счётчику, НЕ распределённый по дням,
 			//а записанный одной строкой (одним периодом дата нач.-дата кон.)
@@ -310,9 +339,51 @@ public class ChrgServ {
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
 			vol = 1 / Calc.getCntCurDays();
 		}
-	}
+
+
+		/*			if (kart.getLsk().equals("26074286")) {
+		Calc.mess("услуга "+serv.getCd()+" площадь "+vol, 2);
+	}*/
+		
+		//ВЫПОЛНИТЬ РАСЧЕТ
 	
-	//ВЫПОЛНИТЬ РАСЧЕТ
+		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d ||
+			Utl.nvl(parMng.getDbl(serv, "Вариант расчета по кол-ву точек-1"), 0d) == 1d) {
+			//без соцнормы и свыше!
+			//тип расчета, например:Взносы на капремонт
+			//Вариант подразумевает объём, по параметру - базе, жилого фонда РАСПределённый по дням
+			tmpSum = BigDecimal.valueOf(vol).multiply(stPrice);
+			if (tmpSum != BigDecimal.ZERO) {
+				Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
+				kart.getChrg().add(chrg);
+			}
+		} if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
+			//тип расчета, например:Коммерческий найм, где цена = сумме
+			tmpSum = stPrice;
+			if (tmpSum != BigDecimal.ZERO) {
+				Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
+				kart.getChrg().add(chrg);
+			}
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d ||
+				   Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d) {
+			//тип расчета, например:текущее содержание, Х.В., Г.В., Канализ
+			//Вариант подразумевает объём по лог.счётчику, РАСПределённый по дням
+			//или по параметру - базе, жилого фонда, так же распределенного по дням
+			//соцнорма
+			
+			
+			
+		} if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
+
+			
+		} if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему без исп.норматива-1"), 0d) == 1d) {
+
+		
+		} if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
+
+		
+		}
+	}
 	
 	
 	

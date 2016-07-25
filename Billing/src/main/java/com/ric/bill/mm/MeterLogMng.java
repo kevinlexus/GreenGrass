@@ -8,6 +8,8 @@ import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Storable;
 import com.ric.bill.excp.NotFoundNode;
+import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
@@ -20,5 +22,7 @@ public interface MeterLogMng {
 	public SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2);
 	public MLogs getLinkedNode(MLogs lnkMLog, String string, Date genDt);
 	public void delNodeVol(MLogs ml, int tp, Date genDt);
+//	public Kart getKart(MLogs mLog);
+//	public House getHouse(MLogs mLog);
 
 }

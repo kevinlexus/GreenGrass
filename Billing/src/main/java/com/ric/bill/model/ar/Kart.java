@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -109,9 +110,9 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	private String lsk;
 
 	//Записи начисления
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="LSK", referencedColumnName="LSK")
-	@BatchSize(size = 500)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
+	@BatchSize(size = 50)
 	private Set<Chrg> chrg = new HashSet<Chrg>(0);
 
 	public String getId() {
