@@ -35,7 +35,7 @@ public class TarifServ implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv; 
 
-	public Integer getId() {
+    public Integer getId() {
 		return this.id;
 	}
     

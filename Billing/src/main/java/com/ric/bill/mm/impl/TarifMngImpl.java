@@ -100,13 +100,35 @@ public class TarifMngImpl implements TarifMng {
 	}
 
 	/**
-	 * Получить список всех услуг по тарифу данного объекта на заданную дату
+	 * Получить список всех услуг по тарифу данного объекта по всем датам
 	 * @param tc - объект
+	 * @return
+	 */
+	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk() }") 
+	public Set<Serv> getAllServ(TarifContains tc) {
+		Set<Serv> lst = new HashSet<Serv>();
+		//искать сперва по наборам тарифа объекта 
+		for (TarifKlsk k : tc.getTarifklsk()) {
+			//по соотв.периоду - сделал по всем датам, так как не понятно, как их фильтровать
+			//if (Utl.between(dt1, k.getDt1(), k.getDt2())) {
+				//затем по строкам - составляющим тариф 
+				for (TarifServ t : k.getTarserv()) {
+					lst.add(t.getServ());
+				}
+			//}
+		}
+		return lst;
+	}
+	
+	/**
+	 * Получить наличие услуги по тарифу данного объекта на заданную дату
+	 * @param tc - объект
+	 * @param genDt - дата выборки
 	 * @param genDt - дата выборки
 	 * @return
 	 */
-	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #genDt }") 
-	public Set<Serv> getAllServ(TarifContains tc, Date genDt) {
+	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
+	public boolean getServ(TarifContains tc, Serv serv, Date genDt) {
 		Set<Serv> lst = new HashSet<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
@@ -114,11 +136,17 @@ public class TarifMngImpl implements TarifMng {
 			if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServ t : k.getTarserv()) {
-					lst.add(t.getServ());
+					if (t.getServ().equals(serv)) {
+						if (Utl.nvl(k.getAct(), 1) == 1) {
+							return true;
+						} else {
+							return false;
+						}
+					}
 				}
 			}
 		}
-		return lst;
+		return false;
 	}
 	
 }

@@ -51,7 +51,10 @@ public class TarifKlsk implements java.io.Serializable, Simple {
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
 	private Integer fktarif;
 
-	//даты начала и окончания действия
+    @Column(name = "ACT")
+	private Integer act;
+
+    //даты начала и окончания действия
     @Column(name = "DT1", updatable = false, nullable = true)
 	private Date dt1;
 
@@ -112,6 +115,14 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 	
 	public void setDt2(Date dt2) {
 		this.dt2 = dt2;
+	}
+
+	public Integer getAct() {
+		return act;
+	}
+
+	public void setAct(Integer act) {
+		this.act = act;
 	}
 	
 }

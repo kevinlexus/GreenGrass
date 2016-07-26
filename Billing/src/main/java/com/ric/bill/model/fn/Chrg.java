@@ -26,7 +26,7 @@ import com.ric.bill.model.bs.Serv;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "KMP_CHRG", schema="FN")
+@Table(name = "KMP_TEMP_CHRG", schema="FN")
 public class Chrg implements java.io.Serializable {
 
 

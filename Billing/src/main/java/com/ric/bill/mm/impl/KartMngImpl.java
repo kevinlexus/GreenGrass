@@ -35,7 +35,7 @@ public class KartMngImpl implements KartMng {
 	private TarifMng tarMng;
 
 	//внутренний класс, состояние проживающего
-	public class PersStatus {
+	private class PersStatus {
 		boolean exist;
 		String kinShip;
 		//конструктор
@@ -370,6 +370,25 @@ public class KartMngImpl implements KartMng {
 		return org;
 	}
 	
+	/**
+	 * Найти наличие услуги (по лиц.счету!)
+	 * @param Kart - Лиц.счет
+	 * @param serv -Услуга
+	 * @param genDt - Дата выборки
+	 * @return
+	 */
+	@Cacheable(cacheNames="readOnlyCache2", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
+	public boolean getServ(Kart kart, Serv serv, Date genDt) {
+		boolean exs = false;
+		//в начале ищем по лиц. счету 
+		exs=tarMng.getServ(kart, serv, genDt);
+		if (!exs) {
+			//потом ищем по дому
+			return tarMng.getServ(kart.getKw().getHouse(), serv, genDt);
+		}
+		//здесь уровня "город" - нет
+		return exs;
+	}
 	
 	/**
 	 * Узнать наличие льготы по капремонту (>=70 лет, собственник, другие проживающие тоже >=70 лет)
