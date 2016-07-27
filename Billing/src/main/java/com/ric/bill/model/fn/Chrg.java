@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 
 /**
@@ -26,7 +27,7 @@ import com.ric.bill.model.bs.Serv;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "KMP_TEMP_CHRG", schema="FN")
+@Table(name = "KMP_CHRG", schema="FN")
 public class Chrg implements java.io.Serializable {
 
 
@@ -34,17 +35,18 @@ public class Chrg implements java.io.Serializable {
 		
 	}
 			
-	public Chrg(Kart kart, Serv serv, int status, String period,
-			BigDecimal sumFull, BigDecimal sumAmnt, Double vol,
+	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
+			BigDecimal sumFull, BigDecimal sumAmnt, BigDecimal vol,
 			BigDecimal price, Lst tp, Date dt1, Date dt2) {
 		
 		setKart(kart);
+		setOrg(org);
 		setServ(serv);
 		setStatus(status);
 		setPeriod(period);
 		setSumFull(sumFull.doubleValue());
 		setSumAmnt(sumAmnt.doubleValue());
-		setVol(vol);
+		setVol(vol.doubleValue());
 		setPrice(price.doubleValue());
 		setTp(tp);
 		setDt1(dt1);
@@ -98,6 +100,10 @@ public class Chrg implements java.io.Serializable {
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv; 
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
+	private Org org; 
+
 	public Kart getKart() {
 		return kart;
 	}
@@ -178,11 +184,11 @@ public class Chrg implements java.io.Serializable {
 		this.dt2 = dt2;
 	}
 
-	private Lst getTp() {
+	public Lst getTp() {
 		return tp;
 	}
 
-	private void setTp(Lst tp) {
+	public void setTp(Lst tp) {
 		this.tp = tp;
 	}
 
@@ -192,6 +198,14 @@ public class Chrg implements java.io.Serializable {
 
 	public void setServ(Serv serv) {
 		this.serv = serv;
+	}
+
+	public Org getOrg() {
+		return org;
+	}
+
+	public void setOrg(Org org) {
+		this.org = org;
 	}
 
 	

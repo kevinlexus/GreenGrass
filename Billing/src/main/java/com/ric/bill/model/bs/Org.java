@@ -50,5 +50,19 @@ public class Org implements java.io.Serializable, Simple {
 		this.name = name;
 	}
 
+	@Override
+	   public boolean equals(Object o) {
+	       if (this == o) return true;
+	       if (!(o instanceof Org)) return false;
+	     
+	       Org otherOrg = (Org) o;
+	     
+	       if (getId() != null ?
+	           !getId().equals(otherOrg.getId()) : otherOrg.getId() != null)
+	           return false;
+	     
+	       return true;
+	   }
+	
 }
 

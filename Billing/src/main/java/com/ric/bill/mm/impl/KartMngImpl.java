@@ -218,8 +218,6 @@ public class KartMngImpl implements KartMng {
 		//строго должна быть указана fk_st_keep! по услуге счетчика)
 		//Serv serv = mLog.getServ().getStdrt(); 
 		Serv servSt = serv.getServStKeep(); 
-		//получить услугу основную, для начисления
-		Serv servChrg = serv.getServChrg();
 		Standart st = new Standart();
 		
 		//Kart kart = mLog.getKart();
@@ -229,14 +227,14 @@ public class KartMngImpl implements KartMng {
 			//если кол-во проживающих не передано, получить его
 
 			cntPers= new CntPers();
-			getCntPers(kart, servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+			getCntPers(kart, serv, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
 		
-		Calc.mess("===="+Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1", genDt), 0d));
+		Calc.mess("===="+Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d));
 		
-		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1", genDt), 0d)==1d
-				|| Utl.nvl(parMng.getDbl(servSt, "Вариант расчета по объему-2", genDt), 0d)==1d) {
+		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d)==1d
+				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
 			if (cntPers.cnt==1) {
 				stVol = getServPropByCD(kart, servSt, "Норматив-1 чел.", genDt);
 			} else if (cntPers.cnt==2) {
@@ -247,12 +245,12 @@ public class KartMngImpl implements KartMng {
 				stVol = 0d;
 			}
 			
-		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1", genDt),0d)==1d
-				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"),0d)==1d
+				&& !serv.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, servSt, "Норматив", genDt);
-		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1", genDt),0d)==1d
-				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
+		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"),0d)==1d
+				&& serv.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0d;
 			String s2;
 			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество", genDt);
@@ -354,7 +352,7 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt - Дата выборки
 	 * @return
 	 */
-	@Cacheable(cacheNames="readOnlyCache2", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="readOnlyCache3", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public Org getOrg(Kart kart, Serv serv, Date genDt) {
 		Org org;
 		//в начале ищем по лиц. счету 

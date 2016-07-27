@@ -127,7 +127,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @param genDt - дата выборки
 	 * @return
 	 */
-	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="readOnlyCache2", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
 	public boolean getServ(TarifContains tc, Serv serv, Date genDt) {
 		Set<Serv> lst = new HashSet<Serv>();
 		//искать сперва по наборам тарифа объекта 

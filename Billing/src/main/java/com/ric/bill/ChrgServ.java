@@ -1,6 +1,7 @@
 package com.ric.bill;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -34,6 +35,7 @@ import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.Chrg;
+import com.ric.bill.model.fn.ChrgRec;
 import com.ric.bill.model.fn.ChrgStore;
 import com.ric.bill.model.mt.MeterLog;
 
@@ -69,7 +71,7 @@ public class ChrgServ {
 
     private ExecProc ex;
     //временное хранилище записей
-	private ChrgStore chrgStore;
+	private ChrgStore chStore;
     
     //конструктор
     public ChrgServ() {
@@ -124,8 +126,10 @@ public class ChrgServ {
 					//Calc.mess("Дом в сч.: klsk="+mLog.getHouse().getKlsk());
 				} 
 
-				chrgLsk(kart); //рассчитать начисление
-				Calc.mess("Кол-во записей="+ex.runWork(1, 0, 0),2);
+				if (kart.getLsk().equals("26074202")) {
+					chrgLsk(kart); //рассчитать начисление
+				}
+				//Calc.mess("Кол-во записей="+ex.runWork(1, 0, 0),2);
 			}
 		}
 	}
@@ -151,16 +155,22 @@ public class ChrgServ {
 		archPrev();
 		//получить все необходимые услуги для начисления из тарифа по дому
 		Calendar c = Calendar.getInstance();
+
 		//необходимый для формирования диапазон дат
 		Date dt1, dt2, genDt;
 		dt1 = Calc.getCurDt1();
 		dt2 = Calc.getCurDt2();
 
-		//Объект, временно хранящий записи начисления 
-		//setChrgStore(new ChrgStore());
+		//типы записей начисления
+		Lst chrgTpDet = lstMng.findByCD("Начислено детально, по дням");
+		Lst chrgTpRnd = lstMng.findByCD("Начислено свернуто, округлено");
+
 		
 		//найти все услуги, действительные в лиц.счете
 		for (Serv serv : tarMng.getAllServ(calc.getHouse())) { 
+			//Объект, временно хранящий записи начисления
+			chStore = new ChrgStore(); 
+
 			for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 				Calc.setGenDt(c.getTime());
 				genDt = Calc.getGenDt();
@@ -195,9 +205,31 @@ public class ChrgServ {
 							e.printStackTrace();
 							throw new ErrorWhileChrg("ChrgServ.chrgLsk: Некорректна услуга!");
 						}
+						
+						
+						
 					//break;
 				}
 			}
+			
+			//окончательно рассчитать и сохранить данные
+			for (ChrgRec rec : chStore.getStore()) {
+//				Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), sum, sum, vol, BigDecimal.valueOf(price), chrgTp, genDt, genDt);
+				BigDecimal vol, sum;
+				vol = rec.getVol();
+				//округлить
+				vol = vol.setScale(5, BigDecimal.ROUND_HALF_UP);
+				//умножить на расценку
+				sum = vol.multiply(rec.getPrice());
+				//округлить до копеек
+				sum = sum.setScale(2, BigDecimal.ROUND_HALF_UP);
+				
+				Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, Calc.getPeriod(), sum, sum, 
+						vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
+				kart.getChrg().add(chrg);
+
+			}
+			
 		}
 		
 	}
@@ -215,7 +247,7 @@ public class ChrgServ {
 		//расценки
 		Double stPrice = 0d, upStPrice = 0d, woKprPrice = 0d;
 		//организация
-		Org org;
+		Org org = null;
 		//база для начисления
 		String baseCD;
 		//объем
@@ -236,10 +268,6 @@ public class ChrgServ {
 		BigDecimal tmpVolD = BigDecimal.ZERO;
 		BigDecimal tmpSumD = BigDecimal.ZERO;
 	
-		
-		//типы записей начисления
-		Lst chrgTpDet = lstMng.findByCD("Начислено детально, по дням");
-		Lst chrgTpRnd = lstMng.findByCD("Начислено свернуто, округлено");
 
 		//получить необходимые услуги
 		stServ = serv.getServSt();
@@ -268,6 +296,11 @@ public class ChrgServ {
 		if (stPrice == null) {
 			stPrice = 0d;
 		}
+
+		/*if (serv.getId()==49) {
+			Calc.mess("Check=",serv.getId());
+		}*/
+		
 
 		//получить нормативный объем
 		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
@@ -378,7 +411,8 @@ public class ChrgServ {
 			//Вариант подразумевает объём, по параметру - базе, жилого фонда РАСПределённый по дням
 	        //тип расчета, например Х.В.ОДН, Г.В.ОДН, Эл.эн.ОДН
 			tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
-			addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+			//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+			chStore.addChrg(tmpSum, BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), stServ, org, genDt);
 			/*tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
 			if (tmpSum != BigDecimal.ZERO) {
 				Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
@@ -387,7 +421,8 @@ public class ChrgServ {
 		} if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
 			//тип расчета, например:Коммерческий найм, где цена = сумме
 			tmpSum = BigDecimal.valueOf(stPrice);
-			addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+			//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+			chStore.addChrg(tmpSum, BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), stServ, org, genDt);
 			
 			/*if (tmpSum != BigDecimal.ZERO) {
 				Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
@@ -398,7 +433,6 @@ public class ChrgServ {
 			//тип расчета, например:текущее содержание, Х.В., Г.В., Канализ
 			//Вариант подразумевает объём по лог.счётчику, РАСПределённый по дням
 			//или по параметру - базе, жилого фонда, так же распределенного по дням
-
 			if (cntPers.cntEmpt != 0) {
 				//есть проживающие
 				//соцнорма
@@ -409,7 +443,8 @@ public class ChrgServ {
 				}
 	
 				tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
-				addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+				//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+				chStore.addChrg(tmpSum, BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(stPrice), stServ, org, genDt);
 /*				if (tmpSum != BigDecimal.ZERO) {
 					Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
 					kart.getChrg().add(chrg);
@@ -418,7 +453,8 @@ public class ChrgServ {
 				//свыше соцнормы
 				tmpVol = vol - tmpVol;
 				tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
-				addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+				//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+				chStore.addChrg(tmpSum, BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(stPrice), upStServ, org, genDt);
 /*				if (tmpSum != BigDecimal.ZERO) {
 					Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
 					kart.getChrg().add(chrg);
@@ -429,11 +465,13 @@ public class ChrgServ {
 				if (woKprServ != null) {
 					//если существует услуга "без проживающих"
 					tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(woKprPrice) );
-					addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+					//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+					chStore.addChrg(tmpSum, BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), woKprServ, org, genDt);
 				} else {
 					//услуги без проживающих не существует, поставить на свыше соц.нормы
 					tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(upStPrice) );
-					addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+					//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+					chStore.addChrg(tmpSum, BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), upStServ, org, genDt);
 				}
 				
 			}
@@ -451,27 +489,31 @@ public class ChrgServ {
 						tmp = stdt.partVol;
 					}
 					//найти коэфф соц.нормы к площади лиц.сч.
-					cf = BigDecimal.valueOf(tmp).divide(BigDecimal.valueOf(sqr));
+					cf = BigDecimal.valueOf(tmp).divide(BigDecimal.valueOf(sqr), 10, RoundingMode.HALF_UP);
 					//соцнорма
 					tmpVolD = BigDecimal.valueOf(vol).multiply(cf);
 					tmpSumD = tmpVolD.multiply(BigDecimal.valueOf(stPrice)); 
-					addChrg(kart, serv, tmpSumD, vol, stPrice, genDt, chrgTpDet);
+					//addChrg(kart, serv, tmpSumD, vol, stPrice, genDt, chrgTpDet);
+					chStore.addChrg(tmpSumD, tmpVolD, BigDecimal.valueOf(stPrice), stServ, org, genDt);
 					//свыше соцнормы
 					tmpVolD = BigDecimal.valueOf(vol).multiply( new BigDecimal("1").subtract(cf) );
 					tmpSumD = tmpVolD.multiply(BigDecimal.valueOf(upStPrice)); 
-					addChrg(kart, serv, tmpSumD, vol, upStPrice, genDt, chrgTpDet);
+					//addChrg(kart, serv, tmpSumD, vol, upStPrice, genDt, chrgTpDet);
+					chStore.addChrg(tmpSumD, tmpVolD, BigDecimal.valueOf(upStPrice), upStServ, org, genDt);
 				} else {
 					//нет проживающих
 					if (woKprServ != null) {
 						//если есть услуга "без проживающих"
 						tmpVolD = BigDecimal.valueOf(vol);
 						tmpSumD = tmpVolD.multiply(BigDecimal.valueOf(woKprPrice)); 
-						addChrg(kart, serv, tmpSumD, vol, woKprPrice, genDt, chrgTpDet);
+						//addChrg(kart, serv, tmpSumD, vol, woKprPrice, genDt, chrgTpDet);
+						chStore.addChrg(tmpSumD, tmpVolD, BigDecimal.valueOf(stPrice), woKprServ, org, genDt);
 					} else {
 						//если нет услуги "без проживающих", взять расценку, по услуге свыше соц.нормы
 						tmpVolD = BigDecimal.valueOf(vol);
 						tmpSumD = tmpVolD.multiply(BigDecimal.valueOf(upStPrice)); 
-						addChrg(kart, serv, tmpSumD, vol, upStPrice, genDt, chrgTpDet);
+						//addChrg(kart, serv, tmpSumD, vol, upStPrice, genDt, chrgTpDet);
+						chStore.addChrg(tmpSumD, tmpVolD, BigDecimal.valueOf(upStPrice), upStServ, org, genDt);
 					}
 					
 				}
@@ -481,23 +523,26 @@ public class ChrgServ {
 			if (cntPers.cntEmpt != 0) {
 				//есть проживающие
 				tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
-				addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+				//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+				chStore.addChrg(tmpSumD, BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), stServ, org, genDt);
 			} else {
 				//нет проживающих
 				tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(woKprPrice) );
-				addChrg(kart, serv, tmpSum, vol, woKprPrice, genDt, chrgTpDet);
+				//addChrg(kart, serv, tmpSum, vol, woKprPrice, genDt, chrgTpDet);
+				chStore.addChrg(tmpSumD, BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice), woKprServ, org, genDt);
 			}			
 			
 		}
 	}
 	
 	
-	private void addChrg(Kart kart, Serv serv, BigDecimal sum, Double vol, Double price, Date genDt, Lst chrgTp) {
+	/* --удалить позже!
+	 * private void addChrg(Kart kart, Serv serv, BigDecimal sum, Double vol, Double price, Date genDt, Lst chrgTp) {
 		if (sum != BigDecimal.ZERO) {
 			Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), sum, sum, vol, BigDecimal.valueOf(price), chrgTp, genDt, genDt);
 			kart.getChrg().add(chrg);
 		}
-	}
+	}*/
 	
 	
 	/**
@@ -528,15 +573,6 @@ public class ChrgServ {
 		*/
 	}
 
-
-	public ChrgStore getChrgStore() {
-		return chrgStore;
-	}
-
-
-	public void setChrgStore(ChrgStore chrgStore) {
-		this.chrgStore = chrgStore;
-	}
 }
 
 

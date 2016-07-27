@@ -244,6 +244,7 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	public void setServSt(Serv servSt) {
 		this.servSt = servSt;
 	}
+	
 	@Override
 	   public boolean equals(Object o) {
 	       if (this == o) return true;
