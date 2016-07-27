@@ -99,13 +99,29 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_CHRG", referencedColumnName="ID")
 	private Serv servChrg; 
 
+	//виртуальная услуга
+	@Type(type= "org.hibernate.type.NumericBooleanType")
+	@Column(name = "VRT", nullable = true)
+	private Boolean vrt; 
+
+	//услуга, на расчет которой повлияет разница от текущей и дополнительных услуг, участвующих в округлении (заполнено, если текущая - виртуальная услуга)
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_ROUND", referencedColumnName="ID")
+	private Serv servRound;
+	
+	//виртуальная услуга, по отношению к текущей
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_VRT", referencedColumnName="ID")
+	private Serv servVrt;
+	
 	@Type(type= "org.hibernate.type.NumericBooleanType")
 	@Column(name = "INCL_ABSN", nullable = true)
 	private Boolean inclAbsn;//учитывать временно отсут (да / нет) при расчете услуги
 	
+	//учитывать временно зарегистр (да / нет) при расчете услуги
 	@Type(type= "org.hibernate.type.NumericBooleanType")
 	@Column(name = "INCL_PRSN", nullable = true)
-	private Boolean inclPrsn;//учитывать временно зарегистр (да / нет) при расчете услуги
+	private Boolean inclPrsn;
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
@@ -245,20 +261,42 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 		this.servSt = servSt;
 	}
 	
-	@Override
-	   public boolean equals(Object o) {
-	       if (this == o) return true;
-	       if (!(o instanceof Serv)) return false;
-	     
-	       Serv otherServ = (Serv) o;
-	     
-	       if (getId() != null ?
-	           !getId().equals(otherServ.getId()) : otherServ.getId() != null)
-	           return false;
-	     
-	       return true;
-	   }
+	public Boolean getVrt() {
+		if (vrt==null) {
+			return false;
+		} else {
+			return vrt;
+		}
+	}
+	public void setVrt(Boolean vrt) {
+		this.vrt = vrt;
+	}
+	public Serv getServRound() {
+		return servRound;
+	}
+	public void setServRound(Serv servRound) {
+		this.servRound = servRound;
+	}
+	public Serv getServVrt() {
+		return servVrt;
+	}
+	public void setServVrt(Serv servVrt) {
+		this.servVrt = servVrt;
+	}
 		
+   @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (!(o instanceof Serv)) return false;
+     
+       Serv otherServ = (Serv) o;
+     
+       if (getId() != null ?
+           !getId().equals(otherServ.getId()) : otherServ.getId() != null)
+           return false;
+     
+       return true;
+   }
 
 }
 

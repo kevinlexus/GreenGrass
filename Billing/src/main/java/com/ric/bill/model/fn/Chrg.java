@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.ric.bill.Simple;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
@@ -28,7 +29,7 @@ import com.ric.bill.model.bs.Serv;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "KMP_CHRG", schema="FN")
-public class Chrg implements java.io.Serializable {
+public class Chrg implements java.io.Serializable, Simple {
 
 
 	public Chrg() {
@@ -103,6 +104,13 @@ public class Chrg implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
 	private Org org; 
+
+    public Integer getId() {
+		return this.id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Kart getKart() {
 		return kart;

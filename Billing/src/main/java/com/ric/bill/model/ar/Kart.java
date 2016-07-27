@@ -44,7 +44,6 @@ import com.ric.bill.model.tr.TarifKlsk;
  * @author lev
  *
  */
-@ToString(callSuper=true, includeFieldNames=true)
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "KART", schema="AR")

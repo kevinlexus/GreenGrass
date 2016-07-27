@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,6 +42,7 @@ import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.fn.ChrgRec;
 import com.ric.bill.model.fn.ChrgStore;
 import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.mt.Vol;
 
 /**
  * Сервис формирования начисления
@@ -165,7 +170,10 @@ public class ChrgServ {
 		Lst chrgTpDet = lstMng.findByCD("Начислено детально, по дням");
 		Lst chrgTpRnd = lstMng.findByCD("Начислено свернуто, округлено");
 
-		
+		//для виртуальной услуги	
+		HashMap<Serv, BigDecimal> mapServ = new HashMap<Serv, BigDecimal>();  
+		HashMap<Serv, BigDecimal> mapVrt = new HashMap<Serv, BigDecimal>();  
+
 		//найти все услуги, действительные в лиц.счете
 		for (Serv serv : tarMng.getAllServ(calc.getHouse())) { 
 			//Объект, временно хранящий записи начисления
@@ -207,14 +215,12 @@ public class ChrgServ {
 						}
 						
 						
-						
 					//break;
 				}
 			}
 			
 			//окончательно рассчитать и сохранить данные
 			for (ChrgRec rec : chStore.getStore()) {
-//				Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), sum, sum, vol, BigDecimal.valueOf(price), chrgTp, genDt, genDt);
 				BigDecimal vol, sum;
 				vol = rec.getVol();
 				//округлить
@@ -224,13 +230,57 @@ public class ChrgServ {
 				//округлить до копеек
 				sum = sum.setScale(2, BigDecimal.ROUND_HALF_UP);
 				
+				//записать, для будущего округления по виртуальной услуге
+				if (rec.getServ().getServVrt() != null) {
+					BigDecimal tmpSum = Utl.nvl(mapServ.get(rec.getServ().getServVrt()), BigDecimal.ZERO);
+					tmpSum = tmpSum.add(sum);
+					mapServ.put(rec.getServ().getServVrt(), tmpSum);
+				}
+				//записать, сумму по виртуальной услуге
+				if (rec.getServ().getVrt()) {
+					BigDecimal tmpSum = Utl.nvl(mapVrt.get(rec.getServ()), BigDecimal.ZERO);
+					tmpSum = tmpSum.add(sum);
+					mapVrt.put(rec.getServ(), tmpSum);
+				}
 				Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, Calc.getPeriod(), sum, sum, 
 						vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
 				kart.getChrg().add(chrg);
-
 			}
-			
 		}
+		
+		//сделать коррекцию на сумму разности между основной и виртуальной услуг
+		for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
+		    Serv servVrt = entryVrt.getKey();
+			//найти сумму, для сравнения, полученную от основных услуг
+		    for (Map.Entry<Serv, BigDecimal> entryServ : mapServ.entrySet()) {
+				if (entryServ.getKey().equals(servVrt)) {
+					Calc.mess("Найдена услуга для округл id="+entryServ.getKey().getId(),2);
+					BigDecimal diff = entryServ.getValue().subtract(entryVrt.getValue());
+					if (diff.compareTo(BigDecimal.ZERO) != 0) {
+						//существует разница, найти услугу, куда кинуть округление
+						Serv servRound = servVrt.getServRound(); 
+						//найти только что добавленные строки начисления, и вписать в одну из них
+						boolean flag = false; //флаг, чтобы больше не корректировать, если уже раз найдено
+						for (Chrg chrg : kart.getChrg()) {
+							if (flag && chrg.getStatus() == 1 && chrg.getServ().equals(servRound)) {
+								flag = true;
+								chrg.setSumAmnt(BigDecimal.valueOf(chrg.getSumAmnt()).add(diff).doubleValue()) ;
+							}
+						}
+					}
+					//удалить строку виртуальной услуги
+					for (Iterator<Chrg> iterator = kart.getChrg().iterator(); iterator.hasNext();) {
+						Chrg chrg = iterator.next();
+						if (chrg.getStatus() == 1 && chrg.getServ().equals(servVrt)) {
+							Calc.mess("Удалена строка с id="+chrg.getId(),2);
+							iterator.remove();
+							em.remove(chrg);
+							//kart.getChrg().remove(chrg);
+						}
+					}
+				}
+			}		    
+		}			
 		
 	}
 

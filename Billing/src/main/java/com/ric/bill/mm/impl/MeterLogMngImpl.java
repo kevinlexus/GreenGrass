@@ -240,6 +240,8 @@ public class MeterLogMngImpl implements MeterLogMng {
 		    	if (Calc.getCurDt1().getTime() <= vol.getDt1().getTime() && Calc.getCurDt2().getTime() >= vol.getDt2().getTime()) {
 			    	Calc.mess("Del vol: id="+vol.getId());
 					iterator.remove();
+					em.remove(vol); //добавил здесь удаление еще
+					
 		    	}
 			}
 		}
