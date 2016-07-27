@@ -210,31 +210,26 @@ public class KartMngImpl implements KartMng {
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public Standart getStandart (Kart kart, Serv serv, CntPers cntPers, Date genDt) {
-		//long startTime;
-		//long endTime;
-		//long totalTime;
-		//startTime   = System.currentTimeMillis();
+		//получить услугу основную, для начисления
+		Serv servChrg = serv.getServChrg();
 		//получить услугу, по которой записывается норматив (в справочнике 
 		//строго должна быть указана fk_st_keep! по услуге счетчика)
-		//Serv serv = mLog.getServ().getStdrt(); 
 		Serv servSt = serv.getServStKeep(); 
 		Standart st = new Standart();
-		
-		//Kart kart = mLog.getKart();
-		//Calc.mess("==== kk"+kart.getKlsk());
+
 		Double stVol = 0d;
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
 
 			cntPers= new CntPers();
-			getCntPers(kart, serv, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+			getCntPers(kart, servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 		}
 		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
 		
-		Calc.mess("===="+Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d));
+		Calc.mess("===="+Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d));
 		
-		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d)==1d
-				|| Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d)==1d) {
+		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
+				|| Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-2"), 0d)==1d) {
 			if (cntPers.cnt==1) {
 				stVol = getServPropByCD(kart, servSt, "Норматив-1 чел.", genDt);
 			} else if (cntPers.cnt==2) {
@@ -245,12 +240,12 @@ public class KartMngImpl implements KartMng {
 				stVol = 0d;
 			}
 			
-		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"),0d)==1d
-				&& !serv.getCd().equals("Электроснабжение (объем)")) {
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
+				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, servSt, "Норматив", genDt);
-		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"),0d)==1d
-				&& serv.getCd().equals("Электроснабжение (объем)")) {
+		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
+				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0d;
 			String s2;
 			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество", genDt);
