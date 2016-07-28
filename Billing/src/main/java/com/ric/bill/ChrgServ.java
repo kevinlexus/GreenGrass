@@ -131,7 +131,7 @@ public class ChrgServ {
 					//Calc.mess("Дом в сч.: klsk="+mLog.getHouse().getKlsk());
 				}*/ 
 
-				if (kart.getLsk().equals("26074098")) {
+				//if (kart.getLsk().equals("26074123")) {
 					long startTime3;
 					long endTime3;
 					long totalTime3;
@@ -142,8 +142,8 @@ public class ChrgServ {
 					endTime3   = System.currentTimeMillis();
 					totalTime3 = endTime3 - startTime3;
 				    System.out.println("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+totalTime3);
-					break; //##################
-				}
+					//break; //##################
+				//}
 				//Calc.mess("Кол-во записей="+ex.runWork(1, 0, 0),2);
 			}
 		}
@@ -192,7 +192,7 @@ public class ChrgServ {
 			long totalTime;
 			startTime2 = System.currentTimeMillis();
 
-			Calc.mess("Расчет услуги id="+serv.getId(),2);
+			Calc.mess("Расчет услуги id="+serv.getId());
 			
 			//Объект, временно хранящий записи начисления
 			chStore = new ChrgStore(); 
@@ -260,17 +260,20 @@ public class ChrgServ {
 					tmpSum = tmpSum.add(sum);
 					mapVrt.put(rec.getServ(), tmpSum);
 				}
-				if (sum.compareTo(BigDecimal.ZERO) != 0) {
-					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, Calc.getPeriod(), sum, sum, 
-							vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
-					kart.getChrg().add(chrg);
+
+				if (!rec.getServ().getVrt()) {
+					if (sum.compareTo(BigDecimal.ZERO) != 0) {
+						Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, Calc.getPeriod(), sum, sum, 
+								vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
+						kart.getChrg().add(chrg);
+					}
 				}
-			}
+			} 
 
 			endTime   = System.currentTimeMillis();
 			totalTime = endTime - startTime2;
-		    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по услуге Id="+serv.getId()+":   "+totalTime, 2);
-			break;
+		    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по услуге Id="+serv.getId()+":   "+totalTime);
+			//break;
 		}
 
 		
@@ -297,13 +300,14 @@ public class ChrgServ {
 						}
 					}
 					//удалить строку виртуальной услуги
-					for (Iterator<Chrg> iterator = kart.getChrg().iterator(); iterator.hasNext();) {
+					/*for (Iterator<Chrg> iterator = kart.getChrg().iterator(); iterator.hasNext();) {
 						Chrg chrg = iterator.next();
 						if (chrg.getStatus() == 1 && chrg.getServ().equals(servVrt)) {
 							iterator.remove();
+							Calc.mess("Удалили строку с id="+chrg.getId(),2);
 							//em.remove(chrg);
 						}
-					}
+					}*/
 				}
 			}		    
 		}			
@@ -459,6 +463,7 @@ public class ChrgServ {
 			//получить объем по лицевому счету и услуге за ДЕНЬ
 			SumNodeVol tmpNodeVol = metMng.getVolPeriod(kart, serv.getServMet(), genDt, genDt);
 			vol = tmpNodeVol.getVol();
+			//vol=5d;
 			
 			if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
 				//доля площади в день
