@@ -39,7 +39,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @param mLog - Счетчик
 	 * @return
 	 */
-/*	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
+	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
 	public Kart getKart(MLogs mLog) {
 		Query query =em.createQuery("from Kart t where t.klsk =:klsk");
 		query.setParameter("klsk", mLog.getKlskObj());
@@ -48,7 +48,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 		} catch (NoResultException e) {
 		  return null;
 		} 
-	}*/
+	}
 
 	/**
 	 * Получить дом, содержащий указанный счетчик

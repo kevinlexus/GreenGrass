@@ -12,6 +12,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.CntPers;
 import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
+import com.ric.bill.TarifContains;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.mm.KartMng;
@@ -23,6 +24,8 @@ import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.ps.Pers;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.Registrable;
+import com.ric.bill.model.tr.TarifKlsk;
+import com.ric.bill.model.tr.TarifServ;
 
 @Service
 public class KartMngImpl implements KartMng {
@@ -383,6 +386,35 @@ public class KartMngImpl implements KartMng {
 		return exs;
 	}
 	
+	/**
+	 * Получить distinct список всех услуг потенциально начисляемых в лиц.счете
+	 * @param tc - объект
+	 * @return
+	 */
+	@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk() }") 
+	public Set<Serv> getAllServ(Kart kart) {
+		HashSet<Serv> lst = new HashSet<Serv>();
+		//искать сперва по наборам тарифа лиц.счета
+		for (TarifKlsk k : kart.getTarifklsk()) {
+				//затем по строкам - составляющим тариф 
+				for (TarifServ t : k.getTarserv()) {
+					if (!lst.contains(t.getServ())) {
+						lst.add(t.getServ());
+					}
+				}
+		}
+		//искать затем по наборам тарифа дома
+		for (TarifKlsk k : kart.getKw().getHouse().getTarifklsk()) {
+				//затем по строкам - составляющим тариф 
+				for (TarifServ t : k.getTarserv()) {
+					if (!lst.contains(t.getServ())) {
+						lst.add(t.getServ());
+					}
+				}
+		}
+		return lst;
+	}
+
 	/**
 	 * Узнать наличие льготы по капремонту (>=70 лет, собственник, другие проживающие тоже >=70 лет)
 	 * @param kart

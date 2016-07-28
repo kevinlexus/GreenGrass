@@ -86,7 +86,8 @@ public class DistGen {
 		//занулить текущие, расчетные объемы
 		nv = new NodeVol();
 		//получить лицевой счет, к которому привязан счетчик, для удобства
-		Kart kart = ml.getKart();
+		//Kart kart = ml.getKart();
+		Kart kart = metMng.getKart(ml);
 
 		calc.setKart(kart); 
 

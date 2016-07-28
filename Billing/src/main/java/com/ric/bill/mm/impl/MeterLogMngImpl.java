@@ -266,12 +266,11 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog - Счетчик
 	 * @return
 	 */
-	/* НЕ ВЗЛЕТЕЛО, медленно выполняется, чем mLog.getKart()
+//	 НЕ ВЗЛЕТЕЛО, медленно выполняется, чем mLog.getKart()
 	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
 	public Kart getKart(MLogs mLog) {
 		return mDao.getKart(mLog);
 	}
-	*/
 	/**
 	 * Получить дом, содержащий указанный счетчик
 	 * @param mLog - Счетчик

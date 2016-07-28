@@ -35,13 +35,13 @@ public interface MLogs extends Storable, Simple {
 
 	public Integer getKlskObj();
 
-	public abstract Kart getKart();
+/*	public abstract Kart getKart();
 
 	public abstract void setKart(Kart kart);
 
 	public abstract House getHouse();
 
-	public abstract void setHouse(House house);
+	public abstract void setHouse(House house);*/
 
 	public abstract Set<MeterLogGraph> getInside();
 

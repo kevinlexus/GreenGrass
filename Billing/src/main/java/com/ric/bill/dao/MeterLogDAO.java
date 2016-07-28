@@ -13,7 +13,7 @@ import com.ric.bill.model.mt.MeterLog;
 
 
 public interface MeterLogDAO {
-	/*public Kart getKart(MLogs mLog);
-	public House getHouse(MLogs mLog);*/
+	public Kart getKart(MLogs mLog);
+	/*public House getHouse(MLogs mLog);*/
 	
 }

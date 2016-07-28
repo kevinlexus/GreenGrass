@@ -22,7 +22,7 @@ public interface MeterLogMng {
 	public SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2);
 	public MLogs getLinkedNode(MLogs lnkMLog, String string, Date genDt);
 	public void delNodeVol(MLogs ml, int tp, Date genDt);
-//	public Kart getKart(MLogs mLog);
-//	public House getHouse(MLogs mLog);
+	public Kart getKart(MLogs mLog);
+	//public House getHouse(MLogs mLog);
 
 }
