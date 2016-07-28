@@ -14,7 +14,6 @@ import com.ric.bill.model.bs.Serv;
  */
 public class ChrgRec {
 
-	private BigDecimal sum;
 	private BigDecimal vol;
 	private BigDecimal price;
 	private Serv serv;
@@ -31,9 +30,8 @@ public class ChrgRec {
      * @param dt1 - дата начала
      * @param dt2 - дата окончания
      */
-	public ChrgRec(BigDecimal sum, BigDecimal vol, BigDecimal price, Serv serv, Org org, Date dt1, Date dt2) {
+	public ChrgRec(BigDecimal vol, BigDecimal price, Serv serv, Org org, Date dt1, Date dt2) {
 		super();
-		setSum(sum);
 		setVol(vol);
 		setPrice(price);
 		setServ(serv);
@@ -64,14 +62,6 @@ public class ChrgRec {
 
 	public void setDt1(Date dt1) {
 		this.dt1 = dt1;
-	}
-
-	public BigDecimal getSum() {
-		return sum;
-	}
-
-	public void setSum(BigDecimal sum) {
-		this.sum = sum;
 	}
 
 	public Org getOrg() {
