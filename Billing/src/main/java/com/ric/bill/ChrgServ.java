@@ -2,10 +2,13 @@ package com.ric.bill;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -143,7 +146,7 @@ public class ChrgServ {
 					
 					endTime3   = System.currentTimeMillis();
 					totalTime3 = endTime3 - startTime3;
-				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+totalTime3);
+				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+totalTime3, 2);
 					//break; //##################
 				//}
 				//Calc.mess("Кол-во записей="+ex.runWork(1, 0, 0),2);
@@ -191,6 +194,8 @@ public class ChrgServ {
 		//для виртуальной услуги	
 		HashMap<Serv, BigDecimal> mapServ = new HashMap<Serv, BigDecimal>();  
 		HashMap<Serv, BigDecimal> mapVrt = new HashMap<Serv, BigDecimal>();  
+
+		List<Chrg> prepChrg = new ArrayList<Chrg>(0); 
 
 		//найти все услуги, действительные в лиц.счете
 		for (Serv serv : kartMng.getAllServ(kart)) {
@@ -244,7 +249,7 @@ public class ChrgServ {
 				//break;
 			}
 			
-			//окончательно рассчитать и сохранить данные
+			//окончательно рассчитать данные
 			for (ChrgRec rec : chStore.getStore()) {
 				BigDecimal vol, sum;
 				vol = rec.getVol();
@@ -272,7 +277,8 @@ public class ChrgServ {
 					if (sum.compareTo(BigDecimal.ZERO) != 0) {
 						Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, Calc.getPeriod(), sum, sum, 
 								vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
-						kart.getChrg().add(chrg);
+						prepChrg.add(chrg);
+						//kart.getChrg().add(chrg);
 					}
 				}
 			} 
@@ -296,7 +302,7 @@ public class ChrgServ {
 						Serv servRound = servVrt.getServRound(); 
 						//найти только что добавленные строки начисления, и вписать в одну из них
 						boolean flag = false; //флаг, чтобы больше не корректировать, если уже раз найдено
-						for (Chrg chrg : kart.getChrg()) {
+						for (Chrg chrg : prepChrg) {
 							//Calc.mess("услуга="+chrg.getServ().getId(),2);
 							if (!flag && chrg.getStatus() == 1 && chrg.getServ().equals(servRound)) {
 								flag = true;
@@ -320,7 +326,9 @@ public class ChrgServ {
 			}		    
 		}			
 
-		
+		//сохранить записи начисления
+		kart.getChrg().addAll(prepChrg); 
+
 	}
 
 	/**
@@ -641,51 +649,22 @@ public class ChrgServ {
 		
 	}
 	
-	
-	/* --удалить позже!
-	 * private void addChrg(Kart kart, Serv serv, BigDecimal sum, Double vol, Double price, Date genDt, Lst chrgTp) {
-		if (sum != BigDecimal.ZERO) {
-			Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), sum, sum, vol, BigDecimal.valueOf(price), chrgTp, genDt, genDt);
-			kart.getChrg().add(chrg);
-		}
-	}*/
-	
-	
 	/**
 	 * перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
 	 */
 	private void archPrev() {
-		Logger.getRootLogger().setLevel(Level.ERROR);
-		Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
-		Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
-		
-		Calc.mess("archPrev:"+Calc.getKart().getLsk()+" dt1:"+Calc.getCurDt1().toLocaleString()+" dt2:"+Calc.getCurDt2().toLocaleString()+ " period:"+Calc.getPeriod(), 2);
+		//Calc.mess("archPrev:"+Calc.getKart().getLsk()+" dt1:"+Calc.getCurDt1().toLocaleString()+" dt2:"+Calc.getCurDt2().toLocaleString()+ " period:"+Calc.getPeriod(), 2);
 		Query query = em.createQuery("update Chrg t set t.status=2 where t.lsk=:lsk "
 				+ "and t.status=1 "
-				/*+ "and t.dt1 between :dt1 and :dt2 "
+				+ "and t.dt1 between :dt1 and :dt2 "
 				+ "and t.dt2 between :dt1 and :dt2 "
-				+ "and t.period=:period"*/
+				+ "and t.period=:period"
 				);
 		query.setParameter("lsk", Calc.getKart().getLsk());
-		/*query.setParameter("dt1", Calc.getCurDt1());
+		query.setParameter("dt1", Calc.getCurDt1());
 		query.setParameter("dt2", Calc.getCurDt2());
-		query.setParameter("period", Calc.getPeriod());*/
+		query.setParameter("period", Calc.getPeriod());
 		query.executeUpdate();
-
-		Logger.getRootLogger().setLevel(Level.OFF);
-		Logger.getLogger("org.hibernate.SQL").setLevel(Level.OFF);
-		Logger.getLogger("org.hibernate.type").setLevel(Level.OFF);
-		
-		
-		/* пока всё закомментил, - не понятно как будет отрабатывать коммит, во вложенном @Transactional
-		//начать транзакцию
-		ds.beginTrans();
-		//выполнить процедуру oracle	
-		if (ex.runWork(16, 0, 0)!=0) {
-			return; // выйти при ошибке
-		 }
-		ds.commitTrans();
-		*/
 	}
 
 }

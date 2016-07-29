@@ -1,7 +1,9 @@
 package com.ric.bill.mm.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ public class KartMngImpl implements KartMng {
 	 * Проверить, считали ли персону
 	 * нельзя кэшировать!
 	 */
-	private boolean foundPers (Set<Pers> counted, Pers p) {
+	private boolean foundPers (List<Pers> counted, Pers p) {
 		if (counted.contains(p)) {
 			//уже считали персону
 			return true;
@@ -160,7 +162,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	@Cacheable("readOnlyCache")
 	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
-		Set<Pers> counted = new HashSet<Pers>();
+		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
 		//поиск сперва по постоянной регистрации 
@@ -392,8 +394,8 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk() }") 
-	public Set<Serv> getAllServ(Kart kart) {
-		HashSet<Serv> lst = new HashSet<Serv>();
+	public List<Serv> getAllServ(Kart kart) {
+		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа лиц.счета
 		for (TarifKlsk k : kart.getTarifklsk()) {
 				//затем по строкам - составляющим тариф 
@@ -424,7 +426,7 @@ public class KartMngImpl implements KartMng {
 		boolean above70owner=false;
 		boolean above70=false;
 		boolean under70=false;
-		Set<Pers> counted = new HashSet<Pers>();
+		List<Pers> counted = new ArrayList<Pers>();
 		for (Registrable p : rc.getReg()) {
 			Pers pers = p.getPers();
 			if (pers!=null && !foundPers(counted, pers)) {

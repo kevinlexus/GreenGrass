@@ -42,8 +42,15 @@ public class BillServ {
 		Calc.setDbgLvl(0);
 
 
-		//Logger.getRootLogger().setLevel(Level.ERROR);
-		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
+		/*Logger.getRootLogger().setLevel(Level.ERROR);
+		Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
+		Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
+		*/
+		/*Logger.getRootLogger().setLevel(Level.OFF);
+		Logger.getLogger("org.hibernate.SQL").setLevel(Level.OFF);
+		Logger.getLogger("org.hibernate.type").setLevel(Level.OFF);
+		*/
+
 		startTime2 = System.currentTimeMillis();
 		/*try {
 			for (House o: houseMng.findAll()) {

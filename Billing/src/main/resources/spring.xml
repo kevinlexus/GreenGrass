@@ -27,8 +27,8 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
   
 	<bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource" destroy-method="close"> 
 	      <property name="URL" value="jdbc:oracle:thin:@192.168.100.92:1521:DEVDB" /> 
-	      <property name="user" value="oralv"/> 
-	      <property name="password" value="mrcy3"/> 
+	      <property name="user" value="lev"/> 
+	      <property name="password" value="testtest1"/> 
 	      <property name="connectionCachingEnabled" value="true"/> 
 	</bean>
  

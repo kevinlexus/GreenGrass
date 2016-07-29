@@ -1,6 +1,7 @@
 package com.ric.bill.mm;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import com.ric.bill.Calc;
@@ -22,7 +23,7 @@ public interface KartMng  {
 	public abstract Double getServPropByCD(Kart kart, Serv serv, String string, Date genDt);
 	public abstract Standart getStandart(Kart kart, Serv serv, CntPers cntPers, Date genDt);
 	public Org getOrg(Kart kart, Serv serv, Date genDt);
-	public Set<Serv> getAllServ(Kart kart);
+	public List<Serv> getAllServ(Kart kart);
 	public double getCapPrivs(RegContains rc, Date genDt);
 	public boolean getServ(Kart kart, Serv serv, Date genDt);	
 }
