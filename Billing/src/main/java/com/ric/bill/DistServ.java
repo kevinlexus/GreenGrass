@@ -157,12 +157,12 @@ public class DistServ {
 				
 				startTime = System.currentTimeMillis();
 			    //начисление
-				/*try {
+				try {
 					chrg.chrgHouse(o.getId());
 				} catch (ErrorWhileChrg e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/ //передать по ID иначе кэшируется
+				} //передать по ID иначе кэшируется
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
 				System.out.println("Время исполнения-3:"+totalTime);
@@ -184,7 +184,7 @@ public class DistServ {
 	public void distHouseVol(int houseId) throws ErrorWhileDist {
 		
 		calc.setUp(); //настроить даты и т.п.
-		calc.clearLstChecks();//почистить рассчитанные объемы
+		//calc.clearLstChecks();//почистить рассчитанные объемы
 
 		House h = em.find(House.class, houseId);
 		if (!Calc.isInit()) {
@@ -244,7 +244,7 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	private void distHouseServ() throws ErrorWhileDist {
-		Calc.mess("******************Услуга*************="+calc.getServ().getCd(), 2);
+		Calc.mess("******************Услуга*************="+calc.getServ().getCd());
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getServMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);

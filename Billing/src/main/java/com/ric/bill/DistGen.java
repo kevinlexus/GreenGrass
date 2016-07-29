@@ -1,5 +1,6 @@
 package com.ric.bill;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -59,7 +60,63 @@ public class DistGen {
     @PersistenceContext
     private EntityManager em;
 
-    /**
+	private List<Check> lstCheck;
+
+	/**
+	 * внутренний класс, для проверок расчета узлов
+	 * @author lev
+	 *
+	 */
+	private class Check {
+		private int id; //ID объекта
+		private int tp; //тип расчета
+		private Date genDt; //дата расчета
+		private NodeVol nodeVol;//рассчитанные объемы
+		
+		public Check(int id, int tp, Date genDt, NodeVol nodeVol) {
+			setId(id);
+			setTp(tp);
+			setGenDt(genDt);
+			setNodeVol(nodeVol);
+		}
+		
+		public int getId() {
+			return id;
+		}
+		public void setId(int id) {
+			this.id = id;
+		}
+		public int getTp() {
+			return tp;
+		}
+		public void setTp(int tp) {
+			this.tp = tp;
+		}
+		public Date getGenDt() {
+			return genDt;
+		}
+		public void setGenDt(Date genDt) {
+			this.genDt = genDt;
+		}
+
+		public NodeVol getNodeVol() {
+			return nodeVol;
+		}
+
+		public void setNodeVol(NodeVol nodeVol) {
+			this.nodeVol = nodeVol;
+		}
+		
+	}
+	
+	/**
+	 * конструктор
+	 */
+	public DistGen() {
+		super();
+		lstCheck = new ArrayList<Check>();
+	}
+	/**
 	 * Распределить узел, следуя по графу (рекурсивная процедура)
 	 * @param ml - вх.узел
 	 * @param tp - тип распределения
@@ -75,7 +132,7 @@ public class DistGen {
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
 	public NodeVol distNode (MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		
-		NodeVol nv = calc.findLstCheck(ml.getId(), tp, genDt); 
+		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		//если рассчитанный узел найден, вернуть готовый объем
 		if (nv != null) { 
 			return nv; 
@@ -87,8 +144,8 @@ public class DistGen {
 		//занулить текущие, расчетные объемы
 		nv = new NodeVol();
 		//получить лицевой счет, к которому привязан счетчик, для удобства
-		//Kart kart = ml.getKart();
-		Kart kart = metMng.getKart(ml);
+		Kart kart = ml.getKart();
+		//Kart kart = metMng.getKart(ml); <--тормозит!
 
 		calc.setKart(kart); 
 
@@ -326,12 +383,8 @@ public class DistGen {
 					double lmtVol = calc.oplLiter(oplMan)/1000;
 					//записать лимит ОДН
 					Lst volTp = lstMng.findByCD("Лимит ОДН");
-					Calc.mess("volTp "+volTp.getCd(),2);
 					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, Calc.getCurDt1(), Calc.getCurDt2());
-					
 					ml.getVol().add(vol);
-					
-					Calc.mess("записан объем по счетчику id="+ml.getId()+" по типу tp="+tp+" по дате genDt="+genDt.toLocaleString()+" vol="+vol.getVol1(),2);
 				}
 				
 			} else if (servChrg.getCd().equals("Электроснабжение (объем)")) {
@@ -367,13 +420,52 @@ public class DistGen {
 		
 		
 		//добавить в список рассчитанных узлов
-		calc.addLstCheck(ml.getId(), tp, genDt, nv);
+		addLstCheck(ml.getId(), tp, genDt, nv);
 		//счетчик рекурсии на -1
 		//rec--;
 		return nv;
 	}
 	
 	
+	/**
+	 * Поиск расчитанного объема заданного по ID объекта
+	 * @param id - ID
+	 * @param tp - тип расчета
+	 * @param genDt - дата расчета
+	 * @return - найденный объем
+	 */
+	@Cacheable(cacheNames="readOnlyCache2", key="{ #id, #tp, #genDt }")
+	private NodeVol findLstCheck(int id, int tp, Date genDt) {
+		for (Check c : lstCheck) {
+			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
+				/*if (id==3670885) {
+				  Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString(), 2);
+				}*/
+				return c.getNodeVol();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Добавление расчитанного объекта
+	 * @param id - ID
+	 * @param tp - тип расчета
+	 * @param genDt - дата расчета
+	 */
+	private void addLstCheck(int id, int tp, Date genDt, NodeVol nodeVol) {
+		  lstCheck.add(new Check(id, tp, genDt, nodeVol));
+/*		  if (id==3670885) {
+			  Calc.mess("Записано id="+id+" tp="+tp+" genDt="+genDt.toLocaleString(), 2);
+		  }*/
+	}
+
+	/**
+	 * Почистить коллекцию, содержащую расчитанные объемы
+	 */
+	public void clearLstChecks() {
+		lstCheck.clear();
+	}
 	 
 }
 

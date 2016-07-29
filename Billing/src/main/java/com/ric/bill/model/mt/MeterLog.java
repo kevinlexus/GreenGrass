@@ -102,14 +102,14 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	 *
 	 * 
 	 * */
-/*	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
 	private Kart kart; 
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
 	private House house; 
-*/
+
 	//klsk объекта, к которому принадлежит данный счетчик
     @Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
 	private Integer klskObj;
@@ -176,7 +176,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 		this.serv = serv;
 	}
 
-/*	public Kart getKart() {
+	public Kart getKart() {
 		return kart;
 	}
 
@@ -191,7 +191,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	public void setHouse(House house) {
 		this.house = house;
 	}
-*/
+
 	public List<MeterLogGraph> getInside() {
 		return inside;
 	}
