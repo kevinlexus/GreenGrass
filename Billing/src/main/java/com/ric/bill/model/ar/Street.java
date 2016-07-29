@@ -1,6 +1,8 @@
 package com.ric.bill.model.ar;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -48,7 +50,7 @@ public class Street extends Base implements java.io.Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_STREET", referencedColumnName="ID")
-	private Set<House> house = new HashSet<House>(0);
+	private List<House> house = new ArrayList<House>(0);
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID", updatable = false)
@@ -76,11 +78,11 @@ public class Street extends Base implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Set<House> getHouse() {
+	public List<House> getHouse() {
 		return house;
 	}
 
-	public void setHouse(Set<House> house) {
+	public void setHouse(List<House> house) {
 		this.house = house;
 	}
 

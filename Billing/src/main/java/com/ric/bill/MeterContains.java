@@ -7,6 +7,6 @@ import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 
 public interface MeterContains extends Storable {
-	public Set<MeterLog> getMlog();
-	public void setMlog(Set<MeterLog> mlog);
+	public List<MeterLog> getMlog();
+	public void setMlog(List<MeterLog> mlog);
 }

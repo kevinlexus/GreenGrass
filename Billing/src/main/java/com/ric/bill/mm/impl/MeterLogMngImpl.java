@@ -1,8 +1,10 @@
 package com.ric.bill.mm.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -63,8 +65,8 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - искомый список
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
-	public Set<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
-		Set<MLogs> lstMlg = new HashSet<MLogs>(0); 
+	public List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
 		Calc.mess("getAllMetLogByServTp задано:"+serv.getCd()+" "+serv.getId()+" "+tp);
 		for (MLogs ml : mm.getMlog()) {
 			//Calc.mess("getAllMetLogByServTp НАЙДЕНО:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getCd());

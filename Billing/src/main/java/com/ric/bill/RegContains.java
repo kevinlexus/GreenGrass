@@ -1,5 +1,6 @@
 package com.ric.bill;
 
+import java.util.List;
 import java.util.Set;
 
 import com.ric.bill.model.ps.Reg;
@@ -12,9 +13,9 @@ import com.ric.bill.model.ps.RegState;
  */
 public interface RegContains extends Storable {
 
-	public Set<Reg> getReg();
-	public void setReg(Set<Reg> reg);
-	public Set<RegState> getRegState();
-	public void setRegState(Set<RegState> regState);
+	public List<Reg> getReg();
+	public void setReg(List<Reg> reg);
+	public List<RegState> getRegState();
+	public void setRegState(List<RegState> regState);
 
 }

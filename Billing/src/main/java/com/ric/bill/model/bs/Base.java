@@ -1,6 +1,8 @@
 package com.ric.bill.model.bs;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -36,14 +38,14 @@ public abstract class Base implements Storable {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 20)
-	protected Set<Dw> dw = new HashSet<Dw>(0);
+	protected List<Dw> dw = new ArrayList<Dw>(0);
 
 	protected Integer klsk;
 
-	public Set<Dw> getDw() {
+	public List<Dw> getDw() {
 		return dw;
 	}
-	public void setDw(Set<Dw> dw) {
+	public void setDw(List<Dw> dw) {
 		this.dw = dw;
 	}
 	

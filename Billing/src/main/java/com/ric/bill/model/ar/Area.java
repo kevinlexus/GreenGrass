@@ -1,6 +1,8 @@
 package com.ric.bill.model.ar;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -66,12 +68,12 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
-	private Set<Street> street = new HashSet<Street>(0);
+	private List<Street> street = new ArrayList<Street>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
-	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
+	private List<TarifKlsk> tarifklsk = new ArrayList<TarifKlsk>(0);
 
 	public String getName() {
 		return name;
@@ -89,19 +91,19 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 		this.cd = cd;
 	}
 
-	public Set<TarifKlsk> getTarifklsk() {
+	public List<TarifKlsk> getTarifklsk() {
 		return tarifklsk;
 	}
 
-	public void setTarifklsk(Set<TarifKlsk> tarifklsk) {
+	public void setTarifklsk(List<TarifKlsk> tarifklsk) {
 		this.tarifklsk = tarifklsk;
 	}
 
-	public Set<Street> getStreet() {
+	public List<Street> getStreet() {
 		return street;
 	}
 
-	public void setStreet(Set<Street> street) {
+	public void setStreet(List<Street> street) {
 		this.street = street;
 	}
 	

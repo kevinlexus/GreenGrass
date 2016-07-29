@@ -1,6 +1,8 @@
 package com.ric.bill.model.ar;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -56,7 +58,7 @@ public class Kw extends Base implements java.io.Serializable, Storable {
 	@OneToMany(fetch = FetchType.LAZY)  //сделал LAZY!
 	@JoinColumn(name="FK_KW", referencedColumnName="ID")
 	@BatchSize(size = 500)
-	private Set<Kart> kart = new HashSet<Kart>(0);
+	private List<Kart> kart = new ArrayList<Kart>(0);
 
 	@Column(name = "FK_HOUSE", nullable = true)
 	private Integer fkHouse;
@@ -79,10 +81,10 @@ public class Kw extends Base implements java.io.Serializable, Storable {
 		this.house = house;
 	}
 	
-	public Set<Kart> getLsk() {
+	public List<Kart> getLsk() {
 		return kart;
 	}
-	public void setLsk(Set<Kart> kart) {
+	public void setLsk(List<Kart> kart) {
 		this.kart = kart;
 	}
 

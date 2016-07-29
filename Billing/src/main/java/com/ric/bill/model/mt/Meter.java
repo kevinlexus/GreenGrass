@@ -1,8 +1,9 @@
 package com.ric.bill.model.mt;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -70,12 +71,12 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@BatchSize(size = 50)
-	private Set<Vol> vol = new HashSet<Vol>(0);
+	private List<Vol> vol = new ArrayList<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@BatchSize(size = 50)
-	private Set<MeterExs> exs = new HashSet<MeterExs>(0);
+	private List<MeterExs> exs = new ArrayList<MeterExs>(0);
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
     @Column(name = "FK_K_LSK", updatable = false, nullable = false)
@@ -111,19 +112,19 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		this.meterLog = meterLog;
 	}
 
-	public Set<Vol> getVol() {
+	public List<Vol> getVol() {
 		return vol;
 	}
 
-	public void setVol(Set<Vol> vol) {
+	public void setVol(List<Vol> vol) {
 		this.vol = vol;
 	}
 
-	public Set<MeterExs> getExs() {
+	public List<MeterExs> getExs() {
 		return exs;
 	}
 
-	public void setExs(Set<MeterExs> exs) {
+	public void setExs(List<MeterExs> exs) {
 		this.exs = exs;
 	}
 

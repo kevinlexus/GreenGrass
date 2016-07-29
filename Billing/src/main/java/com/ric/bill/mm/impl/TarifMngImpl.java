@@ -1,7 +1,9 @@
 package com.ric.bill.mm.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -105,8 +107,8 @@ public class TarifMngImpl implements TarifMng {
 	 * @return
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk() }") 
-	public Set<Serv> getAllServ(TarifContains tc) {
-		Set<Serv> lst = new HashSet<Serv>();
+	public List<Serv> getAllServ(TarifContains tc) {
+		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//по соотв.периоду - сделал по всем датам, так как не понятно, как их фильтровать
@@ -129,7 +131,7 @@ public class TarifMngImpl implements TarifMng {
 	 */
 	@Cacheable(cacheNames="readOnlyCache2", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
 	public boolean getServ(TarifContains tc, Serv serv, Date genDt) {
-		Set<Serv> lst = new HashSet<Serv>();
+		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//по соотв.периоду

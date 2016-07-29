@@ -146,7 +146,7 @@ public class ChrgServ {
 					
 					endTime3   = System.currentTimeMillis();
 					totalTime3 = endTime3 - startTime3;
-				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+totalTime3, 2);
+				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime3, 2);
 					//break; //##################
 				//}
 				//Calc.mess("Кол-во записей="+ex.runWork(1, 0, 0),2);
@@ -182,11 +182,6 @@ public class ChrgServ {
 		//перенести в архив предыдущий расчет
 		archPrev();
 
-		if (true) {
-			//return;
-		}
-		
-		
 		//типы записей начисления
 		Lst chrgTpDet = lstMng.findByCD("Начислено детально, по дням");
 		Lst chrgTpRnd = lstMng.findByCD("Начислено свернуто, округлено");

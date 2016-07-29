@@ -157,12 +157,12 @@ public class DistServ {
 				
 				startTime = System.currentTimeMillis();
 			    //начисление
-				try {
+				/*try {
 					chrg.chrgHouse(o.getId());
 				} catch (ErrorWhileChrg e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} //передать по ID иначе кэшируется
+				}*/ //передать по ID иначе кэшируется
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
 				System.out.println("Время исполнения-3:"+totalTime);

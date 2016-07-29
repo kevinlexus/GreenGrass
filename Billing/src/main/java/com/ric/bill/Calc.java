@@ -52,8 +52,8 @@ public final class Calc {
 	public static long startTime;
 	public static long endTime;
 
-	private Area area; //текущий город 
-	private House house; //текущий дом (распределяемый, начисляемый)
+	private static Area area; //текущий город 
+	private static House house; //текущий дом (распределяемый, начисляемый)
 	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
@@ -161,7 +161,7 @@ public final class Calc {
 		Calc.genDt = genDt;
 	}
 
-	public House getHouse() {
+	public static House getHouse() {
 		return house;
 	}
 
@@ -202,7 +202,7 @@ public final class Calc {
 		Calc.curDt2 = curDt2;
 	}
 
-	public Area getArea() {
+	public static Area getArea() {
 		return area;
 	}
 

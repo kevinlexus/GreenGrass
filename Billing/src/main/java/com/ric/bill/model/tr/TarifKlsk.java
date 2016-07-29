@@ -1,7 +1,9 @@
 package com.ric.bill.model.tr;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -38,15 +40,15 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
-	private Set<TarifServ> tarserv = new HashSet<TarifServ>(0);
+	private List<TarifServ> tarserv = new ArrayList<TarifServ>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
-	private Set<TarifServOrg> tarifservorg = new HashSet<TarifServOrg>(0);
+	private List<TarifServOrg> tarifservorg = new ArrayList<TarifServOrg>(0);
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
-	private Set<TarifServProp> tarprop = new HashSet<TarifServProp>(0);
+	private List<TarifServProp> tarprop = new ArrayList<TarifServProp>(0);
 
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
 	private Integer fktarif;
@@ -69,27 +71,27 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 		this.id = id;
 	}
 
-	public Set<TarifServ> getTarserv() {
+	public List<TarifServ> getTarserv() {
 		return tarserv;
 	}
 
-	public void setTarserv(Set<TarifServ> tarserv) {
+	public void setTarserv(List<TarifServ> tarserv) {
 		this.tarserv = tarserv;
 	}
 
-	public Set<TarifServOrg> getTarifservorg() {
+	public List<TarifServOrg> getTarifservorg() {
 		return tarifservorg;
 	}
 
-	public void setTarifservorg(Set<TarifServOrg> tarifservorg) {
+	public void setTarifservorg(List<TarifServOrg> tarifservorg) {
 		this.tarifservorg = tarifservorg;
 	}
 
-	public Set<TarifServProp> getTarprop() {
+	public List<TarifServProp> getTarprop() {
 		return tarprop;
 	}
 
-	public void setTarprop(Set<TarifServProp> tarprop) {
+	public void setTarprop(List<TarifServProp> tarprop) {
 		this.tarprop = tarprop;
 	}
 

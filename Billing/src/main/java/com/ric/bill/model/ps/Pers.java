@@ -26,7 +26,7 @@ public class Pers implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private int id; //id
 
-    @Column(name = "NM_LAST", updatable = false, nullable = true)
+/*    @Column(name = "NM_LAST", updatable = false, nullable = true)
 	private String lastname; //Фамилия 
 
     @Column(name = "NM_FIRST", updatable = false, nullable = true)
@@ -34,7 +34,7 @@ public class Pers implements java.io.Serializable, Simple {
     
     @Column(name = "NM_PATR", updatable = false, nullable = true)
 	private String middlename; //Отчество 
-
+*/
     @Column(name = "DT_BORN")
 	private Date dtBorn; //дата рождения 
 
@@ -46,7 +46,7 @@ public class Pers implements java.io.Serializable, Simple {
 		this.id = id;
 	}
 	
-	public String getLastname() {
+/*	public String getLastname() {
 		return lastname;
 	}
 	
@@ -68,7 +68,7 @@ public class Pers implements java.io.Serializable, Simple {
 	
 	public void setMiddlename(String middlename) {
 		this.middlename = middlename;
-	}
+	}*/
 
 	public Date getDtBorn() {
 		return dtBorn;

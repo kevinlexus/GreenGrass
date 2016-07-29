@@ -1,6 +1,6 @@
 package com.ric.bill.model.mt;
 
-import java.util.Set;
+import java.util.List;
 
 import com.ric.bill.Simple;
 import com.ric.bill.Storable;
@@ -15,17 +15,17 @@ public interface MLogs extends Storable, Simple {
 
 	public abstract void setName(String name);
 
-	public abstract Set<Meter> getMeter();
+	public abstract List<Meter> getMeter();
 
-	public abstract void setMeter(Set<Meter> meter);
+	public abstract void setMeter(List<Meter> meter);
 
 	public abstract Lst getTp();
 
 	public abstract void setTp(Lst tp);
 
-	public abstract Set<Vol> getVol();
+	public abstract List<Vol> getVol();
 
-	public abstract void setVol(Set<Vol> vol);
+	public abstract void setVol(List<Vol> vol);
 
 	public abstract Serv getServ();
 
@@ -43,9 +43,9 @@ public interface MLogs extends Storable, Simple {
 
 	public abstract void setHouse(House house);*/
 
-	public abstract Set<MeterLogGraph> getInside();
+	public abstract List<MeterLogGraph> getInside();
 
-	public abstract Set<MeterLogGraph> getOutside();
+	public abstract List<MeterLogGraph> getOutside();
 
 
 }

@@ -51,14 +51,15 @@ public class ParMngImpl implements ParMng {
 	//В кэшах не почувствовал разницы:
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }") --58153 мс
 	//@Cacheable("readOnlyCache")
-	@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }")
+	//@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
+	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
 	public Double getDbl(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
     			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
-					//проверка, что соответствует CD и Number (NM), Единичное (SI)
+					//проверка, что соответствует CD и Number (NM), Единичное (SI) - убрал - тормозит
 
     				/*if (checkPar(d.getFkHfp(), cd, "SI")) {
 						return d.getN1();
@@ -91,7 +92,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
 	 */
-	@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd }")
+	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd }")
 	public Double getDbl(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {

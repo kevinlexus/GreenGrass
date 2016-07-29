@@ -1,6 +1,8 @@
 package com.ric.bill.model.ar;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -67,12 +69,12 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_HOUSE", referencedColumnName="ID")
 	@BatchSize(size = 500)
-	private Set<Kw> kw = new HashSet<Kw>(0);
+	private List<Kw> kw = new ArrayList<Kw>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 20)
-	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
+	private List<MeterLog> mlog = new ArrayList<MeterLog>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
@@ -80,7 +82,7 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 	//@Filters({
 	//    @Filter(name = "FILTER_GEN_DT_OUTER")})
 	//Внимание! пока решил не включать предварительные фильтры!
-	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
+	private List<TarifKlsk> tarifklsk = new ArrayList<TarifKlsk>(0);
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_STREET", referencedColumnName="ID", updatable = false)
@@ -96,27 +98,27 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 		this.klsk=klsk;
 	}
 
-	public Set<Kw> getKw() {
+	public List<Kw> getKw() {
 		return kw;
 	}
 
-	public void setKw(Set<Kw> kw) {
+	public void setKw(List<Kw> kw) {
 		this.kw = kw;
 	}
 	
-	public Set<MeterLog> getMlog() {
+	public List<MeterLog> getMlog() {
 		return mlog;
 	}
 
-	public void setMlog(Set<MeterLog> mlog) {
+	public void setMlog(List<MeterLog> mlog) {
 		this.mlog = mlog;
 	}
 
-	public Set<TarifKlsk> getTarifklsk() {
+	public List<TarifKlsk> getTarifklsk() {
 		return tarifklsk;
 	}
 
-	public void setTarifklsk(Set<TarifKlsk> tarifklsk) {
+	public void setTarifklsk(List<TarifKlsk> tarifklsk) {
 		this.tarifklsk = tarifklsk;
 	}
 

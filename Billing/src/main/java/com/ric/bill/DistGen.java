@@ -1,6 +1,7 @@
 package com.ric.bill;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -211,7 +212,7 @@ public class DistGen {
 					Calc.mess("check serv="+mainServ.getServMet().getId());
 					double tmpVol=0d;
 					SumNodeVol sumMainVol;
-					Set<MLogs> lstMain = metMng.getAllMetLogByServTp(kart, mainServ.getServMet(), null);
+					List<MLogs> lstMain = metMng.getAllMetLogByServTp(kart, mainServ.getServMet(), null);
 					for (MLogs mLog2 : lstMain) {
 						//получить объем за период, по лог счетчику основной услуги, если найден
 						sumMainVol = metMng.getVolPeriod(mLog2, tp, Calc.getCurDt1(), Calc.getCurDt2());

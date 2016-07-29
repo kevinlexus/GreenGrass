@@ -1,8 +1,8 @@
 package com.ric.bill.model.mt;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -70,22 +70,22 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	@BatchSize(size = 50)
-	private Set<Meter> meter = new HashSet<Meter>(0);
+	private List<Meter> meter = new ArrayList<Meter>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID", updatable = false) //внимание! если здесь убрать updatable = false то будет update kmp_meter_vol fk_meter_log!
 	@BatchSize(size = 50)
-	private Set<Vol> vol = new HashSet<Vol>(0);
+	private List<Vol> vol = new ArrayList<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
 	@BatchSize(size = 50)
-	private Set<MeterLogGraph> outside = new HashSet<MeterLogGraph>(0);
+	private List<MeterLogGraph> outside = new ArrayList<MeterLogGraph>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
 	@BatchSize(size = 50)
-	private Set<MeterLogGraph> inside = new HashSet<MeterLogGraph>(0);
+	private List<MeterLogGraph> inside = new ArrayList<MeterLogGraph>(0);
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -144,11 +144,11 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 		this.name = name;
 	}
 
-	public Set<Meter> getMeter() {
+	public List<Meter> getMeter() {
 		return meter;
 	}
 
-	public void setMeter(Set<Meter> meter) {
+	public void setMeter(List<Meter> meter) {
 		this.meter = meter;
 	}
 
@@ -160,11 +160,11 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 		this.tp = tp;
 	}
 
-	public Set<Vol> getVol() {
+	public List<Vol> getVol() {
 		return vol;
 	}
 
-	public void setVol(Set<Vol> vol) {
+	public void setVol(List<Vol> vol) {
 		this.vol = vol;
 	}
 
@@ -192,19 +192,19 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 		this.house = house;
 	}
 */
-	public Set<MeterLogGraph> getInside() {
+	public List<MeterLogGraph> getInside() {
 		return inside;
 	}
 
-	public void setInside(Set<MeterLogGraph> inside) {
+	public void setInside(List<MeterLogGraph> inside) {
 		this.inside = inside;
 	}
 
-	public Set<MeterLogGraph> getOutside() {
+	public List<MeterLogGraph> getOutside() {
 		return outside;
 	}
 
-	public void setOutside(Set<MeterLogGraph> outside) {
+	public void setOutside(List<MeterLogGraph> outside) {
 		this.outside = outside;
 	}
 

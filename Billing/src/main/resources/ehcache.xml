@@ -72,4 +72,16 @@
 		memoryStoreEvictionPolicy="LFU" 
 		transactionalMode="off">
 	</cache>
+	
+ 	<cache name="specialCache1" 
+		maxEntriesLocalHeap="1000000"
+		maxEntriesLocalDisk="100000" 
+		eternal="true" 
+		diskPersistent="false"
+		diskSpoolBufferSizeMB="100"
+		timeToIdleSeconds="0" timeToLiveSeconds="0"
+		memoryStoreEvictionPolicy="LFU" 
+		transactionalMode="off">
+	</cache>
+	
 </ehcache>

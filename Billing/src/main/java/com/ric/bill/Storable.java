@@ -1,5 +1,6 @@
 package com.ric.bill;
 
+import java.util.List;
 import java.util.Set;
 
 import com.ric.bill.model.bs.Dw;
@@ -13,7 +14,7 @@ public interface Storable  {
 	//klsk объекта (в каждом подклассе переписать методы!)
 	Integer getKlsk();
 	void setKlsk(Integer klsk);
-	public Set<Dw> getDw();
-	public void setDw(Set<Dw> dw);
+	public List<Dw> getDw();
+	public void setDw(List<Dw> dw);
 	
 }

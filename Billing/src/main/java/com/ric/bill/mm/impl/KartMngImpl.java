@@ -2,7 +2,6 @@ package com.ric.bill.mm.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +13,6 @@ import com.ric.bill.Calc;
 import com.ric.bill.CntPers;
 import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
-import com.ric.bill.TarifContains;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.mm.KartMng;
@@ -82,7 +80,7 @@ public class KartMngImpl implements KartMng {
 	@Cacheable("readOnlyCache")
 	private PersStatus checkPersStatusExt (RegContains regc, Pers p, String status, int tp, Date genDt) {
 		Date dt1, dt2;
-		Set<? extends Registrable> rg;
+		List<? extends Registrable> rg;
 		if (tp==0) {
 			rg = regc.getReg();
 		} else {
@@ -160,7 +158,8 @@ public class KartMngImpl implements KartMng {
 	 * @param cntPers - объект для заполнения
 	 * @return
 	 */
-	@Cacheable("readOnlyCache")
+//	@Cacheable("readOnlyCache")
+	@Cacheable(cacheNames="readOnlyCache", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
 	public void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -336,11 +335,13 @@ public class KartMngImpl implements KartMng {
 		val=tarMng.getProp(kart, serv, cd, genDt);
 		if (val==null) {
 			//потом ищем по дому
-			val=tarMng.getProp(kart.getKw().getHouse(), serv, cd, genDt);
+			val=tarMng.getProp(Calc.getHouse(), serv, cd, genDt);
+			//val=tarMng.getProp(kart.getKw().getHouse(), serv, cd, genDt);
 		}
 		if (val==null) {
 			//потом ищем по городу
-			val=tarMng.getProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
+			val=tarMng.getProp(Calc.getArea(), serv, cd, genDt);
+			//val=tarMng.getProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
 		}
 		return val;
 	}

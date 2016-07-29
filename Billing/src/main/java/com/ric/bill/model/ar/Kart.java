@@ -1,6 +1,8 @@
 package com.ric.bill.model.ar;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -79,23 +81,23 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
-	private Set<MeterLog> mlog = new HashSet<MeterLog>(0);
+	private List<MeterLog> mlog = new ArrayList<MeterLog>(0);
 
 	//@NotFound(action=NotFoundAction.IGNORE)
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
-	private Set<TarifKlsk> tarifklsk = new HashSet<TarifKlsk>(0);
+	private List<TarifKlsk> tarifklsk = new ArrayList<TarifKlsk>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK")
 	@BatchSize(size = 500)
-	private Set<Reg> reg = new HashSet<Reg>(0);
+	private List<Reg> reg = new ArrayList<Reg>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK")
 	@BatchSize(size = 500)
-	private Set<RegState> regState = new HashSet<RegState>(0);
+	private List<RegState> regState = new ArrayList<RegState>(0);
 
 	@Column(name = "FK_KW", nullable = true)
 	private Integer fkKw;
@@ -112,7 +114,7 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
 	@BatchSize(size = 50)
-	private Set<Chrg> chrg = new HashSet<Chrg>(0);
+	private List<Chrg> chrg = new ArrayList<Chrg>(0);
 
 	public String getId() {
 		return this.id;
@@ -145,35 +147,35 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 		this.lsk = lsk;
 	}
 	
-	public Set<MeterLog> getMlog() {
+	public List<MeterLog> getMlog() {
 		return mlog;
 	}
 
-	public void setMlog(Set<MeterLog> mlog) {
+	public void setMlog(List<MeterLog> mlog) {
 		this.mlog = mlog;
 	}
 
-	public Set<TarifKlsk> getTarifklsk() {
+	public List<TarifKlsk> getTarifklsk() {
 		return tarifklsk;
 	}
 
-	public void setTarifklsk(Set<TarifKlsk> tarifklsk) {
+	public void setTarifklsk(List<TarifKlsk> tarifklsk) {
 		this.tarifklsk = tarifklsk;
 	}
 
-	public Set<Reg> getReg() {
+	public List<Reg> getReg() {
 		return reg;
 	}
 
-	public void setReg(Set<Reg> reg) {
+	public void setReg(List<Reg> reg) {
 		this.reg = reg;
 	}
 
-	public Set<RegState> getRegState() {
+	public List<RegState> getRegState() {
 		return regState;
 	}
 
-	public void setRegState(Set<RegState> regState) {
+	public void setRegState(List<RegState> regState) {
 		this.regState = regState;
 	}
 
@@ -185,11 +187,11 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 		this.fkKw = fkKw;
 	}
 
-	public Set<Chrg> getChrg() {
+	public List<Chrg> getChrg() {
 		return chrg;
 	}
 
-	public void setChrg(Set<Chrg> chrg) {
+	public void setChrg(List<Chrg> chrg) {
 		this.chrg = chrg;
 	}
 
