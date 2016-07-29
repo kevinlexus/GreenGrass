@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.NotFoundODNLimit;
@@ -53,6 +54,8 @@ public class DistServ {
 	private VolMng volMng;
 	@Autowired
 	private DistGen distGen;
+	@Autowired
+    private ChrgServ chrg;
 
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
@@ -154,7 +157,12 @@ public class DistServ {
 				
 				startTime = System.currentTimeMillis();
 			    //начисление
-				//chrg.chrgHouse(o.getId()); //передать по ID иначе кэшируется
+				try {
+					chrg.chrgHouse(o.getId());
+				} catch (ErrorWhileChrg e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} //передать по ID иначе кэшируется
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
 				System.out.println("Время исполнения-3:"+totalTime);

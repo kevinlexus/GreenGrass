@@ -13,6 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -141,7 +143,7 @@ public class ChrgServ {
 					
 					endTime3   = System.currentTimeMillis();
 					totalTime3 = endTime3 - startTime3;
-				    System.out.println("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+totalTime3);
+				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+totalTime3);
 					//break; //##################
 				//}
 				//Calc.mess("Кол-во записей="+ex.runWork(1, 0, 0),2);
@@ -158,7 +160,7 @@ public class ChrgServ {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void chrgLsk(Kart kart) throws ErrorWhileChrg {
 		
-		Calc.mess("ЛС===:"+kart.getLsk(), 2);
+		Calc.mess("ЛС===:"+kart.getLsk());
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
 			calc.setArea(calc.getHouse().getStreet().getArea());
@@ -166,8 +168,6 @@ public class ChrgServ {
 			Calc.setInit(true);
 		}
 		calc.setKart(kart);
-		//перенести в архив предыдущий расчет
-		archPrev();
 
 		//получить все необходимые услуги для начисления из тарифа по дому
 		Calendar c = Calendar.getInstance();
@@ -176,7 +176,14 @@ public class ChrgServ {
 		Date dt1, dt2, genDt;
 		dt1 = Calc.getCurDt1();
 		dt2 = Calc.getCurDt2();
+		//перенести в архив предыдущий расчет
+		archPrev();
 
+		if (true) {
+			//return;
+		}
+		
+		
 		//типы записей начисления
 		Lst chrgTpDet = lstMng.findByCD("Начислено детально, по дням");
 		Lst chrgTpRnd = lstMng.findByCD("Начислено свернуто, округлено");
@@ -295,6 +302,7 @@ public class ChrgServ {
 								flag = true;
 								chrg.setSumAmnt(BigDecimal.valueOf(chrg.getSumAmnt()).add(diff).doubleValue()) ;
 								chrg.setSumFull(BigDecimal.valueOf(chrg.getSumFull()).add(diff).doubleValue()) ;
+
 								//Calc.mess("Установили разницу="+diff+" на услугу id="+chrg.getServ().getId(),2);
 							}
 						}
@@ -647,18 +655,27 @@ public class ChrgServ {
 	 * перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
 	 */
 	private void archPrev() {
+		Logger.getRootLogger().setLevel(Level.ERROR);
+		Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
+		Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
 		
+		Calc.mess("archPrev:"+Calc.getKart().getLsk()+" dt1:"+Calc.getCurDt1().toLocaleString()+" dt2:"+Calc.getCurDt2().toLocaleString()+ " period:"+Calc.getPeriod(), 2);
 		Query query = em.createQuery("update Chrg t set t.status=2 where t.lsk=:lsk "
 				+ "and t.status=1 "
-				+ "and t.dt1 between :dt1 and :dt2 "
+				/*+ "and t.dt1 between :dt1 and :dt2 "
 				+ "and t.dt2 between :dt1 and :dt2 "
-				+ "and t.period=:period"
+				+ "and t.period=:period"*/
 				);
 		query.setParameter("lsk", Calc.getKart().getLsk());
-		query.setParameter("dt1", Calc.getCurDt1());
+		/*query.setParameter("dt1", Calc.getCurDt1());
 		query.setParameter("dt2", Calc.getCurDt2());
-		query.setParameter("period", Calc.getPeriod());
+		query.setParameter("period", Calc.getPeriod());*/
 		query.executeUpdate();
+
+		Logger.getRootLogger().setLevel(Level.OFF);
+		Logger.getLogger("org.hibernate.SQL").setLevel(Level.OFF);
+		Logger.getLogger("org.hibernate.type").setLevel(Level.OFF);
+		
 		
 		/* пока всё закомментил, - не понятно как будет отрабатывать коммит, во вложенном @Transactional
 		//начать транзакцию

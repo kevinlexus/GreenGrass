@@ -41,6 +41,7 @@ public class BillServ {
 		System.out.println("Begin!");
 		Calc.setDbgLvl(0);
 
+
 		//Logger.getRootLogger().setLevel(Level.ERROR);
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		startTime2 = System.currentTimeMillis();
