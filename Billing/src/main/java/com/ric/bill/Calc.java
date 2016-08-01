@@ -2,27 +2,12 @@ package com.ric.bill;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.ric.bill.mm.HouseMng;
-import com.ric.bill.mm.KartMng;
-import com.ric.bill.mm.LstMng;
-import com.ric.bill.mm.MeterLogMng;
-import com.ric.bill.mm.ParMng;
-import com.ric.bill.mm.ServMng;
-import com.ric.bill.mm.TarifMng;
-import com.ric.bill.mm.impl.HouseMngImpl;
-import com.ric.bill.mm.impl.MeterLogMngImpl;
-import com.ric.bill.mm.impl.ServMngImpl;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
@@ -58,7 +43,7 @@ public final class Calc {
 	private static Area area; //текущий город 
 	private static House house; //текущий дом (распределяемый, начисляемый)
 	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
-	private Serv serv; //текущая услуга (распределяемая, начисляемая)
+	private static Serv serv; //текущая услуга (распределяемая, начисляемая)
 
 	//установлены ли параметры расчета дома, даты фильтра и т.п.
 	private static boolean init = false;
@@ -120,15 +105,15 @@ public final class Calc {
 	}
 
 	public void setHouse(House house) {
-		this.house = house;
+		Calc.house = house;
 	}
 
 	public Serv getServ() {
 		return serv;
 	}
 
-	public void setServ(Serv serv) {
-		this.serv = serv;
+	public static void setServ(Serv serv) {
+		Calc.serv = serv;
 		
 	}
 
@@ -161,7 +146,7 @@ public final class Calc {
 	}
 
 	public void setArea(Area area) {
-		this.area = area;
+		Calc.area = area;
 	}
 
 	public static double getCntCurDays() {
@@ -169,7 +154,7 @@ public final class Calc {
 	}
 
 	public void setCntCurDays(double cntCurDays) {
-		this.cntCurDays = cntCurDays;
+		Calc.cntCurDays = cntCurDays;
 	}
 
 	public static Date getFirstDt() {

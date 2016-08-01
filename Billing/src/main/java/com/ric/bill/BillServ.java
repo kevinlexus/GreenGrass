@@ -85,13 +85,13 @@ public class BillServ {
 			e.printStackTrace();
 		}*/
 		
-		dist.distAll();
+		//dist.distAll();
 		
-		/*try {
+		try {
 			chrg.chrgAll();
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
-		}*/
+		}
 		
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;
