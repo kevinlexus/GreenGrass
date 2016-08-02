@@ -79,7 +79,7 @@ public class TarifMngImpl implements TarifMng {
 	/**
 	 * Получить организацию по услуге в тарифе 
 	 * @param tc - объект
-	 * @param cd - код свойства
+	 * @param data.cd - код свойства
 	 * @return - свойство
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 

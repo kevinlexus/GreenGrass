@@ -6,6 +6,7 @@ import com.ric.bill.model.bs.Serv;
 
 public interface ServMng {
 	
+	public List<Serv> getAll();
 	public Serv findMain(Serv serv);
 	public List<Serv> findForDistVol();
 	public Serv findByCd(String cd);

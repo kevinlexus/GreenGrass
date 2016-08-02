@@ -31,6 +31,10 @@ public class ServMngImpl implements ServMng {
 	private ServDAO sDao;
 
 	
+	public synchronized List<Serv> getAll() {
+		return sDao.getAll();
+	}
+	
 	//да, да, кэш на уровне DAO! (быстрее работает)
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #serv.getId() }") 
 	public synchronized Serv findMain(Serv serv) {

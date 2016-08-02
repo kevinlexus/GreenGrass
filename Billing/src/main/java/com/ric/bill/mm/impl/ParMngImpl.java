@@ -51,7 +51,7 @@ public class ParMngImpl implements ParMng {
 	//В кэшах не почувствовал разницы:
 	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
 	public synchronized Double getDbl(Storable st, String cd, Date genDt) {
-		Par par = getByCD(cd);
+//		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
@@ -62,7 +62,7 @@ public class ParMngImpl implements ParMng {
 						return d.getN1();
     				}*/
     				//if (d.getPar().getCd().equals(cd)) {
-       				if (d.getPar().equals(par)) {
+       				if (d.getPar().getCd().equals(cd)) {
 						if (d.getPar().getTp().equals("NM")) {
 							if (d.getPar().getDataTp().equals("SI")) {
 								return d.getN1();
@@ -91,10 +91,11 @@ public class ParMngImpl implements ParMng {
 	 */
 	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd }")
 	public synchronized Double getDbl(Storable st, String cd) {
-		Par par = getByCD(cd);
+//		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
-				if (d.getPar().equals(par)) {
+//				if (d.getPar().equals(par)) {
+   				if (d.getPar().getCd().equals(cd)) {
 					if (d.getPar().getTp().equals("NM")) {
 						if (d.getPar().getDataTp().equals("SI")) {
 							return d.getN1();
@@ -122,13 +123,14 @@ public class ParMngImpl implements ParMng {
 	 */
 	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
 	public synchronized String getStr(Storable st, String cd, Date genDt) {
-		Par par = getByCD(cd);
+		//Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
     			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI)
-    				if (d.getPar().equals(par)) {
+//    				if (d.getPar().equals(par)) {
+       				if (d.getPar().getCd().equals(cd)) {
 						if (d.getPar().getTp().equals("ST")) {
 							if (d.getPar().getDataTp().equals("SI") || d.getPar().getDataTp().equals("CD")) {
 								return d.getS1();
