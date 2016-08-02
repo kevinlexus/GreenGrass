@@ -41,7 +41,6 @@ import com.ric.bill.model.fn.ChrgStore;
 @Service
 public class ChrgServ {
 
-
 	@Autowired
 	private Calc calc;
 	@Autowired
@@ -60,13 +59,14 @@ public class ChrgServ {
 	private LstMng lstMng;
 	
 	@Autowired
-	private ApplicationContext context;
+	private ApplicationContext ctx;
 	
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
 
 
+    //вспомогательные массивы
     private List<Chrg> prepChrg;
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
@@ -76,26 +76,30 @@ public class ChrgServ {
     	super();
     }
 
+    //Exception из потока
+    Thread.UncaughtExceptionHandler expThr = new Thread.UncaughtExceptionHandler() {
+        public void uncaughtException(Thread th, Throwable ex) {
+            System.out.println("Uncaught exception: " + ex);
+        }
+    };
+    
 	/**
 	 * выполнить расчет начисления по лиц.счету
 	 * @param kart - объект лиц.счета
 	 * @throws ErrorWhileChrg 
 	 */
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void chrgLsk(Kart kart) throws ErrorWhileChrg {
 		Calc.mess("ЛС===:"+kart.getLsk());
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
-			calc.setArea(calc.getHouse().getStreet().getArea());
+			calc.setArea(kart.getKw().getHouse().getStreet().getArea());
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
 		}
 		calc.setKart(kart);
 
 		prepChrg = new ArrayList<Chrg>(0); 
-
 		//получить все необходимые услуги для начисления из тарифа по дому
-
 
 		//для виртуальной услуги	
 		mapServ = new HashMap<Serv, BigDecimal>();  
@@ -107,14 +111,12 @@ public class ChrgServ {
 		//и создать потоки по кол-ву услуг
 		
 		for (Serv serv : kartMng.getAllServ(kart)) {
-			//if (serv.getId()==32) {
-				//Calc.mess("Добавлен поток по услуге="+serv.getId(), 2);
-				ChrgThr thr1 = (ChrgThr) context.getBean(ChrgThr.class);
+				ChrgThr thr1 = (ChrgThr) ctx.getBean(ChrgThr.class);
 				thr1.set(serv, kart);
 				thr1.start();
+				thr1.setUncaughtExceptionHandler(expThr);
 				trl.add(thr1);
 		    //	break; //TODO - временно выход!
-			//}
 		}
 
 		//ждать, когда все потоки выполнятся
@@ -123,19 +125,9 @@ public class ChrgServ {
 				t.join();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new ErrorWhileChrg("ChrgServ.chrgLsk: Ошибка в потоке, во время начисления");
 			} 
 		}
-		
-		//Calc.mess("Все потоки завершились!", 2);
-
-	    /*for (Map.Entry<Serv, BigDecimal> entryServ : mapServ.entrySet()) {
-			Calc.mess("Check mapServ="+entryServ.getKey().getId()+" на сумму="+entryServ.getValue(),2);
-	    }
-
-	    for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
-			Calc.mess("Check mapVrt="+entryVrt.getKey().getId()+" на сумму="+entryVrt.getValue(),2);
-		}*/
 		
 		//сделать коррекцию на сумму разности между основной и виртуальной услуг
 		for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
@@ -163,7 +155,11 @@ public class ChrgServ {
 		}			
 	}
 
-	
+	/**
+	 * сохранить запись о сумме предназаначенной для коррекции 
+	 * @param serv - услуга
+	 * @param sum - сумма
+	 */
 	public synchronized void putMapServVal(Serv serv, BigDecimal sum) {
 		BigDecimal tmpSum;
 		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
@@ -179,6 +175,11 @@ public class ChrgServ {
 	    mapServ.put(serv, sum);
 	}
 	
+	/**
+	 * сохранить запись о сумме предназаначенной для коррекции 
+	 * @param serv - услуга
+	 * @param sum - сумма
+	 */
 	public synchronized void putMapVrtVal(Serv serv, BigDecimal sum) {
 		BigDecimal tmpSum;
 		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
@@ -193,6 +194,10 @@ public class ChrgServ {
 	    mapVrt.put(serv, sum);
 	}
 
+	/**
+	 * перенести в архив предыдущее и сохранить новое начисление
+	 * @param lsk - лиц.счет передавать строкой!
+	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void save (String lsk) {
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
@@ -219,9 +224,11 @@ public class ChrgServ {
 		}
 	}
 	
+	/**
+	 * добавить из потока строку начисления 
+	 * @param chrg - строка начисления
+	 */
 	public synchronized void chrgAdd(Chrg chrg) {
-  	    //Calc.mess("Check услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull()+
-  	    //		" dt1="+chrg.getDt1().toLocaleString()+ " dt2="+chrg.getDt1().toLocaleString(),2);
 		prepChrg.add(chrg);
 
 	}

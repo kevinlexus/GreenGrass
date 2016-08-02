@@ -45,8 +45,6 @@ public class BillServ {
     @Test
 	public void test1() {
 		
-		//ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-		
 		//распределить объемы по дому
 		long startTime;
 		long endTime;
@@ -54,15 +52,6 @@ public class BillServ {
 
 		System.out.println("Begin!");
 		Calc.setDbgLvl(0);
-
-		/*Logger.getRootLogger().setLevel(Level.ERROR);
-		Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
-		Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
-		*/
-		/*Logger.getRootLogger().setLevel(Level.OFF);
-		Logger.getLogger("org.hibernate.SQL").setLevel(Level.OFF);
-		Logger.getLogger("org.hibernate.type").setLevel(Level.OFF);
-		*/
 
 		startTime = System.currentTimeMillis();
 		
@@ -85,9 +74,8 @@ public class BillServ {
 
 
 	/**
-	 * начислить по всем домам
+	 * выполнить начисление по всем домам
 	 */
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void chrgAll()  throws ErrorWhileChrg {
     	Session sess = (Session) em.getDelegate();
     	ex = new ExecProc(sess);
@@ -104,7 +92,6 @@ public class BillServ {
 	 * выполнить начисление по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 */
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void chrgHouse(int houseId) throws ErrorWhileChrg {
 
 		House h = em.find(House.class, houseId);
@@ -119,40 +106,36 @@ public class BillServ {
 		Calc.mess("Дом: klsk="+Calc.getHouse().getKlsk());
 		
 		//перебрать все квартиры и лиц.счета в них
-		int aaa=1;
 		for (Kw kw : h.getKw()) {
 			for (Kart kart : kw.getLsk()) {
-				aaa++;
-				if (aaa > 5) {
-					//break;
-				}
-				/*for (MeterLog mLog: kart.getMlog()) {
-					Calc.mess("сч="+mLog.getId());
-					//Calc.mess("Дом в сч.: klsk="+mLog.getHouse().getKlsk());
-				}*/ 
-
 				//if (kart.getLsk().equals("26074101")) {
-					long startTime3;
-					long endTime3;
-					long totalTime3;
-					startTime3 = System.currentTimeMillis();
-				    //Calc.mess("Расчет лиц счета:"+kart.getLsk(),2);
-				    
+					long startTime;
+					long endTime;
+					long totalTime;
+					startTime = System.currentTimeMillis();
 				    //расчитать начисление
 					chrgServ.chrgLsk(kart);
 					//сохранить расчет
 					chrgServ.save(kart.getLsk());
 
-					endTime3   = System.currentTimeMillis();
-					totalTime3 = endTime3 - startTime3;
-				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime3,2);
+					endTime   = System.currentTimeMillis();
+					totalTime = endTime - startTime;
+				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime,2);
 					//break; //##################
-				//}
-				//Calc.mess("Кол-во записей="+ex.runWork(1, 0, 0),2);
 			}
 			//break; //##################
 		}
 	}
-    
-	
+
+	/**
+	 * выполнить начисление по лиц.счету
+	 * @param kart
+	 * @throws ErrorWhileChrg
+	 */
+	public void chrgLsk(Kart kart) throws ErrorWhileChrg {
+	    //расчитать начисление
+		chrgServ.chrgLsk(kart);
+		//сохранить расчет
+		chrgServ.save(kart.getLsk());
+	}	
 }

@@ -57,7 +57,6 @@ public class ParMngImpl implements ParMng {
     			//по соотв.периоду
     			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI) - убрал - тормозит
-
     				/*if (checkPar(d.getFkHfp(), cd, "SI")) {
 						return d.getN1();
     				}*/

@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ric.bill.dao.ParDAO;
 import com.ric.bill.excp.EmptyOrg;
 import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.InvalidServ;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.KartMng;
@@ -44,8 +45,8 @@ import com.ric.bill.model.fn.ChrgStore;
  *
  */
 @Component
-@Scope("prototype")
-public class ChrgThr  extends Thread implements ApplicationContextAware{
+@Scope("prototype") //собственный бин для каждого потока
+public class ChrgThr extends Thread {
 	
 	@Autowired
 	private LstMng lstMng;
@@ -57,18 +58,12 @@ public class ChrgThr  extends Thread implements ApplicationContextAware{
 	private KartMng kartMng;
 	@Autowired
 	private MeterLogMng metMng;
-
 	private Serv serv;
+
 	//временное хранилище записей
 	private ChrgStore chStore;
-
+	//текущий лс
 	private Kart kart;
-
-	private ApplicationContext applicationContext;
-	
-	//EntityManager - EM нужен на каждый DAO или сервис свой!
-    @PersistenceContext
-    private EntityManager em;
 
     //конструктор
 	public ChrgThr() {
@@ -77,13 +72,8 @@ public class ChrgThr  extends Thread implements ApplicationContextAware{
 	
 	//установить параметры
 	public void set(Serv serv, Kart kart) {
-		//Calc.mess("Check THR1",2);
 		this.serv = serv;
 		this.kart = kart;
-		
-		//this.serv = em.find(Serv.class, serv.getId());
-		//this.kart = em.find(Kart.class, kart.getLsk());
-
 	}
 
 	public void run() {
@@ -97,20 +87,18 @@ public class ChrgThr  extends Thread implements ApplicationContextAware{
 		dt1 = Calc.getCurDt1();
 		dt2 = Calc.getCurDt2();
 
-		//Calc.mess("Расчет услуги id="+serv.getId(),2);
 		//типы записей начисления
 		Lst chrgTpRnd = lstMng.findByCD("Начислено свернуто, округлено");
 		
 		//Объект, временно хранящий записи начисления
 		chStore = new ChrgStore(); 
-		if (serv.getId()==32) {
+		//if (serv.getId()==32) {
 		  //Calc.mess("ChrThr: Услуга:"+serv.getCd()+" Id="+serv.getId(),2);
-		}
+		//}
 		Calendar c = Calendar.getInstance();
 		
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			genDt = c.getTime();
-			//Calc.mess("Дата:"+genDt + " по услуге="+serv.getId(), 2);
 			//только там, где нет статуса "не начислять" за данный день
 			if (Utl.nvl(parMng.getDbl(kart, "IS_NOT_CHARGE", genDt), 0d) == 1d) {
 				continue;
@@ -123,24 +111,17 @@ public class ChrgThr  extends Thread implements ApplicationContextAware{
 					|| tpOwn.equals("Аренда некоммерч.") || tpOwn.equals("Для внутр. пользования")) {
 					continue;
 				}
-				//Calc.mess("ДАТА="+genDt.toString(),2);
-	
-					//Calc.mess("Услуга:"+serv.getCd());
-					//Calc.setServ(serv);
-					//начислить услугу
-					//Calc.mess("дом="+kart.getKw().getHouse().getId());
-					
 					try {
 					  chrgServ(kart, serv, tpOwn, genDt);
 					} catch (EmptyServ e) {
 						e.printStackTrace();
-						//throw new ErrorWhileChrg("ChrgServ.chrgLsk: Пустая услуга!");  TODO! Временно убрал EXCEPTION! ВЕРНУТЬ!
+						throw new RuntimeException();
 					} catch (EmptyOrg e) {
 						e.printStackTrace();
-						//throw new ErrorWhileChrg("ChrgServ.chrgLsk: Пустая организация!");  TODO! Временно убрал EXCEPTION! ВЕРНУТЬ!
+						throw new RuntimeException();
 					} catch (InvalidServ e) {
 						e.printStackTrace();
-						//throw new ErrorWhileChrg("ChrgServ.chrgLsk: Некорректна услуга!");  TODO! Временно убрал EXCEPTION! ВЕРНУТЬ!
+						throw new RuntimeException();
 					}
 					
 			}
@@ -160,17 +141,11 @@ public class ChrgThr  extends Thread implements ApplicationContextAware{
 			
 			//записать, для будущего округления по виртуальной услуге
 			if (rec.getServ().getServVrt() != null) {
-				//BigDecimal tmpSum = Utl.nvl(chrgServ.getMapServVal(rec.getServ().getServVrt()) , BigDecimal.ZERO);
-				//tmpSum = tmpSum.add(sum);
-				//chrgServ.putMapServVal(rec.getServ().getServVrt(), tmpSum);
 				chrgServ.putMapServVal(rec.getServ().getServVrt(), sum);
 			}
 			//записать, сумму по виртуальной услуге
 			if (rec.getServ().getVrt()) {
-					//BigDecimal tmpSum = Utl.nvl(chrgServ.getMapVrtVal(rec.getServ()), BigDecimal.ZERO);
-					//tmpSum = tmpSum.add(sum);
 					chrgServ.putMapVrtVal(rec.getServ(), sum);
-					//chrgServ.compMapVrtVal(rec.getServ(), tmpSum);
 					
 			}
 
@@ -187,11 +162,6 @@ public class ChrgThr  extends Thread implements ApplicationContextAware{
 		totalTime = endTime - startTime2;
 	    //Calc.mess("Поток завершён, ВРЕМЯ НАЧИСЛЕНИЯ по услуге Id="+serv.getId()+":   "+totalTime, 2);
 
-	    /*for (Chrg chrg : prepChrg) {
-			Calc.mess("Наличие ЗАПИСЕЙ услуга="+chrg.getServ().getId(),2);
-		}	*/
-	    
-		//break;		
 	}
 
 	/**
@@ -521,14 +491,4 @@ public class ChrgThr  extends Thread implements ApplicationContextAware{
 		}
 		
 	}
-
-public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    this.applicationContext = applicationContext;
-}
-
-
-
- public ApplicationContext getContext() {
-        return applicationContext;
-    }	
 }
