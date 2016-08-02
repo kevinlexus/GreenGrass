@@ -1,10 +1,8 @@
 package com.ric.bill;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,14 +13,12 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.excp.EmptyOrg;
-import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.ErrorWhileChrg;
-import com.ric.bill.excp.InvalidServ;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
@@ -33,7 +29,6 @@ import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
-import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.fn.ChrgStore;
@@ -64,94 +59,30 @@ public class ChrgServ {
 	@Autowired
 	private LstMng lstMng;
 	
+	@Autowired
+	private ApplicationContext context;
+	
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
 
-    private ExecProc ex;
-	//временное хранилище записей
-	private ChrgStore chStore;
+
+    private List<Chrg> prepChrg;
+    private HashMap<Serv, BigDecimal> mapServ;
+    private HashMap<Serv, BigDecimal> mapVrt;
     
     //конструктор
     public ChrgServ() {
-		/*ds = new DSess(true);
-		ex = new ExecProc(ds);*/
+    	super();
     }
-    
-
-	/**
-	 * начислить по всем домам
-	 */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void chrgAll()  throws ErrorWhileChrg {
-    	Session sess = (Session) em.getDelegate();
-    	ex = new ExecProc(sess);
-    	
-    	for (House o: houseMng.findAll()) {
-			System.out.println("ДОМ:"+o.getId());
-			Calc.setInit(false);
-			chrgHouse(o.getId());
-		}
-	}
-	
-    /**
-	 * выполнить начисление по дому
-	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
-	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void chrgHouse(int houseId) throws ErrorWhileChrg {
-
-		House h = em.find(House.class, houseId);
-		if (!Calc.isInit()) {
-			calc.setHouse(h);
-			calc.setArea(calc.getHouse().getStreet().getArea());
-			calc.setUp(); //настроить даты фильтра и т.п.
-			Calc.setInit(true);
-		}
-		Calc.mess("Начисление");
-		Calc.mess("Дом: id="+calc.getHouse().getId());
-		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk());
-		
-		//перебрать все квартиры и лиц.счета в них
-		int aaa=1;
-		for (Kw kw : h.getKw()) {
-			for (Kart kart : kw.getLsk()) {
-				aaa++;
-				if (aaa > 5) {
-					//break;
-				}
-				/*for (MeterLog mLog: kart.getMlog()) {
-					Calc.mess("сч="+mLog.getId());
-					//Calc.mess("Дом в сч.: klsk="+mLog.getHouse().getKlsk());
-				}*/ 
-
-				//if (kart.getLsk().equals("26074123")) {
-					long startTime3;
-					long endTime3;
-					long totalTime3;
-					startTime3 = System.currentTimeMillis();
-
-					chrgLsk(kart); //расчитать начисление
-					
-					endTime3   = System.currentTimeMillis();
-					totalTime3 = endTime3 - startTime3;
-				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime3);
-					//break; //##################
-				//}
-				//Calc.mess("Кол-во записей="+ex.runWork(1, 0, 0),2);
-			}
-		}
-	}
-	
 
 	/**
 	 * выполнить расчет начисления по лиц.счету
 	 * @param kart - объект лиц.счета
 	 * @throws ErrorWhileChrg 
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void chrgLsk(Kart kart) throws ErrorWhileChrg {
-		
 		Calc.mess("ЛС===:"+kart.getLsk());
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
@@ -161,24 +92,50 @@ public class ChrgServ {
 		}
 		calc.setKart(kart);
 
+		prepChrg = new ArrayList<Chrg>(0); 
+
 		//получить все необходимые услуги для начисления из тарифа по дому
-		Calendar c = Calendar.getInstance();
 
-		//перенести в архив предыдущий расчет
-		archPrev();
-
-		List<Chrg> prepChrg = new ArrayList<Chrg>(0); 
 
 		//для виртуальной услуги	
-		HashMap<Serv, BigDecimal> mapServ = new HashMap<Serv, BigDecimal>();  
-		HashMap<Serv, BigDecimal> mapVrt = new HashMap<Serv, BigDecimal>();  
+		mapServ = new HashMap<Serv, BigDecimal>();  
+		mapVrt = new HashMap<Serv, BigDecimal>();  
 
+		//список потоков
+		List<ChrgThr> trl = new ArrayList<ChrgThr>();
 		//найти все услуги, действительные в лиц.счете
+		//и создать потоки по кол-ву услуг
+		
 		for (Serv serv : kartMng.getAllServ(kart)) {
-			ChrgThr chrgThr = new ChrgThr();
-			chrgThr.gen(lstMng, chrgServ, parMng, kartMng, chStore, mapServ, mapVrt, prepChrg, kart, serv, c);
+			//if (serv.getId()==32) {
+				//Calc.mess("Добавлен поток по услуге="+serv.getId(), 2);
+				ChrgThr thr1 = (ChrgThr) context.getBean(ChrgThr.class);
+				thr1.set(serv, kart);
+				thr1.start();
+				trl.add(thr1);
+		    //	break; //TODO - временно выход!
+			//}
 		}
 
+		//ждать, когда все потоки выполнятся
+		for (ChrgThr t : trl) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
+		
+		//Calc.mess("Все потоки завершились!", 2);
+
+	    /*for (Map.Entry<Serv, BigDecimal> entryServ : mapServ.entrySet()) {
+			Calc.mess("Check mapServ="+entryServ.getKey().getId()+" на сумму="+entryServ.getValue(),2);
+	    }
+
+	    for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
+			Calc.mess("Check mapVrt="+entryVrt.getKey().getId()+" на сумму="+entryVrt.getValue(),2);
+		}*/
 		
 		//сделать коррекцию на сумму разности между основной и виртуальной услуг
 		for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
@@ -193,8 +150,8 @@ public class ChrgServ {
 						//найти только что добавленные строки начисления, и вписать в одну из них
 						boolean flag = false; //флаг, чтобы больше не корректировать, если уже раз найдено
 						for (Chrg chrg : prepChrg) {
-							//Calc.mess("услуга="+chrg.getServ().getId(),2);
 							if (!flag && chrg.getStatus() == 1 && chrg.getServ().equals(servRound)) {
+								//Calc.mess("Коррекция услуги="+chrg.getServ().getId()+" на сумму="+diff,2);
 								flag = true;
 								chrg.setSumAmnt(BigDecimal.valueOf(chrg.getSumAmnt()).add(diff).doubleValue()) ;
 								chrg.setSumFull(BigDecimal.valueOf(chrg.getSumFull()).add(diff).doubleValue()) ;
@@ -204,31 +161,70 @@ public class ChrgServ {
 				}
 			}		    
 		}			
-
-		//сохранить записи начисления
-		kart.getChrg().addAll(prepChrg); 
-
 	}
 
+	
+	public synchronized void putMapServVal(Serv serv, BigDecimal sum) {
+		BigDecimal tmpSum;
+		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
+		for (Map.Entry<Serv, BigDecimal> entry : mapServ.entrySet()) {
+	    	if (entry.getKey().equals(serv)) { 
+	    		tmpSum = Utl.nvl(entry.getValue(), BigDecimal.ZERO);
+	    		tmpSum = tmpSum.add(sum);
+	    		//Calc.mess("Write serv id="+serv.getId()+" val="+sum,2);
+	    	    mapServ.put(entry.getKey(), tmpSum);
+	    		return;
+	    	}
+	    }
+	    mapServ.put(serv, sum);
+	}
+	
+	public synchronized void putMapVrtVal(Serv serv, BigDecimal sum) {
+		BigDecimal tmpSum;
+		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
+	    for (Map.Entry<Serv, BigDecimal> entry : mapVrt.entrySet()) {
+	    	if (entry.getKey().equals(serv)) {
+	    		tmpSum = Utl.nvl(entry.getValue(), BigDecimal.ZERO);
+	    		tmpSum = tmpSum.add(sum);
+	    		mapVrt.put(entry.getKey(), tmpSum);
+	    		return;
+	    	}
+	    }
+	    mapVrt.put(serv, sum);
+	}
 
-	/**
-	 * перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
-	 */
-	private void archPrev() {
-		//Calc.mess("archPrev:"+Calc.getKart().getLsk()+" dt1:"+Calc.getCurDt1().toLocaleString()+" dt2:"+Calc.getCurDt2().toLocaleString()+ " period:"+Calc.getPeriod(), 2);
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void save (String lsk) {
+		Kart kart = em.find(Kart.class, lsk);
+
+		//перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
 		Query query = em.createQuery("update Chrg t set t.status=2 where t.lsk=:lsk "
 				+ "and t.status=1 "
 				+ "and t.dt1 between :dt1 and :dt2 "
 				+ "and t.dt2 between :dt1 and :dt2 "
 				+ "and t.period=:period"
 				);
-		query.setParameter("lsk", Calc.getKart().getLsk());
+		query.setParameter("lsk", kart.getLsk());
 		query.setParameter("dt1", Calc.getCurDt1());
 		query.setParameter("dt2", Calc.getCurDt2());
 		query.setParameter("period", Calc.getPeriod());
 		query.executeUpdate();
-	}
 
+		for (Chrg chrg : prepChrg) {
+			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
+			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, Calc.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
+					chrg.getVol(), chrg.getPrice(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
+			kart.getChrg().add(chrg2); 
+
+		}
+	}
+	
+	public synchronized void chrgAdd(Chrg chrg) {
+  	    //Calc.mess("Check услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull()+
+  	    //		" dt1="+chrg.getDt1().toLocaleString()+ " dt2="+chrg.getDt1().toLocaleString(),2);
+		prepChrg.add(chrg);
+
+	}
 }
 
 

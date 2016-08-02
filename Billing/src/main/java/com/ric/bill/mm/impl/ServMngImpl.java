@@ -32,18 +32,18 @@ public class ServMngImpl implements ServMng {
 
 	
 	//да, да, кэш на уровне DAO! (быстрее работает)
-	@Cacheable(cacheNames="readOnlyCache", key="{ #serv.getId() }") 
-	public Serv findMain(Serv serv) {
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #serv.getId() }") 
+	public synchronized Serv findMain(Serv serv) {
 		return sDao.findMain(serv);
 	}
 
-	@Cacheable(cacheNames="readOnlyCache")
-	public List<Serv> findForDistVol() {
+	//@Cacheable(cacheNames="readOnlyCache")
+	public synchronized List<Serv> findForDistVol() {
 		return sDao.findForDistVol();
 	}
 
-	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
-	public Serv findByCd(String cd) {
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
+	public synchronized Serv findByCd(String cd) {
 		//Calc.mess("################### ПРОВЕРКА КЭША ####################",2);
 		return sDao.findByCd(cd);
 	}

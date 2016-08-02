@@ -46,7 +46,7 @@ public class TarifMngImpl implements TarifMng {
     
 	//получить свойство тарифа по его CD
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
-	public Prop getPropByCD(String cd) {
+	public synchronized Prop getPropByCD(String cd) {
 		return tDao.getPropByCD(cd);
 	}
 
@@ -56,8 +56,8 @@ public class TarifMngImpl implements TarifMng {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
-	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #cd, #genDt }") 
-	public Double getProp(TarifContains tc, Serv serv, String cd, Date genDt) {
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #cd, #genDt }") 
+	public synchronized Double getProp(TarifContains tc, Serv serv, String cd, Date genDt) {
 		//Prop prop = getPropByCD(cd);//так и не понял, как быстрее, искать тариф предварительно getPropByCD, или непосредственно через.getCd()
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
@@ -83,7 +83,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @return - свойство
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
-	public Org getOrg(TarifContains tc, Serv serv, Date genDt) {
+	public synchronized Org getOrg(TarifContains tc, Serv serv, Date genDt) {
 
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
@@ -107,7 +107,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @return
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #tc.getKlsk() }") 
-	public List<Serv> getAllServ(TarifContains tc) {
+	public synchronized List<Serv> getAllServ(TarifContains tc) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
@@ -130,7 +130,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @return
 	 */
 	@Cacheable(cacheNames="readOnlyCache2", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
-	public boolean getServ(TarifContains tc, Serv serv, Date genDt) {
+	public synchronized boolean getServ(TarifContains tc, Serv serv, Date genDt) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {

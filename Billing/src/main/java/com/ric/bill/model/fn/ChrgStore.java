@@ -74,11 +74,11 @@ public class ChrgStore {
 		}
 	}
 
-	public List<ChrgRec> getStore() {
+	public synchronized List<ChrgRec> getStore() {
 		return store;
 	}
 
-	public void setStore(List<ChrgRec> store) {
+	public synchronized void setStore(List<ChrgRec> store) {
 		this.store = store;
 	}
 	

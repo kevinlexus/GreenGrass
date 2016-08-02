@@ -54,6 +54,24 @@ public class Chrg implements java.io.Serializable, Simple {
 		setDt2(dt2);
 	}
 
+	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
+			Double sumFull, Double sumAmnt, Double vol,
+			Double price, Lst tp, Date dt1, Date dt2) {
+		
+		setKart(kart);
+		setOrg(org);
+		setServ(serv);
+		setStatus(status);
+		setPeriod(period);
+		setSumFull(sumFull);
+		setSumAmnt(sumAmnt);
+		setVol(vol);
+		setPrice(price);
+		setTp(tp);
+		setDt1(dt1);
+		setDt2(dt2);
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CHRG")
 	@SequenceGenerator(name="SEQ_CHRG", sequenceName="FN.KMP_CHRG_ID", allocationSize=10)	

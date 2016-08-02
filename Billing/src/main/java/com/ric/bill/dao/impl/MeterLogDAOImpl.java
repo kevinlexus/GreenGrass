@@ -40,7 +40,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @return
 	 */
 	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
-	public Kart getKart(MLogs mLog) {
+	public synchronized Kart getKart(MLogs mLog) {
 		Query query =em.createQuery("from Kart t where t.klsk =:klsk");
 		query.setParameter("klsk", mLog.getKlskObj());
 		try {

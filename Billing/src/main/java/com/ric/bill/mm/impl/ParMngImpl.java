@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +23,10 @@ public class ParMngImpl implements ParMng {
 
 	@Autowired
 	private ParDAO pDao;
-
 	
 	//получить параметр по его CD
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
-	public Par getByCD(String cd) {
+	public synchronized Par getByCD(String cd) {
 		return pDao.getByCd(cd);
 	}
 
@@ -34,7 +34,7 @@ public class ParMngImpl implements ParMng {
 	 * Узнать существует ли параметр по его CD
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
-	public boolean isExByCd(String cd) {
+	public synchronized boolean isExByCd(String cd) {
 		Par p = getByCD(cd);
 		if (p != null) {
 			return true;
@@ -49,11 +49,8 @@ public class ParMngImpl implements ParMng {
 	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
 	 */
 	//В кэшах не почувствовал разницы:
-	//@Cacheable(cacheNames="readOnlyCache", key="{ #st.getKlsk(), #cd, #genDt }") --58153 мс
-	//@Cacheable("readOnlyCache")
-	//@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
 	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
-	public Double getDbl(Storable st, String cd, Date genDt) {
+	public synchronized Double getDbl(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
@@ -64,7 +61,7 @@ public class ParMngImpl implements ParMng {
     				/*if (checkPar(d.getFkHfp(), cd, "SI")) {
 						return d.getN1();
     				}*/
-//    				if (d.getPar().getCd().equals(cd)) {
+    				//if (d.getPar().getCd().equals(cd)) {
        				if (d.getPar().equals(par)) {
 						if (d.getPar().getTp().equals("NM")) {
 							if (d.getPar().getDataTp().equals("SI")) {
@@ -93,7 +90,7 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
 	 */
 	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd }")
-	public Double getDbl(Storable st, String cd) {
+	public synchronized Double getDbl(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
@@ -123,8 +120,8 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
-	@Cacheable("readOnlyCache")
-	public String getStr(Storable st, String cd, Date genDt) {
+	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
+	public synchronized String getStr(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
@@ -159,7 +156,7 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа String объекта по CD свойства, без указания даты
 	 */
 	@Cacheable("readOnlyCache")
-	public String getStr(Storable st, String cd) {
+	public synchronized String getStr(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {

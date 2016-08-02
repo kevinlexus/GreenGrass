@@ -20,7 +20,7 @@ public class TarifDAOImpl implements TarifDAO {
 
 	@SuppressWarnings("unchecked")
 	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
-	public Prop getPropByCD(String cd) {
+	public synchronized Prop getPropByCD(String cd) {
 		Query query =em.createQuery("from Prop t where t.cd in (:cd)");
 		query.setParameter("cd", cd);
 		return (Prop) query.getSingleResult();

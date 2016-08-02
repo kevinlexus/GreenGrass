@@ -65,7 +65,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - искомый список
 	 */
 	@Cacheable(cacheNames="readOnlyCache", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
-	public List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+	public synchronized List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
 		Calc.mess("getAllMetLogByServTp задано:"+serv.getCd()+" "+serv.getId()+" "+tp);
 		for (MLogs ml : mm.getMlog()) {
@@ -113,7 +113,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog
 	 */
 	@Cacheable("readOnlyCache")
-	public boolean checkExsMet(MLogs mLog, Date genDt) {
+	public synchronized boolean checkExsMet(MLogs mLog, Date genDt) {
     	//установить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
@@ -137,7 +137,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - возвращаемый объем
 	 */
 	@Cacheable(cacheNames="readWriteCache", key="{ #mLog.getId(), #tp, #dt1, #dt2 }")
-    public SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2) {
+    public synchronized SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
@@ -171,7 +171,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - возвращаемый объем
 	 */
 	@Cacheable(cacheNames="readWriteCache", key="{ #mc.getId(), #serv.getId(), #dt1, #dt2 }")
-	public SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2) {
+	public synchronized SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2) {
 		SumNodeVol amntSum = new SumNodeVol();
 		
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
@@ -198,7 +198,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return лог.счетчик
 	 */
 	@Cacheable("readWriteCache") 
-	public MLogs getLinkedNode(MLogs mLog, String tp, Date genDt) {
+	public synchronized MLogs getLinkedNode(MLogs mLog, String tp, Date genDt) {
 		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
     	//сперва направленные внутрь
@@ -233,7 +233,7 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @return 
      */
 	@Cacheable("readWriteCache") 
-	public void delNodeVol(MLogs mLog, int tp, Date genDt) {
+	public synchronized void delNodeVol(MLogs mLog, int tp, Date genDt) {
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();
@@ -270,7 +270,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 */
 //	 НЕ ВЗЛЕТЕЛО, медленно выполняется, чем mLog.getKart()
 	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
-	public Kart getKart(MLogs mLog) {
+	public synchronized Kart getKart(MLogs mLog) {
 		return mDao.getKart(mLog);
 	}
 	/**

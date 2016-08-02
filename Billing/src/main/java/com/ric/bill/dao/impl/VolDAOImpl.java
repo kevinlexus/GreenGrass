@@ -22,7 +22,7 @@ import com.ric.bill.model.mt.Vol;
 	     * Добавить объем
 	     * @param vol - объект объема
 	     */
-	    public void add(Vol vol) {
+	    public synchronized void add(Vol vol) {
 			em.persist(vol);
 		}
 	
