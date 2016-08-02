@@ -3,7 +3,6 @@ package com.ric.bill;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,6 @@ import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
-import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.fn.ChrgStore;
@@ -73,61 +71,11 @@ public class ChrgServ {
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
     
-    //хранилище dw
-    private List<DwRec> dwStore;
-
     //конструктор
     public ChrgServ() {
     	super();
     }
 
-	public synchronized Double getDbl(Storable st, String cd, Date genDt) {
-		for (DwRec rec: dwStore) {
-			if (rec.st.equals(st)) {
-				if (rec.cd.equals(cd) && Utl.between(genDt, rec.dt1, rec.dt2)) {
-					return rec.val;
-				}
-			}
-		}
-		return null;
-	}
-	
-	public synchronized Double getDbl(Storable st, String cd) {
-		for (DwRec rec: dwStore) {
-			if (rec.st.equals(st)) {
-				if (rec.cd.equals(cd)) {
-					return rec.val;
-				}
-			}
-		}
-		return null;
-	}
-
-	public synchronized String getStr(Storable st, String cd, Date genDt) {
-		for (DwRec rec: dwStore) {
-			if (rec.st.equals(st)) {
-				if (rec.cd.equals(cd) && Utl.between(genDt, rec.dt1, rec.dt2)) {
-					return rec.strVal;
-				}
-			}
-		}
-		return null;
-	}
-	
-	public synchronized String getStr(Storable st, String cd) {
-		for (DwRec rec: dwStore) {
-			if (rec.st.equals(st)) {
-				if (rec.cd.equals(cd)) {
-					return rec.strVal;
-				}
-			}
-		}
-		return null;
-	}
-
-	public void setDw(List<DwRec> dwStore) {
-		this.dwStore = dwStore;
-	}
 	/**
 	 * выполнить расчет начисления по лиц.счету
 	 * @param kart - объект лиц.счета
@@ -145,14 +93,9 @@ public class ChrgServ {
 		calc.setKart(kart);
 
 		prepChrg = new ArrayList<Chrg>(0); 
-		
-		//загрузить параметры Dw
-		for (Dw dw: kart.getDw()) {
-			dwStore.add(new DwRec(kart, dw.getN1(), dw.getS1(), dw.getPar().getCd(), dw.getDt1(), dw.getDt2()));
-		}
 
-		
 		//получить все необходимые услуги для начисления из тарифа по дому
+
 
 		//для виртуальной услуги	
 		mapServ = new HashMap<Serv, BigDecimal>();  
@@ -252,7 +195,7 @@ public class ChrgServ {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void save (String lsk) {
-		Kart kart = em.find(Kart.class, lsk);
+		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
 
 		//перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
 		Query query = em.createQuery("update Chrg t set t.status=2 where t.lsk=:lsk "

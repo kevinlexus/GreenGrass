@@ -1,25 +1,23 @@
 package com.ric.bill;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.mm.HouseMng;
-import com.ric.bill.mm.ServMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
-import com.ric.bill.model.bs.Dw;
-import com.ric.bill.model.bs.Serv;
 
 /**
  * Главный сервис биллинга
@@ -38,11 +36,11 @@ public class BillServ {
     private DistServ dist;
 	@Autowired
     private ChrgServ chrgServ;
-	@Autowired
-    private ServMng servMng;
 
     @PersistenceContext
     private EntityManager em;
+
+    private ExecProc ex;
 
     @Test
 	public void test1() {
@@ -91,6 +89,8 @@ public class BillServ {
 	 */
 	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void chrgAll()  throws ErrorWhileChrg {
+    	Session sess = (Session) em.getDelegate();
+    	ex = new ExecProc(sess);
     	
     	for (House o: houseMng.findAll()) {
 			System.out.println("ДОМ:"+o.getId());
@@ -118,7 +118,6 @@ public class BillServ {
 		Calc.mess("Дом: id="+Calc.getHouse().getId());
 		Calc.mess("Дом: klsk="+Calc.getHouse().getKlsk());
 		
-		
 		//перебрать все квартиры и лиц.счета в них
 		int aaa=1;
 		for (Kw kw : h.getKw()) {
@@ -139,17 +138,7 @@ public class BillServ {
 					startTime3 = System.currentTimeMillis();
 				    //Calc.mess("Расчет лиц счета:"+kart.getLsk(),2);
 				    
-					List<DwRec> dwStore = new ArrayList<DwRec>(0);
-					
-					for (Serv serv: servMng.getAll()) {
-						for (Dw dw: serv.getDw()) {
-							DwRec rr =new DwRec(serv, dw.getN1(), dw.getS1(), dw.getPar().getCd(), null, null); 
-							dwStore.add(rr);
-						}
-					}
-
-					chrgServ.setDw(dwStore);
-					//расчитать начисление
+				    //расчитать начисление
 					chrgServ.chrgLsk(kart);
 					//сохранить расчет
 					chrgServ.save(kart.getLsk());

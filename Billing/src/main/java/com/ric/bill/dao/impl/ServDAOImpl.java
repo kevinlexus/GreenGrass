@@ -21,16 +21,6 @@ public class ServDAOImpl implements ServDAO {
     private EntityManager em;
 
 	/**
-	 * Получить все услуги
-	 * @return
-	 */
-    @SuppressWarnings("unchecked")
-	public synchronized List<Serv> getAll() {
-		Query query =em.createQuery("from Serv t");
-		return query.getResultList();
-	}
-
-	/**
 	 * Найти основную услугу по линии основная - ОДН
 	 * @param serv - услуга ОДН
 	 * @return
