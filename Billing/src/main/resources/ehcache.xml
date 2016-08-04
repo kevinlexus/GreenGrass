@@ -29,6 +29,8 @@
 		eternal="true" />
 
  -->	
+
+
  	<cache name="readWriteCache" 
 		maxEntriesLocalHeap="100000000"
 		maxEntriesLocalDisk="100000000" 

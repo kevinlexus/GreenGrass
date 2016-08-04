@@ -25,8 +25,8 @@ import com.ric.bill.model.ar.Kw;
  * @author lev
  *
  */
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = { "classpath:spring.xml" })
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:spring.xml" })
 @Service
 public class BillServ {
 
@@ -122,7 +122,7 @@ public class BillServ {
 
 					endTime   = System.currentTimeMillis();
 					totalTime = endTime - startTime;
-				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime,2);
+				    //Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime,2);
 					//break; //##################
 			}
 			//break; //##################

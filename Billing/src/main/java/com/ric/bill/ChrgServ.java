@@ -79,7 +79,7 @@ public class ChrgServ {
     //Exception из потока
     Thread.UncaughtExceptionHandler expThr = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread th, Throwable ex) {
-            System.out.println("Uncaught exception: " + ex);
+            System.out.println("ChrgServ: Ошибка в потоке: " + ex);
         }
     };
     
@@ -202,6 +202,7 @@ public class ChrgServ {
 	public void save (String lsk) {
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
 
+		//Calc.mess("UPDATE:"+kart.getLsk(), 2);
 		//перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
 		Query query = em.createQuery("update Chrg t set t.status=2 where t.lsk=:lsk "
 				+ "and t.status=1 "
@@ -215,13 +216,13 @@ public class ChrgServ {
 		query.setParameter("period", Calc.getPeriod());
 		query.executeUpdate();
 
-/*		for (Chrg chrg : prepChrg) {
+		for (Chrg chrg : prepChrg) {
 			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
 			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, Calc.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
 					chrg.getVol(), chrg.getPrice(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
 			kart.getChrg().add(chrg2); 
 
-		}*/
+		}
 	}
 	
 	/**

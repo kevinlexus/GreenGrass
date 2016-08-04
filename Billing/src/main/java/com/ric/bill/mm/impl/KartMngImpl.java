@@ -66,7 +66,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("rrr")
+	@Cacheable("readOnlyCache")
 	private synchronized boolean checkPersStatus (RegContains regc, Pers p, String status, int tp, Date genDt) {
 		PersStatus ps = checkPersStatusExt (regc, p, status, tp, genDt);
 		return ps.exist;
@@ -77,7 +77,7 @@ public class KartMngImpl implements KartMng {
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 * и вернуть объект, содержащий наличие проживающего и его отношение к нанимателю
 	 */
-	@Cacheable("rrr")
+	@Cacheable("readOnlyCache")
 	private synchronized PersStatus checkPersStatusExt (RegContains regc, Pers p, String status, int tp, Date genDt) {
 		Date dt1, dt2;
 		List<? extends Registrable> rg;
@@ -122,7 +122,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("rrr")
+	@Cacheable("readOnlyCache")
 	private synchronized boolean checkPersNullStatus (Registrable reg, Date genDt) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -158,8 +158,8 @@ public class KartMngImpl implements KartMng {
 	 * @param cntPers - объект для заполнения
 	 * @return
 	 */
-//	////@Cacheable("readOnlyCache")
-	@Cacheable(cacheNames="rrr", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
+//	@Cacheable("readOnlyCache")
+	@Cacheable(cacheNames="readOnlyCache", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
 	public synchronized void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -212,7 +212,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	@Cacheable(cacheNames="rrr2", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public synchronized Standart getStandart (Kart kart, Serv serv, CntPers cntPers, Date genDt) {
 		//получить услугу основную, для начисления
 		Serv servChrg = serv.getServChrg();
@@ -328,7 +328,7 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt - Дата выборки
 	 * @return
 	 */
-    @Cacheable(cacheNames="rrr", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
+	//@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
 	public synchronized Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
 		Double val;
 		//в начале ищем по лиц. счету 
@@ -353,7 +353,7 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt - Дата выборки
 	 * @return
 	 */
-	@Cacheable(cacheNames="rrr3", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="readOnlyCache3", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public synchronized Org getOrg(Kart kart, Serv serv, Date genDt) {
 		Org org;
 		//в начале ищем по лиц. счету 
@@ -376,7 +376,7 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt - Дата выборки
 	 * @return
 	 */
-	@Cacheable(cacheNames="rrr", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="readOnlyCache2", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public synchronized boolean getServ(Kart kart, Serv serv, Date genDt) {
 		boolean exs = false;
 		//в начале ищем по лиц. счету 
@@ -394,7 +394,7 @@ public class KartMngImpl implements KartMng {
 	 * @param tc - объект
 	 * @return
 	 */
-	@Cacheable(cacheNames="rrr", key="{ #kart.getLsk() }") 
+	@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk() }") 
 	public synchronized List<Serv> getAllServ(Kart kart) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа лиц.счета
