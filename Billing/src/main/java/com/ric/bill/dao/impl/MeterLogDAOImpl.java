@@ -39,7 +39,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @param mLog - Счетчик
 	 * @return
 	 */
-	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
+	@Cacheable(cacheNames="rrr7", key="{ #mLog.getId() }")
 	public synchronized Kart getKart(MLogs mLog) {
 		Query query =em.createQuery("from Kart t where t.klsk =:klsk");
 		query.setParameter("klsk", mLog.getKlskObj());
@@ -55,7 +55,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @param mLog - Счетчик
 	 * @return
 	 */
-/*	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
+/*	////@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
 	public House getHouse(MLogs mLog) {
 		Query query =em.createQuery("from House t where t.klsk =:klsk");
 		query.setParameter("klsk", mLog.getKlskObj());

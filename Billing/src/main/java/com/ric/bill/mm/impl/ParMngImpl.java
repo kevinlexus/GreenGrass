@@ -25,7 +25,7 @@ public class ParMngImpl implements ParMng {
 	private ParDAO pDao;
 	
 	//получить параметр по его CD
-	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
+	//////@Cacheable(cacheNames="readWriteCache", key="{ #cd }") - здесь не кэшируется, только в DAO
 	public synchronized Par getByCD(String cd) {
 		return pDao.getByCd(cd);
 	}
@@ -33,7 +33,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * Узнать существует ли параметр по его CD
 	 */
-	@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
+	@Cacheable(cacheNames="rrr", key="{ #cd }")
 	public synchronized boolean isExByCd(String cd) {
 		Par p = getByCD(cd);
 		if (p != null) {
@@ -49,7 +49,7 @@ public class ParMngImpl implements ParMng {
 	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
 	 */
 	//В кэшах не почувствовал разницы:
-	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
+	@Cacheable(cacheNames="rrr", key="{ #st.getKlsk(), #cd, #genDt }")
 	public synchronized Double getDbl(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
@@ -88,7 +88,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
 	 */
-	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd }")
+	@Cacheable(cacheNames="rrr", key="{ #st.getKlsk(), #cd }")
 	public synchronized Double getDbl(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
@@ -119,7 +119,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
-	@Cacheable(cacheNames="specialCache1", key="{ #st.getKlsk(), #cd, #genDt }")
+	@Cacheable(cacheNames="rrr", key="{ #st.getKlsk(), #cd, #genDt }")
 	public synchronized String getStr(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
@@ -154,7 +154,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа String объекта по CD свойства, без указания даты
 	 */
-	@Cacheable("readOnlyCache")
+	@Cacheable("rrr")
 	public synchronized String getStr(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
