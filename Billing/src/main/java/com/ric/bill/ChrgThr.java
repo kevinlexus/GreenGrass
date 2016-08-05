@@ -381,6 +381,11 @@ public class ChrgThr extends Thread {
 			//тип расчета, например:текущее содержание, Х.В., Г.В., Канализ
 			//Вариант подразумевает объём по лог.счётчику, РАСПределённый по дням
 			//или по параметру - базе, жилого фонда, так же распределенного по дням
+			/*if (kart.getLsk().equals("26074227")) {
+				Calc.mess("Услуга:"+serv.getCd(), 2);
+				Calc.mess("vol="+vol+" price="+stPrice, 2);
+			}*/
+
 			if (cntPers.cntEmpt != 0) {
 				//есть проживающие
 				//соцнорма
@@ -392,6 +397,10 @@ public class ChrgThr extends Thread {
 	
 				//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
 				//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+				/*if (kart.getLsk().equals("26074227")) {
+					Calc.mess("Услуга:"+serv.getCd(), 2);
+					Calc.mess("tmpVol="+tmpVol+" stPrice="+stPrice, 2);
+				}*/
 				chStore.addChrg(BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(stPrice), stServ, org, genDt);
 /*				if (tmpSum != BigDecimal.ZERO) {
 					Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
@@ -402,6 +411,10 @@ public class ChrgThr extends Thread {
 				tmpVol = vol - tmpVol;
 				//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
 				//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
+				/*if (kart.getLsk().equals("26074227")) {
+					Calc.mess("Услуга:"+serv.getCd(), 2);
+					Calc.mess("tmpVol="+tmpVol+" upStPrice="+upStPrice, 2);
+				}*/
 				chStore.addChrg(BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(upStPrice), upStServ, org, genDt);
 /*				if (tmpSum != BigDecimal.ZERO) {
 					Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);

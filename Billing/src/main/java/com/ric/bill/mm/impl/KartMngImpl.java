@@ -77,7 +77,7 @@ public class KartMngImpl implements KartMng {
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 * и вернуть объект, содержащий наличие проживающего и его отношение к нанимателю
 	 */
-	@Cacheable("readOnlyCache")
+	@Cacheable("rrr5")
 	private synchronized PersStatus checkPersStatusExt (RegContains regc, Pers p, String status, int tp, Date genDt) {
 		Date dt1, dt2;
 		List<? extends Registrable> rg;
@@ -122,7 +122,7 @@ public class KartMngImpl implements KartMng {
 	/**
 	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
-	@Cacheable("readOnlyCache")
+	@Cacheable("rrr5")
 	private synchronized boolean checkPersNullStatus (Registrable reg, Date genDt) {
 		//проверить статус, даты
 		Date dt1, dt2;
@@ -159,7 +159,7 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 //	@Cacheable("readOnlyCache")
-	@Cacheable(cacheNames="readOnlyCache", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
+	@Cacheable(cacheNames="rrr5", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
 	public synchronized void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -212,7 +212,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="rrr5", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public synchronized Standart getStandart (Kart kart, Serv serv, CntPers cntPers, Date genDt) {
 		//получить услугу основную, для начисления
 		Serv servChrg = serv.getServChrg();
@@ -328,7 +328,7 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt - Дата выборки
 	 * @return
 	 */
-	//@Cacheable(cacheNames="readOnlyCache", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
+	@Cacheable(cacheNames="rrr5", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
 	public synchronized Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
 		Double val;
 		//в начале ищем по лиц. счету 

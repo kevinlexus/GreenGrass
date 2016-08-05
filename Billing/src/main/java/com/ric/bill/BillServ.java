@@ -110,20 +110,25 @@ public class BillServ {
 		//перебрать все квартиры и лиц.счета в них
 		for (Kw kw : h.getKw()) {
 			for (Kart kart : kw.getLsk()) {
-				//if (kart.getLsk().equals("26074101")) {
+				//if (kart.getLsk().equals("26074227")) {
 					long startTime;
 					long endTime;
 					long totalTime;
 					startTime = System.currentTimeMillis();
 				    //расчитать начисление
-					chrgServ.chrgLsk(kart);
-					//сохранить расчет
-					chrgServ.save(kart.getLsk());
+					if (chrgServ.chrgLsk(kart) ==0){
+						//сохранить расчет
+						chrgServ.save(kart.getLsk());
+					} else {
+						//выполнилось с ошибкой
+						return;
+					}
 
 					endTime   = System.currentTimeMillis();
 					totalTime = endTime - startTime;
-				    //Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime,2);
+				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime,2);
 					//break; //##################
+				//}
 			}
 			//break; //##################
 		}

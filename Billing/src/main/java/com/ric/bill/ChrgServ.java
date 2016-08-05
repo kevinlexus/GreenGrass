@@ -71,6 +71,9 @@ public class ChrgServ {
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
     
+    //флаг ошибки, произошедшей в потоке
+    private static Boolean errThread;
+    
     //конструктор
     public ChrgServ() {
     	super();
@@ -79,7 +82,9 @@ public class ChrgServ {
     //Exception из потока
     Thread.UncaughtExceptionHandler expThr = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread th, Throwable ex) {
-            System.out.println("ChrgServ: Ошибка в потоке: " + ex);
+        	errThread=true;
+            System.out.println("ChrgServ: Ошибка в потоке: " + ex.getMessage());
+            
         }
     };
     
@@ -88,7 +93,7 @@ public class ChrgServ {
 	 * @param kart - объект лиц.счета
 	 * @throws ErrorWhileChrg 
 	 */
-	public void chrgLsk(Kart kart) throws ErrorWhileChrg {
+	public int chrgLsk(Kart kart) throws ErrorWhileChrg {
 		Calc.mess("ЛС===:"+kart.getLsk());
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
@@ -119,14 +124,22 @@ public class ChrgServ {
 		    //	break; //TODO - временно выход!
 		}
 
+		errThread=false;
+		
 		//ждать, когда все потоки выполнятся
 		for (ChrgThr t : trl) {
 			try {
 				t.join();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				throw new ErrorWhileChrg("ChrgServ.chrgLsk: Ошибка в потоке, во время начисления");
+				throw new ErrorWhileChrg("ChrgServ.chrgLsk: ChrgThr: ErrorWhileChrg в потоке, во время начисления");
 			} 
+		}
+		
+		//если была ошибка в потоке - приостановить выполнение, выйти
+		if (errThread) {
+			Calc.mess("ChrgServ.chrgLsk: Произошла ошибка в потоке начисления, выход!", 2);
+			return 1;
 		}
 		
 		//сделать коррекцию на сумму разности между основной и виртуальной услуг
@@ -143,7 +156,9 @@ public class ChrgServ {
 						boolean flag = false; //флаг, чтобы больше не корректировать, если уже раз найдено
 						for (Chrg chrg : prepChrg) {
 							if (!flag && chrg.getStatus() == 1 && chrg.getServ().equals(servRound)) {
-								//Calc.mess("Коррекция услуги="+chrg.getServ().getId()+" на сумму="+diff,2);
+								/*if (kart.getLsk().equals("26074227")) {
+									Calc.mess("Коррекция услуги="+chrg.getServ().getId()+" на сумму="+diff,2);
+								}*/
 								flag = true;
 								chrg.setSumAmnt(BigDecimal.valueOf(chrg.getSumAmnt()).add(diff).doubleValue()) ;
 								chrg.setSumFull(BigDecimal.valueOf(chrg.getSumFull()).add(diff).doubleValue()) ;
@@ -153,6 +168,7 @@ public class ChrgServ {
 				}
 			}		    
 		}			
+		return 0;
 	}
 
 	/**
@@ -198,11 +214,17 @@ public class ChrgServ {
 	 * перенести в архив предыдущее и сохранить новое начисление
 	 * @param lsk - лиц.счет передавать строкой!
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (String lsk) {
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
+		if (!Calc.isInit()) {
+			calc.setHouse(kart.getKw().getHouse());
+			calc.setArea(kart.getKw().getHouse().getStreet().getArea());
+			calc.setUp(); //настроить даты фильтра и т.п.
+			Calc.setInit(true);
+		}
 
-		//Calc.mess("UPDATE:"+kart.getLsk(), 2);
+		//Calc.mess("UPDATE:"+kart.getLsk()+" period="+Calc.getPeriod(), 2);
 		//перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
 		Query query = em.createQuery("update Chrg t set t.status=2 where t.lsk=:lsk "
 				+ "and t.status=1 "
