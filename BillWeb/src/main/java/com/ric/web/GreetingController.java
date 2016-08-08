@@ -11,6 +11,7 @@ import net.sf.ehcache.management.CacheStatistics;
 
 import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Propagation;
@@ -30,9 +31,8 @@ import com.ric.bill.model.ar.Kw;
 //import com.ric.bill.ChrgServ;
 
 
+@EntityScan(basePackages = "com.ric.bill")
 @RestController
-@EnableTransactionManagement
-@EnableCaching
 public class GreetingController {
 
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
@@ -48,20 +48,19 @@ public class GreetingController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
-    @Autowired private CacheManager cacheManager;
+    //@Autowired private CacheManager cacheManager;
     
     @RequestMapping("/greeting")
-    @Transactional(readOnly = false, propagation = Propagation.NEVER)
     public Greeting greeting(@RequestParam(value="lsk", defaultValue="00000000") String lsk) {
 
 
-  	        System.out.println("Cache managerName:"+cacheManager.getName());
+/*  	        System.out.println("Cache managerName:"+cacheManager.getName());
   	        System.out.println("Cache managerName:"+cacheManager.getStatus());
   	        
     	    for (String name : cacheManager.getCacheNames()) {
       	      System.out.println("Cache name:"+name);
       	      
-    	    }
+    	    }*/
     	
     	
     	try {

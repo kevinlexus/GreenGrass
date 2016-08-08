@@ -1,16 +1,13 @@
 package com.ric.web;
 
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 
 @Configuration
-@EnableCaching
 @ComponentScan({ "com.ric.bill" })
-@ImportResource("classpath:spring.xml")
+@Import(JPAConfigTwo.class)
 public class AppConfig {
-
-
-
+	
 }
