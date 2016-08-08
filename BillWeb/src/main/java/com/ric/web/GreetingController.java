@@ -55,24 +55,14 @@ public class GreetingController {
     public Greeting greeting(@RequestParam(value="lsk", defaultValue="00000000") String lsk) {
 
 
-    	    /* get stats for all known caches */
   	        System.out.println("Cache managerName:"+cacheManager.getName());
   	        System.out.println("Cache managerName:"+cacheManager.getStatus());
   	        
     	    for (String name : cacheManager.getCacheNames()) {
       	      System.out.println("Cache name:"+name);
       	      
-    	      /*Cache cache = cacheManager.getCache(name);
-    	      CacheStatistics stats = cache.getStatistics();
-    	      System.out.println("Cache:"+stats.getObjectCount());
-    	      System.out.println("Cache:"+stats.getCacheHits());
-    	      System.out.println("Cache:"+stats.getCacheMisses());*/
     	    }
     	
-    	
-    	//System.out.println(em);
-    	//Par par = em.find(Par.class, 64);
-    	//Kart kart = em.find(Kart.class, lsk);
     	
     	try {
 			billServ.chrgAll();
