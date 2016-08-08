@@ -5,18 +5,33 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.context.annotation.ComponentScan;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.management.Cache;
+import net.sf.ehcache.management.CacheStatistics;
+
+import org.hibernate.stat.Statistics;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ric.bill.model.bs.Org;
+import com.ric.bill.BillServ;
+import com.ric.bill.Calc;
+import com.ric.bill.ChrgServ;
+import com.ric.bill.excp.ErrorWhileChrg;
+import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.ar.Kw;
 
 //import com.ric.bill.ChrgServ;
 
 
-//@EntityScan(basePackages = "com.ric.bill")
-@ComponentScan({ "com.ric.bill" })
+@EntityScan(basePackages = "com.ric.bill")
 @RestController
 public class GreetingController {
 
@@ -24,11 +39,11 @@ public class GreetingController {
     @PersistenceContext
     private EntityManager em;
     
-    /*@Autowired
+    @Autowired
     private BillServ billServ;
 
     @Autowired
-    private ChrgServ chrgServ;*/
+    private ChrgServ chrgServ;
 
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
@@ -47,13 +62,12 @@ public class GreetingController {
       	      
     	    }*/
     	
-    	Org org =em.find(Org.class, 84);
     	
-    	/*try {
+    	try {
 			billServ.chrgAll();
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
-		}*/
+		}
     	
     	/*try {
 			chrgHouse(1737);
@@ -91,14 +105,14 @@ public class GreetingController {
 		}
     	*/
     	return new Greeting(counter.incrementAndGet(),
-    			org.getName());
+    			lsk);
     }
     
     /**
 	 * выполнить начисление по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 */
-/*	public void chrgHouse(int houseId) throws ErrorWhileChrg {
+	public void chrgHouse(int houseId) throws ErrorWhileChrg {
 
 		House h = em.find(House.class, houseId);
 		Calc.setInit(false);
@@ -132,5 +146,5 @@ public class GreetingController {
 		}
 	    Calc.mess("Выполнено!",2);
 	}
- */   
+    
 }
