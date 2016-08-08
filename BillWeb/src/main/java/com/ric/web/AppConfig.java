@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 
 @Configuration
-@ComponentScan({ "com.ric.bill" })
+//@ComponentScan({ "com.ric.bill" })
 @Import(JPAConfigTwo.class)
 public class AppConfig {
 	

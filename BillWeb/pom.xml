@@ -32,7 +32,7 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
+ 		<dependency>
 		  <groupId>org.springframework.samples</groupId>
 		  <artifactId>Billing</artifactId>
 		  <version>0.0.1-SNAPSHOT</version>
@@ -62,6 +62,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
+		<dependency>
+		    <groupId>commons-dbcp</groupId>
+		    <artifactId>commons-dbcp</artifactId>
+		    <version>1.4</version>
 		</dependency>
 		
 		<!-- Hibernate -->
