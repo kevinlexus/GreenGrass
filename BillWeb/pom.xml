@@ -32,7 +32,14 @@
 	</properties>
 
 	<dependencies>
- 		<dependency>
+		
+ 	<!-- 	<dependency>
+		  <groupId>com.ric.check</groupId>
+		  <artifactId>HibernateEHCacheExample</artifactId>
+		  <version>0.0.2-SNAPSHOT</version>
+		</dependency>    -->
+		 
+ 		 <dependency>
 		  <groupId>org.springframework.samples</groupId>
 		  <artifactId>Billing</artifactId>
 		  <version>0.0.1-SNAPSHOT</version>

@@ -27,15 +27,14 @@ import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
+import com.ric.bill.model.bs.Par;
 
 //import com.ric.bill.ChrgServ;
 
 
-@EntityScan(basePackages = "com.ric.bill")
 @RestController
 public class GreetingController {
 
-	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
     
@@ -51,17 +50,28 @@ public class GreetingController {
     //@Autowired private CacheManager cacheManager;
     
     @RequestMapping("/greeting")
+    @Transactional(readOnly = false, propagation = Propagation.NEVER)
     public Greeting greeting(@RequestParam(value="lsk", defaultValue="00000000") String lsk) {
 
 
-/*  	        System.out.println("Cache managerName:"+cacheManager.getName());
+    	    /* get stats for all known caches */
+  	     /*   System.out.println("Cache managerName:"+cacheManager.getName());
   	        System.out.println("Cache managerName:"+cacheManager.getStatus());
   	        
     	    for (String name : cacheManager.getCacheNames()) {
       	      System.out.println("Cache name:"+name);
       	      
-    	    }*/
+    	      /*Cache cache = cacheManager.getCache(name);
+    	      CacheStatistics stats = cache.getStatistics();
+    	      System.out.println("Cache:"+stats.getObjectCount());
+    	      System.out.println("Cache:"+stats.getCacheHits());
+    	      System.out.println("Cache:"+stats.getCacheMisses());*/
+    	    //}
     	
+    	
+    	//System.out.println(em);
+    	Par par = em.find(Par.class, 64);
+    	//Kart kart = em.find(Kart.class, lsk);
     	
     	try {
 			billServ.chrgAll();
@@ -112,7 +122,7 @@ public class GreetingController {
 	 * выполнить начисление по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 */
-	public void chrgHouse(int houseId) throws ErrorWhileChrg {
+	/*public void chrgHouse(int houseId) throws ErrorWhileChrg {
 
 		House h = em.find(House.class, houseId);
 		Calc.setInit(false);
@@ -145,6 +155,6 @@ public class GreetingController {
 			//break; //##################
 		}
 	    Calc.mess("Выполнено!",2);
-	}
+	}*/
     
 }
