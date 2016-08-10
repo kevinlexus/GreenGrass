@@ -24,6 +24,11 @@
 
 	</properties>
 	
+	<parent>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-parent</artifactId>
+	    <version>1.4.0.RELEASE</version>
+	</parent>
 
 	<dependencies>
 	
@@ -34,19 +39,17 @@
 		    <version>1.0.0.Final</version>
 		</dependency>
 
-
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-web</artifactId>
+	    </dependency>
+	    
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${spring-framework.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-    
 		<!-- Spring and Transactions -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -105,7 +108,7 @@
 		    <version>4.2.6.RELEASE</version>
 		</dependency>
 		<!-- http://mvnrepository.com/artifact/log4j/log4j -->
- 		<dependency>
+  		<dependency>
 		    <groupId>log4j</groupId>
 		    <artifactId>log4j</artifactId>
 		    <version>1.2.17</version>
@@ -118,10 +121,10 @@
 
  	   <dependency>
 	       <groupId>org.slf4j</groupId>
-	       <artifactId>slf4j-log4j12</artifactId>
+	       <artifactId>slf4j-api</artifactId>
 	       <version>1.7.5</version>
 	   </dependency>
-	   
+ 	   
 		<!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
  		<dependency>
 		    <groupId>org.hibernate</groupId>
