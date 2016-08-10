@@ -83,7 +83,7 @@ public class BillServ {
     	ex = new ExecProc(sess);
     	
     	for (House o: houseMng.findAll()) {
-			System.out.println("ДОМ:"+o.getId());
+			System.out.println("HOUSE:"+o.getId());
 			Calc.setInit(false);
 			chrgHouse(o.getId());
 		}
@@ -103,9 +103,9 @@ public class BillServ {
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
 		}
-		Calc.mess("Начисление");
-		Calc.mess("Дом: id="+Calc.getHouse().getId());
-		Calc.mess("Дом: klsk="+Calc.getHouse().getKlsk());
+		Calc.mess("Charging");
+		Calc.mess("House: id="+Calc.getHouse().getId());
+		Calc.mess("House: klsk="+Calc.getHouse().getKlsk());
 		
 		//перебрать все квартиры и лиц.счета в них
 		for (Kw kw : h.getKw()) {
@@ -126,7 +126,7 @@ public class BillServ {
 
 					endTime   = System.currentTimeMillis();
 					totalTime = endTime - startTime;
-				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime,2);
+				    Calc.mess("Time for this one lsk:"+kart.getLsk()+" ="+totalTime,2);
 					//break; //##################
 				//}
 			}

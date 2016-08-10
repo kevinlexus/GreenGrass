@@ -177,7 +177,7 @@ public class ChrgThr extends Thread {
 	 * @throws InvalidServ 
 	 */
 	public void chrgServ(Kart kart, Serv serv, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg, InvalidServ {
-		Calc.mess(thrName+" CHECK0="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK0="+serv.getId()+" dt="+genDt,2);	
 		long startTime2;
 		long endTime;
 		long totalTime;
@@ -212,10 +212,10 @@ public class ChrgThr extends Thread {
 		//BigDecimal tmpSumD = BigDecimal.ZERO;
 		
 		if (serv.getId()==32) {
-			Calc.mess(thrName+" CHECK1");
+			//Calc.mess(thrName+" CHECK1");
 		}
 
-		Calc.mess(thrName+" CHECK0.1="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK0.1="+serv.getId()+" dt="+genDt,2);	
 		//получить необходимые услуги
 		stServ = serv.getServSt();
 		upStServ = serv.getServUpst();
@@ -225,7 +225,7 @@ public class ChrgThr extends Thread {
 			stServ = serv;
 		}
 		
-		Calc.mess(thrName+" CHECK0.2="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK0.2="+serv.getId()+" dt="+genDt,2);	
 		
 		//контроль наличия услуги св.с.нормы (по ряду услуг)
 		if ((Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
@@ -233,7 +233,7 @@ public class ChrgThr extends Thread {
 			throw new EmptyServ("По услуге Id="+serv.getId()+" обнаружена пустая услуга свыше соц.нормы");
 		}
 
-		Calc.mess(thrName+" CHECK0.3="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK0.3="+serv.getId()+" dt="+genDt,2);	
 		
 		//Получить кол-во проживающих 
 		//synchronized (kartMng) {
@@ -242,7 +242,7 @@ public class ChrgThr extends Thread {
 		//calc.mess("Kart.klsk="+kart.getKlsk(), 2);
 		//calc.mess("Kart.lsk="+kart.getLsk()+" SERV="+stServ.getCd()+" SERV ID="+stServ.getId(), 2);
 		
-		Calc.mess(thrName+" CHECK0.4="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK0.4="+serv.getId()+" dt="+genDt,2);	
 
 		//получить расценку по норме	
 		synchronized (kartMng) {
@@ -253,7 +253,7 @@ public class ChrgThr extends Thread {
 			stPrice = 0d;
 		}
 
-		Calc.mess(thrName+" CHECK0.5="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK0.5="+serv.getId()+" dt="+genDt,2);	
 		
 		//получить нормативный объем
 		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
@@ -263,14 +263,14 @@ public class ChrgThr extends Thread {
 			
 			
 			synchronized (kartMng) {
-				Calc.mess(thrName+" CHECK1="+serv.getId()+" dt="+genDt,2);	
+				//Calc.mess(thrName+" CHECK1="+serv.getId()+" dt="+genDt,2);	
 				stdt = kartMng.getStandart(kart, serv, cntPers, genDt);
-				Calc.mess(thrName+" CHECK2="+serv.getId()+" dt="+genDt,2);	
+				//Calc.mess(thrName+" CHECK2="+serv.getId()+" dt="+genDt,2);	
 			}
 			//здесь же получить расценки по свыше соц.нормы и без проживающих 
 			if (serv.getServUpst() != null) {
 				
-				Calc.mess(thrName+" CHECK!"+kart,2 );
+				//Calc.mess(thrName+" CHECK!"+kart,2 );
 				upStPrice = kartMng.getServPropByCD(kart, upStServ, "Цена", genDt);
 				if (upStPrice == null) {
 					upStPrice = 0d;
@@ -290,7 +290,7 @@ public class ChrgThr extends Thread {
 		}
 			
 
-		Calc.mess(thrName+" CHECK3="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK3="+serv.getId()+" dt="+genDt,2);	
 		
 		//получить организацию
 		if (serv.getCheckOrg()) {
@@ -303,14 +303,14 @@ public class ChrgThr extends Thread {
 		//получить базу для начисления
 		baseCD = parMng.getStr(serv, "Name_CD_par_base_charge");
 
-		Calc.mess(thrName+" CHECK4="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK4="+serv.getId()+" dt="+genDt,2);	
 	
 		//получить объем для начисления
 		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по кол-ву точек-1"), 0d) == 1d || 
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d ||
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d) {
 			//получить объем одного дня
-			Calc.mess(thrName+" CHECK4.1="+serv.getId()+" dt="+genDt,2);	
+			//Calc.mess(thrName+" CHECK4.1="+serv.getId()+" dt="+genDt,2);	
 			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
 			
 			vol = vol / Calc.getCntCurDays();
@@ -321,12 +321,12 @@ public class ChrgThr extends Thread {
 					return;
 				} else {
 					//применить льготу по капремонту по 70 - летним
-					Calc.mess(thrName+" CHECK4.2="+serv.getId()+" dt="+genDt,2);	
+					//Calc.mess(thrName+" CHECK4.2="+serv.getId()+" dt="+genDt,2);	
 					vol = vol * kartMng.getCapPrivs(kart, genDt);
-					Calc.mess(thrName+" CHECK4.3="+serv.getId()+" dt="+genDt,2);	
+					//Calc.mess(thrName+" CHECK4.3="+serv.getId()+" dt="+genDt,2);	
 				}
 			}
-			Calc.mess(thrName+" CHECK4.4="+serv.getId()+" dt="+genDt,2);	
+			//Calc.mess(thrName+" CHECK4.4="+serv.getId()+" dt="+genDt,2);	
 			
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
 			//получить объем за месяц
@@ -374,7 +374,7 @@ public class ChrgThr extends Thread {
 		
 		//ВЫПОЛНИТЬ РАСЧЕТ
 	
-		Calc.mess(thrName+" CHECK5="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK5="+serv.getId()+" dt="+genDt,2);	
 
 		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d ||
 			Utl.nvl(parMng.getDbl(serv, "Вариант расчета по кол-ву точек-1"), 0d) == 1d ||
@@ -520,7 +520,7 @@ public class ChrgThr extends Thread {
 			}			
 			
 		}
-		Calc.mess(thrName+" CHECK_END="+serv.getId()+" dt="+genDt,2);	
+		//Calc.mess(thrName+" CHECK_END="+serv.getId()+" dt="+genDt,2);	
 		
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;

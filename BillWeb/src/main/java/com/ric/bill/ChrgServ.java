@@ -83,7 +83,7 @@ public class ChrgServ {
     Thread.UncaughtExceptionHandler expThr = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread th, Throwable ex) {
         	errThread=true;
-            System.out.println("ChrgServ: Ошибка в потоке: "+th.getName()+" " + ex.getMessage());
+            System.out.println("ChrgServ: Error in thread: "+th.getName()+" " + ex.getMessage());
             
         }
     };
@@ -121,7 +121,7 @@ public class ChrgServ {
 				thr1.start();
 				thr1.setUncaughtExceptionHandler(expThr);
 				trl.add(thr1);
-				Calc.mess("ЗАПУСТИЛ="+thr1.getName(), 2);
+				Calc.mess("START="+thr1.getName(), 2);
 		    //	break; //TODO - временно выход!
 		}
 
@@ -131,21 +131,21 @@ public class ChrgServ {
 		for (ChrgThr t : trl) {
 			try {
 				t.join();
-				Calc.mess("ЖДУ="+t.getName(), 2);
+				Calc.mess("WAIT="+t.getName(), 2);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				throw new ErrorWhileChrg("ChrgServ.chrgLsk: ChrgThr: ErrorWhileChrg в потоке, во время начисления");
+				throw new ErrorWhileChrg("ChrgServ.chrgLsk: ChrgThr: ErrorWhileChrg in thread!");
 			} 
 		}
 		
-		Calc.mess("*******************ВСЕ ПОТОКИ ЗАВЕРШЕНЫ!********************", 2);
+		Calc.mess("*******************ALL THREADS FINISHED!********************", 2);
 
 		//если была ошибка в потоке - приостановить выполнение, выйти
 		if (errThread) {
-			Calc.mess("ChrgServ.chrgLsk: Произошла ошибка в потоке начисления, выход!", 2);
+			Calc.mess("ChrgServ.chrgLsk: Error in thread, exiting!", 2);
 			return 1;
 		}
-		Calc.mess("CHECK6",2);	
+		//Calc.mess("CHECK6",2);	
 		
 		//сделать коррекцию на сумму разности между основной и виртуальной услуг
 		for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
@@ -173,7 +173,7 @@ public class ChrgServ {
 				}
 			}		    
 		}			
-		Calc.mess("CHECK7",2);	
+		//Calc.mess("CHECK7",2);	
 		return 0;
 	}
 
@@ -223,10 +223,10 @@ public class ChrgServ {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (String lsk) {
 		Session sess = (Session)em.getDelegate();
-		//Calc.mess("CHECK8.1="+sess,2);	
+		////Calc.mess("CHECK8.1="+sess,2);	
 		sess.clear();
 		
-		Calc.mess("CHECK9",2);	
+		//Calc.mess("CHECK9",2);	
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
@@ -234,7 +234,7 @@ public class ChrgServ {
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
 		}
-		Calc.mess("CHECK10",2);	
+		//Calc.mess("CHECK10",2);	
 
 		//Calc.mess("UPDATE:"+kart.getLsk()+" period="+Calc.getPeriod(), 2);
 		//перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
@@ -250,7 +250,7 @@ public class ChrgServ {
 		query.setParameter("period", Calc.getPeriod());
 		query.executeUpdate();
 
-		Calc.mess("CHECK11",2);	
+		//Calc.mess("CHECK11",2);	
 		for (Chrg chrg : prepChrg) {
 			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
 			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, Calc.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
@@ -258,7 +258,7 @@ public class ChrgServ {
 			kart.getChrg().add(chrg2); 
 
 		}
-		Calc.mess("CHECK12",2);	
+		//Calc.mess("CHECK12",2);	
 		
 	}
 	
