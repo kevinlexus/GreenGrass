@@ -5,74 +5,78 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.management.Cache;
-import net.sf.ehcache.management.CacheStatistics;
-
-import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ric.bill.BillServ;
-import com.ric.bill.Calc;
-import com.ric.bill.ChrgServ;
+import com.ric.bill.ChrgThr;
 import com.ric.bill.excp.ErrorWhileChrg;
-import com.ric.bill.model.ar.House;
-import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.ar.Kw;
 import com.ric.bill.model.bs.Par;
 
-//import com.ric.bill.ChrgServ;
 
-
+@EnableCaching
 @RestController
+@ComponentScan({"com.ric.bill"}) //-если убрать - не найдёт бины, например billServ
+@EntityScan(basePackages = "com.ric.bill")
+@EnableAutoConfiguration
 public class GreetingController {
 
     @PersistenceContext
     private EntityManager em;
     
+	@Autowired
+	private ApplicationContext ctx;
+
     @Autowired
     private BillServ billServ;
 
-    @Autowired
-    private ChrgServ chrgServ;
+   // @Autowired
+   // private ChrgServ chrgServ;
+   
 
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
-    //@Autowired private CacheManager cacheManager;
+    //@Autowired 
+    //private CacheManager cacheManager;
     
+   
     @RequestMapping("/greeting")
-    @Transactional(readOnly = false, propagation = Propagation.NEVER)
-    public Greeting greeting(@RequestParam(value="lsk", defaultValue="00000000") String lsk) {
-
+    public String greeting(@RequestParam(value="lsk", defaultValue="00000000") String lsk) {
+    		System.out.println("VERSION 3.0");
 
     	    /* get stats for all known caches */
-  	     /*   System.out.println("Cache managerName:"+cacheManager.getName());
+  	       /* System.out.println("Cache managerName:"+cacheManager.getName());
   	        System.out.println("Cache managerName:"+cacheManager.getStatus());
   	        
     	    for (String name : cacheManager.getCacheNames()) {
       	      System.out.println("Cache name:"+name);
       	      
-    	      /*Cache cache = cacheManager.getCache(name);
-    	      CacheStatistics stats = cache.getStatistics();
-    	      System.out.println("Cache:"+stats.getObjectCount());
+    	      net.sf.ehcache.Cache cache = cacheManager.getCache(name);
+    	      cache.setDisabled(true);
+    	      
+    	      //CacheStatistics stats = cache.getStatistics();
+    	      /*System.out.println("Cache:"+stats.getObjectCount());
     	      System.out.println("Cache:"+stats.getCacheHits());
     	      System.out.println("Cache:"+stats.getCacheMisses());*/
-    	    //}
+    	   // }
     	
     	
     	//System.out.println(em);
-    	Par par = em.find(Par.class, 64);
+    	//Par par = em.find(Par.class, 64);
     	//Kart kart = em.find(Kart.class, lsk);
-    	
+    	//BillServ billServ = new BillServ();  
+    	//BillServ billServ = (BillServ) ctx.getBean(BillServ.class);
+    	//ChrgThr thr1 = (ChrgThr) ctx.getBean(ChrgThr.class);
+
     	try {
 			billServ.chrgAll();
 		} catch (ErrorWhileChrg e) {
@@ -114,8 +118,7 @@ public class GreetingController {
 			e.printStackTrace();
 		}
     	*/
-    	return new Greeting(counter.incrementAndGet(),
-    			lsk);
+    	return "";
     }
     
     /**

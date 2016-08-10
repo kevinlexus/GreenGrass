@@ -9,7 +9,6 @@
 	<configs>
 	</configs>
 	<autoconfigs>
-		<config>java:com.ric.web.JPAConfigTwo</config>
 		<config>java:com.ric.web.BillWebApplication</config>
 		<config>java:com.ric.web.AppConfig</config>
 	</autoconfigs>
