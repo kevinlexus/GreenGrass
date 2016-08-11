@@ -53,29 +53,6 @@ public class GreetingController {
     public String greeting(@RequestParam(value="lsk", defaultValue="00000000") String lsk) {
     		System.out.println("VERSION 3.0");
 
-    	    /* get stats for all known caches */
-  	       /* System.out.println("Cache managerName:"+cacheManager.getName());
-  	        System.out.println("Cache managerName:"+cacheManager.getStatus());
-  	        
-    	    for (String name : cacheManager.getCacheNames()) {
-      	      System.out.println("Cache name:"+name);
-      	      
-    	      net.sf.ehcache.Cache cache = cacheManager.getCache(name);
-    	      cache.setDisabled(true);
-    	      
-    	      //CacheStatistics stats = cache.getStatistics();
-    	      /*System.out.println("Cache:"+stats.getObjectCount());
-    	      System.out.println("Cache:"+stats.getCacheHits());
-    	      System.out.println("Cache:"+stats.getCacheMisses());*/
-    	   // }
-    	
-    	
-    	//System.out.println(em);
-    	//Par par = em.find(Par.class, 64);
-    	//Kart kart = em.find(Kart.class, lsk);
-    	//BillServ billServ = new BillServ();  
-    	//BillServ billServ = (BillServ) ctx.getBean(BillServ.class);
-    	//ChrgThr thr1 = (ChrgThr) ctx.getBean(ChrgThr.class);
 
     	try {
 			billServ.chrgAll();
@@ -83,42 +60,7 @@ public class GreetingController {
 			e.printStackTrace();
 		}
     	
-    	/*try {
-			chrgHouse(1737);
-		} catch (ErrorWhileChrg e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	try {
-			chrgHouse(1744);
-		} catch (ErrorWhileChrg e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-
-    	/*
-    	try {
-			chrgServ.chrgLsk(kart);
-			//chrgServ.save(kart.getLsk());
-			//billServ.chrgLsk(kart);
-		} catch (ErrorWhileChrg e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-
-    	/*System.out.println("kart="+kart);
-    	System.out.println("kart="+kart.getLsk());
-    	try {
-			chrgServ.chrgLsk(kart);
-			chrgServ.save(kart.getLsk());
-			//billServ.chrgLsk(kart);
-		} catch (ErrorWhileChrg e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	*/
-    	return "";
+    	return "Working!";
     }
     
     /**

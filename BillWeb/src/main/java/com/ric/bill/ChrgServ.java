@@ -222,9 +222,9 @@ public class ChrgServ {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (String lsk) {
-		Session sess = (Session)em.getDelegate();
+		//Session sess = (Session)em.getDelegate();
 		////Calc.mess("CHECK8.1="+sess,2);	
-		sess.clear();
+		//sess.clear();
 		
 		//Calc.mess("CHECK9",2);	
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!

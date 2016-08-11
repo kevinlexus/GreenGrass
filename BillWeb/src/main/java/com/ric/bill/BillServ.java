@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -78,6 +79,7 @@ public class BillServ {
 	/**
 	 * выполнить начисление по всем домам
 	 */
+    @Async
     public void chrgAll()  throws ErrorWhileChrg {
     	Session sess = (Session) em.getDelegate();
     	ex = new ExecProc(sess);
