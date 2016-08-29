@@ -1,5 +1,7 @@
 package com.ric.bill;
 
+import java.util.concurrent.Future;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -11,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -60,11 +63,11 @@ public class BillServ {
 		
 		//dist.distAll();
 		
-		try {
+		/*try {
 			chrgAll();
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
@@ -80,7 +83,7 @@ public class BillServ {
 	 * выполнить начисление по всем домам
 	 */
     @Async
-    public void chrgAll()  throws ErrorWhileChrg {
+    public Future<Result> chrgAll() throws ErrorWhileChrg, InterruptedException {
     	Session sess = (Session) em.getDelegate();
     	ex = new ExecProc(sess);
     	
@@ -89,6 +92,7 @@ public class BillServ {
 			Calc.setInit(false);
 			chrgHouse(o.getId());
 		}
+    	return new AsyncResult<Result>(new Result());
 	}
 	
     
@@ -141,10 +145,17 @@ public class BillServ {
 	 * @param kart
 	 * @throws ErrorWhileChrg
 	 */
-	public void chrgLsk(Kart kart) throws ErrorWhileChrg {
+    @Async
+	public Future<Result> chrgLsk(Kart kart, String lsk) throws ErrorWhileChrg {
+		//Если был передан идентификатор лицевого, то найти лиц.счет
+    	if (lsk != null) {
+	    	kart = em.find(Kart.class, lsk);
+		}
+		
 	    //расчитать начисление
 		chrgServ.chrgLsk(kart);
 		//сохранить расчет
 		chrgServ.save(kart.getLsk());
+    	return new AsyncResult<Result>(new Result());
 	}	
 }
