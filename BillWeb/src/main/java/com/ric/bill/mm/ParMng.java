@@ -17,5 +17,6 @@ public interface ParMng {
 	public Double getDbl(Storable st, String cd);
 	public String getStr(Storable st, String cd, Date dt1);
 	public String getStr(Storable st, String cd);
+	public Date getDate(Storable st, String cd);
 
 }

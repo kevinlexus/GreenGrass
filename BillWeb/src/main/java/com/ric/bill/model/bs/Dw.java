@@ -35,13 +35,19 @@ public class Dw implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private int id;
 	
+    //значение - строка
     @Column(name = "S1", updatable = true)
     private String s1;
 
+    //значение - число
     @Column(name = "NS1", updatable = true)
     private Double n1;
 
-	@ManyToOne(fetch = FetchType.LAZY) //если LAZY заменить EAGER, то будут джойниться все параметры и экстрактиться тоже!(замедление) 
+    //значение - дата
+    @Column(name = "DTS1", updatable = false)
+	private Date dts1;
+    
+    @ManyToOne(fetch = FetchType.LAZY) //если LAZY заменить EAGER, то будут джойниться все параметры и экстрактиться тоже!(замедление) 
 	@JoinColumn(name="FK_HFP", referencedColumnName="ID")
 	@BatchSize(size = 20)
 	private Par par; 
@@ -97,6 +103,13 @@ public class Dw implements java.io.Serializable, Simple {
 
 	public void setDt2(Date dt2) {
 		this.dt2 = dt2;
+	}
+	public Date getDts1() {
+		return dts1;
+	}
+	
+	public void setDts1(Date dts1) {
+		this.dts1 = dts1;
 	}
 	
 }

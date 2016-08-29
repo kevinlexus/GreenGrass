@@ -65,7 +65,6 @@ public class ChrgServ {
     @PersistenceContext
     private EntityManager em;
 
-
     //вспомогательные массивы
     private List<Chrg> prepChrg;
     private HashMap<Serv, BigDecimal> mapServ;

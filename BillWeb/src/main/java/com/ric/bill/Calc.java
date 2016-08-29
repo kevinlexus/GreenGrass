@@ -6,11 +6,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ric.bill.mm.ObjMng;
+import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.bs.Obj;
 import com.ric.bill.model.bs.Serv;
 
 /**
@@ -52,7 +59,16 @@ public final class Calc {
 	//уровень отладки
 	private static int dbgLvl;
 	
+	//EntityManager - EM нужен на каждый DAO или сервис свой!
+    @PersistenceContext
+    private EntityManager em;
+    
+	@Autowired
+	private ObjMng objMng;
 	
+	@Autowired
+	private ParMng parMng;
+
 	//конструктор
 	public Calc() {
 		calendar = new GregorianCalendar(1940, Calendar.JANUARY, 1);
@@ -67,17 +83,22 @@ public final class Calc {
 	 * настроить объект для расчета 
 	 */
 	public void setUp() {
-		//HARDCODE!! TODO!
-		calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
+		//Объект приложения, получить даты текущего периода
+		Obj obj = objMng.findByCD("Модуль начисления");
+		
+		calendar = new GregorianCalendar();
+		//calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
 		calendar.clear(Calendar.ZONE_OFFSET);
 		
 		setGenDt(calendar.getTime());
 		//1 день месяца
-		calendar.set(Calendar.DATE, 1); 
+		//calendar.set(Calendar.DATE, 1); 
+		calendar.setTime(parMng.getDate(obj, "Начало расчетного периода"));
 		setCurDt1(calendar.getTime());
 		//последний день месяца
-		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-		//calendar.set(Calendar.DATE, 2); 
+		//calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		//calendar.set(Calendar.DATE, 2);
+		calendar.setTime(parMng.getDate(obj, "Конец расчетного периода"));
 		setCurDt2(calendar.getTime());
 		
 		//задать период для партицирования

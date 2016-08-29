@@ -120,6 +120,36 @@ public class ParMngImpl implements ParMng {
 	}
 
 	/**
+	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
+	 */
+	public synchronized Date getDate(Storable st, String cd) {
+		Par par = getByCD(cd);
+		try {
+			for (Dw d: st.getDw()) {
+				if (d.getPar().equals(par)) {
+					if (d.getPar().getTp().equals("DT")) {
+						if (d.getPar().getDataTp().equals("SI")) {
+							return d.getDts1();
+						} else {
+								throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+						}
+					} else {
+						throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом DT завершилась ошибкой");
+					}
+				}
+			}
+			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
+			if (!isExByCd(cd)) {
+				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
+			};
+		} catch (WrongGetMethod e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
 	//@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
