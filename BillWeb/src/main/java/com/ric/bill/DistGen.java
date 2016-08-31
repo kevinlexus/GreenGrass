@@ -382,7 +382,7 @@ public class DistGen {
 					double oplMan = lnkODNVol.getArea() /  lnkODNVol.getPers();   
 					double lmtVol = calc.oplLiter(oplMan)/1000;
 					//записать лимит ОДН
-					Lst volTp = lstMng.findByCD("Лимит ОДН");
+					Lst volTp = lstMng.getByCD("Лимит ОДН");
 					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, Calc.getCurDt1(), Calc.getCurDt2());
 					ml.getVol().add(vol);
 				}
@@ -397,7 +397,7 @@ public class DistGen {
 		//записать объем или площадь или кол-во прож. в текущий узел (лог.счетчик)
 		if ((tp==0||tp==2||tp==3) && nv.getVol() != 0d) {
 			//расчетная связь, расчетная связь ОДН
-			volTp = lstMng.findByCD("Фактический объем");
+			volTp = lstMng.getByCD("Фактический объем");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt);
 			
 			ml.getVol().add(vol);
@@ -408,7 +408,7 @@ public class DistGen {
 			}
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
-			volTp = lstMng.findByCD("Площадь и проживающие");
+			volTp = lstMng.getByCD("Площадь и проживающие");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt);
 
 			ml.getVol().add(vol);

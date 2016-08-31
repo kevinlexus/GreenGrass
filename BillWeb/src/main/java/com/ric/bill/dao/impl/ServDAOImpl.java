@@ -54,7 +54,7 @@ public class ServDAOImpl implements ServDAO {
 	 */
 	//@Cacheable(cacheNames="rrr1", key="{ #cd }")
 	@Cacheable(cacheNames="rrr1")
-	public synchronized Serv findByCd(String cd){
+	public synchronized Serv getByCD(String cd){
 		Query query =em.createQuery("from Serv t where t.cd=:cd");
 		query.setParameter("cd", cd);
 		return (Serv) query.getSingleResult();

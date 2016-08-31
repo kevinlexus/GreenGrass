@@ -38,7 +38,7 @@ public class ExecProc {
 	try {	
 		switch (varArr[0]) {
 		case 1: {
-			// Установить статус итогового формирования
+			//Отправить 
 			sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection

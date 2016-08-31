@@ -7,6 +7,6 @@ import com.ric.bill.model.bs.Serv;
 
 public interface LstMng {
 	
-	public Lst findByCD(String cd);
+	public Lst getByCD(String cd);
 	
 }

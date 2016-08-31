@@ -22,7 +22,7 @@ public class ObjDAOImpl implements ObjDAO {
 	 * Найти элемент списка по CD 
 	 */
 	@Cacheable("rrr1")
-	public synchronized Obj findByCD(String cd) {
+	public synchronized Obj getByCD(String cd) {
 		Query query =em.createQuery("from Obj t where t.cd in (:cd)");
 		query.setParameter("cd", cd);
 		return (Obj) query.getSingleResult();

@@ -5,6 +5,6 @@ import com.ric.bill.model.bs.Obj;
 
 public interface ObjDAO {
 
-	public Obj findByCD(String cd);
+	public Obj getByCD(String cd);
 	
 }

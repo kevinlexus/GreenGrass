@@ -198,11 +198,11 @@ public class DistServ {
 
 		
 		//Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));
-		/*Serv serv = servMng.findByCd("Холодная вода (объем)");	
+		/*Serv serv = servMng.getByCD("Холодная вода (объем)");	
 		Calc.mess("услуга 1:"+serv.getName(), 2);
-		serv = servMng.findByCd("Отопление ОДН");	
+		serv = servMng.getByCD("Отопление ОДН");	
 		Calc.mess("услуга 2:"+serv.getName(), 2);
-		serv = servMng.findByCd("Холодная вода (объем)");	
+		serv = servMng.getByCD("Холодная вода (объем)");	
 		Calc.mess("услуга 3:"+serv.getName(), 2);*/
 		
 		/*Calc.mess("Дом: 1============================================================",2);

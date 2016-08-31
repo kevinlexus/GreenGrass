@@ -2,16 +2,19 @@ package com.ric.bill;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.hibernate.Session;
+import org.apache.commons.collections4.MapIterator;
+import org.apache.commons.collections4.keyvalue.MultiKey;
+import org.apache.commons.collections4.map.MultiKeyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.ErrorWhileChrg;
+import com.ric.bill.excp.TooManyRecursiveCalls;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
@@ -26,12 +30,10 @@ import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
-import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.ar.Kw;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.Chrg;
-import com.ric.bill.model.fn.ChrgStore;
 
 /**
  * Сервис формирования начисления
@@ -69,7 +71,9 @@ public class ChrgServ {
     private List<Chrg> prepChrg;
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
-    
+    //массив для сумм по укрупнённым услугам, для нового начисления 
+    private MultiKeyMap mapDebNew;
+
     //флаг ошибки, произошедшей в потоке
     private static Boolean errThread;
     
@@ -108,6 +112,8 @@ public class ChrgServ {
 		//для виртуальной услуги	
 		mapServ = new HashMap<Serv, BigDecimal>();  
 		mapVrt = new HashMap<Serv, BigDecimal>();  
+		//для долгов
+		mapDebNew = new MultiKeyMap();
 
 		//список потоков
 		List<ChrgThr> trl = new ArrayList<ChrgThr>();
@@ -171,13 +177,14 @@ public class ChrgServ {
 					}
 				}
 			}		    
-		}			
+		}		
+		
 		//Calc.mess("CHECK7",2);	
 		return 0;
 	}
 
 	/**
-	 * сохранить запись о сумме предназаначенной для коррекции 
+	 * сохранить запись о сумме, предназаначенной для коррекции 
 	 * @param serv - услуга
 	 * @param sum - сумма
 	 */
@@ -197,7 +204,7 @@ public class ChrgServ {
 	}
 	
 	/**
-	 * сохранить запись о сумме предназаначенной для коррекции 
+	 * сохранить запись о сумме, предназаначенной для коррекции 
 	 * @param serv - услуга
 	 * @param sum - сумма
 	 */
@@ -215,12 +222,14 @@ public class ChrgServ {
 	    mapVrt.put(serv, sum);
 	}
 
+
 	/**
 	 * перенести в архив предыдущее и сохранить новое начисление
 	 * @param lsk - лиц.счет передавать строкой!
+	 * @throws ErrorWhileChrg 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void save (String lsk) {
+	public void save (String lsk) throws ErrorWhileChrg {
 		//Session sess = (Session)em.getDelegate();
 		////Calc.mess("CHECK8.1="+sess,2);	
 		//sess.clear();
@@ -239,17 +248,59 @@ public class ChrgServ {
 		//перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
 		Query query = em.createQuery("update Chrg t set t.status=2 where t.lsk=:lsk "
 				+ "and t.status=1 "
-				+ "and t.dt1 between :dt1 and :dt2 "
-				+ "and t.dt2 between :dt1 and :dt2 "
+				//+ "and t.dt1 between :dt1 and :dt2 " -нет смысла, есть period
+				//+ "and t.dt2 between :dt1 and :dt2 "
 				+ "and t.period=:period"
 				);
 		query.setParameter("lsk", kart.getLsk());
-		query.setParameter("dt1", Calc.getCurDt1());
-		query.setParameter("dt2", Calc.getCurDt2());
+		//query.setParameter("dt1", Calc.getCurDt1());
+		//query.setParameter("dt2", Calc.getCurDt2());
 		query.setParameter("period", Calc.getPeriod());
 		query.executeUpdate();
+		
+		//СОХРАНИТЬ ДЕЛЬТУ в debt
 
-		//Calc.mess("CHECK11",2);	
+		//сгруппировать до укрупнённых услуг текущий расчет по debt
+		for (Chrg chrg : prepChrg) {
+			Serv servMain = null;
+			try {
+				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
+			}catch(Exception e) {
+			    e.printStackTrace();
+				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+			}
+			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
+			putSumDebt(mapDebNew, servMain, chrg.getOrg(), BigDecimal.valueOf(chrg.getSumAmnt()));
+		}
+		
+		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
+		for (Chrg chrg : kart.getChrg()) {
+			//Только необходимые строки
+			if (chrg.getStatus()==1 && chrg.getPeriod().equals(Calc.getPeriod())) {
+				Serv servMain = null;
+				try {
+					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
+				}catch(Exception e) {
+				    e.printStackTrace();
+					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+				}
+				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
+				putSumDebt(mapDebNew, servMain, chrg.getOrg(), BigDecimal.valueOf(-1d * chrg.getSumAmnt()));
+			}
+		}
+		
+		//Найти дельту, отправить в функцию долгов
+		MapIterator it = mapDebNew.mapIterator();
+		Calc.mess("Проверка дельты: 1", 2);
+		while (it.hasNext()) {
+			it.next();
+			Calc.mess("Проверка дельты: 1.1", 2);
+			MultiKey mk = (MultiKey) it.getKey();
+			Calc.mess("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
+		}
+		Calc.mess("Проверка дельты: 2", 2);
+		
+		
 		for (Chrg chrg : prepChrg) {
 			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
 			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, Calc.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
@@ -261,6 +312,22 @@ public class ChrgServ {
 		
 	}
 	
+	/**
+	 * сохранить запись о сумме, предназаначенной для сохранения дельты в долгах 
+	 * @param serv - услуга
+	 * @param sum - сумма
+	 */
+	public synchronized void putSumDebt(MultiKeyMap mkMap, Serv serv, Org org, BigDecimal sum) {
+		BigDecimal s = (BigDecimal) mkMap.get(serv, org);
+		if (s != null) {
+		  s.add(sum);
+		} else {
+		  s = sum;
+		}
+	    //добавить в элемент массива
+		mkMap.put(serv, org, s);
+	}
+
 	/**
 	 * добавить из потока строку начисления 
 	 * @param chrg - строка начисления

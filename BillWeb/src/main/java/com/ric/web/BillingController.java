@@ -1,5 +1,6 @@
 package com.ric.web;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -43,23 +44,36 @@ public class BillingController {
 
     @RequestMapping("/chrglsk")
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") String lsk) {
-    	Future<Result> res = null;
-    	try {
-    		res = billServ.chrgLsk(null, lsk);
-		} catch (ErrorWhileChrg e) {
-			return "ERROR";
-		}
+    	Future<Result> fut = null;
+    	fut = billServ.chrgLsk(null, lsk);
 	   	//проверить окончание потока 
-	    while (!res.isDone()) {
+	    while (!fut.isDone()) {
 	         try {
 				Thread.sleep(100);
 				//100-millisecond задержка
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return "ERROR";
 			} 
 	     }
-    	return "OK";
+
+	    try {
+			if (fut.get().err ==0) {
+				return "ERROR";
+			} else {
+				return "OK";
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "ERROR";
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "ERROR";
+		}
+	    
     }
     
     @RequestMapping("/chrgall")

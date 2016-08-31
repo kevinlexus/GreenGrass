@@ -9,6 +9,6 @@ import com.ric.bill.model.bs.Serv;
 
 public interface LstDAO {
 
-	public Lst findByCD(String cd);
+	public Lst getByCD(String cd);
 	
 }

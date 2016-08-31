@@ -1,5 +1,8 @@
 package com.ric.bill.model.bs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,9 +16,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Type;
 
 import com.ric.bill.Storable;
+import com.ric.bill.model.mt.Meter;
+import com.ric.bill.model.tr.ServTree;
 
 
 
@@ -114,6 +120,12 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_VRT", referencedColumnName="ID")
 	private Serv servVrt;
 	
+	//иерархия услуги
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
+	@BatchSize(size = 50)
+	private List<ServTree> servTree = new ArrayList<ServTree>(0);
+
 	@Type(type= "org.hibernate.type.NumericBooleanType")
 	@Column(name = "INCL_ABSN", nullable = true)
 	private Boolean inclAbsn;//учитывать временно отсут (да / нет) при расчете услуги
@@ -284,6 +296,13 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 		this.servVrt = servVrt;
 	}
 		
+	public List<ServTree> getServTree() {
+		return servTree;
+	}
+	public void setServTree(List<ServTree> servTree) {
+		this.servTree = servTree;
+	}
+
    @Override
    public boolean equals(Object o) {
        if (this == o) return true;

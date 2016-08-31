@@ -63,11 +63,23 @@ public class BillServ {
 		
 		//dist.distAll();
 		
-		/*try {
-			chrgAll();
-		} catch (ErrorWhileChrg e) {
+    	Future<Result> res = null;
+    	try {
+    		res = chrgAll();
+		} catch (ErrorWhileChrg | InterruptedException e) {
 			e.printStackTrace();
-		}*/
+		}
+    	
+	   	//проверить окончание потока 
+		 while (!res.isDone()) {
+	         try {
+				Thread.sleep(100);
+				//100-millisecond задержка
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+	     }
 
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
@@ -143,19 +155,26 @@ public class BillServ {
 	/**
 	 * выполнить начисление по лиц.счету
 	 * @param kart
+	 * @throws InterruptedException 
 	 * @throws ErrorWhileChrg
 	 */
     @Async
-	public Future<Result> chrgLsk(Kart kart, String lsk) throws ErrorWhileChrg {
+	public Future<Result> chrgLsk(Kart kart, String lsk) {
+		Result res = new Result();
+		res.err=0;
 		//Если был передан идентификатор лицевого, то найти лиц.счет
     	if (lsk != null) {
 	    	kart = em.find(Kart.class, lsk);
 		}
-		
-	    //расчитать начисление
-		chrgServ.chrgLsk(kart);
-		//сохранить расчет
-		chrgServ.save(kart.getLsk());
-    	return new AsyncResult<Result>(new Result());
+		//расчитать начисление
+		try {
+			chrgServ.chrgLsk(kart);
+			//сохранить расчет
+			chrgServ.save(kart.getLsk());
+		} catch (ErrorWhileChrg e) {
+			e.printStackTrace();
+			res.err=1;
+		}
+    	return new AsyncResult<Result>(res);
 	}	
 }

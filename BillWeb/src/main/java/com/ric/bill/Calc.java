@@ -84,7 +84,7 @@ public final class Calc {
 	 */
 	public void setUp() {
 		//Объект приложения, получить даты текущего периода
-		Obj obj = objMng.findByCD("Модуль начисления");
+		Obj obj = objMng.getByCD("Модуль начисления");
 		
 		calendar = new GregorianCalendar();
 		//calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
@@ -93,6 +93,10 @@ public final class Calc {
 		setGenDt(calendar.getTime());
 		//1 день месяца
 		//calendar.set(Calendar.DATE, 1); 
+		//Calc.mess("OBJ=="+obj,2);
+		Date ddd = parMng.getDate(obj, "Начало расчетного периода");
+		//Calc.mess("ddd=="+ddd,2);
+		
 		calendar.setTime(parMng.getDate(obj, "Начало расчетного периода"));
 		setCurDt1(calendar.getTime());
 		//последний день месяца

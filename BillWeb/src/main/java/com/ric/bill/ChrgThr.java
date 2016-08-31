@@ -5,36 +5,20 @@ import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.dao.ParDAO;
 import com.ric.bill.excp.EmptyOrg;
 import com.ric.bill.excp.EmptyServ;
-import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.InvalidServ;
-import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.fn.ChrgRec;
@@ -94,7 +78,7 @@ public class ChrgThr extends Thread {
 		dt2 = Calc.getCurDt2();
 
 		//типы записей начисления
-		Lst chrgTpRnd = lstMng.findByCD("Начислено свернуто, округлено");
+		Lst chrgTpRnd = lstMng.getByCD("Начислено свернуто, округлено");
 		
 		//Объект, временно хранящий записи начисления
 		chStore = new ChrgStore(); 

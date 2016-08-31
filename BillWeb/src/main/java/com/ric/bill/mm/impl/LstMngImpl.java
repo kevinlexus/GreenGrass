@@ -33,8 +33,8 @@ public class LstMngImpl implements LstMng {
 	private LstDAO lstDao;
 
 	@Cacheable("rrr1") //здесь кэш работает очень эффективно!
-	public synchronized Lst findByCD(String cd) {
-		return lstDao.findByCD(cd);
+	public synchronized Lst getByCD(String cd) {
+		return lstDao.getByCD(cd);
 	}
 
 

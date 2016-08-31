@@ -4,6 +4,6 @@ import com.ric.bill.model.bs.Obj;
 
 public interface ObjMng {
 	
-	public Obj findByCD(String cd);
+	public Obj getByCD(String cd);
 	
 }
