@@ -60,9 +60,9 @@ public class BillingController {
 
 	    try {
 			if (fut.get().err ==0) {
-				return "ERROR";
-			} else {
 				return "OK";
+			} else {
+				return "ERROR";
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

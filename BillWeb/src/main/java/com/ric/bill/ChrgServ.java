@@ -242,11 +242,52 @@ public class ChrgServ {
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
 		}
-		//Calc.mess("CHECK10",2);	
-
-		//Calc.mess("UPDATE:"+kart.getLsk()+" period="+Calc.getPeriod(), 2);
-		//перенести предыдущий расчет начисления в статус "подготовка к архиву" (1->2)
-		Query query = em.createQuery("update Chrg t set t.status=2 where t.lsk=:lsk "
+		
+		//ДЕЛЬТА
+		//ПОДГОТОВИТЬСЯ для сохранения дельты
+		//сгруппировать до укрупнённых услуг текущий расчет по debt
+		for (Chrg chrg : prepChrg) {
+			Serv servMain = null;
+			try {
+				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
+			}catch(Exception e) {
+			    e.printStackTrace();
+				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+			}
+			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
+			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
+			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
+			putSumDeb(mapDebNew, servMain, orgMain, BigDecimal.valueOf(chrg.getSumAmnt()));
+			//Calc.mess("Сохранить дельту: serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
+		}
+		
+		/*BigDecimal a = BigDecimal.valueOf(10d);
+		BigDecimal b = BigDecimal.valueOf(-1d*15d);
+		BigDecimal c = a.add(b);
+		Calc.mess("CHECKCCCCCC="+c, 2);*/
+		
+		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
+		for (Chrg chrg : kart.getChrg()) {
+			//Только необходимые строки
+			//Calc.mess("CHECK status="+chrg.getStatus()+"period="+chrg.getPeriod(), 2);
+			if (chrg.getStatus()==1 && chrg.getPeriod().equals(Calc.getPeriod())) {
+				Serv servMain = null;
+				try {
+					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
+				}catch(Exception e) {
+				    e.printStackTrace();
+					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+				}
+				//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
+				Org orgMain = em.find(Org.class, chrg.getOrg().getId());
+				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
+				//Calc.mess("Вычесть дельту: serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
+				putSumDeb(mapDebNew, servMain, orgMain, BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
+			}
+		}
+		
+		//перенести предыдущий расчет начисления в статус "архив" (1->0)
+		Query query = em.createQuery("update Chrg t set t.status=0 where t.lsk=:lsk "
 				+ "and t.status=1 "
 				//+ "and t.dt1 between :dt1 and :dt2 " -нет смысла, есть period
 				//+ "and t.dt2 between :dt1 and :dt2 "
@@ -258,58 +299,27 @@ public class ChrgServ {
 		query.setParameter("period", Calc.getPeriod());
 		query.executeUpdate();
 		
-		//СОХРАНИТЬ ДЕЛЬТУ в debt
-
-		//сгруппировать до укрупнённых услуг текущий расчет по debt
-		for (Chrg chrg : prepChrg) {
-			Serv servMain = null;
-			try {
-				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
-			}catch(Exception e) {
-			    e.printStackTrace();
-				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
-			}
-			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
-			putSumDebt(mapDebNew, servMain, chrg.getOrg(), BigDecimal.valueOf(chrg.getSumAmnt()));
-		}
 		
-		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
-		for (Chrg chrg : kart.getChrg()) {
-			//Только необходимые строки
-			if (chrg.getStatus()==1 && chrg.getPeriod().equals(Calc.getPeriod())) {
-				Serv servMain = null;
-				try {
-					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
-				}catch(Exception e) {
-				    e.printStackTrace();
-					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
-				}
-				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
-				putSumDebt(mapDebNew, servMain, chrg.getOrg(), BigDecimal.valueOf(-1d * chrg.getSumAmnt()));
-			}
-		}
-		
-		//Найти дельту, отправить в функцию долгов
+		//ДЕЛЬТА
+		//НАЙТИ и передать дельту в функцию долгов
 		MapIterator it = mapDebNew.mapIterator();
-		Calc.mess("Проверка дельты: 1", 2);
 		while (it.hasNext()) {
 			it.next();
-			Calc.mess("Проверка дельты: 1.1", 2);
 			MultiKey mk = (MultiKey) it.getKey();
-			Calc.mess("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
+			//Calc.mess("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
+			BigDecimal val = (BigDecimal)it.getValue();
+			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
+			  Calc.mess("Отправка дельты: serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+			}
 		}
-		Calc.mess("Проверка дельты: 2", 2);
 		
-		
+		//Сохранить новое начисление
 		for (Chrg chrg : prepChrg) {
 			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
 			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, Calc.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
 					chrg.getVol(), chrg.getPrice(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
 			kart.getChrg().add(chrg2); 
-
 		}
-		//Calc.mess("CHECK12",2);	
-		
 	}
 	
 	/**
@@ -317,10 +327,10 @@ public class ChrgServ {
 	 * @param serv - услуга
 	 * @param sum - сумма
 	 */
-	public synchronized void putSumDebt(MultiKeyMap mkMap, Serv serv, Org org, BigDecimal sum) {
+	public synchronized void putSumDeb(MultiKeyMap mkMap, Serv serv, Org org, BigDecimal sum) {
 		BigDecimal s = (BigDecimal) mkMap.get(serv, org);
 		if (s != null) {
-		  s.add(sum);
+		  s=s.add(sum);
 		} else {
 		  s = sum;
 		}
