@@ -97,7 +97,7 @@ public class BillServ {
     @Async
     public Future<Result> chrgAll() throws ErrorWhileChrg, InterruptedException {
     	Session sess = (Session) em.getDelegate();
-    	ex = new ExecProc(sess);
+    	setEx(new ExecProc(sess));
     	
     	for (House o: houseMng.findAll()) {
 			System.out.println("HOUSE:"+o.getId());
@@ -176,5 +176,15 @@ public class BillServ {
 			res.err=1;
 		}
     	return new AsyncResult<Result>(res);
+	}
+
+
+	public ExecProc getEx() {
+		return ex;
+	}
+
+
+	public void setEx(ExecProc ex) {
+		this.ex = ex;
 	}	
 }

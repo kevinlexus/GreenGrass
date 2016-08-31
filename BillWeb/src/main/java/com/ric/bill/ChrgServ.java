@@ -2,6 +2,7 @@ package com.ric.bill;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,8 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.keyvalue.MultiKey;
@@ -299,7 +302,7 @@ public class ChrgServ {
 		query.setParameter("period", Calc.getPeriod());
 		query.executeUpdate();
 		
-		
+	
 		//ДЕЛЬТА
 		//НАЙТИ и передать дельту в функцию долгов
 		MapIterator it = mapDebNew.mapIterator();
@@ -310,6 +313,35 @@ public class ChrgServ {
 			BigDecimal val = (BigDecimal)it.getValue();
 			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
 			  Calc.mess("Отправка дельты: serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+			  //вызвать хранимую функцию, для пересчёта долга
+			  /*.prepareCall("{ call fn.transfer_change(p_lsk => rec_klsk.lsk,1
+		      p_fk_serv => c2.fk_serv,2
+		      p_fk_org => c2.fk_org,3
+		      p_period => to_char(l_dt1,'YYYYMM'),4
+		      p_summa_chng => c2.summa,5
+		      p_dtek => sysdate,6
+		      p_tp_chng => 1,7
+		      p_fk_chng => l_iter) 8;*/
+			  
+			  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
+			  qr.registerStoredProcedureParameter("P_LSK", String.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_FK_SERV", Integer.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_FK_ORG", Integer.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_PERIOD", String.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_SUMMA_CHNG", Double.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_DTEK", Date.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
+			  qr.setParameter("P_LSK", kart.getLsk());
+			  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
+			  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
+			  qr.setParameter("P_PERIOD", Calc.getPeriod());
+			  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
+			  qr.setParameter("P_DTEK", new Date());
+			  qr.setParameter("P_TP_CHNG", 1);
+			  qr.setParameter("P_FK_CHNG", 1);
+			  
+			  qr.execute();
 			}
 		}
 		

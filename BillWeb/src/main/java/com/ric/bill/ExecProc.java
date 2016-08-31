@@ -27,28 +27,52 @@ public class ExecProc {
 	 * 
 	 * @param var  вариант исполнения
 	 * 		extPar дополнительный параметр
+	 * @param dbl1 
 	 *            
 	 * @return
 	 */
-	public int runWork(int var, int extPar, int extPar2) { //используется массив var[] так как doWork требует final переменную... так обманули
+	public int runWork(int var, int extPar1, int extPar2, int extPar3, int extPar4, int extPar5, Double dbl1) { //используется массив var[] так как doWork требует final переменную... так обманули
 	doWorkRet =-1;
 	final int varArr[]={var};
-	final int extParArr[]={extPar};
+	final int extParArr1[]={extPar1};
 	final int extParArr2[]={extPar2};
+	final int extParArr3[]={extPar3};
+	final int extParArr4[]={extPar4};
+	final int extParArr5[]={extPar5};
+	final double extParArr6[]={dbl1};
+
+	//CallableStatement call = connection
+	//		.prepareCall("{ ? = call fn.p_chrg.check_temp(?) }");
+
 	try {	
 		switch (varArr[0]) {
 		case 1: {
 			//Отправить 
-			sess.doWork(new Work() {
-				public void execute(Connection connection) throws SQLException {
+			//sess.doWork(new Work() {
+/*				public void execute(Connection connection) throws SQLException {
+					//		.prepareCall("{ ? = call fn.p_chrg.check_temp(?) }");
 					CallableStatement call = connection
-							.prepareCall("{ ? = call fn.p_chrg.check_temp(?) }");
-					call.registerOutParameter(1, Types.INTEGER);
-					call.setInt(2, 1);
-					call.execute();
-					doWorkRet = call.getInt(1);
-				}
-			});
+							.prepareCall("{ call fn.transfer_change(?, ?, ?, ?, ?, ?, ?, ?) }");
+					
+					//call.registerOutParameter(1, Types.INTEGER);
+					call.setInt(1, extPar1);
+					call.setInt(2, extPar2);
+					call.setInt(3, extPar3);
+					call.execute(7,);*/
+
+					/*.prepareCall("{ call fn.transfer_change(p_lsk => rec_klsk.lsk,1
+				      p_fk_serv => c2.fk_serv,2
+				      p_fk_org => c2.fk_org,3
+				      p_period => to_char(l_dt1,'YYYYMM'),4
+				      p_summa_chng => c2.summa,5
+				      p_dtek => sysdate,6
+				      p_tp_chng => 1,7
+				      p_fk_chng => l_iter) 8;*/
+
+
+					//doWorkRet = call.getInt(1);
+				//}
+			//});
 			break;
 		}
 		default: {

@@ -28,7 +28,7 @@ import com.ric.bill.model.bs.Serv;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "KMP_CHRG", schema="FN")
+@Table(name = "CHRG", schema="FN")
 public class Chrg implements java.io.Serializable, Simple {
 
 
@@ -74,7 +74,7 @@ public class Chrg implements java.io.Serializable, Simple {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CHRG")
-	@SequenceGenerator(name="SEQ_CHRG", sequenceName="FN.KMP_CHRG_ID", allocationSize=10)	
+	@SequenceGenerator(name="SEQ_CHRG", sequenceName="FN.SEQ_CHRG", allocationSize=10)	
     @Column(name = "ID", unique=true, updatable = false, nullable = false)			
 	private Integer id;
 	
