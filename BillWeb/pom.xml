@@ -4,7 +4,7 @@
   <groupId>com.ric.bill</groupId>
   <artifactId>BillWeb</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
+  <packaging>jar</packaging>  
             
   <properties>
 
@@ -21,7 +21,10 @@
 
 		<!-- Test -->
 		<junit.version>4.11</junit.version>
-
+		
+<!-- 		<start-class>com.ric.web.BillWebApplication</start-class>
+		 -->
+		
 	</properties>
 	
 	<parent>
@@ -145,17 +148,22 @@
 		    <artifactId>commons-collections4</artifactId>
 		    <version>4.1</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
+		<dependency>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>oracle</artifactId>
+		    <version>10.2.0.2.0</version>
+		</dependency>
 	
 	</dependencies>	
-<build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.18.1</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
