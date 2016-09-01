@@ -97,6 +97,9 @@ public class ChrgThr extends Thread {
 			//только там, где существует услуга в данном дне
 			if (kartMng.getServ(kart, serv, genDt)) {
 				String tpOwn = parMng.getStr(kart, "FORM_S", genDt); 
+				if (tpOwn == null) {
+					Calc.mess("ОШИБКА! Не указанна форма собственности! lsk="+kart.getLsk(), 2);
+				}
 				//где лиц.счет является нежилым помещением, не начислять за данный день
 				if (tpOwn.equals("Нежилое собственное") || tpOwn.equals("Нежилое муниципальное")
 					|| tpOwn.equals("Аренда некоммерч.") || tpOwn.equals("Для внутр. пользования")) {
@@ -151,7 +154,7 @@ public class ChrgThr extends Thread {
 
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;
-	    //Calc.mess("Поток завершён, ВРЕМЯ НАЧИСЛЕНИЯ по услуге Id="+serv.getId()+":   "+totalTime, 2);
+        //Calc.mess("ChrThr: Поток завершён "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId(),2);
 
 	}
 

@@ -78,15 +78,11 @@ public class BillingController {
     
     @RequestMapping("/chrgall")
     public String chrgAll() {
-    	Future<Result> res = null;
-    	try {
-    		res = billServ.chrgAll();
-		} catch (ErrorWhileChrg | InterruptedException e) {
-			e.printStackTrace();
-		}
+    	Future<Result> fut = null;
+		fut = billServ.chrgAll();
     	
 	   	//проверить окончание потока 
-		 while (!res.isDone()) {
+		 while (!fut.isDone()) {
 	         try {
 				Thread.sleep(100);
 				//100-millisecond задержка
@@ -95,7 +91,22 @@ public class BillingController {
 				e.printStackTrace();
 			} 
 	     }
-    	return "OK";
+
+		 try {
+				if (fut.get().err ==0) {
+					return "OK";
+				} else {
+					return "ERROR";
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "ERROR";
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "ERROR";
+		}
     }
 
     /**

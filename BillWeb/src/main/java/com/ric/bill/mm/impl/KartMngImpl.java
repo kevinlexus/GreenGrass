@@ -485,4 +485,8 @@ public class KartMngImpl implements KartMng {
 	}
 
 	
+	//все лицевые по определённому критерию
+	public List<Kart> findAll() {
+		return kDao.findAll();
+	}
 }

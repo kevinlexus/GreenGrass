@@ -77,6 +77,7 @@ public final class Calc {
 		calendar = new GregorianCalendar(2940, Calendar.JANUARY, 1);
 		calendar.clear(Calendar.ZONE_OFFSET);
 		lastDt = calendar.getTime();
+		
 	}
 	
 	/**

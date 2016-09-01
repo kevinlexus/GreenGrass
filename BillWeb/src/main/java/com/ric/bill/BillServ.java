@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.mm.HouseMng;
+import com.ric.bill.mm.KartMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
@@ -42,6 +43,8 @@ public class BillServ {
     private DistServ dist;
 	@Autowired
     private ChrgServ chrgServ;
+	@Autowired
+    private KartMng kartMng;
 
     @PersistenceContext
     private EntityManager em;
@@ -62,11 +65,7 @@ public class BillServ {
 		//dist.distAll();
 		
     	Future<Result> res = null;
-    	try {
-    		res = chrgAll();
-		} catch (ErrorWhileChrg | InterruptedException e) {
-			e.printStackTrace();
-		}
+		res = chrgAll();
     	
 	   	//проверить окончание потока 
 		 while (!res.isDone()) {
@@ -93,26 +92,95 @@ public class BillServ {
 	 * выполнить начисление по всем домам
 	 */
     @Async
-    public Future<Result> chrgAll() throws ErrorWhileChrg, InterruptedException {
-		if (!Calc.isInit()) {
-			calc.setUp(); //настроить даты фильтра и т.п.
-			Calc.setInit(true);
+    public Future<Result> chrgAll() {
+		Result res = new Result();
+		res.err=0;
+		long startTime;
+		long endTime;
+		long totalTime;
+
+		long startTime2;
+		long endTime2;
+		long totalTime2;
+
+		startTime = System.currentTimeMillis();
+		//установить даты
+		calc.setUp();
+		
+		for (Kart kart : kartMng.findAll()) {
+			//расчитать начисление по лиц.счету
+			try {
+				startTime2 = System.currentTimeMillis();
+				
+				if (chrgServ.chrgLsk(kart) ==0){
+					//сохранить расчет
+					chrgServ.save(kart.getLsk());
+				} else {
+					//выполнилось с ошибкой
+					//ничего не предпринимать, считать дальше
+				}
+				endTime2   = System.currentTimeMillis();
+				totalTime2 = endTime2 - startTime2;
+			    Calc.mess("Time for this one lsk:"+kart.getLsk()+" ="+totalTime2,2);
+				
+			} catch (ErrorWhileChrg e) {
+				//выполнилось с ошибкой, вывести стек
+				e.printStackTrace();
+			}
+			
 		}
-    	
-    	for (House o: houseMng.findAll2()) {
-			System.out.println("HOUSE:"+o.getId());
+
+		/*for (House o: houseMng.findAll2()) {
+			System.out.println("Started House: id="+o.getId());
 			Calc.setInit(false);
 			chrgHouse(o.getId());
-		}
-    	return new AsyncResult<Result>(new Result());
+			System.out.println("Finished House: id="+o.getId());
+		}*/
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+	    Calc.mess("Time for all process:"+totalTime,2);
+    	return new AsyncResult<Result>(res);
 	}
 	
+    
+	/**
+	 * выполнить начисление по лиц.счету
+	 * @param kart
+	 * @throws InterruptedException 
+	 * @throws ErrorWhileChrg
+	 */
+    @Async
+	public Future<Result> chrgLsk(Kart kart, String lsk) {
+		Result res = new Result();
+		res.err=0;
+		//Если был передан идентификатор лицевого, то найти лиц.счет
+    	if (lsk != null) {
+	    	kart = em.find(Kart.class, lsk);
+		}
+		//расчитать начисление
+		try {
+			if (chrgServ.chrgLsk(kart) ==0){
+				//сохранить расчет
+				chrgServ.save(kart.getLsk());
+			} else {
+				res.err=1;
+			}
+		} catch (ErrorWhileChrg e) {
+			e.printStackTrace();
+			res.err=1;
+		}
+    	return new AsyncResult<Result>(res);
+	}
+
+    
+    
+    
     
     /**
 	 * выполнить начисление по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 */
-	public void chrgHouse(int houseId) throws ErrorWhileChrg {
+	public void chrgHouse(int houseId) {
 
 		House h = em.find(House.class, houseId);
 		if (!Calc.isInit()) {
@@ -135,12 +203,16 @@ public class BillServ {
 					long totalTime;
 					startTime = System.currentTimeMillis();
 				    //расчитать начисление
-					if (chrgServ.chrgLsk(kart) ==0){
-						//сохранить расчет
-						chrgServ.save(kart.getLsk());
-					} else {
-						//выполнилось с ошибкой
-						return;
+					try {
+						if (chrgServ.chrgLsk(kart) ==0){
+							//сохранить расчет
+							chrgServ.save(kart.getLsk());
+						} else {
+							//выполнилось с ошибкой
+							//ничего не предпринимать, считать дальше
+						}
+					} catch (ErrorWhileChrg e) {
+						e.printStackTrace();
 					}
 
 					endTime   = System.currentTimeMillis();
@@ -153,30 +225,5 @@ public class BillServ {
 		}
 	}
 
-	/**
-	 * выполнить начисление по лиц.счету
-	 * @param kart
-	 * @throws InterruptedException 
-	 * @throws ErrorWhileChrg
-	 */
-    @Async
-	public Future<Result> chrgLsk(Kart kart, String lsk) {
-		Result res = new Result();
-		res.err=0;
-		//Если был передан идентификатор лицевого, то найти лиц.счет
-    	if (lsk != null) {
-	    	kart = em.find(Kart.class, lsk);
-		}
-		//расчитать начисление
-		try {
-			chrgServ.chrgLsk(kart);
-			//сохранить расчет
-			chrgServ.save(kart.getLsk());
-		} catch (ErrorWhileChrg e) {
-			e.printStackTrace();
-			res.err=1;
-		}
-    	return new AsyncResult<Result>(res);
-	}
-
+    
 }

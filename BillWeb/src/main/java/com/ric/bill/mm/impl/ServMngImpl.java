@@ -18,6 +18,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.dao.HouseDAO;
 import com.ric.bill.dao.ServDAO;
 import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.NotFoundUpperLevel;
 import com.ric.bill.excp.TooManyRecursiveCalls;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
@@ -66,16 +67,17 @@ public class ServMngImpl implements ServMng {
 	 * @tp - тип иерархии, например "serv_tree_kassa"
 	 * @return - искомая услуга
 	 * @throws TooManyRecursiveCalls 
+	 * @throws NotFoundUpperLevel 
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #serv.getId(), #tp }")
-	public synchronized Serv getUpper(Serv serv, String tp) throws TooManyRecursiveCalls {
+	public synchronized Serv getUpper(Serv serv, String tp) throws TooManyRecursiveCalls, NotFoundUpperLevel {
 		Lst tpTree = lstMng.getByCD(tp);
 		for(ServTree rec : serv.getServTree()) {
 			if (rec.getTp().equals(tpTree) && rec.getServ().equals(serv)) {
 				return getUpperTree(rec, tpTree.getCd(), 0).getServ();
 			}
 		}
-		return null;
+		throw new NotFoundUpperLevel("По услуге id="+serv.getId()+" не найден верхний уровень!");
 	}
 
 	/**

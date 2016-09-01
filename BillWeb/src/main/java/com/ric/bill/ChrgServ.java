@@ -100,7 +100,7 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	public int chrgLsk(Kart kart) throws ErrorWhileChrg {
-		//Calc.mess("ChrgServ.chrgLsk Lsk="+kart.getLsk(), 2);
+		Calc.mess("ChrgServ.chrgLsk Lsk="+kart.getLsk(), 2);
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
 			calc.setArea(kart.getKw().getHouse().getStreet().getArea());
@@ -302,7 +302,6 @@ public class ChrgServ {
 		query.setParameter("period", Calc.getPeriod());
 		query.executeUpdate();
 		
-	
 		//ДЕЛЬТА
 		//НАЙТИ и передать дельту в функцию долгов
 		MapIterator it = mapDeb.mapIterator();
@@ -312,7 +311,19 @@ public class ChrgServ {
 			//Calc.mess("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
 			BigDecimal val = (BigDecimal)it.getValue();
 			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
-			  Calc.mess("Отправка дельты: serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+
+			  try {
+				Calc.mess("Отправка дельты: serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//Calc.mess("Проверка дельты1: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
+				//Calc.mess("Проверка дельты2: org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+				//Calc.mess("Проверка дельты2: serv="+((Serv) mk.getKey(0)).getId()+" sum="+it.getValue(),2);
+				e.printStackTrace();
+				
+			}
+			  
+			  
 			  //вызвать хранимую функцию, для пересчёта долга
 			  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
 			  qr.registerStoredProcedureParameter("P_LSK", String.class, ParameterMode.IN);

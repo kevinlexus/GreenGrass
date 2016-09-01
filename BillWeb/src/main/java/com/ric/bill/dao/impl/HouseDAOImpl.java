@@ -52,7 +52,6 @@ public class HouseDAOImpl implements HouseDAO {
 		Query q;
 		List<House> lstHouse = null;
 		try {
-		Calc.mess("Query1"+Calc.getCurDt1().toLocaleString(), 2);
 			q = em.createNativeQuery("select distinct h.id "+
 						   "from ar.house h, ar.lskxorg x, ar.kart k, ar.kw kw, bs.org o "+
 						   "where k.fk_kw = kw.id "+
