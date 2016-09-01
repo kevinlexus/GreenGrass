@@ -75,7 +75,7 @@ public class ChrgServ {
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
     //массив для сумм по укрупнённым услугам, для нового начисления 
-    private MultiKeyMap mapDebNew;
+    private MultiKeyMap mapDeb;
 
     //флаг ошибки, произошедшей в потоке
     private static Boolean errThread;
@@ -88,9 +88,9 @@ public class ChrgServ {
     //Exception из потока
     Thread.UncaughtExceptionHandler expThr = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread th, Throwable ex) {
-        	errThread=true;
+			errThread=true;
             System.out.println("ChrgServ: Error in thread: "+th.getName()+" " + ex.getMessage());
-            
+			ex.printStackTrace();
         }
     };
     
@@ -100,7 +100,7 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	public int chrgLsk(Kart kart) throws ErrorWhileChrg {
-		Calc.mess("ЛС===:"+kart.getLsk());
+		//Calc.mess("ChrgServ.chrgLsk Lsk="+kart.getLsk(), 2);
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
 			calc.setArea(kart.getKw().getHouse().getStreet().getArea());
@@ -116,7 +116,7 @@ public class ChrgServ {
 		mapServ = new HashMap<Serv, BigDecimal>();  
 		mapVrt = new HashMap<Serv, BigDecimal>();  
 		//для долгов
-		mapDebNew = new MultiKeyMap();
+		mapDeb = new MultiKeyMap();
 
 		//список потоков
 		List<ChrgThr> trl = new ArrayList<ChrgThr>();
@@ -129,7 +129,7 @@ public class ChrgServ {
 				thr1.start();
 				thr1.setUncaughtExceptionHandler(expThr);
 				trl.add(thr1);
-				Calc.mess("START="+thr1.getName(), 2);
+				//Calc.mess("START="+thr1.getName(), 2);
 		    //	break; //TODO - временно выход!
 		}
 
@@ -139,14 +139,14 @@ public class ChrgServ {
 		for (ChrgThr t : trl) {
 			try {
 				t.join();
-				Calc.mess("WAIT="+t.getName(), 2);
+				//Calc.mess("WAIT="+t.getName(), 2);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				throw new ErrorWhileChrg("ChrgServ.chrgLsk: ChrgThr: ErrorWhileChrg in thread!");
 			} 
 		}
 		
-		Calc.mess("*******************ALL THREADS FINISHED!********************", 2);
+		//Calc.mess("*******************ALL THREADS FINISHED!********************", 2);
 
 		//если была ошибка в потоке - приостановить выполнение, выйти
 		if (errThread) {
@@ -260,7 +260,7 @@ public class ChrgServ {
 			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
-			putSumDeb(mapDebNew, servMain, orgMain, BigDecimal.valueOf(chrg.getSumAmnt()));
+			putSumDeb(mapDeb, servMain, orgMain, BigDecimal.valueOf(chrg.getSumAmnt()));
 			//Calc.mess("Сохранить дельту: serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
 		}
 		
@@ -285,7 +285,7 @@ public class ChrgServ {
 				Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
 				//Calc.mess("Вычесть дельту: serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
-				putSumDeb(mapDebNew, servMain, orgMain, BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
+				putSumDeb(mapDeb, servMain, orgMain, BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
 			}
 		}
 		
@@ -305,7 +305,7 @@ public class ChrgServ {
 	
 		//ДЕЛЬТА
 		//НАЙТИ и передать дельту в функцию долгов
-		MapIterator it = mapDebNew.mapIterator();
+		MapIterator it = mapDeb.mapIterator();
 		while (it.hasNext()) {
 			it.next();
 			MultiKey mk = (MultiKey) it.getKey();
@@ -314,15 +314,6 @@ public class ChrgServ {
 			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
 			  Calc.mess("Отправка дельты: serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
 			  //вызвать хранимую функцию, для пересчёта долга
-			  /*.prepareCall("{ call fn.transfer_change(p_lsk => rec_klsk.lsk,1
-		      p_fk_serv => c2.fk_serv,2
-		      p_fk_org => c2.fk_org,3
-		      p_period => to_char(l_dt1,'YYYYMM'),4
-		      p_summa_chng => c2.summa,5
-		      p_dtek => sysdate,6
-		      p_tp_chng => 1,7
-		      p_fk_chng => l_iter) 8;*/
-			  
 			  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
 			  qr.registerStoredProcedureParameter("P_LSK", String.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_FK_SERV", Integer.class, ParameterMode.IN);

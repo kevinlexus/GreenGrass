@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
@@ -36,6 +39,14 @@ import com.ric.bill.model.tr.TarifKlsk;
  * @author lev
  *
  */
+@SqlResultSetMapping(name="HouseMapping",
+classes = {
+    @ConstructorResult(
+            targetClass = House.class,
+            columns = {
+                @ColumnResult(name = "id", type = Long.class)
+            })
+})
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "HOUSE", schema="AR")
@@ -52,6 +63,10 @@ import com.ric.bill.model.tr.TarifKlsk;
 public class House extends Base implements java.io.Serializable, MeterContains, TarifContains {
 
 	public House() {
+	}
+
+	public House(Integer id) {
+		this.id = id;
 	}
 
 	@Id

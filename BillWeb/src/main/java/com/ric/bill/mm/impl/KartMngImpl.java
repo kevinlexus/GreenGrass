@@ -441,11 +441,13 @@ public class KartMngImpl implements KartMng {
 		List<Pers> counted = new ArrayList<Pers>();
 		for (Registrable p : rc.getReg()) {
 			Pers pers = p.getPers();
+			//если дата рождения - пустая - считать сегодняшней датой
+			Date dtBrn = Utl.nvl(pers.getDtBorn(), new Date());
 			if (pers!=null && !foundPers(counted, pers)) {
 				PersStatus ps = checkPersStatusExt(rc, pers, "Постоянная прописка", 0, genDt);
 				if (ps.exist) {
 					//постоянная регистрация есть
-					if (Utl.getDiffYears(pers.getDtBorn(), genDt) >= 70) {
+					if (Utl.getDiffYears(dtBrn, genDt) >= 70) {
 						//если 70 летний
 						if (ps.kinShip.equals("Собственник") || ps.kinShip.equals("Наниматель")) {
 							//да еще и Наниматель (Собственник)
@@ -463,7 +465,7 @@ public class KartMngImpl implements KartMng {
 					ps = checkPersStatusExt(rc, pers, "Временная прописка", 0, genDt);
 					if (ps.exist) {
 						//временное присутствие есть
-						if (Utl.getDiffYears(pers.getDtBorn(), genDt) < 70) {
+						if (Utl.getDiffYears(dtBrn, genDt) < 70) {
 							//временно зарег <70 лет
 							under70 = true;
 						}						

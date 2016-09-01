@@ -46,8 +46,6 @@ public class BillServ {
     @PersistenceContext
     private EntityManager em;
 
-    private ExecProc ex;
-
     @Test
 	public void test1() {
 		
@@ -96,10 +94,12 @@ public class BillServ {
 	 */
     @Async
     public Future<Result> chrgAll() throws ErrorWhileChrg, InterruptedException {
-    	Session sess = (Session) em.getDelegate();
-    	setEx(new ExecProc(sess));
+		if (!Calc.isInit()) {
+			calc.setUp(); //настроить даты фильтра и т.п.
+			Calc.setInit(true);
+		}
     	
-    	for (House o: houseMng.findAll()) {
+    	for (House o: houseMng.findAll2()) {
 			System.out.println("HOUSE:"+o.getId());
 			Calc.setInit(false);
 			chrgHouse(o.getId());
@@ -116,11 +116,12 @@ public class BillServ {
 
 		House h = em.find(House.class, houseId);
 		if (!Calc.isInit()) {
-			calc.setHouse(h);
-			calc.setArea(Calc.getHouse().getStreet().getArea());
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
 		}
+		calc.setHouse(h);
+		calc.setArea(Calc.getHouse().getStreet().getArea());
+
 		Calc.mess("Charging");
 		Calc.mess("House: id="+Calc.getHouse().getId());
 		Calc.mess("House: klsk="+Calc.getHouse().getKlsk());
@@ -178,13 +179,4 @@ public class BillServ {
     	return new AsyncResult<Result>(res);
 	}
 
-
-	public ExecProc getEx() {
-		return ex;
-	}
-
-
-	public void setEx(ExecProc ex) {
-		this.ex = ex;
-	}	
 }

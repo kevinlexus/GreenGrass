@@ -26,5 +26,8 @@ public class HouseMngImpl implements HouseMng {
 		return hDao.findAll();
 	}
 
+    public synchronized List<House> findAll2() {
+		return hDao.findAll2();
+	}
 
 }

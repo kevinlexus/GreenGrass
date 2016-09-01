@@ -10,5 +10,6 @@ import com.ric.bill.model.mt.MeterLog;
 public interface HouseMng {
 	
 	public List<House> findAll();
+	public List<House> findAll2();
 	
 }

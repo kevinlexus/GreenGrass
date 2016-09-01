@@ -83,7 +83,7 @@ public class ChrgThr extends Thread {
 		//Объект, временно хранящий записи начисления
 		chStore = new ChrgStore(); 
 		//if (serv.getId()==32) {
-		  //Calc.mess("ChrThr: Услуга:"+serv.getCd()+" Id="+serv.getId(),2);
+		  //Calc.mess("ChrThr: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId(),2);
 		//}
 		Calendar c = Calendar.getInstance();
 		
