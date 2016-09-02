@@ -4,12 +4,10 @@
   <groupId>com.ric.bill</groupId>
   <artifactId>BillWeb</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>  
             
   <properties>
 
 		<!-- Generic properties -->
-		<java.version>1.7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -22,15 +20,16 @@
 		<!-- Test -->
 		<junit.version>4.11</junit.version>
 		
-<!-- 		<start-class>com.ric.web.BillWebApplication</start-class>
-		 -->
+ 		<start-class>com.ric.web.BillWebApplication</start-class>
+		<java.version>1.8</java.version>
 		
 	</properties>
 	
 	<parent>
-	    <groupId>org.springframework.boot</groupId>
-	    <artifactId>spring-boot-starter-parent</artifactId>
-	    <version>1.4.0.RELEASE</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.0.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<dependencies>
@@ -156,6 +155,13 @@
 		    <version>10.2.0.2.0</version>
 		</dependency>
 	
+		<!-- добавил согласно статьи http://zazos79.blogspot.ru/2015/02/spring-boot-12-run-as-windows-service.html -->
+		<dependency> 
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-loader</artifactId>
+	            <scope>provided</scope>
+	    </dependency>
+    	
 	</dependencies>	
 
     <build>
@@ -163,7 +169,46 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+		      <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-loader</artifactId>
+                        </exclude>
+                    </excludes>
+		      </configuration>                
+
+		      <executions>
+		        <execution>
+		          <goals>
+		            <goal>repackage</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+
             </plugin>
+            
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target> <!-- Это нужно, чтобы заработал windows-сервис! -->
+								<zip destfile="${project.build.directory}/${project.build.finalName}.jar" update="true" compress="store">
+									<fileset dir="${project.build.directory}/classes" includes="com/ric/web/Bootstrap.class"/>
+								</zip>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+            
         </plugins>
     </build>
 </project>
