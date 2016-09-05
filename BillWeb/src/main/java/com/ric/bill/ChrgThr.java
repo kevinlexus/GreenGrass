@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -35,8 +38,8 @@ public class ChrgThr extends Thread {
 	
 	@Autowired
 	private LstMng lstMng;
-	@Autowired
-	private ChrgServ chrgServ;
+	//@Autowired
+	//private ChrgServ chrgServ;
 	@Autowired
 	private ParMng parMng;
 	@Autowired
@@ -52,15 +55,26 @@ public class ChrgThr extends Thread {
 
 	private String thrName;
 	
-    //конструктор
+    //вспомогательные массивы
+    private List<Chrg> prepChrg;
+    private HashMap<Serv, BigDecimal> mapServ;
+    private HashMap<Serv, BigDecimal> mapVrt;
+
+	//конструктор
 	public ChrgThr() {
 		super();
 	}
 	
 	//установить параметры
-	public void set(Serv serv, Kart kart) {
+	//				thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
+
+	public void set(Serv serv, Kart kart, 
+			HashMap<Serv, BigDecimal> mapServ, HashMap<Serv, BigDecimal> mapVrt, List<Chrg> prepChrg) {
 		this.serv = serv;
 		this.kart = kart;
+		this.mapServ = mapServ;
+		this.mapVrt = mapVrt;
+		this.prepChrg = prepChrg;
 	}
 
 	public void run() {
@@ -135,11 +149,11 @@ public class ChrgThr extends Thread {
 			
 			//записать, для будущего округления по виртуальной услуге
 			if (rec.getServ().getServVrt() != null) {
-				chrgServ.putMapServVal(rec.getServ().getServVrt(), sum);
+				putMapServVal(rec.getServ().getServVrt(), sum);
 			}
 			//записать, сумму по виртуальной услуге
 			if (rec.getServ().getVrt()) {
-					chrgServ.putMapVrtVal(rec.getServ(), sum);
+					putMapVrtVal(rec.getServ(), sum);
 					
 			}
 
@@ -147,7 +161,7 @@ public class ChrgThr extends Thread {
 				if (sum.compareTo(BigDecimal.ZERO) != 0) {
 					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, Calc.getPeriod(), sum, sum, 
 							vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
-					chrgServ.chrgAdd(chrg);
+					chrgAdd(chrg);
 				}
 			}
 		} 
@@ -517,4 +531,58 @@ public class ChrgThr extends Thread {
 		}
 		
 	}
+	
+	/**
+	 * сохранить запись о сумме, предназаначенной для коррекции 
+	 * @param serv - услуга
+	 * @param sum - сумма
+	 */
+	public void putMapServVal(Serv serv, BigDecimal sum) {
+		synchronized (mapServ) {
+		BigDecimal tmpSum;
+		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
+		for (Map.Entry<Serv, BigDecimal> entry : mapServ.entrySet()) {
+	    	if (entry.getKey().equals(serv)) { 
+	    		tmpSum = Utl.nvl(entry.getValue(), BigDecimal.ZERO);
+	    		tmpSum = tmpSum.add(sum);
+	    		//Calc.mess("Write serv id="+serv.getId()+" val="+sum,2);
+	    	    mapServ.put(entry.getKey(), tmpSum);
+	    		return;
+	    	}
+	    }
+	    mapServ.put(serv, sum);
+		}
+	}
+	
+	/**
+	 * сохранить запись о сумме, предназаначенной для коррекции 
+	 * @param serv - услуга
+	 * @param sum - сумма
+	 */
+	public void putMapVrtVal(Serv serv, BigDecimal sum) {
+		synchronized (mapVrt) {
+		BigDecimal tmpSum;
+		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
+	    for (Map.Entry<Serv, BigDecimal> entry : mapVrt.entrySet()) {
+	    	if (entry.getKey().equals(serv)) {
+	    		tmpSum = Utl.nvl(entry.getValue(), BigDecimal.ZERO);
+	    		tmpSum = tmpSum.add(sum);
+	    		mapVrt.put(entry.getKey(), tmpSum);
+	    		return;
+	    	}
+	    }
+	    mapVrt.put(serv, sum);
+		}
+	}
+
+	/**
+	 * добавить из потока строку начисления 
+	 * @param chrg - строка начисления
+	 */
+	public void chrgAdd(Chrg chrg) {
+		synchronized (chrg) {
+		  prepChrg.add(chrg);
+		}
+	}
+	
 }
