@@ -210,7 +210,7 @@ public class ChrgServ {
 			Calc.setInit(true);
 		}
 		
-		//ДЕЛЬТА
+		//ДЕЛЬТА 
 		//ПОДГОТОВИТЬСЯ для сохранения дельты
 		//сгруппировать до укрупнённых услуг текущий расчет по debt
 		for (Chrg chrg : prepChrg) {
