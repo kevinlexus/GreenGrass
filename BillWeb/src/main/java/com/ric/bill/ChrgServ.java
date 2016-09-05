@@ -218,9 +218,9 @@ public class ChrgServ {
 			try {
 				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 			}catch(Exception e) {
-				servMain = chrg.getServ();
+				//servMain = chrg.getServ();
 			    //e.printStackTrace();
-				//throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 			}
 			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
@@ -228,12 +228,7 @@ public class ChrgServ {
 			putSumDeb(mapDeb, servMain, orgMain, BigDecimal.valueOf(chrg.getSumAmnt()));
 			//Calc.mess("Сохранить дельту: serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
 		}
-		
-		/*BigDecimal a = BigDecimal.valueOf(10d);
-		BigDecimal b = BigDecimal.valueOf(-1d*15d);
-		BigDecimal c = a.add(b);
-		Calc.mess("CHECKCCCCCC="+c, 2);*/
-		
+
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
@@ -244,8 +239,8 @@ public class ChrgServ {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 				}catch(Exception e) {
 				    //e.printStackTrace();
-					servMain = chrg.getServ();
-					//throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+					//servMain = chrg.getServ();
+					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 				}
 				//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 				Org orgMain = em.find(Org.class, chrg.getOrg().getId());
