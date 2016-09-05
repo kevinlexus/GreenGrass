@@ -213,7 +213,7 @@ public class ChrgServ {
 		//ДЕЛЬТА 
 		//ПОДГОТОВИТЬСЯ для сохранения дельты
 		//сгруппировать до укрупнённых услуг текущий расчет по debt
-		for (Chrg chrg : prepChrg) {
+		for (Chrg chrg : prepChrg) { 
 			Serv servMain = null;
 			try {
 				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
