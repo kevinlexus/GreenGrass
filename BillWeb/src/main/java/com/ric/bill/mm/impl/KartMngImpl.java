@@ -412,8 +412,9 @@ public class KartMngImpl implements KartMng {
 		for (TarifKlsk k : kart.getTarifklsk()) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServ t : k.getTarserv()) {
-					if (!lst.contains(t.getServ())) {
-						lst.add(t.getServ());
+						if (!lst.contains(t.getServ())) {
+							lst.add(t.getServ());
+						
 					}
 				}
 		}
@@ -421,8 +422,8 @@ public class KartMngImpl implements KartMng {
 		for (TarifKlsk k : kart.getKw().getHouse().getTarifklsk()) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServ t : k.getTarserv()) {
-					if (!lst.contains(t.getServ())) {
-						lst.add(t.getServ());
+						if (!lst.contains(t.getServ())) {
+							lst.add(t.getServ());
 					}
 				}
 		}

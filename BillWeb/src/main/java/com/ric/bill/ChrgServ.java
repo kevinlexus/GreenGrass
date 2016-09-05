@@ -20,6 +20,8 @@ import org.apache.commons.collections4.keyvalue.MultiKey;
 import org.apache.commons.collections4.map.MultiKeyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,7 @@ import com.ric.bill.model.fn.Chrg;
  *
  */
 @Service
+@Scope("prototype")
 public class ChrgServ {
 
 	@Autowired
@@ -99,7 +102,7 @@ public class ChrgServ {
 	 * @param kart - объект лиц.счета
 	 * @throws ErrorWhileChrg 
 	 */
-	public int chrgLsk(Kart kart) throws ErrorWhileChrg {
+	public /*synchronized */int chrgLsk(Kart kart) throws ErrorWhileChrg {
 		Calc.mess("ChrgServ.chrgLsk Lsk="+kart.getLsk(), 2);
 		if (!Calc.isInit()) {
 			calc.setHouse(kart.getKw().getHouse());
@@ -108,6 +111,7 @@ public class ChrgServ {
 			Calc.setInit(true);
 		}
 		calc.setKart(kart);
+		Calc.mess("CHECK1",1);	
 
 		prepChrg = new ArrayList<Chrg>(0); 
 		//получить все необходимые услуги для начисления из тарифа по дому
@@ -123,6 +127,7 @@ public class ChrgServ {
 		//найти все услуги, действительные в лиц.счете
 		//и создать потоки по кол-ву услуг
 		
+		Calc.mess("CHECK2",1);	
 		for (Serv serv : kartMng.getAllServ(kart)) {
 				ChrgThr thr1 = (ChrgThr) ctx.getBean(ChrgThr.class);
 				thr1.set(serv, kart);
@@ -132,6 +137,7 @@ public class ChrgServ {
 				//Calc.mess("START="+thr1.getName(), 2);
 		    //	break; //TODO - временно выход!
 		}
+		Calc.mess("CHECK3",1);	
 
 		errThread=false;
 		
@@ -146,14 +152,14 @@ public class ChrgServ {
 			} 
 		}
 		
-		//Calc.mess("*******************ALL THREADS FINISHED!********************", 2);
+		Calc.mess("*******************ALL THREADS FINISHED!********************", 1);
 
 		//если была ошибка в потоке - приостановить выполнение, выйти
 		if (errThread) {
 			Calc.mess("ChrgServ.chrgLsk: Error in thread, exiting!", 2);
 			return 1;
 		}
-		//Calc.mess("CHECK6",2);	
+		Calc.mess("CHECK6",1);	
 		
 		//сделать коррекцию на сумму разности между основной и виртуальной услуг
 		for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
@@ -182,7 +188,7 @@ public class ChrgServ {
 			}		    
 		}		
 		
-		//Calc.mess("CHECK7",2);	
+		Calc.mess("CHECK7",1);	
 		return 0;
 	}
 
@@ -254,8 +260,11 @@ public class ChrgServ {
 			try {
 				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 			}catch(Exception e) {
-			    e.printStackTrace();
-				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+				Calc.mess("ВРЕМЕННО УБРАЛ EXCEPTION! ЗАМЕНИТЬ КОД servMain!!!");
+				servMain = chrg.getServ();
+
+			    //e.printStackTrace();
+				//throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 			}
 			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
@@ -278,8 +287,11 @@ public class ChrgServ {
 				try {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 				}catch(Exception e) {
-				    e.printStackTrace();
-					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+					Calc.mess("ВРЕМЕННО УБРАЛ EXCEPTION! ЗАМЕНИТЬ КОД servMain!!!");
+					servMain = chrg.getServ();
+				    //e.printStackTrace();
+					//throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+				    
 				}
 				//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 				Org orgMain = em.find(Org.class, chrg.getOrg().getId());

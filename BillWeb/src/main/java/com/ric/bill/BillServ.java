@@ -8,6 +8,9 @@ import javax.persistence.PersistenceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,8 @@ import com.ric.bill.model.ar.Kw;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring.xml" })
 @Service
+//@Scope(value="request", proxyMode=ScopedProxyMode.TARGET_CLASS)
+@Scope("prototype")
 public class BillServ {
 
 	@Autowired
@@ -42,48 +47,24 @@ public class BillServ {
 	@Autowired
     private KartMng kartMng;
 
-    @PersistenceContext
+	@Autowired
+    private Check check;
+
+	@PersistenceContext
     private EntityManager em;
 
-    @Test
-	public void test1() {
-		
-		//распределить объемы по дому
-		long startTime;
-		long endTime;
-		long totalTime;
+    @Async
+    public Future<Result> useCheck() {
+		Result res = new Result();
 
-		System.out.println("Begin!");
-		Calc.setDbgLvl(0);
+		System.out.println("Try-1");
 
-		startTime = System.currentTimeMillis();
-		
-		//dist.distAll();
-		
-    	Future<Result> res = null;
-		res = chrgAll();
-    	
-	   	//проверить окончание потока 
-		 while (!res.isDone()) {
-	         try {
-				Thread.sleep(100);
-				//100-millisecond задержка
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-	     }
+    	check.checkMe(1);
 
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		System.out.println("ОБЩЕЕ время исполнения:"+totalTime);
-
-		System.out.println("End!");
-			
-		
-	}
-
-
+    	res.err=0;
+		return new AsyncResult<Result>(res);
+    }
+    
 	/**
 	 * выполнить начисление по всем домам
 	 */
@@ -103,11 +84,17 @@ public class BillServ {
 		//установить даты
 		calc.setUp();
 		
+		System.out.println("chrgAll 1");
 		for (Kart kart : kartMng.findAll()) {
 			//расчитать начисление по лиц.счету
+			
+			
+			//check.checkMe(1);
+			
 			try {
 				startTime2 = System.currentTimeMillis();
 				
+				System.out.println("chrgAll 2 "+kart.getLsk());
 				if (chrgServ.chrgLsk(kart) ==0){
 					//сохранить расчет
 					chrgServ.save(kart.getLsk());

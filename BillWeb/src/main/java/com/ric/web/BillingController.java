@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -17,8 +18,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ric.bill.BillServ;
+import com.ric.bill.Calc;
 import com.ric.bill.ChrgThr;
 import com.ric.bill.Result;
 import com.ric.bill.excp.ErrorWhileChrg;
@@ -76,6 +79,36 @@ public class BillingController {
 	    
     }
     
+    @RequestMapping("/chrgcheck")
+    public String chrgCheck() {
+    	Future<Result> fut = null;
+		fut = billServ.useCheck();
+		
+		 while (!fut.isDone()) {
+	         try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+	     }
+		 try {
+				if (fut.get().err ==0) {
+					return "OK";
+				} else {
+					return "ERROR";
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "ERROR";
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "ERROR";
+		}
+    }
+
     @RequestMapping("/chrgall")
     public String chrgAll() {
     	Future<Result> fut = null;

@@ -1,0 +1,76 @@
+[2016-09-05 08:16:38] [debug] ( prunsrv.c:1679) [16704] Commons Daemon procrun log initialized
+[2016-09-05 08:16:39] [info]  ( prunsrv.c:1683) [16704] Commons Daemon procrun (1.0.15.0 32-bit) started
+[2016-09-05 08:16:39] [debug] ( prunsrv.c:561 ) [16704] Installing service...
+[2016-09-05 08:16:40] [info]  ( prunsrv.c:600 ) [16704] Service BillWeb name BillWeb
+[2016-09-05 08:16:41] [debug] ( prunsrv.c:616 ) [16704] Setting service description Core of billing system
+[2016-09-05 08:16:43] [info]  ( prunsrv.c:634 ) [16704] Service 'BillWeb' installed
+[2016-09-05 08:16:43] [info]  ( prunsrv.c:1764) [16704] Commons Daemon procrun finished
+[2016-09-05 08:16:45] [debug] ( prunsrv.c:1679) [19516] Commons Daemon procrun log initialized
+[2016-09-05 08:16:45] [info]  ( prunsrv.c:1683) [19516] Commons Daemon procrun (1.0.15.0 32-bit) started
+[2016-09-05 08:16:45] [info]  ( prunsrv.c:1580) [19516] Debugging 'BillWeb' service...
+[2016-09-05 08:16:46] [debug] ( prunsrv.c:1374) [19516] Inside ServiceMain...
+[2016-09-05 08:16:46] [debug] ( prunsrv.c:844 ) [19516] reportServiceStatusE: 2, 0, 3000, 0
+[2016-09-05 08:16:46] [info]  ( prunsrv.c:1127) [19516] Starting service...
+[2016-09-05 08:16:46] [debug] ( javajni.c:233 ) [19516] loading jvm 'C:\Program Files (x86)\Java\jre1.8.0_71\bin\client\jvm.dll'
+[2016-09-05 08:16:47] [debug] ( javajni.c:704 ) [19552] Jvm Option[0] -Djava.class.path=C:\work\git\BillWeb\src\main\java\WindowsService\BillWeb-0.0.1-SNAPSHOT.jar
+[2016-09-05 08:16:47] [debug] ( javajni.c:704 ) [19552] Jvm Option[1] exit
+[2016-09-05 08:16:55] [debug] ( javajni.c:888 ) [19552] argv[0] = start
+[2016-09-05 08:16:55] [debug] ( javajni.c:941 ) [19552] Java Worker thread started com/ric/web/Bootstrap:start
+[2016-09-05 08:16:57] [debug] ( prunsrv.c:1186) [19516] Java started com/ric/web/Bootstrap
+[2016-09-05 08:16:57] [info]  ( prunsrv.c:1284) [19516] Service started in 10733 ms.
+[2016-09-05 08:16:57] [debug] ( prunsrv.c:844 ) [19516] reportServiceStatusE: 4, 0, 0, 0
+[2016-09-05 08:16:58] [debug] ( prunsrv.c:1528) [19516] Waiting for worker to finish...
+[2016-09-05 08:20:13] [debug] ( javajni.c:964 ) [19552] Java Worker thread finished com/ric/web/Bootstrap:start with status=0
+[2016-09-05 08:20:13] [debug] ( prunsrv.c:1533) [19516] Worker finished.
+[2016-09-05 08:20:13] [debug] ( prunsrv.c:1559) [19516] Waiting for all threads to exit
+[2016-09-05 08:21:43] [info]  ( prunsrv.c:1339) [19192] Console CTRL+C event signaled
+[2016-09-05 08:21:43] [info]  ( prunsrv.c:943 ) [19192] Stopping service...
+[2016-09-05 08:21:43] [debug] ( javajni.c:888 ) [20320] argv[0] = stop
+[2016-09-05 08:21:43] [debug] ( javajni.c:941 ) [20320] Java Worker thread started com/ric/web/Bootstrap:stop
+[2016-09-05 08:21:43] [debug] ( javajni.c:471 ) [19596] Exit hook with exit code 1
+[2016-09-05 08:21:48] [debug] ( prunsrv.c:1679) [19144] Commons Daemon procrun log initialized
+[2016-09-05 08:21:48] [info]  ( prunsrv.c:1683) [19144] Commons Daemon procrun (1.0.15.0 32-bit) started
+[2016-09-05 08:21:48] [info]  ( prunsrv.c:1580) [19144] Debugging 'BillWeb' service...
+[2016-09-05 08:21:48] [debug] ( prunsrv.c:1374) [19144] Inside ServiceMain...
+[2016-09-05 08:21:48] [debug] ( prunsrv.c:844 ) [19144] reportServiceStatusE: 2, 0, 3000, 0
+[2016-09-05 08:21:48] [info]  ( prunsrv.c:1127) [19144] Starting service...
+[2016-09-05 08:21:48] [debug] ( javajni.c:233 ) [19144] loading jvm 'C:\Program Files (x86)\Java\jre1.8.0_71\bin\client\jvm.dll'
+[2016-09-05 08:21:48] [debug] ( javajni.c:704 ) [19316] Jvm Option[0] -Djava.class.path=C:\work\git\BillWeb\src\main\java\WindowsService\BillWeb-0.0.1-SNAPSHOT.jar
+[2016-09-05 08:21:48] [debug] ( javajni.c:704 ) [19316] Jvm Option[1] exit
+[2016-09-05 08:21:49] [debug] ( javajni.c:888 ) [19316] argv[0] = start
+[2016-09-05 08:21:49] [debug] ( javajni.c:941 ) [19316] Java Worker thread started com/ric/web/Bootstrap:start
+[2016-09-05 08:21:50] [debug] ( prunsrv.c:1186) [19144] Java started com/ric/web/Bootstrap
+[2016-09-05 08:21:50] [info]  ( prunsrv.c:1284) [19144] Service started in 1362 ms.
+[2016-09-05 08:21:50] [debug] ( prunsrv.c:844 ) [19144] reportServiceStatusE: 4, 0, 0, 0
+[2016-09-05 08:21:50] [debug] ( prunsrv.c:1528) [19144] Waiting for worker to finish...
+[2016-09-05 08:22:01] [debug] ( javajni.c:964 ) [19316] Java Worker thread finished com/ric/web/Bootstrap:start with status=0
+[2016-09-05 08:22:01] [debug] ( prunsrv.c:1533) [19144] Worker finished.
+[2016-09-05 08:22:01] [debug] ( prunsrv.c:1559) [19144] Waiting for all threads to exit
+[2016-09-05 08:23:27] [info]  ( prunsrv.c:1339) [19168] Console CTRL+C event signaled
+[2016-09-05 08:23:27] [info]  ( prunsrv.c:943 ) [19168] Stopping service...
+[2016-09-05 08:23:27] [debug] ( javajni.c:888 ) [19948] argv[0] = stop
+[2016-09-05 08:23:27] [debug] ( javajni.c:941 ) [19948] Java Worker thread started com/ric/web/Bootstrap:stop
+[2016-09-05 08:23:27] [debug] ( javajni.c:471 ) [18456] Exit hook with exit code 0
+[2016-09-05 08:26:06] [debug] ( prunsrv.c:1679) [19976] Commons Daemon procrun log initialized
+[2016-09-05 08:26:06] [info]  ( prunsrv.c:1683) [19976] Commons Daemon procrun (1.0.15.0 32-bit) started
+[2016-09-05 08:26:06] [info]  ( prunsrv.c:1580) [19976] Debugging 'BillWeb' service...
+[2016-09-05 08:26:07] [debug] ( prunsrv.c:1374) [19976] Inside ServiceMain...
+[2016-09-05 08:26:07] [debug] ( prunsrv.c:844 ) [19976] reportServiceStatusE: 2, 0, 3000, 0
+[2016-09-05 08:26:07] [info]  ( prunsrv.c:1127) [19976] Starting service...
+[2016-09-05 08:26:07] [debug] ( javajni.c:233 ) [19976] loading jvm 'C:\Program Files (x86)\Java\jre1.8.0_71\bin\client\jvm.dll'
+[2016-09-05 08:26:07] [debug] ( javajni.c:704 ) [20280] Jvm Option[0] -Djava.class.path=C:\work\git\BillWeb\src\main\java\WindowsService\BillWeb-0.0.1-SNAPSHOT.jar
+[2016-09-05 08:26:07] [debug] ( javajni.c:704 ) [20280] Jvm Option[1] exit
+[2016-09-05 08:26:07] [debug] ( javajni.c:888 ) [20280] argv[0] = start
+[2016-09-05 08:26:07] [debug] ( javajni.c:941 ) [20280] Java Worker thread started com/ric/web/Bootstrap:start
+[2016-09-05 08:26:08] [debug] ( prunsrv.c:1186) [19976] Java started com/ric/web/Bootstrap
+[2016-09-05 08:26:08] [info]  ( prunsrv.c:1284) [19976] Service started in 1088 ms.
+[2016-09-05 08:26:08] [debug] ( prunsrv.c:844 ) [19976] reportServiceStatusE: 4, 0, 0, 0
+[2016-09-05 08:26:08] [debug] ( prunsrv.c:1528) [19976] Waiting for worker to finish...
+[2016-09-05 08:26:15] [debug] ( javajni.c:964 ) [20280] Java Worker thread finished com/ric/web/Bootstrap:start with status=0
+[2016-09-05 08:26:15] [debug] ( prunsrv.c:1533) [19976] Worker finished.
+[2016-09-05 08:26:15] [debug] ( prunsrv.c:1559) [19976] Waiting for all threads to exit
+[2016-09-05 08:28:33] [info]  ( prunsrv.c:1339) [11460] Console CTRL+C event signaled
+[2016-09-05 08:28:33] [info]  ( prunsrv.c:943 ) [11460] Stopping service...
+[2016-09-05 08:28:33] [debug] ( javajni.c:888 ) [20408] argv[0] = stop
+[2016-09-05 08:28:33] [debug] ( javajni.c:941 ) [20408] Java Worker thread started com/ric/web/Bootstrap:stop
+[2016-09-05 08:28:33] [debug] ( javajni.c:471 ) [19508] Exit hook with exit code 0

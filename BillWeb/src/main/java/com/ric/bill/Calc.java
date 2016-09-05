@@ -26,13 +26,16 @@ import com.ric.bill.model.bs.Serv;
  *
  */
 @Service
-public final class Calc {
+public final class Calc { 
 	private static Date genDt; //рассчитываемая дата
+	
 	//даты текущего периода
 	private static Date curDt1;
 	private static Date curDt2;
+	
 	//период для партицирования
 	private static String period;
+	
 	//наиболее ранняя и поздние даты в биллинге, константы
 	private static Date firstDt;//=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
 	private static Date lastDt;//=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
@@ -71,6 +74,8 @@ public final class Calc {
 
 	//конструктор
 	public Calc() {
+		Calc.mess("CALC INIT 1.0",1);
+
 		calendar = new GregorianCalendar(1940, Calendar.JANUARY, 1);
 		calendar.clear(Calendar.ZONE_OFFSET);
 		firstDt = calendar.getTime();
@@ -84,6 +89,7 @@ public final class Calc {
 	 * настроить объект для расчета 
 	 */
 	public void setUp() {
+
 		//Объект приложения, получить даты текущего периода
 		Obj obj = objMng.getByCD("Модуль начисления");
 		

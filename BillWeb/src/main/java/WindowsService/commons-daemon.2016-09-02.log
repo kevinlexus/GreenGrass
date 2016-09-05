@@ -1,0 +1,53 @@
+[2016-09-02 11:23:38] [debug] ( prunsrv.c:1679) [ 9100] Commons Daemon procrun log initialized
+[2016-09-02 11:23:38] [info]  ( prunsrv.c:1683) [ 9100] Commons Daemon procrun (1.0.15.0 32-bit) started
+[2016-09-02 11:23:38] [debug] ( prunsrv.c:561 ) [ 9100] Installing service...
+[2016-09-02 11:23:38] [info]  ( prunsrv.c:600 ) [ 9100] Service BillWeb name BillWeb
+[2016-09-02 11:23:38] [debug] ( prunsrv.c:616 ) [ 9100] Setting service description Core of billing system
+[2016-09-02 11:23:38] [info]  ( prunsrv.c:634 ) [ 9100] Service 'BillWeb' installed
+[2016-09-02 11:23:38] [info]  ( prunsrv.c:1764) [ 9100] Commons Daemon procrun finished
+[2016-09-02 11:23:50] [debug] ( prunsrv.c:1679) [12852] Commons Daemon procrun log initialized
+[2016-09-02 11:23:50] [info]  ( prunsrv.c:1683) [12852] Commons Daemon procrun (1.0.15.0 32-bit) started
+[2016-09-02 11:23:50] [info]  ( prunsrv.c:1596) [12852] Running 'BillWeb' Service...
+[2016-09-02 11:23:50] [debug] ( prunsrv.c:1374) [11928] Inside ServiceMain...
+[2016-09-02 11:23:50] [debug] ( prunsrv.c:844 ) [11928] reportServiceStatusE: 2, 0, 3000, 0
+[2016-09-02 11:23:50] [info]  ( prunsrv.c:1127) [11928] Starting service...
+[2016-09-02 11:23:50] [debug] ( javajni.c:233 ) [11928] loading jvm 'C:\Program Files (x86)\Java\jre1.8.0_71\bin\client\jvm.dll'
+[2016-09-02 11:23:50] [debug] ( javajni.c:704 ) [11796] Jvm Option[0] -Djava.class.path=C:\work\git\BillWeb\src\main\java\WindowsService\BillWeb-0.0.1-SNAPSHOT.jar
+[2016-09-02 11:23:50] [debug] ( javajni.c:704 ) [11796] Jvm Option[1] exit
+[2016-09-02 11:23:50] [error] ( javajni.c:863 ) [11796] FindClass com/ric/web/Bootstrap failed
+[2016-09-02 11:23:50] [debug] ( javajni.c:964 ) [11796] Java Worker thread finished com/ric/web/Bootstrap:start with status=3
+[2016-09-02 11:23:50] [error] ( prunsrv.c:1183) [11928] Failed to start Java
+[2016-09-02 11:23:50] [error] ( prunsrv.c:1536) [11928] ServiceStart returned 4
+[2016-09-02 11:23:50] [debug] ( prunsrv.c:844 ) [11928] reportServiceStatusE: 1, 1066, 0, 4
+[2016-09-02 11:23:50] [info]  ( prunsrv.c:1598) [12852] Run service finished.
+[2016-09-02 11:23:50] [info]  ( prunsrv.c:1764) [12852] Commons Daemon procrun finished
+[2016-09-02 11:24:11] [debug] ( prunsrv.c:1679) [10468] Commons Daemon procrun log initialized
+[2016-09-02 11:24:11] [info]  ( prunsrv.c:1683) [10468] Commons Daemon procrun (1.0.15.0 32-bit) started
+[2016-09-02 11:24:11] [info]  ( prunsrv.c:1596) [10468] Running 'BillWeb' Service...
+[2016-09-02 11:24:11] [debug] ( prunsrv.c:1374) [10012] Inside ServiceMain...
+[2016-09-02 11:24:11] [debug] ( prunsrv.c:844 ) [10012] reportServiceStatusE: 2, 0, 3000, 0
+[2016-09-02 11:24:11] [info]  ( prunsrv.c:1127) [10012] Starting service...
+[2016-09-02 11:24:11] [debug] ( javajni.c:233 ) [10012] loading jvm 'C:\Program Files (x86)\Java\jre1.8.0_71\bin\client\jvm.dll'
+[2016-09-02 11:24:11] [debug] ( javajni.c:704 ) [12180] Jvm Option[0] -Djava.class.path=C:\work\git\BillWeb\src\main\java\WindowsService\BillWeb-0.0.1-SNAPSHOT.jar
+[2016-09-02 11:24:11] [debug] ( javajni.c:704 ) [12180] Jvm Option[1] exit
+[2016-09-02 11:24:11] [debug] ( javajni.c:888 ) [12180] argv[0] = start
+[2016-09-02 11:24:11] [debug] ( javajni.c:941 ) [12180] Java Worker thread started com/ric/web/Bootstrap:start
+[2016-09-02 11:24:12] [debug] ( prunsrv.c:1186) [10012] Java started com/ric/web/Bootstrap
+[2016-09-02 11:24:12] [info]  ( prunsrv.c:1284) [10012] Service started in 1077 ms.
+[2016-09-02 11:24:12] [debug] ( prunsrv.c:844 ) [10012] reportServiceStatusE: 4, 0, 0, 0
+[2016-09-02 11:24:12] [debug] ( prunsrv.c:1528) [10012] Waiting for worker to finish...
+[2016-09-02 11:24:19] [debug] ( javajni.c:964 ) [12180] Java Worker thread finished com/ric/web/Bootstrap:start with status=0
+[2016-09-02 11:24:19] [debug] ( prunsrv.c:1533) [10012] Worker finished.
+[2016-09-02 11:24:19] [debug] ( prunsrv.c:1559) [10012] Waiting for all threads to exit
+[2016-09-02 11:24:58] [debug] ( prunsrv.c:844 ) [10468] reportServiceStatusE: 3, 0, 3000, 0
+[2016-09-02 11:24:58] [info]  ( prunsrv.c:943 ) [ 8680] Stopping service...
+[2016-09-02 11:24:58] [debug] ( javajni.c:888 ) [11516] argv[0] = stop
+[2016-09-02 11:24:58] [debug] ( javajni.c:941 ) [11516] Java Worker thread started com/ric/web/Bootstrap:stop
+[2016-09-02 11:24:59] [debug] ( javajni.c:471 ) [13948] Exit hook with exit code 0
+[2016-09-02 11:24:59] [debug] ( prunsrv.c:910 ) [13948] Stop exit hook called ...
+[2016-09-02 11:24:59] [debug] ( prunsrv.c:844 ) [13948] reportServiceStatusE: 1, 0, 0, 0
+[2016-09-02 11:24:59] [debug] ( prunsrv.c:919 ) [13948] Start exit hook called ...
+[2016-09-02 11:24:59] [debug] ( prunsrv.c:920 ) [13948] VM exit code: 0
+[2016-09-02 11:24:59] [debug] ( prunsrv.c:844 ) [13948] reportServiceStatusE: 1, 0, 0, 0
+[2016-09-02 11:24:59] [error] ( prunsrv.c:866 ) [13948] Failed to set service status
+[2016-09-02 11:24:59] [error] ( prunsrv.c:866 ) [13948] Неверный дескриптор.

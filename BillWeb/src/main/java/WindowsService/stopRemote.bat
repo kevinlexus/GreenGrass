@@ -1,1 +1,1 @@
-sc \\192.168.100.92 STOP BillWeb
+sc \\192.168.100.92 STOP BillWeb2

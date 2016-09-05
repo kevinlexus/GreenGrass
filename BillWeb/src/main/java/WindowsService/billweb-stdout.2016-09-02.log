@@ -1,0 +1,65 @@
+
+2016-09-02 11:23:50 Commons Daemon procrun stdout initialized
+
+2016-09-02 11:24:11 Commons Daemon procrun stdout initialized
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.4.0.RELEASE)
+
+2016-09-02 10:24:12.550  INFO 7512 --- [           main] com.ric.web.BillWebApplication           : Starting BillWebApplication v0.0.1-SNAPSHOT on LEV-NEW with PID 7512 (C:\work\git\BillWeb\src\main\java\WindowsService\BillWeb-0.0.1-SNAPSHOT.jar started by LEV-NEW$ in C:\work\git\BillWeb\src\main\java\WindowsService)
+2016-09-02 10:24:12.557  INFO 7512 --- [           main] com.ric.web.BillWebApplication           : No active profile set, falling back to default profiles: default
+2016-09-02 10:24:12.636  INFO 7512 --- [           main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@b4a148: startup date [Fri Sep 02 10:24:12 NOVT 2016]; root of context hierarchy
+2016-09-02 10:24:13.980  INFO 7512 --- [           main] o.s.b.f.xml.XmlBeanDefinitionReader      : Loading XML bean definitions from class path resource [spring.xml]
+2016-09-02 10:24:14.369  INFO 7512 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'org.springframework.transaction.config.internalTransactionAdvisor' with a different definition: replacing [Root bean: class [org.springframework.transaction.interceptor.BeanFactoryTransactionAttributeSourceAdvisor]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration; factoryMethodName=transactionAdvisor; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/transaction/annotation/ProxyTransactionManagementConfiguration.class]]
+2016-09-02 10:24:14.370  INFO 7512 --- [           main] a.ConfigurationClassBeanDefinitionReader : Skipping bean definition for [BeanMethod:name=transactionalEventListenerFactory,declaringClass=org.springframework.transaction.annotation.AbstractTransactionManagementConfiguration]: a definition for bean 'org.springframework.transaction.config.internalTransactionalEventListenerFactory' already exists. This top-level bean definition is considered as an override.
+2016-09-02 10:24:14.674  INFO 7512 --- [           main] o.s.s.a.AsyncAnnotationBeanPostProcessor : No TaskExecutor bean found for async annotation processing.
+2016-09-02 10:24:14.772  INFO 7512 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [class org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$fecbe13f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2016-09-02 10:24:14.807  INFO 7512 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cache.annotation.ProxyCachingConfiguration' of type [class org.springframework.cache.annotation.ProxyCachingConfiguration$$EnhancerBySpringCGLIB$$47de175d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2016-09-02 10:24:15.490  INFO 7512 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8080 (http)
+2016-09-02 10:24:15.503  INFO 7512 --- [           main] o.apache.catalina.core.StandardService   : Starting service Tomcat
+2016-09-02 10:24:15.504  INFO 7512 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.4
+2016-09-02 10:24:15.597  INFO 7512 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2016-09-02 10:24:15.597  INFO 7512 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2962 ms
+2016-09-02 10:24:15.757  INFO 7512 --- [ost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2016-09-02 10:24:15.761  INFO 7512 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2016-09-02 10:24:15.761  INFO 7512 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2016-09-02 10:24:15.761  INFO 7512 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2016-09-02 10:24:15.761  INFO 7512 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2016-09-02 10:24:16.047  INFO 7512 --- [           main] j.LocalContainerEntityManagerFactoryBean : Building JPA container EntityManagerFactory for persistence unit 'JpaPersistenceUnit'
+2016-09-02 10:24:16.048  WARN 7512 --- [           main] org.hibernate.ejb.HibernatePersistence   : HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+2016-09-02 10:24:16.059  INFO 7512 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: JpaPersistenceUnit
+	...]
+2016-09-02 10:24:16.195  INFO 7512 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.1.0.Final}
+2016-09-02 10:24:16.196  INFO 7512 --- [           main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2016-09-02 10:24:16.198  INFO 7512 --- [           main] org.hibernate.cfg.Environment            : HHH000021: Bytecode provider name : javassist
+2016-09-02 10:24:16.265  INFO 7512 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2016-09-02 10:24:16.839  INFO 7512 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
+2016-09-02 10:24:17.643  INFO 7512 --- [           main] org.hibernate.tuple.PojoInstantiator     : HHH000182: No default (no-argument) constructor for class: com.ric.bill.dao.impl.HouseDAOImpl$1SQLMappingCfgEntity (class must be instantiated by Interceptor)
+2016-09-02 10:24:17.668  INFO 7512 --- [           main] org.hibernate.tuple.PojoInstantiator     : HHH000182: No default (no-argument) constructor for class: com.ric.bill.dao.impl.KartDAOImpl$1SQLMappingCfgEntity (class must be instantiated by Interceptor)
+2016-09-02 10:24:18.320  INFO 7512 --- [           main] o.s.c.ehcache.EhCacheManagerFactoryBean  : Initializing EhCache CacheManager
+2016-09-02 10:24:18.923  INFO 7512 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@b4a148: startup date [Fri Sep 02 10:24:12 NOVT 2016]; root of context hierarchy
+2016-09-02 10:24:19.048  INFO 7512 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/chrglsk]}" onto public java.lang.String com.ric.web.BillingController.chrgLsk(java.lang.String)
+2016-09-02 10:24:19.049  INFO 7512 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/chrgall]}" onto public java.lang.String com.ric.web.BillingController.chrgAll()
+2016-09-02 10:24:19.054  INFO 7512 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-09-02 10:24:19.054  INFO 7512 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2016-09-02 10:24:19.094  INFO 7512 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-09-02 10:24:19.094  INFO 7512 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-09-02 10:24:19.143  INFO 7512 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-09-02 10:24:19.423  INFO 7512 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2016-09-02 10:24:19.485  INFO 7512 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2016-09-02 10:24:19.490  INFO 7512 --- [           main] com.ric.web.BillWebApplication           : Started BillWebApplication in 7.696 seconds (JVM running for 8.181)
+2016-09-02 10:24:35.820  INFO 7512 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2016-09-02 10:24:35.820  INFO 7512 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2016-09-02 10:24:35.845  INFO 7512 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 24 ms
+02.09.2016 10:24:36 ChrgServ.chrgLsk Lsk=51050001
+2016-09-02 10:24:36.176  INFO 7512 --- [cTaskExecutor-1] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2016-09-02 10:24:58.927  INFO 7512 --- [      Thread-21] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@b4a148: startup date [Fri Sep 02 10:24:12 NOVT 2016]; root of context hierarchy
+2016-09-02 10:24:58.929  INFO 7512 --- [      Thread-21] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2016-09-02 10:24:58.932  INFO 7512 --- [      Thread-21] o.s.c.ehcache.EhCacheManagerFactoryBean  : Shutting down EhCache CacheManager
+2016-09-02 10:24:58.942  INFO 7512 --- [      Thread-21] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'JpaPersistenceUnit'
