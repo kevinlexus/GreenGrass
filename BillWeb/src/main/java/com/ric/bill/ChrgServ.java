@@ -153,7 +153,7 @@ public class ChrgServ {
 		while (true) {
 			Calc.mess("ChrgServ: Loading servs for threads",1);
 			//получить следующие N услуг, рассчитать их в потоке
-			List<Serv> servWork = getNextServ(4);
+			List<Serv> servWork = getNextServ(2);
 			if (servWork.isEmpty()) {
 				//выйти, если все услуги обработаны
 				break;
