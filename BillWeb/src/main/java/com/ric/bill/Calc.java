@@ -220,7 +220,7 @@ public final class Calc {
 	public static void mess(String txt) {
 			DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 			ZonedDateTime dt = ZonedDateTime.now();
-			if (getDbgLvl() > 0 ) {
+			if (getDbgLvl() <=1 ) {
 				System.out.println(dt.format(frmt)+' '+txt);
 			}
 		}

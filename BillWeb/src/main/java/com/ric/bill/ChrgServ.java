@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,13 +73,15 @@ public class ChrgServ {
     @PersistenceContext
     private EntityManager em;
 
-    //вспомогательные массивы
+    //вспомогательные коллекции
     private List<Chrg> prepChrg;
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
-    //массив для сумм по укрупнённым услугам, для нового начисления 
+    //коллекция для сумм по укрупнённым услугам, для нового начисления 
     private MultiKeyMap mapDeb;
-
+    //коллекция для формирования потоков
+    private List<Serv> servThr;
+    
     //флаг ошибки, произошедшей в потоке
     private static Boolean errThread;
     
@@ -96,7 +99,25 @@ public class ChrgServ {
         }
     };
     
-	/**
+	//получить список N следующих услуг, для расчета в потоках
+    private List<Serv> getNextServ(int cnt) {
+    	List<Serv> lst = new ArrayList<Serv>(); 
+		int i=1;
+		Iterator<Serv> itr = servThr.iterator();
+		while (itr.hasNext()) {
+			Serv serv = itr.next(); 
+    		lst.add(serv);
+    		itr.remove();
+    		i++;
+			if (i > cnt) {
+				break;
+			}
+		}
+		
+    	return lst;
+	}
+    
+    /**
 	 * выполнить расчет начисления по лиц.счету
 	 * @param kart - объект лиц.счета
 	 * @throws ErrorWhileChrg 
@@ -125,28 +146,42 @@ public class ChrgServ {
 		//найти все услуги, действительные в лиц.счете
 		//и создать потоки по кол-ву услуг
 		
-		for (Serv serv : kartMng.getAllServ(kart)) {
-				ChrgThr thr1 = (ChrgThr) ctx.getBean(ChrgThr.class);
-				thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
-				thr1.start();
-				thr1.setUncaughtExceptionHandler(expThr);
-				trl.add(thr1);
-				//Calc.mess("START="+thr1.getName(), 2);
-		    //	break; //TODO - временно выход!
+		//загрузить все услуги
+		servThr = kartMng.getAllServ(kart);
+		
+		errThread=false;
+		while (true) {
+			Calc.mess("ChrgServ: Loading servs for threads",1);
+			//получить следующие N услуг, рассчитать их в потоке
+			List<Serv> servWork = getNextServ(4);
+			if (servWork.isEmpty()) {
+				//выйти, если все услуги обработаны
+				break;
+			}
+			for (Serv serv : servWork) {
+					ChrgThr thr1 = (ChrgThr) ctx.getBean(ChrgThr.class);
+					thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
+					thr1.start();
+					thr1.setUncaughtExceptionHandler(expThr);
+					trl.add(thr1);
+			}
+			//ждать, когда все потоки выполнятся
+			for (ChrgThr t : trl) {
+				try {
+					t.join();
+					//Calc.mess("WAIT="+t.getName(), 2);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					throw new ErrorWhileChrg("ChrgServ.chrgLsk: ChrgThr: ErrorWhileChrg in thread!");
+				} 
+			}
+			if (errThread) {
+				//была ошибка в потоке- выйти из цикла
+				break;
+			}
 		}
 
-		errThread=false;
 		
-		//ждать, когда все потоки выполнятся
-		for (ChrgThr t : trl) {
-			try {
-				t.join();
-				//Calc.mess("WAIT="+t.getName(), 2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				throw new ErrorWhileChrg("ChrgServ.chrgLsk: ChrgThr: ErrorWhileChrg in thread!");
-			} 
-		}
 		
 		//Calc.mess("*******************ALL THREADS FINISHED!********************", 2);
 
@@ -218,9 +253,9 @@ public class ChrgServ {
 			try {
 				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 			}catch(Exception e) {
-				//servMain = chrg.getServ();
+				servMain = chrg.getServ();
 			    //e.printStackTrace();
-				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+				//throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 			}
 			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
@@ -239,8 +274,8 @@ public class ChrgServ {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 				}catch(Exception e) {
 				    //e.printStackTrace();
-					//servMain = chrg.getServ();
-					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+					servMain = chrg.getServ();
+					//throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 				}
 				//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 				Org orgMain = em.find(Org.class, chrg.getOrg().getId());

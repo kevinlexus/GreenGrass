@@ -40,8 +40,9 @@ public class BillServ {
 	private Calc calc;
 	@Autowired
     private DistServ dist;
-	//@Autowired
-    //private ChrgServ chrgServ;
+	@Autowired
+    private ChrgServ chrgServ;
+	
 	@Autowired
     private KartMng kartMng;
 
@@ -60,7 +61,7 @@ public class BillServ {
 		long totalTime;
 
 		System.out.println("Begin!");
-		Calc.setDbgLvl(0);
+		Calc.setDbgLvl(2);
 
 		startTime = System.currentTimeMillis();
 		
@@ -95,8 +96,10 @@ public class BillServ {
 	 */
     @Async
     public Future<Result> chrgAll() {
-    	ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
+    	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 
+		Calc.setDbgLvl(2);
+    	
     	Result res = new Result();
 		res.err=0;
 		long startTime;
@@ -155,7 +158,9 @@ public class BillServ {
 	 */
     @Async
 	public Future<Result> chrgLsk(Kart kart, String lsk) {
-    	ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
+		Calc.setDbgLvl(2);
+    	
+    	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 		Result res = new Result();
 		res.err=0;
 		//Если был передан идентификатор лицевого, то найти лиц.счет
