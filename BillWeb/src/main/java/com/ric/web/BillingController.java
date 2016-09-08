@@ -40,14 +40,13 @@ public class BillingController {
 	@Autowired
 	private ApplicationContext ctx;
 
-    //@Autowired
-    //private BillServ billServ;
+    @Autowired
+    private BillServ billServ;
 
     @RequestMapping("/chrglsk")
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") String lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist) {
     	Future<Result> fut = null;
-    	BillServ billServ = (BillServ) ctx.getBean("billServ"); 
 		boolean isDist;
     	if (dist.equals("1")) {
 			isDist = true;
@@ -88,7 +87,6 @@ public class BillingController {
     @RequestMapping("/chrgall")
     public String chrgAll(@RequestParam(value="dist", defaultValue="0") String dist) {
     	Future<Result> fut = null;
-    	BillServ billServ = (BillServ) ctx.getBean("billServ"); 
 		boolean isDist;
     	if (dist.equals("1")) {
 			isDist = true;

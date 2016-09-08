@@ -128,7 +128,7 @@ public class BillServ {
 	 */
     @Async
 	public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
-		Calc.setDbgLvl(2);
+		Calc.setDbgLvl(0);
     	
     	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 		Result res = new Result();

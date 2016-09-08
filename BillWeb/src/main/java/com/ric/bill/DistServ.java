@@ -185,17 +185,21 @@ public class DistServ {
 	 * @param lsk - номер лиц.счета
 	 * @throws ErrorWhileDist 
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distKartVol(String lsk) throws ErrorWhileDist {
 		Kart kart = em.find(Kart.class, lsk);
 
 		//найти все необходимые услуги для удаления объемов (здесь только по типу 0)
 		for (Serv serv : servMng.findForDistVol()) {
+				Calc.mess("Удаление объема по услуге"+serv.getCd());
 				delKartServVolTp(kart, serv, 0);
 		}
 
+		
 		Calc.mess("Распределение объемов");
 		//найти все необходимые услуги для распределения
-		try {
+		 
+		 try {
 			for (Serv serv : servMng.findForDistVol()) {
 				Calc.mess("Распределение услуги: "+serv.getCd());
 				  distKartServTp(kart, serv);
@@ -214,6 +218,7 @@ public class DistServ {
 	 * @param tp - тип расчета
 	 */
 	private void delKartServVolTp(Kart kart, Serv serv, int tp) {
+		Calc.mess("delKartServVolTp: kart.lsk="+kart.getLsk()+", serv.cd="+serv.getCd()+" tp="+tp);
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
@@ -269,14 +274,6 @@ public class DistServ {
 		Calc.mess("Дом: id="+calc.getHouse().getId(), 2);
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk(), 2);
 
-		
-		//Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));
-		/*Serv serv = servMng.getByCD("Холодная вода (объем)");	
-		Calc.mess("услуга 1:"+serv.getName(), 2);
-		serv = servMng.getByCD("Отопление ОДН");	
-		Calc.mess("услуга 2:"+serv.getName(), 2);
-		serv = servMng.getByCD("Холодная вода (объем)");	
-		Calc.mess("услуга 3:"+serv.getName(), 2);*/
 		
 		/*Calc.mess("Дом: 1============================================================",2);
 		h = em.find(House.class, 1737);

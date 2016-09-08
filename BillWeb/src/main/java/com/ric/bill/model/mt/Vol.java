@@ -27,7 +27,7 @@ import com.ric.bill.model.bs.Lst;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "KMP_METER_VOL", schema="MT")
+@Table(name = "METER_VOL", schema="MT")
 public class Vol implements java.io.Serializable, Simple {
 
 	public Vol (){
@@ -45,7 +45,7 @@ public class Vol implements java.io.Serializable, Simple {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VOL")
-	@SequenceGenerator(name="SEQ_VOL", sequenceName="MT.KMP_METER_VOL_ID", allocationSize=10) //делал allocationSize=100 тогда надо increment by делать 100, работает быстрее, на 10%.. но тогда гэп большой от других инсертов 	
+	@SequenceGenerator(name="SEQ_VOL", sequenceName="MT.SEQ_METER_VOL", allocationSize=1) //делал allocationSize=100 тогда надо increment by делать 100, работает быстрее, на 10%.. но тогда гэп большой от других инсертов 	
     @Column(name = "ID", unique=true, updatable = false, nullable = false)					
 	private Integer id;
 	
