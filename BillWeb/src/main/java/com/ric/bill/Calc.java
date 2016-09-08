@@ -50,7 +50,7 @@ public final class Calc {
 	private static Area area; //текущий город 
 	private static House house; //текущий дом (распределяемый, начисляемый)
 	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
-	private static Serv serv; //текущая услуга (распределяемая, начисляемая)
+	//private static Serv serv; //текущая услуга (распределяемая, начисляемая)
 
 	//установлены ли параметры расчета дома, даты фильтра и т.п.
 	private static boolean init = false;
@@ -134,14 +134,14 @@ public final class Calc {
 		Calc.house = house;
 	}
 
-	public Serv getServ() {
+	/*public Serv getServ() {
 		return serv;
 	}
 
 	public static void setServ(Serv serv) {
 		Calc.serv = serv;
 		
-	}
+	}*/
 
 	public int getCalcTp() {
 		return this.calcTp;

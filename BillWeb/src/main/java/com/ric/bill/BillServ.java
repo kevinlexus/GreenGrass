@@ -39,7 +39,7 @@ public class BillServ {
 	@Autowired
 	private Calc calc;
 	@Autowired
-    private DistServ dist;
+    private DistServ distServ;
 	@Autowired
     private ChrgServ chrgServ;
 	
@@ -52,7 +52,7 @@ public class BillServ {
     @PersistenceContext
     private EntityManager em;
 
-    @Test
+/*    @Test
 	public void test1() {
 		
 		//распределить объемы по дому
@@ -88,16 +88,14 @@ public class BillServ {
 		System.out.println("End!");
 			
 		
-	}
+	}*/
 
 
 	/**
 	 * выполнить начисление по всем домам
 	 */
     @Async
-    public Future<Result> chrgAll() {
-    	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
-
+    public Future<Result> chrgAll(boolean dist) {
 		Calc.setDbgLvl(2);
     	
     	Result res = new Result();
@@ -114,6 +112,12 @@ public class BillServ {
 		//установить даты
 		calc.setUp();
 		
+		//Распределить объемы, если задано
+		if (dist) {
+		 distServ.distAll();
+		}
+		
+		//Начисление
 		for (Kart kart : kartMng.findAll()) {
 			//расчитать начисление по лиц.счету
 			try {
@@ -137,12 +141,6 @@ public class BillServ {
 			
 		}
 
-		/*for (House o: houseMng.findAll2()) {
-			System.out.println("Started House: id="+o.getId());
-			Calc.setInit(false);
-			chrgHouse(o.getId());
-			System.out.println("Finished House: id="+o.getId());
-		}*/
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 	    Calc.mess("Time for all process:"+totalTime,2);
@@ -158,7 +156,7 @@ public class BillServ {
 	 */
     @Async
 	public Future<Result> chrgLsk(Kart kart, String lsk) {
-		Calc.setDbgLvl(2);
+		Calc.setDbgLvl(1);
     	
     	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 		Result res = new Result();

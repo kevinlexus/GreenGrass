@@ -251,11 +251,11 @@ public class KartMngImpl implements KartMng {
 			}
 			
 		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
-				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
+				&& !servChrg.getCd().equals("Электроснабжение")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, servSt, "Норматив", genDt);
 		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
-				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
+				&& servChrg.getCd().equals("Электроснабжение")) {
 			Double kitchElStv = 0d;
 			String s2;
 			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество", genDt);

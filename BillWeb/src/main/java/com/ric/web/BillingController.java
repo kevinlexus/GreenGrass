@@ -79,10 +79,16 @@ public class BillingController {
     }
     
     @RequestMapping("/chrgall")
-    public String chrgAll() {
+    public String chrgAll(@RequestParam(value="dist", defaultValue="0") String dist) {
     	Future<Result> fut = null;
     	BillServ billServ = (BillServ) ctx.getBean("billServ"); 
-		fut = billServ.chrgAll();
+		boolean isDist;
+    	if (dist.equals("1")) {
+			isDist = true;
+		} else {
+			isDist = false;
+		}
+    	fut = billServ.chrgAll(isDist);
     	
 	   	//проверить окончание потока 
 		 while (!fut.isDone()) {
