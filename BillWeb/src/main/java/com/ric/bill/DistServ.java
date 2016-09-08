@@ -26,6 +26,7 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.House;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 
@@ -143,7 +144,8 @@ public class DistServ {
 				//dist.clearCache();
 				//распределить объемы
 				startTime = System.currentTimeMillis();
-				Calc.setHouseInit(false);
+		    	//установить дом
+		    	calc.setHouse(o);
 				
 				distHouseVol(o.getId());
 				//System.out.println("------------------------------------------");
@@ -177,6 +179,79 @@ public class DistServ {
 		
     }
 	
+	
+	/**
+	 * распределить объем по всем услугам, по дому
+	 * @param lsk - номер лиц.счета
+	 * @throws ErrorWhileDist 
+	 */
+	public void distKartVol(String lsk) throws ErrorWhileDist {
+		Kart kart = em.find(Kart.class, lsk);
+
+		//найти все необходимые услуги для удаления объемов (здесь только по типу 0)
+		for (Serv serv : servMng.findForDistVol()) {
+				delKartServVolTp(kart, serv, 0);
+		}
+
+		Calc.mess("Распределение объемов");
+		//найти все необходимые услуги для распределения
+		try {
+			for (Serv serv : servMng.findForDistVol()) {
+				Calc.mess("Распределение услуги: "+serv.getCd());
+				  distKartServTp(kart, serv);
+			}
+		} catch (ErrorWhileDist e) {
+			e.printStackTrace();
+			throw new ErrorWhileDist("Dist.distHouseVol: ");
+		}
+
+	}
+	
+	/**
+	 * Удалить объем по Лиц.счету, определённой услуге
+	 * @param Kart - лиц.счет
+	 * @param serv - услуга
+	 * @param tp - тип расчета
+	 */
+	private void delKartServVolTp(Kart kart, Serv serv, int tp) {
+		//перебрать все необходимые даты, за период
+		Calendar c = Calendar.getInstance();
+		//необходимый для формирования диапазон дат
+		Date dt1, dt2;
+		if (calc.getCalcTp()==2) {
+			//формирование по ОДН - задать последнюю дату
+			dt1 = Calc.getCurDt2();
+			dt2 = Calc.getCurDt2();
+		} else {
+			//прочее формирование
+			dt1 = Calc.getCurDt1();
+			dt2 = Calc.getCurDt2();
+		}
+
+		//найти все счетчики по Лиц.счету, по услуге
+		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
+			Calc.setGenDt(c.getTime());
+			
+			for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
+				metMng.delNodeVol(ml, tp, Calc.getGenDt());
+			}
+			
+		}
+	}
+
+	
+	/**
+	 * Распределить объем по счетчикам дома
+	 * @param calcTp - тип обработки
+	 * @throws ErrorWhileDist 
+	 */
+	private void distKartServTp(Kart kart, Serv serv) throws ErrorWhileDist {
+		//найти все вводы по лиц.счету и по услуге
+		for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
+				distGraph(ml);
+		}
+	}
+	
 	/**
 	 * распределить объем по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
@@ -189,10 +264,8 @@ public class DistServ {
 
 		House h = em.find(House.class, houseId);
 		//установить инициализацию дома
-		if (!Calc.isHouseInit()) {
-			calc.setHouse(h);
-			Calc.setHouseInit(true);
-		}
+    	//установить дом и счет
+    	calc.setHouse(h);
 		Calc.mess("Дом: id="+calc.getHouse().getId(), 2);
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk(), 2);
 

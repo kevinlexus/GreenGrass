@@ -44,10 +44,17 @@ public class BillingController {
     //private BillServ billServ;
 
     @RequestMapping("/chrglsk")
-    public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") String lsk) {
+    public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") String lsk, 
+    					  @RequestParam(value="dist", defaultValue="0") String dist) {
     	Future<Result> fut = null;
     	BillServ billServ = (BillServ) ctx.getBean("billServ"); 
-    	fut = billServ.chrgLsk(null, lsk);
+		boolean isDist;
+    	if (dist.equals("1")) {
+			isDist = true;
+		} else {
+			isDist = false;
+		}
+    	fut = billServ.chrgLsk(null, lsk, isDist);
 	   	//проверить окончание потока 
 	    while (!fut.isDone()) {
 	         try {

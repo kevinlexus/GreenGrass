@@ -147,10 +147,6 @@ public class DistGen {
 		Kart kart = ml.getKart();
 		//Kart kart = metMng.getKart(ml); <--тормозит!
 
-		if (!Calc.isHouseInit()) {
-			calc.setHouse(kart.getKw().getHouse());
-			Calc.setHouseInit(true);
-		}
 		calc.setKart(kart); 
 
 		if (!ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {

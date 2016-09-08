@@ -76,9 +76,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 				Calc.mess("getAllMetLogByServTp ТИП:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getId());
 				//и услуге
 				Serv sss = ml.getServ();
-				if (ml.getId() == 3602003) {
-					Calc.mess("stop");	
-				}
 				if (ml.getServ().equals(serv)) {
 					Calc.mess("getAllMetLogByServTp Соответствует:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd());
 					lstMlg.add(ml);

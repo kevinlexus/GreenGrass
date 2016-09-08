@@ -124,11 +124,6 @@ public class ChrgServ {
 	 */
 	public int chrgLsk(Kart kart) throws ErrorWhileChrg {
 		Calc.mess("ChrgServ.chrgLsk Lsk="+kart.getLsk(), 2);
-		if (!Calc.isHouseInit()) {
-			calc.setHouse(kart.getKw().getHouse());
-			Calc.setHouseInit(true);
-		}
-		calc.setKart(kart);
 
 		prepChrg = new ArrayList<Chrg>(0); 
 		//получить все необходимые услуги для начисления из тарифа по дому
@@ -230,16 +225,8 @@ public class ChrgServ {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (String lsk) throws ErrorWhileChrg {
-		//Session sess = (Session)em.getDelegate();
-		////Calc.mess("CHECK8.1="+sess,2);	
-		//sess.clear();
-		
 		//Calc.mess("CHECK9",2);	
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
-		if (!Calc.isHouseInit()) {
-			calc.setHouse(kart.getKw().getHouse());
-			Calc.setHouseInit(true);
-		}
 		
 		//ДЕЛЬТА
 		//ПОДГОТОВИТЬСЯ для сохранения дельты

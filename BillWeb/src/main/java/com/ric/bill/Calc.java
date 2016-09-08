@@ -245,13 +245,13 @@ public final class Calc {
 		Calc.dbgLvl = dbgLvl;
 	}
 
-	public static boolean isHouseInit() {
+/*	public static boolean isHouseInit() {
 		return init;
 	}
 
 	public static void setHouseInit(boolean init) {
 		Calc.init = init;
-	}
+	}*/
 	
 	public static String getPeriod() {
 		return period;

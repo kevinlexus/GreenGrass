@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.excp.ErrorWhileChrg;
+import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.model.ar.House;
@@ -82,7 +83,9 @@ public class BillServ {
 			//расчитать начисление по лиц.счету
 			try {
 				startTime2 = System.currentTimeMillis();
-				Calc.setHouseInit(false); //сбросить инициализацию дома
+		    	//установить дом и счет
+		    	calc.setHouse(kart.getKw().getHouse());
+				calc.setKart(kart);
 				
 				if (chrgServ.chrgLsk(kart) ==0){
 					//сохранить расчет
@@ -117,12 +120,14 @@ public class BillServ {
     
 	/**
 	 * выполнить начисление по лиц.счету
-	 * @param kart
+	 * @param kart - лиц счет (заполнен либо он, либо lsk)
+	 * @param lsk - номер лиц.счета 
+	 * @param dist - распределить объемы?
 	 * @throws InterruptedException 
 	 * @throws ErrorWhileChrg
 	 */
     @Async
-	public Future<Result> chrgLsk(Kart kart, String lsk) {
+	public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 		Calc.setDbgLvl(2);
     	
     	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
@@ -132,8 +137,22 @@ public class BillServ {
     	if (lsk != null) {
 	    	kart = em.find(Kart.class, lsk);
 		}
+    	
+    	//установить дом и счет
+    	calc.setHouse(kart.getKw().getHouse());
+		calc.setKart(kart);
+    	
+		if (dist) {
+			try {
+				distServ.distKartVol(kart.getLsk());
+			} catch (ErrorWhileDist e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				res.err=1;
+				return new AsyncResult<Result>(res);
+			}
+		}
 		//расчитать начисление
-		Calc.setHouseInit(false); //сбросить инициализацию дома
 		try {
 			if (chrgServ.chrgLsk(kart) ==0){
 				//сохранить расчет
@@ -174,7 +193,6 @@ public class BillServ {
 					long totalTime;
 					startTime = System.currentTimeMillis();
 				    //расчитать начисление
-					Calc.setHouseInit(false); //сбросить инициализацию дома
 					try {
 						if (chrgServ.chrgLsk(kart) ==0){
 							//сохранить расчет
