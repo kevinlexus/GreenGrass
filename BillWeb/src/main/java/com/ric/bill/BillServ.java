@@ -110,7 +110,7 @@ public class BillServ {
 
 		startTime = System.currentTimeMillis();
 		//установить даты
-		calc.setUp();
+		//calc.setUp();
 		
 		//Распределить объемы, если задано
 		if (dist) {
@@ -192,16 +192,16 @@ public class BillServ {
     	ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 
 		House h = em.find(House.class, houseId);
-		if (!Calc.isInit()) {
+		/*if (!Calc.isInit()) {
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
-		}
-		calc.setHouse(h);
+		}*/
+		/*calc.setHouse(h);
 		calc.setArea(Calc.getHouse().getStreet().getArea());
 
 		Calc.mess("Charging");
 		Calc.mess("House: id="+Calc.getHouse().getId());
-		Calc.mess("House: klsk="+Calc.getHouse().getKlsk());
+		Calc.mess("House: klsk="+Calc.getHouse().getKlsk());*/
 		
 		//перебрать все квартиры и лиц.счета в них
 		for (Kw kw : h.getKw()) {

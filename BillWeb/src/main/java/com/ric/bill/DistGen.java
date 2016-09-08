@@ -147,7 +147,7 @@ public class DistGen {
 		Kart kart = ml.getKart();
 		//Kart kart = metMng.getKart(ml); <--тормозит!
 
-		calc.setKart(kart); 
+		//calc.setKart(kart); 
 
 		if (ml.getId()==3650165) {
 			Calc.mess("stop");

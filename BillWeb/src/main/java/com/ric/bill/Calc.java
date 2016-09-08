@@ -6,11 +6,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.ContextConfiguration;
 
 import com.ric.bill.mm.ObjMng;
 import com.ric.bill.mm.ParMng;
@@ -25,6 +29,7 @@ import com.ric.bill.model.bs.Serv;
  * @author lev
  *
  */
+@ContextConfiguration(locations = { "classpath:spring.xml" })
 @Service
 public final class Calc {
 	private static Date genDt; //рассчитываемая дата
@@ -47,9 +52,9 @@ public final class Calc {
 	public static long startTime;
 	public static long endTime;
 
-	private static Area area; //текущий город 
-	private static House house; //текущий дом (распределяемый, начисляемый)
-	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
+//	private static Area area; //текущий город 
+//	private static House house; //текущий дом (распределяемый, начисляемый)
+//	private static Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
 	//private static Serv serv; //текущая услуга (распределяемая, начисляемая)
 
 	//установлены ли параметры расчета дома, даты фильтра и т.п.
@@ -68,25 +73,30 @@ public final class Calc {
 	
 	@Autowired
 	private ParMng parMng;
-
+	
+	
 	//конструктор
 	public Calc() {
+		System.out.println("CHECK!===================================1");
 		calendar = new GregorianCalendar(1940, Calendar.JANUARY, 1);
 		calendar.clear(Calendar.ZONE_OFFSET);
 		firstDt = calendar.getTime();
 		calendar = new GregorianCalendar(2940, Calendar.JANUARY, 1);
 		calendar.clear(Calendar.ZONE_OFFSET);
 		lastDt = calendar.getTime();
-		
 	}
 	
 	/**
 	 * настроить объект для расчета 
 	 */
-	public void setUp() {
+	@PostConstruct
+	private void setUp() {
 		//Объект приложения, получить даты текущего периода
+		
 		Obj obj = objMng.getByCD("Модуль начисления");
 		
+		//MileageFeeCalculator calc = ApplicationContextHolder.getContext().getBean(MileageFeeCalculator.class);
+        
 		calendar = new GregorianCalendar();
 		//calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
 		calendar.clear(Calendar.ZONE_OFFSET);
@@ -126,13 +136,13 @@ public final class Calc {
 		Calc.genDt = genDt;
 	}
 
-	public static House getHouse() {
+	/*public static House getHouse() {
 		return house;
 	}
 
 	public void setHouse(House house) {
 		Calc.house = house;
-	}
+	}*/
 
 	/*public Serv getServ() {
 		return serv;
@@ -167,13 +177,13 @@ public final class Calc {
 		Calc.curDt2 = curDt2;
 	}
 
-	public static Area getArea() {
+/*	public static Area getArea() {
 		return area;
 	}
 
 	public void setArea(Area area) {
 		Calc.area = area;
-	}
+	}*/
 
 	public static double getCntCurDays() {
 		return cntCurDays;
@@ -208,13 +218,13 @@ public final class Calc {
 		System.out.println("************ "+mess+" затрачено="+Long.toString(Calc.endTime-Calc.startTime));
 	}
 
-	public static Kart getKart() {
+	/*public static Kart getKart() {
 		return kart;
 	}
 
 	public void setKart(Kart kart) {
 		Calc.kart = kart;
-	}
+	}*/
 
 	//Отправить в консоль сообщение
 	public static void mess(String txt) {

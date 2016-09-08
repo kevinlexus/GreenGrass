@@ -343,12 +343,12 @@ public class KartMngImpl implements KartMng {
 		val=tarMng.getProp(kart, serv, cd, genDt);
 		if (val==null) {
 			//потом ищем по дому
-			val=tarMng.getProp(Calc.getHouse(), serv, cd, genDt);
+			val=tarMng.getProp(kart.getKw().getHouse(), serv, cd, genDt);
 			//val=tarMng.getProp(kart.getKw().getHouse(), serv, cd, genDt);
 		}
 		if (val==null) {
 			//потом ищем по городу
-			val=tarMng.getProp(Calc.getArea(), serv, cd, genDt);
+			val=tarMng.getProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
 			//val=tarMng.getProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
 		}
 		return val;
