@@ -93,7 +93,7 @@ public final class Calc {
 	private void setUp() {
 		//Объект приложения, получить даты текущего периода
 		
-		Obj obj = objMng.getByCD("Модуль начисления");
+		Obj obj = objMng.getByCD("Модуль начисления"); 
 		
 		//MileageFeeCalculator calc = ApplicationContextHolder.getContext().getBean(MileageFeeCalculator.class);
         
