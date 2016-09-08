@@ -61,7 +61,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * Получить все лог.счетчики по определённому объекту, типу и услуге
 	 * @param - Объект
 	 * @param serv - Услуга
-	 * @param tp - Тип счетчика, если не указан - по всем
+	 * @param tp - Тип, если не указан - по всем
 	 * @return - искомый список
 	 */
 	//@Cacheable(cacheNames="rrr1", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
@@ -76,6 +76,9 @@ public class MeterLogMngImpl implements MeterLogMng {
 				Calc.mess("getAllMetLogByServTp ТИП:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getId());
 				//и услуге
 				Serv sss = ml.getServ();
+				if (ml.getId() == 3602003) {
+					Calc.mess("stop");	
+				}
 				if (ml.getServ().equals(serv)) {
 					Calc.mess("getAllMetLogByServTp Соответствует:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd());
 					lstMlg.add(ml);

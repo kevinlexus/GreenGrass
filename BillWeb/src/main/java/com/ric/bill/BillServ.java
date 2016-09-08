@@ -39,7 +39,7 @@ public class BillServ {
 	@Autowired
 	private Calc calc;
 	@Autowired
-    private DistServ distServ;
+    private DistServ dist;
 	@Autowired
     private ChrgServ chrgServ;
 	
@@ -52,7 +52,7 @@ public class BillServ {
     @PersistenceContext
     private EntityManager em;
 
-/*    @Test
+    @Test
 	public void test1() {
 		
 		//распределить объемы по дому
@@ -88,14 +88,16 @@ public class BillServ {
 		System.out.println("End!");
 			
 		
-	}*/
+	}
 
 
 	/**
 	 * выполнить начисление по всем домам
 	 */
     @Async
-    public Future<Result> chrgAll(boolean dist) {
+    public Future<Result> chrgAll() {
+    	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
+
 		Calc.setDbgLvl(2);
     	
     	Result res = new Result();
@@ -110,15 +112,11 @@ public class BillServ {
 
 		startTime = System.currentTimeMillis();
 		//установить даты
-		//calc.setUp();
+		calc.setUp();
 		
-		//Распределить объемы, если задано
-		if (dist) {
-		 distServ.distAll();
-		}
+		dist.distAll();
 		
-		//Начисление
-		for (Kart kart : kartMng.findAll()) {
+		/*for (Kart kart : kartMng.findAll()) {
 			//расчитать начисление по лиц.счету
 			try {
 				startTime2 = System.currentTimeMillis();
@@ -139,8 +137,14 @@ public class BillServ {
 				e.printStackTrace();
 			}
 			
-		}
+		}*/
 
+		/*for (House o: houseMng.findAll2()) {
+			System.out.println("Started House: id="+o.getId());
+			Calc.setInit(false);
+			chrgHouse(o.getId());
+			System.out.println("Finished House: id="+o.getId());
+		}*/
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 	    Calc.mess("Time for all process:"+totalTime,2);
@@ -156,7 +160,7 @@ public class BillServ {
 	 */
     @Async
 	public Future<Result> chrgLsk(Kart kart, String lsk) {
-		Calc.setDbgLvl(1);
+		Calc.setDbgLvl(2);
     	
     	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 		Result res = new Result();
@@ -192,16 +196,16 @@ public class BillServ {
     	ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 
 		House h = em.find(House.class, houseId);
-		/*if (!Calc.isInit()) {
+		if (!Calc.isInit()) {
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
-		}*/
-		/*calc.setHouse(h);
+		}
+		calc.setHouse(h);
 		calc.setArea(Calc.getHouse().getStreet().getArea());
 
 		Calc.mess("Charging");
 		Calc.mess("House: id="+Calc.getHouse().getId());
-		Calc.mess("House: klsk="+Calc.getHouse().getKlsk());*/
+		Calc.mess("House: klsk="+Calc.getHouse().getKlsk());
 		
 		//перебрать все квартиры и лиц.счета в них
 		for (Kw kw : h.getKw()) {

@@ -124,13 +124,13 @@ public class ChrgServ {
 	 */
 	public int chrgLsk(Kart kart) throws ErrorWhileChrg {
 		Calc.mess("ChrgServ.chrgLsk Lsk="+kart.getLsk(), 2);
-		/*if (!Calc.isInit()) {
-			//calc.setHouse(kart.getKw().getHouse());
+		if (!Calc.isInit()) {
+			calc.setHouse(kart.getKw().getHouse());
 			calc.setArea(kart.getKw().getHouse().getStreet().getArea());
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
-		}*/
-		//calc.setKart(kart);
+		}
+		calc.setKart(kart);
 
 		prepChrg = new ArrayList<Chrg>(0); 
 		//получить все необходимые услуги для начисления из тарифа по дому
@@ -153,7 +153,7 @@ public class ChrgServ {
 		while (true) {
 			Calc.mess("ChrgServ: Loading servs for threads",1);
 			//получить следующие N услуг, рассчитать их в потоке
-			List<Serv> servWork = getNextServ(2);
+			List<Serv> servWork = getNextServ(4);
 			if (servWork.isEmpty()) {
 				//выйти, если все услуги обработаны
 				break;
@@ -238,12 +238,12 @@ public class ChrgServ {
 		
 		//Calc.mess("CHECK9",2);	
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
-		/*if (!Calc.isInit()) {
-			//calc.setHouse(kart.getKw().getHouse());
+		if (!Calc.isInit()) {
+			calc.setHouse(kart.getKw().getHouse());
 			calc.setArea(kart.getKw().getHouse().getStreet().getArea());
 			calc.setUp(); //настроить даты фильтра и т.п.
 			Calc.setInit(true);
-		}*/
+		}
 		
 		//ДЕЛЬТА
 		//ПОДГОТОВИТЬСЯ для сохранения дельты
@@ -278,8 +278,6 @@ public class ChrgServ {
 					//throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 				}
 				//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
-				Calc.mess("CHECK orgmain1="+chrg.getServ().getId());				
-				Calc.mess("CHECK orgmain2="+em);				
 				Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
 				//Calc.mess("Вычесть дельту: serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
@@ -312,61 +310,36 @@ public class ChrgServ {
 
 			  try {
 				Calc.mess("Отправка дельты: serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
-					  //вызвать хранимую функцию, для пересчёта долга
-					  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
-					  qr.registerStoredProcedureParameter("P_LSK", String.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_FK_SERV", Integer.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_FK_ORG", Integer.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_PERIOD", String.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_SUMMA_CHNG", Double.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_DTEK", Date.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
-					  qr.setParameter("P_LSK", kart.getLsk());
-					  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
-					  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
-					  qr.setParameter("P_PERIOD", Calc.getPeriod());
-					  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
-					  qr.setParameter("P_DTEK", new Date());
-					  qr.setParameter("P_TP_CHNG", 1);
-					  qr.setParameter("P_FK_CHNG", 1);
-					  
-					  qr.execute();
-				} catch (Exception e) {
-					Calc.mess("Повторная отправка дельты: serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
-					try {
-					  //вызвать хранимую функцию, для пересчёта долга
-					  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
-					  qr.registerStoredProcedureParameter("P_LSK", String.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_FK_SERV", Integer.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_FK_ORG", Integer.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_PERIOD", String.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_SUMMA_CHNG", Double.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_DTEK", Date.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
-					  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
-					  qr.setParameter("P_LSK", kart.getLsk());
-					  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
-					  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
-					  qr.setParameter("P_PERIOD", Calc.getPeriod());
-					  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
-					  qr.setParameter("P_DTEK", new Date());
-					  qr.setParameter("P_TP_CHNG", 1);
-					  qr.setParameter("P_FK_CHNG", 1);
-					  
-					  qr.execute();
-					} catch (Exception e2) {
-					
-					// TODO Auto-generated catch block
-					//Calc.mess("Проверка дельты1: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
-					//Calc.mess("Проверка дельты2: org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
-					//Calc.mess("Проверка дельты2: serv="+((Serv) mk.getKey(0)).getId()+" sum="+it.getValue(),2);
-					e2.printStackTrace();
-					}
-					
-				}
-				  
-				  
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//Calc.mess("Проверка дельты1: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
+				//Calc.mess("Проверка дельты2: org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+				//Calc.mess("Проверка дельты2: serv="+((Serv) mk.getKey(0)).getId()+" sum="+it.getValue(),2);
+				e.printStackTrace();
+				
+			}
+			  
+			  
+			  //вызвать хранимую функцию, для пересчёта долга
+			  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
+			  qr.registerStoredProcedureParameter("P_LSK", String.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_FK_SERV", Integer.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_FK_ORG", Integer.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_PERIOD", String.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_SUMMA_CHNG", Double.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_DTEK", Date.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
+			  qr.setParameter("P_LSK", kart.getLsk());
+			  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
+			  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
+			  qr.setParameter("P_PERIOD", Calc.getPeriod());
+			  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
+			  qr.setParameter("P_DTEK", new Date());
+			  qr.setParameter("P_TP_CHNG", 1);
+			  qr.setParameter("P_FK_CHNG", 1);
+			  
+			  qr.execute();
 			}
 		}
 		

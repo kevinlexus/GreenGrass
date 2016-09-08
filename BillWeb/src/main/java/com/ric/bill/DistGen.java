@@ -147,7 +147,7 @@ public class DistGen {
 		Kart kart = ml.getKart();
 		//Kart kart = metMng.getKart(ml); <--тормозит!
 
-		//calc.setKart(kart); 
+		calc.setKart(kart); 
 
 		if (ml.getId()==3650165) {
 			Calc.mess("stop");
@@ -372,7 +372,7 @@ public class DistGen {
 		//после рекурсивного расчета дочерних узлов, и только по последней дате, выполнить расчет Лимита ОДН
 		if (tp==1 && mLogTp.equals("ЛОДН") && genDt.getTime() == Calc.getCurDt2().getTime() /*genDt.equals(Calc.getCurDt2()*/) {
 			//по связи по площади и кол.прож. и только по ЛОДН счетчику
-			if (servChrg.getCd().equals("Холодная вода") || servChrg.getCd().equals("Горячая вода")) {
+			if (servChrg.getCd().equals("Холодная вода (объем)") || servChrg.getCd().equals("Горячая вода, подогрев")) {
 				SumNodeVol lnkODNVol = null;
 				//получить площадь и кол-во прожив по дому, за месяц  
 				lnkODNVol = metMng.getVolPeriod(ml, tp, Calc.getCurDt1(), Calc.getCurDt2());
@@ -387,7 +387,7 @@ public class DistGen {
 					ml.getVol().add(vol);
 				}
 				
-			} else if (servChrg.getCd().equals("Электроснабжение")) {
+			} else if (servChrg.getCd().equals("Электроснабжение (объем)")) {
 				
 			}
 		

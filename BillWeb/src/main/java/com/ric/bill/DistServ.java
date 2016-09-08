@@ -26,7 +26,6 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.House;
-import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 
@@ -77,26 +76,26 @@ public class DistServ {
 	}*/
 
 	/**
-	 * Удалить объем по дому, по услуге
+	 * Удалить объем по вводам дома
 	 * 
 	 * @param serv - заданная услуга
 	 */
-    private void delHouseServVol(House house, Serv serv) {
-		delHouseServVolTp(house, serv.getServMet(), 1);
-		delHouseServVolTp(house, serv.getServMet(), 0);
-		delHouseServVolTp(house, serv.getServMet(), 2);
-		delHouseServVolTp(house, serv.getServMet(), 3);
-		if (serv.getServOdn() != null){
-			delHouseServVolTp(house, serv.getServOdn(), 0);//счетчики ОДН
+    private void delHouseVolServ() {
+		delHouseServVolTp(calc.getServ().getServMet(), 1);
+		delHouseServVolTp(calc.getServ().getServMet(), 0);
+		delHouseServVolTp(calc.getServ().getServMet(), 2);
+		delHouseServVolTp(calc.getServ().getServMet(), 3);
+		if (calc.getServ().getServOdn() != null){
+			delHouseServVolTp(calc.getServ().getServOdn(), 0);//счетчики ОДН
 		} 
 	}
 
+	
 	/**
-	 * Удалить объем по дому, определённой услуге
-	 * @param tp - тип расчета
+	 * Удалить объем по вводу, определённой услуге
 	 * @param serv - услуга
 	 */
-	private void delHouseServVolTp(House house, Serv serv, int tp) {
+	private void delHouseServVolTp(Serv serv, int tp) {
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
@@ -114,45 +113,12 @@ public class DistServ {
 		//найти все вводы по дому и по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			Calc.setGenDt(c.getTime());
-			for (MLogs ml : metMng.getAllMetLogByServTp(house, serv, "Ввод")) {
+			for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
 				metMng.delNodeVol(ml, tp, Calc.getGenDt());
 			}
 		}
 		
 		
-	}
-	
-	
-	/**
-	 * Удалить объем по Лиц.счету, определённой услуге
-	 * @param Kart - лиц.счет
-	 * @param serv - услуга
-	 * @param tp - тип расчета
-	 */
-	private void delKartServVolTp(Kart kart, Serv serv, int tp) {
-		//перебрать все необходимые даты, за период
-		Calendar c = Calendar.getInstance();
-		//необходимый для формирования диапазон дат
-		Date dt1, dt2;
-		if (calc.getCalcTp()==2) {
-			//формирование по ОДН - задать последнюю дату
-			dt1 = Calc.getCurDt2();
-			dt2 = Calc.getCurDt2();
-		} else {
-			//прочее формирование
-			dt1 = Calc.getCurDt1();
-			dt2 = Calc.getCurDt2();
-		}
-
-		//найти все счетчики по Лиц.счету, по услуге
-		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
-			Calc.setGenDt(c.getTime());
-			
-			for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, "Ввод")) {
-				metMng.delNodeVol(ml, tp, Calc.getGenDt());
-			}
-			
-		}
 	}
 	
 	/**
@@ -174,11 +140,15 @@ public class DistServ {
 		try {
 			for (House o: houseMng.findAll2()) {
 				System.out.println("ДОМ:"+o.getId());
+				//dist.clearCache();
 				//распределить объемы
 				startTime = System.currentTimeMillis();
 				Calc.setInit(false);
 				
-				distHouseVol(o, o.getId());
+				distHouseVol(o.getId());
+				//System.out.println("------------------------------------------");
+				//dist.distHouseVol(o.getId());
+
 				//передать по ID иначе кэшируется
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
@@ -188,6 +158,14 @@ public class DistServ {
 				//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
 				
 				startTime = System.currentTimeMillis();
+			    //начисление
+				/*try {
+					ssddServ.chrgHouse(o.getId());
+				} catch (ErrorWhileChrg e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} //передать по ID иначе кэшируется
+				*/
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
 				System.out.println("Время исполнения-3:"+totalTime);
@@ -200,105 +178,87 @@ public class DistServ {
     }
 	
 	/**
-	 * распределить объем по всем услугам, по дому
+	 * распределить объем по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 * @throws ErrorWhileDist 
 	 */
-	public void distHouseVol(House house, int houseId) throws ErrorWhileDist {
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    //@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void distHouseVol(int houseId) throws ErrorWhileDist {
 		
-		//calc.setUp(); //настроить даты и т.п.
+		calc.setUp(); //настроить даты и т.п.
+		//calc.clearLstChecks();//почистить рассчитанные объемы
 
 		House h = em.find(House.class, houseId);
-		/*if (!Calc.isInit()) {
-			//calc.setHouse(h);
-			calc.setArea(h.getStreet().getArea());
+		if (!Calc.isInit()) {
+			calc.setHouse(h);
+			calc.setArea(calc.getHouse().getStreet().getArea());
 			Calc.setInit(true);
-		}*/
+		}
+		Calc.mess("Дом: id="+calc.getHouse().getId(), 2);
+		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk(), 2);
+
+		
+		//Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));
+		/*Serv serv = servMng.getByCD("Холодная вода (объем)");	
+		Calc.mess("услуга 1:"+serv.getName(), 2);
+		serv = servMng.getByCD("Отопление ОДН");	
+		Calc.mess("услуга 2:"+serv.getName(), 2);
+		serv = servMng.getByCD("Холодная вода (объем)");	
+		Calc.mess("услуга 3:"+serv.getName(), 2);*/
+		
+		/*Calc.mess("Дом: 1============================================================",2);
+		h = em.find(House.class, 1737);
+		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
+		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));
+
+		Calc.mess("Дом: 2============================================================",2);
+		h = em.find(House.class, 1744);
+		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
+		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));*/
 		
 		Calc.mess("Очистка объемов");
 		//найти все необходимые услуги для удаления объемов
-		for (Serv serv : servMng.findForDistVol()) {
-				//calc.setServ(s);
-				delHouseServVol(house, serv);
+		for (Serv s : servMng.findForDistVol()) {
+				calc.setServ(s);
+				delHouseVolServ();
 		}
 
 		Calc.mess("Распределение объемов");
 		//найти все необходимые услуги для распределения
 		try {
-			for (Serv serv : servMng.findForDistVol()) {
-				//calc.setServ(s);
-				Calc.mess("Распределение услуги: "+serv.getCd());
-				  distHouseServ(house, serv);
+			for (Serv s : servMng.findForDistVol()) {
+				calc.setServ(s);
+				Calc.mess("Распределение услуги: "+s.getCd());
+				  distHouseServ();
 			}
 		} catch (ErrorWhileDist e) {
 			e.printStackTrace();
 			throw new ErrorWhileDist("Dist.distHouseVol: ");
 		}
 
-	}
-	
-
-	/**
-	 * распределить объем по всем услугам, по дому
-	 * @param lsk - номер лиц.счета
-	 * @throws ErrorWhileDist 
-	 */
-	public void distKartVol(String lsk) throws ErrorWhileDist {
+		//calc.showAllChecks();
 		
-		//calc.setUp(); //настроить даты и т.п.
-
-		Kart kart = em.find(Kart.class, lsk);
-
-		//найти все необходимые услуги для удаления объемов (здесь только по типу 0)
-		for (Serv serv : servMng.findForDistVol()) {
-				delKartServVolTp(kart, serv, 0);
-		}
-
-		Calc.mess("Распределение объемов");
-		//найти все необходимые услуги для распределения
-		try {
-			for (Serv serv : servMng.findForDistVol()) {
-				//calc.setServ(s);
-				Calc.mess("Распределение услуги: "+serv.getCd());
-				  distKartServTp(kart, serv);
-			}
-		} catch (ErrorWhileDist e) {
-			e.printStackTrace();
-			throw new ErrorWhileDist("Dist.distHouseVol: ");
-		}
-
 	}
 	
-	
-	/**
-	 * Распределить объем по счетчикам дома
-	 * @param calcTp - тип обработки
-	 * @throws ErrorWhileDist 
-	 */
-	private void distKartServTp(Kart kart, Serv serv) throws ErrorWhileDist {
-		//найти все вводы по лиц.счету и по услуге
-		for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
-				distGraph(ml);
-		}
-	}
 	
 	/**
 	 * распределить объем по услуге данного дома
 	 * @throws ErrorWhileDist 
 	 */
-	private void distHouseServ(House house, Serv serv) throws ErrorWhileDist {
-		Calc.mess("******************Услуга*************="+serv.getCd());
+	private void distHouseServ() throws ErrorWhileDist {
+		Calc.mess("******************Услуга*************="+calc.getServ().getCd());
 		calc.setCalcTp(1);
-		distHouseServTp(house, serv.getServMet());//Расчет площади, кол-во прожив
+		distHouseServTp(calc.getServ().getServMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);
-		distHouseServTp(house, serv.getServMet());//Распределение объема
+		distHouseServTp(calc.getServ().getServMet());//Распределение объема
 		calc.setCalcTp(2);
-		distHouseServTp(house, serv.getServMet());//Расчет ОДН
+		distHouseServTp(calc.getServ().getServMet());//Расчет ОДН
 		calc.setCalcTp(3);
-		distHouseServTp(house, serv.getServMet());//Расчет пропорц.площади
-		if (serv.getServOdn() != null){
+		distHouseServTp(calc.getServ().getServMet());//Расчет пропорц.площади
+		if (calc.getServ().getServOdn() != null){
 			calc.setCalcTp(0);
-			distHouseServTp(house, serv.getServOdn());//Суммировать счетчики ОДН
+			distHouseServTp(calc.getServ().getServOdn());//Суммировать счетчики ОДН
 		}
 	}
 	
@@ -307,10 +267,10 @@ public class DistServ {
 	 * @param calcTp - тип обработки
 	 * @throws ErrorWhileDist 
 	 */
-	private void distHouseServTp(House house, Serv serv) throws ErrorWhileDist {
+	private void distHouseServTp(Serv serv) throws ErrorWhileDist {
 		Calc.mess("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
-		for (MLogs ml : metMng.getAllMetLogByServTp(house, serv, "Ввод")) {
+		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
 				Calc.mess("Вызов distGraph c id="+ml.getId());
 				distGraph(ml);
 		}

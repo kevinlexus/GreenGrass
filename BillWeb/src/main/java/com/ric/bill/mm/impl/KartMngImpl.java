@@ -251,11 +251,11 @@ public class KartMngImpl implements KartMng {
 			}
 			
 		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
-				&& !servChrg.getCd().equals("Электроснабжение")) {
+				&& !servChrg.getCd().equals("Электроснабжение (объем)")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
 			stVol = getServPropByCD(kart, servSt, "Норматив", genDt);
 		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
-				&& servChrg.getCd().equals("Электроснабжение")) {
+				&& servChrg.getCd().equals("Электроснабжение (объем)")) {
 			Double kitchElStv = 0d;
 			String s2;
 			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество", genDt);
@@ -343,12 +343,12 @@ public class KartMngImpl implements KartMng {
 		val=tarMng.getProp(kart, serv, cd, genDt);
 		if (val==null) {
 			//потом ищем по дому
-			val=tarMng.getProp(kart.getKw().getHouse(), serv, cd, genDt);
+			val=tarMng.getProp(Calc.getHouse(), serv, cd, genDt);
 			//val=tarMng.getProp(kart.getKw().getHouse(), serv, cd, genDt);
 		}
 		if (val==null) {
 			//потом ищем по городу
-			val=tarMng.getProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
+			val=tarMng.getProp(Calc.getArea(), serv, cd, genDt);
 			//val=tarMng.getProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
 		}
 		return val;
