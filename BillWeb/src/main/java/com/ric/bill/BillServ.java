@@ -39,7 +39,7 @@ public class BillServ {
 	@Autowired
 	private Calc calc;
 	@Autowired
-    private DistServ dist;
+    private DistServ distServ;
 	@Autowired
     private ChrgServ chrgServ;
 	
@@ -52,50 +52,11 @@ public class BillServ {
     @PersistenceContext
     private EntityManager em;
 
-    @Test
-	public void test1() {
-		
-		//распределить объемы по дому
-		long startTime;
-		long endTime;
-		long totalTime;
-
-		System.out.println("Begin!");
-		Calc.setDbgLvl(2);
-
-		startTime = System.currentTimeMillis();
-		
-		//dist.distAll();
-		
-    	Future<Result> res = null;
-		res = chrgAll();
-    	
-	   	//проверить окончание потока 
-		 while (!res.isDone()) {
-	         try {
-				Thread.sleep(100);
-				//100-millisecond задержка
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-	     }
-
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		System.out.println("ОБЩЕЕ время исполнения:"+totalTime);
-
-		System.out.println("End!");
-			
-		
-	}
-
-
 	/**
 	 * выполнить начисление по всем домам
 	 */
     @Async
-    public Future<Result> chrgAll() {
+    public Future<Result> chrgAll(boolean dist) {
     	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 
 		Calc.setDbgLvl(2);
@@ -111,15 +72,17 @@ public class BillServ {
 		long totalTime2;
 
 		startTime = System.currentTimeMillis();
-		//установить даты
-		calc.setUp();
 		
-		dist.distAll();
 		
-		/*for (Kart kart : kartMng.findAll()) {
+		if (dist) {
+			 distServ.distAll();
+		}
+		
+		for (Kart kart : kartMng.findAll()) {
 			//расчитать начисление по лиц.счету
 			try {
 				startTime2 = System.currentTimeMillis();
+				Calc.setHouseInit(false); //сбросить инициализацию дома
 				
 				if (chrgServ.chrgLsk(kart) ==0){
 					//сохранить расчет
@@ -137,7 +100,7 @@ public class BillServ {
 				e.printStackTrace();
 			}
 			
-		}*/
+		}
 
 		/*for (House o: houseMng.findAll2()) {
 			System.out.println("Started House: id="+o.getId());
@@ -170,6 +133,7 @@ public class BillServ {
 	    	kart = em.find(Kart.class, lsk);
 		}
 		//расчитать начисление
+		Calc.setHouseInit(false); //сбросить инициализацию дома
 		try {
 			if (chrgServ.chrgLsk(kart) ==0){
 				//сохранить расчет
@@ -196,12 +160,6 @@ public class BillServ {
     	ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 
 		House h = em.find(House.class, houseId);
-		if (!Calc.isInit()) {
-			calc.setUp(); //настроить даты фильтра и т.п.
-			Calc.setInit(true);
-		}
-		calc.setHouse(h);
-		calc.setArea(Calc.getHouse().getStreet().getArea());
 
 		Calc.mess("Charging");
 		Calc.mess("House: id="+Calc.getHouse().getId());
@@ -216,6 +174,7 @@ public class BillServ {
 					long totalTime;
 					startTime = System.currentTimeMillis();
 				    //расчитать начисление
+					Calc.setHouseInit(false); //сбросить инициализацию дома
 					try {
 						if (chrgServ.chrgLsk(kart) ==0){
 							//сохранить расчет

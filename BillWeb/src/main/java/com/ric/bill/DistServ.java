@@ -143,7 +143,7 @@ public class DistServ {
 				//dist.clearCache();
 				//распределить объемы
 				startTime = System.currentTimeMillis();
-				Calc.setInit(false);
+				Calc.setHouseInit(false);
 				
 				distHouseVol(o.getId());
 				//System.out.println("------------------------------------------");
@@ -186,14 +186,12 @@ public class DistServ {
     //@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distHouseVol(int houseId) throws ErrorWhileDist {
 		
-		calc.setUp(); //настроить даты и т.п.
-		//calc.clearLstChecks();//почистить рассчитанные объемы
 
 		House h = em.find(House.class, houseId);
-		if (!Calc.isInit()) {
+		//установить инициализацию дома
+		if (!Calc.isHouseInit()) {
 			calc.setHouse(h);
-			calc.setArea(calc.getHouse().getStreet().getArea());
-			Calc.setInit(true);
+			Calc.setHouseInit(true);
 		}
 		Calc.mess("Дом: id="+calc.getHouse().getId(), 2);
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk(), 2);

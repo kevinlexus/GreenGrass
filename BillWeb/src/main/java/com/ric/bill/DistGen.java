@@ -147,21 +147,12 @@ public class DistGen {
 		Kart kart = ml.getKart();
 		//Kart kart = metMng.getKart(ml); <--тормозит!
 
+		if (!Calc.isHouseInit()) {
+			calc.setHouse(kart.getKw().getHouse());
+			Calc.setHouseInit(true);
+		}
 		calc.setKart(kart); 
 
-		if (ml.getId()==3650165) {
-			Calc.mess("stop");
-		}
-		
-		if (tp==2 && ml.getId()==3625292) {
-			Calc.mess("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
-			Calc.mess("стоп");
-		}
-
-		/*if (rec > 1000) {
-			throw new WrongGetMethod("При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружен замкнутый цикл");
-		}
-		rec++;*/
 		if (!ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
 			Calc.mess("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
 		}

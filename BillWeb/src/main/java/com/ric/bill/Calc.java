@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -83,7 +84,8 @@ public final class Calc {
 	/**
 	 * настроить объект для расчета 
 	 */
-	public void setUp() {
+	@PostConstruct
+	private void setUp() {
 		//Объект приложения, получить даты текущего периода
 		Obj obj = objMng.getByCD("Модуль начисления");
 		
@@ -132,6 +134,7 @@ public final class Calc {
 
 	public void setHouse(House house) {
 		Calc.house = house;
+		setArea(house.getStreet().getArea());
 	}
 
 	public Serv getServ() {
@@ -171,7 +174,7 @@ public final class Calc {
 		return area;
 	}
 
-	public void setArea(Area area) {
+	private static void setArea(Area area) { //private!!!
 		Calc.area = area;
 	}
 
@@ -242,11 +245,11 @@ public final class Calc {
 		Calc.dbgLvl = dbgLvl;
 	}
 
-	public static boolean isInit() {
+	public static boolean isHouseInit() {
 		return init;
 	}
 
-	public static void setInit(boolean init) {
+	public static void setHouseInit(boolean init) {
 		Calc.init = init;
 	}
 	
