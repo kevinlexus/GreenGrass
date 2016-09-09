@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -147,6 +148,7 @@ public class DistServ {
 		    	//установить дом
 		    	calc.setHouse(o);
 				
+		    	
 				distHouseVol(o.getId());
 				//System.out.println("------------------------------------------");
 				//dist.distHouseVol(o.getId());
@@ -186,8 +188,11 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@CacheEvict(cacheNames="lskMeter", allEntries=true)
 	public void distKartVol(String lsk) throws ErrorWhileDist {
 		Kart kart = em.find(Kart.class, lsk);
+		//почистить коллекцию обработанных счетчиков
+		distGen.clearLstChecks();
 
 		//найти все необходимые услуги для удаления объемов (здесь только по типу 0)
 		for (Serv serv : servMng.findForDistVol()) {
@@ -286,6 +291,9 @@ public class DistServ {
 		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));*/
 		
 		Calc.mess("Очистка объемов");
+		//почистить коллекцию обработанных счетчиков
+		distGen.clearLstChecks();
+
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);

@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -17,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.excp.ErrorWhileChrg;
-import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.model.ar.House;
@@ -58,8 +56,6 @@ public class BillServ {
 	 */
     @Async
     public Future<Result> chrgAll(boolean dist) {
-    	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
-
 		Calc.setDbgLvl(2);
     	
     	Result res = new Result();
@@ -128,7 +124,7 @@ public class BillServ {
 	 */
     @Async
 	public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
-		Calc.setDbgLvl(0);
+		Calc.setDbgLvl(2);
     	
     	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 		Result res = new Result();
@@ -138,6 +134,61 @@ public class BillServ {
 	    	kart = em.find(Kart.class, lsk);
 		}
     	
+    	//TEST пока не удалять!
+		/*long startTime;
+		long endTime;
+		long totalTime;
+				startTime = System.currentTimeMillis();
+
+		for (int a=1; a < 100; a++) {
+	    	for (Kw kw : kart.getKw().getHouse().getKw()) {
+	    		Calc.mess("Квартира id="+kw.getId(),2);
+	    		for (Kart k : kw.getLsk()) {
+	    			for (MLogs ml : k.getMlog()) {
+	    	    		Calc.mess("Счетчик id="+ml.getId(),2);
+	    				
+	    			}
+	    			
+	    		}
+	    		
+	    	}
+		}
+    	
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+	    Calc.mess("TEST time:"+totalTime,2);
+    	
+		startTime = System.currentTimeMillis();
+
+		for (int a=1; a < 100000; a++) {
+		    Calc.mess("Checking",2);
+			
+		}
+    	
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+	    Calc.mess("TEST3 time:"+totalTime,2);
+
+		startTime = System.currentTimeMillis();
+
+		for (int a=1; a < 100000; a++) {
+	    	for (Kw kw : kart.getKw().getHouse().getKw()) {
+	    		for (Kart k : kw.getLsk()) {
+	    			for (MLogs ml : k.getMlog()) {
+	    				
+	    			}
+	    			
+	    		}
+	    		
+	    	}
+		}
+    	
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+	    Calc.mess("TEST2 time:"+totalTime,2);*/
+    	//TEST пока не удалять!
+    	
+/*
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
 		calc.setKart(kart);
@@ -163,7 +214,7 @@ public class BillServ {
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
 			res.err=1;
-		}
+		} */
     	return new AsyncResult<Result>(res);
 	}
 

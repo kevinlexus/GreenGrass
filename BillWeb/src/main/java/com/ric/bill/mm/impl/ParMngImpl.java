@@ -50,8 +50,8 @@ public class ParMngImpl implements ParMng {
 	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
 	 */
 	//В кэшах не почувствовал разницы:
-	//@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
-	@Cacheable(cacheNames="rrr1")
+	//@Cacheable(cacheNames="rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
 	public synchronized Double getDbl(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
@@ -90,8 +90,8 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd }")
 	//@Cacheable(cacheNames="rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd }")
 	public synchronized Double getDbl(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
@@ -152,8 +152,8 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа String объекта по CD свойства
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
-	@Cacheable(cacheNames="rrr1")
+	//@Cacheable(cacheNames="rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
 	public synchronized String getStr(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
@@ -188,7 +188,8 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа String объекта по CD свойства, без указания даты
 	 */
-	@Cacheable("rrr1")
+	//@Cacheable("rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd }")
 	public synchronized String getStr(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {

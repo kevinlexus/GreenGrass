@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ric.bill.BillServ;
+import com.ric.bill.Calc;
 import com.ric.bill.ChrgThr;
 import com.ric.bill.Result;
 import com.ric.bill.excp.ErrorWhileChrg;
@@ -46,6 +47,7 @@ public class BillingController {
     @RequestMapping("/chrglsk")
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") String lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist) {
+    	Calc.mess("BillingController.chrgLsk",2);
     	Future<Result> fut = null;
 		boolean isDist;
     	if (dist.equals("1")) {
@@ -86,6 +88,7 @@ public class BillingController {
     
     @RequestMapping("/chrgall")
     public String chrgAll(@RequestParam(value="dist", defaultValue="0") String dist) {
+    	Calc.mess("BillingController.chrgAll",2);
     	Future<Result> fut = null;
 		boolean isDist;
     	if (dist.equals("1")) {

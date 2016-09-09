@@ -159,8 +159,8 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 //	@Cacheable("readOnlyCache")
-	//@Cacheable(cacheNames="rrr1", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
 	//@Cacheable("rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
 	public synchronized void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -213,8 +213,8 @@ public class KartMngImpl implements KartMng {
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	//@Cacheable(cacheNames="rrr1")
+	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public synchronized Standart getStandart (Kart kart, Serv serv, CntPers cntPers, Date genDt) {
 		Calc.mess("STANDART1="+serv.getId()+" dt="+genDt);	
 		//получить услугу основную, для начисления

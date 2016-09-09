@@ -131,7 +131,7 @@ public class DistGen {
 	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
 	public NodeVol distNode (MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
-		
+		Calc.mess("DistGen.NodeVol ВЫЗОВ!");
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		//если рассчитанный узел найден, вернуть готовый объем
 		if (nv != null) { 
@@ -421,13 +421,11 @@ public class DistGen {
 	 * @param genDt - дата расчета
 	 * @return - найденный объем
 	 */
-	@Cacheable(cacheNames="rrr1", key="{ #id, #tp, #genDt }")
+	@Cacheable(cacheNames="lskMeter", key="{ #id, #tp, #genDt }")
 	private NodeVol findLstCheck(int id, int tp, Date genDt) {
 		for (Check c : lstCheck) {
 			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
-				/*if (id==3670885) {
-				  Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString(), 2);
-				}*/
+				  Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString());
 				return c.getNodeVol();
 			}
 		}
