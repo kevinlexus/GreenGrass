@@ -37,7 +37,7 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private int id; //id
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp; 
 

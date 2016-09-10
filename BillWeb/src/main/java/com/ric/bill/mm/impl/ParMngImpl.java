@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +19,12 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Par;
 
+
 @Service
 public class ParMngImpl implements ParMng {
+
+	@Autowired
+	private ApplicationContext ctx;
 
 	@Autowired
 	private ParDAO pDao;

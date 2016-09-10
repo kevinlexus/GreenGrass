@@ -80,6 +80,7 @@ public class BillServ {
 			try {
 				startTime2 = System.currentTimeMillis();
 		    	//установить дом и счет
+				
 		    	calc.setHouse(kart.getKw().getHouse());
 				calc.setKart(kart);
 				

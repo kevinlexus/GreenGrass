@@ -47,15 +47,15 @@ public class Reg implements java.io.Serializable, Registrable {
 	@JoinColumn(name="FK_PERS", referencedColumnName="ID", updatable = false)
 	private Pers pers;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_REG_TP", referencedColumnName="ID", updatable = false)
 	private Lst tp;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_REG_STATUS", referencedColumnName="ID", updatable = false)
 	private Lst regStatus;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_KINSHIP", referencedColumnName="ID", updatable = false)
 	private Lst kinship;
 

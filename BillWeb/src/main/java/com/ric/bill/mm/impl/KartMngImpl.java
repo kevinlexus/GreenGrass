@@ -335,8 +335,8 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt - Дата выборки
 	 * @return
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
-	@Cacheable("rrr1")
+	//@Cacheable("rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
 	public synchronized Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
 		Double val;
 		//в начале ищем по лиц. счету 
@@ -361,8 +361,8 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt - Дата выборки
 	 * @return
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	//@Cacheable(cacheNames="rrr1") 
+	@Cacheable(cacheNames="rrr2", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public synchronized Org getOrg(Kart kart, Serv serv, Date genDt) {
 		Org org;
 		//в начале ищем по лиц. счету 
@@ -385,8 +385,8 @@ public class KartMngImpl implements KartMng {
 	 * @param genDt - Дата выборки
 	 * @return
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
-	@Cacheable("rrr1")
+	//@Cacheable("rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public synchronized boolean getServ(Kart kart, Serv serv, Date genDt) {
 		boolean exs = false;
 		//в начале ищем по лиц. счету 
@@ -404,8 +404,8 @@ public class KartMngImpl implements KartMng {
 	 * @param tc - объект
 	 * @return
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") 
 	//@Cacheable("rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") 
 	public synchronized List<Serv> getAllServ(Kart kart) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа лиц.счета

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -42,12 +43,16 @@ public class ChrgThr extends Thread {
 	//private ChrgServ chrgServ;
 	@Autowired
 	private ParMng parMng;
+	
 	@Autowired
 	private KartMng kartMng;
 	@Autowired
 	private MeterLogMng metMng;
-	private Serv serv;
 
+	@Autowired
+	private ApplicationContext ctx;
+	
+	private Serv serv;
 	//временное хранилище записей
 	private ChrgStore chStore;
 	//текущий лс
@@ -59,7 +64,7 @@ public class ChrgThr extends Thread {
     private List<Chrg> prepChrg;
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
-
+    
 	//конструктор
 	public ChrgThr() {
 		super();
@@ -69,12 +74,15 @@ public class ChrgThr extends Thread {
 	//				thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
 
 	public void set(Serv serv, Kart kart, 
-			HashMap<Serv, BigDecimal> mapServ, HashMap<Serv, BigDecimal> mapVrt, List<Chrg> prepChrg) {
+			HashMap<Serv, BigDecimal> mapServ, 
+			HashMap<Serv, BigDecimal> mapVrt, 
+			List<Chrg> prepChrg) {
 		this.serv = serv;
 		this.kart = kart;
 		this.mapServ = mapServ;
 		this.mapVrt = mapVrt;
 		this.prepChrg = prepChrg;
+
 	}
 
 	public void run() {
@@ -246,9 +254,9 @@ public class ChrgThr extends Thread {
 		//Calc.mess(thrName+" CHECK0.4="+serv.getId()+" dt="+genDt,2);	
 
 		//получить расценку по норме	
-		synchronized (kartMng) {
+		//synchronized (kartMng) {
 			stPrice = kartMng.getServPropByCD(kart, stServ, "Цена", genDt);
-		}
+		//}
 		
 		if (stPrice == null) {
 			stPrice = 0d;
@@ -263,11 +271,11 @@ public class ChrgThr extends Thread {
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
 			
 			
-			synchronized (kartMng) {
+			//synchronized (kartMng) {
 				//Calc.mess(thrName+" CHECK1="+serv.getId()+" dt="+genDt,2);	
 				stdt = kartMng.getStandart(kart, serv, cntPers, genDt);
 				//Calc.mess(thrName+" CHECK2="+serv.getId()+" dt="+genDt,2);	
-			}
+			//}
 			//здесь же получить расценки по свыше соц.нормы и без проживающих 
 			if (serv.getServUpst() != null) {
 				
@@ -538,9 +546,9 @@ public class ChrgThr extends Thread {
 	 * @param sum - сумма
 	 */
 	public void putMapServVal(Serv serv, BigDecimal sum) {
-		synchronized (mapServ) {
 		BigDecimal tmpSum;
 		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
+		synchronized (mapServ) {
 		for (Map.Entry<Serv, BigDecimal> entry : mapServ.entrySet()) {
 	    	if (entry.getKey().equals(serv)) { 
 	    		tmpSum = Utl.nvl(entry.getValue(), BigDecimal.ZERO);
@@ -560,9 +568,9 @@ public class ChrgThr extends Thread {
 	 * @param sum - сумма
 	 */
 	public void putMapVrtVal(Serv serv, BigDecimal sum) {
-		synchronized (mapVrt) {
 		BigDecimal tmpSum;
 		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
+		synchronized (mapVrt) {
 	    for (Map.Entry<Serv, BigDecimal> entry : mapVrt.entrySet()) {
 	    	if (entry.getKey().equals(serv)) {
 	    		tmpSum = Utl.nvl(entry.getValue(), BigDecimal.ZERO);

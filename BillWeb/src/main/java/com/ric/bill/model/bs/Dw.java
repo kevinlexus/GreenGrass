@@ -47,9 +47,10 @@ public class Dw implements java.io.Serializable, Simple {
     @Column(name = "DTS1", updatable = false)
 	private Date dts1;
     
-    @ManyToOne(fetch = FetchType.LAZY) //если LAZY заменить EAGER, то будут джойниться все параметры и экстрактиться тоже!(замедление) 
+    // Заменил LAZY на EAGER - стало быстрее... может не правильно тестил? 10.09.2016
+    @ManyToOne(fetch = FetchType.EAGER) //если LAZY заменить EAGER, то будут джойниться все параметры и экстрактиться тоже!(замедление) 
 	@JoinColumn(name="FK_HFP", referencedColumnName="ID")
-	@BatchSize(size = 20)
+	@BatchSize(size = 50)
 	private Par par; 
 
     //даты начала и окончания произведенного объема

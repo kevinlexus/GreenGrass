@@ -39,8 +39,8 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @param mLog - Счетчик
 	 * @return
 	 */
-//	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId() }")
-	@Cacheable(cacheNames="rrr1")
+//	@Cacheable(cacheNames="rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId() }")
 	public synchronized Kart getKart(MLogs mLog) {
 		Query query =em.createQuery("from Kart t where t.klsk =:klsk");
 		query.setParameter("klsk", mLog.getKlskObj());
