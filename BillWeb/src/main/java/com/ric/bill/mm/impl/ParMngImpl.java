@@ -31,7 +31,7 @@ public class ParMngImpl implements ParMng {
 	
 	//получить параметр по его CD
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
-	public synchronized Par getByCD(String cd) {
+	public/* synchronized */Par getByCD(String cd) {
 		return pDao.getByCd(cd);
 	}
 
@@ -40,7 +40,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	//@Cacheable(cacheNames="rrr1", key="{ #cd }")
 	@Cacheable(cacheNames="rrr1")
-	public synchronized boolean isExByCd(String cd) {
+	public/* synchronized */boolean isExByCd(String cd) {
 		Par p = getByCD(cd);
 		if (p != null) {
 			return true;
@@ -57,6 +57,7 @@ public class ParMngImpl implements ParMng {
 	//В кэшах не почувствовал разницы:
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
+	@Transactional
 	public synchronized Double getDbl(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
@@ -97,7 +98,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd }")
-	public synchronized Double getDbl(Storable st, String cd) {
+	public/* synchronized */Double getDbl(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
@@ -127,7 +128,7 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
 	 */
-	public synchronized Date getDate(Storable st, String cd) {
+	public/* synchronized */Date getDate(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
@@ -159,7 +160,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
-	public synchronized String getStr(Storable st, String cd, Date genDt) {
+	public/* synchronized */String getStr(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
@@ -195,7 +196,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd }")
-	public synchronized String getStr(Storable st, String cd) {
+	public/* synchronized */String getStr(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {

@@ -7,10 +7,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 import com.ric.bill.excp.EmptyOrg;
@@ -33,9 +36,11 @@ import com.ric.bill.model.fn.ChrgStore;
  * @author lev
  *
  */
+
+
 @Component
 @Scope("prototype") //собственный бин для каждого потока
-public class ChrgThr extends Thread {
+public class ChrgThr {
 	
 	@Autowired
 	private LstMng lstMng;
@@ -85,7 +90,12 @@ public class ChrgThr extends Thread {
 
 	}
 
-	public void run() {
+	@Async
+	//public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
+	public  Future<Result> run1() {
+    	Result res = new Result();
+		res.err=0;
+		
 		Thread t = Thread.currentThread();
 	    thrName = t.getName();
 	      
@@ -177,7 +187,7 @@ public class ChrgThr extends Thread {
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;
         //Calc.mess("ChrThr: Поток завершён "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId(),2);
-
+		return new AsyncResult<Result>(res);
 	}
 
 	/**
@@ -588,7 +598,7 @@ public class ChrgThr extends Thread {
 	 * @param chrg - строка начисления
 	 */
 	public void chrgAdd(Chrg chrg) {
-		synchronized (chrg) {
+		synchronized (prepChrg) {
 		  prepChrg.add(chrg);
 		}
 	}

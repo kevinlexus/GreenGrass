@@ -28,7 +28,7 @@ public class ParDAOImpl implements ParDAO {
 	@SuppressWarnings("unchecked")
 	//@Cacheable(cacheNames="rrr1", key="{ #cd }")
 	@Cacheable(cacheNames="rrr1")
-	public synchronized Par getByCd(String cd) {
+	public/* synchronized */Par getByCd(String cd) {
 		Query query =em.createQuery("from Par t where t.cd = :cd");
 		query.setParameter("cd", cd);
 		return (Par) query.getSingleResult();
@@ -37,7 +37,7 @@ public class ParDAOImpl implements ParDAO {
 	//работает это медленнее чем была итерация по всем параметрам объекта!
 	//@Cacheable(cacheNames="rrr1", key="{ #id, #cd, #dataTp }")
 	@Cacheable(cacheNames="rrr1")
-	public synchronized boolean checkPar(int id, String cd, String dataTp) {
+	public/* synchronized */boolean checkPar(int id, String cd, String dataTp) {
 		Query query =em.createQuery("from Par t where t.id = :id and t.cd=:cd and t.dataTp=:dataTp");
 		query.setParameter("id", id);
 		query.setParameter("cd", cd);

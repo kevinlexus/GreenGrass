@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
 import com.ric.bill.CntPers;
@@ -67,7 +68,7 @@ public class KartMngImpl implements KartMng {
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 */
 	@Cacheable("rrr1")
-	private synchronized boolean checkPersStatus (RegContains regc, Pers p, String status, int tp, Date genDt) {
+	private /*synchronized */boolean checkPersStatus (RegContains regc, Pers p, String status, int tp, Date genDt) {
 		PersStatus ps = checkPersStatusExt (regc, p, status, tp, genDt);
 		return ps.exist;
 	}
@@ -78,7 +79,7 @@ public class KartMngImpl implements KartMng {
 	 * и вернуть объект, содержащий наличие проживающего и его отношение к нанимателю
 	 */
 	//@Cacheable("rrr1")
-	private synchronized PersStatus checkPersStatusExt (RegContains regc, Pers p, String status, int tp, Date genDt) {
+	private /*synchronized */PersStatus checkPersStatusExt (RegContains regc, Pers p, String status, int tp, Date genDt) {
 		Date dt1, dt2;
 		List<? extends Registrable> rg;
 		if (tp==0) {
@@ -123,7 +124,7 @@ public class KartMngImpl implements KartMng {
 	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
 	@Cacheable("rrr1")
-	private synchronized boolean checkPersNullStatus (Registrable reg, Date genDt) {
+	private /*synchronized*/ boolean checkPersNullStatus (Registrable reg, Date genDt) {
 		//проверить статус, даты
 		Date dt1, dt2;
 		if (reg.getTp().getCd().equals("Временное присутствие")) {
@@ -161,6 +162,7 @@ public class KartMngImpl implements KartMng {
 //	@Cacheable("readOnlyCache")
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
+	@Transactional
 	public synchronized void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -215,7 +217,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable(cacheNames="rrr1")
 	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
-	public synchronized Standart getStandart (Kart kart, Serv serv, CntPers cntPers, Date genDt) {
+	public /*synchronized*/ Standart getStandart (Kart kart, Serv serv, CntPers cntPers, Date genDt) {
 		Calc.mess("STANDART1="+serv.getId()+" dt="+genDt);	
 		//получить услугу основную, для начисления
 		Serv servChrg = serv.getServChrg();
@@ -337,7 +339,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
-	public synchronized Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
+	public /*synchronized*/ Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
 		Double val;
 		//в начале ищем по лиц. счету 
 		val=tarMng.getProp(kart, serv, cd, genDt);
@@ -363,7 +365,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr2", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
-	public synchronized Org getOrg(Kart kart, Serv serv, Date genDt) {
+	public /*synchronized*/ Org getOrg(Kart kart, Serv serv, Date genDt) {
 		Org org;
 		//в начале ищем по лиц. счету 
 		org=tarMng.getOrg(kart, serv, genDt);
@@ -387,7 +389,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
-	public synchronized boolean getServ(Kart kart, Serv serv, Date genDt) {
+	public /*synchronized*/ boolean getServ(Kart kart, Serv serv, Date genDt) {
 		boolean exs = false;
 		//в начале ищем по лиц. счету 
 		exs=tarMng.getServ(kart, serv, genDt);
@@ -406,7 +408,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") 
-	public synchronized List<Serv> getAllServ(Kart kart) {
+	public /*synchronized*/ List<Serv> getAllServ(Kart kart) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа лиц.счета
 		for (TarifKlsk k : kart.getTarifklsk()) {
@@ -434,7 +436,7 @@ public class KartMngImpl implements KartMng {
 	 * @param kart
 	 * @param genDt
 	 */
-	public synchronized double getCapPrivs(RegContains rc, Date genDt) {
+	public /*synchronized*/ double getCapPrivs(RegContains rc, Date genDt) {
 		boolean above70owner=false;
 		boolean above70=false;
 		boolean under70=false;

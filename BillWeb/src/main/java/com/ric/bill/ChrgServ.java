@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
@@ -53,6 +55,8 @@ public class ChrgServ {
 	private Calc calc;
 	@Autowired
 	private ParMng parMng;
+	//@Autowired
+	//private ChrgThr chrgThr;
 	@Autowired
 	private ServMng servMng;
 	@Autowired
@@ -143,8 +147,10 @@ public class ChrgServ {
 		servThr = kartMng.getAllServ(kart);
 		
 		errThread=false;
+		List<Future<Result>> frl = new ArrayList<Future<Result>>();
+
 		while (true) {
-			Calc.mess("ChrgServ: Loading servs for threads",1);
+			Calc.mess("ChrgServ: Loading servs for threads");
 			//получить следующие N услуг, рассчитать их в потоке
 			List<Serv> servWork = getNextServ(10);
 			if (servWork.isEmpty()) {
@@ -152,14 +158,53 @@ public class ChrgServ {
 				break;
 			}
 			for (Serv serv : servWork) {
+					Future<Result> fut = null;
+					ChrgThr chrgThr = ctx.getBean(ChrgThr.class);
+ 					chrgThr.set(serv, kart, mapServ, mapVrt, prepChrg);
+			    	fut = chrgThr.run1();
+			    	frl.add(fut);
+					Calc.mess("ChrgServ: Begins "+serv.getCd());
+
+			}
+		}
+		
+		
+		//проверить окончание потока
+	    int flag2 = 0;
+		while (flag2==0) {
+			flag2=1;
+			for (Future<Result> fut : frl) {
+				if (!fut.isDone()) {
+					flag2=0;
+				} else {
+					try {
+						Calc.mess("ChrgServ: Done Result.err:="+fut.get().err);
+						if (fut.get().err==1) {
+							errThread=true;
+						}
+					} catch (InterruptedException | ExecutionException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				}
+			}
+		}
+					/*
+					
 					ChrgThr thr1 = (ChrgThr) ctx.getBean(ChrgThr.class);
 					thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
 					thr1.start();
 					thr1.setUncaughtExceptionHandler(expThr);
-					trl.add(thr1);
-			}
+					trl.add(thr1);*/
 			//ждать, когда все потоки выполнятся
-			for (ChrgThr t : trl) {
+		/*	for (ChrgThr t : trl) {
 				try {
 					t.join();
 					//Calc.mess("WAIT="+t.getName(), 2);
@@ -172,7 +217,7 @@ public class ChrgServ {
 				//была ошибка в потоке- выйти из цикла
 				break;
 			}
-		}
+		}*/
 
 		
 		
@@ -225,6 +270,11 @@ public class ChrgServ {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (String lsk) throws ErrorWhileChrg {
+		
+		/*if(1==1) {
+			return;
+		}*/
+		
 		//Calc.mess("CHECK9",2);	
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
 		
