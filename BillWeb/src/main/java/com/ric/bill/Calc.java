@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -72,6 +73,8 @@ public final class Calc {
 
 	//конструктор
 	public Calc() {
+		TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
+		
 		calendar = new GregorianCalendar(1940, Calendar.JANUARY, 1);
 		calendar.clear(Calendar.ZONE_OFFSET);
 		firstDt = calendar.getTime();

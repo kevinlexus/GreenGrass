@@ -56,6 +56,7 @@ public class BillingController {
 			isDist = false;
 		}
     	fut = billServ.chrgLsk(null, lsk, isDist);
+    	
 	   	//проверить окончание потока 
 	    while (!fut.isDone()) {
 	         try {
@@ -83,7 +84,7 @@ public class BillingController {
 			e.printStackTrace();
 			return "ERROR";
 		}
-	    
+
     }
     
     @RequestMapping("/chrgall")

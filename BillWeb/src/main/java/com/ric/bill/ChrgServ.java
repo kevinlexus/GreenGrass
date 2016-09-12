@@ -81,8 +81,6 @@ public class ChrgServ {
     private List<Chrg> prepChrg;
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
-    //коллекция для сумм по укрупнённым услугам, для нового начисления 
-    private MultiKeyMap mapDeb;
     //коллекция для формирования потоков
     private List<Serv> servThr;
     
@@ -135,8 +133,6 @@ public class ChrgServ {
 		//для виртуальной услуги	
 		mapServ = new HashMap<Serv, BigDecimal>();  
 		mapVrt = new HashMap<Serv, BigDecimal>();  
-		//для долгов
-		mapDeb = new MultiKeyMap();
 
 		//список потоков
 		List<ChrgThr> trl = new ArrayList<ChrgThr>();
@@ -271,11 +267,10 @@ public class ChrgServ {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (String lsk) throws ErrorWhileChrg {
 		
-		/*if(1==1) {
-			return;
-		}*/
-		
-		//Calc.mess("CHECK9",2);	
+	    //коллекция для сумм по укрупнённым услугам, для нового начисления 
+	    MultiKeyMap mapDeb = new MultiKeyMap();
+
+	    //Calc.mess("CHECK9",2);	
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
 		
 		//ДЕЛЬТА
@@ -286,9 +281,9 @@ public class ChrgServ {
 			try {
 				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 			}catch(Exception e) {
-				servMain = chrg.getServ();
-			    //e.printStackTrace();
-				//throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
+				//servMain = chrg.getServ();
+			    e.printStackTrace();
+				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 			}
 			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
@@ -352,7 +347,6 @@ public class ChrgServ {
 				
 			}
 			  
-			  
 			  //вызвать хранимую функцию, для пересчёта долга
 			  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
 			  qr.registerStoredProcedureParameter("P_LSK", String.class, ParameterMode.IN);
@@ -360,7 +354,7 @@ public class ChrgServ {
 			  qr.registerStoredProcedureParameter("P_FK_ORG", Integer.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_PERIOD", String.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_SUMMA_CHNG", Double.class, ParameterMode.IN);
-			  qr.registerStoredProcedureParameter("P_DTEK", Date.class, ParameterMode.IN);
+			  //qr.registerStoredProcedureParameter("P_DTEK", Date.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
 			  qr.setParameter("P_LSK", kart.getLsk());
@@ -368,7 +362,7 @@ public class ChrgServ {
 			  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
 			  qr.setParameter("P_PERIOD", Calc.getPeriod());
 			  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
-			  qr.setParameter("P_DTEK", new Date());
+			  //qr.setParameter("P_DTEK", new Date());
 			  qr.setParameter("P_TP_CHNG", 1);
 			  qr.setParameter("P_FK_CHNG", 1);
 			  

@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.excp.ErrorWhileChrg;
+import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.model.ar.House;
@@ -126,13 +127,19 @@ public class BillServ {
     @Async
 	public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 		Calc.setDbgLvl(2);
-    	
+		
     	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 		Result res = new Result();
+		Future<Result> fut = new AsyncResult<Result>(res);
+
 		res.err=0;
 		//Если был передан идентификатор лицевого, то найти лиц.счет
     	if (lsk != null) {
 	    	kart = em.find(Kart.class, lsk);
+	    	if (kart ==null) {
+	    		res.err=1;
+	    		return fut;
+	    	}
 		}
     	
     	//TEST пока не удалять!
@@ -189,7 +196,7 @@ public class BillServ {
 	    Calc.mess("TEST2 time:"+totalTime,2);*/
     	//TEST пока не удалять!
     	
-/*
+
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
 		calc.setKart(kart);
@@ -201,7 +208,7 @@ public class BillServ {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				res.err=1;
-				return new AsyncResult<Result>(res);
+				return fut;
 			}
 		}
 		//расчитать начисление
@@ -215,8 +222,8 @@ public class BillServ {
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
 			res.err=1;
-		} */
-    	return new AsyncResult<Result>(res);
+		} 
+    	return fut;
 	}
 
     

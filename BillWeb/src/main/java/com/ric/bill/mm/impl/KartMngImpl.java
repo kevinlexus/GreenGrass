@@ -407,7 +407,7 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable("rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") 
+	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") - НЕ КЭШИРОВАТЬ!!!
 	public /*synchronized*/ List<Serv> getAllServ(Kart kart) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа лиц.счета
