@@ -15,9 +15,11 @@ import javax.persistence.Query;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TemporalType;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ric.bill.Calc;
+import com.ric.bill.Config;
 import com.ric.bill.Result;
 import com.ric.bill.ResultSet;
 import com.ric.bill.dao.HouseDAO;
@@ -31,6 +33,8 @@ public class HouseDAOImpl implements HouseDAO {
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
     private EntityManager em;
+    @Autowired
+    private Config config;
     
     static final String STATEMENT_SQLMAP = "Statement-SQL-Mapping";
     
@@ -61,7 +65,7 @@ public class HouseDAOImpl implements HouseDAO {
 						   "and ? between x.dt1 and x.dt2 "+
 						   "and kw.fk_house = h.id "+
 						   "order by h.id ",  STATEMENT_SQLMAP);
-			q.setParameter(1, Calc.getCurDt1(), TemporalType.DATE);
+			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 			
 			List<ResultSet> lst = q.getResultList();
 			lstHouse = new ArrayList<House>();

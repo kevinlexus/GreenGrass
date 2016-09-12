@@ -37,9 +37,10 @@ public class BillServ {
 	@Autowired
 	private HouseMng houseMng;
 	@Autowired
-	private Calc calc;
-	@Autowired
     private DistServ distServ;
+	@Autowired
+    private DistGen distGen;
+	
 	@Autowired
     private ChrgServ chrgServ;
 	
@@ -51,13 +52,21 @@ public class BillServ {
 
     @PersistenceContext
     private EntityManager em;
-
+    
+    private Calc calc;
+    
+    //конструктор
+    public BillServ() {
+    	//расчетный объект
+    	this.calc=new Calc();
+    }
+    
 	/**
 	 * выполнить начисление по всем домам
 	 */
     @Async
     public Future<Result> chrgAll(boolean dist) {
-		Calc.setDbgLvl(2);
+    	Calc.setDbgLvl(2);
     	
     	Result res = new Result();
 		res.err=0;
@@ -71,7 +80,6 @@ public class BillServ {
 
 		startTime = System.currentTimeMillis();
 		
-		
 		if (dist) {
 			 distServ.distAll();
 		}
@@ -83,9 +91,9 @@ public class BillServ {
 		    	//установить дом и счет
 				
 		    	calc.setHouse(kart.getKw().getHouse());
-				calc.setKart(kart);
+		    	calc.setKart(kart);
 				
-				if (chrgServ.chrgLsk(kart) ==0){
+				if (chrgServ.chrgLsk(calc) ==0){
 					//сохранить расчет
 					chrgServ.save(kart.getLsk());
 				} else {
@@ -142,68 +150,13 @@ public class BillServ {
 	    	}
 		}
     	
-    	//TEST пока не удалять!
-		/*long startTime;
-		long endTime;
-		long totalTime;
-				startTime = System.currentTimeMillis();
-
-		for (int a=1; a < 100; a++) {
-	    	for (Kw kw : kart.getKw().getHouse().getKw()) {
-	    		Calc.mess("Квартира id="+kw.getId(),2);
-	    		for (Kart k : kw.getLsk()) {
-	    			for (MLogs ml : k.getMlog()) {
-	    	    		Calc.mess("Счетчик id="+ml.getId(),2);
-	    				
-	    			}
-	    			
-	    		}
-	    		
-	    	}
-		}
-    	
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-	    Calc.mess("TEST time:"+totalTime,2);
-    	
-		startTime = System.currentTimeMillis();
-
-		for (int a=1; a < 100000; a++) {
-		    Calc.mess("Checking",2);
-			
-		}
-    	
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-	    Calc.mess("TEST3 time:"+totalTime,2);
-
-		startTime = System.currentTimeMillis();
-
-		for (int a=1; a < 100000; a++) {
-	    	for (Kw kw : kart.getKw().getHouse().getKw()) {
-	    		for (Kart k : kw.getLsk()) {
-	    			for (MLogs ml : k.getMlog()) {
-	    				
-	    			}
-	    			
-	    		}
-	    		
-	    	}
-		}
-    	
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-	    Calc.mess("TEST2 time:"+totalTime,2);*/
-    	//TEST пока не удалять!
-    	
-
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
-		calc.setKart(kart);
+    	calc.setKart(kart);
     	
 		if (dist) {
 			try {
-				distServ.distKartVol(kart.getLsk());
+				distServ.distKartVol(calc);
 			} catch (ErrorWhileDist e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -213,7 +166,7 @@ public class BillServ {
 		}
 		//расчитать начисление
 		try {
-			if (chrgServ.chrgLsk(kart) ==0){
+			if (chrgServ.chrgLsk(calc) ==0){
 				//сохранить расчет
 				chrgServ.save(kart.getLsk());
 			} else {
@@ -240,8 +193,8 @@ public class BillServ {
 		House h = em.find(House.class, houseId);
 
 		Calc.mess("Charging");
-		Calc.mess("House: id="+Calc.getHouse().getId());
-		Calc.mess("House: klsk="+Calc.getHouse().getKlsk());
+		Calc.mess("House: id="+calc.getHouse().getId());
+		Calc.mess("House: klsk="+calc.getHouse().getKlsk());
 		
 		//перебрать все квартиры и лиц.счета в них
 		for (Kw kw : h.getKw()) {
@@ -253,7 +206,7 @@ public class BillServ {
 					startTime = System.currentTimeMillis();
 				    //расчитать начисление
 					try {
-						if (chrgServ.chrgLsk(kart) ==0){
+						if (chrgServ.chrgLsk(calc) ==0){
 							//сохранить расчет
 							chrgServ.save(kart.getLsk());
 						} else {
@@ -273,6 +226,7 @@ public class BillServ {
 			//break; //##################
 		}
 	}
+
 
     
 }

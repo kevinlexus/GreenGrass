@@ -52,11 +52,9 @@ import com.ric.bill.model.fn.Chrg;
 public class ChrgServ {
 
 	@Autowired
-	private Calc calc;
-	@Autowired
 	private ParMng parMng;
-	//@Autowired
-	//private ChrgThr chrgThr;
+	@Autowired
+	private Config config;
 	@Autowired
 	private ServMng servMng;
 	@Autowired
@@ -124,8 +122,8 @@ public class ChrgServ {
 	 * @param kart - объект лиц.счета
 	 * @throws ErrorWhileChrg 
 	 */
-	public int chrgLsk(Kart kart) throws ErrorWhileChrg {
-		Calc.mess("ChrgServ.chrgLsk Lsk="+kart.getLsk(), 2);
+	public int chrgLsk(Calc calc) throws ErrorWhileChrg {
+		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getLsk(), 2);
 
 		prepChrg = new ArrayList<Chrg>(0); 
 		//получить все необходимые услуги для начисления из тарифа по дому
@@ -139,6 +137,7 @@ public class ChrgServ {
 		//найти все услуги, действительные в лиц.счете
 		//и создать потоки по кол-ву услуг
 		
+		Kart kart = calc.getKart();
 		//загрузить все услуги
 		servThr = kartMng.getAllServ(kart);
 		
@@ -156,7 +155,7 @@ public class ChrgServ {
 			for (Serv serv : servWork) {
 					Future<Result> fut = null;
 					ChrgThr chrgThr = ctx.getBean(ChrgThr.class);
- 					chrgThr.set(serv, kart, mapServ, mapVrt, prepChrg);
+ 					chrgThr.set(calc, serv, kart, mapServ, mapVrt, prepChrg);
 			    	fut = chrgThr.run1();
 			    	frl.add(fut);
 					Calc.mess("ChrgServ: Begins "+serv.getCd());
@@ -296,7 +295,7 @@ public class ChrgServ {
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
 			//Calc.mess("CHECK status="+chrg.getStatus()+"period="+chrg.getPeriod(), 2);
-			if (chrg.getStatus()==1 && chrg.getPeriod().equals(Calc.getPeriod())) {
+			if (chrg.getStatus()==1 && chrg.getPeriod().equals(config.getPeriod())) {
 				Serv servMain = null;
 				try {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
@@ -323,7 +322,7 @@ public class ChrgServ {
 		query.setParameter("lsk", kart.getLsk());
 		//query.setParameter("dt1", Calc.getCurDt1());
 		//query.setParameter("dt2", Calc.getCurDt2());
-		query.setParameter("period", Calc.getPeriod());
+		query.setParameter("period", config.getPeriod());
 		query.executeUpdate();
 		
 		//ДЕЛЬТА
@@ -360,7 +359,7 @@ public class ChrgServ {
 			  qr.setParameter("P_LSK", kart.getLsk());
 			  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
 			  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
-			  qr.setParameter("P_PERIOD", Calc.getPeriod());
+			  qr.setParameter("P_PERIOD", config.getPeriod());
 			  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
 			  //qr.setParameter("P_DTEK", new Date());
 			  qr.setParameter("P_TP_CHNG", 1);
@@ -373,7 +372,7 @@ public class ChrgServ {
 		//Сохранить новое начисление
 		for (Chrg chrg : prepChrg) {
 			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
-			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, Calc.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
+			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
 					chrg.getVol(), chrg.getPrice(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
 			kart.getChrg().add(chrg2); 
 		}
