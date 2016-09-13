@@ -24,7 +24,6 @@ import org.apache.commons.collections4.map.MultiKeyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,16 +122,9 @@ public class ChrgServ {
 	 * @param kart - объект лиц.счета
 	 * @throws ErrorWhileChrg 
 	 */
-	public Future<Result> chrgLsk(Calc calc) throws ErrorWhileChrg {
-    	Result res = new Result();
-		res.err=0;
-
+	public int chrgLsk(Calc calc) throws ErrorWhileChrg {
 		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getLsk(), 2);
 
-		//if (1==1) {
-		//	return new AsyncResult<Result>(res);
-		//}
-		
 		prepChrg = new ArrayList<Chrg>(0); 
 		//получить все необходимые услуги для начисления из тарифа по дому
 
@@ -150,6 +142,7 @@ public class ChrgServ {
 		servThr = kartMng.getAllServ(kart);
 		
 		errThread=false;
+		List<Future<Result>> frl = new ArrayList<Future<Result>>();
 
 		while (true) {
 			Calc.mess("ChrgServ: Loading servs for threads");
@@ -159,13 +152,10 @@ public class ChrgServ {
 				//выйти, если все услуги обработаны
 				break;
 			}
-
-			List<Future<Result>> frl = new ArrayList<Future<Result>>();
-
 			for (Serv serv : servWork) {
 					Future<Result> fut = null;
 					ChrgThr chrgThr = ctx.getBean(ChrgThr.class);
- 					chrgThr.set(calc, serv, kart, mapServ, mapVrt, prepChrg);
+ 					chrgThr.set(calc, serv, mapServ, mapVrt, prepChrg);
 			    	fut = chrgThr.run1();
 			    	frl.add(fut);
 					Calc.mess("ChrgServ: Begins "+serv.getCd());
@@ -173,7 +163,7 @@ public class ChrgServ {
 			}
 			
 			
-			//проверить окончание всех потоков
+			//проверить окончание потока
 		    int flag2 = 0;
 			while (flag2==0) {
 				flag2=1;
@@ -204,15 +194,39 @@ public class ChrgServ {
 		}
 		
 		
+					/*
+					
+					ChrgThr thr1 = (ChrgThr) ctx.getBean(ChrgThr.class);
+					thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
+					thr1.start();
+					thr1.setUncaughtExceptionHandler(expThr);
+					trl.add(thr1);*/
+			//ждать, когда все потоки выполнятся
+		/*	for (ChrgThr t : trl) {
+				try {
+					t.join();
+					//Calc.mess("WAIT="+t.getName(), 2);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					throw new ErrorWhileChrg("ChrgServ.chrgLsk: ChrgThr: ErrorWhileChrg in thread!");
+				} 
+			}
+			if (errThread) {
+				//была ошибка в потоке- выйти из цикла
+				break;
+			}
+		}*/
+
+		
 		
 		//Calc.mess("*******************ALL THREADS FINISHED!********************", 2);
 
 		//если была ошибка в потоке - приостановить выполнение, выйти
 		if (errThread) {
 			Calc.mess("ChrgServ.chrgLsk: Error in thread, exiting!", 2);
-			res.err=1;
-			return new AsyncResult<Result>(res);
+			return 1;
 		}
+		//Calc.mess("CHECK6",2);	
 		
 		//сделать коррекцию на сумму разности между основной и виртуальной услуг
 		for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
@@ -241,10 +255,8 @@ public class ChrgServ {
 			}		    
 		}		
 		
-		//Сохранить результат
-		save(kart.getLsk());
-
-		return new AsyncResult<Result>(res);
+		//Calc.mess("CHECK7",2);	
+		return 0;
 	}
 
 

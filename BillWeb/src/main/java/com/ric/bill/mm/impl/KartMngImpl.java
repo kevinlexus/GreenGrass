@@ -344,7 +344,7 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable("rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
+	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #cd, #genDt }") 
 	public /*synchronized*/ Double getServPropByCD(Calc calc, Serv serv, String cd, Date genDt) {
 		Double val;
 		//в начале ищем по лиц. счету 

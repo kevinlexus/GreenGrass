@@ -60,8 +60,6 @@ public class ChrgThr {
 	private Serv serv;
 	//временное хранилище записей
 	private ChrgStore chStore;
-	//текущий лс
-	private Kart kart;
 
 	private String thrName;
 	
@@ -80,13 +78,12 @@ public class ChrgThr {
 	//установить параметры
 	//				thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
 
-	public void set(Calc calc, Serv serv, Kart kart, 
+	public void set(Calc calc, Serv serv,  
 			HashMap<Serv, BigDecimal> mapServ, 
 			HashMap<Serv, BigDecimal> mapVrt, 
 			List<Chrg> prepChrg) {
 		this.calc = calc;
 		this.serv = serv;
-		this.kart = kart;
 		this.mapServ = mapServ;
 		this.mapVrt = mapVrt;
 		this.prepChrg = prepChrg;
@@ -96,13 +93,9 @@ public class ChrgThr {
 	@Async
 	//public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 	public  Future<Result> run1() {
-
-		Result res = new Result();
+    	Result res = new Result();
 		res.err=0;
-
-		if (1==1) {
-			return new AsyncResult<Result>(res);
-		}
+		Kart kart = calc.getKart();
 		
 		Thread t = Thread.currentThread();
 	    thrName = t.getName();
@@ -208,6 +201,7 @@ public class ChrgThr {
 		long startTime2;
 		long endTime;
 		long totalTime;
+		Kart kart = calc.getKart();
 		startTime2 = System.currentTimeMillis();
 
 		//услуги по норме, свыше и без проживающих
@@ -273,7 +267,9 @@ public class ChrgThr {
 
 		//получить расценку по норме	
 		//synchronized (kartMng) {
-			stPrice = kartMng.getServPropByCD(calc, stServ, "Цена", genDt);
+		
+		stPrice = kartMng.getServPropByCD(calc, stServ, "Цена", genDt);
+			
 		//}
 		
 		if (stPrice == null) {
