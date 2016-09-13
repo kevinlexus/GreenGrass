@@ -78,8 +78,8 @@ public class KartMngImpl implements KartMng {
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 * и вернуть объект, содержащий наличие проживающего и его отношение к нанимателю
 	 */
-	//@Cacheable("rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #regc.getKlsk(), #p.getId(), #status, #tp, #genDt }") 
+	//@Cacheable(cacheNames="rrr1", key="{ #regc.getKlsk(), #p.getId(), #status, #tp, #genDt }") 
+	@Cacheable("rrr1")
 	private /*synchronized */PersStatus checkPersStatusExt (RegContains regc, Pers p, String status, int tp, Date genDt) {
 		Date dt1, dt2;
 		List<? extends Registrable> rg;
