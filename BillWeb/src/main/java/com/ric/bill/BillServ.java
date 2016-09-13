@@ -17,23 +17,18 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
-import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.ar.Kw;
-import com.ric.bill.model.bs.Serv;
 
 /**
  * Главный сервис биллинга
  * @author lev
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring.xml" })
 @Service
 @Scope("prototype")
@@ -163,6 +158,8 @@ public class BillServ {
     	
     	Result res = new Result();
 		res.err=0;
+		//кол-во потоков
+		int cntThreads = 5; 
 		long startTime;
 		long endTime;
 		long totalTime;
@@ -183,7 +180,12 @@ public class BillServ {
 		while (true) {
 			Calc.mess("BillServ.chrgAll: Loading karts for threads", 2);
 			//получить следующие N лиц.счетов, рассчитать их в потоке
-			List<Kart> kartWork = getNextKart(8);
+			long startTime2;
+			long endTime2;
+			long totalTime2;
+			startTime2 = System.currentTimeMillis();
+
+			List<Kart> kartWork = getNextKart(cntThreads);
 			if (kartWork.isEmpty()) {
 				//выйти, если все услуги обработаны
 				break;
@@ -234,45 +236,19 @@ public class BillServ {
 				}
 				
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 			}
+			
+			endTime2   = System.currentTimeMillis();
+			totalTime2 = endTime2 - startTime2;
+		    Calc.mess("Time for chrg One Lsk:"+totalTime2/cntThreads,2);
 
 		}
-		
-
-		
-/*		for (Kart kart : kartMng.findAll()) {
-			//расчитать начисление по лиц.счету
-			try {
-				startTime2 = System.currentTimeMillis();
-		    	//установить дом и счет
-				
-		    	calc.setHouse(kart.getKw().getHouse());
-		    	calc.setKart(kart);
-				
-				if (chrgServ.chrgLsk(calc) ==0){
-					//сохранить расчет
-					chrgServ.save(kart.getLsk());
-				} else {
-					//выполнилось с ошибкой
-					//ничего не предпринимать, считать дальше
-				}
-				endTime2   = System.currentTimeMillis();
-				totalTime2 = endTime2 - startTime2;
-			    Calc.mess("Time for this one lsk:"+kart.getLsk()+" ="+totalTime2,2);
-				
-			} catch (ErrorWhileChrg e) {
-				//выполнилось с ошибкой, вывести стек
-				e.printStackTrace();
-			}
-			
-		}*/
-
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 	    Calc.mess("Time for all process:"+totalTime,2);
@@ -289,11 +265,11 @@ public class BillServ {
 	 * @throws InterruptedException 
 	 * @throws ErrorWhileChrg
 	 */
-    /*@Async TODO
+    @Async
 	public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 		Calc.setDbgLvl(2);
+		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		
-    	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 		Result res = new Result();
 		Future<Result> fut = new AsyncResult<Result>(res);
 
@@ -316,26 +292,21 @@ public class BillServ {
 			try {
 				distServ.distKartVol(calc);
 			} catch (ErrorWhileDist e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				res.err=1;
 				return fut;
 			}
 		}
 		//расчитать начисление
-		try {
-			if (chrgServ.chrgLsk(calc) ==0){
-				//сохранить расчет
-				chrgServ.save(kart.getLsk());
-			} else {
-				res.err=1;
-			}
+	    try {
+			fut = chrgServThr.chrgAndSaveLsk(calc);
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
 			res.err=1;
-		} 
+			return fut;
+		}
     	return fut;
-	}*/
+	}
 
     
     

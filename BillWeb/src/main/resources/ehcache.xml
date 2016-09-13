@@ -20,6 +20,13 @@
        memoryStoreEvictionPolicy="LRU">
     </cache>
 
+    <cache name="rrr3"
+       maxElementsInMemory="500000" 
+       eternal="true" 
+       overflowToDisk="false" 
+       memoryStoreEvictionPolicy="LRU">
+    </cache>
+
     <cache name="lskMeter"
        maxElementsInMemory="500000" 
        eternal="true" 

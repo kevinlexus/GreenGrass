@@ -370,7 +370,7 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr2", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="rrr3", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public /*synchronized*/ Org getOrg(Kart kart, Serv serv, Date genDt) {
 		Org org;
 		//в начале ищем по лиц. счету 
