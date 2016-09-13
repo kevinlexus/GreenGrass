@@ -96,8 +96,13 @@ public class ChrgThr {
 	@Async
 	//public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 	public  Future<Result> run1() {
-    	Result res = new Result();
+
+		Result res = new Result();
 		res.err=0;
+
+		if (1==1) {
+			return new AsyncResult<Result>(res);
+		}
 		
 		Thread t = Thread.currentThread();
 	    thrName = t.getName();
