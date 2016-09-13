@@ -52,7 +52,7 @@ public class KartDAOImpl implements KartDAO {
 						   "and o.reu in ('Z4', 'D8', 'F4', 'J4', 'G4') "+
 						   "and x.fk_org = o.id "+
 						   "and ? between x.dt1 and x.dt2 "+
-						   //"and x.lsk between '51050001' and '51050001' "+
+						   //"and x.lsk between '51050001' and '51050010' "+
 						   "order by x.lsk ",  STATEMENT_SQLMAP);
 			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 			

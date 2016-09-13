@@ -93,10 +93,11 @@ public class ChrgThr {
 	@Async
 	//public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 	public  Future<Result> run1() {
-    	Result res = new Result();
-		res.err=0;
 		Kart kart = calc.getKart();
 		
+		Result res = new Result();
+		res.err=0;
+
 		Thread t = Thread.currentThread();
 	    thrName = t.getName();
 	      
@@ -197,11 +198,10 @@ public class ChrgThr {
 	 * @throws InvalidServ 
 	 */
 	public void chrgServ(Calc calc, Serv serv, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg, InvalidServ {
-		//Calc.mess(thrName+" CHECK0="+serv.getId()+" dt="+genDt,2);	
+		Kart kart = calc.getKart();
 		long startTime2;
 		long endTime;
 		long totalTime;
-		Kart kart = calc.getKart();
 		startTime2 = System.currentTimeMillis();
 
 		//услуги по норме, свыше и без проживающих
@@ -267,9 +267,7 @@ public class ChrgThr {
 
 		//получить расценку по норме	
 		//synchronized (kartMng) {
-		
-		stPrice = kartMng.getServPropByCD(calc, stServ, "Цена", genDt);
-			
+			stPrice = kartMng.getServPropByCD(calc, stServ, "Цена", genDt);
 		//}
 		
 		if (stPrice == null) {

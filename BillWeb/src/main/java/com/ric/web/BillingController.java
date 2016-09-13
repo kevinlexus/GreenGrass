@@ -44,7 +44,7 @@ public class BillingController {
     @Autowired
     private BillServ billServ;
 
-    @RequestMapping("/chrglsk")
+/*    @RequestMapping("/chrglsk") TODO
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") String lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist) {
     	Calc.mess("BillingController.chrgLsk",2);
@@ -85,7 +85,7 @@ public class BillingController {
 			return "ERROR";
 		}
 
-    }
+    } */
     
     @RequestMapping("/chrgall")
     public String chrgAll(@RequestParam(value="dist", defaultValue="0") String dist) {
