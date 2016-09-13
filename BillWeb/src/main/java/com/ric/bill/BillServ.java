@@ -1,15 +1,10 @@
 package com.ric.bill;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -19,10 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.ric.bill.excp.ErrorWhileChrg;
-import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
+import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.ar.Kw;
 
 /**
  * Главный сервис биллинга
@@ -37,10 +33,9 @@ public class BillServ {
 	@Autowired
 	private HouseMng houseMng;
 	@Autowired
-    private DistServ distServ;
+	private Calc calc;
 	@Autowired
-    private DistGen distGen;
-	
+    private DistServ distServ;
 	@Autowired
     private ChrgServ chrgServ;
 	
@@ -52,21 +47,13 @@ public class BillServ {
 
     @PersistenceContext
     private EntityManager em;
-    
-    //коллекция для формирования потоков
-    private List<Kart> kartThr;
-    
-    //конструктор
-    public BillServ() {
 
-    }
-    
 	/**
 	 * выполнить начисление по всем домам
 	 */
-/*    @Async
+    @Async
     public Future<Result> chrgAll(boolean dist) {
-    	Calc.setDbgLvl(2);
+		Calc.setDbgLvl(2);
     	
     	Result res = new Result();
 		res.err=0;
@@ -80,9 +67,8 @@ public class BillServ {
 
 		startTime = System.currentTimeMillis();
 		
-	    Calc calc=new Calc();
-
-	    if (dist) {
+		
+		if (dist) {
 			 distServ.distAll();
 		}
 		
@@ -93,9 +79,9 @@ public class BillServ {
 		    	//установить дом и счет
 				
 		    	calc.setHouse(kart.getKw().getHouse());
-		    	calc.setKart(kart);
+				calc.setKart(kart);
 				
-				if (chrgServ.chrgLsk(calc) ==0){
+				if (chrgServ.chrgLsk(kart) ==0){
 					//сохранить расчет
 					chrgServ.save(kart.getLsk());
 				} else {
@@ -113,151 +99,20 @@ public class BillServ {
 			
 		}
 
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-	    Calc.mess("Time for all process:"+totalTime,2);
-    	return new AsyncResult<Result>(res);
-	}*/
-	
-	//получить список N следующих лиц.счетов, для расчета в потоках
-    private List<Kart> getNextKart(int cnt) {
-    	List<Kart> lst = new ArrayList<Kart>(); 
-		int i=1;
-		Iterator<Kart> itr = kartThr.iterator();
-		while (itr.hasNext()) {
-			Kart kart = itr.next(); 
-    		lst.add(kart);
-    		itr.remove();
-    		i++;
-			if (i > cnt) {
-				break;
-			}
-		}
-		
-    	return lst;
-	}
-
-    //флаг ошибки, произошедшей в потоке
-    private static Boolean errThread;
-    
-    //Exception из потока
-    Thread.UncaughtExceptionHandler expThr = new Thread.UncaughtExceptionHandler() {
-        public void uncaughtException(Thread th, Throwable ex) {
-			errThread=true;
-            System.out.println("BillServ: Error in thread: "+th.getName()+" " + ex.getMessage());
-			ex.printStackTrace();
-        }
-    };
-    
-    /**
-	 * выполнить начисление по всем домам в потоках
-	 */
-    @Async
-    public Future<Result> chrgAll(boolean dist) {
-    	Calc.setDbgLvl(2);
-    	
-    	Result res = new Result();
-		res.err=0;
-		//кол-во потоков
-		int cntThreads = 5; 
-		long startTime;
-		long endTime;
-		long totalTime;
-
-		startTime = System.currentTimeMillis();
-		
-
-	    if (dist) {
-			 distServ.distAll();
-		}
-	    
-		//загрузить все Лиц.счета
-		kartThr = kartMng.findAll();
-		
-	    //флаг ошибки, произошедшей в потоке
-	    errThread=false;
-	    
-		while (true) {
-			Calc.mess("BillServ.chrgAll: Loading karts for threads", 2);
-			//получить следующие N лиц.счетов, рассчитать их в потоке
-			long startTime2;
-			long endTime2;
-			long totalTime2;
-			startTime2 = System.currentTimeMillis();
-
-			List<Kart> kartWork = getNextKart(cntThreads);
-			if (kartWork.isEmpty()) {
-				//выйти, если все услуги обработаны
-				break;
-			}
-
-			List<Future<Result>> frl = new ArrayList<Future<Result>>();
-
-			for (Kart kart : kartWork) {
-					Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk(), 2);
-					Future<Result> fut = null;
-					ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
-
-				    Calc calc=new Calc();
-				    calc.setKart(kart);
-				    calc.setHouse(kart.getKw().getHouse());
-				    
-				    try {
-						fut = chrgServThr.chrgAndSaveLsk(calc);
-					} catch (ErrorWhileChrg e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			    	frl.add(fut);
-					Calc.mess("BillServ.chrgAll: Begins thread for lsk="+kart.getLsk(), 2);
-			}
-			
-			
-			//проверить окончание всех потоков
-		    int flag2 = 0;
-			while (flag2==0) {
-				Calc.mess("BillServ.chrgAll: ========================================== Waiting for threads-2", 2);
-				flag2=1;
-				for (Future<Result> fut : frl) {
-					if (!fut.isDone()) {
-						flag2=0;
-					} else {
-						try {
-							Calc.mess("ChrgServ: Done Result.err:="+fut.get().err);
-							if (fut.get().err==1) {
-								errThread=true;
-							}
-						} catch (InterruptedException | ExecutionException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					
-					}
-				}
-				
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			
-			endTime2   = System.currentTimeMillis();
-			totalTime2 = endTime2 - startTime2;
-		    Calc.mess("Time for chrg One Lsk:"+totalTime2/cntThreads,2);
-
-		}
+		/*for (House o: houseMng.findAll2()) {
+			System.out.println("Started House: id="+o.getId());
+			Calc.setInit(false);
+			chrgHouse(o.getId());
+			System.out.println("Finished House: id="+o.getId());
+		}*/
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 	    Calc.mess("Time for all process:"+totalTime,2);
     	return new AsyncResult<Result>(res);
 	}
-    
 	
     
-    /**
+	/**
 	 * выполнить начисление по лиц.счету
 	 * @param kart - лиц счет (заполнен либо он, либо lsk)
 	 * @param lsk - номер лиц.счета 
@@ -268,44 +123,97 @@ public class BillServ {
     @Async
 	public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 		Calc.setDbgLvl(2);
-		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
-		
+    	
+    	//ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 		Result res = new Result();
-		Future<Result> fut = new AsyncResult<Result>(res);
-
 		res.err=0;
 		//Если был передан идентификатор лицевого, то найти лиц.счет
     	if (lsk != null) {
 	    	kart = em.find(Kart.class, lsk);
-	    	if (kart ==null) {
-	    		res.err=1;
-	    		return fut;
+		}
+    	
+    	//TEST пока не удалять!
+		/*long startTime;
+		long endTime;
+		long totalTime;
+				startTime = System.currentTimeMillis();
+
+		for (int a=1; a < 100; a++) {
+	    	for (Kw kw : kart.getKw().getHouse().getKw()) {
+	    		Calc.mess("Квартира id="+kw.getId(),2);
+	    		for (Kart k : kw.getLsk()) {
+	    			for (MLogs ml : k.getMlog()) {
+	    	    		Calc.mess("Счетчик id="+ml.getId(),2);
+	    				
+	    			}
+	    			
+	    		}
+	    		
 	    	}
 		}
-	    Calc calc=new Calc();
     	
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+	    Calc.mess("TEST time:"+totalTime,2);
+    	
+		startTime = System.currentTimeMillis();
+
+		for (int a=1; a < 100000; a++) {
+		    Calc.mess("Checking",2);
+			
+		}
+    	
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+	    Calc.mess("TEST3 time:"+totalTime,2);
+
+		startTime = System.currentTimeMillis();
+
+		for (int a=1; a < 100000; a++) {
+	    	for (Kw kw : kart.getKw().getHouse().getKw()) {
+	    		for (Kart k : kw.getLsk()) {
+	    			for (MLogs ml : k.getMlog()) {
+	    				
+	    			}
+	    			
+	    		}
+	    		
+	    	}
+		}
+    	
+		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+	    Calc.mess("TEST2 time:"+totalTime,2);*/
+    	//TEST пока не удалять!
+    	
+/*
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
-    	calc.setKart(kart);
+		calc.setKart(kart);
     	
 		if (dist) {
 			try {
-				distServ.distKartVol(calc);
+				distServ.distKartVol(kart.getLsk());
 			} catch (ErrorWhileDist e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 				res.err=1;
-				return fut;
+				return new AsyncResult<Result>(res);
 			}
 		}
 		//расчитать начисление
-	    try {
-			fut = chrgServThr.chrgAndSaveLsk(calc);
+		try {
+			if (chrgServ.chrgLsk(kart) ==0){
+				//сохранить расчет
+				chrgServ.save(kart.getLsk());
+			} else {
+				res.err=1;
+			}
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
 			res.err=1;
-			return fut;
-		}
-    	return fut;
+		} */
+    	return new AsyncResult<Result>(res);
 	}
 
     
@@ -316,16 +224,14 @@ public class BillServ {
 	 * выполнить начисление по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 */
-/*	public void chrgHouse(int houseId) { TODO
+	public void chrgHouse(int houseId) {
     	ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
 
 		House h = em.find(House.class, houseId);
 
-		Calc calc=new Calc();
-
 		Calc.mess("Charging");
-		Calc.mess("House: id="+calc.getHouse().getId());
-		Calc.mess("House: klsk="+calc.getHouse().getKlsk());
+		Calc.mess("House: id="+Calc.getHouse().getId());
+		Calc.mess("House: klsk="+Calc.getHouse().getKlsk());
 		
 		//перебрать все квартиры и лиц.счета в них
 		for (Kw kw : h.getKw()) {
@@ -337,7 +243,7 @@ public class BillServ {
 					startTime = System.currentTimeMillis();
 				    //расчитать начисление
 					try {
-						if (chrgServ.chrgLsk(calc) ==0){
+						if (chrgServ.chrgLsk(kart) ==0){
 							//сохранить расчет
 							chrgServ.save(kart.getLsk());
 						} else {
@@ -356,8 +262,7 @@ public class BillServ {
 			}
 			//break; //##################
 		}
-	}*/
-
+	}
 
     
 }

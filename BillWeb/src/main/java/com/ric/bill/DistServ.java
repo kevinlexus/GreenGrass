@@ -41,7 +41,7 @@ import com.ric.bill.model.mt.MLogs;
 public class DistServ {
 
 	@Autowired
-	private Config config;
+	private Calc calc;
 	@Autowired
 	private MeterLogMng metMng;
 	@Autowired
@@ -65,9 +65,6 @@ public class DistServ {
     @PersistenceContext
     private EntityManager em;
 
-    private Calc calc;
-    
-    
     /**
 	 * Установить фильтры для сессии -убрал пока
 	 * 
@@ -80,13 +77,6 @@ public class DistServ {
 		//отдельно установить фильтр существования счетчиков
 	}*/
 
-    
-    //конструктор
-    public DistServ() {
-    	//расчетный объект
-    	this.calc=new Calc();
-    }
-    
 	/**
 	 * Удалить объем по вводам дома
 	 * 
@@ -114,19 +104,19 @@ public class DistServ {
 		Date dt1, dt2;
 		if (calc.getCalcTp()==2) {
 			//формирование по ОДН - задать последнюю дату
-			dt1 = config.getCurDt2();
-			dt2 = config.getCurDt2();
+			dt1 = Calc.getCurDt2();
+			dt2 = Calc.getCurDt2();
 		} else {
 			//прочее формирование
-			dt1 = config.getCurDt1();
-			dt2 = config.getCurDt2();
+			dt1 = Calc.getCurDt1();
+			dt2 = Calc.getCurDt2();
 		}
 
 		//найти все вводы по дому и по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
-			calc.setGenDt(c.getTime());
+			Calc.setGenDt(c.getTime());
 			for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-				metMng.delNodeVol(ml, tp, calc.getGenDt());
+				metMng.delNodeVol(ml, tp, Calc.getGenDt());
 			}
 		}
 		
@@ -149,43 +139,58 @@ public class DistServ {
 		long startTime;
 		long endTime;
 		long totalTime;
+		try {
 			for (House o: houseMng.findAll2()) {
 				System.out.println("ДОМ:"+o.getId());
 				//dist.clearCache();
 				//распределить объемы
 				startTime = System.currentTimeMillis();
 		    	//установить дом
-				calc.setHouse(o);
+		    	calc.setHouse(o);
 				
-				//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
-				//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
 		    	
-				try {
-					distHouseVol(o.getId());
-				} catch (ErrorWhileDist e) {
-					e.printStackTrace();
-				}
+				distHouseVol(o.getId());
+				//System.out.println("------------------------------------------");
+				//dist.distHouseVol(o.getId());
 
 				//передать по ID иначе кэшируется
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
 				System.out.println("Время исполнения-1:"+totalTime);
 				
+				//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
+				//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
+				
+				startTime = System.currentTimeMillis();
+			    //начисление
+				/*try {
+					ssddServ.chrgHouse(o.getId());
+				} catch (ErrorWhileChrg e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} //передать по ID иначе кэшируется
+				*/
+				endTime   = System.currentTimeMillis();
+				totalTime = endTime - startTime;
+				System.out.println("Время исполнения-3:"+totalTime);
 				
 			}
+		} catch (ErrorWhileDist e) {
+			e.printStackTrace();
+		}
 		
     }
 	
 	
 	/**
 	 * распределить объем по всем услугам, по дому
+	 * @param lsk - номер лиц.счета
 	 * @throws ErrorWhileDist 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@CacheEvict(cacheNames="lskMeter", allEntries=true)
-	public void distKartVol(Calc calc) throws ErrorWhileDist {
-		this.calc=calc;
-		Kart kart = em.find(Kart.class, calc.getKart().getLsk());
+	public void distKartVol(String lsk) throws ErrorWhileDist {
+		Kart kart = em.find(Kart.class, lsk);
 		//почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
@@ -225,20 +230,20 @@ public class DistServ {
 		Date dt1, dt2;
 		if (calc.getCalcTp()==2) {
 			//формирование по ОДН - задать последнюю дату
-			dt1 = config.getCurDt2();
-			dt2 = config.getCurDt2();
+			dt1 = Calc.getCurDt2();
+			dt2 = Calc.getCurDt2();
 		} else {
 			//прочее формирование
-			dt1 = config.getCurDt1();
-			dt2 = config.getCurDt2();
+			dt1 = Calc.getCurDt1();
+			dt2 = Calc.getCurDt2();
 		}
 
 		//найти все счетчики по Лиц.счету, по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
-			calc.setGenDt(c.getTime());
+			Calc.setGenDt(c.getTime());
 			
 			for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
-				metMng.delNodeVol(ml, tp, calc.getGenDt());
+				metMng.delNodeVol(ml, tp, Calc.getGenDt());
 			}
 			
 		}
@@ -270,7 +275,7 @@ public class DistServ {
 		House h = em.find(House.class, houseId);
 		//установить инициализацию дома
     	//установить дом и счет
-		calc.setHouse(h);
+    	calc.setHouse(h);
 		Calc.mess("Дом: id="+calc.getHouse().getId(), 2);
 		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk(), 2);
 
@@ -308,7 +313,7 @@ public class DistServ {
 			throw new ErrorWhileDist("Dist.distHouseVol: ");
 		}
 
-		//Calc.showAllChecks();
+		//calc.showAllChecks();
 		
 	}
 	
@@ -360,22 +365,22 @@ public class DistServ {
 		Date dt1, dt2;
 		if (calc.getCalcTp()==2) {
 			//формирование по ОДН - задать последнюю дату
-			dt1 = config.getCurDt2();
-			dt2 = config.getCurDt2();
+			dt1 = Calc.getCurDt2();
+			dt2 = Calc.getCurDt2();
 		} else {
 			//прочее формирование
-			dt1 = config.getCurDt1();
-			dt2 = config.getCurDt2();
+			dt1 = Calc.getCurDt1();
+			dt2 = Calc.getCurDt2();
 		}
 		
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
-			calc.setGenDt(c.getTime());
+			Calc.setGenDt(c.getTime());
 			//Calc.beginTimer();
 			//Calc.mess("по дате="+Calc.getGenDt(), 2);
 			@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
-				dummy=distGen.distNode(calc, ml, calc.getCalcTp(), calc.getGenDt());
+				dummy=distGen.distNode(ml, calc.getCalcTp(), Calc.getGenDt());
 			} catch (WrongGetMethod e) {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружен замкнутый цикл");  
@@ -389,14 +394,12 @@ public class DistServ {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: Не найден нужный счетчик, при вызове BillServ.distNode(): ");
 			}
-			//Calc.showTimer(Calc.getCalcTp()+" тип");
+			//Calc.showTimer(calc.getCalcTp()+" тип");
 			
 			//break;
 		}
 
 		
 	}
-
-
-
+	
 }

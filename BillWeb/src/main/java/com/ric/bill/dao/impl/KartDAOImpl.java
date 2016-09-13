@@ -13,10 +13,9 @@ import javax.persistence.Query;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TemporalType;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ric.bill.Config;
+import com.ric.bill.Calc;
 import com.ric.bill.ResultSetLsk;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.model.ar.Kart;
@@ -24,9 +23,6 @@ import com.ric.bill.model.ar.Kart;
 
 @Repository
 public class KartDAOImpl implements KartDAO {
-
-    @Autowired
-    private Config config;
 
     @PersistenceContext
     private EntityManager em;
@@ -52,9 +48,9 @@ public class KartDAOImpl implements KartDAO {
 						   "and o.reu in ('Z4', 'D8', 'F4', 'J4', 'G4') "+
 						   "and x.fk_org = o.id "+
 						   "and ? between x.dt1 and x.dt2 "+
-						   //"and x.lsk between '14024241' and '14024254' "+
+						   //"and x.lsk between '51050001' and '51050001' "+
 						   "order by x.lsk ",  STATEMENT_SQLMAP);
-			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
+			q.setParameter(1, Calc.getCurDt1(), TemporalType.DATE);
 			
 			List<ResultSetLsk> lst = q.getResultList();
 			lstKart = new ArrayList<Kart>();

@@ -10,10 +10,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.BillServ;
 import com.ric.bill.Calc;
 import com.ric.bill.CntPers;
-import com.ric.bill.Config;
 import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
 import com.ric.bill.Utl;
@@ -36,13 +34,9 @@ public class KartMngImpl implements KartMng {
 	@Autowired
 	private KartDAO kDao;
 	@Autowired
-	private BillServ billServ;
-	@Autowired
 	private ParMng parMng;
 	@Autowired
 	private TarifMng tarMng;
-    @Autowired
-    private Config config;
 
 	//внутренний класс, состояние проживающего
 	private class PersStatus {
@@ -85,6 +79,7 @@ public class KartMngImpl implements KartMng {
 	 * и вернуть объект, содержащий наличие проживающего и его отношение к нанимателю
 	 */
 	//@Cacheable("rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #regc.getKlsk(), #p.getId(), #status, #tp, #genDt }") 
 	private /*synchronized */PersStatus checkPersStatusExt (RegContains regc, Pers p, String status, int tp, Date genDt) {
 		Date dt1, dt2;
 		List<? extends Registrable> rg;
@@ -98,17 +93,17 @@ public class KartMngImpl implements KartMng {
 			if (r.getPers()!=null && r.getPers().equals(p)) {
 				if (r.getTp().getCd().equals(status)) {
 					if (r.getDtRegTs() == null ||
-					    r.getDtRegTs().before(config.getCurDt2())) {
-						dt1=Utl.nvl(r.getDtReg(), config.getFirstDt());
+					    r.getDtRegTs().before(Calc.getCurDt2())) {
+						dt1=Utl.nvl(r.getDtReg(), Calc.getFirstDt());
 					} else {
-						dt1=config.getLastDt();
+						dt1=Calc.getLastDt();
 					}
 					
 					if (r.getDtUnRegTs() == null ||
-						r.getDtUnRegTs().before(config.getCurDt2())) {
-						dt2=Utl.nvl(r.getDtUnReg(), config.getLastDt());
+						r.getDtUnRegTs().before(Calc.getCurDt2())) {
+						dt2=Utl.nvl(r.getDtUnReg(), Calc.getLastDt());
 					} else {
-						dt2=config.getLastDt();
+						dt2=Calc.getLastDt();
 					}
 					if (Utl.between(genDt, dt1, dt2)) {
 						//наличие статуса подтвердилось,  - проживающий присутствует
@@ -135,17 +130,17 @@ public class KartMngImpl implements KartMng {
 		Date dt1, dt2;
 		if (reg.getTp().getCd().equals("Временное присутствие")) {
 			if (reg.getDtRegTs() == null ||
-					reg.getDtRegTs().before(config.getCurDt2())) {
-				dt1=Utl.nvl(reg.getDtReg(), config.getFirstDt());
+					reg.getDtRegTs().before(Calc.getCurDt2())) {
+				dt1=Utl.nvl(reg.getDtReg(), Calc.getFirstDt());
 			} else {
-				dt1=config.getLastDt();
+				dt1=Calc.getLastDt();
 			}
 			
 			if (reg.getDtUnRegTs() == null ||
-					reg.getDtUnRegTs().before(config.getCurDt2())) {
-				dt2=Utl.nvl(reg.getDtUnReg(), config.getLastDt());
+					reg.getDtUnRegTs().before(Calc.getCurDt2())) {
+				dt2=Utl.nvl(reg.getDtUnReg(), Calc.getLastDt());
 			} else {
-				dt2=config.getLastDt();
+				dt2=Calc.getLastDt();
 			}
 			if (Utl.between(genDt, dt1, dt2)) {
 				//наличие статуса подтвердилось
@@ -222,8 +217,8 @@ public class KartMngImpl implements KartMng {
 	 * @param calcCd - CD Варианта расчета начисления 
 	 */
 	//@Cacheable(cacheNames="rrr1")
-	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
-	public /*synchronized*/ Standart getStandart (Calc calc, Serv serv, CntPers cntPers, Date genDt) {
+	@Cacheable(cacheNames="rrr3", key="{ #kart.getLsk(), #serv.getId(), #cntPers, #genDt }") 
+	public /*synchronized*/ Standart getStandart (Kart kart, Serv serv, CntPers cntPers, Date genDt) {
 		Calc.mess("STANDART1="+serv.getId()+" dt="+genDt);	
 		//получить услугу основную, для начисления
 		Serv servChrg = serv.getServChrg();
@@ -238,7 +233,7 @@ public class KartMngImpl implements KartMng {
 
 			cntPers= new CntPers();
 			Calc.mess("STANDART2="+serv.getId()+" dt="+genDt);	
-			getCntPers(calc.getKart(), servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+			getCntPers(kart, servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 			Calc.mess("STANDART3="+serv.getId()+" dt="+genDt);	
 		}
 		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
@@ -249,11 +244,11 @@ public class KartMngImpl implements KartMng {
 		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
 				|| Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-2"), 0d)==1d) {
 			if (cntPers.cnt==1) {
-				stVol = getServPropByCD(calc, servSt, "Норматив-1 чел.", genDt);
+				stVol = getServPropByCD(kart, servSt, "Норматив-1 чел.", genDt);
 			} else if (cntPers.cnt==2) {
-				stVol = getServPropByCD(calc, servSt, "Норматив-2 чел.", genDt);
+				stVol = getServPropByCD(kart, servSt, "Норматив-2 чел.", genDt);
 			} else if (cntPers.cnt >= 3) {
-				stVol = getServPropByCD(calc, servSt, "Норматив-3 и более чел.", genDt);
+				stVol = getServPropByCD(kart, servSt, "Норматив-3 и более чел.", genDt);
 			} else {
 				stVol = 0d;
 			}
@@ -261,12 +256,12 @@ public class KartMngImpl implements KartMng {
 		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& !servChrg.getCd().equals("Электроснабжение")) {
 			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
-			stVol = getServPropByCD(calc, servSt, "Норматив", genDt);
+			stVol = getServPropByCD(kart, servSt, "Норматив", genDt);
 		} else if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& servChrg.getCd().equals("Электроснабжение")) {
 			Double kitchElStv = 0d;
 			String s2;
-			kitchElStv = parMng.getDbl(calc.getKart(), "Электроплита. основное количество", genDt);
+			kitchElStv = parMng.getDbl(kart, "Электроплита. основное количество", genDt);
 			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
 				switch (cntPers.cnt) {
@@ -319,12 +314,12 @@ public class KartMngImpl implements KartMng {
 			}
 			}
 			//получить норматив, зависящий от проживающих
-			stVol = getServPropByCD(calc, servSt, s2, genDt);
+			stVol = getServPropByCD(kart, servSt, s2, genDt);
 			
 		}
 		if (stVol!=null) {	
 			st.vol = stVol;
-			st.partVol=cntPers.cnt * stVol/config.getCntCurDays();
+			st.partVol=cntPers.cnt * stVol/Calc.getCntCurDays();
 		} else {
 			st.vol = 0d;
 			st.partVol= 0d;
@@ -344,19 +339,19 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable("rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #cd, #genDt }") 
-	public /*synchronized*/ Double getServPropByCD(Calc calc, Serv serv, String cd, Date genDt) {
+	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #cd, #genDt }") 
+	public /*synchronized*/ Double getServPropByCD(Kart kart, Serv serv, String cd, Date genDt) {
 		Double val;
 		//в начале ищем по лиц. счету 
-		val=tarMng.getProp(calc.getKart(), serv, cd, genDt);
+		val=tarMng.getProp(kart, serv, cd, genDt);
 		if (val==null) {
 			//потом ищем по дому
-			val=tarMng.getProp(calc.getHouse(), serv, cd, genDt);
+			val=tarMng.getProp(Calc.getHouse(), serv, cd, genDt);
 			//val=tarMng.getProp(kart.getKw().getHouse(), serv, cd, genDt);
 		}
 		if (val==null) {
 			//потом ищем по городу
-			val=tarMng.getProp(calc.getArea(), serv, cd, genDt);
+			val=tarMng.getProp(Calc.getArea(), serv, cd, genDt);
 			//val=tarMng.getProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
 		}
 		return val;
@@ -370,7 +365,7 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr3", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="rrr2", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public /*synchronized*/ Org getOrg(Kart kart, Serv serv, Date genDt) {
 		Org org;
 		//в начале ищем по лиц. счету 
@@ -413,7 +408,7 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable("rrr1")
-	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") - НЕ КЭШИРОВАТЬ!!!
+	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") 
 	public /*synchronized*/ List<Serv> getAllServ(Kart kart) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа лиц.счета

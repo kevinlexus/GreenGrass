@@ -40,6 +40,8 @@ import com.ric.bill.model.mt.Vol;
 public class DistGen {
 
 	@Autowired
+	private Calc calc;
+	@Autowired
 	private MeterLogMng metMng;
 	@Autowired
 	private KartMng kartMng;
@@ -53,8 +55,6 @@ public class DistGen {
 	private HouseMng houseMng;
 	@Autowired
 	private VolMng volMng;
-	@Autowired
-	private Config config;
 	
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
@@ -130,7 +130,7 @@ public class DistGen {
 	//ВНИМАНИЕ! Пришлось вынести в отдельный сервис (не хотел кэш включаться на private методе!!!):
 	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
-	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
+	public NodeVol distNode (MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
 		Calc.mess("DistGen.NodeVol ВЫЗОВ!");
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		//если рассчитанный узел найден, вернуть готовый объем
@@ -172,7 +172,7 @@ public class DistGen {
 								//добавить объем в объект объема
 								//умножить объем на процент существования и на долю дня
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=v.getVol1() * e.getPrc() / config.getCntCurDays();
+									vl=v.getVol1() * e.getPrc() / Calc.getCntCurDays();
 								}
 							}
 						}
@@ -181,17 +181,17 @@ public class DistGen {
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
 				//Calc.mess("before:");
-				vl = kartMng.getStandart(calc, ml.getServ(), null, genDt).partVol;
+				vl = kartMng.getStandart(kart, ml.getServ(), null, genDt).partVol;
 			}
 				
 		} else if (tp==1 && (mLogTp.equals("ЛНрм") || mLogTp.equals("ЛИПУ") || mLogTp.equals("Лсчетчик"))) {
 			//по связи по площади и кол.прож. (только по Лнрм, ЛИПУ) в доле 1 дня
 			//площадь
-			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", genDt), 0d) / config.getCntCurDays(); 
+			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", genDt), 0d) / Calc.getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
 			kartMng.getCntPers(kart, servChrg, cntPers, 0, genDt);
-			partPers = cntPers.cnt / config.getCntCurDays();
+			partPers = cntPers.cnt / Calc.getCntCurDays();
 		} else if (tp==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
 			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии
@@ -222,14 +222,14 @@ public class DistGen {
 				// не найден счетчик (лог.счетчик должен быть обязательно, а физ.сч. к нему привязанных, может и не быть!)
 		        throw new NotFoundNode("Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId());  
 			}
-			SumNodeVol lnkODPUVol = metMng.getVolPeriod(lnkODPU, tp, config.getCurDt1(), config.getCurDt2());
+			SumNodeVol lnkODPUVol = metMng.getVolPeriod(lnkODPU, tp, Calc.getCurDt1(), Calc.getCurDt2());
 
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
 	    	Calc.mess("check id="+lnkLODN.getId());
-			lnkODNVol = metMng.getVolPeriod(lnkLODN, tp, config.getCurDt1(), config.getCurDt2());
+			lnkODNVol = metMng.getVolPeriod(lnkLODN, tp, Calc.getCurDt1(), Calc.getCurDt2());
 			Calc.mess("объем по ЛОДН id="+lnkLODN.getId()+" vol="+lnkODNVol.getVol()+" pers="+lnkODNVol.getPers()+" area="+lnkODNVol.getArea());
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
-			SumNodeVol sumVol = metMng.getVolPeriod(ml, tp, config.getCurDt1(), config.getCurDt2());
+			SumNodeVol sumVol = metMng.getVolPeriod(ml, tp, Calc.getCurDt1(), Calc.getCurDt2());
 			
 			if (metMng.checkExsMet(lnkODPU, genDt) && lnkODPUVol.getVol() >= 0d) {
 				//при наличии счетчика(ков) ОДПУ и объема по нему
@@ -259,7 +259,7 @@ public class DistGen {
 					List<MLogs> lstMain = metMng.getAllMetLogByServTp(kart, mainServ.getServMet(), null);
 					for (MLogs mLog2 : lstMain) {
 						//получить объем за период, по лог счетчику основной услуги, если найден
-						sumMainVol = metMng.getVolPeriod(mLog2, tp, config.getCurDt1(), config.getCurDt2());
+						sumMainVol = metMng.getVolPeriod(mLog2, tp, Calc.getCurDt1(), Calc.getCurDt2());
 						tmpVol = tmpVol + sumMainVol.getVol();
 					}
 					
@@ -339,7 +339,7 @@ public class DistGen {
 				 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 				 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 				 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-						NodeVol nvChld = distNode(calc, g.getSrc(), tp, genDt);
+						NodeVol nvChld = distNode(g.getSrc(), tp, genDt);
 						//добавить объемы от дочерних узлов
 						nv.addPartArea(nvChld.getPartArea());
 						nv.addPartPers(nvChld.getPartPers());
@@ -357,20 +357,20 @@ public class DistGen {
 		}
 
 		//после рекурсивного расчета дочерних узлов, и только по последней дате, выполнить расчет Лимита ОДН
-		if (tp==1 && mLogTp.equals("ЛОДН") && genDt.getTime() == config.getCurDt2().getTime() /*genDt.equals(Calc.getCurDt2()*/) {
+		if (tp==1 && mLogTp.equals("ЛОДН") && genDt.getTime() == Calc.getCurDt2().getTime() /*genDt.equals(Calc.getCurDt2()*/) {
 			//по связи по площади и кол.прож. и только по ЛОДН счетчику
 			if (servChrg.getCd().equals("Холодная вода") || servChrg.getCd().equals("Горячая вода")) {
 				SumNodeVol lnkODNVol = null;
 				//получить площадь и кол-во прожив по дому, за месяц  
-				lnkODNVol = metMng.getVolPeriod(ml, tp, config.getCurDt1(), config.getCurDt2());
+				lnkODNVol = metMng.getVolPeriod(ml, tp, Calc.getCurDt1(), Calc.getCurDt2());
 				//расчитать лимит кубов
 				//если кол-во прожив. > 0
 				if (lnkODNVol.getPers() > 0d) {
 					double oplMan = lnkODNVol.getArea() /  lnkODNVol.getPers();   
-					double lmtVol = oplLiter(oplMan)/1000;
+					double lmtVol = calc.oplLiter(oplMan)/1000;
 					//записать лимит ОДН
 					Lst volTp = lstMng.getByCD("Лимит ОДН");
-					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2());
+					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, Calc.getCurDt1(), Calc.getCurDt2());
 					ml.getVol().add(vol);
 				}
 				
@@ -451,120 +451,6 @@ public class DistGen {
 	public void clearLstChecks() {
 		lstCheck.clear();
 	}
-
-	/**
-	 * таблица для возврата норматива потребления (в литрах) по соотв.площади на человека
-	 * @param oplMan - площадь на человека
-	 * @return
-	 */
-	public double oplLiter(Double oplMan) {
-		int inVal = (int) Math.round(oplMan);
-		double val=0d;
-		
-		switch (inVal) {
-		case 1: val = 2;
-		break;
-		case 2: val = 2;
-		break;
-		case 3: val = 2;
-		break;
-		case 4: val = 10;
-		break;
-		case 5: val = 10;
-		break;
-		case 6: val = 10;
-		break;
-		case 7: val = 10;
-		break;
-		case 8: val = 10;
-		break;
-		case 9: val = 10;
-		break;
-		case 10: val = 9;
-		break;
-		case 11: val = 8.2;
-		break;
-		case 12: val = 7.5;
-		break;
-		case 13: val = 6.9;
-		break;
-		case 14: val = 6.4;
-		break;
-		case 15: val = 6.0;
-		break;
-		case 16: val = 5.6;
-		break;
-		case 17: val = 5.3;
-		break;
-		case 18: val = 5.0;
-		break;
-		case 19: val = 4.7;
-		break;
-		case 20: val = 4.5;
-		break;
-		case 21: val = 4.3;
-		break;
-		case 22: val = 4.1;
-		break;
-		case 23: val = 3.9;
-		break;
-		case 24: val = 3.8;
-		break;
-		case 25: val = 3.6;
-		break;
-		case 26: val = 3.5;
-		break;
-		case 27: val = 3.3;
-		break;
-		case 28: val = 3.2;
-		break;
-		case 29: val = 3.1;
-		break;
-		case 30: val = 3.0;
-		break;
-		case 31: val = 2.9;
-		break;
-		case 32: val = 2.8;
-		break;
-		case 33: val = 2.7;
-		break;
-		case 34: val = 2.6;
-		break;
-		case 35: val = 2.6;
-		break;
-		case 36: val = 2.5;
-		break;
-		case 37: val = 2.4;
-		break;
-		case 38: val = 2.4;
-		break;
-		case 39: val = 2.3;
-		break;
-		case 40: val = 2.3;
-		break;
-		case 41: val = 2.2;
-		break;
-		case 42: val = 2.1;
-		break;
-		case 43: val = 2.1;
-		break;
-		case 44: val = 2;
-		break;
-		case 45: val = 2;
-		break;
-		case 46: val = 2;
-		break;
-		case 47: val = 1.9;
-		break;
-		case 48: val = 1.9;
-		break;
-		case 49: val = 1.8;
-		break;
-		default: val = 1.8;
-		
-		}
-		
-		return val;
-	}
+	 
 }
 

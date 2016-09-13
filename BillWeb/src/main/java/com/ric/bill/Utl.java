@@ -4,10 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ric.bill.mm.ParMng;
-
 /**
  * Утилиты
  * @author lev
@@ -34,10 +30,10 @@ public class Utl {
 	 */
 	public static boolean between(Date checkDt, Date dt1, Date dt2) {
 		if (dt1 == null) {
-			dt1 = Config.getFirstDt();
+			dt1 = Calc.getFirstDt();
 		}
 		if (dt2 == null) {
-			dt2 = Config.getLastDt();
+			dt2 = Calc.getLastDt();
 		}
 		
 		if (checkDt.getTime() >= dt1.getTime() &&

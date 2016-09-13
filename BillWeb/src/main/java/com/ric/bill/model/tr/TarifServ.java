@@ -31,7 +31,7 @@ public class TarifServ implements java.io.Serializable, Simple {
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
 	private Integer fkTarif;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv; 
 

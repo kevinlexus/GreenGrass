@@ -44,8 +44,8 @@ public class ChrgThr {
 	
 	@Autowired
 	private LstMng lstMng;
-	@Autowired
-	private Config config;
+	//@Autowired
+	//private ChrgServ chrgServ;
 	@Autowired
 	private ParMng parMng;
 	
@@ -60,6 +60,8 @@ public class ChrgThr {
 	private Serv serv;
 	//временное хранилище записей
 	private ChrgStore chStore;
+	//текущий лс
+	private Kart kart;
 
 	private String thrName;
 	
@@ -67,8 +69,6 @@ public class ChrgThr {
     private List<Chrg> prepChrg;
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
-
-    private Calc calc;
     
 	//конструктор
 	public ChrgThr() {
@@ -78,12 +78,12 @@ public class ChrgThr {
 	//установить параметры
 	//				thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
 
-	public void set(Calc calc, Serv serv,  
+	public void set(Serv serv, Kart kart, 
 			HashMap<Serv, BigDecimal> mapServ, 
 			HashMap<Serv, BigDecimal> mapVrt, 
 			List<Chrg> prepChrg) {
-		this.calc = calc;
 		this.serv = serv;
+		this.kart = kart;
 		this.mapServ = mapServ;
 		this.mapVrt = mapVrt;
 		this.prepChrg = prepChrg;
@@ -93,11 +93,9 @@ public class ChrgThr {
 	@Async
 	//public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 	public  Future<Result> run1() {
-		Kart kart = calc.getKart();
-		
-		Result res = new Result();
+    	Result res = new Result();
 		res.err=0;
-
+		
 		Thread t = Thread.currentThread();
 	    thrName = t.getName();
 	      
@@ -108,8 +106,8 @@ public class ChrgThr {
 
 		//необходимый для формирования диапазон дат
 		Date dt1, dt2, genDt;
-		dt1 = config.getCurDt1();
-		dt2 = config.getCurDt2();
+		dt1 = Calc.getCurDt1();
+		dt2 = Calc.getCurDt2();
 
 		//типы записей начисления
 		Lst chrgTpRnd = lstMng.getByCD("Начислено свернуто, округлено");
@@ -140,7 +138,7 @@ public class ChrgThr {
 					continue;
 				}
 					try {
-					  chrgServ(calc, serv, tpOwn, genDt);
+					  chrgServ(kart, serv, tpOwn, genDt);
 					} catch (EmptyServ e) {
 						e.printStackTrace();
 						throw new RuntimeException();
@@ -179,7 +177,7 @@ public class ChrgThr {
 
 			if (!rec.getServ().getVrt()) {
 				if (sum.compareTo(BigDecimal.ZERO) != 0) {
-					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, config.getPeriod(), sum, sum, 
+					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, Calc.getPeriod(), sum, sum, 
 							vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
 					chrgAdd(chrg);
 				}
@@ -197,8 +195,8 @@ public class ChrgThr {
 	 * @param serv - услуга
 	 * @throws InvalidServ 
 	 */
-	public void chrgServ(Calc calc, Serv serv, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg, InvalidServ {
-		Kart kart = calc.getKart();
+	public void chrgServ(Kart kart, Serv serv, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg, InvalidServ {
+		//Calc.mess(thrName+" CHECK0="+serv.getId()+" dt="+genDt,2);	
 		long startTime2;
 		long endTime;
 		long totalTime;
@@ -267,7 +265,7 @@ public class ChrgThr {
 
 		//получить расценку по норме	
 		//synchronized (kartMng) {
-			stPrice = kartMng.getServPropByCD(calc, stServ, "Цена", genDt);
+			stPrice = kartMng.getServPropByCD(kart, stServ, "Цена", genDt);
 		//}
 		
 		if (stPrice == null) {
@@ -285,14 +283,14 @@ public class ChrgThr {
 			
 			//synchronized (kartMng) {
 				//Calc.mess(thrName+" CHECK1="+serv.getId()+" dt="+genDt,2);	
-				stdt = kartMng.getStandart(calc, serv, cntPers, genDt);
+				stdt = kartMng.getStandart(kart, serv, cntPers, genDt);
 				//Calc.mess(thrName+" CHECK2="+serv.getId()+" dt="+genDt,2);	
 			//}
 			//здесь же получить расценки по свыше соц.нормы и без проживающих 
 			if (serv.getServUpst() != null) {
 				
 				//Calc.mess(thrName+" CHECK!"+kart,2 );
-				upStPrice = kartMng.getServPropByCD(calc, upStServ, "Цена", genDt);
+				upStPrice = kartMng.getServPropByCD(kart, upStServ, "Цена", genDt);
 				if (upStPrice == null) {
 					upStPrice = 0d;
 				}
@@ -301,7 +299,7 @@ public class ChrgThr {
 			}
 
 			if (serv.getServWokpr() != null) {
-				woKprPrice = kartMng.getServPropByCD(calc, woKprServ, "Цена", genDt);
+				woKprPrice = kartMng.getServPropByCD(kart, woKprServ, "Цена", genDt);
 				if (woKprPrice == null) {
 					woKprPrice = 0d;
 				}
@@ -334,7 +332,7 @@ public class ChrgThr {
 			//Calc.mess(thrName+" CHECK4.1="+serv.getId()+" dt="+genDt,2);	
 			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
 			
-			vol = vol / config.getCntCurDays();
+			vol = vol / Calc.getCntCurDays();
 			//проверить по капремонту, чтобы не была квартира муниципальной
 			if (serv.getCd().equals("Взносы на кап.рем.")) {
 				if (!(tpOwn.equals("Подсобное помещение") || tpOwn.equals("Приватизированная") || tpOwn.equals("Собственная"))) {
@@ -354,7 +352,7 @@ public class ChrgThr {
 			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
 			//получить долю объема за день HARD CODE
 			//площадь полива (в доле 1 дня)/100 * 60 дней / 12мес * норматив / среднее кол-во дней в месяце
-			vol = vol/100d*60d/12d*stdt.partVol/30.4d/config.getCntCurDays();
+			vol = vol/100d*60d/12d*stdt.partVol/30.4d/Calc.getCntCurDays();
 			
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d ||
 				   Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
@@ -370,7 +368,7 @@ public class ChrgThr {
 			
 			if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
 				//доля площади в день
-				sqr = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d) / config.getCntCurDays();
+				sqr = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d) / Calc.getCntCurDays();
 			}
 			
 			
@@ -381,11 +379,11 @@ public class ChrgThr {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
 			}
 			//получить объем по услуге за период
-			SumNodeVol tmpNodeVol = metMng.getVolPeriod(kart, serv.getServMet(), config.getCurDt1(), config.getCurDt2());
+			SumNodeVol tmpNodeVol = metMng.getVolPeriod(kart, serv.getServMet(), Calc.getCurDt1(), Calc.getCurDt2());
 			vol = tmpNodeVol.getVol();
-			vol = vol / config.getCntCurDays();
+			vol = vol / Calc.getCntCurDays();
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
-			vol = 1 / config.getCntCurDays();
+			vol = 1 / Calc.getCntCurDays();
 		}
 
 
