@@ -31,14 +31,14 @@ public class TarifServOrg implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private Integer id; //id
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv ; 
 
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
 	private Integer fkTarif;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
 	private Org org; 
 	

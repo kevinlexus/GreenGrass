@@ -15,6 +15,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.Calc;
+import com.ric.bill.Config;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Utl;
@@ -36,6 +37,9 @@ public class MeterLogMngImpl implements MeterLogMng {
 
 	@Autowired
 	private MeterLogDAO mDao;
+
+	@Autowired
+	private Config config;
 
 	@PersistenceContext
     private EntityManager em;
@@ -169,8 +173,8 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param dt2 - кон.период
 	 * @return - возвращаемый объем
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #mc.getId(), #serv.getId(), #dt1, #dt2 }")
-	@Cacheable(cacheNames="rrr1") 
+	//@Cacheable(cacheNames="rrr1") 
+	@Cacheable(cacheNames="rrr1", key="{ #mc.getId(), #serv.getId(), #dt1, #dt2 }")
 	public synchronized SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2) {
 		SumNodeVol amntSum = new SumNodeVol();
 		
@@ -237,13 +241,13 @@ public class MeterLogMngImpl implements MeterLogMng {
 		//удалять итератором, иначе java.util.ConcurrentModificationException
     	Calc.mess("MeterLogMngImpl.delNodeVol mLog.id="+mLog.getId()+", tp="+tp+" genDt="+genDt);
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
-	    	Calc.mess("Check del1=========:"+Calc.getCurDt1().toLocaleString()+","+Calc.getCurDt2().toLocaleString());
+	    	Calc.mess("Check del1=========:"+config.getCurDt1().toLocaleString()+","+config.getCurDt2().toLocaleString());
 		    Vol vol = iterator.next();
 	    	Calc.mess("Check del2=========:"+vol.getTp().getCd());
 		    if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН") ) {
 		    	//проверить период
-		    	Calc.mess("Check del3=========:"+Calc.getCurDt1().toLocaleString()+","+Calc.getCurDt2().toLocaleString());
-		    	if (Calc.getCurDt1().getTime() <= vol.getDt1().getTime() && Calc.getCurDt2().getTime() >= vol.getDt2().getTime()) {
+		    	Calc.mess("Check del3=========:"+config.getCurDt1().toLocaleString()+","+config.getCurDt2().toLocaleString());
+		    	if (config.getCurDt1().getTime() <= vol.getDt1().getTime() && config.getCurDt2().getTime() >= vol.getDt2().getTime()) {
 			    	Calc.mess("MeterLogMngImpl.delNodeVol удаление объема: mLog.id="+mLog.getId()+", vol.id="+vol.getId());
 					iterator.remove();
 					em.remove(vol); //добавил здесь удаление еще

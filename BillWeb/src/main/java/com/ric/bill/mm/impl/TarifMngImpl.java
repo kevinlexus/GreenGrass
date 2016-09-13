@@ -46,9 +46,9 @@ public class TarifMngImpl implements TarifMng {
     
 	//получить свойство тарифа по его CD
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
-	public synchronized Prop getPropByCD(String cd) {
-		return tDao.getPropByCD(cd);
-	}
+	//public synchronized Prop getPropByCD(String cd) {
+//		return tDao.getPropByCD(cd);
+	//}
 
 	/**
 	 * Получить значение типа Double тарифа по CD 
@@ -82,8 +82,8 @@ public class TarifMngImpl implements TarifMng {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
 	//@Cacheable(cacheNames="rrr1") 
+	@Cacheable(cacheNames="rrr3", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
 	public synchronized Org getOrg(TarifContains tc, Serv serv, Date genDt) {
 
 		//искать сперва по наборам тарифа объекта 
@@ -107,9 +107,9 @@ public class TarifMngImpl implements TarifMng {
 	 * @param tc - объект
 	 * @return
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #tc.getKlsk() }") 
-	@Cacheable(cacheNames="rrr1") 
-	public synchronized List<Serv> getAllServ(TarifContains tc) {
+	//@Cacheable(cacheNames="rrr1") 
+	@Cacheable(cacheNames="rrr1", key="{ #tc.getKlsk() }") 
+	public /*synchronized*/ List<Serv> getAllServ(TarifContains tc) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
@@ -132,7 +132,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @return
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
-	public synchronized boolean getServ(TarifContains tc, Serv serv, Date genDt) {
+	public /*synchronized*/ boolean getServ(TarifContains tc, Serv serv, Date genDt) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
