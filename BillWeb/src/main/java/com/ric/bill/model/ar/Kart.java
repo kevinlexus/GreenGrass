@@ -115,6 +115,12 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@BatchSize(size = 50)
 	private List<Chrg> chrg = new ArrayList<Chrg>(0);
 
+	//Связь лиц.счета с УК
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
+	@BatchSize(size = 50)
+	private List<Lskxorg> lskxorg = new ArrayList<Lskxorg>(0);
+
 	public String getId() {
 		return this.id;
 	}
@@ -207,6 +213,14 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
      
        return true;
    }
+
+	public List<Lskxorg> getLskxorg() {
+		return lskxorg;
+	}
+	
+	public void setLskxorg(List<Lskxorg> lskxorg) {
+		this.lskxorg = lskxorg;
+	}
 
 	
 }
