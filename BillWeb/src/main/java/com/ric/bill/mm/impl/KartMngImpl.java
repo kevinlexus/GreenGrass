@@ -397,11 +397,17 @@ public class KartMngImpl implements KartMng {
 	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public /*synchronized*/ boolean getServ(Kart kart, Serv serv, Date genDt) {
 		boolean exs = false;
+		int ret = 0;
 		//в начале ищем по лиц. счету 
-		exs=tarMng.getServ(kart, serv, genDt);
-		if (!exs) {
+		ret=tarMng.getServ(kart, serv, genDt);
+		if (ret==0) {
 			//потом ищем по дому
-			return tarMng.getServ(kart.getKw().getHouse(), serv, genDt);
+			ret=tarMng.getServ(kart.getKw().getHouse(), serv, genDt);
+			if (ret==2) {
+				exs=true;
+			}
+		} else if (ret==2) {
+			exs=true;
 		}
 		//здесь уровня "город" - нет
 		return exs;

@@ -129,10 +129,12 @@ public class TarifMngImpl implements TarifMng {
 	 * @param tc - объект
 	 * @param genDt - дата выборки
 	 * @param genDt - дата выборки
-	 * @return
+	 * @return - вернуть 0 - услуга не найдена, поискать на другом уровне
+	 *                   1 - услуга помечена как удалена с уровня город (не искать её на уроне город)
+	 *                   2 - услуга найдена, или помечена как Act=1 (добавлена на уровень лиц.счета) 
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
-	public /*synchronized*/ boolean getServ(TarifContains tc, Serv serv, Date genDt) {
+	public /*synchronized*/ int getServ(TarifContains tc, Serv serv, Date genDt) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
@@ -142,15 +144,15 @@ public class TarifMngImpl implements TarifMng {
 				for (TarifServ t : k.getTarserv()) {
 					if (t.getServ().equals(serv)) {
 						if (Utl.nvl(k.getAct(), 1) == 1) {
-							return true;
+							return 2;
 						} else {
-							return false;
+							return 1;
 						}
 					}
 				}
 			}
 		}
-		return false;
+		return 0;
 	}
 	
 }
