@@ -38,6 +38,10 @@ public class HouseDAOImpl implements HouseDAO {
     
     static final String STATEMENT_SQLMAP = "Statement-SQL-Mapping";
     
+    //конструктор
+    public HouseDAOImpl() {
+    	
+    }
 	public List<House> findAll() {
 		return em.createQuery("select t from House t "
 				+ "where t.klsk in (-1)").getResultList(); //

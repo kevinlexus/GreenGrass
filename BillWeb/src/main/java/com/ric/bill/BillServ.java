@@ -155,6 +155,9 @@ public class BillServ {
     public Future<Result> chrgAll(boolean dist) {
     	Calc.setDbgLvl(2);
     	
+		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
+		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
+    	
     	Result res = new Result();
 		res.err=0;
 		//кол-во потоков

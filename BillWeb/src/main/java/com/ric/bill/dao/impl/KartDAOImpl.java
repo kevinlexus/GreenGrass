@@ -33,6 +33,11 @@ public class KartDAOImpl implements KartDAO {
     
     static final String STATEMENT_SQLMAP = "Statement-SQL-Mapping2";
 
+    //конструктор
+    public KartDAOImpl() {
+    	
+    }
+    
 	public List<Kart> findAll() {
 		@SqlResultSetMapping(name= STATEMENT_SQLMAP, classes = { //эту часть кода можно закинуть в любое место
 		        @ConstructorResult(targetClass = ResultSetLsk.class,
@@ -46,13 +51,14 @@ public class KartDAOImpl implements KartDAO {
 		List<Kart> lstKart = null;
 		try {
 			q = em.createNativeQuery("select distinct x.lsk "+
-						   "from ar.lskxorg x, ar.kart k, ar.kw kw, bs.org o "+
+						   "from ar.lskxorg x, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
 						   "where k.fk_kw = kw.id "+
 						   "and k.lsk = x.lsk "+
 						   "and o.reu in ('Z4', 'D8', 'F4', 'J4', 'G4') "+
-						   "and x.fk_org = o.id "+
+						   "and o.parent_id=u.id "+
+						   "and x.fk_uk = u.id "+
 						   "and ? between x.dt1 and x.dt2 "+
-						   //"and x.lsk between '14024241' and '14024254' "+
+						   "and x.lsk between '14024241' and '14024254' "+
 						   "order by x.lsk ",  STATEMENT_SQLMAP);
 			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 			

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
@@ -36,12 +38,16 @@ import com.ric.bill.model.tr.TarifKlsk;
  * @author lev
  *
  */
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "LSKXORG", schema="AR")
 public class Lskxorg implements java.io.Serializable {
-
-
+	
+	@Id
+	@Column(name="ROWID")
+	private String rowid;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_UK", referencedColumnName="ID")
 	private Org uk;
@@ -75,6 +81,14 @@ public class Lskxorg implements java.io.Serializable {
 
 	public void setDt2(Date dt2) {
 		this.dt2 = dt2;
+	}
+
+	public String getRowid() {
+		return rowid;
+	}
+
+	public void setRowid(String rowid) {
+		this.rowid = rowid;
 	}
 
 }
