@@ -1,5 +1,6 @@
 package com.ric.bill.model.ar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -9,6 +10,8 @@ import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -44,19 +47,26 @@ import com.ric.bill.model.tr.TarifKlsk;
 @Table(name = "LSKXORG", schema="AR")
 public class Lskxorg implements java.io.Serializable {
 	
+
+    //@EmbeddedId
+    //private EntityPropertyPK id;
 	@Id
-	@Column(name="ROWID")
-	private String rowid;
+	@Column(name="ID", updatable = false, nullable = false)
+	private Integer id; //id
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="FK_UK", referencedColumnName="ID")
+    //лиц.счет
+    @Column(name = "LSK", updatable = false, insertable = false, nullable = false)
+    private String lsk;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="FK_UK", referencedColumnName="ID", updatable = false, insertable = false, nullable = true)
 	private Org uk;
 	
     //даты начала и окончания действия лиц.счета
-    @Column(name = "DT1", updatable = false, nullable = true)
+    @Column(name = "DT1", updatable = false, insertable = false, nullable = true)
     private Date dt1;
 
-    @Column(name = "DT2", updatable = false, nullable = true)
+    @Column(name = "DT2", updatable = false, insertable = false, nullable = true)
     private Date dt2;
 
     public Org getUk() {
@@ -83,13 +93,43 @@ public class Lskxorg implements java.io.Serializable {
 		this.dt2 = dt2;
 	}
 
-	public String getRowid() {
-		return rowid;
+	public String getLsk() {
+		return lsk;
 	}
 
-	public void setRowid(String rowid) {
-		this.rowid = rowid;
+	public void setLsk(String lsk) {
+		this.lsk = lsk;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+/*	public EntityPropertyPK getId() {
+		return id;
+	}
+
+	public void setId(EntityPropertyPK id) {
+		this.id = id;
+	}*/
+
+	   @Override
+	   public boolean equals(Object o) {
+	       if (this == o) return true;
+	       if (!(o instanceof Lskxorg)) return false;
+	     
+	       Lskxorg other = (Lskxorg) o;
+	     
+	       if (getId() != null ?
+	           !getId().equals(other.getId()) : other.getId() != null)
+	           return false;
+	     
+	       return true;
+	   }
 
 }
 

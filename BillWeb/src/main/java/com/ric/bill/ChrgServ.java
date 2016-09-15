@@ -267,11 +267,12 @@ public class ChrgServ {
 			}
 			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
+			Org ukMain = em.find(Org.class, chrg.getUk().getId());
 			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
 			if (lsk.equals("14024244")) {
 				  Calc.mess("Сохранить дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
 				}
-			putSumDeb(mapDeb, servMain, orgMain, BigDecimal.valueOf(chrg.getSumAmnt()));
+			putSumDeb(mapDeb, servMain, orgMain, ukMain, BigDecimal.valueOf(chrg.getSumAmnt()));
 		}
 
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
@@ -291,11 +292,12 @@ public class ChrgServ {
 				}
 				//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
 				Org orgMain = em.find(Org.class, chrg.getOrg().getId());
+				Org ukMain = em.find(Org.class, chrg.getUk().getId());
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
 				if (lsk.equals("14024244")) {
  				  Calc.mess("Вычесть дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
 				}
-				putSumDeb(mapDeb, servMain, orgMain, BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
+				putSumDeb(mapDeb, servMain, orgMain, ukMain, BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
 			}
 		}
 		
@@ -323,7 +325,7 @@ public class ChrgServ {
 			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
 
 			//if (lsk.equals("14024244")) {
-			  Calc.mess("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+			  Calc.mess("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" uk="+((Org) mk.getKey(2)).getId()+" sum="+it.getValue(),2);
 				// TODO Auto-generated catch block
 				//Calc.mess("Проверка дельты1: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
 				//Calc.mess("Проверка дельты2: org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
@@ -339,6 +341,7 @@ public class ChrgServ {
 			  //qr.registerStoredProcedureParameter("P_DTEK", Date.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
+			  qr.registerStoredProcedureParameter("P_FK_UK", Integer.class, ParameterMode.IN);
 			  qr.setParameter("P_LSK", kart.getLsk());
 			  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
 			  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
@@ -347,6 +350,7 @@ public class ChrgServ {
 			  //qr.setParameter("P_DTEK", new Date());
 			  qr.setParameter("P_TP_CHNG", 1);
 			  qr.setParameter("P_FK_CHNG", 1);
+			  qr.setParameter("P_FK_UK", ((Org) mk.getKey(2)).getId());
 			  
 			  qr.execute();
 			}
@@ -355,7 +359,7 @@ public class ChrgServ {
 		//Сохранить новое начисление
 		for (Chrg chrg : prepChrg) {
 			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
-			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
+			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), chrg.getUk(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
 					chrg.getVol(), chrg.getPrice(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
 			kart.getChrg().add(chrg2); 
 		}
@@ -366,15 +370,15 @@ public class ChrgServ {
 	 * @param serv - услуга
 	 * @param sum - сумма
 	 */
-	public /*synchronized */void putSumDeb(MultiKeyMap mkMap, Serv serv, Org org, BigDecimal sum) {
-		BigDecimal s = (BigDecimal) mkMap.get(serv, org);
+	public /*synchronized */void putSumDeb(MultiKeyMap mkMap, Serv serv, Org org, Org uk, BigDecimal sum) {
+		BigDecimal s = (BigDecimal) mkMap.get(serv, org, uk);
 		if (s != null) {
 		  s=s.add(sum);
 		} else {
 		  s = sum;
 		}
 	    //добавить в элемент массива
-		mkMap.put(serv, org, s);
+		mkMap.put(serv, org, uk, s);
 	}
 
 

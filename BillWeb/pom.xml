@@ -152,6 +152,14 @@
 		    <artifactId>oracle</artifactId>
 		    <version>10.2.0.2.0</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.0</version>
+		</dependency>
+
 	
 		<!-- добавил согласно статьи http://zazos79.blogspot.ru/2015/02/spring-boot-12-run-as-windows-service.html -->
 		<dependency> 

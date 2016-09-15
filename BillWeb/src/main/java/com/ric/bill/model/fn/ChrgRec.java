@@ -18,6 +18,7 @@ public class ChrgRec {
 	private BigDecimal price;
 	private Serv serv;
 	private Org org;
+	private Org uk;
     private Date dt1, dt2;
 
     /**
@@ -30,12 +31,13 @@ public class ChrgRec {
      * @param dt1 - дата начала
      * @param dt2 - дата окончания
      */
-	public ChrgRec(BigDecimal vol, BigDecimal price, Serv serv, Org org, Date dt1, Date dt2) {
+	public ChrgRec(BigDecimal vol, BigDecimal price, Serv serv, Org org, Org uk, Date dt1, Date dt2) {
 		super();
 		setVol(vol);
 		setPrice(price);
 		setServ(serv);
 		setOrg(org);
+		setOrg(uk);
 		setDt1(dt1);
 		setDt2(dt2);
 	}
@@ -86,6 +88,14 @@ public class ChrgRec {
 
 	public void setServ(Serv serv) {
 		this.serv = serv;
+	}
+
+	public Org getUk() {
+		return uk;
+	}
+
+	public void setUk(Org uk) {
+		this.uk = uk;
 	}
 
 	

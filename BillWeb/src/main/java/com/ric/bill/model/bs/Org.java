@@ -21,7 +21,7 @@ public class Org implements java.io.Serializable {
 
 	@Id
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; //id
+	private Integer id; //id
 
 	@Column(name = "CD", updatable = false, nullable = false)
 	private String cd; //cd 

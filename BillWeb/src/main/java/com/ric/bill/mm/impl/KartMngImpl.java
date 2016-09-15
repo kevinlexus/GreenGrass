@@ -22,6 +22,7 @@ import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.ar.Lskxorg;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.ps.Pers;
@@ -335,6 +336,21 @@ public class KartMngImpl implements KartMng {
 	}
 
 
+	/**
+	 * Получить текущую УК, к которой сейчас привязан лиц.счет через lskxorg
+	 * @param kart - лиц.счет
+	 * @param genDt - дата выборки
+	 */
+	public Org getUk(Kart kart, Date genDt) {
+		for (Lskxorg lxo: kart.getLskxorg()) {
+			if (Utl.between(genDt, lxo.getDt1(), lxo.getDt2())) {
+				return lxo.getUk();
+			}			
+		}
+		return null;
+	}
+	
+	
 	/**
 	 * Найти значение свойства услуги (по лиц.счету!)
 	 * @param Kart - Лиц.счет

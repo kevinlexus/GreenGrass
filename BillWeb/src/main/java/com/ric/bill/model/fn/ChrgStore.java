@@ -35,10 +35,10 @@ public class ChrgStore {
 	 * @param org - организация
 	 * @param dt1 - дата
 	 */
-	public void addChrg (BigDecimal vol, BigDecimal price, Serv serv, Org org, Date dt1) {
+	public void addChrg (BigDecimal vol, BigDecimal price, Serv serv, Org org, Org uk, Date dt1) {
 		if (getStore().size() == 0) {
 			//завести новую строку
-			getStore().add(new ChrgRec(vol, price, serv, org, dt1, dt1));
+			getStore().add(new ChrgRec(vol, price, serv, org, uk, dt1, dt1));
 		} else {
 			ChrgRec lastRec = null;
 			//получить последний добавленный элемент по данной услуге
@@ -49,7 +49,7 @@ public class ChrgStore {
 			}
 			if (lastRec == null) {
 				//последний элемент с данной услугой не найден, - создать
-				getStore().add(new ChrgRec(vol, price, serv, org, dt1, dt1));
+				getStore().add(new ChrgRec(vol, price, serv, org, uk, dt1, dt1));
 			} else {
 				//последний элемент найден
 				//сравнить по-элементно
@@ -57,7 +57,9 @@ public class ChrgStore {
 				//Calc.mess("CHECK5="+org, 2);
 				if (lastRec.getPrice().compareTo(price) == 0 &&
 					(lastRec.getOrg() == null && org == null ||
-					 lastRec.getOrg().equals(org))
+					 lastRec.getOrg().equals(org)) &&
+						(lastRec.getUk() == null && uk == null ||
+						 lastRec.getUk().equals(uk))
 					) {
 					//добавить данные в последнюю строку, просуммировать сумму и объем 
 					//lastRec.setSum(lastRec.getSum().add(sum)); - СУММА Считается в конце, после всего расчета!
@@ -68,7 +70,7 @@ public class ChrgStore {
 				} else {
 					//завести новую строку, если отличается расценкой или организацией
 					//BigDecimal sum, BigDecimal vol, BigDecimal price, int org, Date dt1
-					getStore().add(new ChrgRec(vol, price, serv, org, dt1, dt1));
+					getStore().add(new ChrgRec(vol, price, serv, org, uk, dt1, dt1));
 				}
 			}
 		}

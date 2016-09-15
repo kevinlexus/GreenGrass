@@ -38,7 +38,7 @@ public class ChrgServThr {
 		Result res = chrgServ.chrgLsk(calc);
 		//Сохранить результат
 		if (res.err==0) {
-			chrgServ.save(calc.getKart().getLsk()); 
+			//chrgServ.save(calc.getKart().getLsk()); 
 		}
 		
 		return new AsyncResult<Result>(res);

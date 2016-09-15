@@ -16,10 +16,12 @@ import javax.persistence.TemporalType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ric.bill.Calc;
 import com.ric.bill.Config;
 import com.ric.bill.ResultSetLsk;
 import com.ric.bill.dao.KartDAO;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.ar.Lskxorg;
 
 
 @Repository
@@ -47,6 +49,10 @@ public class KartDAOImpl implements KartDAO {
 		        )
 		    }) @Entity class SQLMappingCfgEntity{@Id String lsk;} // <- walkaround
 
+
+		//Lskxorg lxo = em.find(Lskxorg.class, 2249921);
+		//Calc.mess("CHEEEEEEEEEEEEEEEEEEEK=========="+lxo.getLsk());
+		
 		Query q;
 		List<Kart> lstKart = null;
 		try {
@@ -58,7 +64,7 @@ public class KartDAOImpl implements KartDAO {
 						   "and o.parent_id=u.id "+
 						   "and x.fk_uk = u.id "+
 						   "and ? between x.dt1 and x.dt2 "+
-						   //"and x.lsk between '14024241' and '14024254' "+
+						   "and x.lsk between '36010339' and '36010339' "+
 						   "order by x.lsk ",  STATEMENT_SQLMAP);
 			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 			
