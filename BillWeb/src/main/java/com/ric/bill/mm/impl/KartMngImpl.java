@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -44,6 +47,8 @@ public class KartMngImpl implements KartMng {
 	private TarifMng tarMng;
     @Autowired
     private Config config;
+	@PersistenceContext
+    private EntityManager em;
 
 	//внутренний класс, состояние проживающего
 	private class PersStatus {
@@ -343,9 +348,9 @@ public class KartMngImpl implements KartMng {
 	 */
 	public Org getUk(Kart kart, Date genDt) {
 		for (Lskxorg lxo: kart.getLskxorg()) {
-			if (Utl.between(genDt, lxo.getDt1(), lxo.getDt2())) {
-				return lxo.getUk();
-			}			
+		//	if (Utl.between(genDt, lxo.getDt1(), lxo.getDt2())) {
+				return em.find(Org.class, 1649);
+		//	}			
 		}
 		return null;
 	}

@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -56,6 +59,9 @@ public class ChrgThr {
 
 	@Autowired
 	private ApplicationContext ctx;
+
+	@PersistenceContext
+    private EntityManager em;
 	
 	private Serv serv;
 	//временное хранилище записей
@@ -132,7 +138,10 @@ public class ChrgThr {
 			if (kartMng.getServ(kart, serv, genDt)) {
 				String tpOwn = parMng.getStr(kart, "FORM_S", genDt);
 				//получить обслуживающую УК
+				//Org uk = em.find(Org.class, 1649); //null;//kartMng.getUk(kart, genDt);
+
 				Org uk = kartMng.getUk(kart, genDt);
+				
 				if (tpOwn == null) {
 					Calc.mess("ОШИБКА! Не указанна форма собственности! lsk="+kart.getLsk(), 2);
 				}
