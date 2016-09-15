@@ -346,7 +346,9 @@ public class KartMngImpl implements KartMng {
 	 * @param kart - лиц.счет
 	 * @param genDt - дата выборки
 	 */
-	public Org getUk(Kart kart, Date genDt) {
+	public synchronized Org getUk(Kart kart, Date genDt) {
+		Calc.mess("CHEEEEEEEEK"+kart.getLsk()+"  "+genDt,2);
+		
 		for (Lskxorg lxo: kart.getLskxorg()) {
 		//	if (Utl.between(genDt, lxo.getDt1(), lxo.getDt2())) {
 				return em.find(Org.class, 1649);
