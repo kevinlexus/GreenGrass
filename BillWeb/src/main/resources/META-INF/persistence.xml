@@ -8,14 +8,24 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
         
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
+            		
+<!--    херь какая то, здесь параметры вообще не читаются-->
 		<property name="hibernate.enable_lazy_load_no_trans" value="true" />
+		
+            		
 <!--    Включил batch процессинг записей в hibernate, увеличило скорость существенно-->
 	<!-- 	<property name="hibernate.jdbc.batch_size" value="1000" />	
 		<property name="hibernate.order_inserts" value="true" />	
 		<property name="hibernate.order_updates" value="true" />	
 		<property name="hibernate.jdbc.batch_versioned_data" value="true" />	 -->
 
-<!-- hibernate.c3p0.min_size=5
+<!-- 
+
+			<property name="hibernate.c3p0.min_size" value="2" />
+            <property name="hibernate.c3p0.max_size" value="5" />
+            <property name="hibernate.c3p0.timeout" value="20" />
+
+hibernate.c3p0.min_size=5
 hibernate.c3p0.max_size=20
 hibernate.c3p0.timeout=1800
 hibernate.c3p0.max_statements=50
