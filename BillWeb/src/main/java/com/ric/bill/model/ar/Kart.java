@@ -116,8 +116,8 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	private List<Chrg> chrg = new ArrayList<Chrg>(0);
 
 	//Связь лиц.счета с УК
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
-	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false, insertable = false)
 	@BatchSize(size = 50)
 	private List<Lskxorg> lskxorg = new ArrayList<Lskxorg>(0);
 

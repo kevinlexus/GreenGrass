@@ -64,7 +64,7 @@ public class KartDAOImpl implements KartDAO {
 						   "and o.parent_id=u.id "+
 						   "and x.fk_uk = u.id "+
 						   "and ? between x.dt1 and x.dt2 "+
-						   "and x.lsk between '36010339' and '36010339' "+
+						   //"and x.lsk between '36010339' and '36010339' "+
 						   "order by x.lsk ",  STATEMENT_SQLMAP);
 			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 			

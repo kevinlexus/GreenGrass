@@ -59,10 +59,10 @@ public class ChrgThr {
 
 	@Autowired
 	private ApplicationContext ctx;
-
-	@PersistenceContext
-    private EntityManager em;
 	
+    @PersistenceContext
+    private EntityManager em;
+
 	private Serv serv;
 	//временное хранилище записей
 	private ChrgStore chStore;
@@ -138,8 +138,6 @@ public class ChrgThr {
 			if (kartMng.getServ(kart, serv, genDt)) {
 				String tpOwn = parMng.getStr(kart, "FORM_S", genDt);
 				//получить обслуживающую УК
-				//Org uk = em.find(Org.class, 1649); //null;//kartMng.getUk(kart, genDt);
-
 				Org uk = kartMng.getUk(kart, genDt);
 				
 				if (tpOwn == null) {
@@ -456,13 +454,16 @@ public class ChrgThr {
 					tmpVol= stdt.partVol;
 				}
 	
-				//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
-				//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
-				/*if (kart.getLsk().equals("26074227")) {
-					Calc.mess("Услуга:"+serv.getCd(), 2);
-					Calc.mess("tmpVol="+tmpVol+" stPrice="+stPrice, 2);
-				}*/
-				chStore.addChrg(BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
+				try {
+					chStore.addChrg(BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					Calc.mess("ERRRRRRRRRRRRRR="+kart.getLsk()+" uk="+uk, 2);
+					e.printStackTrace();
+					
+				}
+				
+				
 /*				if (tmpSum != BigDecimal.ZERO) {
 					Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
 					kart.getChrg().add(chrg);
