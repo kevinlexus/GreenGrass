@@ -161,7 +161,10 @@ public class BillServ {
     	Result res = new Result();
 		res.err=0;
 		//кол-во потоков
-		int cntThreads = 10; 
+		int cntThreads = 10;
+		//кол-во обраб.лиц.сч.
+		int cntLsk = 0;
+		
 		long startTime;
 		long endTime;
 		long totalTime;
@@ -175,7 +178,7 @@ public class BillServ {
 	    
 		//загрузить все Лиц.счета
 		kartThr = kartMng.findAll();
-		
+		cntLsk = kartThr.size(); 
 	    //флаг ошибки, произошедшей в потоке
 	    errThread=false;
 	    
@@ -196,13 +199,6 @@ public class BillServ {
 			List<Future<Result>> frl = new ArrayList<Future<Result>>();
 
 			for (Kart kart : kartWork) {
-				/*long startTime3;
-				long endTime3;
-				long totalTime3;
-				startTime3 = System.currentTimeMillis();
-				endTime3   = System.currentTimeMillis();
-				totalTime3 = endTime3 - startTime3;
-			    Calc.mess("Time for CHECK:"+totalTime3,2);*/
 
 					Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
 					Future<Result> fut = null;
@@ -262,7 +258,10 @@ public class BillServ {
 		}
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
+	    Calc.mess("Ver=2.0",2);
+	    Calc.mess("Counted lsk:"+cntLsk,2);
 	    Calc.mess("Time for all process:"+totalTime,2);
+	    Calc.mess("Time per one Lsk: "+totalTime/cntLsk+" ms.",2);
     	return new AsyncResult<Result>(res);
 	}
     
