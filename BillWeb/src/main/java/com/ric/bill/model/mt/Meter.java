@@ -79,7 +79,9 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	private List<MeterExs> exs = new ArrayList<MeterExs>(0);
 
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-    @Column(name = "FK_K_LSK", updatable = false, nullable = false)
+	@Column(name = "FK_K_LSK", nullable = true)
+	private Integer klsk;
+
 	public Integer getKlsk() {
 		return klsk;
 	}

@@ -20,6 +20,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
+
+
+
+
+
+
+
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -33,6 +40,8 @@ import com.ric.bill.MeterContains;
 import com.ric.bill.RegContains;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
+import com.ric.bill.model.bs.Dw;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.mt.MeterLog;
@@ -41,18 +50,22 @@ import com.ric.bill.model.ps.RegState;
 import com.ric.bill.model.tr.TarifKlsk;
 
 /**
- * Лицевой счет
+ * Принадлежность лицевого к управляющей компаниии
+ * 
+ * Лев (10:57:37 26/09/2016) 
+ * но это же не лицевой счет)) это таблица связей лиц.счета (которого у нас теперь нет) с УК
+ * ***KnяZь'**** (10:57:59 26/09/2016) 
+ * это два в одном
+ * Лев (11:00:33 26/09/2016) 
+ * это отступление от корректной схемы, ну ладно, фиг с ним
+ * 
  * @author lev
  *
  */
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "KART", schema="AR")
-@AttributeOverrides({
-		@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK")  )//зафигачил KUL, иначе если ставить lsk приводит к неэффективности ВНИМАНИЕ, ВЕРНУЛ LSK, ТАк как приводит к некорректной обработке (kul не уникальный!)
-		}																  //короче KUL не фига не решил проблему, а её усугубил, так как это не уникальный идентификатор не фига
-		)
-public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
+public class Kart  implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
 
 	public Kart() {
 	}
@@ -60,54 +73,47 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "lsk", updatable = false, nullable = false)
-	private String id; //id записи
-
+	private Integer lsk; //id записи
 	
+    //вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
+	@Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
+	private Integer klsk;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KW", referencedColumnName="ID", updatable = false, insertable = false)
 	private Kw kw;
 
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_K_LSK", nullable = true)
-	public Integer getKlsk() {
-		return this.klsk;
-	}
-	
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
-	
+	//Обслуживающая УК
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="FK_UK", referencedColumnName="ID", updatable = false, insertable = false)
+	private Org uk;
+
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ")
 	@BatchSize(size = 50)
 	private List<MeterLog> mlog = new ArrayList<MeterLog>(0);
 
-	//@NotFound(action=NotFoundAction.IGNORE)
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ")
 	@BatchSize(size = 50)
 	private List<TarifKlsk> tarifklsk = new ArrayList<TarifKlsk>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="LSK", referencedColumnName="LSK")
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ")
 	@BatchSize(size = 500)
 	private List<Reg> reg = new ArrayList<Reg>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="LSK", referencedColumnName="LSK")
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ")
 	@BatchSize(size = 500)
 	private List<RegState> regState = new ArrayList<RegState>(0);
 
 	@Column(name = "FK_KW", nullable = true)
 	private Integer fkKw;
 
-	//ФИО владельца
-	@Column(name = "FIO", nullable = true)
-	private String fio;
-	
-	//Лиц.счет
-	@Column(name = "LSK", nullable = true, updatable = false, insertable = false)
-	private String lsk;
+	//Лиц.счет из квартплаты - для поиска
+	@Column(name = "FLSK", nullable = true, updatable = false, insertable = false)
+	private String flsk;
 
 	//Записи начисления
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
@@ -115,41 +121,12 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 	@BatchSize(size = 50)
 	private List<Chrg> chrg = new ArrayList<Chrg>(0);
 
-	//Связь лиц.счета с УК
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false, insertable = false)
-	@BatchSize(size = 50)
-	private List<Lskxorg> lskxorg = new ArrayList<Lskxorg>(0);
-
-	public String getId() {
-		return this.id;
-	}
-	
-	public void setId(String id) {
-		this.id=id;
-	}
 	public Kw getKw() {
 		return kw;
 	}
 	
 	public void setKw(Kw kw) {
 		this.kw = kw;
-	}
-	
-	public String getFio() {
-		return fio;
-	}
-	
-	public void setFio(String fio) {
-		this.fio = fio;
-	}
-	
-	public String getLsk() {
-		return lsk;
-	}
-	
-	public void setLsk(String lsk) {
-		this.lsk = lsk;
 	}
 	
 	public List<MeterLog> getMlog() {
@@ -214,12 +191,50 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
        return true;
    }
 
-	public List<Lskxorg> getLskxorg() {
-		return lskxorg;
+	public String getFlsk() {
+		return flsk;
 	}
-	
-	public void setLskxorg(List<Lskxorg> lskxorg) {
-		this.lskxorg = lskxorg;
+
+	public void setFlsk(String flsk) {
+		this.flsk = flsk;
+	}
+
+	@Override
+	public Integer getKlsk() {
+		return klsk;
+	}
+
+	@Override
+	public void setKlsk(Integer klsk) {
+		this.klsk=klsk;
+	}
+
+	public Integer getLsk() {
+		return lsk;
+	}
+
+	public void setLsk(Integer lsk) {
+		this.lsk = lsk;
+	}
+
+	public Org getUk() {
+		return uk;
+	}
+
+	public void setUk(Org uk) {
+		this.uk = uk;
+	}
+
+	@Override
+	public List<Dw> getDw() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setDw(List<Dw> dw) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

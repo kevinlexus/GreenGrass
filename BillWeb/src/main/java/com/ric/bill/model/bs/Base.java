@@ -40,8 +40,6 @@ public abstract class Base implements Storable {
 	@BatchSize(size = 20)
 	protected List<Dw> dw = new ArrayList<Dw>(0);
 
-	protected Integer klsk;
-
 	public List<Dw> getDw() {
 		return dw;
 	}

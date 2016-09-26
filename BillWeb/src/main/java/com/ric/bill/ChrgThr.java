@@ -138,7 +138,8 @@ public class ChrgThr {
 			if (kartMng.getServ(kart, serv, genDt)) {
 				String tpOwn = parMng.getStr(kart, "FORM_S", genDt);
 				//получить обслуживающую УК
-				Org uk = kartMng.getUk(kart, genDt);
+				Org uk = kart.getUk();
+				//Org uk = kartMng.getUk(kart, genDt);
 				
 				if (tpOwn == null) {
 					Calc.mess("ОШИБКА! Не указанна форма собственности! lsk="+kart.getLsk(), 2);

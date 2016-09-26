@@ -3,7 +3,6 @@ package com.ric.bill.mm.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -22,7 +21,6 @@ import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.ar.Lskxorg;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.ps.Pers;
@@ -341,7 +339,7 @@ public class KartMngImpl implements KartMng {
 	 * @param kart - лиц.счет
 	 * @param genDt - дата выборки
 	 */
-	public synchronized Org getUk(Kart kart, Date genDt) {
+/*	public synchronized Org getUk(Kart kart, Date genDt) {
 		for (Lskxorg lxo: kart.getLskxorg()) {
 			if (Utl.between(genDt, lxo.getDt1(), lxo.getDt2())) {
 				if (lxo.getUk() == null) {
@@ -351,7 +349,7 @@ public class KartMngImpl implements KartMng {
 			}			
 		}
 		return null;
-	}
+	}*/
 	
 	
 	/**

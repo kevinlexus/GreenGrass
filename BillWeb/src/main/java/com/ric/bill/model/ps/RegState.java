@@ -60,7 +60,7 @@ public class RegState implements java.io.Serializable, Registrable {
 	private Date dtUnRegTs; //Дата снятия с учёта, фактически установлена
 
 	@Column(name = "LSK", updatable = false, insertable = false)
-	private String lsk;
+	private Integer lsk;
 
 	public Integer getId() {
 		return this.id;
@@ -118,11 +118,11 @@ public class RegState implements java.io.Serializable, Registrable {
 		this.tp = tp;
 	}
 
-	public String getLsk() {
+	public Integer getLsk() {
 		return lsk;
 	}
 
-	public void setLsk(String lsk) {
+	public void setLsk(Integer lsk) {
 		this.lsk = lsk;
 	}
 	

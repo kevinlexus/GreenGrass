@@ -103,8 +103,10 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 	@JoinColumn(name="FK_STREET", referencedColumnName="ID", updatable = false)
 	private Street street;
 	
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
+	private Integer klsk;
+
+	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	public Integer getKlsk() {
 		return this.klsk;
 	}

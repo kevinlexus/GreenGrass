@@ -3,8 +3,8 @@ package com.ric.bill;
 
 @lombok.Getter //ломбок - вещь!
 @lombok.AllArgsConstructor
-public class ResultSetLsk {
+public class ResultSetKlsk {
 
-	private String lsk;
+	private Integer lsk;
 	
 }

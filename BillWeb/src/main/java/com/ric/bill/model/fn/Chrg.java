@@ -96,7 +96,7 @@ public class Chrg implements java.io.Serializable, Simple {
 	private Integer status;
 
 	@Column(name = "LSK", updatable = false, insertable = false)
-	private String lsk;
+	private Integer lsk;
 
 	@Column(name = "PERIOD")
 	private String period;
@@ -152,11 +152,11 @@ public class Chrg implements java.io.Serializable, Simple {
 		this.status = status;
 	}
 
-	public String getLsk() {
+	public Integer getLsk() {
 		return lsk;
 	}
 
-	public void setLsk(String lsk) {
+	public void setLsk(Integer lsk) {
 		this.lsk = lsk;
 	}
 

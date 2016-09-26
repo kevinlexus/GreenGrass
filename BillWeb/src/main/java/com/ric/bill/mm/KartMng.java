@@ -20,7 +20,7 @@ import com.ric.bill.model.tr.TarifKlsk;
 public interface KartMng  {
 
 	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt);
-	public Org getUk(Kart kart, Date genDt);
+	//public Org getUk(Kart kart, Date genDt);
 	public abstract Double getServPropByCD(Calc calc, Serv serv, String string, Date genDt);
 	public abstract Standart getStandart(Calc calc, Serv serv, CntPers cntPers, Date genDt);
 	public Org getOrg(Kart kart, Serv serv, Date genDt);

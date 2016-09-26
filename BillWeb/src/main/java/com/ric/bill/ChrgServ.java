@@ -115,7 +115,7 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	public Result chrgLsk(Calc calc) throws ErrorWhileChrg {
-		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getLsk(), 2);
+		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getFlsk(), 2);
 		Result res = new Result();
 		res.err=0;
 		//if (1==1) {
@@ -243,7 +243,7 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void save (String lsk) throws ErrorWhileChrg {
+	public void save (Integer lsk) throws ErrorWhileChrg {
 		
 	    //коллекция для сумм по укрупнённым услугам, для нового начисления 
 	    MultiKeyMap mapDeb = new MultiKeyMap();
@@ -269,9 +269,9 @@ public class ChrgServ {
 			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 			Org ukMain = em.find(Org.class, chrg.getUk().getId());
 			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
-			if (lsk.equals("14024244")) {
-				  Calc.mess("Сохранить дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
-				}
+			//if (lsk.equals("14024244")) {
+			//	  Calc.mess("Сохранить дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
+			//	}
 			putSumDeb(mapDeb, servMain, orgMain, ukMain, BigDecimal.valueOf(chrg.getSumAmnt()));
 		}
 
@@ -294,9 +294,9 @@ public class ChrgServ {
 				Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 				Org ukMain = em.find(Org.class, chrg.getUk().getId());
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
-				if (lsk.equals("14024244")) {
- 				  Calc.mess("Вычесть дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
-				}
+				//if (lsk.equals("14024244")) {
+ 				//  Calc.mess("Вычесть дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
+				//}
 				putSumDeb(mapDeb, servMain, orgMain, ukMain, BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
 			}
 		}

@@ -103,7 +103,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	 * 
 	 * */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ", updatable = false, insertable = false)
 	private Kart kart; 
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -119,8 +119,10 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	private String name;
     
     //вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-    @Column(name = "FK_K_LSK", updatable = false, nullable = false)
-    public Integer getKlsk() {
+	@Column(name = "FK_K_LSK", nullable = true)
+	private Integer klsk;
+
+	public Integer getKlsk() {
 		return klsk;
 	}
 

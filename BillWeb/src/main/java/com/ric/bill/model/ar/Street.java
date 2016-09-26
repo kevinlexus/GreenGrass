@@ -62,6 +62,8 @@ public class Street extends Base implements java.io.Serializable {
 	
 	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
+	private Integer klsk;
+
 	public Integer getKlsk() {
 		return this.klsk;
 	}

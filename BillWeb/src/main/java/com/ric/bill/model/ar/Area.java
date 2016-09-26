@@ -56,8 +56,10 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 		this.id = id;
 	}
 
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	@Column(name = "FK_K_LSK", nullable = true)
+	private Integer klsk;
+	
+	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
 	public Integer getKlsk() {
 		return this.klsk;
 	}
