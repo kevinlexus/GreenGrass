@@ -46,6 +46,31 @@ public abstract class Base implements Storable {
 	public void setDw(List<Dw> dw) {
 		this.dw = dw;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dw == null) ? 0 : dw.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Base other = (Base) obj;
+		if (dw == null) {
+			if (other.dw != null)
+				return false;
+		} else if (!dw.equals(other.dw))
+			return false;
+		return true;
+	}
 	
 	
 }

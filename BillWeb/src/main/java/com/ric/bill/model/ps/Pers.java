@@ -78,19 +78,34 @@ public class Pers implements java.io.Serializable, Simple {
 		this.dtBorn = dtBorn;
 	}
 
-@Override
-   public boolean equals(Object o) {
-       if (this == o) return true;
-       if (!(o instanceof Pers)) return false;
-     
-       Pers otherPers = (Pers) o;
-     
-       if (getId() != null ?
-           !getId().equals(otherPers.getId()) : otherPers.getId() != null)
-           return false;
-     
-       return true;
-   }
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dtBorn == null) ? 0 : dtBorn.hashCode());
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pers other = (Pers) obj;
+		if (dtBorn == null) {
+			if (other.dtBorn != null)
+				return false;
+		} else if (!dtBorn.equals(other.dtBorn))
+			return false;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+
 }
 

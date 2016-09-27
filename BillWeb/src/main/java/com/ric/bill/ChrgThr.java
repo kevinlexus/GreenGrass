@@ -97,7 +97,6 @@ public class ChrgThr {
 	}
 
 	@Async
-	//public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
 	public  Future<Result> run1() {
 		Kart kart = calc.getKart();
 		
@@ -150,7 +149,7 @@ public class ChrgThr {
 					continue;
 				}
 					try {
-					  chrgServ(calc, serv, uk, tpOwn, genDt);
+					  genChrg(calc, serv, uk, tpOwn, genDt);
 					} catch (EmptyServ e) {
 						e.printStackTrace();
 						throw new RuntimeException();
@@ -207,7 +206,7 @@ public class ChrgThr {
 	 * @param serv - услуга
 	 * @throws InvalidServ 
 	 */
-	public void chrgServ(Calc calc, Serv serv, Org uk, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg, InvalidServ {
+	private void genChrg(Calc calc, Serv serv, Org uk, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg, InvalidServ {
 		if (uk == null) {
 			Calc.mess("CHEEEEEEEEEEEEECK===="+uk,2);
 		}

@@ -27,6 +27,7 @@ import javax.persistence.Table;
 
 
 
+
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -177,20 +178,6 @@ public class Kart  implements java.io.Serializable, MeterContains, TarifContains
 		this.chrg = chrg;
 	}
 
-   @Override
-   public boolean equals(Object o) {
-       if (this == o) return true;
-       if (!(o instanceof Kart)) return false;
-     
-       Kart otherKart = (Kart) o;
-     
-       if (getLsk() != null ?
-           !getLsk().equals(otherKart.getLsk()) : otherKart.getLsk() != null)
-           return false;
-     
-       return true;
-   }
-
 	public String getFlsk() {
 		return flsk;
 	}
@@ -237,6 +224,94 @@ public class Kart  implements java.io.Serializable, MeterContains, TarifContains
 		
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((chrg == null) ? 0 : chrg.hashCode());
+		result = prime * result + ((fkKw == null) ? 0 : fkKw.hashCode());
+		result = prime * result + ((flsk == null) ? 0 : flsk.hashCode());
+		result = prime * result + ((klsk == null) ? 0 : klsk.hashCode());
+		result = prime * result + ((kw == null) ? 0 : kw.hashCode());
+		result = prime * result + ((lsk == null) ? 0 : lsk.hashCode());
+		result = prime * result + ((mlog == null) ? 0 : mlog.hashCode());
+		result = prime * result + ((reg == null) ? 0 : reg.hashCode());
+		result = prime * result
+				+ ((regState == null) ? 0 : regState.hashCode());
+		result = prime * result
+				+ ((tarifklsk == null) ? 0 : tarifklsk.hashCode());
+		result = prime * result + ((uk == null) ? 0 : uk.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Kart other = (Kart) obj;
+		if (chrg == null) {
+			if (other.chrg != null)
+				return false;
+		} else if (!chrg.equals(other.chrg))
+			return false;
+		if (fkKw == null) {
+			if (other.fkKw != null)
+				return false;
+		} else if (!fkKw.equals(other.fkKw))
+			return false;
+		if (flsk == null) {
+			if (other.flsk != null)
+				return false;
+		} else if (!flsk.equals(other.flsk))
+			return false;
+		if (klsk == null) {
+			if (other.klsk != null)
+				return false;
+		} else if (!klsk.equals(other.klsk))
+			return false;
+		if (kw == null) {
+			if (other.kw != null)
+				return false;
+		} else if (!kw.equals(other.kw))
+			return false;
+		if (lsk == null) {
+			if (other.lsk != null)
+				return false;
+		} else if (!lsk.equals(other.lsk))
+			return false;
+		if (mlog == null) {
+			if (other.mlog != null)
+				return false;
+		} else if (!mlog.equals(other.mlog))
+			return false;
+		if (reg == null) {
+			if (other.reg != null)
+				return false;
+		} else if (!reg.equals(other.reg))
+			return false;
+		if (regState == null) {
+			if (other.regState != null)
+				return false;
+		} else if (!regState.equals(other.regState))
+			return false;
+		if (tarifklsk == null) {
+			if (other.tarifklsk != null)
+				return false;
+		} else if (!tarifklsk.equals(other.tarifklsk))
+			return false;
+		if (uk == null) {
+			if (other.uk != null)
+				return false;
+		} else if (!uk.equals(other.uk))
+			return false;
+		return true;
+	}
+
+	
 	
 }
 

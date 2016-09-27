@@ -305,19 +305,161 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 		this.servTree = servTree;
 	}
 
-   @Override
-   public boolean equals(Object o) {
-       if (this == o) return true;
-       if (!(o instanceof Serv)) return false;
-     
-       Serv otherServ = (Serv) o;
-     
-       if (getId() != null ?
-           !getId().equals(otherServ.getId()) : otherServ.getId() != null)
-           return false;
-     
-       return true;
-   }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((cd == null) ? 0 : cd.hashCode());
+		result = prime * result
+				+ ((checkOrg == null) ? 0 : checkOrg.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((inclAbsn == null) ? 0 : inclAbsn.hashCode());
+		result = prime * result
+				+ ((inclPrsn == null) ? 0 : inclPrsn.hashCode());
+		result = prime * result + ((klsk == null) ? 0 : klsk.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((npp == null) ? 0 : npp.hashCode());
+		result = prime * result + ((npp2 == null) ? 0 : npp2.hashCode());
+		result = prime * result
+				+ ((servChrg == null) ? 0 : servChrg.hashCode());
+		result = prime * result + ((servMet == null) ? 0 : servMet.hashCode());
+		result = prime * result + ((servOdn == null) ? 0 : servOdn.hashCode());
+		result = prime * result + ((servOrg == null) ? 0 : servOrg.hashCode());
+		result = prime * result
+				+ ((servRound == null) ? 0 : servRound.hashCode());
+		result = prime * result + ((servSt == null) ? 0 : servSt.hashCode());
+		result = prime * result
+				+ ((servStKeep == null) ? 0 : servStKeep.hashCode());
+		result = prime * result
+				+ ((servTree == null) ? 0 : servTree.hashCode());
+		result = prime * result
+				+ ((servUpst == null) ? 0 : servUpst.hashCode());
+		result = prime * result + ((servVrt == null) ? 0 : servVrt.hashCode());
+		result = prime * result
+				+ ((servWokpr == null) ? 0 : servWokpr.hashCode());
+		result = prime * result + ((vrt == null) ? 0 : vrt.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Serv other = (Serv) obj;
+		if (cd == null) {
+			if (other.cd != null)
+				return false;
+		} else if (!cd.equals(other.cd))
+			return false;
+		if (checkOrg == null) {
+			if (other.checkOrg != null)
+				return false;
+		} else if (!checkOrg.equals(other.checkOrg))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (inclAbsn == null) {
+			if (other.inclAbsn != null)
+				return false;
+		} else if (!inclAbsn.equals(other.inclAbsn))
+			return false;
+		if (inclPrsn == null) {
+			if (other.inclPrsn != null)
+				return false;
+		} else if (!inclPrsn.equals(other.inclPrsn))
+			return false;
+		if (klsk == null) {
+			if (other.klsk != null)
+				return false;
+		} else if (!klsk.equals(other.klsk))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (npp == null) {
+			if (other.npp != null)
+				return false;
+		} else if (!npp.equals(other.npp))
+			return false;
+		if (npp2 == null) {
+			if (other.npp2 != null)
+				return false;
+		} else if (!npp2.equals(other.npp2))
+			return false;
+		if (servChrg == null) {
+			if (other.servChrg != null)
+				return false;
+		} else if (!servChrg.equals(other.servChrg))
+			return false;
+		if (servMet == null) {
+			if (other.servMet != null)
+				return false;
+		} else if (!servMet.equals(other.servMet))
+			return false;
+		if (servOdn == null) {
+			if (other.servOdn != null)
+				return false;
+		} else if (!servOdn.equals(other.servOdn))
+			return false;
+		if (servOrg == null) {
+			if (other.servOrg != null)
+				return false;
+		} else if (!servOrg.equals(other.servOrg))
+			return false;
+		if (servRound == null) {
+			if (other.servRound != null)
+				return false;
+		} else if (!servRound.equals(other.servRound))
+			return false;
+		if (servSt == null) {
+			if (other.servSt != null)
+				return false;
+		} else if (!servSt.equals(other.servSt))
+			return false;
+		if (servStKeep == null) {
+			if (other.servStKeep != null)
+				return false;
+		} else if (!servStKeep.equals(other.servStKeep))
+			return false;
+		if (servTree == null) {
+			if (other.servTree != null)
+				return false;
+		} else if (!servTree.equals(other.servTree))
+			return false;
+		if (servUpst == null) {
+			if (other.servUpst != null)
+				return false;
+		} else if (!servUpst.equals(other.servUpst))
+			return false;
+		if (servVrt == null) {
+			if (other.servVrt != null)
+				return false;
+		} else if (!servVrt.equals(other.servVrt))
+			return false;
+		if (servWokpr == null) {
+			if (other.servWokpr != null)
+				return false;
+		} else if (!servWokpr.equals(other.servWokpr))
+			return false;
+		if (vrt == null) {
+			if (other.vrt != null)
+				return false;
+		} else if (!vrt.equals(other.vrt))
+			return false;
+		return true;
+	}
 
+
+	
 }
 

@@ -162,19 +162,6 @@ public class Reg implements java.io.Serializable, Registrable {
 		this.kinship = kinship;
 	}
 
-@Override
-   public boolean equals(Object o) {
-       if (this == o) return true;
-       if (!(o instanceof Reg)) return false;
-     
-       Reg otherReg = (Reg) o;
-     
-       if (getId() != null ?
-           !getId().equals(otherReg.getId()) : otherReg.getId() != null)
-           return false;
-     
-       return true;
-   }
-	
+
 }
 
