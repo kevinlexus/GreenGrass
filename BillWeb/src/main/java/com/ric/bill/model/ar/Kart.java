@@ -1,12 +1,11 @@
 package com.ric.bill.model.ar;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,31 +18,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
-
-
-
-
-
-
-
-
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.FilterDefs;
-import org.hibernate.annotations.Filters;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.MeterContains;
 import com.ric.bill.RegContains;
+import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
-import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Reg;
@@ -66,7 +48,12 @@ import com.ric.bill.model.tr.TarifKlsk;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "KART", schema="AR")
-public class Kart  implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
+@AssociationOverrides({
+	   @AssociationOverride(name = "dw",
+	      joinColumns = @JoinColumn(referencedColumnName = "FK_KLSK_OBJ"))
+	})
+@AttributeOverride(name = "klsk", column = @Column(name = "FK_KLSK_OBJ"))
+public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
 
 	public Kart() {
 	}
@@ -76,10 +63,6 @@ public class Kart  implements java.io.Serializable, MeterContains, TarifContains
     @Column(name = "lsk", updatable = false, nullable = false)
 	private Integer lsk; //id записи
 	
-    //вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
-	private Integer klsk;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KW", referencedColumnName="ID", updatable = false, insertable = false)
 	private Kw kw;
@@ -186,16 +169,6 @@ public class Kart  implements java.io.Serializable, MeterContains, TarifContains
 		this.flsk = flsk;
 	}
 
-	@Override
-	public Integer getKlsk() {
-		return klsk;
-	}
-
-	@Override
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
-
 	public Integer getLsk() {
 		return lsk;
 	}
@@ -212,17 +185,6 @@ public class Kart  implements java.io.Serializable, MeterContains, TarifContains
 		this.uk = uk;
 	}
 
-	@Override
-	public List<Dw> getDw() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setDw(List<Dw> dw) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public int hashCode() {
@@ -231,7 +193,7 @@ public class Kart  implements java.io.Serializable, MeterContains, TarifContains
 		result = prime * result + ((chrg == null) ? 0 : chrg.hashCode());
 		result = prime * result + ((fkKw == null) ? 0 : fkKw.hashCode());
 		result = prime * result + ((flsk == null) ? 0 : flsk.hashCode());
-		result = prime * result + ((klsk == null) ? 0 : klsk.hashCode());
+		result = prime * result + ((getKlsk() == null) ? 0 : getKlsk().hashCode());
 		result = prime * result + ((kw == null) ? 0 : kw.hashCode());
 		result = prime * result + ((lsk == null) ? 0 : lsk.hashCode());
 		result = prime * result + ((mlog == null) ? 0 : mlog.hashCode());
@@ -268,10 +230,10 @@ public class Kart  implements java.io.Serializable, MeterContains, TarifContains
 				return false;
 		} else if (!flsk.equals(other.flsk))
 			return false;
-		if (klsk == null) {
-			if (other.klsk != null)
+		if (getKlsk() == null) {
+			if (other.getKlsk() != null)
 				return false;
-		} else if (!klsk.equals(other.klsk))
+		} else if (!getKlsk().equals(other.getKlsk()))
 			return false;
 		if (kw == null) {
 			if (other.kw != null)

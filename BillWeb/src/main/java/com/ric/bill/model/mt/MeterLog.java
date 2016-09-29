@@ -48,7 +48,6 @@ import com.ric.bill.model.bs.Serv;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER_LOG", schema="MT")
-@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class MeterLog extends Base implements java.io.Serializable, MLogs {
 
 	public MeterLog (){
@@ -118,18 +117,6 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
     @Column(name = "NAME", updatable = false, nullable = true)
 	private String name;
     
-    //вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_K_LSK", nullable = true)
-	private Integer klsk;
-
-	public Integer getKlsk() {
-		return klsk;
-	}
-
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
-
 	public Integer getKlskObj() {
 		return klskObj;
 	}
@@ -217,7 +204,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((inside == null) ? 0 : inside.hashCode());
 		result = prime * result + ((kart == null) ? 0 : kart.hashCode());
-		result = prime * result + ((klsk == null) ? 0 : klsk.hashCode());
+		result = prime * result + ((getKlsk() == null) ? 0 : getKlsk().hashCode());
 		result = prime * result + ((klskObj == null) ? 0 : klskObj.hashCode());
 		result = prime * result + ((meter == null) ? 0 : meter.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -256,10 +243,10 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 				return false;
 		} else if (!kart.equals(other.kart))
 			return false;
-		if (klsk == null) {
-			if (other.klsk != null)
+		if (getKlsk() == null) {
+			if (other.getKlsk() != null)
 				return false;
-		} else if (!klsk.equals(other.klsk))
+		} else if (!getKlsk().equals(other.getKlsk()))
 			return false;
 		if (klskObj == null) {
 			if (other.klskObj != null)

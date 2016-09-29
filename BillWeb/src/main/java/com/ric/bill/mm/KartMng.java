@@ -23,9 +23,9 @@ public interface KartMng  {
 	//public Org getUk(Kart kart, Date genDt);
 	public abstract Double getServPropByCD(Calc calc, Serv serv, String string, Date genDt);
 	public abstract Standart getStandart(Calc calc, Serv serv, CntPers cntPers, Date genDt);
-	public Org getOrg(Kart kart, Serv serv, Date genDt);
-	public List<Serv> getAllServ(Kart kart);
+	public Org getOrg(Calc calc, Serv serv, Date genDt);
+	public List<Serv> getAllServ(Calc calc);
 	public double getCapPrivs(RegContains rc, Date genDt);
-	public boolean getServ(Kart kart, Serv serv, Date genDt);
+	public boolean getServ(Calc calc, Serv serv, Date genDt);
 	public List<Kart> findAll();
 }

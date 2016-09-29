@@ -30,7 +30,6 @@ import com.ric.bill.model.bs.Base;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "STREET", schema="AR")
-@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class Street extends Base implements java.io.Serializable {
 
 	public Street() {
@@ -60,17 +59,6 @@ public class Street extends Base implements java.io.Serializable {
 	@Column(name = "NAME", nullable = true)
 	private String name; 
 	
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_K_LSK", nullable = true)
-	private Integer klsk;
-
-	public Integer getKlsk() {
-		return this.klsk;
-	}
-
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
 
 	public String getName() {
 		return name;

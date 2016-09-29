@@ -276,7 +276,7 @@ public class BillServ {
 	 * @throws ErrorWhileChrg
 	 */
     @Async
-	public Future<Result> chrgLsk(Kart kart, String lsk, boolean dist) {
+	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
 		Calc.setDbgLvl(2);
 		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		

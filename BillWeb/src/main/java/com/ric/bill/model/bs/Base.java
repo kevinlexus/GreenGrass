@@ -35,6 +35,9 @@ import com.ric.bill.Storable;
 @MappedSuperclass
 public abstract class Base implements Storable {
 	
+    @Column(name = "FK_K_LSK", updatable = false, nullable = false)
+	protected Integer klsk;
+
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 20)
@@ -46,7 +49,7 @@ public abstract class Base implements Storable {
 	public void setDw(List<Dw> dw) {
 		this.dw = dw;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -70,6 +73,14 @@ public abstract class Base implements Storable {
 		} else if (!dw.equals(other.dw))
 			return false;
 		return true;
+	}
+
+	public Integer getKlsk() {
+		return klsk;
+	}
+	
+	public void setKlsk(Integer klsk) {
+		this.klsk = klsk;
 	}
 	
 	

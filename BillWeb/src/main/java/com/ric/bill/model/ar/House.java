@@ -50,7 +50,6 @@ classes = {
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "HOUSE", schema="AR")
-@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 //Внимание! пока решил не включать предварительные фильтры в связи с некорректностью логики в выражении Between or Between! Подумать! TODO!
 /*@FilterDefs({
 	//фильтр, когда одна из дат входит в диапазон
@@ -103,18 +102,6 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 	@JoinColumn(name="FK_STREET", referencedColumnName="ID", updatable = false)
 	private Street street;
 	
-	@Column(name = "FK_K_LSK", nullable = true)
-	private Integer klsk;
-
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	public Integer getKlsk() {
-		return this.klsk;
-	}
-
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
-
 	public List<Kw> getKw() {
 		return kw;
 	}

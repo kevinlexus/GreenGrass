@@ -136,14 +136,14 @@ public class ChrgServ {
 		
 		Kart kart = calc.getKart();
 		//загрузить все услуги
-		servThr = kartMng.getAllServ(kart);
+		servThr = kartMng.getAllServ(calc);
 		
 		errThread=false;
 
 		while (true) {
 			Calc.mess("ChrgServ: Loading servs for threads");
 			//получить следующие N услуг, рассчитать их в потоке
-			List<Serv> servWork = getNextServ(10);
+			List<Serv> servWork = getNextServ(1);
 			if (servWork.isEmpty()) {
 				//выйти, если все услуги обработаны
 				break;

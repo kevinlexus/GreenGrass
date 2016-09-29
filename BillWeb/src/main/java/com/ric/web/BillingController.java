@@ -45,7 +45,7 @@ public class BillingController {
     private BillServ billServ;
 
     @RequestMapping("/chrglsk") 
-    public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") String lsk, 
+    public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist) {
     	Calc.mess("BillingController.chrgLsk",2);
     	Future<Result> fut = null;

@@ -27,7 +27,7 @@ import com.ric.bill.model.ps.Pers;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.Registrable;
 import com.ric.bill.model.tr.TarifKlsk;
-import com.ric.bill.model.tr.TarifServ;
+import com.ric.bill.model.tr.TarifServProp;
 
 @Service
 public class KartMngImpl implements KartMng {
@@ -353,7 +353,7 @@ public class KartMngImpl implements KartMng {
 	
 	
 	/**
-	 * Найти значение свойства услуги (по лиц.счету!)
+	 * Найти значение свойства типа Double услуги (по лиц.счету!)
 	 * @param Kart - Лиц.счет
 	 * @param serv -Услуга
 	 * @param cd - CD свойства
@@ -364,17 +364,15 @@ public class KartMngImpl implements KartMng {
 	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #cd, #genDt }") 
 	public /*synchronized*/ Double getServPropByCD(Calc calc, Serv serv, String cd, Date genDt) {
 		Double val;
-		//в начале ищем по лиц. счету 
-		val=tarMng.getProp(calc.getKart(), serv, cd, genDt);
+		//в начале ищем по дому
+		val=tarMng.getProp(calc.getHouse(), serv, cd, genDt);
 		if (val==null) {
-			//потом ищем по дому
-			val=tarMng.getProp(calc.getHouse(), serv, cd, genDt);
-			//val=tarMng.getProp(kart.getKw().getHouse(), serv, cd, genDt);
+			//потом ищем по лиц. счету 
+			val=tarMng.getProp(calc.getKart(), serv, cd, genDt);
 		}
 		if (val==null) {
 			//потом ищем по городу
 			val=tarMng.getProp(calc.getArea(), serv, cd, genDt);
-			//val=tarMng.getProp(kart.getKw().getHouse().getStreet().getArea(), serv, cd, genDt);
 		}
 		return val;
 	}
@@ -387,18 +385,18 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr3", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
-	public /*synchronized*/ Org getOrg(Kart kart, Serv serv, Date genDt) {
+	@Cacheable(cacheNames="rrr3", key="{ #calc.getKart().getLsk(), #serv.getId(), #genDt }") 
+	public /*synchronized*/ Org getOrg(Calc calc, Serv serv, Date genDt) {
 		Org org;
-		//в начале ищем по лиц. счету 
-		org=tarMng.getOrg(kart, serv, genDt);
+		//в начале ищем по дому
+		org=tarMng.getOrg(calc.getHouse(), serv, genDt);
 		if (org==null) {
-			//потом ищем по дому
-			org=tarMng.getOrg(kart.getKw().getHouse(), serv, genDt);
+			//потом ищем по лиц. счету 
+			org=tarMng.getOrg(calc.getKart(), serv, genDt);
 		}
 		if (org==null) {
 			//потом ищем по городу
-			org=tarMng.getOrg(kart.getKw().getHouse().getStreet().getArea(), serv, genDt);
+			org=tarMng.getOrg(calc.getArea(), serv, genDt);
 		}
 		return org;
 	}
@@ -411,51 +409,54 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable("rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
-	public /*synchronized*/ boolean getServ(Kart kart, Serv serv, Date genDt) {
+	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #genDt }") 
+	public /*synchronized*/ boolean getServ(Calc calc, Serv serv, Date genDt) {
 		boolean exs = false;
-		int ret = 0;
-		//в начале ищем по лиц. счету 
-		ret=tarMng.getServ(kart, serv, genDt);
-		if (ret==0) {
-			//потом ищем по дому
-			ret=tarMng.getServ(kart.getKw().getHouse(), serv, genDt);
-			if (ret==2) {
-				exs=true;
-			}
-		} else if (ret==2) {
-			exs=true;
-		}
-		//здесь уровня "город" - нет
+		//искать свойство "Цена"
+		Double n1 = getServPropByCD(calc, serv, "Цена", genDt);
+		if (n1 != null) {
+			exs = true;
+		}	
 		return exs;
 	}
 	
 	/**
-	 * Получить distinct список всех услуг потенциально начисляемых в лиц.счете
+	 * Получить distinct список всех услуг потенциально начисляемых в лиц.счете в данном периоде
 	 * @param tc - объект
 	 * @return
 	 */
 	//@Cacheable("rrr1")
 	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") - НЕ КЭШИРОВАТЬ!!!
-	public /*synchronized*/ List<Serv> getAllServ(Kart kart) {
+	public /*synchronized*/ List<Serv> getAllServ(Calc calc) {
 		List<Serv> lst = new ArrayList<Serv>();
-		//искать сперва по наборам тарифа лиц.счета
-		for (TarifKlsk k : kart.getTarifklsk()) {
+		//искать сперва по наборам тарифа дома (как часто встречающееся)
+		for (TarifKlsk k : calc.getHouse().getTarifklsk()) {
+			if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
-				for (TarifServ t : k.getTarserv()) {
-					if (!lst.contains(t.getServ())) {
-						lst.add(t.getServ());
+				for (TarifServProp t : k.getTarprop()) {
+					//искать наличие свойства "Цена", оно и определяет наличие услуги
+					if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {
+						if (t.getProp().getCd().equals("Цена")) {
+							lst.add(t.getServ());
+						}
 					}
 				}
+			}
 		}
-		//искать затем по наборам тарифа дома
-		for (TarifKlsk k : kart.getKw().getHouse().getTarifklsk()) {
+
+		//искать потом по наборам тарифа лиц.счета
+		for (TarifKlsk k : calc.getKart().getTarifklsk()) {
+			if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
-				for (TarifServ t : k.getTarserv()) {
-					if (!lst.contains(t.getServ())) {
-						lst.add(t.getServ());
+				for (TarifServProp t : k.getTarprop()) {
+					//искать наличие свойства "Цена", оно и определяет наличие услуги
+					if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {
+						if (t.getProp().getCd().equals("Цена")) {
+							lst.add(t.getServ());
+						}
 					}
 				}
+			}
 		}
 		return lst;
 	}

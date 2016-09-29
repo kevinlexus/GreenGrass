@@ -63,18 +63,6 @@ public class Kw extends Base implements java.io.Serializable, Storable {
 	@Column(name = "FK_HOUSE", nullable = true)
 	private Integer fkHouse;
 
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_K_LSK", nullable = true)
-	private Integer klsk;
-
-	public Integer getKlsk() {
-		return this.klsk;
-	}
-
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
-
 	public House getHouse() {
 		return house;
 	}

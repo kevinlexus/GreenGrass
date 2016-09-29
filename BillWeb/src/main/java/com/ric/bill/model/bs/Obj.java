@@ -19,7 +19,6 @@ import com.ric.bill.Storable;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "OBJ", schema="BS")
-@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class Obj extends Base implements java.io.Serializable, Storable {
 
 	@Id
@@ -33,18 +32,6 @@ public class Obj extends Base implements java.io.Serializable, Storable {
     @Column(name = "NAME", updatable = false, nullable = false)
 	private String name; //Наименование 
 
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_K_LSK", nullable = true)
-	private Integer klsk;
-
-	public Integer getKlsk() {
-		return this.klsk;
-	}
-	
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
-    
     public Integer getId() {
 		return this.id;
 	}

@@ -134,7 +134,7 @@ public class ChrgThr {
 			}
 
 			//только там, где существует услуга в данном дне
-			if (kartMng.getServ(kart, serv, genDt)) {
+			if (kartMng.getServ(calc, serv, genDt)) {
 				String tpOwn = parMng.getStr(kart, "FORM_S", genDt);
 				//получить обслуживающую УК
 				Org uk = kart.getUk();
@@ -328,7 +328,7 @@ public class ChrgThr {
 		
 		//получить организацию
 		if (serv.getCheckOrg()) {
-		  org = kartMng.getOrg(kart, serv.getServOrg(), genDt);
+		  org = kartMng.getOrg(calc, serv.getServOrg(), genDt);
 		  if (org == null) {
 				throw new EmptyOrg("При расчете л.с.="+kart.getLsk()+" , обнаружена пустая организция по услуге Id="+serv.getServOrg().getId());
 		  }
@@ -454,14 +454,7 @@ public class ChrgThr {
 					tmpVol= stdt.partVol;
 				}
 	
-				try {
-					chStore.addChrg(BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					Calc.mess("ERRRRRRRRRRRRRR="+kart.getLsk()+" uk="+uk, 2);
-					e.printStackTrace();
-					
-				}
+				chStore.addChrg(BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
 				
 				
 /*				if (tmpSum != BigDecimal.ZERO) {

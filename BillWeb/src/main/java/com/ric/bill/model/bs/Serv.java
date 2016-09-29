@@ -33,7 +33,6 @@ import com.ric.bill.model.tr.ServTree;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "SERV", schema="TR")
-@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class Serv extends Base implements java.io.Serializable, Storable {
 
 	
@@ -134,18 +133,6 @@ public class Serv extends Base implements java.io.Serializable, Storable {
 	@Type(type= "org.hibernate.type.NumericBooleanType")
 	@Column(name = "INCL_PRSN", nullable = true)
 	private Boolean inclPrsn;
-
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_K_LSK", nullable = true)
-	private Integer klsk;
-
-	public Integer getKlsk() {
-		return this.klsk;
-	}
-
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
 
 	public String getCd() {
 		return cd;

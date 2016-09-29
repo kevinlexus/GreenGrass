@@ -46,18 +46,18 @@ public class Utl {
 		} else {
 			return false;
 		}
-/*		Calc.mess("1 "+dt1);
-		Calc.mess("2 "+dt2);
-		Calc.mess("3 "+checkDt);
-		if ((checkDt.after(dt1) || checkDt.equals(dt1))
-			&&
-			(checkDt.before(dt2) || checkDt.equals(dt2))) {
-			return true;
-		} else {
-			return false;
-		}*/
-		
-		
+	}
+	
+	/**
+	 * вернуть true если хотя бы одна из дат находится в двух диапазонах периода
+	 * @param checkDt1 - проверяемая дата
+	 * @param checkDt2 - проверяемая дата
+	 * @param dt1 - начало периода
+	 * @param dt2 - окончание периода
+	 * @return
+	 */
+	public static boolean between2(Date checkDt1, Date checkDt2, Date dt1, Date dt2) {
+		return between(checkDt1, dt1, dt2) || between(checkDt2, dt1, dt2);
 	}
 	
 	//вернуть кол-во лет между датами

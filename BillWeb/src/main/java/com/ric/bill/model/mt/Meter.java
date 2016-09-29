@@ -38,7 +38,6 @@ import com.ric.bill.model.bs.Par;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER", schema="MT")
-@AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class Meter extends Base implements java.io.Serializable, Storable {
 
 	public Meter (){
@@ -77,18 +76,6 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@JoinColumn(name="FK_METER", referencedColumnName="ID")
 	@BatchSize(size = 50)
 	private List<MeterExs> exs = new ArrayList<MeterExs>(0);
-
-	//вернуть klsk объекта (в каждом подклассе свой метод из за того что колонка может иметь другое название!)
-	@Column(name = "FK_K_LSK", nullable = true)
-	private Integer klsk;
-
-	public Integer getKlsk() {
-		return klsk;
-	}
-
-	public void setKlsk(Integer klsk) {
-		this.klsk=klsk;
-	}
 
 /*	public Date getDt1() {
 		return dt1;

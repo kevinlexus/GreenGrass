@@ -40,14 +40,6 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
-	private List<TarifServ> tarserv = new ArrayList<TarifServ>(0);
-
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
-	private List<TarifServOrg> tarifservorg = new ArrayList<TarifServOrg>(0);
-	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
 	private List<TarifServProp> tarprop = new ArrayList<TarifServProp>(0);
 
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
@@ -69,22 +61,6 @@ public class TarifKlsk implements java.io.Serializable, Simple {
     
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public List<TarifServ> getTarserv() {
-		return tarserv;
-	}
-
-	public void setTarserv(List<TarifServ> tarserv) {
-		this.tarserv = tarserv;
-	}
-
-	public List<TarifServOrg> getTarifservorg() {
-		return tarifservorg;
-	}
-
-	public void setTarifservorg(List<TarifServOrg> tarifservorg) {
-		this.tarifservorg = tarifservorg;
 	}
 
 	public List<TarifServProp> getTarprop() {

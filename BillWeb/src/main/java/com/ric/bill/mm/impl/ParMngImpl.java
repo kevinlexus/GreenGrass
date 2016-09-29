@@ -89,6 +89,10 @@ public class ParMngImpl implements ParMng {
 		} catch (WrongGetMethod e) {
 			//TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			Calc.mess("ERRRRRRRRRRROR on "+st.getDw(), 2);
+			e.printStackTrace();
+			
 		}
 		return null;
 	}
