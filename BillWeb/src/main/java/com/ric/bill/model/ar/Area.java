@@ -26,6 +26,7 @@ import org.hibernate.annotations.ParamDef;
 import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
+import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 
 /**
@@ -97,6 +98,33 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 	public void setStreet(List<Street> street) {
 		this.street = street;
 	}
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Area)) {
+			return false;
+		}
+		Area other = (Area) obj;
+		if (getId() == null) {
+			if (other.getId() != null) {
+				return false;
+			}
+		} else if (!getId().equals(other.getId())) {
+			return false;
+		}
+		return true;
+	}
+
+
 }
 

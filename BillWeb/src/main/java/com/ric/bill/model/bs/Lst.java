@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.ar.House;
 
 /**
  * Элемент списка
@@ -63,51 +64,32 @@ public class Lst implements java.io.Serializable, Simple {
 	public void setLstTp(LstTp lstTp) {
 		this.lstTp = lstTp;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cd == null) ? 0 : cd.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((lstTp == null) ? 0 : lstTp.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Lst)) 
 			return false;
 		Lst other = (Lst) obj;
-		if (cd == null) {
-			if (other.cd != null)
+		if (getId() == null) {
+			if (other.getId() != null)
 				return false;
-		} else if (!cd.equals(other.cd))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (lstTp == null) {
-			if (other.lstTp != null)
-				return false;
-		} else if (!lstTp.equals(other.lstTp))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
+		} else if (!getId().equals(other.getId()))
 			return false;
 		return true;
 	}
-
-
+	
 	
 }
 

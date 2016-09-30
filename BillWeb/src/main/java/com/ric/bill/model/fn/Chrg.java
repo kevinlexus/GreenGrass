@@ -36,13 +36,12 @@ public class Chrg implements java.io.Serializable, Simple {
 		
 	}
 			
-	public Chrg(Kart kart, Serv serv, Org org, Org uk, int status, String period,
+	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			BigDecimal sumFull, BigDecimal sumAmnt, BigDecimal vol,
 			BigDecimal price, Lst tp, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
-		setUk(uk);
 		setServ(serv);
 		setStatus(status);
 		setPeriod(period);
@@ -55,13 +54,12 @@ public class Chrg implements java.io.Serializable, Simple {
 		setDt2(dt2);
 	}
 
-	public Chrg(Kart kart, Serv serv, Org org, Org uk, int status, String period,
+	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			Double sumFull, Double sumAmnt, Double vol,
 			Double price, Lst tp, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
-		setUk(uk);
 		setServ(serv);
 		setStatus(status);
 		setPeriod(period);
@@ -124,10 +122,6 @@ public class Chrg implements java.io.Serializable, Simple {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
 	private Org org; 
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="FK_UK", referencedColumnName="ID")
-	private Org uk; 
 
 	public Integer getId() {
 		return this.id;
@@ -238,14 +232,6 @@ public class Chrg implements java.io.Serializable, Simple {
 
 	public void setOrg(Org org) {
 		this.org = org;
-	}
-
-	public Org getUk() {
-		return uk;
-	}
-
-	public void setUk(Org uk) {
-		this.uk = uk;
 	}
 
 	

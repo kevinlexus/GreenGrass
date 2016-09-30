@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.bs.Org;
 
 /**
  * Объемы счетчика 
@@ -133,6 +134,31 @@ public class Vol implements java.io.Serializable, Simple {
 
 	public void setMet(Meter met) {
 		this.met = met;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Vol)) 
+			return false;
+		Vol other = (Vol) obj;
+		if (getId() == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!getId().equals(other.getId()))
+			return false;
+		return true;
 	}
 
 

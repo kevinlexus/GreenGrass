@@ -10,6 +10,8 @@ import com.ric.bill.MeterContains;
 import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
 import com.ric.bill.TarifContains;
+import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
@@ -22,7 +24,7 @@ public interface KartMng  {
 	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt);
 	//public Org getUk(Kart kart, Date genDt);
 	public abstract Double getServPropByCD(Calc calc, Serv serv, String string, Date genDt);
-	public abstract Standart getStandart(Calc calc, Serv serv, CntPers cntPers, Date genDt);
+	public abstract Standart getStandart(Calc calc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable;
 	public Org getOrg(Calc calc, Serv serv, Date genDt);
 	public List<Serv> getAllServ(Calc calc);
 	public double getCapPrivs(RegContains rc, Date genDt);

@@ -20,6 +20,7 @@ import org.hibernate.annotations.ParamDef;
 import org.springframework.cache.annotation.Cacheable;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Par;
@@ -40,7 +41,7 @@ public class Reg implements java.io.Serializable, Registrable {
 	private int id; //id
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ", updatable = false)
 	private Kart kart;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -71,8 +72,8 @@ public class Reg implements java.io.Serializable, Registrable {
     @Column(name = "DT_UNREG_TS", updatable = false, nullable = true)
 	private Date dtUnRegTs; //Дата снятия с учёта, фактически установлена
     
-	@Column(name = "LSK", updatable = false, insertable = false)
-	private Integer lsk;
+	@Column(name = "FK_KLSK_OBJ", updatable = false, insertable = false)
+	private Integer klskObj;
 	
     public Integer getId() {
 		return this.id;
@@ -146,14 +147,6 @@ public class Reg implements java.io.Serializable, Registrable {
 		this.tp = tp;
 	}
 
-	public Integer getLsk() {
-		return lsk;
-	}
-
-	public void setLsk(Integer lsk) {
-		this.lsk = lsk;
-	}
-
    public Lst getKinship() {
 		return kinship;
 	}
@@ -162,6 +155,38 @@ public class Reg implements java.io.Serializable, Registrable {
 		this.kinship = kinship;
 	}
 
+	public Integer getKlskObj() {
+		return klskObj;
+	}
 
+	public void setKlskObj(Integer klskObj) {
+		this.klskObj = klskObj;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + getId();
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Reg)) 
+			return false;
+		Reg other = (Reg) obj;
+		if (getId().equals(other.getId()))
+			return false;
+		return true;
+	}
+
+
+
+	
 }
 

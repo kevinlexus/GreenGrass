@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.ar.House;
 
 /*
  * Значение параметра объекта
@@ -112,5 +113,33 @@ public class Dw implements java.io.Serializable, Simple {
 	public void setDts1(Date dts1) {
 		this.dts1 = dts1;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + getId();
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Dw)) {
+			return false;
+		}
+		Dw other = (Dw) obj;
+		if (!getId().equals(other.getId())) {
+			return false;
+		}
+		return true;
+	}
+
+
 	
 }

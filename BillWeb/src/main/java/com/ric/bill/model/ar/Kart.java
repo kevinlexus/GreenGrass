@@ -25,6 +25,7 @@ import com.ric.bill.RegContains;
 import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
+import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.mt.MeterLog;
@@ -48,12 +49,12 @@ import com.ric.bill.model.tr.TarifKlsk;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "KART", schema="AR")
+/*@AttributeOverride(name = "klsk", column = @Column(name = "FK_KLSK_OBJ"))
 @AssociationOverrides({
 	   @AssociationOverride(name = "dw",
-	      joinColumns = @JoinColumn(referencedColumnName = "FK_KLSK_OBJ"))
-	})
-@AttributeOverride(name = "klsk", column = @Column(name = "FK_KLSK_OBJ"))
-public class Kart extends Base implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
+	      joinColumns = @JoinColumn(referencedColumnName = "FK_KLSK_OBJ")) TODO - не работает, написал на stack пришлось перестать наследовать Base
+	})*/
+public class Kart /*extends Base*/ implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
 
 	public Kart() {
 	}
@@ -62,6 +63,30 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "lsk", updatable = false, nullable = false)
 	private Integer lsk; //id записи
+	
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_KLSK_OBJ")
+	@BatchSize(size = 20)
+	private List<Dw> dw = new ArrayList<Dw>(0);
+
+    @Column(name = "FK_KLSK_OBJ", updatable = false, nullable = false)
+    private Integer klskObj;
+	
+	public List<Dw> getDw() {
+		return dw;
+	}
+	public void setDw(List<Dw> dw) {
+		this.dw = dw;
+	}
+
+	public Integer getKlsk() { //пришлось сделать что метод getKlsk ссылается на klskObj из за тупости в архитектуре таблиц 
+		return klskObj;
+	}
+	
+	public void setKlsk(Integer klsk) {
+		this.klskObj = klsk;
+	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KW", referencedColumnName="ID", updatable = false, insertable = false)
@@ -169,6 +194,14 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 		this.flsk = flsk;
 	}
 
+	public Integer getId() {
+		return lsk;
+	}
+
+	public void setId(Integer lsk) {
+		this.lsk = lsk;
+	}
+
 	public Integer getLsk() {
 		return lsk;
 	}
@@ -185,95 +218,37 @@ public class Kart extends Base implements java.io.Serializable, MeterContains, T
 		this.uk = uk;
 	}
 
-
+	public Integer getKlskObj() {
+		return klskObj;
+	}
+	public void setKlskObj(Integer klskObj) {
+		this.klskObj = klskObj;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((chrg == null) ? 0 : chrg.hashCode());
-		result = prime * result + ((fkKw == null) ? 0 : fkKw.hashCode());
-		result = prime * result + ((flsk == null) ? 0 : flsk.hashCode());
-		result = prime * result + ((getKlsk() == null) ? 0 : getKlsk().hashCode());
-		result = prime * result + ((kw == null) ? 0 : kw.hashCode());
-		result = prime * result + ((lsk == null) ? 0 : lsk.hashCode());
-		result = prime * result + ((mlog == null) ? 0 : mlog.hashCode());
-		result = prime * result + ((reg == null) ? 0 : reg.hashCode());
-		result = prime * result
-				+ ((regState == null) ? 0 : regState.hashCode());
-		result = prime * result
-				+ ((tarifklsk == null) ? 0 : tarifklsk.hashCode());
-		result = prime * result + ((uk == null) ? 0 : uk.hashCode());
+		result = prime * result + ((getLsk() == null) ? 0 : getLsk().hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Kart)) 
 			return false;
 		Kart other = (Kart) obj;
-		if (chrg == null) {
-			if (other.chrg != null)
+		if (getLsk() == null) {
+			if (other.getLsk() != null)
 				return false;
-		} else if (!chrg.equals(other.chrg))
-			return false;
-		if (fkKw == null) {
-			if (other.fkKw != null)
-				return false;
-		} else if (!fkKw.equals(other.fkKw))
-			return false;
-		if (flsk == null) {
-			if (other.flsk != null)
-				return false;
-		} else if (!flsk.equals(other.flsk))
-			return false;
-		if (getKlsk() == null) {
-			if (other.getKlsk() != null)
-				return false;
-		} else if (!getKlsk().equals(other.getKlsk()))
-			return false;
-		if (kw == null) {
-			if (other.kw != null)
-				return false;
-		} else if (!kw.equals(other.kw))
-			return false;
-		if (lsk == null) {
-			if (other.lsk != null)
-				return false;
-		} else if (!lsk.equals(other.lsk))
-			return false;
-		if (mlog == null) {
-			if (other.mlog != null)
-				return false;
-		} else if (!mlog.equals(other.mlog))
-			return false;
-		if (reg == null) {
-			if (other.reg != null)
-				return false;
-		} else if (!reg.equals(other.reg))
-			return false;
-		if (regState == null) {
-			if (other.regState != null)
-				return false;
-		} else if (!regState.equals(other.regState))
-			return false;
-		if (tarifklsk == null) {
-			if (other.tarifklsk != null)
-				return false;
-		} else if (!tarifklsk.equals(other.tarifklsk))
-			return false;
-		if (uk == null) {
-			if (other.uk != null)
-				return false;
-		} else if (!uk.equals(other.uk))
+		} else if (!getLsk().equals(other.getLsk()))
 			return false;
 		return true;
 	}
 
-	
+
 	
 }
 

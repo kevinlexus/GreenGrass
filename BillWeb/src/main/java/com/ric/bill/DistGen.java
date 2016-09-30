@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.NotFoundODNLimit;
 import com.ric.bill.excp.WrongGetMethod;
@@ -126,11 +127,12 @@ public class DistGen {
 	 * @throws EmptyServ
 	 * @throws NotFoundODNLimit
 	 * @throws NotFoundNode
+	 * @throws EmptyStorable 
 	 */
 	//ВНИМАНИЕ! Пришлось вынести в отдельный сервис (не хотел кэш включаться на private методе!!!):
 	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
-	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode {
+	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable {
 		Calc.mess("DistGen.NodeVol ВЫЗОВ!");
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		//если рассчитанный узел найден, вернуть готовый объем

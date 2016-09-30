@@ -26,6 +26,7 @@ import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
+import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.bs.Par;
 
@@ -116,51 +117,26 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	public void setExs(List<MeterExs> exs) {
 		this.exs = exs;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((exs == null) ? 0 : exs.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((klsk == null) ? 0 : klsk.hashCode());
-		result = prime * result
-				+ ((meterLog == null) ? 0 : meterLog.hashCode());
-		result = prime * result + ((vol == null) ? 0 : vol.hashCode());
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Meter)) 
 			return false;
 		Meter other = (Meter) obj;
-		if (exs == null) {
-			if (other.exs != null)
+		if (getId() == null) {
+			if (other.getId() != null)
 				return false;
-		} else if (!exs.equals(other.exs))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (klsk == null) {
-			if (other.klsk != null)
-				return false;
-		} else if (!klsk.equals(other.klsk))
-			return false;
-		if (meterLog == null) {
-			if (other.meterLog != null)
-				return false;
-		} else if (!meterLog.equals(other.meterLog))
-			return false;
-		if (vol == null) {
-			if (other.vol != null)
-				return false;
-		} else if (!vol.equals(other.vol))
+		} else if (!getId().equals(other.getId()))
 			return false;
 		return true;
 	}

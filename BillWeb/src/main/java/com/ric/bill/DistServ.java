@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.excp.NotFoundNode;
@@ -382,6 +383,9 @@ public class DistServ {
 			} catch (EmptyServ e) {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: Пустая услуга при рекурсивном вызове BillServ.distNode()");
+			} catch (EmptyStorable e) {
+				e.printStackTrace();
+				throw new ErrorWhileDist("Dist.distGraph: Пустой хранимый компонент при рекурсивном вызове BillServ.distNode()");
 			} catch (NotFoundODNLimit e) {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: Не найден лимит ОДН в счетчике ОДН, при вызове BillServ.distNode()");

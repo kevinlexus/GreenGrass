@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import com.ric.bill.excp.EmptyOrg;
 import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.InvalidServ;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
@@ -123,6 +124,12 @@ public class ChrgThr {
 		chStore = new ChrgStore(); 
 		//if (serv.getId()==32) {
 		Calc.mess("ChrThr: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId(),1);
+		if (serv.getId()==35) {
+			Calc.mess("ChrThr: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId(),1);
+		}
+		
+		
+		
 		//}
 		Calendar c = Calendar.getInstance();
 		
@@ -150,7 +157,7 @@ public class ChrgThr {
 				}
 					try {
 					  genChrg(calc, serv, uk, tpOwn, genDt);
-					} catch (EmptyServ e) {
+					} catch (EmptyStorable e) {
 						e.printStackTrace();
 						throw new RuntimeException();
 					} catch (EmptyOrg e) {
@@ -188,7 +195,7 @@ public class ChrgThr {
 
 			if (!rec.getServ().getVrt()) {
 				if (sum.compareTo(BigDecimal.ZERO) != 0) {
-					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), rec.getUk(), 1, config.getPeriod(), sum, sum, 
+					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, config.getPeriod(), sum, sum, 
 							vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
 					chrgAdd(chrg);
 				}
@@ -206,11 +213,7 @@ public class ChrgThr {
 	 * @param serv - услуга
 	 * @throws InvalidServ 
 	 */
-	private void genChrg(Calc calc, Serv serv, Org uk, String tpOwn, Date genDt) throws EmptyServ, EmptyOrg, InvalidServ {
-		if (uk == null) {
-			Calc.mess("CHEEEEEEEEEEEEECK===="+uk,2);
-		}
-		
+	private void genChrg(Calc calc, Serv serv, Org uk, String tpOwn, Date genDt) throws EmptyStorable, EmptyOrg, InvalidServ {
 		Kart kart = calc.getKart();
 		long startTime2;
 		long endTime;
@@ -264,7 +267,7 @@ public class ChrgThr {
 		//контроль наличия услуги св.с.нормы (по ряду услуг)
 		if ((Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d) && serv.getServUpst() == null) {
-			throw new EmptyServ("По услуге Id="+serv.getId()+" обнаружена пустая услуга свыше соц.нормы");
+			throw new EmptyStorable("По услуге Id="+serv.getId()+" обнаружена пустая услуга свыше соц.нормы");
 		}
 
 		//Calc.mess(thrName+" CHECK0.3="+serv.getId()+" dt="+genDt,2);	

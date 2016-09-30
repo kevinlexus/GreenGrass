@@ -15,8 +15,11 @@ import com.ric.bill.CntPers;
 import com.ric.bill.Config;
 import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
+import com.ric.bill.TarifContains;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.KartDAO;
+import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.TarifMng;
@@ -219,10 +222,11 @@ public class KartMngImpl implements KartMng {
 	 * @param serv - Рассчитываемая услуга 
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
+	 * @throws EmptyServ 
 	 */
 	//@Cacheable(cacheNames="rrr1")
 	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
-	public /*synchronized*/ Standart getStandart (Calc calc, Serv serv, CntPers cntPers, Date genDt) {
+	public /*synchronized*/ Standart getStandart (Calc calc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable {
 		Calc.mess("STANDART1="+serv.getId()+" dt="+genDt);	
 		//получить услугу основную, для начисления
 		Serv servChrg = serv.getServChrg();
@@ -412,8 +416,8 @@ public class KartMngImpl implements KartMng {
 	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #genDt }") 
 	public /*synchronized*/ boolean getServ(Calc calc, Serv serv, Date genDt) {
 		boolean exs = false;
-		//искать свойство "Цена"
-		Double n1 = getServPropByCD(calc, serv, "Цена", genDt);
+		//искать свойство "Поставщик"
+		Double n1 = getServPropByCD(calc, serv, "Поставщик", genDt);
 		if (n1 != null) {
 			exs = true;
 		}	
@@ -421,43 +425,47 @@ public class KartMngImpl implements KartMng {
 	}
 	
 	/**
+	 * 
+	 * @param tc -тарифосодержащий объект
+	 * @param lst -список услуг
+	 * @return - обновленный список услуг
+	 */
+    public List<Serv> checkServ(TarifContains tc, List lst) {
+		for (TarifKlsk k : tc.getTarifklsk()) {
+			//if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
+				//затем по строкам - составляющим тариф 
+				for (TarifServProp t : k.getTarprop()) {
+					if (t.getServ().getServChrg() != null && t.getServ().getServChrg().equals(t.getServ())) {
+						//искать наличие свойства "Поставщик", оно и определяет наличие услуги
+						if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {
+							if (t.getProp().getCd().equals("Поставщик")) {
+								if (!lst.contains(t.getServ())) {
+									Calc.mess("KartMngImpl.getAllServ = "+t.getServ().getName(),2);
+									lst.add(t.getServ());
+								}
+							}
+						}
+					}
+				}
+			//}
+		}
+		return lst;
+    }
+	
+	/**
 	 * Получить distinct список всех услуг потенциально начисляемых в лиц.счете в данном периоде
 	 * @param tc - объект
 	 * @return
+	 * @throws EmptyServ 
 	 */
 	//@Cacheable("rrr1")
 	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") - НЕ КЭШИРОВАТЬ!!!
 	public /*synchronized*/ List<Serv> getAllServ(Calc calc) {
 		List<Serv> lst = new ArrayList<Serv>();
-		//искать сперва по наборам тарифа дома (как часто встречающееся)
-		for (TarifKlsk k : calc.getHouse().getTarifklsk()) {
-			if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
-				//затем по строкам - составляющим тариф 
-				for (TarifServProp t : k.getTarprop()) {
-					//искать наличие свойства "Цена", оно и определяет наличие услуги
-					if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {
-						if (t.getProp().getCd().equals("Цена")) {
-							lst.add(t.getServ());
-						}
-					}
-				}
-			}
-		}
-
-		//искать потом по наборам тарифа лиц.счета
-		for (TarifKlsk k : calc.getKart().getTarifklsk()) {
-			if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
-				//затем по строкам - составляющим тариф 
-				for (TarifServProp t : k.getTarprop()) {
-					//искать наличие свойства "Цена", оно и определяет наличие услуги
-					if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {
-						if (t.getProp().getCd().equals("Цена")) {
-							lst.add(t.getServ());
-						}
-					}
-				}
-			}
-		}
+		//искать по наборам тарифа дома
+		lst = checkServ(calc.getHouse(), lst);
+		//искать по наборам тарифа лиц.счета
+		lst = checkServ(calc.getKart(), lst);
 		return lst;
 	}
 

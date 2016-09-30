@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import lombok.EqualsAndHashCode;
+
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -33,6 +35,7 @@ import com.ric.bill.Storable;
  *
  */
 @MappedSuperclass
+@EqualsAndHashCode(callSuper=false)
 public abstract class Base implements Storable {
 	
     @Column(name = "FK_K_LSK", updatable = false, nullable = false)
@@ -50,31 +53,6 @@ public abstract class Base implements Storable {
 		this.dw = dw;
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((dw == null) ? 0 : dw.hashCode());
-		return result;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Base other = (Base) obj;
-		if (dw == null) {
-			if (other.dw != null)
-				return false;
-		} else if (!dw.equals(other.dw))
-			return false;
-		return true;
-	}
-
 	public Integer getKlsk() {
 		return klsk;
 	}

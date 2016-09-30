@@ -9,7 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.ric.bill.Calc;
 import com.ric.bill.Simple;
+import com.ric.bill.model.ar.House;
 
 /**
  * Персона
@@ -24,7 +26,7 @@ public class Pers implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; //id
+	private Integer id; //id
 
 /*    @Column(name = "NM_LAST", updatable = false, nullable = true)
 	private String lastname; //Фамилия 
@@ -82,8 +84,7 @@ public class Pers implements java.io.Serializable, Simple {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((dtBorn == null) ? 0 : dtBorn.hashCode());
-		result = prime * result + id;
+		result = prime * result + getId();
 		return result;
 	}
 
@@ -93,19 +94,15 @@ public class Pers implements java.io.Serializable, Simple {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Pers)) 
 			return false;
 		Pers other = (Pers) obj;
-		if (dtBorn == null) {
-			if (other.dtBorn != null)
-				return false;
-		} else if (!dtBorn.equals(other.dtBorn))
-			return false;
-		if (id != other.id)
+		if (getId().equals(other.getId()))
 			return false;
 		return true;
 	}
 
 
+	
 }
 

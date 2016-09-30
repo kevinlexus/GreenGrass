@@ -85,6 +85,30 @@ public class Kw extends Base implements java.io.Serializable, Storable {
 	public void setFkHouse(Integer fkHouse) {
 		this.fkHouse = fkHouse;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Kw)) 
+			return false;
+		Kw other = (Kw) obj;
+		if (getId() == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!getId().equals(other.getId()))
+			return false;
+		return true;
+	}
+
 	
 }
 

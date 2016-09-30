@@ -17,6 +17,7 @@ import org.hibernate.annotations.FetchMode;
 import org.springframework.cache.annotation.Cacheable;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 
@@ -36,7 +37,7 @@ public class RegState implements java.io.Serializable, Registrable {
 	private int id; //id
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ", updatable = false)
 	private Kart kart;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -59,8 +60,8 @@ public class RegState implements java.io.Serializable, Registrable {
     @Column(name = "DT_UNREG_TS", updatable = false, nullable = true)
 	private Date dtUnRegTs; //Дата снятия с учёта, фактически установлена
 
-	@Column(name = "LSK", updatable = false, insertable = false)
-	private Integer lsk;
+	@Column(name = "FK_KLSK_OBJ", updatable = false, insertable = false)
+	private Integer klskObj;
 
 	public Integer getId() {
 		return this.id;
@@ -118,28 +119,19 @@ public class RegState implements java.io.Serializable, Registrable {
 		this.tp = tp;
 	}
 
-	public Integer getLsk() {
-		return lsk;
+	public Integer getKlskObj() {
+		return klskObj;
 	}
 
-	public void setLsk(Integer lsk) {
-		this.lsk = lsk;
+	public void setKlskObj(Integer klskObj) {
+		this.klskObj = klskObj;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((dtReg == null) ? 0 : dtReg.hashCode());
-		result = prime * result + ((dtRegTs == null) ? 0 : dtRegTs.hashCode());
-		result = prime * result + ((dtUnReg == null) ? 0 : dtUnReg.hashCode());
-		result = prime * result
-				+ ((dtUnRegTs == null) ? 0 : dtUnRegTs.hashCode());
-		result = prime * result + id;
-		result = prime * result + ((kart == null) ? 0 : kart.hashCode());
-		result = prime * result + ((lsk == null) ? 0 : lsk.hashCode());
-		result = prime * result + ((pers == null) ? 0 : pers.hashCode());
-		result = prime * result + ((tp == null) ? 0 : tp.hashCode());
+		result = prime * result + getId();
 		return result;
 	}
 
@@ -149,54 +141,14 @@ public class RegState implements java.io.Serializable, Registrable {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof RegState)) 
 			return false;
 		RegState other = (RegState) obj;
-		if (dtReg == null) {
-			if (other.dtReg != null)
-				return false;
-		} else if (!dtReg.equals(other.dtReg))
-			return false;
-		if (dtRegTs == null) {
-			if (other.dtRegTs != null)
-				return false;
-		} else if (!dtRegTs.equals(other.dtRegTs))
-			return false;
-		if (dtUnReg == null) {
-			if (other.dtUnReg != null)
-				return false;
-		} else if (!dtUnReg.equals(other.dtUnReg))
-			return false;
-		if (dtUnRegTs == null) {
-			if (other.dtUnRegTs != null)
-				return false;
-		} else if (!dtUnRegTs.equals(other.dtUnRegTs))
-			return false;
-		if (id != other.id)
-			return false;
-		if (kart == null) {
-			if (other.kart != null)
-				return false;
-		} else if (!kart.equals(other.kart))
-			return false;
-		if (lsk == null) {
-			if (other.lsk != null)
-				return false;
-		} else if (!lsk.equals(other.lsk))
-			return false;
-		if (pers == null) {
-			if (other.pers != null)
-				return false;
-		} else if (!pers.equals(other.pers))
-			return false;
-		if (tp == null) {
-			if (other.tp != null)
-				return false;
-		} else if (!tp.equals(other.tp))
+		if (getId().equals(other.getId()))
 			return false;
 		return true;
 	}
-	
+
 
 	
 }

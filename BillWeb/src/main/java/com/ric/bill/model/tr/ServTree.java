@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Serv;
 
@@ -75,18 +76,30 @@ public class ServTree implements java.io.Serializable {
 	}
 
 	@Override
-   public boolean equals(Object o) {
-       if (this == o) return true;
-       if (!(o instanceof ServTree)) return false;
-     
-       ServTree otherST = (ServTree) o;
-     
-       if (getId() != null ?
-           !getId().equals(otherST.getId()) : otherST.getId() != null)
-           return false;
-     
-       return true;
-   }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof ServTree)) 
+			return false;
+		ServTree other = (ServTree) obj;
+		if (getId() == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!getId().equals(other.getId()))
+			return false;
+		return true;
+	}
+
 	
 }
 

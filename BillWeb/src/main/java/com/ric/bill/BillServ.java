@@ -153,7 +153,7 @@ public class BillServ {
 	 */
     @Async
     public Future<Result> chrgAll(boolean dist) {
-    	Calc.setDbgLvl(2);
+    	Calc.setDbgLvl(0);
     	
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
@@ -277,7 +277,7 @@ public class BillServ {
 	 */
     @Async
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
-		Calc.setDbgLvl(2);
+		Calc.setDbgLvl(0);
 		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		
 		Result res = new Result();

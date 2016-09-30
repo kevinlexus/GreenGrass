@@ -14,6 +14,8 @@ import com.ric.bill.Calc;
 import com.ric.bill.Storable;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.ParDAO;
+import com.ric.bill.excp.EmptyServ;
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Dw;
@@ -89,20 +91,20 @@ public class ParMngImpl implements ParMng {
 		} catch (WrongGetMethod e) {
 			//TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (Exception e) {
-			Calc.mess("ERRRRRRRRRRROR on "+st.getDw(), 2);
-			e.printStackTrace();
-			
 		}
 		return null;
 	}
 
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
+	 * @throws EmptyServ 
 	 */
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd }")
-	public/* synchronized */Double getDbl(Storable st, String cd) {
+	public/* synchronized */Double getDbl(Storable st, String cd) throws EmptyStorable {
+		if (st == null) {
+			throw new EmptyStorable("Параметр st = null");
+		}
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
@@ -136,6 +138,7 @@ public class ParMngImpl implements ParMng {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
+				Calc.mess("ParMngImpl.getDate="+d.getPar().getCd());
 				if (d.getPar().equals(par)) {
 					if (d.getPar().getTp().equals("DT")) {
 						if (d.getPar().getDataTp().equals("SI")) {
