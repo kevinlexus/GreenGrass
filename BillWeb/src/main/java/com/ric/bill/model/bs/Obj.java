@@ -25,7 +25,7 @@ public class Obj extends Base implements java.io.Serializable, Storable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; //id
+	private Integer id; //id
 
     @Column(name = "CD", updatable = false, nullable = false)
 	private String cd; //cd 
@@ -54,24 +54,26 @@ public class Obj extends Base implements java.io.Serializable, Storable {
 		this.name = name;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + getId();
-		return result;
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof Obj))
+	        return false;
+
+	    Obj other = (Obj)o;
+
+	    if (id == other.getId()) return true;
+	    if (id == null) return false;
+
+	    // equivalence by id
+	    return id.equals(other.getId());
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof Obj)) 
-			return false;
-		Obj other = (Obj) obj;
-		if (getId().equals(other.getId()))
-			return false;
-		return true;
+	public int hashCode() {
+	    if (id != null) {
+	        return id.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
 	}
 
 	

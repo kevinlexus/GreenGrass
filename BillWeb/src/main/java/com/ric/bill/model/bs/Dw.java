@@ -34,7 +34,7 @@ public class Dw implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id;
+	private Integer id;
 	
     //значение - строка
     @Column(name = "S1", updatable = true)
@@ -114,32 +114,27 @@ public class Dw implements java.io.Serializable, Simple {
 		this.dts1 = dts1;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + getId();
-		return result;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Dw)) {
-			return false;
-		}
-		Dw other = (Dw) obj;
-		if (!getId().equals(other.getId())) {
-			return false;
-		}
-		return true;
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof Dw))
+	        return false;
+
+	    Dw other = (Dw)o;
+
+	    if (id == other.getId()) return true;
+	    if (id == null) return false;
+
+	    // equivalence by id
+	    return id.equals(other.getId());
 	}
 
+	public int hashCode() {
+	    if (id != null) {
+	        return id.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
+	}
 
 	
 }

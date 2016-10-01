@@ -23,7 +23,7 @@ public class LstTp implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; //id
+	private Integer id; //id
 
 	@Column(name = "CD", updatable = false, nullable = false)
 	private String cd; //cd 
@@ -50,27 +50,27 @@ public class LstTp implements java.io.Serializable, Simple {
 	public void setName(String name) {
 		this.name = name;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + getId();
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof LstTp)) 
-			return false;
-		LstTp other = (LstTp) obj;
-		if (getId().equals(other.getId()))
-			return false;
-		return true;
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof LstTp))
+	        return false;
+
+	    LstTp other = (LstTp)o;
+
+	    if (id == other.getId()) return true;
+	    if (id == null) return false;
+
+	    // equivalence by id
+	    return id.equals(other.getId());
 	}
 
+	public int hashCode() {
+	    if (id != null) {
+	        return id.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
+	}
 	
 }
 

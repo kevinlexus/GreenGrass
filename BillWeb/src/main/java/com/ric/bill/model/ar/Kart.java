@@ -224,30 +224,28 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 	public void setKlskObj(Integer klskObj) {
 		this.klskObj = klskObj;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getLsk() == null) ? 0 : getLsk().hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Kart)) 
-			return false;
-		Kart other = (Kart) obj;
-		if (getLsk() == null) {
-			if (other.getLsk() != null)
-				return false;
-		} else if (!getLsk().equals(other.getLsk()))
-			return false;
-		return true;
+
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof Kart))
+	        return false;
+
+	    Kart other = (Kart)o;
+
+	    if (lsk == other.getLsk()) return true;
+	    if (lsk == null) return false;
+
+	    // equivalence by id
+	    return lsk.equals(other.getLsk());
 	}
 
+	public int hashCode() {
+	    if (lsk != null) {
+	        return lsk.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
+	}
 
 	
 }

@@ -38,7 +38,7 @@ public class Reg implements java.io.Serializable, Registrable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; //id
+	private Integer id; //id
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ", updatable = false)
@@ -163,28 +163,27 @@ public class Reg implements java.io.Serializable, Registrable {
 		this.klskObj = klskObj;
 	}
 
-	@Override
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof Reg))
+	        return false;
+
+	    Reg other = (Reg)o;
+
+	    if (id == other.getId()) return true;
+	    if (id == null) return false;
+
+	    // equivalence by id
+	    return id.equals(other.getId());
+	}
+
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + getId();
-		return result;
+	    if (id != null) {
+	        return id.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Reg)) 
-			return false;
-		Reg other = (Reg) obj;
-		if (getId().equals(other.getId()))
-			return false;
-		return true;
-	}
-
 
 
 	

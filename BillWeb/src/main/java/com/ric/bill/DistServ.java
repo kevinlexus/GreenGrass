@@ -145,7 +145,6 @@ public class DistServ {
 		
 	}*/
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void distAll() {
 		long startTime;
 		long endTime;
@@ -166,7 +165,9 @@ public class DistServ {
 				} catch (ErrorWhileDist e) {
 					e.printStackTrace();
 				}
-
+				
+				//o=null; 
+				
 				//передать по ID иначе кэшируется
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
@@ -264,7 +265,6 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    //@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	private void distHouseVol(int houseId) throws ErrorWhileDist {
 		
 

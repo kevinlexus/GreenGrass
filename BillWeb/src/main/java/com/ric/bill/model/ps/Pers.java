@@ -80,28 +80,27 @@ public class Pers implements java.io.Serializable, Simple {
 		this.dtBorn = dtBorn;
 	}
 
-	@Override
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof Pers))
+	        return false;
+
+	    Pers other = (Pers)o;
+
+	    if (id == other.getId()) return true;
+	    if (id == null) return false;
+
+	    // equivalence by id
+	    return id.equals(other.getId());
+	}
+
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + getId();
-		return result;
+	    if (id != null) {
+	        return id.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Pers)) 
-			return false;
-		Pers other = (Pers) obj;
-		if (getId().equals(other.getId()))
-			return false;
-		return true;
-	}
-
 
 	
 }

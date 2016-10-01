@@ -13,6 +13,8 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
 import com.ric.bill.Config;
@@ -242,7 +244,8 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @return 
      */
 	@Cacheable("rrr1") 
-	public synchronized void delNodeVol(MLogs mLog, int tp, Date genDt) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void delNodeVol(MLogs mLog, int tp, Date genDt) {
 		//удалять итератором, иначе java.util.ConcurrentModificationException
     	Calc.mess("MeterLogMngImpl.delNodeVol mLog.id="+mLog.getId()+", tp="+tp+" genDt="+genDt);
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
@@ -255,7 +258,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		    	if (config.getCurDt1().getTime() <= vol.getDt1().getTime() && config.getCurDt2().getTime() >= vol.getDt2().getTime()) {
 			    	Calc.mess("MeterLogMngImpl.delNodeVol удаление объема: mLog.id="+mLog.getId()+", vol.id="+vol.getId());
 					iterator.remove();
-					em.remove(vol); //добавил здесь удаление еще
+					//em.remove(vol); //добавил здесь удаление еще
 					
 		    	}
 			}

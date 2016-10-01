@@ -35,7 +35,7 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
-	private int id; //id
+	private Integer id; //id
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
@@ -115,6 +115,29 @@ public class MeterLogGraph implements java.io.Serializable, Simple {
 	
 	public void setDt2(Date dt2) {
 		this.dt2 = dt2;
+	}
+
+	
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof MeterLogGraph))
+	        return false;
+
+	    MeterLogGraph other = (MeterLogGraph)o;
+
+	    if (id == other.getId()) return true;
+	    if (id == null) return false;
+
+	    // equivalence by id
+	    return id.equals(other.getId());
+	}
+
+	public int hashCode() {
+	    if (id != null) {
+	        return id.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
 	}
 	
 }
