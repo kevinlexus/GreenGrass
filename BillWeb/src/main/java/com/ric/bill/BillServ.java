@@ -153,7 +153,7 @@ public class BillServ {
 	 */
     @Async
     public Future<Result> chrgAll(boolean dist) {
-    	Calc.setDbgLvl(0);
+    	Calc.setDbgLvl(2);
     	
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
@@ -168,6 +168,7 @@ public class BillServ {
 		long startTime;
 		long endTime;
 		long totalTime;
+		long totalTime3;
 
 		startTime = System.currentTimeMillis();
 		
@@ -176,6 +177,11 @@ public class BillServ {
 			 distServ.distAll();
 		}
 	    
+	    if (1==1) {
+	    	return new AsyncResult<Result>(res);
+	    }
+	    
+		long startTime3 = System.currentTimeMillis();
 		//загрузить все Лиц.счета
 		kartThr = kartMng.findAll();
 		cntLsk = kartThr.size(); 
@@ -258,10 +264,11 @@ public class BillServ {
 		}
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime;
+		totalTime3 = endTime - startTime3;
 	    Calc.mess("Ver=2.0",2);
 	    Calc.mess("Counted lsk:"+cntLsk,2);
 	    Calc.mess("Time for all process:"+totalTime,2);
-	    Calc.mess("Time per one Lsk: "+totalTime/cntLsk+" ms.",2);
+	    Calc.mess("Time per one Lsk: "+totalTime3/cntLsk+" ms.",2);
     	return new AsyncResult<Result>(res);
 	}
     

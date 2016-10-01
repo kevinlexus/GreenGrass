@@ -265,7 +265,7 @@ public class DistServ {
 	 */
 	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     //@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void distHouseVol(int houseId) throws ErrorWhileDist {
+	private void distHouseVol(int houseId) throws ErrorWhileDist {
 		
 
 		House h = em.find(House.class, houseId);

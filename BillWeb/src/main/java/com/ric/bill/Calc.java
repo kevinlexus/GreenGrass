@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import com.ric.bill.model.bs.Serv;
  * @author lev
  *
  */
+@Slf4j
 public final class Calc {
 	private Date genDt; //рассчитываемая дата
 	private static int calcTp; //тип обработки расчёта
@@ -74,19 +77,21 @@ public final class Calc {
 	
 	//Отправить в консоль сообщение
 	public static void mess(String txt) {
-			DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			ZonedDateTime dt = ZonedDateTime.now();
+//			DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+//			ZonedDateTime dt = ZonedDateTime.now();
 			if (getDbgLvl() <=1 ) {
-				System.out.println(dt.format(frmt)+' '+txt);
+				log.info(txt);		
+				//System.out.println(dt.format(frmt)+' '+txt);
 			}
 		}
 
 	//Отправить в консоль сообщение с уровнем выше dbgLvl
 	public static void mess(String txt, int dbgLvl) {
-			DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-			ZonedDateTime dt = ZonedDateTime.now();
+			//DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+			//ZonedDateTime dt = ZonedDateTime.now();
 			if (dbgLvl >= getDbgLvl()) {
-				System.out.println(dt.format(frmt)+' '+txt);
+//				System.out.println(dt.format(frmt)+' '+txt);
+				log.info(txt);		
 			}
 		}
 

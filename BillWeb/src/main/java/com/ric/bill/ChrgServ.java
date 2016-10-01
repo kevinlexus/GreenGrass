@@ -263,19 +263,19 @@ public class ChrgServ {
 			try {
 				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 				//преобразовать к объекту текущей сессии (потому что начисление взято из разных потоков, разных сессий)
-				servMain = em.find(Serv.class, servMain.getId());
+				//servMain = em.find(Serv.class, servMain.getId());
 			}catch(Exception e) {
 				//servMain = chrg.getServ();
 			    e.printStackTrace();
 				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 			}
 			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
-			Org orgMain = em.find(Org.class, chrg.getOrg().getId());
+			//Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
 			//if (lsk.equals("14024244")) {
 			//	  Calc.mess("Сохранить дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
 			//	}
-			putSumDeb(mapDeb, servMain, orgMain, BigDecimal.valueOf(chrg.getSumAmnt()));
+			putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(chrg.getSumAmnt()));
 		}
 
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
@@ -287,19 +287,19 @@ public class ChrgServ {
 				try {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 					//преобразовать к объекту текущей сессии (потому что начисление взято из таблицы)
-					servMain = em.find(Serv.class, servMain.getId());
+					//servMain = em.find(Serv.class, servMain.getId());
 				}catch(Exception e) {
 				    e.printStackTrace();
 					//servMain = chrg.getServ();
 					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 				}
 				//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
-				Org orgMain = em.find(Org.class, chrg.getOrg().getId());
+				//Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
 				//if (lsk.equals("14024244")) {
  				//  Calc.mess("Вычесть дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
 				//}
-				putSumDeb(mapDeb, servMain, orgMain, BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
+				putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
 			}
 		}
 		

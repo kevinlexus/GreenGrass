@@ -8,6 +8,10 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -133,7 +137,6 @@ public class DistGen {
 	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
 	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable {
-		Calc.mess("DistGen.NodeVol ВЫЗОВ!");
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		//если рассчитанный узел найден, вернуть готовый объем
 		if (nv != null) { 
@@ -220,11 +223,16 @@ public class DistGen {
 			}
 			//поиск счетчика Ф/Л ОДПУ
 			lnkODPU = metMng.getLinkedNode(lnkSumODPU, "ЛОДПУ", genDt);
+			SumNodeVol lnkODPUVol = new SumNodeVol();  
 			if (lnkODPU == null) {
 				// не найден счетчик (лог.счетчик должен быть обязательно, а физ.сч. к нему привязанных, может и не быть!)
-		        throw new NotFoundNode("Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId());  
+			    //переделал из ошибки в Warning:
+				//Calc.mess("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(),2);
+				calc.mess("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(), 2);
+				return null;
+			} else {
+				lnkODPUVol = metMng.getVolPeriod(lnkODPU, tp, config.getCurDt1(), config.getCurDt2());
 			}
-			SumNodeVol lnkODPUVol = metMng.getVolPeriod(lnkODPU, tp, config.getCurDt1(), config.getCurDt2());
 
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
 	    	Calc.mess("check id="+lnkLODN.getId());
@@ -342,10 +350,12 @@ public class DistGen {
 				 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 				 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
 						NodeVol nvChld = distNode(calc, g.getSrc(), tp, genDt);
-						//добавить объемы от дочерних узлов
-						nv.addPartArea(nvChld.getPartArea());
-						nv.addPartPers(nvChld.getPartPers());
-						nv.addVol(nvChld.getVol() * g.getPrc());
+						if (nvChld != null){
+							//добавить объемы от дочерних узлов
+							nv.addPartArea(nvChld.getPartArea());
+							nv.addPartPers(nvChld.getPartPers());
+							nv.addVol(nvChld.getVol() * g.getPrc());
+						}
 				}
 			}
 		}

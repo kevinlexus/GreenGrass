@@ -61,14 +61,14 @@ public class HouseDAOImpl implements HouseDAO {
 		List<House> lstHouse = null;
 		try {
 			q = em.createNativeQuery("select distinct h.id "+
-						   "from ar.house h, ar.lskxorg x, ar.kart k, ar.kw kw, bs.org o "+
-						   "where k.fk_kw = kw.id "+
-						   "and k.lsk = x.lsk "+
-						   "and o.reu in ('Z4', 'D8', 'F4', 'J4', 'G4') "+
-						   "and x.fk_org = o.id "+
-						   "and ? between x.dt1 and x.dt2 "+
-						   "and kw.fk_house = h.id "+
-						   "order by h.id ",  STATEMENT_SQLMAP);
+					   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
+					   "where k.fk_kw = kw.id "+
+					   "and h.id = kw.fk_house "+
+					   "and o.reu in ('Z4', 'D8', 'F4', 'J4', 'G4') "+
+					   "and o.parent_id=u.id "+
+					   "and k.fk_uk = u.id /*and h.id in (1742,1743,1744)*/ /* and h.id in (162,163,968)*/ "+
+					   "and ? between k.dt1 and k.dt2 "+
+					   "order by h.id ",  STATEMENT_SQLMAP);
 			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 			
 			List<ResultSet> lst = q.getResultList();

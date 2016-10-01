@@ -142,13 +142,13 @@ public class MeterLogMngImpl implements MeterLogMng {
 	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId(), #tp, #dt1, #dt2 }")
     public synchronized SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
-		Calc.mess("MeterLogMngImpl.getVolPeriod mLog1 "+mLog.getId());
+		//Calc.mess("MeterLogMngImpl.getVolPeriod mLog1 "+mLog.getId());
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
 			//по всему соотв.периоду 
-    		Calc.mess("MeterLogMngImpl.getVolPeriod mLog "+v.getMLog().getId());
-    		Calc.mess("MeterLogMngImpl.getVolPeriod vol1 "+v.getVol1());
-    		Calc.mess("MeterLogMngImpl.getVolPeriod cd "+v.getTp().getCd());
+    		//Calc.mess("MeterLogMngImpl.getVolPeriod mLog "+v.getMLog().getId());
+    		//Calc.mess("MeterLogMngImpl.getVolPeriod vol1 "+v.getVol1());
+    		//Calc.mess("MeterLogMngImpl.getVolPeriod cd "+v.getTp().getCd());
 
     		if (Utl.between(v.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
 				Utl.between(v.getDt2(), dt1, dt2)	
