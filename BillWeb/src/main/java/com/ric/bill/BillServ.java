@@ -176,6 +176,7 @@ public class BillServ {
 	    if (dist) {
 			 distServ.distAll();
 		}
+		Calc.mess("BillServ.chrgAll: Распределение по всем домам выполнено!", 2);
 	    
 	    if (1==1) {
 	    	return new AsyncResult<Result>(res);

@@ -136,7 +136,6 @@ public class DistGen {
 	//ВНИМАНИЕ! Пришлось вынести в отдельный сервис (не хотел кэш включаться на private методе!!!):
 	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable {
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		//если рассчитанный узел найден, вернуть готовый объем
@@ -383,8 +382,8 @@ public class DistGen {
 					double lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
 					Lst volTp = lstMng.getByCD("Лимит ОДН");
-//					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2());
-//					ml.getVol().add(vol);
+					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2());
+					ml.getVol().add(vol);
 				}
 				
 			} else if (servChrg.getCd().equals("Электроснабжение")) {
@@ -398,9 +397,9 @@ public class DistGen {
 		if ((tp==0||tp==2||tp==3) && nv.getVol() != 0d) {
 			//расчетная связь, расчетная связь ОДН
 			volTp = lstMng.getByCD("Фактический объем");
-//			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt);
+			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt);
 			
-//			ml.getVol().add(vol);
+			ml.getVol().add(vol);
 			
 			//if (ml.getId()==3670885 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
 //			if (ml.getId()==3670885) {
@@ -409,9 +408,9 @@ public class DistGen {
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.getByCD("Площадь и проживающие");
-//			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt);
+			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt);
 
-//			ml.getVol().add(vol);
+			ml.getVol().add(vol);
 			
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
 				Calc.mess("записана площадь по счетчику id="+ml.getId()+" area="+nv.getPartArea()+" pers="+nv.getPartPers());

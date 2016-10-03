@@ -94,6 +94,9 @@ public class DistServ {
 	 * @param serv - заданная услуга
 	 */
     private void delHouseVolServ() {
+
+    	Calc.mess("Удаление объемов по Дому: id="+calc.getHouse().getId(), 2);
+
 		delHouseServVolTp(calc.getServ().getServMet(), 1);
 		delHouseServVolTp(calc.getServ().getServMet(), 0);
 		delHouseServVolTp(calc.getServ().getServMet(), 2);
@@ -124,13 +127,11 @@ public class DistServ {
 		}
 
 		//найти все вводы по дому и по услуге
-		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
-			calc.setGenDt(c.getTime());
-			for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-				metMng.delNodeVol(ml, tp, calc.getGenDt());
-			}
+		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+			//Calc.mess("ПРОВЕРКА, УБРАТЬ1! " +ml.getInside().size(),2);
+			//Calc.mess("ПРОВЕРКА, УБРАТЬ2! " +ml.getOutside().size(),2);
+			metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2());
 		}
-		
 		
 	}
 	
@@ -240,7 +241,7 @@ public class DistServ {
 			calc.setGenDt(c.getTime());
 			
 			for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
-				metMng.delNodeVol(ml, tp, calc.getGenDt());
+				metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2());
 			}
 			
 		}
@@ -286,7 +287,7 @@ public class DistServ {
 		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
 		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));*/
 		
-		Calc.mess("Очистка объемов");
+		Calc.mess("Очистка объемов", 2);
 		//почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
@@ -296,7 +297,7 @@ public class DistServ {
 				delHouseVolServ();
 		}
 
-		Calc.mess("Распределение объемов");
+		Calc.mess("Распределение объемов", 2);
 		//найти все необходимые услуги для распределения
 		try {
 			for (Serv s : servMng.findForDistVol()) {
@@ -309,6 +310,7 @@ public class DistServ {
 			throw new ErrorWhileDist("Dist.distHouseVol: ");
 		}
 
+		//System.gc();
 		//Calc.showAllChecks();
 		
 	}
@@ -377,6 +379,8 @@ public class DistServ {
 			NodeVol dummy;
 			try {
 				dummy=distGen.distNode(calc, ml, calc.getCalcTp(), calc.getGenDt());
+				
+				
 			} catch (WrongGetMethod e) {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружен замкнутый цикл");  

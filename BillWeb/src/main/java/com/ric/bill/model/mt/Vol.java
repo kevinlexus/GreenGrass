@@ -50,7 +50,7 @@ public class Vol implements java.io.Serializable, Simple {
     @Column(name = "ID", unique=true, updatable = false, nullable = false)					
 	private Integer id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp; 
 

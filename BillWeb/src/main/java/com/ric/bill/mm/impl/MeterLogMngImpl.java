@@ -245,20 +245,27 @@ public class MeterLogMngImpl implements MeterLogMng {
      */
 	@Cacheable("rrr1") 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void delNodeVol(MLogs mLog, int tp, Date genDt) {
+	public void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2) {
+/*		long startTime;
+		long endTime;
+		long totalTime;
+		startTime = System.currentTimeMillis();
+		int i=0;
+*/		
 		//удалять итератором, иначе java.util.ConcurrentModificationException
-    	Calc.mess("MeterLogMngImpl.delNodeVol mLog.id="+mLog.getId()+", tp="+tp+" genDt="+genDt);
+    	//Calc.mess("MeterLogMngImpl.delNodeVol mLog.id="+mLog.getId()+", tp="+tp+" genDt="+genDt);
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
-	    	Calc.mess("Check del1=========:"+config.getCurDt1().toLocaleString()+","+config.getCurDt2().toLocaleString());
+	    	//Calc.mess("Check del1=========:"+config.getCurDt1().toLocaleString()+","+config.getCurDt2().toLocaleString());
 		    Vol vol = iterator.next();
-	    	Calc.mess("Check del2=========:"+vol.getTp().getCd());
+	    	//Calc.mess("Check del2=========:"+vol.getTp().getCd());
 		    if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН") ) {
 		    	//проверить период
-		    	Calc.mess("Check del3=========:"+config.getCurDt1().toLocaleString()+","+config.getCurDt2().toLocaleString());
-		    	if (config.getCurDt1().getTime() <= vol.getDt1().getTime() && config.getCurDt2().getTime() >= vol.getDt2().getTime()) {
-			    	Calc.mess("MeterLogMngImpl.delNodeVol удаление объема: mLog.id="+mLog.getId()+", vol.id="+vol.getId());
+		    	//Calc.mess("Check del3=========:"+config.getCurDt1().toLocaleString()+","+config.getCurDt2().toLocaleString());
+		    	if (dt1.getTime() <= vol.getDt1().getTime() && dt2.getTime() >= vol.getDt2().getTime()) {  //здесь диапазон дат "снаружи"
+			    	//Calc.mess("MeterLogMngImpl.delNodeVol удаление объема: mLog.id="+mLog.getId()+", vol.id="+vol.getId(),2);
+
 					iterator.remove();
-					//em.remove(vol); //добавил здесь удаление еще
+				    //em.remove(vol); //добавил здесь удаление еще
 					
 		    	}
 			}
@@ -266,15 +273,25 @@ public class MeterLogMngImpl implements MeterLogMng {
 
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, удалить их объемы рекурсивно
 		for (MeterLogGraph g : mLog.getInside()) {
-			if (Utl.between(genDt, g.getDt1(), g.getDt2())) {
+			if (dt1.getTime() >= g.getDt1().getTime() && dt1.getTime() <= g.getDt2().getTime() || 
+				dt2.getTime() >= g.getDt1().getTime() && dt2.getTime() <= g.getDt2().getTime()	
+					) { //здесь диапазон дат "внутри" (чтобы хотя бы одна из заданных дат была внутри диапазона
+				
 				if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 
 						 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 						 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 						 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-							delNodeVol(g.getSrc(), tp, genDt);
+							delNodeVol(g.getSrc(), tp, dt1, dt2);
+//							i++;
 				}
 			}
 		}
+
+/*		endTime   = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+	    Calc.mess("ВРЕМЯ УДАЛЕНИЯ ОБЪЕМА mLog.id="+mLog.getId()+" ms="+totalTime+" итераций="+i,2);
+*/
+
 	}
 	
 	

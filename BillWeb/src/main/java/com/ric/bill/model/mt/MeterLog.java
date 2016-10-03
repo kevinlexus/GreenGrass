@@ -76,14 +76,16 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@BatchSize(size = 50)
 	private List<Vol> vol = new ArrayList<Vol>(0);
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
 	@BatchSize(size = 50)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<MeterLogGraph> outside = new ArrayList<MeterLogGraph>(0);
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
 	@BatchSize(size = 50)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<MeterLogGraph> inside = new ArrayList<MeterLogGraph>(0);
 	
 	
