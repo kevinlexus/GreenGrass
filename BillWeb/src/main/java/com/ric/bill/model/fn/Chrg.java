@@ -111,15 +111,15 @@ public class Chrg implements java.io.Serializable, Simple {
 	@Column(name = "PRICE")
 	private Double price;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHRG_TP", referencedColumnName="ID")
 	private Lst tp; 
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv; 
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
 	private Org org; 
 

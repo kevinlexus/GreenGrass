@@ -57,7 +57,8 @@ public class Kw extends Base implements java.io.Serializable, Storable {
 
 	@OneToMany(fetch = FetchType.LAZY)  //сделал LAZY!
 	@JoinColumn(name="FK_KW", referencedColumnName="ID")
-	@BatchSize(size = 500)
+	//@BatchSize(size = 500)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<Kart> kart = new ArrayList<Kart>(0);
 
 	@Column(name = "FK_HOUSE", nullable = true)

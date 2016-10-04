@@ -17,6 +17,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;

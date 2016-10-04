@@ -70,20 +70,20 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип, если не указан - по всем
 	 * @return - искомый список
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
-	@Cacheable(cacheNames="rrr1") 
+	//@Cacheable(cacheNames="rrr1") 
+	@Cacheable(cacheNames="rrr1", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
 	public synchronized List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
-		Calc.mess("getAllMetLogByServTp задано:"+serv.getCd()+" "+serv.getId()+" "+tp);
+		//Calc.mess("getAllMetLogByServTp задано:"+serv.getCd()+" "+serv.getId()+" "+tp);
 		for (MLogs ml : mm.getMlog()) {
 			//Calc.mess("getAllMetLogByServTp НАЙДЕНО:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getCd());
 			//по типу, если указано
 			if (tp == null || ml.getTp().getCd().equals(tp)) {
-				Calc.mess("MeterLogMngImpl.getAllMetLogByServTp "+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getId());
+				//Calc.mess("MeterLogMngImpl.getAllMetLogByServTp "+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getId());
 				//и услуге
 				Serv sss = ml.getServ();
 				if (ml.getServ().equals(serv)) {
-					Calc.mess("getAllMetLogByServTp Соответствует:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd());
+					//Calc.mess("getAllMetLogByServTp Соответствует:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd());
 					lstMlg.add(ml);
 				}
 			}

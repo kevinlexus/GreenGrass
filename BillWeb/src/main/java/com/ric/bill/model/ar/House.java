@@ -22,6 +22,8 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -83,7 +85,8 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_HOUSE", referencedColumnName="ID")
-	@BatchSize(size = 500)
+	//@BatchSize(size = 500)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<Kw> kw = new ArrayList<Kw>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)

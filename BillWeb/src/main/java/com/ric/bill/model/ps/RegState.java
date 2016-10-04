@@ -44,7 +44,7 @@ public class RegState implements java.io.Serializable, Registrable {
 	@JoinColumn(name="FK_PERS", referencedColumnName="ID", updatable = false)
 	private Pers pers;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TEMP_TP", referencedColumnName="ID", updatable = false)
 	private Lst tp;
 	

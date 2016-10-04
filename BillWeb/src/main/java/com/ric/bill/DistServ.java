@@ -146,7 +146,7 @@ public class DistServ {
 		
 	}*/
 
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //не переносить отсюда транзакцию (иначе объемы не будут удаляться, так как дом определён здесь, в транзакции
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //не переносить отсюда транзакцию (иначе объемы не будут удаляться, так как дом определён здесь, в транзакции
     public void distAll() {
 		long startTime;
 		long endTime;
@@ -259,7 +259,7 @@ public class DistServ {
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 * @throws ErrorWhileDist 
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
 	public void distHouseVol(int houseId) throws ErrorWhileDist {
 		
 

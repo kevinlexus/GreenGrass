@@ -31,11 +31,11 @@ public class ServTree implements java.io.Serializable {
     @Column(name = "ID", updatable = false, nullable = false)
 	private Integer id; //id
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv; 
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp; 
 
