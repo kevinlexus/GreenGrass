@@ -59,7 +59,7 @@ public class ParMngImpl implements ParMng {
 	//В кэшах не почувствовал разницы:
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
-	@Transactional
+	//@Transactional
 	public synchronized Double getDbl(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {

@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -40,6 +42,7 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
+	//@Fetch(FetchMode.SUBSELECT)
 	private List<TarifServProp> tarprop = new ArrayList<TarifServProp>(0);
 
     @Column(name = "FK_TARIF", updatable = false, nullable = false)

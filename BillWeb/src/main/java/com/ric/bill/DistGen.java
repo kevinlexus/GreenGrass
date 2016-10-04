@@ -121,6 +121,12 @@ public class DistGen {
 		super();
 		lstCheck = new ArrayList<Check>();
 	}
+	
+//	public void saveVol(MLogs ml, Vol vl) {
+
+		//ml.getVol().add(vl);
+//	}
+	
 	/**
 	 * Распределить узел, следуя по графу (рекурсивная процедура)
 	 * @param ml - вх.узел
@@ -331,7 +337,6 @@ public class DistGen {
 		nv.addPartArea(partArea);
 		nv.addPartPers(partPers);
 		nv.addVol(vl);
-
 		
 		if (ml.getId()==3661161/* && tp==0*/) {
 			Calc.mess("stop");
@@ -383,6 +388,7 @@ public class DistGen {
 					//записать лимит ОДН
 					Lst volTp = lstMng.getByCD("Лимит ОДН");
 					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2());
+					//saveVol(ml, vol);
 					ml.getVol().add(vol);
 				}
 				
@@ -399,6 +405,7 @@ public class DistGen {
 			volTp = lstMng.getByCD("Фактический объем");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt);
 			
+			//saveVol(ml, vol);
 			ml.getVol().add(vol);
 			
 			//if (ml.getId()==3670885 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
@@ -411,7 +418,8 @@ public class DistGen {
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt);
 
 			ml.getVol().add(vol);
-			
+			//saveVol(ml, vol);
+
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
 				Calc.mess("записана площадь по счетчику id="+ml.getId()+" area="+nv.getPartArea()+" pers="+nv.getPartPers());
 			}
@@ -437,7 +445,7 @@ public class DistGen {
 	private NodeVol findLstCheck(int id, int tp, Date genDt) {
 		for (Check c : lstCheck) {
 			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
-				  Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString());
+				  //Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString());
 				return c.getNodeVol();
 			}
 		}

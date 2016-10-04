@@ -244,7 +244,7 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @return 
      */
 	@Cacheable("rrr1") 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
 	public void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2) {
 /*		long startTime;
 		long endTime;
@@ -265,7 +265,9 @@ public class MeterLogMngImpl implements MeterLogMng {
 			    	//Calc.mess("MeterLogMngImpl.delNodeVol удаление объема: mLog.id="+mLog.getId()+", vol.id="+vol.getId(),2);
 
 					iterator.remove();
-				    //em.remove(vol); //добавил здесь удаление еще
+				    
+					
+					//em.remove(vol); //добавил здесь удаление еще - оно не нужно!!! удаляется и так
 					
 		    	}
 			}

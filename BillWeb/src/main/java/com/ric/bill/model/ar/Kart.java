@@ -93,7 +93,7 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 	private Kw kw;
 
 	//Обслуживающая УК
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_UK", referencedColumnName="ID", updatable = false, insertable = false)
 	private Org uk;
 

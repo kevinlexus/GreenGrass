@@ -146,6 +146,7 @@ public class DistServ {
 		
 	}*/
 
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //не переносить отсюда транзакцию (иначе объемы не будут удаляться, так как дом определён здесь, в транзакции
     public void distAll() {
 		long startTime;
 		long endTime;
@@ -155,9 +156,6 @@ public class DistServ {
 				//dist.clearCache();
 				//распределить объемы
 				startTime = System.currentTimeMillis();
-		    	//установить дом
-				calc.setHouse(o);
-				
 				//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 				//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
 		    	
@@ -166,10 +164,6 @@ public class DistServ {
 				} catch (ErrorWhileDist e) {
 					e.printStackTrace();
 				}
-				
-				//o=null; 
-				
-				//передать по ID иначе кэшируется
 				endTime   = System.currentTimeMillis();
 				totalTime = endTime - startTime;
 				System.out.println("Время исполнения-1:"+totalTime);
@@ -265,8 +259,8 @@ public class DistServ {
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 * @throws ErrorWhileDist 
 	 */
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	private void distHouseVol(int houseId) throws ErrorWhileDist {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
+	public void distHouseVol(int houseId) throws ErrorWhileDist {
 		
 
 		House h = em.find(House.class, houseId);
@@ -297,6 +291,10 @@ public class DistServ {
 				delHouseVolServ();
 		}
 
+		//if (1==1) {
+		//	return;
+		//}
+		
 		Calc.mess("Распределение объемов", 2);
 		//найти все необходимые услуги для распределения
 		try {

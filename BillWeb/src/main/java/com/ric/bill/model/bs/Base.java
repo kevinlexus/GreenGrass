@@ -44,6 +44,7 @@ public abstract class Base implements Storable {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 20)
+	@Fetch(FetchMode.SUBSELECT)
 	protected List<Dw> dw = new ArrayList<Dw>(0);
 
 	public List<Dw> getDw() {

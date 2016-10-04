@@ -1,0 +1,612 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.4.0.RELEASE)
+
+2016-10-03 14:19:58.865  INFO 7568 --- [           main] com.ric.web.BillWebApplication           : Starting BillWebApplication on LEV-NEW with PID 7568 (C:\work\git\BillWeb\target\classes started by lev in C:\work\git\BillWeb)
+2016-10-03 14:19:58.867  INFO 7568 --- [           main] com.ric.web.BillWebApplication           : No active profile set, falling back to default profiles: default
+2016-10-03 14:19:58.914  INFO 7568 --- [           main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@158d2680: startup date [Mon Oct 03 14:19:58 GMT+07:00 2016]; root of context hierarchy
+2016-10-03 14:19:59.672  INFO 7568 --- [           main] o.s.b.f.xml.XmlBeanDefinitionReader      : Loading XML bean definitions from class path resource [spring.xml]
+2016-10-03 14:19:59.950  INFO 7568 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'org.springframework.transaction.config.internalTransactionAdvisor' with a different definition: replacing [Root bean: class [org.springframework.transaction.interceptor.BeanFactoryTransactionAttributeSourceAdvisor]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration; factoryMethodName=transactionAdvisor; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/transaction/annotation/ProxyTransactionManagementConfiguration.class]]
+2016-10-03 14:19:59.952  INFO 7568 --- [           main] a.ConfigurationClassBeanDefinitionReader : Skipping bean definition for [BeanMethod:name=transactionalEventListenerFactory,declaringClass=org.springframework.transaction.annotation.AbstractTransactionManagementConfiguration]: a definition for bean 'org.springframework.transaction.config.internalTransactionalEventListenerFactory' already exists. This top-level bean definition is considered as an override.
+2016-10-03 14:20:00.203  INFO 7568 --- [           main] o.s.s.a.AsyncAnnotationBeanPostProcessor : No TaskExecutor bean found for async annotation processing.
+2016-10-03 14:20:00.276  INFO 7568 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [class org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$31a4922e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2016-10-03 14:20:00.308  INFO 7568 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cache.annotation.ProxyCachingConfiguration' of type [class org.springframework.cache.annotation.ProxyCachingConfiguration$$EnhancerBySpringCGLIB$$7ab6c84c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2016-10-03 14:20:00.763  INFO 7568 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8082 (http)
+2016-10-03 14:20:00.778  INFO 7568 --- [           main] o.apache.catalina.core.StandardService   : Starting service Tomcat
+2016-10-03 14:20:00.779  INFO 7568 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.4
+2016-10-03 14:20:00.892  INFO 7568 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2016-10-03 14:20:00.892  INFO 7568 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1978 ms
+2016-10-03 14:20:01.043  INFO 7568 --- [ost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2016-10-03 14:20:01.046  INFO 7568 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2016-10-03 14:20:01.046  INFO 7568 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2016-10-03 14:20:01.047  INFO 7568 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2016-10-03 14:20:01.047  INFO 7568 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2016-10-03 14:20:01.101  INFO 7568 --- [           main] com.mchange.v2.log.MLog                  : MLog clients using log4j logging.
+2016-10-03 14:20:01.120  INFO 7568 --- [           main] com.mchange.v2.c3p0.C3P0Registry         : Initializing c3p0-0.9.1.2 [built 21-May-2007 15:04:56; debug? true; trace: 10]
+2016-10-03 14:20:01.205  INFO 7568 --- [           main] j.LocalContainerEntityManagerFactoryBean : Building JPA container EntityManagerFactory for persistence unit 'JpaPersistenceUnit'
+2016-10-03 14:20:01.205  WARN 7568 --- [           main] org.hibernate.ejb.HibernatePersistence   : HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+2016-10-03 14:20:01.211  INFO 7568 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: JpaPersistenceUnit
+	...]
+2016-10-03 14:20:01.275  INFO 7568 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.1.0.Final}
+2016-10-03 14:20:01.278  INFO 7568 --- [           main] org.hibernate.cfg.Environment            : HHH000205: Loaded properties from resource hibernate.properties: {hibernate.order_inserts=true	, hibernate.jdbc.batch_versioned_data=true, hibernate.order_updates=true	, hibernate.show_sql=false, hibernate.jdbc.batch_size=1000, hibernate.bytecode.use_reflection_optimizer=false}
+2016-10-03 14:20:01.278  INFO 7568 --- [           main] org.hibernate.cfg.Environment            : HHH000021: Bytecode provider name : javassist
+2016-10-03 14:20:01.311  INFO 7568 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2016-10-03 14:20:01.546  INFO 7568 --- [           main] c.m.v.c.i.AbstractPoolBackedDataSource   : Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 3, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, dataSourceName -> 1hgeknp9j124l4d650x8d9|4f186450, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, identityToken -> 1hgeknp9j124l4d650x8d9|4f186450, idleConnectionTestPeriod -> 20, initialPoolSize -> 10, jdbcUrl -> jdbc:oracle:thin:@192.168.100.92:1521:DEVDB, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 30, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 100, maxStatements -> 1000, maxStatementsPerConnection -> 0, minPoolSize -> 10, numHelperThreads -> 3, numThreadsAwaitingCheckoutDefaultUser -> 0, preferredTestQuery -> null, properties -> {user=******, password=******}, propertyCycle -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, usesTraditionalReflectiveProxies -> false ]
+2016-10-03 14:20:01.734  INFO 7568 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
+2016-10-03 14:20:01.818  INFO 7568 --- [           main] o.h.e.j.e.i.LobCreatorBuilderImpl        : HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2016-10-03 14:20:02.258  INFO 7568 --- [           main] org.hibernate.tuple.PojoInstantiator     : HHH000182: No default (no-argument) constructor for class: com.ric.bill.dao.impl.HouseDAOImpl$1SQLMappingCfgEntity (class must be instantiated by Interceptor)
+2016-10-03 14:20:02.274  INFO 7568 --- [           main] org.hibernate.tuple.PojoInstantiator     : HHH000182: No default (no-argument) constructor for class: com.ric.bill.dao.impl.KartDAOImpl$1SQLMappingCfgEntity (class must be instantiated by Interceptor)
+2016-10-03 14:20:02.743  INFO 7568 --- [           main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2016-10-03 14:20:02.944  INFO 7568 --- [           main] com.ric.bill.Calc                        : ParMngImpl.getDate=Конец расчетного периода
+2016-10-03 14:20:02.949  INFO 7568 --- [           main] com.ric.bill.Calc                        : ParMngImpl.getDate=Начало расчетного периода
+2016-10-03 14:20:02.953  INFO 7568 --- [           main] com.ric.bill.Calc                        : ParMngImpl.getDate=Конец расчетного периода
+2016-10-03 14:20:03.141  INFO 7568 --- [           main] o.s.c.ehcache.EhCacheManagerFactoryBean  : Initializing EhCache CacheManager
+2016-10-03 14:20:03.514  INFO 7568 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@158d2680: startup date [Mon Oct 03 14:19:58 GMT+07:00 2016]; root of context hierarchy
+2016-10-03 14:20:03.592  INFO 7568 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/chrglsk]}" onto public java.lang.String com.ric.web.BillingController.chrgLsk(java.lang.Integer,java.lang.String)
+2016-10-03 14:20:03.593  INFO 7568 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/chrgall]}" onto public java.lang.String com.ric.web.BillingController.chrgAll(java.lang.String)
+2016-10-03 14:20:03.598  INFO 7568 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2016-10-03 14:20:03.598  INFO 7568 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-10-03 14:20:03.635  INFO 7568 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-10-03 14:20:03.635  INFO 7568 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-10-03 14:20:03.678  INFO 7568 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-10-03 14:20:03.923  INFO 7568 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2016-10-03 14:20:03.970  INFO 7568 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8082 (http)
+2016-10-03 14:20:03.974  INFO 7568 --- [           main] com.ric.web.BillWebApplication           : Started BillWebApplication in 5.421 seconds (JVM running for 5.971)
+2016-10-03 14:20:12.479  INFO 7568 --- [nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2016-10-03 14:20:12.480  INFO 7568 --- [nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2016-10-03 14:20:12.504  INFO 7568 --- [nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 24 ms
+2016-10-03 14:20:12.551  INFO 7568 --- [nio-8082-exec-1] com.ric.bill.Calc                        : BillingController.chrgAll
+2016-10-03 14:20:12.778  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=162
+2016-10-03 14:20:12.781  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=163
+2016-10-03 14:20:12.782  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=968
+2016-10-03 14:20:12.783  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=1124
+2016-10-03 14:20:12.784  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=1171
+2016-10-03 14:20:12.785  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=1172
+2016-10-03 14:20:12.787  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=1173
+2016-10-03 14:20:12.788  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=1742
+2016-10-03 14:20:12.789  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=1743
+2016-10-03 14:20:12.790  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=1744
+2016-10-03 14:20:12.792  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=2715
+2016-10-03 14:20:12.794  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=3536
+2016-10-03 14:20:12.795  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=3537
+2016-10-03 14:20:12.795  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=5174
+2016-10-03 14:20:12.796  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=5382
+2016-10-03 14:20:12.798  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=7298
+2016-10-03 14:20:12.799  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=7301
+2016-10-03 14:20:12.799  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=7309
+2016-10-03 14:20:12.800  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=7310
+2016-10-03 14:20:12.801  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=7311
+2016-10-03 14:20:12.802  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=7467
+2016-10-03 14:20:12.803  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Found house id=7468
+ДОМ:162
+2016-10-03 14:20:12.805  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=162
+2016-10-03 14:20:12.805  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=1488
+2016-10-03 14:20:12.805  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:20:12.833  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=162
+2016-10-03 14:20:13.607  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=162
+2016-10-03 14:20:13.609  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=162
+2016-10-03 14:20:13.609  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=162
+2016-10-03 14:20:13.610  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=162
+2016-10-03 14:20:13.610  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:838
+ДОМ:163
+2016-10-03 14:20:13.643  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=163
+2016-10-03 14:20:13.643  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=1489
+2016-10-03 14:20:13.643  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:20:13.664  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=163
+2016-10-03 14:20:13.665  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=163
+2016-10-03 14:20:13.666  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=163
+2016-10-03 14:20:13.666  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=163
+2016-10-03 14:20:13.667  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=163
+2016-10-03 14:20:13.667  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:41
+ДОМ:968
+2016-10-03 14:20:13.686  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=968
+2016-10-03 14:20:13.686  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=2294
+2016-10-03 14:20:13.686  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:20:13.697  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=968
+2016-10-03 14:20:19.426  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=968
+2016-10-03 14:20:20.512  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=968
+2016-10-03 14:20:22.503  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=968
+2016-10-03 14:20:23.300  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=968
+2016-10-03 14:20:24.030  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:28527
+ДОМ:1124
+2016-10-03 14:20:42.213  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=1124
+2016-10-03 14:20:42.213  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=2450
+2016-10-03 14:20:42.213  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:20:42.635  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1124
+2016-10-03 14:20:44.158  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1124
+2016-10-03 14:20:44.993  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1124
+2016-10-03 14:20:46.233  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1124
+2016-10-03 14:20:46.748  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1124
+2016-10-03 14:20:47.264  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:13549
+ДОМ:1171
+2016-10-03 14:20:55.762  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=1171
+2016-10-03 14:20:55.762  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=2497
+2016-10-03 14:20:55.762  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:20:56.684  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1171
+2016-10-03 14:20:57.277  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1171
+2016-10-03 14:20:57.679  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1171
+2016-10-03 14:20:58.413  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1171
+2016-10-03 14:20:58.709  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1171
+2016-10-03 14:20:59.019  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:8488
+ДОМ:1172
+2016-10-03 14:21:04.249  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=1172
+2016-10-03 14:21:04.249  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=2498
+2016-10-03 14:21:04.249  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:21:04.552  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1172
+2016-10-03 14:21:04.862  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1172
+2016-10-03 14:21:05.003  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1172
+2016-10-03 14:21:05.208  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1172
+2016-10-03 14:21:05.347  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1172
+2016-10-03 14:21:05.489  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+2016-10-03 14:21:07.035  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.035  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.035  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.036  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.037  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.037  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.037  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.037  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.037  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.037  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.037  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.037  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.038  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.039  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.039  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.039  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.039  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.039  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.039  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.039  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.039  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.040  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.040  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.040  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.041  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.041  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.041  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12859
+2016-10-03 14:21:07.286  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.286  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.286  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.286  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.286  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.288  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.288  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.288  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.288  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.288  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.289  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.289  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.289  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.289  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.289  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.289  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.290  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.290  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.290  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.290  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.290  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.290  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.291  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.291  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.291  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.291  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.291  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.291  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.292  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.292  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.292  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.292  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.292  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.292  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.293  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.293  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+2016-10-03 14:21:07.293  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=12854
+Время исполнения-1:3156
+ДОМ:1173
+2016-10-03 14:21:07.405  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=1173
+2016-10-03 14:21:07.405  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=2499
+2016-10-03 14:21:07.405  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:21:07.913  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1173
+2016-10-03 14:21:09.381  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1173
+2016-10-03 14:21:09.956  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1173
+2016-10-03 14:21:10.986  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1173
+2016-10-03 14:21:11.511  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1173
+2016-10-03 14:21:12.045  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:12654
+ДОМ:1742
+2016-10-03 14:21:20.061  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=1742
+2016-10-03 14:21:20.061  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=3068
+2016-10-03 14:21:20.061  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:21:21.960  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1742
+2016-10-03 14:21:22.985  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1742
+2016-10-03 14:21:23.450  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1742
+2016-10-03 14:21:24.171  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1742
+2016-10-03 14:21:24.518  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1742
+2016-10-03 14:21:24.864  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:9228
+ДОМ:1743
+2016-10-03 14:21:29.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=1743
+2016-10-03 14:21:29.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=3069
+2016-10-03 14:21:29.287  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:21:30.730  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1743
+2016-10-03 14:21:31.440  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1743
+2016-10-03 14:21:31.815  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1743
+2016-10-03 14:21:32.288  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1743
+2016-10-03 14:21:32.508  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1743
+2016-10-03 14:21:32.735  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:5771
+ДОМ:1744
+2016-10-03 14:21:35.058  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=1744
+2016-10-03 14:21:35.058  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=3070
+2016-10-03 14:21:35.058  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:21:36.294  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1744
+2016-10-03 14:21:38.462  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1744
+2016-10-03 14:21:39.418  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1744
+2016-10-03 14:21:40.784  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1744
+2016-10-03 14:21:41.496  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=1744
+2016-10-03 14:21:42.180  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:20599
+ДОМ:2715
+2016-10-03 14:21:55.658  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=2715
+2016-10-03 14:21:55.658  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=4041
+2016-10-03 14:21:55.658  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:21:58.345  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=2715
+2016-10-03 14:22:00.277  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=2715
+2016-10-03 14:22:01.063  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=2715
+2016-10-03 14:22:02.536  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=2715
+2016-10-03 14:22:03.298  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=2715
+2016-10-03 14:22:04.090  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:24982
+ДОМ:3536
+2016-10-03 14:22:20.640  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=3536
+2016-10-03 14:22:20.640  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=4862
+2016-10-03 14:22:20.640  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:22:23.094  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3536
+2016-10-03 14:22:24.358  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3536
+2016-10-03 14:22:24.912  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3536
+2016-10-03 14:22:25.851  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3536
+2016-10-03 14:22:26.322  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3536
+2016-10-03 14:22:26.795  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:12110
+ДОМ:3537
+2016-10-03 14:22:32.749  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=3537
+2016-10-03 14:22:32.749  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=4863
+2016-10-03 14:22:32.749  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:22:34.605  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3537
+2016-10-03 14:22:35.423  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3537
+2016-10-03 14:22:35.719  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3537
+2016-10-03 14:22:36.240  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3537
+2016-10-03 14:22:36.528  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=3537
+2016-10-03 14:22:36.861  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:7568
+ДОМ:5174
+2016-10-03 14:22:40.318  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=5174
+2016-10-03 14:22:40.318  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=6500
+2016-10-03 14:22:40.318  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:22:41.863  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5174
+2016-10-03 14:22:42.204  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5174
+2016-10-03 14:22:42.315  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5174
+2016-10-03 14:22:42.551  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5174
+2016-10-03 14:22:42.663  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5174
+2016-10-03 14:22:42.779  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:4236
+ДОМ:5382
+2016-10-03 14:22:44.554  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=5382
+2016-10-03 14:22:44.554  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=6708
+2016-10-03 14:22:44.554  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:22:45.915  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5382
+2016-10-03 14:22:46.268  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5382
+2016-10-03 14:22:46.383  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5382
+2016-10-03 14:22:46.620  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5382
+2016-10-03 14:22:46.739  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=5382
+2016-10-03 14:22:46.859  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:4268
+ДОМ:7298
+2016-10-03 14:22:48.822  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=7298
+2016-10-03 14:22:48.822  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=8624
+2016-10-03 14:22:48.822  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:22:50.076  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7298
+2016-10-03 14:22:50.989  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7298
+2016-10-03 14:22:51.444  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7298
+2016-10-03 14:22:52.165  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7298
+2016-10-03 14:22:52.477  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7298
+2016-10-03 14:22:52.835  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:10305
+ДОМ:7301
+2016-10-03 14:22:59.127  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=7301
+2016-10-03 14:22:59.127  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=8627
+2016-10-03 14:22:59.127  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:23:01.163  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7301
+2016-10-03 14:23:02.415  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7301
+2016-10-03 14:23:03.008  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7301
+2016-10-03 14:23:03.852  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7301
+2016-10-03 14:23:04.370  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7301
+2016-10-03 14:23:04.801  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:11227
+ДОМ:7309
+2016-10-03 14:23:10.354  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=7309
+2016-10-03 14:23:10.354  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=8635
+2016-10-03 14:23:10.354  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:23:12.741  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7309
+2016-10-03 14:23:15.104  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7309
+2016-10-03 14:23:17.199  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7309
+2016-10-03 14:23:18.833  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7309
+2016-10-03 14:23:19.670  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7309
+2016-10-03 14:23:20.515  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:56820
+ДОМ:7310
+2016-10-03 14:24:07.174  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=7310
+2016-10-03 14:24:07.174  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=8636
+2016-10-03 14:24:07.174  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:24:11.489  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7310
+2016-10-03 14:24:13.515  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7310
+2016-10-03 14:24:14.146  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7310
+2016-10-03 14:24:15.096  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7310
+2016-10-03 14:24:15.607  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7310
+2016-10-03 14:24:16.075  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:29613
+ДОМ:7311
+2016-10-03 14:24:36.788  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=7311
+2016-10-03 14:24:36.788  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=8637
+2016-10-03 14:24:36.788  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:24:41.437  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7311
+2016-10-03 14:24:42.380  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7311
+2016-10-03 14:24:42.825  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7311
+2016-10-03 14:24:43.479  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7311
+2016-10-03 14:24:43.797  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7311
+2016-10-03 14:24:45.325  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:22657
+ДОМ:7467
+2016-10-03 14:24:59.446  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=7467
+2016-10-03 14:24:59.446  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=8793
+2016-10-03 14:24:59.447  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:25:04.960  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7467
+2016-10-03 14:25:06.131  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7467
+2016-10-03 14:25:09.170  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7467
+2016-10-03 14:25:10.145  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7467
+2016-10-03 14:25:11.028  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7467
+2016-10-03 14:25:11.826  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+2016-10-03 14:25:43.887  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.888  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.888  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.889  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.901  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.902  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.903  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.903  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.904  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.904  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.904  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.905  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.905  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.905  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.906  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.906  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.907  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.907  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.907  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.908  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.908  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.908  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.910  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.910  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.911  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.911  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.911  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.911  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.912  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.912  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.912  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.913  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.913  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.913  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.914  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.914  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.915  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.915  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.915  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.916  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.916  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.916  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.916  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.917  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.917  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.917  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.918  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.918  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.918  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.918  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.919  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.919  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.919  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.919  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.920  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.920  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.920  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.921  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.921  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.921  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.922  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.922  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.923  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.924  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.924  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.925  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.925  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.926  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.927  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.928  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.929  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.930  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.930  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.931  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.931  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.932  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.933  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.935  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.936  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.936  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.937  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.937  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.937  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.937  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.938  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.938  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.938  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.939  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.939  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.939  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.939  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.940  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.940  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.940  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.941  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.941  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.944  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.944  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.945  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.945  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.945  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.946  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.946  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.946  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.947  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.947  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.947  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.947  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.948  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.948  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.948  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.949  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.949  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.949  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.949  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.950  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.950  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.950  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.950  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.951  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.951  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.952  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.952  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.952  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.952  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.953  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.953  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.953  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.954  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.954  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.954  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.955  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.955  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.955  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.956  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.956  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.956  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.956  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.957  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.957  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.957  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.958  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.958  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.958  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.959  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.959  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.960  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.960  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.960  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.961  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.961  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.961  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.961  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.962  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.962  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.962  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.963  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.963  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.963  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.964  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.964  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.964  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.965  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.965  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.965  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.966  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.966  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.967  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.967  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.967  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.968  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.968  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.968  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.969  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.969  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.969  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.970  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.970  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.970  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.970  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.971  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.971  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.971  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.972  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.972  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.973  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.973  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.973  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.973  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.974  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.974  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.974  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.975  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.975  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.975  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.975  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+2016-10-03 14:25:43.976  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id=218
+Время исполнения-1:59012
+ДОМ:7468
+2016-10-03 14:25:58.457  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: id=7468
+2016-10-03 14:25:58.457  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Дом: klsk=8794
+2016-10-03 14:25:58.457  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Очистка объемов
+2016-10-03 14:26:03.874  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7468
+2016-10-03 14:26:04.795  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7468
+2016-10-03 14:26:05.320  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7468
+2016-10-03 14:26:05.975  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7468
+2016-10-03 14:26:07.149  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Удаление объемов по Дому: id=7468
+2016-10-03 14:26:07.557  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : Распределение объемов
+Время исполнения-1:101555
+2016-10-03 14:31:19.967  INFO 7568 --- [cTaskExecutor-1] com.ric.bill.Calc                        : BillServ.chrgAll: Распределение по всем домам выполнено!
