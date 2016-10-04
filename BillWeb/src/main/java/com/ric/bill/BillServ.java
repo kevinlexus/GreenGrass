@@ -175,12 +175,12 @@ public class BillServ {
 
 	    if (dist) {
 			 distServ.distAll();
+			 Calc.mess("BillServ.chrgAll: Распределение по всем домам выполнено!", 2);
 		}
-		Calc.mess("BillServ.chrgAll: Распределение по всем домам выполнено!", 2);
 	    
-	    if (1==1) {
-	    	return new AsyncResult<Result>(res);
-	    }
+	    //if (1==1) {
+	    //	return new AsyncResult<Result>(res);
+	    //}
 	    
 		long startTime3 = System.currentTimeMillis();
 		//загрузить все Лиц.счета

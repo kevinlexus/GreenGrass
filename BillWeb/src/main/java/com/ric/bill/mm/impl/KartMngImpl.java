@@ -366,7 +366,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #cd, #genDt }") 
-	public /*synchronized*/ Double getServPropByCD(Calc calc, Serv serv, String cd, Date genDt) {
+	public synchronized Double getServPropByCD(Calc calc, Serv serv, String cd, Date genDt) { //убрал synchronized, получил - java.util.concurrent.ExecutionException: org.hibernate.exception.GenericJDBCException: could not initialize a collection
 		Double val;
 		//в начале ищем по дому
 		val=tarMng.getProp(calc.getHouse(), serv, cd, genDt);
@@ -440,7 +440,7 @@ public class KartMngImpl implements KartMng {
 						if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {
 							if (t.getProp().getCd().equals("Поставщик")) {
 								if (!lst.contains(t.getServ())) {
-									Calc.mess("KartMngImpl.getAllServ = "+t.getServ().getName(),2);
+									//Calc.mess("KartMngImpl.getAllServ = "+t.getServ().getName(),2);
 									lst.add(t.getServ());
 								}
 							}

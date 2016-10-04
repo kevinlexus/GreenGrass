@@ -28,12 +28,6 @@ public class ChrgServThr {
 	@Async
 	public Future<Result> chrgAndSaveLsk(Calc calc) throws ErrorWhileChrg {
 		ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
-/*if (1==1) {
-	Result res = new Result();
-	res.err=0;
-	return new AsyncResult<Result>(res);
-	
-}*/
 		//Выполнить начисление
 		Result res = chrgServ.chrgLsk(calc);
 		//Сохранить результат
