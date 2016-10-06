@@ -170,7 +170,7 @@ public class KartMngImpl implements KartMng {
 //	@Cacheable("readOnlyCache")
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
-	@Transactional
+	//@Transactional - чё за бред
 	public synchronized void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
@@ -365,7 +365,7 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 */
 	//@Cacheable("rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #cd, #genDt }") 
+	@Cacheable(cacheNames="rrr1", key="{#calc.getKart().getLsk(), #serv.getId(), #cd, #genDt }") 
 	public synchronized Double getServPropByCD(Calc calc, Serv serv, String cd, Date genDt) { //убрал synchronized, получил - java.util.concurrent.ExecutionException: org.hibernate.exception.GenericJDBCException: could not initialize a collection
 		Double val;
 		//в начале ищем по дому
@@ -430,7 +430,7 @@ public class KartMngImpl implements KartMng {
 	 * @param lst -список услуг
 	 * @return - обновленный список услуг
 	 */
-    public List<Serv> checkServ(TarifContains tc, List lst) {
+    public synchronized List<Serv> checkServ(TarifContains tc, List lst) {
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
@@ -460,7 +460,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable("rrr1")
 	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") - НЕ КЭШИРОВАТЬ!!!
-	public /*synchronized*/ List<Serv> getAllServ(Calc calc) {
+	public synchronized List<Serv> getAllServ(Calc calc) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать по наборам тарифа дома
 		lst = checkServ(calc.getHouse(), lst);

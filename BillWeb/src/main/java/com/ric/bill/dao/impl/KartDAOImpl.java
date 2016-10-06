@@ -54,11 +54,12 @@ public class KartDAOImpl implements KartDAO {
 			q = em.createNativeQuery("select distinct k.lsk "+
 						   "from ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
 						   "where k.fk_kw = kw.id "+
-						   "and o.reu in ('Z4', 'D8', 'F4', 'J4', 'G4') "+
+						   "and o.reu in ('Z4', 'F4', 'J4', 'G4') /*'D8'*/ "+
 						   "and o.parent_id=u.id "+
 						   "and k.fk_uk = u.id "+
-						   "and ? between k.dt1 and k.dt2 "+
+						   "and ? between k.dt1 and k.dt2 "+ //Дом по которому тестим мы тарифы с Мишей - h.id=7309
 						   //"and k.flsk between '36010100' and '36010106' "+
+						   //"and k.lsk between 275670 and 275680 "+
 						   "order by k.lsk ",  STATEMENT_SQLMAP);
 			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 			

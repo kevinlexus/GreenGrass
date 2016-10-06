@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
@@ -49,15 +50,22 @@ public class BillServ {
 	@Autowired
 	private ApplicationContext ctx;
 
-    @PersistenceContext
+	@Autowired
+	private Config config;
+
+	@PersistenceContext
     private EntityManager em;
     
     //коллекция для формирования потоков
     private List<Kart> kartThr;
     
+    private Calc calc;
+    
     //конструктор
     public BillServ() {
-
+    	
+    	calc = new Calc();
+    	
     }
     
 	/**
@@ -152,6 +160,7 @@ public class BillServ {
 	 * выполнить начисление по всем домам в потоках
 	 */
     @Async
+    @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
     public Future<Result> chrgAll(boolean dist) {
     	Calc.setDbgLvl(2);
     	
@@ -190,7 +199,7 @@ public class BillServ {
 	    errThread=false;
 	    
 		while (true) {
-			Calc.mess("BillServ.chrgAll: Loading karts for threads", 2);
+			Calc.mess("BillServ.chrgAll: Loading karts for threads", 0);
 			//получить следующие N лиц.счетов, рассчитать их в потоке
 			long startTime2;
 			long endTime2;
@@ -207,12 +216,11 @@ public class BillServ {
 
 			for (Kart kart : kartWork) {
 
-					Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
+					Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk(), 2);
 					Future<Result> fut = null;
 					ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 
-				    Calc calc=new Calc();
-				    calc.setKart(kart);
+					calc.setKart(kart);
 				    calc.setHouse(kart.getKw().getHouse());
 				    
 
@@ -223,7 +231,7 @@ public class BillServ {
 						e.printStackTrace();
 					}
 			    	frl.add(fut);
-					Calc.mess("BillServ.chrgAll: Begins thread for lsk="+kart.getLsk());
+					Calc.mess("BillServ.chrgAll: Begins thread for lsk="+kart.getLsk(), 2);
 			}
 			
 			
@@ -284,8 +292,9 @@ public class BillServ {
 	 * @throws ErrorWhileChrg
 	 */
     @Async
+    @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
-		Calc.setDbgLvl(0);
+		Calc.setDbgLvl(2);
 		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		
 		Result res = new Result();
@@ -300,8 +309,7 @@ public class BillServ {
 	    		return fut;
 	    	}
 		}
-	    Calc calc=new Calc();
-    	
+
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
     	calc.setKart(kart);
@@ -333,6 +341,7 @@ public class BillServ {
     /**
 	 * выполнить начисление по дому
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
+     * @return 
 	 */
 /*	public void chrgHouse(int houseId) { TODO
     	ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
@@ -376,6 +385,4 @@ public class BillServ {
 		}
 	}*/
 
-
-    
 }
