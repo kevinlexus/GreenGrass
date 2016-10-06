@@ -43,7 +43,6 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.Chrg;
-import com.ric.bill.model.tr.TarifServProp;
 
 /**
  * Сервис формирования начисления
@@ -117,15 +116,12 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	public Result chrgLsk(Calc calc) throws ErrorWhileChrg {
-		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getFlsk(), 0);
+		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getFlsk(), 2);
 		Result res = new Result();
 		res.err=0;
 		//if (1==1) {
 		//	return new AsyncResult<Result>(res);
 		//}
-		
-		//TarifServProp tp = em.find(TarifServProp.class, 115726);
-		//Calc.mess("CHECK TARIF==========="+tp.getN1(),2);
 		
 		prepChrg = new ArrayList<Chrg>(0); 
 		//получить все необходимые услуги для начисления из тарифа по дому
@@ -146,7 +142,7 @@ public class ChrgServ {
 		errThread=false;
 
 		for (Serv serv: servThr) {
-			Calc.mess("ChrgServ: lsk="+calc.getKart().getFlsk()+" "+"serv.cd="+serv.getCd(), 2);
+			Calc.mess("ChrgServ: serv.cd="+serv.getCd());
 		}
 		while (true) {
 			Calc.mess("ChrgServ: Loading servs for threads");
@@ -227,8 +223,8 @@ public class ChrgServ {
 						boolean flag = false; //флаг, чтобы больше не корректировать, если уже раз найдено
 						for (Chrg chrg : prepChrg) {
 							if (!flag && chrg.getStatus() == 1 && chrg.getServ().equals(servRound)) {
-								Calc.mess("Коррекция услуги="+chrg.getServ().getId()+" на сумму="+diff,2);
 								/*if (kart.getLsk().equals("26074227")) {
+									Calc.mess("Коррекция услуги="+chrg.getServ().getId()+" на сумму="+diff,2);
 								}*/
 								flag = true;
 								chrg.setSumAmnt(BigDecimal.valueOf(chrg.getSumAmnt()).add(diff).doubleValue()) ;
@@ -250,7 +246,7 @@ public class ChrgServ {
 	 * @param lsk - лиц.счет передавать строкой!
 	 * @throws ErrorWhileChrg 
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (Integer lsk) throws ErrorWhileChrg {
 		
 	    //коллекция для сумм по укрупнённым услугам, для нового начисления 
@@ -277,11 +273,8 @@ public class ChrgServ {
 			//Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
 			//if (lsk.equals("14024244")) {
-			Calc.mess("Сохранить дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
+			//	  Calc.mess("Сохранить дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
 			//	}
-			//if (servMain.getId() ==8) {
-//				Calc.mess("Сохранить дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
-			//}
 			putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(chrg.getSumAmnt()));
 		}
 
@@ -304,9 +297,8 @@ public class ChrgServ {
 				//Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
 				//if (lsk.equals("14024244")) {
-				//if (servMain.getId() ==8) {
-	 			Calc.mess("Вычесть дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
- 				//}
+ 				//  Calc.mess("Вычесть дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
+				//}
 				putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
 			}
 		}

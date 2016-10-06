@@ -44,7 +44,6 @@ public class Config {
 
 	//конструктор
 	public Config() {
-		
 		TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
 		
 		calendar = new GregorianCalendar(1940, Calendar.JANUARY, 1);
@@ -142,6 +141,6 @@ public class Config {
 		return period;
 	}
 
-
+	
 	
 }

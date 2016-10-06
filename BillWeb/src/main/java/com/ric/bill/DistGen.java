@@ -122,11 +122,6 @@ public class DistGen {
 		lstCheck = new ArrayList<Check>();
 	}
 	
-//	public void saveVol(MLogs ml, Vol vl) {
-
-		//ml.getVol().add(vl);
-//	}
-	
 	/**
 	 * Распределить узел, следуя по графу (рекурсивная процедура)
 	 * @param ml - вх.узел
@@ -139,9 +134,6 @@ public class DistGen {
 	 * @throws NotFoundNode
 	 * @throws EmptyStorable 
 	 */
-	//ВНИМАНИЕ! Пришлось вынести в отдельный сервис (не хотел кэш включаться на private методе!!!):
-	//http://stackoverflow.com/questions/18185209/spring-cacheable-doesnt-cache-public-methods
-	//@Cacheable(cacheNames="readOnlyCache", key="{ #ml.getId(), #tp, #genDt }") // - всё равно, плохо кэшируется!  
 	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable {
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		//если рассчитанный узел найден, вернуть готовый объем

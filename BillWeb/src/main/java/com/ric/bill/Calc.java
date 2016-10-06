@@ -31,10 +31,7 @@ public final class Calc {
 	private House house; //текущий дом (распределяемый, начисляемый)
 	private Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
-	
-	//конструктор
-	public void Calc() {
-	}
+
 	
 	public Serv getServ() {
 		return this.serv;
@@ -113,4 +110,5 @@ public final class Calc {
 	public Date getGenDt() {
 		return this.genDt;
 	}
+
 }

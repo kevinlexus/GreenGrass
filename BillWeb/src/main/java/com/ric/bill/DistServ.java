@@ -146,7 +146,7 @@ public class DistServ {
 		
 	}*/
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //не переносить отсюда транзакцию (иначе объемы не будут удаляться, так как дом определён здесь, в транзакции
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void distAll() {
 		long startTime;
 		long endTime;

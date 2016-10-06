@@ -59,6 +59,7 @@ public class ParMngImpl implements ParMng {
 	//В кэшах не почувствовал разницы:
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
+	//@Transactional
 	public synchronized Double getDbl(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
@@ -100,7 +101,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd }")
-	public synchronized Double getDbl(Storable st, String cd) throws EmptyStorable {
+	public/* synchronized */Double getDbl(Storable st, String cd) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
 		}
@@ -166,7 +167,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
-	public synchronized String getStr(Storable st, String cd, Date genDt) {
+	public/* synchronized */String getStr(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
@@ -202,7 +203,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd }")
-	public /*synchronized*/ String getStr(Storable st, String cd) {
+	public/* synchronized */String getStr(Storable st, String cd) {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
