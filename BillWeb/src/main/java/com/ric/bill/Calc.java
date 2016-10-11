@@ -22,7 +22,7 @@ import com.ric.bill.model.bs.Serv;
 @Slf4j
 public final class Calc {
 	private Date genDt; //рассчитываемая дата
-	private static int calcTp; //тип обработки расчёта
+	private int calcTp; //тип обработки расчёта
 	//уровень отладки
 	private static int dbgLvl;
 	
@@ -32,6 +32,7 @@ public final class Calc {
 	private Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
+	private Integer who; //кто?
 	
 	public Serv getServ() {
 		return this.serv;
@@ -75,6 +76,8 @@ public final class Calc {
 	}
 
 	
+	
+	//ЧУШЬ полная, из за того что dbgLvl - статик, получаются одни и те же уровни дебага для разных методов, переписать на log4
 	//Отправить в консоль сообщение
 	public static void mess(String txt) {
 //			DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
@@ -85,6 +88,7 @@ public final class Calc {
 			}
 		}
 
+	//ЧУШЬ полная, из за того что dbgLvl - статик, получаются одни и те же уровни дебага для разных методов, переписать на log4
 	//Отправить в консоль сообщение с уровнем выше dbgLvl
 	public static void mess(String txt, int dbgLvl) {
 			//DateTimeFormatter frmt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
@@ -109,6 +113,14 @@ public final class Calc {
 
 	public Date getGenDt() {
 		return this.genDt;
+	}
+
+	public Integer getWho() {
+		return who;
+	}
+
+	public void setWho(Integer who) {
+		this.who = who;
 	}
 
 }

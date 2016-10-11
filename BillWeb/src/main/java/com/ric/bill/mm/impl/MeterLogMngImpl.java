@@ -245,7 +245,7 @@ public class MeterLogMngImpl implements MeterLogMng {
      */
 	@Cacheable("rrr1") 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
-	public void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2) {
+	public synchronized void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2) {
 /*		long startTime;
 		long endTime;
 		long totalTime;

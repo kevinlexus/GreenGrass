@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,12 +44,13 @@ import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
 
 /**
- * Сервис распределения объема по одному узлу
+ * Сервис распределения объема по узлам
  * @author lev
  *
  */
 
 @Service
+@Scope("prototype")
 public class DistGen {
 
 	@Autowired
@@ -306,6 +310,10 @@ public class DistGen {
 			
 			
 		} else if (tp==3 && mLogTp.equals("Лсчетчик")) {
+			if (ml.getId()==12945 || ml.getId()==17138){
+				Calc.mess("CHECK: tp="+tp,2);
+				Calc.mess("CHECK: calc.getCalcTp="+calc.getCalcTp(),2);
+			}
 			//по расчетной связи пропорц.площади (Отопление например)
 			MLogs lnkLODN = null;
 			//поиск счетчика ЛОДН
@@ -583,5 +591,15 @@ public class DistGen {
 		
 		return val;
 	}
+	
+	@PostConstruct
+	public void constr() {
+
+	}
+	@PreDestroy
+	public void dest() {
+
+	}
+
 }
 

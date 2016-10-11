@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,6 +43,8 @@ import com.ric.bill.model.mt.MLogs;
 public class DistServ {
 
 	@Autowired
+	private ApplicationContext ctx;
+	@Autowired
 	private Config config;
 	@Autowired
 	private MeterLogMng metMng;
@@ -57,8 +60,10 @@ public class DistServ {
 	private HouseMng houseMng;
 	@Autowired
 	private VolMng volMng;
-	@Autowired
+	
+	@Autowired //-здесь не надо autowire, так как prototype
 	private DistGen distGen;
+	
 	@Autowired
     private ChrgServ chrg;
 
@@ -147,10 +152,12 @@ public class DistServ {
 	}*/
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void distAll() {
-		long startTime;
-		long endTime;
-		long totalTime;
+    public void distAll(Calc calc) {
+			//distGen = ctx.getBean(DistGen.class);
+			this.calc=calc;
+			long startTime;
+			long endTime;
+			long totalTime;
 			for (House o: houseMng.findAll2()) {
 				System.out.println("ДОМ:"+o.getId());
 				//dist.clearCache();
@@ -175,12 +182,15 @@ public class DistServ {
 	
 	
 	/**
-	 * распределить объем по всем услугам, по дому
+	 * распределить объем по всем услугам, по лиц.счету
 	 * @throws ErrorWhileDist 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distKartVol(Calc calc) throws ErrorWhileDist {
 		this.calc=calc;
+
+		calc.setCalcTp(0);
+
 		Kart kart = em.find(Kart.class, calc.getKart().getLsk());
 		//почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
@@ -353,7 +363,7 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	private void distGraph (MLogs ml) throws ErrorWhileDist {
-		Calc.mess("Распределение ввода:"+ml.getId());
+		Calc.mess("DistServ.distGraph: Распределение ввода:"+ml.getId());
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат

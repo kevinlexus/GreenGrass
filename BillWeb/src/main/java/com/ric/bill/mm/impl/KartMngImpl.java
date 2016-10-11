@@ -430,7 +430,7 @@ public class KartMngImpl implements KartMng {
 	 * @param lst -список услуг
 	 * @return - обновленный список услуг
 	 */
-    public List<Serv> checkServ(TarifContains tc, List lst) {
+    public synchronized List<Serv> checkServ(TarifContains tc, List lst) {
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 

@@ -148,15 +148,16 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)    
     public Future<Result> chrgAll(boolean dist) {
+	    Calc calc=new Calc();
+	    calc.setWho(2);
     	Calc.setDbgLvl(2);
-    	
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
     	
     	Result res = new Result();
 		res.err=0;
 		//кол-во потоков
-		int cntThreads = 1;
+		int cntThreads = 10;
 		//кол-во обраб.лиц.сч.
 		int cntLsk = 0;
 		
@@ -169,7 +170,7 @@ public class BillServ {
 		DistServ distServ = ctx.getBean(DistServ.class);
 
 	    if (dist) {
-			 distServ.distAll();
+			 distServ.distAll(calc);
 			 Calc.mess("BillServ.chrgAll: Распределение по всем домам выполнено!", 2);
 		}
 	    
@@ -204,16 +205,13 @@ public class BillServ {
 
 					Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
 					Future<Result> fut = null;
-					//ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
-					ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
+					ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 
-				    Calc calc=new Calc();
 				    calc.setKart(kart);
 				    calc.setHouse(kart.getKw().getHouse());
 				    
 				    try {
-						//fut = chrgServThr.chrgAndSaveLsk(calc);
-						fut = chrgServ.chrgAndSaveLsk(calc);
+						fut = chrgServThr.chrgAndSaveLsk(calc);
 					} catch (ErrorWhileChrg e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -283,8 +281,8 @@ public class BillServ {
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
 		Calc.setDbgLvl(2);
-		//ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
-		ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
+		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
+		//ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 		DistServ distServ = ctx.getBean(DistServ.class);
 		
 		Result res = new Result();
@@ -300,7 +298,8 @@ public class BillServ {
 	    	}
 		}
 	    Calc calc=new Calc();
-    	
+    	calc.setWho(1);
+	    
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
     	calc.setKart(kart);
@@ -314,9 +313,12 @@ public class BillServ {
 				return fut;
 			}
 		}
+
+		Calc.setDbgLvl(2);
+
 		//расчитать начисление
 	    try {
-			fut = chrgServ.chrgAndSaveLsk(calc);
+			fut = chrgServThr.chrgAndSaveLsk(calc);
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
 			res.err=1;
