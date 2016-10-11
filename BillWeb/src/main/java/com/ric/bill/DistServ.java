@@ -179,7 +179,6 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	@CacheEvict(cacheNames="lskMeter", allEntries=true)
 	public void distKartVol(Calc calc) throws ErrorWhileDist {
 		this.calc=calc;
 		Kart kart = em.find(Kart.class, calc.getKart().getLsk());

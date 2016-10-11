@@ -24,6 +24,7 @@ import org.apache.commons.collections4.map.MultiKeyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -379,6 +380,18 @@ public class ChrgServ {
 		mkMap.put(serv, org, s);
 	}
 
+	@Async
+	public Future<Result> chrgAndSaveLsk(Calc calc) throws ErrorWhileChrg {
+		//Выполнить начисление
+		Result res = chrgLsk(calc);
+		//Сохранить результат
+		if (res.err==0) {
+			save(calc.getKart().getLsk()); 
+		}
+		
+		return new AsyncResult<Result>(res);
+	}
+	
 
 }
 

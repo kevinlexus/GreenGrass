@@ -40,6 +40,11 @@ import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
 
+/**
+ * Сервис распределения объема по одному узлу
+ * @author lev
+ *
+ */
 
 @Service
 public class DistGen {
@@ -433,8 +438,8 @@ public class DistGen {
 	 * @param genDt - дата расчета
 	 * @return - найденный объем
 	 */
-	@Cacheable(cacheNames="lskMeter", key="{ #id, #tp, #genDt }")
-	private NodeVol findLstCheck(int id, int tp, Date genDt) {
+	@Cacheable(cacheNames="rrr3", key="{ #id, #tp, #genDt }") //пока убрал --> добавил synchronized - (вроде не в потоках, а валится в NullPointerException)
+	private /*synchronized */NodeVol findLstCheck(int id, int tp, Date genDt) { //
 		for (Check c : lstCheck) {
 			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
 				  //Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString());

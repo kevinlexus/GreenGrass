@@ -36,13 +36,6 @@ public class BillServ {
 
 	@Autowired
 	private HouseMng houseMng;
-	@Autowired
-    private DistServ distServ;
-	@Autowired
-    private DistGen distGen;
-	
-	@Autowired
-    private ChrgServ chrgServ;
 	
 	@Autowired
     private KartMng kartMng;
@@ -163,7 +156,7 @@ public class BillServ {
     	Result res = new Result();
 		res.err=0;
 		//кол-во потоков
-		int cntThreads = 10;
+		int cntThreads = 1;
 		//кол-во обраб.лиц.сч.
 		int cntLsk = 0;
 		
@@ -173,7 +166,7 @@ public class BillServ {
 		long totalTime3;
 
 		startTime = System.currentTimeMillis();
-		
+		DistServ distServ = ctx.getBean(DistServ.class);
 
 	    if (dist) {
 			 distServ.distAll();
@@ -211,15 +204,16 @@ public class BillServ {
 
 					Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
 					Future<Result> fut = null;
-					ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
+					//ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
+					ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 
 				    Calc calc=new Calc();
 				    calc.setKart(kart);
 				    calc.setHouse(kart.getKw().getHouse());
 				    
-
 				    try {
-						fut = chrgServThr.chrgAndSaveLsk(calc);
+						//fut = chrgServThr.chrgAndSaveLsk(calc);
+						fut = chrgServ.chrgAndSaveLsk(calc);
 					} catch (ErrorWhileChrg e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -288,8 +282,10 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
-		Calc.setDbgLvl(0);
-		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
+		Calc.setDbgLvl(2);
+		//ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
+		ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
+		DistServ distServ = ctx.getBean(DistServ.class);
 		
 		Result res = new Result();
 		Future<Result> fut = new AsyncResult<Result>(res);
@@ -320,7 +316,7 @@ public class BillServ {
 		}
 		//расчитать начисление
 	    try {
-			fut = chrgServThr.chrgAndSaveLsk(calc);
+			fut = chrgServ.chrgAndSaveLsk(calc);
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
 			res.err=1;
