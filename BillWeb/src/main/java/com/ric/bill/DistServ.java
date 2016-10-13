@@ -276,10 +276,6 @@ public class DistServ {
 		//установить инициализацию дома
     	//установить дом и счет
 		calc.setHouse(h);
-		Calc.mess("Дом: id="+calc.getHouse().getId(), 2);
-		Calc.mess("Дом: klsk="+calc.getHouse().getKlsk(), 2);
-
-		
 		/*Calc.mess("Дом: 1============================================================",2);
 		h = em.find(House.class, 1737);
 		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
@@ -290,7 +286,7 @@ public class DistServ {
 		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
 		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));*/
 		
-		Calc.mess("Очистка объемов", 2);
+		Calc.mess("DistServ.distHouseVol: Очистка объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
 		//почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
@@ -304,12 +300,12 @@ public class DistServ {
 		//	return;
 		//}
 		
-		Calc.mess("Распределение объемов", 2);
+		Calc.mess("DistServ.distHouseVol: Распределение объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
 		//найти все необходимые услуги для распределения
 		try {
 			for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
-				Calc.mess("Распределение услуги: "+s.getCd());
+				Calc.mess("DistServ.distHouseVol: Распределение услуги: "+s.getCd(),2);
 				  distHouseServ();
 			}
 		} catch (ErrorWhileDist e) {

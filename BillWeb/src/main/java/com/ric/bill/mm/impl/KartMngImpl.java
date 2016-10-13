@@ -428,20 +428,36 @@ public class KartMngImpl implements KartMng {
 	 * 
 	 * @param tc -тарифосодержащий объект
 	 * @param lst -список услуг
+	 * @param cd - параметр, который проверять
+	 * @param cmd - добавлять ли услугу в список(0) или удалять(1)?
 	 * @return - обновленный список услуг
 	 */
-    public synchronized List<Serv> checkServ(TarifContains tc, List lst) {
-		for (TarifKlsk k : tc.getTarifklsk()) {
+    public synchronized List<Serv> checkServ(TarifContains tc, List lst, String cd, int cmd) {
+    	//список отключенных услуг
+    	//List lstOff = new ArrayList<Serv>();
+    	for (TarifKlsk k : tc.getTarifklsk()) {
 			//if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					if (t.getServ().getServChrg() != null && t.getServ().getServChrg().equals(t.getServ())) {
 						//искать наличие свойства "Поставщик", оно и определяет наличие услуги
 						if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {
-							if (t.getProp().getCd().equals("Поставщик")) {
-								if (!lst.contains(t.getServ())) {
-									//Calc.mess("KartMngImpl.getAllServ = "+t.getServ().getName(),2);
-									lst.add(t.getServ());
+							if (t.getProp().getCd().equals(cd)) {
+									//найдено свойство cd в этом периоде, добавить или удалить из списка услуг
+									switch (cmd) {
+										case 0 :
+											//добавить элемент, если еще не добавлен
+											if (!lst.contains(t.getServ())) {
+												lst.add(t.getServ());
+											}
+										break;
+										case 1 :
+											//удалить элемент, если существует
+											if (lst.contains(t.getServ())) {
+												lst.remove(t.getServ());
+											}
+										
+										break;
 								}
 							}
 						}
@@ -462,10 +478,18 @@ public class KartMngImpl implements KartMng {
 	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") - НЕ КЭШИРОВАТЬ!!!
 	public /*synchronized*/ List<Serv> getAllServ(Calc calc) {
 		List<Serv> lst = new ArrayList<Serv>();
-		//искать по наборам тарифа дома
-		lst = checkServ(calc.getHouse(), lst);
-		//искать по наборам тарифа лиц.счета
-		lst = checkServ(calc.getKart(), lst);
+		//искать и добавить по наборам тарифа
+		//дома:
+		lst = checkServ(calc.getHouse(), lst, "Поставщик", 0);
+		//лиц.счета
+		lst = checkServ(calc.getKart(), lst, "Поставщик", 0);
+
+		//удалить отключенные услуги по наборам тарифа
+		//дома:
+		lst = checkServ(calc.getHouse(), lst, "Отключение", 1);
+		//лиц.счета
+		lst = checkServ(calc.getKart(), lst, "Отключение", 1);
+		
 		return lst;
 	}
 

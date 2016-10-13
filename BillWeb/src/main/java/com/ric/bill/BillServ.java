@@ -148,8 +148,6 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)    
     public Future<Result> chrgAll(boolean dist) {
-	    Calc calc=new Calc();
-	    calc.setWho(2);
     	Calc.setDbgLvl(2);
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
@@ -170,6 +168,7 @@ public class BillServ {
 		DistServ distServ = ctx.getBean(DistServ.class);
 
 	    if (dist) {
+	    	 Calc calc=new Calc();
 			 distServ.distAll(calc);
 			 Calc.mess("BillServ.chrgAll: Распределение по всем домам выполнено!", 2);
 		}
@@ -206,6 +205,10 @@ public class BillServ {
 					Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
 					Future<Result> fut = null;
 					ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
+
+				    //под каждый поток - свой Calc
+					Calc calc=new Calc();
+				    calc.setWho(2);
 
 				    calc.setKart(kart);
 				    calc.setHouse(kart.getKw().getHouse());

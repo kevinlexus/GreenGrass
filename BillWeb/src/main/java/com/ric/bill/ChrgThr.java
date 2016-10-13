@@ -123,9 +123,9 @@ public class ChrgThr {
 		//Объект, временно хранящий записи начисления
 		chStore = new ChrgStore(); 
 		//if (serv.getId()==32) {
-		Calc.mess("ChrThr: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId(),1);
+		Calc.mess("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
 		if (serv.getId()==35) {
-			Calc.mess("ChrThr: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId(),1);
+			Calc.mess("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
 		}
 		
 		
@@ -443,53 +443,28 @@ public class ChrgThr {
 			//тип расчета, например:текущее содержание, Х.В., Г.В., Канализ
 			//Вариант подразумевает объём по лог.счётчику, РАСПределённый по дням
 			//или по параметру - базе, жилого фонда, так же распределенного по дням
-			/*if (kart.getLsk().equals("26074227")) {
-				Calc.mess("Услуга:"+serv.getCd(), 2);
-				Calc.mess("vol="+vol+" price="+stPrice, 2);
-			}*/
-
+			Double absVol= Math.abs(vol);
+			
 			if (cntPers.cntEmpt != 0) {
 				//есть проживающие
 				//соцнорма
-				if (vol <= stdt.partVol) {
-					tmpVol= vol;
+				if (absVol <= stdt.partVol) {
+					tmpVol= absVol;
 				} else {
 					tmpVol= stdt.partVol;
 				}
 	
-				chStore.addChrg(BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
-				
-				
-/*				if (tmpSum != BigDecimal.ZERO) {
-					Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
-					kart.getChrg().add(chrg);
-				}*/
-				
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
 				//свыше соцнормы
-				tmpVol = vol - tmpVol;
-				//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
-				//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
-				/*if (kart.getLsk().equals("26074227")) {
-					Calc.mess("Услуга:"+serv.getCd(), 2);
-					Calc.mess("tmpVol="+tmpVol+" upStPrice="+upStPrice, 2);
-				}*/
-				chStore.addChrg(BigDecimal.valueOf(tmpVol), BigDecimal.valueOf(upStPrice), upStServ, org, uk, genDt);
-/*				if (tmpSum != BigDecimal.ZERO) {
-					Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
-					kart.getChrg().add(chrg);
-				}*/
-				
+				tmpVol = absVol - tmpVol;
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice), upStServ, org, uk, genDt);
 			} else {
 				//нет проживающих
 				if (woKprServ != null) {
 					//если существует услуга "без проживающих"
-					//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(woKprPrice) );
-					//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
 					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice), woKprServ, org, uk, genDt);
 				} else {
 					//услуги без проживающих не существует, поставить на свыше соц.нормы
-					//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(upStPrice) );
-					//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
 					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), upStServ, org, uk, genDt);
 				}
 				
