@@ -3,9 +3,6 @@ package com.ric.bill.mm.impl;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
@@ -21,8 +18,6 @@ import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.ParMng;
-import com.ric.bill.model.ar.House;
-import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Par;
 
@@ -36,10 +31,7 @@ public class ParMngImpl implements ParMng {
 	@Autowired
 	private ParDAO pDao;
 	
-    @PersistenceContext
-    private EntityManager em;
-
-    //получить параметр по его CD
+	//получить параметр по его CD
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
 	public/* synchronized */Par getByCD(String cd) {
 		return pDao.getByCd(cd);
@@ -68,17 +60,10 @@ public class ParMngImpl implements ParMng {
 	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
 	//@Transactional
-	public/* synchronized */Double getDbl(Storable st, String cd, Date genDt) {
-		Storable st2 = null;
-		if (st.getClass()==Kart.class) {
-			st2 = em.find(Kart.class, ((Kart) st).getLsk());
-		}
-		if (st.getClass()==House.class) {
-			st2 = em.find(House.class, ((House) st).getId());
-		}
+	public/* synchronized*/ Double getDbl(Storable st, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
-			for (Dw d: st2.getDw()) {
+			for (Dw d: st.getDw()) {
     			//по соотв.периоду
     			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI) - убрал - тормозит
