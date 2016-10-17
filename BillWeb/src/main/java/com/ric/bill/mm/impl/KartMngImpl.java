@@ -269,7 +269,7 @@ public class KartMngImpl implements KartMng {
 				&& servChrg.getCd().equals("Электроснабжение")) {
 			Double kitchElStv = 0d;
 			String s2;
-			kitchElStv = parMng.getDbl(calc.getKart(), "Электроплита. основное количество", genDt);
+			kitchElStv = parMng.getDbl(calc.getKart().getKlsk(), calc.getKart().getDw(),  "Электроплита. основное количество", genDt);
 			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
 				switch (cntPers.cnt) {

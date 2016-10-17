@@ -32,6 +32,7 @@ public class ChrgServThr {
 	public Future<Result> chrgAndSaveLsk(Calc calc) throws ErrorWhileChrg {
 		ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 		//Выполнить начисление
+		calc.getKart().getDw().size();
 		Result res = chrgServ.chrgLsk(calc);
 		//Сохранить результат
 		if (res.err==0) {

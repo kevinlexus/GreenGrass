@@ -58,12 +58,12 @@ public class ParMngImpl implements ParMng {
 	 */
 	//В кэшах не почувствовал разницы:
 	//@Cacheable(cacheNames="rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
+	@Cacheable(cacheNames="rrr1", key="{ #klsk, #cd, #genDt }")
 	//@Transactional
-	public/* synchronized*/ Double getDbl(Storable st, String cd, Date genDt) {
+	public/* synchronized*/ Double getDbl(Integer klsk, List<Dw> lstDw, String cd, Date genDt) {
 		Par par = getByCD(cd);
 		try {
-			for (Dw d: st.getDw()) {
+			for (Dw d: lstDw) {
     			//по соотв.периоду
     			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI) - убрал - тормозит
