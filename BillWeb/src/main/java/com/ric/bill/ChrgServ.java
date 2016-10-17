@@ -93,6 +93,59 @@ public class ChrgServ {
     	super();
     }
 
+    //внутренний класс, контроля
+    private class Control {
+		Integer orgId;
+    	Integer servId;
+    	
+    	@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((orgId == null) ? 0 : orgId.hashCode());
+			result = prime * result
+					+ ((servId == null) ? 0 : servId.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (!(obj instanceof Control)) {
+				return false;
+			}
+			Control other = (Control) obj;
+			if (orgId == null) {
+				if (other.orgId != null) {
+					return false;
+				}
+			} else if (!orgId.equals(other.orgId)) {
+				return false;
+			}
+			if (servId == null) {
+				if (other.servId != null) {
+					return false;
+				}
+			} else if (!servId.equals(other.servId)) {
+				return false;
+			}
+			return true;
+		}
+
+		public Control(Integer servId, Integer orgId) {
+    		this.orgId=orgId;
+    		this.servId=servId;
+    		
+    		
+		}
+
+    }
+    
 	//получить список N следующих услуг, для расчета в потоках
     private List<Serv> getNextServ(int cnt) {
     	List<Serv> lst = new ArrayList<Serv>(); 
@@ -117,7 +170,27 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	public Result chrgLsk(Calc calc) throws ErrorWhileChrg {
-		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getFlsk(), 2);
+		/*Set<Control> ctrlSet = new HashSet();
+		Control a=new Control(11,11);
+		Control b=new Control(11,11);
+		ctrlSet.add(a);	
+	    ctrlSet.add(b);	
+	    
+		if (ctrlSet.contains(b)) {
+			Calc.mess("Eq", 2);
+			Calc.mess(Integer.toString(a.hashCode()), 2);
+			Calc.mess(Integer.toString(b.hashCode()), 2);
+			Calc.mess("Size"+ctrlSet.size(), 2);
+			
+		} else {
+			Calc.mess("Not Eq", 2);
+			Calc.mess(Integer.toString(a.hashCode()), 2);
+			Calc.mess(Integer.toString(b.hashCode()), 2);
+			Calc.mess("Size"+ctrlSet.size(), 2);
+			
+		}*/
+		  
+		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk(), 2);
 		Result res = new Result();
 		res.err=0;
 		//if (1==1) {
@@ -319,6 +392,7 @@ public class ChrgServ {
 		
 		//ДЕЛЬТА
 		//НАЙТИ и передать дельту в функцию долгов
+		Set<Control> ctrlSet = new HashSet();
 		MapIterator it = mapDeb.mapIterator();
 		while (it.hasNext()) {
 			it.next();
@@ -326,9 +400,12 @@ public class ChrgServ {
 			//Calc.mess("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
 			BigDecimal val = (BigDecimal)it.getValue();
 			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
-
 			//if (lsk.equals("14024244")) {
 			  Calc.mess("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+			  //проверка на дубли
+			  if (ctrlSet.contains(new Control(((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId()))) {
+					throw new ErrorWhileChrg("ChrgServ.save: Found dublicate elements while sending delta");
+			  }
 				// TODO Auto-generated catch block
 				//Calc.mess("Проверка дельты1: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
 				//Calc.mess("Проверка дельты2: org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
