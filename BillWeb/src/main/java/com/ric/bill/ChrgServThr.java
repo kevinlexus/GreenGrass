@@ -13,6 +13,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.ChrgServ;
 import com.ric.bill.Result;
 import com.ric.bill.excp.ErrorWhileChrg;
+import com.ric.bill.model.tr.TarifKlsk;
 
 /**
  * Поток начисления, выполняет вызовы функций начисления
@@ -31,8 +32,25 @@ public class ChrgServThr {
 	@Async
 	public Future<Result> chrgAndSaveLsk(Calc calc) throws ErrorWhileChrg {
 		ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
-		//Выполнить начисление
+		//загрузить все Lazy параметры, чтобы не было concurrensy issue в потоках например, на getDbl()
+		//ну или использовать EAGER в дочерних коллекциях, что более затратно
 		calc.getKart().getDw().size();
+		calc.getKart().getTarifklsk().size();
+		for (TarifKlsk k : calc.getKart().getTarifklsk()) {
+			k.getTarprop().size();
+		}
+		calc.getKart().getReg().size();
+		calc.getKart().getRegState().size();
+
+		calc.getHouse().getTarifklsk().size();
+		for (TarifKlsk k : calc.getHouse().getTarifklsk()) {
+			k.getTarprop().size();
+		}
+		calc.getArea().getTarifklsk().size();
+		for (TarifKlsk k : calc.getArea().getTarifklsk()) {
+			k.getTarprop().size();
+		}
+		//Выполнить начисление
 		Result res = chrgServ.chrgLsk(calc);
 		//Сохранить результат
 		if (res.err==0) {

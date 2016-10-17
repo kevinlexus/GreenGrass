@@ -41,7 +41,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @return - свойство
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #tc.getKlsk(), #serv.getId(), #cd, #genDt }") 
-	public synchronized Double getProp(TarifContains tc, Serv serv, String cd, Date genDt) {
+	public /*synchronized*/ Double getProp(TarifContains tc, Serv serv, String cd, Date genDt) {
 		//Prop prop = getPropByCD(cd);//так и не понял, как быстрее, искать тариф предварительно getPropByCD, или непосредственно через.getCd()
 		//искать сперва по наборам тарифа объекта 
 		//Calc.mess("getProp Looking for serv="+serv.getCd(),2);
@@ -82,7 +82,7 @@ public class TarifMngImpl implements TarifMng {
 	 */
 	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr3", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
-	public synchronized Org getOrg(TarifContains tc, Serv serv, Date genDt) {
+	public /*synchronized*/ Org getOrg(TarifContains tc, Serv serv, Date genDt) {
 
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//по соотв.периоду

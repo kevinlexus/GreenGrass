@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.MeterContains;
 import com.ric.bill.RegContains;
@@ -109,12 +111,14 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ")
-	@BatchSize(size = 500)
+	//@BatchSize(size = 500)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<Reg> reg = new ArrayList<Reg>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ")
-	@BatchSize(size = 500)
+	//@BatchSize(size = 500)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<RegState> regState = new ArrayList<RegState>(0);
 
 	@Column(name = "FK_KW", nullable = true)

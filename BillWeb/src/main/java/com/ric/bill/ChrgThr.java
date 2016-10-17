@@ -100,7 +100,6 @@ public class ChrgThr {
 	@Async
 	public  Future<Result> run1() {
 		Kart kart = calc.getKart();
-//		sz(kart);
 		
 		Result res = new Result();
 		res.err=0;
@@ -129,21 +128,30 @@ public class ChrgThr {
 			Calc.mess("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
 		}
 		
-		
-		
 		//}
 		Calendar c = Calendar.getInstance();
 		
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			genDt = c.getTime();
 			//только там, где нет статуса "не начислять" за данный день
-			if (Utl.nvl(parMng.getDbl(kart.getKlsk(), kart.getDw(), "IS_NOT_CHARGE", genDt), 0d) == 1d) {
-				continue;
+			try {
+				if (Utl.nvl(parMng.getDbl(kart, "IS_NOT_CHARGE", genDt), 0d) == 1d) {
+					continue;
+				}
+			} catch (EmptyStorable e) {
+				e.printStackTrace();
+				throw new RuntimeException();
 			}
 
 			//только там, где существует услуга в данном дне
 			if (kartMng.getServ(calc, serv, genDt)) {
-				String tpOwn = parMng.getStr(kart, "FORM_S", genDt);
+				String tpOwn = null;
+				try {
+					tpOwn = parMng.getStr(kart, "FORM_S", genDt);
+				} catch (EmptyStorable e) {
+					e.printStackTrace();
+					throw new RuntimeException();
+				}
 				//получить обслуживающую УК
 				Org uk = kart.getUk();
 				//Org uk = kartMng.getUk(kart, genDt);
@@ -349,7 +357,7 @@ public class ChrgThr {
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d) {
 			//получить объем одного дня
 			//Calc.mess(thrName+" CHECK4.1="+serv.getId()+" dt="+genDt,2);	
-			vol = Utl.nvl(parMng.getDbl(kart.getKlsk(), kart.getDw(), baseCD, genDt), 0d);
+			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
 			
 			vol = vol / config.getCntCurDays();
 			//проверить по капремонту, чтобы не была квартира муниципальной
@@ -368,7 +376,7 @@ public class ChrgThr {
 			
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
 			//получить объем за месяц
-			vol = Utl.nvl(parMng.getDbl(kart.getKlsk(), kart.getDw(), baseCD, genDt), 0d);
+			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
 			//получить долю объема за день HARD CODE
 			//площадь полива (в доле 1 дня)/100 * 60 дней / 12мес * норматив / среднее кол-во дней в месяце
 			vol = vol/100d*60d/12d*stdt.partVol/30.4d/config.getCntCurDays();
@@ -387,7 +395,7 @@ public class ChrgThr {
 			
 			if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
 				//доля площади в день
-				sqr = Utl.nvl(parMng.getDbl(kart.getKlsk(), kart.getDw(), baseCD, genDt), 0d) / config.getCntCurDays();
+				sqr = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d) / config.getCntCurDays();
 			}
 			
 			

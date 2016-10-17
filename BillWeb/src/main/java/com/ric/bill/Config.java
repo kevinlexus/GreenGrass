@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.mm.ObjMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Obj;
@@ -56,7 +57,7 @@ public class Config {
 	}
 	
 	@PostConstruct
-	private void setUp() {
+	private void setUp() throws EmptyStorable {
 		//Объект приложения, получить даты текущего периода
 		Obj obj = objMng.getByCD("Модуль начисления");
 		

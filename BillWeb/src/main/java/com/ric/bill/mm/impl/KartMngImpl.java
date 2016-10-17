@@ -171,7 +171,7 @@ public class KartMngImpl implements KartMng {
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
 	//@Transactional
-	public synchronized void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
+	public /*synchronized*/ void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
@@ -269,7 +269,7 @@ public class KartMngImpl implements KartMng {
 				&& servChrg.getCd().equals("Электроснабжение")) {
 			Double kitchElStv = 0d;
 			String s2;
-			kitchElStv = parMng.getDbl(calc.getKart().getKlsk(), calc.getKart().getDw(),  "Электроплита. основное количество", genDt);
+			kitchElStv = parMng.getDbl(calc.getKart(), "Электроплита. основное количество", genDt);
 			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
 				switch (cntPers.cnt) {
@@ -366,7 +366,7 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #cd, #genDt }") 
-	public synchronized Double getServPropByCD(Calc calc, Serv serv, String cd, Date genDt) { //убрал synchronized, получил - java.util.concurrent.ExecutionException: org.hibernate.exception.GenericJDBCException: could not initialize a collection
+	public /*synchronized*/ Double getServPropByCD(Calc calc, Serv serv, String cd, Date genDt) { //убрал synchronized, получил - java.util.concurrent.ExecutionException: org.hibernate.exception.GenericJDBCException: could not initialize a collection
 		Double val;
 		//в начале ищем по дому
 		val=tarMng.getProp(calc.getHouse(), serv, cd, genDt);
@@ -432,7 +432,7 @@ public class KartMngImpl implements KartMng {
 	 * @param cmd - добавлять ли услугу в список(0) или удалять(1)?
 	 * @return - обновленный список услуг
 	 */
-    public synchronized List<Serv> checkServ(TarifContains tc, List lst, String cd, int cmd) {
+    public /*synchronized*/ List<Serv> checkServ(TarifContains tc, List lst, String cd, int cmd) {
     	//список отключенных услуг
     	//List lstOff = new ArrayList<Serv>();
     	for (TarifKlsk k : tc.getTarifklsk()) {

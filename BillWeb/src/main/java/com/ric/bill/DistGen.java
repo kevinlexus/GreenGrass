@@ -199,7 +199,7 @@ public class DistGen {
 		} else if (tp==1 && (mLogTp.equals("ЛНрм") || mLogTp.equals("ЛИПУ") || mLogTp.equals("Лсчетчик"))) {
 			//по связи по площади и кол.прож. (только по Лнрм, ЛИПУ) в доле 1 дня
 			//площадь
-			partArea = Utl.nvl(parMng.getDbl(kart.getKlsk(), kart.getDw(), "Площадь.Общая", genDt), 0d) / config.getCntCurDays(); 
+			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", genDt), 0d) / config.getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
 			kartMng.getCntPers(kart, servChrg, cntPers, 0, genDt);
@@ -215,8 +215,8 @@ public class DistGen {
 			//поиск счетчика ЛОДН
 			lnkLODN = metMng.getLinkedNode(ml, "ЛОДН", genDt);
 			//параметр Доначисление по ОДН
-			Double parAddODN = Utl.nvl(parMng.getDbl(lnkLODN.getKlsk(), lnkLODN.getDw(), "Доначисление по ОДН", genDt), 0d);
-			Double parLimitODN = parMng.getDbl(lnkLODN.getKlsk(), lnkLODN.getDw(), "Лимит по ОДН", genDt);
+			Double parAddODN = Utl.nvl(parMng.getDbl((Storable)lnkLODN, "Доначисление по ОДН", genDt), 0d);
+			Double parLimitODN = parMng.getDbl((Storable)lnkLODN, "Лимит по ОДН", genDt);
 			
 			if (lnkLODN == null) {
 				// не найден счетчик
@@ -328,7 +328,7 @@ public class DistGen {
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
 			SumNodeVol sumVol = metMng.getVolPeriod(ml, tp, genDt, genDt);
 			//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
-			Double tmp =parMng.getDbl(lnkLODN.getKlsk(), lnkLODN.getDw(), "VOL_SQ_MT", genDt);
+			Double tmp =parMng.getDbl(lnkLODN, "VOL_SQ_MT", genDt);
 			if (tmp != null) {
 				//установлено значение "Введено гкал." 
 				vl = tmp * sumVol.getArea();
