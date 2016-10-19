@@ -46,7 +46,7 @@ public class ParseMngImpl implements ParseMng {
 				List<WebElement> chldLst = e.findElements(By.xpath(".//*"));
 				String txt = null;
 				for (WebElement e2 : chldLst) {
-					if (e2.getAttribute("class").contains("b-post__txt")) {
+					if (e2.getAttribute("class").contains("b-post__txt")) { 
 						txt = e2.getText();
 					}
 					if (e2.getAttribute("id").contains("project-reason-")) {
