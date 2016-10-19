@@ -2,6 +2,9 @@ package com.ric.bill;
 
 import java.util.concurrent.Future;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -28,6 +31,8 @@ public class ChrgServThr {
 
 	@Autowired
 	private ApplicationContext ctx;
+    @PersistenceContext
+    private EntityManager em;
 	
 	@Async
 	public Future<Result> chrgAndSaveLsk(Calc calc) throws ErrorWhileChrg {

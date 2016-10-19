@@ -283,7 +283,7 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
-		Calc.setDbgLvl(2);
+		Calc.setDbgLvl(1);
 		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		//ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 		DistServ distServ = ctx.getBean(DistServ.class);
@@ -316,8 +316,6 @@ public class BillServ {
 				return fut;
 			}
 		}
-
-		Calc.setDbgLvl(2);
 
 		//расчитать начисление
 	    try {

@@ -216,7 +216,7 @@ public class ChrgServ {
 		errThread=false;
 
 		for (Serv serv: servThr) {
-			Calc.mess("ChrgServ: serv.cd="+serv.getCd());
+			Calc.mess("ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
 		}
 		while (true) {
 			Calc.mess("ChrgServ: Loading servs for threads");
@@ -249,7 +249,7 @@ public class ChrgServ {
 						flag2=0;
 					} else {
 						try {
-							Calc.mess("ChrgServ: Done Result.err:="+fut.get().err);
+							//Calc.mess("ChrgServ: Done Result.err:="+fut.get().err);
 							if (fut.get().err==1) {
 								errThread=true;
 							}

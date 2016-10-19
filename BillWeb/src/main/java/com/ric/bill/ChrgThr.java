@@ -124,7 +124,7 @@ public class ChrgThr {
 		chStore = new ChrgStore(); 
 		//if (serv.getId()==32) {
 		Calc.mess("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
-		if (serv.getId()==35) {
+		if (serv.getId()==72) {
 			Calc.mess("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
 		}
 		
