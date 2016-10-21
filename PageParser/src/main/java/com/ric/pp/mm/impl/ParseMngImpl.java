@@ -27,6 +27,23 @@ public class ParseMngImpl implements ParseMng {
 	public void parse() {
 		  
 		System.out.println("Started");
+		
+		
+		
+		
+		
+		
+		Proj proj = new Proj(1, 0, "txt", 2);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		System.setProperty("webdriver.chrome.driver", "C:\\install\\ChromeDriver\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
 		driver.get("https://www.fl.ru/projects/");
@@ -37,6 +54,7 @@ public class ParseMngImpl implements ParseMng {
 		combo.sendKeys("Программирование");
 		combo.sendKeys(Keys.RETURN);
 		combo.submit();
+		
 		
 		for (int page=1; page<=100; page++) {
 			System.out.println("Page:"+page);
