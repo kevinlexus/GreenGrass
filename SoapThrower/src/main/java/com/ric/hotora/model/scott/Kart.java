@@ -1,4 +1,4 @@
-package com.ric.finday.model.scott;
+package com.ric.hotora.model.scott;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,28 +46,6 @@ public class Kart implements java.io.Serializable  {
 		this.lsk = lsk;
 	}
 	
-	public boolean equals(Object o) {
-	    if (this == o) return true;
-	    if (o == null || !(o instanceof Kart))
-	        return false;
-
-	    Kart other = (Kart)o;
-
-	    if (getLsk() == other.getLsk()) return true;
-	    if (getLsk() == null) return false;
-
-	    // equivalence by id
-	    return getLsk().equals(other.getLsk());
-	}
-
-	public int hashCode() {
-	    if (getLsk() != null) {
-	        return getLsk().hashCode();
-	    } else {
-	        return super.hashCode();
-	    }
-	}
-
 	public String getReu() {
 		return reu;
 	}
@@ -100,6 +78,28 @@ public class Kart implements java.io.Serializable  {
 		this.fio = fio;
 	}
 
+
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof Kart))
+	        return false;
+
+	    Kart other = (Kart)o;
+
+	    if (getLsk() == other.getLsk()) return true;
+	    if (getLsk() == null) return false;
+
+	    // equivalence by id
+	    return getLsk().equals(other.getLsk());
+	}
+
+	public int hashCode() {
+	    if (getLsk() != null) {
+	        return getLsk().hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
+	}
 	
 }
 

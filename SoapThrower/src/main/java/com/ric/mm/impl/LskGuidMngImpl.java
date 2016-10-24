@@ -6,17 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ric.hotora.dao.KartDAO;
+import com.ric.hotora.dao.LskGuidDAO;
+import com.ric.hotora.model.fkv.LskGuid;
 import com.ric.hotora.model.scott.Kart;
 import com.ric.mm.KartMng;
+import com.ric.mm.LskGuidMng;
 
 @Service
-public class KartMngImpl implements KartMng {
+public class LskGuidMngImpl implements LskGuidMng {
 
 	@Autowired
-	private KartDAO kDao;
+	private LskGuidDAO lDao;
 
-	public List<Kart> getKart(String lsk) {
-		return kDao.getKart(lsk);
+	public List<LskGuid> getLskGuid(String lsk) {
+		return lDao.getLskGuid(lsk);
 	}
 	
 	

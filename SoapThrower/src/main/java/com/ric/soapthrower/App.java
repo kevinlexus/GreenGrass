@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service.Fault;
 
 /**
- * Hello world!
+ * Точка входа в приложение
  *
  */
 public class App 

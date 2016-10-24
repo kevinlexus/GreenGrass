@@ -2,6 +2,7 @@ package com.ric.soapthrower;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.concurrent.Future;
 
 import javax.persistence.EntityManager;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ric.finday.model.scott.Kart;
+import com.ric.hotora.model.fkv.LskGuid;
+import com.ric.hotora.model.scott.Kart;
+import com.ric.mm.LskGuidMng;
 
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryRequest;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryResult;
@@ -42,20 +45,18 @@ public class ThrowerMng {
 	private ApplicationContext ctx;
     @PersistenceContext
     private EntityManager em;
+	@Autowired
+	private LskGuidMng lMng;
 	
     @Test
     public void checkIt() {
     	
-    	Kart kart = em.find(Kart.class, "07234421");
-    	if (kart!=null){
-	    	System.out.println(kart.getReu());
-	    	System.out.println(kart.getKul());
-	    	System.out.println(kart.getNd());
-	    	System.out.println(kart.getFio());
-    	} else {
-    		System.out.println("не найден лс!");
+    	List<LskGuid> lst = lMng.getLskGuid("07234421");
+    	for (LskGuid e: lst) {
+    		System.out.println(e.getLsk());
+    		System.out.println(e.getKul());
     	}
-
+    	
     }
     
 	//отправить XML

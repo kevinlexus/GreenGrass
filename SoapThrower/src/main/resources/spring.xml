@@ -25,12 +25,11 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-<!--	 <context:component-scan base-package="com.ric.mm" />
- 	 <context:component-scan base-package="com.ric.mm.impl" />
-	 <context:component-scan base-package="com.ric.finday.dao" />
-	 <context:component-scan base-package="com.ric.finday.dao.impl" />-->
  	 <context:component-scan base-package="com.ric.soapthrower" />
- 
+ 	 <context:component-scan base-package="com.ric.mm" />
+ 	 <context:component-scan base-package="com.ric.mm.impl" />
+	 <context:component-scan base-package="com.ric.hotora.dao" />
+	 <context:component-scan base-package="com.ric.hotora.dao.impl" />
  
     <bean class="org.springframework.orm.jpa.JpaTransactionManager"
         id="transactionManager">
