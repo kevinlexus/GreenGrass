@@ -195,12 +195,11 @@ public class DistServ {
 		//почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
-		//найти все необходимые услуги для удаления объемов (здесь только по типу 0)
-		for (Serv serv : servMng.findForDistVol()) {
+		//найти все необходимые услуги для удаления объемов, здесь только по типу 0 и только те услуги, которые надо удалить для ЛС 
+		for (Serv serv : servMng.findForDistVolForKart()) {
 				Calc.mess("Удаление объема по услуге"+serv.getCd());
 				delKartServVolTp(kart, serv, 0);
 		}
-
 		
 		Calc.mess("Распределение объемов");
 		//найти все необходимые услуги для распределения

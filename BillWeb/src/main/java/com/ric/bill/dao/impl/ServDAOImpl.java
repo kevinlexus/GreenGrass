@@ -48,6 +48,19 @@ public class ServDAOImpl implements ServDAO {
 	}
 
 	/**
+	 * Найти и отсортировать, все услуги для распределения объемов 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Serv> findForDistVolForKart() {
+		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4) order by t.npp2");
+		query.setParameter("s1", "Холодная вода");
+		query.setParameter("s2", "Горячая вода");
+		query.setParameter("s3", "Водоотведение");
+		query.setParameter("s4", "Электроснабжение");
+		return query.getResultList();
+	}
+
+	/**
 	 * Найти услугу по CD
 	 * @param cd - услуги
 	 * @return

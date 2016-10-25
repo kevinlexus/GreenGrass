@@ -55,6 +55,10 @@ public class ServMngImpl implements ServMng {
 		return sDao.findForDistVol();
 	}
 
+	public synchronized List<Serv> findForDistVolForKart() {
+		return sDao.findForDistVolForKart();
+	}
+
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
 	public synchronized Serv getByCD(String cd) {
 		//Calc.mess("################### ПРОВЕРКА КЭША ####################",2);
