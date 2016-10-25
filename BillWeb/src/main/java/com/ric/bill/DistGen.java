@@ -159,6 +159,7 @@ public class DistGen {
 		Kart kart = ml.getKart();
 		//Kart kart = metMng.getKart(ml); <--тормозит!
 
+		//присвоить лиц.счет, чтобы использовать calc в подсчете например нормативов
 		calc.setKart(kart); 
 
 		if (!ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {

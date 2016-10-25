@@ -283,7 +283,7 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
-		Calc.setDbgLvl(1);
+		Calc.setDbgLvl(2);
 		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		//ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 		DistServ distServ = ctx.getBean(DistServ.class);
@@ -306,7 +306,6 @@ public class BillServ {
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
     	calc.setKart(kart);
-    	
 		if (dist) {
 			try {
 				distServ.distKartVol(calc);
@@ -316,6 +315,9 @@ public class BillServ {
 				return fut;
 			}
 		}
+
+		//присвоить обратно лиц.счет, который мог быть занулён в distServ.distKartVol(calc);
+		calc.setKart(kart); 
 
 		//расчитать начисление
 	    try {

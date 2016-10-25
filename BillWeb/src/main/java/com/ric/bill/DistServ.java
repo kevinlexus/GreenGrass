@@ -359,7 +359,7 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	private void distGraph (MLogs ml) throws ErrorWhileDist {
-		Calc.mess("DistServ.distGraph: Распределение ввода:"+ml.getId());
+		Calc.mess("DistServ.distGraph: Распределение счетчика:"+ml.getId());
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
