@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
@@ -35,6 +36,7 @@ import ru.gosuslugi.dom.schema.integration.base.BaseType;
  *                         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-base/}OGRN"/>
  *                         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-base/}KPP" minOccurs="0"/>
  *                       &lt;/sequence>
+ *                       &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-base/}NZA"/>
  *                     &lt;/choice>
  *                     &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}orgVersionGUID"/>
  *                     &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}orgRootEntityGUID"/>
@@ -47,6 +49,7 @@ import ru.gosuslugi.dom.schema.integration.base.BaseType;
  *         &lt;/element>
  *         &lt;element name="lastEditingDateFrom" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *       &lt;/sequence>
+ *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="10.0.2.1""/>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -68,6 +71,8 @@ public class ExportOrgRegistryRequest
     protected List<ExportOrgRegistryRequest.SearchCriteria> searchCriteria;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar lastEditingDateFrom;
+    @XmlAttribute(name = "version", namespace = "http://dom.gosuslugi.ru/schema/integration/base/", required = true)
+    protected String version;
 
     /**
      * Gets the value of the searchCriteria property.
@@ -122,6 +127,34 @@ public class ExportOrgRegistryRequest
         this.lastEditingDateFrom = value;
     }
 
+    /**
+     * Gets the value of the version property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVersion() {
+        if (version == null) {
+            return "10.0.2.1";
+        } else {
+            return version;
+        }
+    }
+
+    /**
+     * Sets the value of the version property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVersion(String value) {
+        this.version = value;
+    }
+
 
     /**
      * <p>Java class for anonymous complex type.
@@ -140,6 +173,7 @@ public class ExportOrgRegistryRequest
      *               &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-base/}OGRN"/>
      *               &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-base/}KPP" minOccurs="0"/>
      *             &lt;/sequence>
+     *             &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-base/}NZA"/>
      *           &lt;/choice>
      *           &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}orgVersionGUID"/>
      *           &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}orgRootEntityGUID"/>
@@ -158,6 +192,7 @@ public class ExportOrgRegistryRequest
         "ogrnip",
         "ogrn",
         "kpp",
+        "nza",
         "orgVersionGUID",
         "orgRootEntityGUID",
         "isRegistered"
@@ -170,6 +205,8 @@ public class ExportOrgRegistryRequest
         protected String ogrn;
         @XmlElement(name = "KPP", namespace = "http://dom.gosuslugi.ru/schema/integration/organizations-base/")
         protected String kpp;
+        @XmlElement(name = "NZA", namespace = "http://dom.gosuslugi.ru/schema/integration/organizations-base/")
+        protected String nza;
         @XmlElement(namespace = "http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/")
         protected String orgVersionGUID;
         @XmlElement(namespace = "http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/")
@@ -246,6 +283,30 @@ public class ExportOrgRegistryRequest
          */
         public void setKPP(String value) {
             this.kpp = value;
+        }
+
+        /**
+         * Gets the value of the nza property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getNZA() {
+            return nza;
+        }
+
+        /**
+         * Sets the value of the nza property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setNZA(String value) {
+            this.nza = value;
         }
 
         /**

@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import ru.gosuslugi.dom.schema.integration.house_management.MunicipalResourceNotElectricType;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
@@ -40,10 +41,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
     "readingsSource"
 })
 @XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.device_metering.ImportMeteringDeviceValuesRequest.MeteringDevicesValues.OneRateDeviceValue.CurrentValue.class,
-    ru.gosuslugi.dom.schema.integration.device_metering.ImportMeteringDeviceValuesRequest.MeteringDevicesValues.OneRateDeviceValue.ControlValue.class,
-    ru.gosuslugi.dom.schema.integration.device_metering.OneRateMeteringValueKindType.CurrentValue.class,
-    ru.gosuslugi.dom.schema.integration.device_metering.OneRateMeteringValueKindType.ControlValue.class
+    MunicipalResourceNotElectricType.class
 })
 public class OneRateMeteringValueType {
 

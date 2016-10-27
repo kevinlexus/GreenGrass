@@ -29,6 +29,7 @@ public class ObjectFactory {
     private final static QName _KPP_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/organizations-base/", "KPP");
     private final static QName _Fax_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/organizations-base/", "Fax");
     private final static QName _Mail_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/organizations-base/", "Mail");
+    private final static QName _NZA_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/organizations-base/", "NZA");
     private final static QName _OGRNIP_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/organizations-base/", "OGRNIP");
     private final static QName _OKOGU_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/organizations-base/", "OKOGU");
     private final static QName _OKOPF_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/organizations-base/", "OKOPF");
@@ -85,6 +86,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://dom.gosuslugi.ru/schema/integration/organizations-base/", name = "Mail")
     public JAXBElement<String> createMail(String value) {
         return new JAXBElement<String>(_Mail_QNAME, String.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://dom.gosuslugi.ru/schema/integration/organizations-base/", name = "NZA")
+    public JAXBElement<String> createNZA(String value) {
+        return new JAXBElement<String>(_NZA_QNAME, String.class, null, value);
     }
 
     /**

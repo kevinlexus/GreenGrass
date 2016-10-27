@@ -80,6 +80,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ForeignBranchType }
+     * 
+     */
+    public ForeignBranchType createForeignBranchType() {
+        return new ForeignBranchType();
+    }
+
+    /**
      * Create an instance of {@link SubsidiaryType.SourceName }
      * 
      */

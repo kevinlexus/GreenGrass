@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_base.EntpsType;
+import ru.gosuslugi.dom.schema.integration.organizations_registry_base.ForeignBranchType;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_base.LegalType;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgVersionType;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_base.SubsidiaryType;
@@ -65,6 +66,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.Subsidiar
  *                       &lt;/complexType>
  *                     &lt;/element>
  *                     &lt;element name="Entrp" type="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}EntpsType"/>
+ *                     &lt;element name="ForeignBranch" type="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}ForeignBranchType"/>
  *                   &lt;/choice>
  *                   &lt;element name="registryOrganizationStatus" minOccurs="0">
  *                     &lt;simpleType>
@@ -277,6 +279,7 @@ public class ExportOrgRegistryResultType {
      *             &lt;/complexType>
      *           &lt;/element>
      *           &lt;element name="Entrp" type="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}EntpsType"/>
+     *           &lt;element name="ForeignBranch" type="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}ForeignBranchType"/>
      *         &lt;/choice>
      *         &lt;element name="registryOrganizationStatus" minOccurs="0">
      *           &lt;simpleType>
@@ -301,6 +304,7 @@ public class ExportOrgRegistryResultType {
         "legal",
         "subsidiary",
         "entrp",
+        "foreignBranch",
         "registryOrganizationStatus"
     })
     public static class OrgVersion {
@@ -318,6 +322,8 @@ public class ExportOrgRegistryResultType {
         protected ExportOrgRegistryResultType.OrgVersion.Subsidiary subsidiary;
         @XmlElement(name = "Entrp")
         protected EntpsType entrp;
+        @XmlElement(name = "ForeignBranch")
+        protected ForeignBranchType foreignBranch;
         protected String registryOrganizationStatus;
 
         /**
@@ -454,6 +460,30 @@ public class ExportOrgRegistryResultType {
          */
         public void setEntrp(EntpsType value) {
             this.entrp = value;
+        }
+
+        /**
+         * Gets the value of the foreignBranch property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link ForeignBranchType }
+         *     
+         */
+        public ForeignBranchType getForeignBranch() {
+            return foreignBranch;
+        }
+
+        /**
+         * Sets the value of the foreignBranch property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link ForeignBranchType }
+         *     
+         */
+        public void setForeignBranch(ForeignBranchType value) {
+            this.foreignBranch = value;
         }
 
         /**

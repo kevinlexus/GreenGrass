@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Header>
+		<ns5:RequestHeader xmlns="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
+			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
+			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/house-management/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
+			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/metering-device-base/">
+			<ns5:Date>2016-10-27T07:28:46.535+06:00</ns5:Date>
+			<ns5:MessageGUID>ab2f59bc-9580-4be2-b545-72a32c7f7418
+			</ns5:MessageGUID>
+			<ns5:orgPPAGUID>9b051b50-937d-44f7-b03b-ff621d84ea3d</ns5:orgPPAGUID>
+		</ns5:RequestHeader>
+	</S:Header>
+	<S:Body>
+		<ns4:exportOrgRegistryRequest xmlns="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
+			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
+			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/house-management/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
+			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+			ns5:version="10.0.2.1">
+			<ns4:SearchCriteria>
+				<ns2:OGRN>1114205043468</ns2:OGRN>
+			</ns4:SearchCriteria>
+		</ns4:exportOrgRegistryRequest>
+	</S:Body>
+</S:Envelope>
+--------------------
