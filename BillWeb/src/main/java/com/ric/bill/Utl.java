@@ -2,7 +2,13 @@ package com.ric.bill;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.UUID;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -72,11 +78,34 @@ public class Utl {
 	    return diff;
 	}
 
-	//вернуть объект Calendar по заданной дате
+	/**
+	 * Вернуть объект Calendar по заданной дате 
+	 * @param date
+	 * @return
+	 */
 	public static Calendar getCalendar(Date date) {
 	    Calendar cal = Calendar.getInstance(Locale.US);
 	    cal.setTime(date);
 	    return cal;
 	}	
+	
+	//вернуть случайный UUID
+	public static UUID getRndUuid() {
+		return UUID.randomUUID();
+	}
+	
+	/**
+	 * Вернуть дату в XML типе
+	 * @param dt
+	 * @return
+	 * @throws DatatypeConfigurationException
+	 */
+	public XMLGregorianCalendar getXMLDate(Date dt) throws DatatypeConfigurationException {
+		GregorianCalendar c = new GregorianCalendar();
+		c.setTime(dt);
+		XMLGregorianCalendar xmlDt = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+		return xmlDt;
+	}
+	
 	
 }
