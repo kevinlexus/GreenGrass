@@ -10,7 +10,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Основные характеристики дома
+ * РћСЃРЅРѕРІРЅС‹Рµ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё РґРѕРјР°
  * 
  * <p>Java class for HouseBasicRSOType complex type.
  * 

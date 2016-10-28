@@ -11,7 +11,7 @@ import ru.gosuslugi.dom.schema.integration.individual_registry_base.FIOType;
 
 
 /**
- * Инициатор - физическое лицо
+ * РРЅРёС†РёР°С‚РѕСЂ - С„РёР·РёС‡РµСЃРєРѕРµ Р»РёС†Рѕ
  * 
  * <p>Java class for VotingInitiatorIndType complex type.
  * 

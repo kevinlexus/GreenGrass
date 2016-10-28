@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Строка данных для объекта ЖФ
+ * РЎС‚СЂРѕРєР° РґР°РЅРЅС‹С… РґР»СЏ РѕР±СЉРµРєС‚Р° Р–Р¤
  * 
  * <p>Java class for OGFData complex type.
  * 

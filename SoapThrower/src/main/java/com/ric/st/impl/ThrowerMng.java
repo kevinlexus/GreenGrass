@@ -3,34 +3,24 @@ package com.ric.st.impl;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.concurrent.Future;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.terracotta.modules.ehcache.async.AsyncConfig;
 
-import com.ric.bill.Utl;
-import com.ric.hotora.model.scott.Kart;
-import com.ric.st.SoapPreps;
-import com.ric.st.Throwers;
-
-import ru.gosuslugi.dom.schema.integration.base.HeaderType;
-import ru.gosuslugi.dom.schema.integration.base.ObjectFactory;
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 import ru.gosuslugi.dom.schema.integration.house_management.ApartmentHouseUOType.BasicCharacteristicts;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest;
@@ -40,22 +30,20 @@ import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagem
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementService;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryRequest;
+import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryRequest.SearchCriteria;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryResult;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryResultType;
-import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryRequest.SearchCriteria;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service.Fault;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service.RegOrgPortsType;
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service.RegOrgService;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.UUID;
-
+import com.ric.bill.Utl;
+import com.ric.st.SoapPreps;
+import com.ric.st.Throwers;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @RunWith(SpringJUnit4ClassRunner.class) //только для JUnit, можно убрать!
-@ContextConfiguration(classes = {AppConfig.class}) //только для JUnit, можно убрать!
+@ContextConfiguration(classes = {AsyncConfig.class}) //только для JUnit, можно убрать!
 @Service
 public class ThrowerMng implements Throwers{
 
@@ -100,8 +88,8 @@ public class ThrowerMng implements Throwers{
     	bc.setFloorCount("10");
     	bc.setNoRSOGKNEGRPRegistered(true);
     	ac.setUndergroundFloorCount("0");
-
-    	UUID tuid = UUID.randomUUID();
+    	ac.setMinFloorCount((byte)0);
+    	
     	ac.setTransportGUID(Utl.getRndUuid().toString());
     	
     	NsiRef ns = new NsiRef();

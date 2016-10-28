@@ -15,7 +15,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Лифт (для экспорта)
+ * Р›РёС„С‚ (РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°)
  * 
  * <p>Java class for LiftExportType complex type.
  * 

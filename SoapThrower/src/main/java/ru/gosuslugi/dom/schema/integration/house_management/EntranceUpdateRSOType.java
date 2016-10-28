@@ -11,7 +11,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Подъезд (обновление данных для РСО)
+ * РџРѕРґСЉРµР·Рґ (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ Р РЎРћ)
  * 
  * <p>Java class for EntranceUpdateRSOType complex type.
  * 

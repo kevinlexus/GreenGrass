@@ -11,7 +11,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Подъезд (для экспорта)
+ * РџРѕРґСЉРµР·Рґ (РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°)
  * 
  * <p>Java class for EntranceExportType complex type.
  * 

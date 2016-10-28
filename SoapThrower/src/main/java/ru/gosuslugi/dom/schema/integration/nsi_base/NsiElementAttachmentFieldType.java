@@ -9,7 +9,7 @@ import ru.gosuslugi.dom.schema.integration.base.AttachmentType;
 
 
 /**
- * Составной тип. Наименование и значение поля "Вложение"
+ * РЎРѕСЃС‚Р°РІРЅРѕР№ С‚РёРї. РќР°РёРјРµРЅРѕРІР°РЅРёРµ Рё Р·РЅР°С‡РµРЅРёРµ РїРѕР»СЏ "Р’Р»РѕР¶РµРЅРёРµ"
  * 
  * <p>Java class for NsiElementAttachmentFieldType complex type.
  * 

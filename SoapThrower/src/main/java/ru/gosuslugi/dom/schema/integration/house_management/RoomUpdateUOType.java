@@ -14,7 +14,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Комната (обновление данных для УО)
+ * РљРѕРјРЅР°С‚Р° (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ РЈРћ)
  * 
  * <p>Java class for RoomUpdateUOType complex type.
  * 

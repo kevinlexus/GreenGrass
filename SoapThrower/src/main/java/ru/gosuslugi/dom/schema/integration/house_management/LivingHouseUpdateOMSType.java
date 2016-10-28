@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Жилой дом (обновление данных ОМС)
+ * Р–РёР»РѕР№ РґРѕРј (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РћРњРЎ)
  * 
  * <p>Java class for LivingHouseUpdateOMSType complex type.
  * 

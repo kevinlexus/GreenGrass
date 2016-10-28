@@ -11,7 +11,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Подъезд (обновление данных для УО)
+ * РџРѕРґСЉРµР·Рґ (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ РЈРћ)
  * 
  * <p>Java class for EntranceUpdateUOType complex type.
  * 

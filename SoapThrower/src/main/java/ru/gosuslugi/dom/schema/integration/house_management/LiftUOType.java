@@ -12,7 +12,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Лифт (для импорта от УО)
+ * Р›РёС„С‚ (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РЈРћ)
  * 
  * <p>Java class for LiftUOType complex type.
  * 

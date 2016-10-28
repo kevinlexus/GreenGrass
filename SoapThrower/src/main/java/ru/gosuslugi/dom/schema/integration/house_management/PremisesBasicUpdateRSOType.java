@@ -11,7 +11,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Базовый тип помещения (обновление данных для РСО)
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РїРѕРјРµС‰РµРЅРёСЏ (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ Р РЎРћ)
  * 
  * <p>Java class for PremisesBasicUpdateRSOType complex type.
  * 

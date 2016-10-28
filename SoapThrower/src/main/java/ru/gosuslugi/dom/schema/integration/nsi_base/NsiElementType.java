@@ -12,7 +12,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Составной тип. Элемент справочника.
+ * РЎРѕСЃС‚Р°РІРЅРѕР№ С‚РёРї. Р­Р»РµРјРµРЅС‚ СЃРїСЂР°РІРѕС‡РЅРёРєР°.
  * 
  * <p>Java class for NsiElementType complex type.
  * 

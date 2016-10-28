@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * —Ò˚ÎÍ‡ Ì‡ Œ “ÃŒ
+ * –°—Å—ã–ª–∫–∞ –Ω–∞ –û–ö–¢–ú–û
  * 
  * <p>Java class for OKTMORefType complex type.
  * 

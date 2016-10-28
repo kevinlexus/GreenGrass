@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип выбора дня начала/окончания периода ввода показаний по ПУ
+ * РўРёРї РІС‹Р±РѕСЂР° РґРЅСЏ РЅР°С‡Р°Р»Р°/РѕРєРѕРЅС‡Р°РЅРёСЏ РїРµСЂРёРѕРґР° РІРІРѕРґР° РїРѕРєР°Р·Р°РЅРёР№ РїРѕ РџРЈ
  * 
  * <p>Java class for DeviceMeteringsDaySelectionType complex type.
  * 

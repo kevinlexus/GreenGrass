@@ -9,7 +9,7 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
 
 
 /**
- * Тип статуса размещения ДУ в ГИС ЖКХ
+ * РўРёРї СЃС‚Р°С‚СѓСЃР° СЂР°Р·РјРµС‰РµРЅРёСЏ Р”РЈ РІ Р“РРЎ Р–РљРҐ
  * 
  * <p>Java class for importContractResultType complex type.
  * 

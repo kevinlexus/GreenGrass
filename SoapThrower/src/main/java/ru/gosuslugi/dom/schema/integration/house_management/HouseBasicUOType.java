@@ -14,7 +14,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Основные характеристики дома (для импорта от УО)
+ * РћСЃРЅРѕРІРЅС‹Рµ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё РґРѕРјР° (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РЈРћ)
  * 
  * <p>Java class for HouseBasicUOType complex type.
  * 

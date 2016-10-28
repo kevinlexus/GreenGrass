@@ -11,7 +11,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Параметры закрытого ЛС
+ * РџР°СЂР°РјРµС‚СЂС‹ Р·Р°РєСЂС‹С‚РѕРіРѕ Р›РЎ
  * 
  * <p>Java class for ClosedAccountAttributesType complex type.
  * 

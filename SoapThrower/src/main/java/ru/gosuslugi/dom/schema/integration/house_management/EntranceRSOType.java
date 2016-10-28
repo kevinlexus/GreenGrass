@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Подъезд (для импорта от РСО)
+ * РџРѕРґСЉРµР·Рґ (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ Р РЎРћ)
  * 
  * <p>Java class for EntranceRSOType complex type.
  * 

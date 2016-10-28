@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Индивидуальный предприниматель
+ * РРЅРґРёРІРёРґСѓР°Р»СЊРЅС‹Р№ РїСЂРµРґРїСЂРёРЅРёРјР°С‚РµР»СЊ
  * 
  * <p>Java class for EntpsType complex type.
  * 
@@ -170,7 +170,7 @@ public class EntpsType {
     }
 
     /**
-     * ОГРН
+     * РћР“Р Рќ
      * 
      * @return
      *     possible object is

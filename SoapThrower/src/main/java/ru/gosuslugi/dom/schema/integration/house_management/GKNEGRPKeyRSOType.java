@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Сведения из ГКН для РСО
+ * РЎРІРµРґРµРЅРёСЏ РёР· Р“РљРќ РґР»СЏ Р РЎРћ
  * 
  * <p>Java class for GKN_EGRP_KeyRSOType complex type.
  * 

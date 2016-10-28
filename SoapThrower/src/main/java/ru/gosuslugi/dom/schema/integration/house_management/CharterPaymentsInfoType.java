@@ -16,7 +16,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Тип информации о размере платы за жилое помещение по уставу
+ * РўРёРї РёРЅС„РѕСЂРјР°С†РёРё Рѕ СЂР°Р·РјРµСЂРµ РїР»Р°С‚С‹ Р·Р° Р¶РёР»РѕРµ РїРѕРјРµС‰РµРЅРёРµ РїРѕ СѓСЃС‚Р°РІСѓ
  * 
  * <p>Java class for CharterPaymentsInfoType complex type.
  * 

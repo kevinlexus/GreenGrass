@@ -2,11 +2,13 @@ package com.ric.st.impl;
 
 import javax.xml.ws.BindingProvider;
 
+import org.springframework.stereotype.Service;
+
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 import com.ric.st.Configs;
 
-
+@Service
 public class Config implements Configs {
 
 	

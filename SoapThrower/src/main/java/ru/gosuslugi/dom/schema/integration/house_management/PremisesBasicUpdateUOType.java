@@ -13,7 +13,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Базовый тип помещения (обновление данных для УО)
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РїРѕРјРµС‰РµРЅРёСЏ (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ РЈРћ)
  * 
  * <p>Java class for PremisesBasicUpdateUOType complex type.
  * 

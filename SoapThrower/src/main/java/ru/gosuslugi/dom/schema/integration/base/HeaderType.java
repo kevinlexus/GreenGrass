@@ -11,7 +11,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Базовый тип заголовка
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї Р·Р°РіРѕР»РѕРІРєР°
  * 
  * <p>Java class for HeaderType complex type.
  * 

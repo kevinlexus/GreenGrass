@@ -9,38 +9,14 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import org.w3._2000._09.xmldsig_.SignatureType;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportAccountRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportAccountResult;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportCAChAsyncRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportCAChRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportCAChResult;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportHouseRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResult;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportMeteringDeviceDataRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportMeteringDeviceDataResult;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportStatusCAChRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportStatusCAChResult;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportStatusPublicPropertyContractRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportStatusPublicPropertyContractResult;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportSupplyResourceContractRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportSupplyResourceContractResult;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportVotingProtocolRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ExportVotingProtocolResult;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportAccountRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportCharterRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportContractRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseOMSRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseRSORequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportMeteringDeviceDataRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportNotificationRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportPublicPropertyContractRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportSupplyResourceContractRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportVotingProtocolRequest;
+import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportDataProviderRequest;
+import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportDataProviderResult;
+import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryRequest;
+import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryResult;
 
 
 /**
- * Базовый тип бизнес-сообщения с подписью
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї Р±РёР·РЅРµСЃ-СЃРѕРѕР±С‰РµРЅРёСЏ СЃ РїРѕРґРїРёСЃСЊСЋ
  * 
  * <p>Java class for BaseType complex type.
  * 
@@ -66,36 +42,11 @@ import ru.gosuslugi.dom.schema.integration.house_management.ImportVotingProtocol
     "signature"
 })
 @XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.base.ImportResult.class,
-    ImportContractRequest.class,
-    ExportAccountResult.class,
-    ImportVotingProtocolRequest.class,
-    ImportSupplyResourceContractRequest.class,
-    ExportMeteringDeviceDataRequest.class,
-    ExportCAChAsyncRequest.class,
-    ExportMeteringDeviceDataResult.class,
-    ImportHouseUORequest.class,
-    ExportVotingProtocolRequest.class,
-    ExportVotingProtocolResult.class,
-    ExportStatusCAChResult.class,
-    ImportCharterRequest.class,
-    ExportHouseRequest.class,
-    ExportStatusPublicPropertyContractResult.class,
-    ExportCAChResult.class,
-    ExportSupplyResourceContractResult.class,
-    ExportStatusPublicPropertyContractRequest.class,
-    ExportCAChRequest.class,
-    ImportPublicPropertyContractRequest.class,
-    ExportStatusCAChRequest.class,
-    ImportNotificationRequest.class,
-    ImportMeteringDeviceDataRequest.class,
-    ImportHouseOMSRequest.class,
-    ImportAccountRequest.class,
-    ImportHouseRSORequest.class,
-    ExportHouseResult.class,
-    ExportSupplyResourceContractRequest.class,
-    ExportAccountRequest.class,
-    ru.gosuslugi.dom.schema.integration.house_management.ImportResult.class,
+    ImportResult.class,
+    ExportDataProviderResult.class,
+    ExportDataProviderRequest.class,
+    ExportOrgRegistryResult.class,
+    ExportOrgRegistryRequest.class,
     BaseAsyncResponseType.class
 })
 public class BaseType {

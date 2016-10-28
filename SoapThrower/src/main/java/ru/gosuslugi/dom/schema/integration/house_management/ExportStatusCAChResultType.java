@@ -150,14 +150,14 @@ public class ExportStatusCAChResultType {
     }
 
     /**
-     * Статус ДУ:
-     *  Project - проект
-     *  ApprovalProcess - на утверждении
-     *  Approved - утвержден
-     *  Rejected- отклонен
-     *  Terminated - расторгнут/закрыт
-     *  Reviewed - рассмотрен
-     *  Annul - сведения аннулированы
+     * РЎС‚Р°С‚СѓСЃ Р”РЈ:
+     *  Project - РїСЂРѕРµРєС‚
+     *  ApprovalProcess - РЅР° СѓС‚РІРµСЂР¶РґРµРЅРёРё
+     *  Approved - СѓС‚РІРµСЂР¶РґРµРЅ
+     *  Rejected- РѕС‚РєР»РѕРЅРµРЅ
+     *  Terminated - СЂР°СЃС‚РѕСЂРіРЅСѓС‚/Р·Р°РєСЂС‹С‚
+     *  Reviewed - СЂР°СЃСЃРјРѕС‚СЂРµРЅ
+     *  Annul - СЃРІРµРґРµРЅРёСЏ Р°РЅРЅСѓР»РёСЂРѕРІР°РЅС‹
      * 
      * @return
      *     possible object is
@@ -388,14 +388,14 @@ public class ExportStatusCAChResultType {
         }
 
         /**
-         * Статус управляемого объекта:
-         *  Project - проект
-         *  ApprovalProcess - на утверждении
-         *  Approved - утвержден
-         *  Rejected- отклонен
-         *  Terminated - расторгнут
-         *  Reviewed - рассмотрен
-         *  Locked - заблокирован
+         * РЎС‚Р°С‚СѓСЃ СѓРїСЂР°РІР»СЏРµРјРѕРіРѕ РѕР±СЉРµРєС‚Р°:
+         *  Project - РїСЂРѕРµРєС‚
+         *  ApprovalProcess - РЅР° СѓС‚РІРµСЂР¶РґРµРЅРёРё
+         *  Approved - СѓС‚РІРµСЂР¶РґРµРЅ
+         *  Rejected- РѕС‚РєР»РѕРЅРµРЅ
+         *  Terminated - СЂР°СЃС‚РѕСЂРіРЅСѓС‚
+         *  Reviewed - СЂР°СЃСЃРјРѕС‚СЂРµРЅ
+         *  Locked - Р·Р°Р±Р»РѕРєРёСЂРѕРІР°РЅ
          * 
          * @return
          *     possible object is

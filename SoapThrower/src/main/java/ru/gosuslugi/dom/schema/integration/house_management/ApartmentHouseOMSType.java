@@ -14,7 +14,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Многоквартирный дом (для импорта от ОМС)
+ * РњРЅРѕРіРѕРєРІР°СЂС‚РёСЂРЅС‹Р№ РґРѕРј (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РћРњРЎ)
  * 
  * <p>Java class for ApartmentHouseOMSType complex type.
  * 

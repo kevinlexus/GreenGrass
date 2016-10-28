@@ -14,7 +14,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Лифт (обновлени еданных от ОМС)
+ * Р›РёС„С‚ (РѕР±РЅРѕРІР»РµРЅРё РµРґР°РЅРЅС‹С… РѕС‚ РћРњРЎ)
  * 
  * <p>Java class for LiftUpdateOMSType complex type.
  * 

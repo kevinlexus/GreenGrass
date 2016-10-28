@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Базовый тип ошибки контроля или бизнес-процесса
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РѕС€РёР±РєРё РєРѕРЅС‚СЂРѕР»СЏ РёР»Рё Р±РёР·РЅРµСЃ-РїСЂРѕС†РµСЃСЃР°
  * 
  * <p>Java class for ErrorMessageType complex type.
  * 

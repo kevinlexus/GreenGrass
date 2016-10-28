@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Базовый тип для fault-ошибки
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РґР»СЏ fault-РѕС€РёР±РєРё
  * 
  * <p>Java class for anonymous complex type.
  * 

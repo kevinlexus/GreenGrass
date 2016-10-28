@@ -12,7 +12,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Тип для редактирования ПУ после начала внесения показаний
+ * РўРёРї РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РџРЈ РїРѕСЃР»Рµ РЅР°С‡Р°Р»Р° РІРЅРµСЃРµРЅРёСЏ РїРѕРєР°Р·Р°РЅРёР№
  * 
  * <p>Java class for MeteringDeviceToUpdateAfterDevicesValuesType complex type.
  * 

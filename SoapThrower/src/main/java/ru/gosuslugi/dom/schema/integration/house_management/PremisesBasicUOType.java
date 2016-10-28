@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Базовый тип помещения (для импорта от УО)
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РїРѕРјРµС‰РµРЅРёСЏ (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РЈРћ)
  * 
  * <p>Java class for PremisesBasicUOType complex type.
  * 

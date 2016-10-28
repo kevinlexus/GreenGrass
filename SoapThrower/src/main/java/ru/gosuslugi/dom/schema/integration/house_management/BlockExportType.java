@@ -15,7 +15,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Блок дома блокированной застройки  (для экспорта)
+ * Р‘Р»РѕРє РґРѕРјР° Р±Р»РѕРєРёСЂРѕРІР°РЅРЅРѕР№ Р·Р°СЃС‚СЂРѕР№РєРё  (РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°)
  * 
  * <p>Java class for BlockExportType complex type.
  * 

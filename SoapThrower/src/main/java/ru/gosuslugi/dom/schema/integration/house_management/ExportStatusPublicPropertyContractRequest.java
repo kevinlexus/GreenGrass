@@ -169,7 +169,7 @@ public class ExportStatusPublicPropertyContractRequest
     }
 
     /**
-     * Корневой идентификатор ДОГПОИ (не меняется от версии к версии)
+     * РљРѕСЂРЅРµРІРѕР№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р”РћР“РџРћР (РЅРµ РјРµРЅСЏРµС‚СЃСЏ РѕС‚ РІРµСЂСЃРёРё Рє РІРµСЂСЃРёРё)
      * 
      * @return
      *     possible object is
@@ -193,7 +193,7 @@ public class ExportStatusPublicPropertyContractRequest
     }
 
     /**
-     * Идентификатор версии ДОГПОИ
+     * РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РІРµСЂСЃРёРё Р”РћР“РџРћР
      * 
      * @return
      *     possible object is

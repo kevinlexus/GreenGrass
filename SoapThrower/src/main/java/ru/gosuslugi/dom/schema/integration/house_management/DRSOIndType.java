@@ -11,7 +11,7 @@ import ru.gosuslugi.dom.schema.integration.individual_registry_base.ID;
 
 
 /**
- * Физическое лицо в ДРСО
+ * Р¤РёР·РёС‡РµСЃРєРѕРµ Р»РёС†Рѕ РІ Р”Р РЎРћ
  * 
  * <p>Java class for DRSOIndType complex type.
  * 

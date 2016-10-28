@@ -13,7 +13,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Данные справочника.
+ * Р”Р°РЅРЅС‹Рµ СЃРїСЂР°РІРѕС‡РЅРёРєР°.
  * 
  * <p>Java class for NsiItemType complex type.
  * 

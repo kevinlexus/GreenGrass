@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Нежилое помещение (обновление данных для РСО)
+ * РќРµР¶РёР»РѕРµ РїРѕРјРµС‰РµРЅРёРµ (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ Р РЎРћ)
  * 
  * <p>Java class for NonResidentialPremisesUpdateRSOType complex type.
  * 

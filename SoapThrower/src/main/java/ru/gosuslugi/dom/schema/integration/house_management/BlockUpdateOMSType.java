@@ -15,7 +15,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Блок дома блокированной застройки  (обновление данных для ОМС)
+ * Р‘Р»РѕРє РґРѕРјР° Р±Р»РѕРєРёСЂРѕРІР°РЅРЅРѕР№ Р·Р°СЃС‚СЂРѕР№РєРё  (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ РћРњРЎ)
  * 
  * <p>Java class for BlockUpdateOMSType complex type.
  * 

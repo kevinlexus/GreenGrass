@@ -11,7 +11,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Жилое помещение (для импорта от РСО)
+ * Р–РёР»РѕРµ РїРѕРјРµС‰РµРЅРёРµ (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ Р РЎРћ)
  * 
  * <p>Java class for ResidentialPremisesRSOType complex type.
  * 

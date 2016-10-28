@@ -33,7 +33,7 @@ public interface RegOrgPortsType {
 
 
     /**
-     * экспорт сведений об организациях
+     * СЌРєСЃРїРѕСЂС‚ СЃРІРµРґРµРЅРёР№ РѕР± РѕСЂРіР°РЅРёР·Р°С†РёСЏС…
      * 
      * @param exportOrgRegistryRequest
      * @return
@@ -49,7 +49,7 @@ public interface RegOrgPortsType {
     ;
 
     /**
-     * экспорт сведений о поставщиках данных
+     * СЌРєСЃРїРѕСЂС‚ СЃРІРµРґРµРЅРёР№ Рѕ РїРѕСЃС‚Р°РІС‰РёРєР°С… РґР°РЅРЅС‹С…
      * 
      * @param exportDataProviderRequest
      * @return

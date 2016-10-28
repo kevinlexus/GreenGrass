@@ -11,7 +11,7 @@ import ru.gosuslugi.dom.schema.integration.house_management.VotingInitiatorIndTy
 
 
 /**
- * ‘»Œ
+ * –§–ò–û
  * 
  * <p>Java class for FIOType complex type.
  * 

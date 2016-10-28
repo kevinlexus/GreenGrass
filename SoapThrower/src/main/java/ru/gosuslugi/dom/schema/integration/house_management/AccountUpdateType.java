@@ -11,7 +11,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
 
 
 /**
- * Характеристика ЛС
+ * РҐР°СЂР°РєС‚РµСЂРёСЃС‚РёРєР° Р›РЎ
  * 
  * <p>Java class for AccountUpdateType complex type.
  * 

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Сведения из ГКН и ЕГРП для экспорта
+ * РЎРІРµРґРµРЅРёСЏ РёР· Р“РљРќ Рё Р•Р“Р Рџ РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°
  * 
  * <p>Java class for GKN_EGRP_KeyExportType complex type.
  * 

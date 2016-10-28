@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Жилой дом (для экспорта)
+ * Р–РёР»РѕР№ РґРѕРј (РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°)
  * 
  * <p>Java class for LivingHouseExportType complex type.
  * 

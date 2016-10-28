@@ -14,7 +14,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Комната (для экспорта)
+ * РљРѕРјРЅР°С‚Р° (РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°)
  * 
  * <p>Java class for RoomExportType complex type.
  * 

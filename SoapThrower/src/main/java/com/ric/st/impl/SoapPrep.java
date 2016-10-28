@@ -53,6 +53,7 @@ public class SoapPrep implements SoapPreps {
     	c.setTime(dt);
     	XMLGregorianCalendar cl = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
 
+    	rh = new RequestHeader();
     	rh.setDate(cl);
     	rh.setMessageGUID(rUuid.toString());
     	rh.setOrgPPAGUID(orgPpaGuid);

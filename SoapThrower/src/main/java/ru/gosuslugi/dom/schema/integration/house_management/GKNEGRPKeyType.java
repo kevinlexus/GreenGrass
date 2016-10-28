@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Сведения из ГКН для УО и ОМС
+ * РЎРІРµРґРµРЅРёСЏ РёР· Р“РљРќ РґР»СЏ РЈРћ Рё РћРњРЎ
  * 
  * <p>Java class for GKN_EGRP_KeyType complex type.
  * 

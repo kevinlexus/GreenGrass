@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Комната (для импорта от УО)
+ * РљРѕРјРЅР°С‚Р° (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РЈРћ)
  * 
  * <p>Java class for RoomUOType complex type.
  * 

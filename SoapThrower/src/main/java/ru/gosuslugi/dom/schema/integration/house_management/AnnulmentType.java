@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Аннулирование сведений
+ * РђРЅРЅСѓР»РёСЂРѕРІР°РЅРёРµ СЃРІРµРґРµРЅРёР№
  * 
  * <p>Java class for AnnulmentType complex type.
  * 

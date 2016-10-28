@@ -14,7 +14,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Лифт (обновление данных от УО)
+ * Р›РёС„С‚ (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РѕС‚ РЈРћ)
  * 
  * <p>Java class for LiftUpdateUOType complex type.
  * 

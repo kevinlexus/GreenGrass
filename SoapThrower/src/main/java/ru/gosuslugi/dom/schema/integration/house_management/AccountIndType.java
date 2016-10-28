@@ -12,7 +12,7 @@ import ru.gosuslugi.dom.schema.integration.individual_registry_base.ID;
 
 
 /**
- * Физическое лицо
+ * Р¤РёР·РёС‡РµСЃРєРѕРµ Р»РёС†Рѕ
  * 
  * <p>Java class for AccountIndType complex type.
  * 

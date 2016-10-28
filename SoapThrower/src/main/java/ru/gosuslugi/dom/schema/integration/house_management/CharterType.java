@@ -14,7 +14,7 @@ import ru.gosuslugi.dom.schema.integration.base.AttachmentType;
 
 
 /**
- * ”ÒÚ‡‚
+ * –£—Å—Ç–∞–≤
  * 
  * <p>Java class for CharterType complex type.
  * 

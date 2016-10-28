@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Базовый тип документа ОЧ
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РґРѕРєСѓРјРµРЅС‚Р° РћР§
  * 
  * <p>Java class for DocumentPortalType complex type.
  * 

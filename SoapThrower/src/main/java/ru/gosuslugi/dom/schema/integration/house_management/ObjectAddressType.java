@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Объект жилищного фонда
+ * РћР±СЉРµРєС‚ Р¶РёР»РёС‰РЅРѕРіРѕ С„РѕРЅРґР°
  * 
  * <p>Java class for ObjectAddressType complex type.
  * 
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="ApartmentNumber" minOccurs="0">
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;pattern value="[а-яА-ЯёЁ0-9]{1,120}"/>
+ *               &lt;pattern value="[Р°-СЏРђ-РЇС‘РЃ0-9]{1,120}"/>
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>

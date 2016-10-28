@@ -1,4 +1,4 @@
-package com.ric.hotora.model.scott;
+package com.ric.st.hotora.model.scott;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

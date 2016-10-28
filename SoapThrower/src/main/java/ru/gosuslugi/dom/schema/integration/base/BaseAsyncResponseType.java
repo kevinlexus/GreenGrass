@@ -6,11 +6,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import ru.gosuslugi.dom.schema.integration.house_management.GetStateResult;
+import ru.gosuslugi.dom.schema.integration.organizations_registry_common.GetStateResult;
 
 
 /**
- * Базовый тип ответа на запрос статуса
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РѕС‚РІРµС‚Р° РЅР° Р·Р°РїСЂРѕСЃ СЃС‚Р°С‚СѓСЃР°
  * 
  * <p>Java class for BaseAsyncResponseType complex type.
  * 

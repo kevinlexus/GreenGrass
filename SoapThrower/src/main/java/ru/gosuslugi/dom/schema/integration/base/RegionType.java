@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Ссылка на субъект РФ (ФИАС)
+ * РЎСЃС‹Р»РєР° РЅР° СЃСѓР±СЉРµРєС‚ Р Р¤ (Р¤РРђРЎ)
  * 
  * <p>Java class for RegionType complex type.
  * 

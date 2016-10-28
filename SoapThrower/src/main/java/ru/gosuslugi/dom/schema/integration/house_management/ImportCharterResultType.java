@@ -9,7 +9,7 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
 
 
 /**
- * Тип статуса размещения устава в ГИС ЖКХ
+ * РўРёРї СЃС‚Р°С‚СѓСЃР° СЂР°Р·РјРµС‰РµРЅРёСЏ СѓСЃС‚Р°РІР° РІ Р“РРЎ Р–РљРҐ
  * 
  * <p>Java class for importCharterResultType complex type.
  * 

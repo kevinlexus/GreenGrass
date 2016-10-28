@@ -4,13 +4,11 @@ package ru.gosuslugi.dom.schema.integration.base;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import ru.gosuslugi.dom.schema.integration.house_management.Attachments;
 
 
 /**
- * Вложение
+ * Р’Р»РѕР¶РµРЅРёРµ
  * 
  * <p>Java class for AttachmentType complex type.
  * 
@@ -59,10 +57,6 @@ import ru.gosuslugi.dom.schema.integration.house_management.Attachments;
     "description",
     "attachment",
     "attachmentHASH"
-})
-@XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.house_management.ContractType.AgreementAttachment.class,
-    Attachments.class
 })
 public class AttachmentType {
 

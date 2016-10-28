@@ -11,7 +11,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Подъезд (для импорта от ОМС)
+ * РџРѕРґСЉРµР·Рґ (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РћРњРЎ)
  * 
  * <p>Java class for EntranceOMSType complex type.
  * 

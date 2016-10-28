@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Жилой дом (для импорта от РСО)
+ * Р–РёР»РѕР№ РґРѕРј (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ Р РЎРћ)
  * 
  * <p>Java class for LivingHouseRSOType complex type.
  * 

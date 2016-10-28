@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Значение строки данных для объекта ЖФ
+ * Р—РЅР°С‡РµРЅРёРµ СЃС‚СЂРѕРєРё РґР°РЅРЅС‹С… РґР»СЏ РѕР±СЉРµРєС‚Р° Р–Р¤
  * 
  * <p>Java class for OGFDataValue complex type.
  * 

@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Сведения об исключении объекта управления из ДУ/Устава
+ * РЎРІРµРґРµРЅРёСЏ РѕР± РёСЃРєР»СЋС‡РµРЅРёРё РѕР±СЉРµРєС‚Р° СѓРїСЂР°РІР»РµРЅРёСЏ РёР· Р”РЈ/РЈСЃС‚Р°РІР°
  * 
  * <p>Java class for ExclusionType complex type.
  * 

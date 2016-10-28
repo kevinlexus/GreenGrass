@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Основание для обязательств по оплате
+ * РћСЃРЅРѕРІР°РЅРёРµ РґР»СЏ РѕР±СЏР·Р°С‚РµР»СЊСЃС‚РІ РїРѕ РѕРїР»Р°С‚Рµ
  * 
  * <p>Java class for PaymentReasonType complex type.
  * 

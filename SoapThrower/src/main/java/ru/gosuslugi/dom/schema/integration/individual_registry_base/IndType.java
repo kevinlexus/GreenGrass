@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Физическое лицо
+ * Р¤РёР·РёС‡РµСЃРєРѕРµ Р»РёС†Рѕ
  * 
  * <p>Java class for IndType complex type.
  * 

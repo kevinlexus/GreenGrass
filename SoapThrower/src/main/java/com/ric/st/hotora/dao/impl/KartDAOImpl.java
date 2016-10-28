@@ -1,4 +1,4 @@
-package com.ric.hotora.dao.impl;
+package com.ric.st.hotora.dao.impl;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
-import com.ric.hotora.dao.KartDAO;
-import com.ric.hotora.model.scott.Kart;
+import com.ric.st.hotora.dao.KartDAO;
+import com.ric.st.hotora.model.scott.Kart;
 
 
 

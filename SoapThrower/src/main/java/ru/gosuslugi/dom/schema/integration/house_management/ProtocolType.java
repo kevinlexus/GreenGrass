@@ -16,7 +16,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Протокол ОСС
+ * РџСЂРѕС‚РѕРєРѕР» РћРЎРЎ
  * 
  * <p>Java class for ProtocolType complex type.
  * 

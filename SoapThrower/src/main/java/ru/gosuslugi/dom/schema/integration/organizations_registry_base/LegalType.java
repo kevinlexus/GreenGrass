@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Юридическое лицо
+ * Р®СЂРёРґРёС‡РµСЃРєРѕРµ Р»РёС†Рѕ
  * 
  * <p>Java class for LegalType complex type.
  * 

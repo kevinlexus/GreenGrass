@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Многоквартирный дом (обновление данных для УО)
+ * РњРЅРѕРіРѕРєРІР°СЂС‚РёСЂРЅС‹Р№ РґРѕРј (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ РЈРћ)
  * 
  * <p>Java class for ApartmentHouseUpdateUOType complex type.
  * 

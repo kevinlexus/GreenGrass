@@ -23,17 +23,17 @@
 		<hibernate.version>5.1.0.Final</hibernate.version>
 
 		<!-- Test -->
-		<junit.version>4.11</junit.version>
+		<junit.version>4.12</junit.version>
 
 		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
+ 		<dependency>
 			<groupId>com.ric.bill</groupId>
 			<artifactId>BillWeb</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> 
 
 		<!-- http://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
 		<dependency>
@@ -85,15 +85,15 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring-framework.version}</version>
-			<scope>test</scope>
-		</dependency>
+<!-- 			<scope>test</scope>
+ -->		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
+<!-- 			<scope>test</scope>
+ -->		</dependency>
 
 		<!-- http://mvnrepository.com/artifact/org.springframework/spring-aspects -->
 		<dependency>
@@ -159,7 +159,7 @@
 
 	</dependencies>
 
-  <build>
+<!-- пробовал shade filter  <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -190,5 +190,5 @@
       </plugin>
     </plugins>
   </build>
-
+ -->  
 </project>

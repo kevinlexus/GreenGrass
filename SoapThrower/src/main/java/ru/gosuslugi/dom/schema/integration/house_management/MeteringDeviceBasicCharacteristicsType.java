@@ -14,7 +14,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Основные характеристики ПУ
+ * РћСЃРЅРѕРІРЅС‹Рµ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё РџРЈ
  * 
  * <p>Java class for MeteringDeviceBasicCharacteristicsType complex type.
  * 

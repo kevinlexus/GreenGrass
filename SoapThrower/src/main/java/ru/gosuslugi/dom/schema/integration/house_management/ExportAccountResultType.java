@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Экспорт ЛС
+ * Р­РєСЃРїРѕСЂС‚ Р›РЎ
  * 
  * <p>Java class for exportAccountResultType complex type.
  * 

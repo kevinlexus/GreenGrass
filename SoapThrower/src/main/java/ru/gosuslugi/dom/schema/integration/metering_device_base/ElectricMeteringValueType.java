@@ -11,7 +11,7 @@ import ru.gosuslugi.dom.schema.integration.house_management.MunicipalResourceEle
 
 
 /**
- * Показания по ПУ электрической энергии
+ * РџРѕРєР°Р·Р°РЅРёСЏ РїРѕ РџРЈ СЌР»РµРєС‚СЂРёС‡РµСЃРєРѕР№ СЌРЅРµСЂРіРёРё
  * 
  * <p>Java class for ElectricMeteringValueType complex type.
  * 

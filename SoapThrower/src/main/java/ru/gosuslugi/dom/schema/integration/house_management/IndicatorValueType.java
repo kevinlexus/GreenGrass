@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Выбор значения показателя качества
+ * Р’С‹Р±РѕСЂ Р·РЅР°С‡РµРЅРёСЏ РїРѕРєР°Р·Р°С‚РµР»СЏ РєР°С‡РµСЃС‚РІР°
  * 
  * <p>Java class for IndicatorValueType complex type.
  * 

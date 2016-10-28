@@ -17,7 +17,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
 
 
 /**
- * Договор ресурсоснабжения
+ * Р”РѕРіРѕРІРѕСЂ СЂРµСЃСѓСЂСЃРѕСЃРЅР°Р±Р¶РµРЅРёСЏ
  * 
  * <p>Java class for SupplyResourceContractType complex type.
  * 

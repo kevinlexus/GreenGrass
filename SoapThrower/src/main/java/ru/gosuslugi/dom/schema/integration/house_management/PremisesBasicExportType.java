@@ -13,7 +13,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Базовый тип помещения (для экспорта)
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РїРѕРјРµС‰РµРЅРёСЏ (РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°)
  * 
  * <p>Java class for PremisesBasicExportType complex type.
  * 

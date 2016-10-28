@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Базовый тип помещения (для импорта от РСО)
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РїРѕРјРµС‰РµРЅРёСЏ (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ Р РЎРћ)
  * 
  * <p>Java class for PremisesBasicRSOType complex type.
  * 

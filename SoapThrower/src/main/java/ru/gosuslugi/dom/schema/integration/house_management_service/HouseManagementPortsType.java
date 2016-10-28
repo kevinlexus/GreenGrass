@@ -60,7 +60,7 @@ public interface HouseManagementPortsType {
 
 
     /**
-     * Передать данные ПУ
+     * РџРµСЂРµРґР°С‚СЊ РґР°РЅРЅС‹Рµ РџРЈ
      * 
      * @param importMeteringDeviceDataRequest
      * @return
@@ -76,7 +76,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Получить перечень ПУ
+     * РџРѕР»СѓС‡РёС‚СЊ РїРµСЂРµС‡РµРЅСЊ РџРЈ
      * 
      * @param exportMeteringDeviceDataRequest
      * @return
@@ -92,7 +92,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Импорт договора управления 
+     * РРјРїРѕСЂС‚ РґРѕРіРѕРІРѕСЂР° СѓРїСЂР°РІР»РµРЅРёСЏ 
      * 
      * @param importContractRequest
      * @return
@@ -108,7 +108,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Импорт устава 
+     * РРјРїРѕСЂС‚ СѓСЃС‚Р°РІР° 
      * 
      * @param importCharterRequest
      * @return
@@ -124,7 +124,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Экспорт статусов договоров управления, уставов, доп. соглашений
+     * Р­РєСЃРїРѕСЂС‚ СЃС‚Р°С‚СѓСЃРѕРІ РґРѕРіРѕРІРѕСЂРѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ, СѓСЃС‚Р°РІРѕРІ, РґРѕРї. СЃРѕРіР»Р°С€РµРЅРёР№
      * 
      * @param exportStatusCAChRequest
      * @return
@@ -140,7 +140,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * ВИ_ИРАО_ДОМ_ЭКСП. Экспорт данных дома.
+     * Р’Р_РР РђРћ_Р”РћРњ_Р­РљРЎРџ. Р­РєСЃРїРѕСЂС‚ РґР°РЅРЅС‹С… РґРѕРјР°.
      * 
      * @param exportHouseDataRequest
      * @return
@@ -156,7 +156,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * ВИ_ИЛС_СЗЛС. передать данные лицевых счетов
+     * Р’Р_РР›РЎ_РЎР—Р›РЎ. РїРµСЂРµРґР°С‚СЊ РґР°РЅРЅС‹Рµ Р»РёС†РµРІС‹С… СЃС‡РµС‚РѕРІ
      * 
      * @param importAccountDataRequest
      * @return
@@ -172,7 +172,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * ВИ_ИЛС_РЛС. получить перечень лицевых счетов
+     * Р’Р_РР›РЎ_Р Р›РЎ. РїРѕР»СѓС‡РёС‚СЊ РїРµСЂРµС‡РµРЅСЊ Р»РёС†РµРІС‹С… СЃС‡РµС‚РѕРІ
      * 
      * @param exportAccountDataRequest
      * @return
@@ -188,7 +188,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Импорт ДОИ (Договор на пользование общим имуществом)
+     * РРјРїРѕСЂС‚ Р”РћР (Р”РѕРіРѕРІРѕСЂ РЅР° РїРѕР»СЊР·РѕРІР°РЅРёРµ РѕР±С‰РёРј РёРјСѓС‰РµСЃС‚РІРѕРј)
      * 
      * @param importPublicPropertyContractRequest
      * @return
@@ -204,7 +204,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Экспорт списка ДОИ
+     * Р­РєСЃРїРѕСЂС‚ СЃРїРёСЃРєР° Р”РћР
      * 
      * @param exportStatusPublicPropertyContractRequest
      * @return
@@ -220,7 +220,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * ВИ_ИО_И_1. Импорт новостей для информирования граждан
+     * Р’Р_РРћ_Р_1. РРјРїРѕСЂС‚ РЅРѕРІРѕСЃС‚РµР№ РґР»СЏ РёРЅС„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РіСЂР°Р¶РґР°РЅ
      * 
      * @param importNotificationRequest
      * @return
@@ -236,7 +236,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Импорт протокола ОСС
+     * РРјРїРѕСЂС‚ РїСЂРѕС‚РѕРєРѕР»Р° РћРЎРЎ
      * 
      * @param importVotingProtocolRequest
      * @return
@@ -252,7 +252,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Экспорт протокола ОСС
+     * Р­РєСЃРїРѕСЂС‚ РїСЂРѕС‚РѕРєРѕР»Р° РћРЎРЎ
      * 
      * @param exportVotingProtocolRequest
      * @return
@@ -268,7 +268,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Экспорт договоров управления, уставов, доп. соглашений
+     * Р­РєСЃРїРѕСЂС‚ РґРѕРіРѕРІРѕСЂРѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ, СѓСЃС‚Р°РІРѕРІ, РґРѕРї. СЃРѕРіР»Р°С€РµРЅРёР№
      * 
      * @param exportCAChDataRequest
      * @return
@@ -284,7 +284,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Импорт данных дома для полномочия УО
+     * РРјРїРѕСЂС‚ РґР°РЅРЅС‹С… РґРѕРјР° РґР»СЏ РїРѕР»РЅРѕРјРѕС‡РёСЏ РЈРћ
      * 
      * @param importHouseUODataRequest
      * @return
@@ -300,7 +300,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Импорт данных дома для полномочия РСО
+     * РРјРїРѕСЂС‚ РґР°РЅРЅС‹С… РґРѕРјР° РґР»СЏ РїРѕР»РЅРѕРјРѕС‡РёСЏ Р РЎРћ
      * 
      * @param importHouseRSODataRequest
      * @return
@@ -316,7 +316,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Импорт данных дома для полномочия ОМС
+     * РРјРїРѕСЂС‚ РґР°РЅРЅС‹С… РґРѕРјР° РґР»СЏ РїРѕР»РЅРѕРјРѕС‡РёСЏ РћРњРЎ
      * 
      * @param importHouseOMSDataRequest
      * @return
@@ -332,7 +332,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Импорт договора ресурсоснабжения с РСО
+     * РРјРїРѕСЂС‚ РґРѕРіРѕРІРѕСЂР° СЂРµСЃСѓСЂСЃРѕСЃРЅР°Р±Р¶РµРЅРёСЏ СЃ Р РЎРћ
      * 
      * @param importSupplyResourceContractRequest
      * @return
@@ -348,7 +348,7 @@ public interface HouseManagementPortsType {
     ;
 
     /**
-     * Экспорт договоров ресурсоснабжения
+     * Р­РєСЃРїРѕСЂС‚ РґРѕРіРѕРІРѕСЂРѕРІ СЂРµСЃСѓСЂСЃРѕСЃРЅР°Р±Р¶РµРЅРёСЏ
      * 
      * @param exportSupplyResourceContractRequest
      * @return

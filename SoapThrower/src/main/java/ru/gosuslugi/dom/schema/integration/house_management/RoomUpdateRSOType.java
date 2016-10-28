@@ -12,7 +12,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Комната (обновление данных для РСО)
+ * РљРѕРјРЅР°С‚Р° (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ Р РЎРћ)
  * 
  * <p>Java class for RoomUpdateRSOType complex type.
  * 

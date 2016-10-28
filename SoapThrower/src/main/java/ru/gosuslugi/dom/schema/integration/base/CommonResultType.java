@@ -7,13 +7,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Результат выполнения C_UD
+ * Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ C_UD
  * 
  * <p>Java class for CommonResultType complex type.
  * 
@@ -55,9 +54,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "uniqueNumber",
     "updateDate",
     "error"
-})
-@XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.house_management.ImportResult.CommonResult.class
 })
 public class CommonResultType {
 

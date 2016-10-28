@@ -10,7 +10,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Результат экспорта договоров ресурсоснабжения
+ * Р РµР·СѓР»СЊС‚Р°С‚ СЌРєСЃРїРѕСЂС‚Р° РґРѕРіРѕРІРѕСЂРѕРІ СЂРµСЃСѓСЂСЃРѕСЃРЅР°Р±Р¶РµРЅРёСЏ
  * 
  * <p>Java class for exportSupplyResourceContractResultType complex type.
  * 

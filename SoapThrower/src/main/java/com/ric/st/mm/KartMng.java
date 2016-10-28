@@ -1,8 +1,8 @@
-package com.ric.mm;
+package com.ric.st.mm;
 
 import java.util.List;
 
-import com.ric.hotora.model.scott.Kart;
+import com.ric.st.hotora.model.scott.Kart;
 
 
 public interface KartMng  {

@@ -14,7 +14,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Жилой дом (для импорта от ОМС)
+ * Р–РёР»РѕР№ РґРѕРј (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РћРњРЎ)
  * 
  * <p>Java class for LivingHouseOMSType complex type.
  * 

@@ -13,7 +13,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 
 /**
- * Предмет договора
+ * РџСЂРµРґРјРµС‚ РґРѕРіРѕРІРѕСЂР°
  * 
  * <p>Java class for ContractSubjectType complex type.
  * 

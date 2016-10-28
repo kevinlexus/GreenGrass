@@ -14,7 +14,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * Комната (обновление данных для ОМС)
+ * РљРѕРјРЅР°С‚Р° (РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ РћРњРЎ)
  * 
  * <p>Java class for RoomUpdateOMSType complex type.
  * 

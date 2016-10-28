@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Жилой дом (для импорта от УО)
+ * Р–РёР»РѕР№ РґРѕРј (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РЈРћ)
  * 
  * <p>Java class for LivingHouseUOType complex type.
  * 

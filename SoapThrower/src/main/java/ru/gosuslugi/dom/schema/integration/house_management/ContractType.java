@@ -17,7 +17,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
 
 
 /**
- * дс
+ * п■пё
  * 
  * <p>Java class for ContractType complex type.
  * 

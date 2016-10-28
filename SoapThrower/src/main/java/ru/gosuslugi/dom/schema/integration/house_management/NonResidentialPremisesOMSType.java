@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Нежилое помещение  (для импорта от ОМС, экспорта)
+ * РќРµР¶РёР»РѕРµ РїРѕРјРµС‰РµРЅРёРµ  (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РћРњРЎ, СЌРєСЃРїРѕСЂС‚Р°)
  * 
  * <p>Java class for NonResidentialPremisesOMSType complex type.
  * 

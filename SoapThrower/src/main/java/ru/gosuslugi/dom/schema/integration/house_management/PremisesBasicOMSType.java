@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Базовый тип помещения (для импорта от ОМС)
+ * Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РїРѕРјРµС‰РµРЅРёСЏ (РґР»СЏ РёРјРїРѕСЂС‚Р° РѕС‚ РћРњРЎ)
  * 
  * <p>Java class for PremisesBasicOMSType complex type.
  * 
