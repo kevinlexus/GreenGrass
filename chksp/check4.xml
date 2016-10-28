@@ -1,0 +1,17 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://dom.gosuslugi.ru/schema/integration/10.0.0.4/" xmlns:nsi="http://dom.gosuslugi.ru/schema/integration/10.0.0.4/nsi/" xmlns:xd="http://www.w3.org/2000/09/xmldsig#">
+   <soapenv:Header>
+      <ns:RequestHeader>
+         <ns:Date>2016-10-07 11-21-00</ns:Date>
+         <ns:MessageGUID>1</ns:MessageGUID>
+         <!--You have a CHOICE of the next 2 items at this level-->
+         <ns:SenderID>1</ns:SenderID>
+         <ns:orgPPAGUID>1</ns:orgPPAGUID>
+      </ns:RequestHeader>
+   </soapenv:Header>
+   <soapenv:Body>
+    <GetStockPrice  Id="checkMe">
+      <StockName>IBM</StockName>
+    </GetStockPrice>
+
+   </soapenv:Body>
+</soapenv:Envelope>
