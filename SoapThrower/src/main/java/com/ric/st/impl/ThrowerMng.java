@@ -1,8 +1,10 @@
 package com.ric.st.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -10,7 +12,10 @@ import javax.persistence.PersistenceContext;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Dispatch;
+import javax.xml.ws.handler.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +25,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.terracotta.modules.ehcache.async.AsyncConfig;
+import org.w3._2000._09.xmldsig_.SignatureType;
 
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 import ru.gosuslugi.dom.schema.integration.house_management.ApartmentHouseUOType.BasicCharacteristicts;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ApartmentHouseToCreate;
+import ru.gosuslugi.dom.schema.integration.house_management.ImportResult;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementPortsType;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementService;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
@@ -57,9 +64,26 @@ public class ThrowerMng implements Throwers{
     public void importHouse() throws DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault {
     	//подготовительный объект
     	SoapPreps sp = new SoapPrep();
-
+    	
     	HouseManagementService service = new HouseManagementService();
     	HouseManagementPortsType port = service.getHouseManagementPort();
+    	
+    	
+    	BindingProvider provider = (BindingProvider) port;
+    	Binding binding = provider.getBinding();
+    	
+    	List<Handler> handlerChain = binding.getHandlerChain();
+    	handlerChain.add(new LoggingSOAPHandler());
+    	binding.setHandlerChain(handlerChain);
+    	
+/*    	service.setHandlerResolver(new HandlerResolver() {
+    		public List<Handler> getHandlerChain(PortInfo portInfo) {
+                List<Handler> handlerChain = new ArrayList<Handler>();
+                handlerChain.add(new LoggingSOAPHandler());
+                return handlerChain;
+            }
+	    });*/
+
     	sp.setBindingProvider((BindingProvider) port);
     	sp.setWSBindingProvider((WSBindingProvider)port);
     	
@@ -69,11 +93,17 @@ public class ThrowerMng implements Throwers{
 	    			"http://127.0.0.1:8085/ext-bus-home-management-service/services/HomeManagement");
     	}
 
-    	//подготовить заголовок запроса
-    	sp.prepRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid());
+    	//создать и подготовить заголовок запроса
+    	sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid());
     	sp.setBasicAuth();
     	
     	ImportHouseUORequest req = new ImportHouseUORequest();
+    	
+    	
+    	SignatureType sg = new SignatureType();
+    	sg.setId("blabla");
+    	req.setSignature(sg);
+    	
     	ApartmentHouse ah = new ApartmentHouse();
     	ApartmentHouseToCreate ac = new ApartmentHouseToCreate();
     	BasicCharacteristicts bc = new BasicCharacteristicts();
@@ -81,30 +111,33 @@ public class ThrowerMng implements Throwers{
     	bc.setTotalSquare(BigDecimal.valueOf(1000d));
     	bc.setUsedYear(BigDecimal.valueOf(1970d).shortValue());
     	bc.setCulturalHeritage(false);
+
     	NsiRef tz = new NsiRef();
     	tz.setCode("10");
     	tz.setGUID("8538e485-b925-5aa7-923f-3b6755e27d4b");
+    	
     	bc.setOlsonTZ(tz);
     	bc.setFloorCount("10");
     	bc.setNoRSOGKNEGRPRegistered(true);
-    	ac.setUndergroundFloorCount("0");
-    	ac.setMinFloorCount((byte)0);
-    	
-    	ac.setTransportGUID(Utl.getRndUuid().toString());
-    	
+
     	NsiRef ns = new NsiRef();
     	ns.setName("Исправный");
     	ns.setCode("2");
     	ns.setGUID("57c4dbc5-bdd5-4490-92e1-3e687797b32a");
-    	
     	bc.setState(ns);
+    	
+    	ac.setUndergroundFloorCount("0");
+    	ac.setMinFloorCount((byte)0);
+    	ac.setTransportGUID(Utl.getRndUuid().toString());
     	
     	ac.setBasicCharacteristicts(bc);
     	ah.setApartmentHouseToCreate(ac);
 
     	req.setVersion("10.0.1.1");
     	req.setApartmentHouse(ah);
-    	port.importHouseUOData(req);
+    	ImportResult ir = port.importHouseUOData(req);
+    	System.out.println("Result: "+ir);
+    	
     }
     
 	//отправить XML-2

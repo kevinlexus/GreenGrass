@@ -42,13 +42,13 @@ public class SoapPrep implements SoapPreps {
 	}
 	
 	/**
-	 * Подготовить заголовок запроса
+	 * Создать и подготовить заголовок запроса
 	 * @param dt
 	 * @param rUuid
 	 * @param orgPpaGuid
 	 * @throws DatatypeConfigurationException 
 	 */
-	public void prepRh(Date dt, UUID rUuid, String orgPpaGuid) throws DatatypeConfigurationException {
+	public void createRh(Date dt, UUID rUuid, String orgPpaGuid) throws DatatypeConfigurationException {
 		GregorianCalendar c = new GregorianCalendar();
     	c.setTime(dt);
     	XMLGregorianCalendar cl = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);

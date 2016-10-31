@@ -1,38 +1,90 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+					<ns3:BasicCharacteristicts>
+						<ns3:No_RSO_GKN_EGRP_Registered>true</ns3:No_RSO_GKN_EGRP_Registered>
+						<ns3:FIASHouseGuid>810321c3-f0b4-454a-9a1c-cad82adebd58</ns3:FIASHouseGuid>
+						<ns3:TotalSquare>1000.0</ns3:TotalSquare>
+						<ns3:State>
+							<ns8:Code>2</ns8:Code>
+							<ns8:GUID>57c4dbc5-bdd5-4490-92e1-3e687797b32a</ns8:GUID>
+							<ns8:Name>Исправный</ns8:Name>
+						</ns3:State>
+						<ns3:UsedYear>1970</ns3:UsedYear>
+						<ns3:FloorCount>10</ns3:FloorCount>
+						<ns3:OlsonTZ>
+							<ns8:Code>10</ns8:Code>
+							<ns8:GUID>8538e485-b925-5aa7-923f-3b6755e27d4b</ns8:GUID>
+						</ns3:OlsonTZ>
+						<ns3:CulturalHeritage>false</ns3:CulturalHeritage>
+					</ns3:BasicCharacteristicts>
+
+
+				<ns3:ApartmentHouseToCreate>
+					<ns3:BasicCharacteristicts>VBBBBBBBBBBBBBBBBBBBBBBB
+					</ns3:BasicCharacteristicts>
+					<ns3:UndergroundFloorCount>0</ns3:UndergroundFloorCount>
+					<ns3:MinFloorCount>0</ns3:MinFloorCount>
+					<ns2:TransportGUID>098373ac-e394-4379-9f93-c8b81b27a155
+					</ns2:TransportGUID>
+				</ns3:ApartmentHouseToCreate>
+
+
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
 	<S:Header>
-		<ns5:RequestHeader xmlns="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/house-management/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/account-base/"
+		<ns2:RequestHeader xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/base/"
+			xmlns="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+			xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/bills-base/"
+			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/house-management/"
+			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
 			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
-			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
-			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/metering-device-base/">
-			<ns5:Date>2016-10-27T07:28:46.535+06:00</ns5:Date>
-			<ns5:MessageGUID>ab2f59bc-9580-4be2-b545-72a32c7f7418
-			</ns5:MessageGUID>
-			<ns5:orgPPAGUID>9b051b50-937d-44f7-b03b-ff621d84ea3d</ns5:orgPPAGUID>
-		</ns5:RequestHeader>
+			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/">
+			<ns2:Date>2016-10-31T15:05:07.630+06:00</ns2:Date>
+			<ns2:MessageGUID>65d35895-5029-420c-8344-39824e7d21c4</ns2:MessageGUID>
+			<ns2:orgPPAGUID>9b051b50-937d-44f7-b03b-ff621d84ea3d</ns2:orgPPAGUID>
+		</ns2:RequestHeader>
 	</S:Header>
 	<S:Body>
-		<ns4:exportOrgRegistryRequest xmlns="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/house-management/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/account-base/"
+		<ns3:importHouseUORequest
+			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/house-management/"
+			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/base/" xmlns="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+			xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/bills-base/"
+			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
 			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
 			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
-			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
-			ns5:version="10.0.2.1">
-			<ns4:SearchCriteria>
-				<ns2:OGRN>1114205043468</ns2:OGRN>
-			</ns4:SearchCriteria>
-		</ns4:exportOrgRegistryRequest>
+			ns2:version="10.0.1.1">
+			<Signature Id="blabla" />
+			<ns3:ApartmentHouse>
+				<ns3:ApartmentHouseToCreate>
+					<ns3:BasicCharacteristicts>
+						<ns3:No_RSO_GKN_EGRP_Registered>true</ns3:No_RSO_GKN_EGRP_Registered>
+						<ns3:FIASHouseGuid>810321c3-f0b4-454a-9a1c-cad82adebd58</ns3:FIASHouseGuid>
+						<ns3:TotalSquare>1000.0</ns3:TotalSquare>
+						<ns3:State>
+							<ns8:Code>2</ns8:Code>
+							<ns8:GUID>57c4dbc5-bdd5-4490-92e1-3e687797b32a</ns8:GUID>
+							<ns8:Name>Исправный</ns8:Name>
+						</ns3:State>
+						<ns3:UsedYear>1970</ns3:UsedYear>
+						<ns3:FloorCount>10</ns3:FloorCount>
+						<ns3:OlsonTZ>
+							<ns8:Code>10</ns8:Code>
+							<ns8:GUID>8538e485-b925-5aa7-923f-3b6755e27d4b</ns8:GUID>
+						</ns3:OlsonTZ>
+						<ns3:CulturalHeritage>false</ns3:CulturalHeritage>
+					</ns3:BasicCharacteristicts>
+					<ns3:UndergroundFloorCount>0</ns3:UndergroundFloorCount>
+					<ns3:MinFloorCount>0</ns3:MinFloorCount>
+					<ns2:TransportGUID>2725351b-6327-4db9-b2ec-e5d53b496a8e</ns2:TransportGUID>
+				</ns3:ApartmentHouseToCreate>
+			</ns3:ApartmentHouse>
+		</ns3:importHouseUORequest>
 	</S:Body>
 </S:Envelope>
---------------------
+				
