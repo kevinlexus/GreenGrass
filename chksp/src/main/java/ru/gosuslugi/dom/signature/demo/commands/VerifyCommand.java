@@ -9,6 +9,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
 import ru.gosuslugi.dom.signature.demo.args.VerifyParameters;
 import ru.gosuslugi.dom.signature.demo.exceptions.SignatureVerificationException;
 import ru.gosuslugi.dom.signature.demo.jce.KeyStoreUtils;
@@ -35,6 +36,7 @@ import xades4j.xml.unmarshalling.QualifyingPropertiesUnmarshaller2;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
+
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.Provider;
@@ -250,4 +252,11 @@ public class VerifyCommand implements Command {
         }
         return signedURIs;
     }
+
+	@Override
+	public String signElem(String doc, String signedElementId, String containerElementId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

@@ -83,7 +83,20 @@
   
   <build>
     <plugins>
-      <plugin>
+	  <!-- исключить конфигурационные файлы из jar --> 
+<!--       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <includes>
+            <include>ru/*.*</include>
+            <include>xades4j/*.*</include>
+          </includes>
+        </configuration>
+      </plugin>
+ -->
+<!--       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.5.1</version>
         <configuration>
@@ -117,7 +130,7 @@
 		
 		    </configuration>
 	    </plugin>
-          
+ -->          
     </plugins>
   </build>
   

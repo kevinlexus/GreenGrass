@@ -4,6 +4,9 @@ import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.RFC4519Style;
 import org.bouncycastle.cert.jcajce.JcaX500NameUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import ru.gosuslugi.dom.signature.demo.args.ListParameters;
 import ru.gosuslugi.dom.signature.demo.jce.KeyStoreUtils;
 import ru.gosuslugi.dom.signature.demo.jce.ProviderFactory;
@@ -77,4 +80,10 @@ public class ListCommand implements Command {
             }
         }
     }
+
+	@Override
+	public String signElem(String doc, String signedElementId, String containerElementId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
