@@ -26,7 +26,7 @@ public class Config implements Configs {
 	 *	Получить OrgPPGUID организации 
 	 */
 	public String getOrgPPGuid() {
-		return "9b051b50-937d-44f7-b03b-ff621d84ea3d";
+		return "b9fe4d27-020d-44dc-8bfd-b5972a504f45";
 	}
 
 	/**

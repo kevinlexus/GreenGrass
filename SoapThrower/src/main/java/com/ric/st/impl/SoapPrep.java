@@ -57,6 +57,7 @@ public class SoapPrep implements SoapPreps {
     	rh.setDate(cl);
     	rh.setMessageGUID(rUuid.toString());
     	rh.setOrgPPAGUID(orgPpaGuid);
+    	rh.setIsOperatorSignature(true);
     	ws.setOutboundHeaders(rh);
 	}
 
