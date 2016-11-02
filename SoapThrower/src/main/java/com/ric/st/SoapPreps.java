@@ -15,7 +15,7 @@ import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagem
 public interface SoapPreps {
 	public RequestHeader getRh();
 	public void setRh(RequestHeader rh);
-	public void createRh(Date dt, UUID rUuid, String orgPpaGuid) throws DatatypeConfigurationException;
+	public void createRh(Date dt, UUID rUuid, String orgPpaGuid, boolean isSetOperSign ) throws DatatypeConfigurationException;
 	public BindingProvider getBindingProvider();
 	public void setBindingProvider(BindingProvider bindingProvider);
 	public void setBasicAuth();

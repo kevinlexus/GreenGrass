@@ -29,12 +29,15 @@ public class App
 		} catch (DatatypeConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ru.gosuslugi.dom.schema.integration.house_management_service.Fault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
         System.out.println( "Ended" );
         
     }
     
-    public static void checkSoap() throws Fault, DatatypeConfigurationException {
+    public static void checkSoap() throws Fault, DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault {
     	
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
 		Configs cfg = context.getBean(Config.class);
@@ -43,12 +46,9 @@ public class App
 		
 		//создать бин отправщика SOAP
 		Throwers thrMng = context.getBean(ThrowerMng.class);
-		try {
-			thrMng.importHouse();
-		} catch (ru.gosuslugi.dom.schema.integration.house_management_service.Fault e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		thrMng.importHouse();
+		//thrMng.exportContracts();
+		//thrMng.exportOrgRegistry();
 		System.out.println("Start()");
     	
     	

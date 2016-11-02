@@ -48,7 +48,7 @@ public class SoapPrep implements SoapPreps {
 	 * @param orgPpaGuid
 	 * @throws DatatypeConfigurationException 
 	 */
-	public void createRh(Date dt, UUID rUuid, String orgPpaGuid) throws DatatypeConfigurationException {
+	public void createRh(Date dt, UUID rUuid, String orgPpaGuid, boolean isSetOperSign ) throws DatatypeConfigurationException {
 		GregorianCalendar c = new GregorianCalendar();
     	c.setTime(dt);
     	XMLGregorianCalendar cl = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
@@ -57,7 +57,9 @@ public class SoapPrep implements SoapPreps {
     	rh.setDate(cl);
     	rh.setMessageGUID(rUuid.toString());
     	rh.setOrgPPAGUID(orgPpaGuid);
-    	rh.setIsOperatorSignature(true);
+    	if (isSetOperSign) {
+    		rh.setIsOperatorSignature(true);
+    	}
     	ws.setOutboundHeaders(rh);
 	}
 

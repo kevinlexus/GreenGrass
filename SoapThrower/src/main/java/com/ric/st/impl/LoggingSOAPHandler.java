@@ -62,7 +62,11 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 				e.printStackTrace();
 			}
 			try {
-				ThrowerMng.xmlText = sc.signElem(bs.toString(), "foo", "foo");
+				if (ThrowerMng.sign) {
+				  ThrowerMng.xmlText = sc.signElem(bs.toString(), "foo", "foo");
+				} else {
+					  ThrowerMng.xmlText = bs.toString();
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

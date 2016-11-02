@@ -1,42 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
 	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
 	<S:Header>
 		<ns3:RequestHeader xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/base/"
 			xmlns="http://dom.gosuslugi.ru/schema/integration/house-management/"
-			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
 			xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/bills-base/"
 			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
-			xmlns:ns5="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/">
-			<ns3:Date>2016-11-01T09:34:49.658+06:00</ns3:Date>
-			<ns3:MessageGUID>3b46f7db-9147-4572-84be-1769ff91d4ee
+			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+			xmlns:ns8="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/">
+			<ns3:Date>2016-11-02T14:33:15.010+06:00</ns3:Date>
+			<ns3:MessageGUID>ce2789ef-ceda-44d8-be30-6af0852dadd3
 			</ns3:MessageGUID>
-			<ns3:orgPPAGUID>9b051b50-937d-44f7-b03b-ff621d84ea3d</ns3:orgPPAGUID>
+			<ns3:orgPPAGUID>b9fe4d27-020d-44dc-8bfd-b5972a504f45</ns3:orgPPAGUID>
+			<ns3:IsOperatorSignature>true</ns3:IsOperatorSignature>
 		</ns3:RequestHeader>
 	</S:Header>
 	<S:Body>
 		<importHouseUORequest
 			xmlns="http://dom.gosuslugi.ru/schema/integration/house-management/"
 			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
 			xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/bills-base/"
 			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
-			xmlns:ns5="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+			xmlns:ns8="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
 			Id="foo" ns3:version="10.0.1.1">
 			<ApartmentHouse>
 				<ApartmentHouseToCreate>
 					<BasicCharacteristicts>
 						<No_RSO_GKN_EGRP_Registered>true</No_RSO_GKN_EGRP_Registered>
-						<FIASHouseGuid>810321c3-f0b4-454a-9a1c-cad82adebd58</FIASHouseGuid>
+						<FIASHouseGuid>810321c3-f0b4-454a-9a1c-cad82adebd58
+						</FIASHouseGuid>
 						<TotalSquare>1000.0</TotalSquare>
 						<State>
 							<ns2:Code>2</ns2:Code>
@@ -53,7 +56,8 @@
 					</BasicCharacteristicts>
 					<UndergroundFloorCount>0</UndergroundFloorCount>
 					<MinFloorCount>0</MinFloorCount>
-					<ns3:TransportGUID>ab757385-ad8c-4afd-92d9-3ee311c74728</ns3:TransportGUID>
+					<ns3:TransportGUID>7e6af95b-8acd-4464-a0ac-65bcd992752f
+					</ns3:TransportGUID>
 				</ApartmentHouseToCreate>
 			</ApartmentHouse>
 		</importHouseUORequest>

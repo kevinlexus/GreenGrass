@@ -49,6 +49,9 @@ import org.w3._2000._09.xmldsig_.SignatureType;
 
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 import ru.gosuslugi.dom.schema.integration.house_management.ApartmentHouseUOType.BasicCharacteristicts;
+import ru.gosuslugi.dom.schema.integration.house_management.ExportCAChRequest;
+import ru.gosuslugi.dom.schema.integration.house_management.ExportCAChRequestCriteriaType;
+import ru.gosuslugi.dom.schema.integration.house_management.ExportCAChResult;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportMeteringDeviceDataRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse;
@@ -83,8 +86,119 @@ public class ThrowerMng implements Throwers{
 	private Config config;
 
 	public static String xmlText; 
+	public static boolean sign;
 	
-    public void importHouse() throws DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault {
+	   public void exportOrgRegistry() throws DatatypeConfigurationException, Fault {
+	    	//подготовительный объект
+	    	SoapPreps sp = new SoapPrep();
+	    	//подписывать?
+	    	sign = false;
+	    	
+	    	RegOrgService service = new RegOrgService();
+	    	RegOrgPortsType port = service.getRegOrgPort();
+	    	
+	    	BindingProvider provider = (BindingProvider) port;
+	    	Binding binding = provider.getBinding();
+	    	
+	    	List<Handler> handlerChain = binding.getHandlerChain();
+	    	handlerChain.add(new LoggingSOAPHandler());
+	    	binding.setHandlerChain(handlerChain);
+	    	
+	    	sp.setBindingProvider((BindingProvider) port);
+	    	sp.setWSBindingProvider((WSBindingProvider)port);
+	    	
+	    	//не удалять - получить ENDPOINT sp.getBindingProvider().getRequestContext().get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
+	    	if (config.isSrvTest()) {
+	    		sp.getBindingProvider().getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, 
+		    			"http://127.0.0.1:8085/ext-bus-org-registry-common-service/services/OrgRegistryCommon");
+	    	}
+
+	    	ExportOrgRegistryRequest req = new ExportOrgRegistryRequest(); 
+	    	SearchCriteria sc = new SearchCriteria();
+	    	sc.setOGRN("1114205043468");
+	    	req.getSearchCriteria().add(sc);
+	    	req.setVersion("10.0.2.1");
+    		port.exportOrgRegistry(req);
+	    	
+	    	//создать и подготовить заголовок запроса
+	    	sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid(), false);
+	    	sp.setBasicAuth();
+	    	
+	    	ExportOrgRegistryResult ir = port.exportOrgRegistry(req);
+	    	//ir.getOrgData()
+	    	
+	    	System.out.println("MSG:"+xmlText);
+	    	
+	    	MessageFactory factory;
+	    	SOAPMessage message2 = null;
+			try {
+				factory = MessageFactory.newInstance();
+		        message2 = factory.createMessage(new MimeHeaders(), new ByteArrayInputStream(xmlText.getBytes()));
+			} catch (SOAPException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+	        try {
+	            // Create SOAP Connection
+	            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+	            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+	            
+	            String authorization = new sun.misc.BASE64Encoder().encode(("lanit"+":"+"tv,n8!Ya").getBytes());
+	            MimeHeaders hd = message2.getMimeHeaders();
+	            hd.addHeader("Authorization", "Basic " + authorization);
+	            //Method m = HouseManagementPortsType.class.getMethod("importHouseUOData", ImportHouseUORequest.class);
+	            
+	            Method m = RegOrgPortsType.class.getMethod("exportOrgRegistry", ExportOrgRegistryRequest.class);
+	            WebMethod webmethod = m.getAnnotation(WebMethod.class);
+	            hd.addHeader("SOAPAction", webmethod.action());
+	            
+	            
+	            System.out.println("Send:"); 
+	            System.out.println("");
+	            System.out.println("");
+	            printSOAPmessage(message2);
+
+	            // Send SOAP Message to SOAP Server
+	            String url = "http://127.0.0.1:8085/ext-bus-org-registry-common-service/services/OrgRegistryCommon";
+	            SOAPMessage soapResponse = soapConnection.call(message2, url);
+
+	            System.out.println("");
+	            System.out.println("");
+	            System.out.println("Recv:");
+	            printSOAPmessage(soapResponse);
+	            
+	            ExportOrgRegistryResult res = null;
+		    	JAXBContext context = JAXBContext.newInstance(ExportOrgRegistryResult.class);
+		    	Unmarshaller unmarshaller = JAXBContext.newInstance(ExportOrgRegistryResult.class).createUnmarshaller();
+		    	res = (ExportOrgRegistryResult)unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
+	            
+	    		System.out.println("");
+	    		System.out.println("");
+	    		System.out.println("");
+	    		System.out.println("");
+	    		System.out.println("===========================");
+		    	for (ExportOrgRegistryResultType tp: res.getOrgData()) {
+		    		for (NsiRef ref: tp.getOrganizationRoles()) {
+			    		System.out.println("Result: "+ref.getGUID());
+			    		System.out.println("Result: "+ref.getName());
+		    		}
+		    	}
+	    		System.out.println("===========================");
+
+		    	// Process the SOAP Response
+	            soapConnection.close();
+	        } catch (Exception e) {
+	            System.err.println("Error occurred while sending SOAP Request to Server");
+	            e.printStackTrace();
+	        }
+	    	
+	    }
+	
+    public void exportContracts() throws DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault {
     	//подготовительный объект
     	SoapPreps sp = new SoapPrep();
     	
@@ -99,14 +213,6 @@ public class ThrowerMng implements Throwers{
     	handlerChain.add(new LoggingSOAPHandler());
     	binding.setHandlerChain(handlerChain);
     	
-/*    	service.setHandlerResolver(new HandlerResolver() {
-    		public List<Handler> getHandlerChain(PortInfo portInfo) {
-                List<Handler> handlerChain = new ArrayList<Handler>();
-                handlerChain.add(new LoggingSOAPHandler());
-                return handlerChain;
-            }
-	    });*/
-
     	sp.setBindingProvider((BindingProvider) port);
     	sp.setWSBindingProvider((WSBindingProvider)port);
     	
@@ -117,15 +223,116 @@ public class ThrowerMng implements Throwers{
     	}
 
     	//создать и подготовить заголовок запроса
-    	sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid());
+    	sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid(), true);
+    	sp.setBasicAuth();
+    	
+    	ExportCAChRequest req = new ExportCAChRequest();
+    	req.setId("foo");
+    	req.setVersion("10.0.1.1");
+
+    	ExportCAChRequestCriteriaType cr = new ExportCAChRequestCriteriaType();
+    	cr.setUOGUID("b9fe4d27-020d-44dc-8bfd-b5972a504f45");
+    	cr.setFIASHouseGuid("70fb4d71-fef9-43ec-92f2-ca03980a004c");
+    	req.getCriteria().add(cr);
+    	
+    	ExportCAChResult ir = port.exportCAChData(req);
+    	
+    	System.out.println("MSG:"+xmlText);
+    	
+    	MessageFactory factory;
+    	SOAPMessage message2 = null;
+		try {
+			factory = MessageFactory.newInstance();
+	        //message2 = factory.createMessage(new MimeHeaders(), new ByteArrayInputStream(xmlText.getBytes(Charset.forName("UTF-8"))));
+	        message2 = factory.createMessage(new MimeHeaders(), new ByteArrayInputStream(xmlText.getBytes()));
+		} catch (SOAPException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+            // Create SOAP Connection
+            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+            
+            String authorization = new sun.misc.BASE64Encoder().encode(("lanit"+":"+"tv,n8!Ya").getBytes());
+            MimeHeaders hd = message2.getMimeHeaders();
+            hd.addHeader("Authorization", "Basic " + authorization);
+            
+            Method m = HouseManagementPortsType.class.getMethod("exportCAChData", ExportCAChRequest.class);
+            WebMethod webmethod = m.getAnnotation(WebMethod.class);
+            hd.addHeader("SOAPAction", webmethod.action());
+            
+            
+            System.out.println("Send:"); 
+            System.out.println("");
+            System.out.println("");
+            printSOAPmessage(message2);
+
+            // Send SOAP Message to SOAP Server
+            String url = "http://127.0.0.1:8085/ext-bus-home-management-service/services/HomeManagement";
+            SOAPMessage soapResponse = soapConnection.call(message2, url);
+
+            System.out.println("");
+            System.out.println("");
+            System.out.println("Recv:");
+            printSOAPmessage(soapResponse);
+            
+        	ImportResult res = null;
+	    	JAXBContext context = JAXBContext.newInstance(ImportResult.class);
+    	   // SOAPMessage message = MessageFactory.newInstance().createMessage(null,
+    	   //         new FileInputStream("C:\\work\\git\\chksp\\target\\res.xml"));
+	    	Unmarshaller unmarshaller = JAXBContext.newInstance(ImportResult.class).createUnmarshaller();
+	    	res = (ImportResult)unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
+            
+	    	System.out.println("Result: "+res.getCommonResult());
+
+	    	// Process the SOAP Response
+            soapConnection.close();
+        } catch (Exception e) {
+            System.err.println("Error occurred while sending SOAP Request to Server");
+            e.printStackTrace();
+        }
+    	
+    }
+	
+	
+    public void importHouse() throws DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault {
+    	//подписывать?
+    	sign = true;
+    	
+    	//подготовительный объект
+    	SoapPreps sp = new SoapPrep();
+    	
+    	HouseManagementService service = new HouseManagementService();
+    	HouseManagementPortsType port = service.getHouseManagementPort();
+    	
+    	
+    	BindingProvider provider = (BindingProvider) port;
+    	Binding binding = provider.getBinding();
+    	
+    	List<Handler> handlerChain = binding.getHandlerChain();
+    	handlerChain.add(new LoggingSOAPHandler());
+    	binding.setHandlerChain(handlerChain);
+    	
+    	sp.setBindingProvider((BindingProvider) port);
+    	sp.setWSBindingProvider((WSBindingProvider)port);
+    	
+    	//не удалять - получить ENDPOINT sp.getBindingProvider().getRequestContext().get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
+    	if (config.isSrvTest()) {
+    		sp.getBindingProvider().getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, 
+	    			"http://127.0.0.1:8085/ext-bus-home-management-service/services/HomeManagement");
+    	}
+
+    	//создать и подготовить заголовок запроса
+    	sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid(), true);
     	sp.setBasicAuth();
     	
     	ImportHouseUORequest req = new ImportHouseUORequest();
     	req.setId("foo");
-    	
-    	//SignatureType sg = new SignatureType();
-    	//sg.setId("blabla");
-    	//req.setSignature(sg);
     	
     	ApartmentHouse ah = new ApartmentHouse();
     	ApartmentHouseToCreate ac = new ApartmentHouseToCreate();
@@ -220,36 +427,6 @@ public class ThrowerMng implements Throwers{
             System.err.println("Error occurred while sending SOAP Request to Server");
             e.printStackTrace();
         }
-    	
-    	
-    	if (1==2) {
-    	//попробовать ответ
-    	ImportResult res = null;
-	    try {
-		    	JAXBContext context = JAXBContext.newInstance(ImportResult.class);
-	    	    SOAPMessage message = MessageFactory.newInstance().createMessage(null,
-	    	            new FileInputStream("C:\\work\\git\\chksp\\target\\res.xml"));
-		    	Unmarshaller unmarshaller = JAXBContext.newInstance(ImportResult.class).createUnmarshaller();
-	    	    
-		    	res = (ImportResult)unmarshaller.unmarshal(message.getSOAPBody().extractContentAsDocument());
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		 catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SOAPException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	
-    	System.out.println("Result: "+res.getCommonResult());
-    	//попробовать 
-    	}
     	
     }
     
