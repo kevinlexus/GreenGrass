@@ -182,7 +182,7 @@ public class ThrowerMng implements Throwers{
             MimeHeaders hd = message2.getMimeHeaders();
             hd.addHeader("Authorization", "Basic " + authorization);
             
-            System.out.println("Send:");
+            System.out.println("Send:"); 
             System.out.println("");
             System.out.println("");
             printSOAPmessage(message2);
