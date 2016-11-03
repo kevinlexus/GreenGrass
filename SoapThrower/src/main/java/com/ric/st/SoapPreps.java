@@ -30,5 +30,5 @@ public interface SoapPreps {
 	public void setEndPoint(String endPoint);
 	public void isSignXML(Boolean sign);
 	public SOAPMessage createSM(String xmlText) throws IOException, SOAPException;
-	public void sendSOAP();
+	public Object sendSOAP(Class portClass, Object req, String meth, Object result, String login, String pass) throws IOException, SOAPException;
 }

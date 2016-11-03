@@ -2,20 +2,31 @@ package com.ric.st.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import javax.jws.WebMethod;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
+import javax.xml.soap.SOAPConnection;
+import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
@@ -33,6 +44,7 @@ public class SoapPrep implements SoapPreps {
 	private WSBindingProvider ws;
 	private String endPoint;
 	private Binding binding;
+	private String xmlText; 
 	
 	/*
 	 * Конструктор
@@ -41,8 +53,9 @@ public class SoapPrep implements SoapPreps {
 		setBindingProvider(bs);
 		setWSBindingProvider(ws);
 		setBinding(bs.getBinding());
+		// установить хедеры
 		setRh(new RequestHeader());
-		//Добавить хэндлер
+		// добавить хэндлер
 		addHandler();
 	}
 
@@ -110,16 +123,6 @@ public class SoapPrep implements SoapPreps {
 		this.bp = bs;
 	}
 	
-	/*
-	 * Подключить basic-авторизацию - не здесь делается
-	 * 
-	 */
-/*	public void setBasicAuth() {
-    	bs.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "lanit");
-    	bs.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "tv,n8!Ya");
-	}
-*/
-	
 	/**
 	 * Получить WS-байнд-провайдер
 	 */
@@ -177,4 +180,78 @@ public class SoapPrep implements SoapPreps {
 		factory = MessageFactory.newInstance();
         return factory.createMessage(new MimeHeaders(), new ByteArrayInputStream(xmlText.getBytes()));
 	}
+
+	/*
+	 * Отправить SOAP сообщение
+	 * 
+	 */
+	public Object sendSOAP(Class portClass, Object req, String meth, Object result, String login, String pass) throws IOException, SOAPException {
+		//получить XML из хэндлера
+    	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
+        setXmlText((String) responseContext.get("SOAP_XML"));
+		
+    	SOAPMessage message2 = createSM(xmlText);
+        Object res = null;
+        try {
+            // Create SOAP Connection
+            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+            
+            String authorization = new sun.misc.BASE64Encoder().encode((login+":"+pass).getBytes());
+            MimeHeaders hd = message2.getMimeHeaders();
+            hd.addHeader("Authorization", "Basic " + authorization);
+            
+//            Method m = HouseManagementPortsType.class.getMethod("importHouseUOData", ImportHouseUORequest.class);
+            Method m = portClass.getMethod(meth, req.getClass());
+
+            WebMethod webmethod = m.getAnnotation(WebMethod.class);
+
+            hd.addHeader("SOAPAction", webmethod.action());
+            
+            System.out.println("Send:"); 
+            System.out.println("");
+            System.out.println("");
+            printSOAPmessage(message2);
+            // отправить SOAP сообщение на Endpoint
+            SOAPMessage soapResponse = soapConnection.call(message2, getEndPoint());
+
+            System.out.println("");
+            System.out.println("");
+            System.out.println("Recv:");
+            printSOAPmessage(soapResponse);
+
+	    	JAXBContext context = JAXBContext.newInstance(result.getClass());
+	    	Unmarshaller unmarshaller = JAXBContext.newInstance(result.getClass()).createUnmarshaller();
+	    	res = unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
+
+	    	// Process the SOAP Response
+            soapConnection.close();
+        } catch (Exception e) {
+            System.err.println("Error occurred while sending SOAP Request to Server");
+            e.printStackTrace();
+        }
+        
+        
+		return res;
+	}
+
+	public String getXmlText() {
+		return xmlText;
+	}
+
+	public void setXmlText(String xmlText) {
+		this.xmlText = xmlText;
+	}
+	
+    /**
+     * Method used to print the SOAP Response
+     */
+    private static void printSOAPmessage(SOAPMessage soapResponse) throws Exception {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        Source sourceContent = soapResponse.getSOAPPart().getContent();
+        StreamResult result = new StreamResult(System.out);
+        transformer.transform(sourceContent, result);
+    }    
+	
 }

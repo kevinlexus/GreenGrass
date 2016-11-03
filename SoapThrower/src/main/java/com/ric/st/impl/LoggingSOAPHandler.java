@@ -41,7 +41,6 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 
 	public boolean handleMessage(SOAPMessageContext context) {
 		SOAPMessage soapMsg = context.getMessage();
-
 		
 		boolean sign = false; 
 		if(context.containsKey("sign")){
@@ -60,10 +59,11 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 			}
 			try {
 				if (sign) {
-
-					ThrowerMng.xmlText = sc.signElem(bs.toString(), "foo", "foo");
+					context.put("SOAP_XML", sc.signElem(bs.toString(), "foo", "foo"));
+					context.setScope("SOAP_XML", MessageContext.Scope.APPLICATION);
 				} else {
-					  ThrowerMng.xmlText = bs.toString();
+					context.put("SOAP_XML", bs.toString());
+					context.setScope("SOAP_XML", MessageContext.Scope.APPLICATION);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
