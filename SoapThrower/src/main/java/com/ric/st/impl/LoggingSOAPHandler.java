@@ -32,27 +32,24 @@ import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
 public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 
 	public void close(MessageContext arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public boolean handleFault(SOAPMessageContext arg0) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {
-		// TODO Auto-generated method stub
 		SOAPMessage soapMsg = context.getMessage();
-        SOAPEnvelope soapEnv;
-        
-		try {
-			soapEnv = soapMsg.getSOAPPart().getEnvelope();
-	        SOAPHeader soapHeader = soapEnv.getHeader();
-	        SOAPBody soapBody = soapMsg.getSOAPBody();
 
-	        XPath xpath = XPathFactory.newInstance().newXPath();
-	        Command sc = new SignCommand(null);
+		
+		boolean sign = false; 
+		if(context.containsKey("sign")){
+			sign = (Boolean) context.get("sign");
+		}
+		
+		try {
+			Command sc = new SignCommand(null);
 			
 			ByteArrayOutputStream bs = new ByteArrayOutputStream();
 			try {
@@ -62,8 +59,9 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 				e.printStackTrace();
 			}
 			try {
-				if (ThrowerMng.sign) {
-				  ThrowerMng.xmlText = sc.signElem(bs.toString(), "foo", "foo");
+				if (sign) {
+
+					ThrowerMng.xmlText = sc.signElem(bs.toString(), "foo", "foo");
 				} else {
 					  ThrowerMng.xmlText = bs.toString();
 				}
@@ -72,27 +70,15 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 				e.printStackTrace();
 			}
 
-	        //soapMsg.saveChanges();
-
-/*		System.out.println("BEGIN MSG:");
-	        try {
-				soapMsg.writeTo(System.out);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-*/		} catch (SOAPException e) {
+		} catch (SOAPException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-/*		System.out.println("END MSG:");
-*/		
 		return false;
 	}
 
 	public Set<QName> getHeaders() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

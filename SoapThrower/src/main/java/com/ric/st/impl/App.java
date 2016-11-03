@@ -1,6 +1,11 @@
 package com.ric.st.impl;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.soap.SOAPException;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -32,12 +37,24 @@ public class App
 		} catch (ru.gosuslugi.dom.schema.integration.house_management_service.Fault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SOAPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
         System.out.println( "Ended" );
         
     }
     
-    public static void checkSoap() throws Fault, DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault {
+    public static void checkSoap() throws Fault, DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault, IOException, SOAPException {
     	
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
 		Configs cfg = context.getBean(Config.class);

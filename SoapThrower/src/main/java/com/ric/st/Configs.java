@@ -6,7 +6,7 @@ public interface Configs {
 
 	public NsiRef getTz();
 	public String getOrgPPGuid();
-	public String getSrvTestUrl();
+	public String getSrvTestHost();
 	public boolean isSrvTest();
 	public String getBscLogin();
 	public String getBscPass();

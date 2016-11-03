@@ -32,7 +32,7 @@ public class Config implements Configs {
 	/**
 	 * Получить URL тестового сервера
 	 */
-	public String getSrvTestUrl() {
+	public String getSrvTestHost() {
 		return "http://127.0.0.1:8085";		
 	}
 
