@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import javax.jws.WebMethod;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -185,53 +186,45 @@ public class SoapPrep implements SoapPreps {
 	 * Отправить SOAP сообщение
 	 * 
 	 */
-	public Object sendSOAP(Class portClass, Object req, String meth, Object result, String login, String pass) throws IOException, SOAPException {
+	public Object sendSOAP(Class portClass, Object req, String meth, Object result, String login, String pass) throws Exception {
 		//получить XML из хэндлера
     	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
         setXmlText((String) responseContext.get("SOAP_XML"));
 		
     	SOAPMessage message2 = createSM(xmlText);
         Object res = null;
-        try {
-            // Create SOAP Connection
-            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-            
-            String authorization = new sun.misc.BASE64Encoder().encode((login+":"+pass).getBytes());
-            MimeHeaders hd = message2.getMimeHeaders();
-            hd.addHeader("Authorization", "Basic " + authorization);
-            
-//            Method m = HouseManagementPortsType.class.getMethod("importHouseUOData", ImportHouseUORequest.class);
-            Method m = portClass.getMethod(meth, req.getClass());
-
-            WebMethod webmethod = m.getAnnotation(WebMethod.class);
-
-            hd.addHeader("SOAPAction", webmethod.action());
-            
-            System.out.println("Send:"); 
-            System.out.println("");
-            System.out.println("");
-            printSOAPmessage(message2);
-            // отправить SOAP сообщение на Endpoint
-            SOAPMessage soapResponse = soapConnection.call(message2, getEndPoint());
-
-            System.out.println("");
-            System.out.println("");
-            System.out.println("Recv:");
-            printSOAPmessage(soapResponse);
-
-	    	JAXBContext context = JAXBContext.newInstance(result.getClass());
-	    	Unmarshaller unmarshaller = JAXBContext.newInstance(result.getClass()).createUnmarshaller();
-	    	res = unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
-
-	    	// Process the SOAP Response
-            soapConnection.close();
-        } catch (Exception e) {
-            System.err.println("Error occurred while sending SOAP Request to Server");
-            e.printStackTrace();
-        }
+        // создать SOAP соединение 
+        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
         
+        String authorization = new sun.misc.BASE64Encoder().encode((login+":"+pass).getBytes());
+        MimeHeaders hd = message2.getMimeHeaders();
+        hd.addHeader("Authorization", "Basic " + authorization);
         
+        Method m = portClass.getMethod(meth, req.getClass());
+
+        WebMethod webmethod = m.getAnnotation(WebMethod.class);
+
+        hd.addHeader("SOAPAction", webmethod.action());
+        
+        System.out.println("Send:"); 
+        System.out.println("");
+        System.out.println("");
+        printSOAPmessage(message2);
+        // отправить SOAP сообщение на Endpoint
+        SOAPMessage soapResponse = soapConnection.call(message2, getEndPoint());
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Recv:");
+        printSOAPmessage(soapResponse);
+
+    	JAXBContext context = JAXBContext.newInstance(result.getClass());
+    	Unmarshaller unmarshaller = JAXBContext.newInstance(result.getClass()).createUnmarshaller();
+    	res = unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
+
+    	// закрыть SOAP соединение 
+        soapConnection.close();
 		return res;
 	}
 

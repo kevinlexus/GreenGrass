@@ -49,12 +49,15 @@ public class App
 		} catch (SOAPException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
         System.out.println( "Ended" );
         
     }
     
-    public static void checkSoap() throws Fault, DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault, IOException, SOAPException {
+    public static void checkSoap() throws Exception {
     	
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
 		Configs cfg = context.getBean(Config.class);

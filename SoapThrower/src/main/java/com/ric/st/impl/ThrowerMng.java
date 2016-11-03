@@ -57,23 +57,23 @@ public class ThrowerMng implements Throwers{
 	@Autowired
 	private Config config;
 
-    public void importHouse() throws DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault, IOException, SOAPException {
-    	//создать сервис и порт
+    public void importHouse() throws Exception {
+    	// создать сервис и порт
     	HouseManagementService service = new HouseManagementService();
     	HouseManagementPortsType port = service.getHouseManagementPort();
 
-    	//подготовительный объект
+    	// подготовительный объект
     	SoapPreps sp = new SoapPrep((BindingProvider) port, (WSBindingProvider) port);
 
-    	//подписывать XML?
+    	// подписывать XML?
     	sp.isSignXML(true);
     	
-    	//заменить Endpoint, если надо 
+    	// заменить Endpoint, если надо 
     	if (config.isSrvTest()) {
     		sp.changeHost(config.getSrvTestHost());
     	}
 
-    	//создать и подготовить заголовок запроса
+    	// создать и подготовить заголовок запроса
     	sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid(), true);
     	
     	ImportHouseUORequest req = new ImportHouseUORequest();
@@ -116,7 +116,11 @@ public class ThrowerMng implements Throwers{
     	port.importHouseUOData(req);
 
     	// отправка SOAP, возврат результата
-    	ImportResult res = (ImportResult) sp.sendSOAP(HouseManagementPortsType.class, req, "importHouseUOData", new ImportResult(), 
+    	ImportResult res = (ImportResult) sp.sendSOAP(  // исправить для соотв.класса
+    			HouseManagementPortsType.class,  		// исправить для соотв.класса
+    			req, 
+    			"importHouseUOData", 			 		// исправить для соотв.класса
+    			new ImportResult(), 			 		// исправить для соотв.класса
     			config.getBscLogin(), config.getBscPass());
 
     	System.out.println("res:"+res.getCommonResult());

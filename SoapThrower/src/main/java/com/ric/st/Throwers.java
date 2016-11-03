@@ -11,5 +11,5 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service
 
 public interface Throwers {
 
-    public void importHouse() throws DatatypeConfigurationException, ru.gosuslugi.dom.schema.integration.house_management_service.Fault, UnknownHostException, MalformedURLException, IOException, SOAPException;
+    public void importHouse() throws Exception;
 }
