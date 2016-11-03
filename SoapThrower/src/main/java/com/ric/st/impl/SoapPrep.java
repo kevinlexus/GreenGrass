@@ -33,6 +33,8 @@ import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
 
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
+import ru.gosuslugi.dom.signature.demo.commands.Command;
+import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
 
 import com.ric.bill.Utl;
 import com.ric.st.SoapPreps;
@@ -45,7 +47,8 @@ public class SoapPrep implements SoapPreps {
 	private WSBindingProvider ws;
 	private String endPoint;
 	private Binding binding;
-	private String xmlText; 
+	private String xmlText;
+	private Boolean sign; 
 	
 	/*
 	 * Конструктор
@@ -168,8 +171,18 @@ public class SoapPrep implements SoapPreps {
 	 * @param sign
 	 * @return 
 	 */
-	public void isSignXML(Boolean sign) {
+	public void setSignXML(Boolean sign) {
+		this.sign = sign;
     	bp.getRequestContext().put("sign", sign);
+	}
+
+	/**
+	 * Подписывать XML?
+	 * @param sign
+	 * @return 
+	 */
+	public boolean getSignXML() {
+    	return sign;
 	}
 
 	/**
@@ -189,8 +202,13 @@ public class SoapPrep implements SoapPreps {
 	public Object sendSOAP(Class portClass, Object req, String meth, Object result, String login, String pass) throws Exception {
 		//получить XML из хэндлера
     	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
-        setXmlText((String) responseContext.get("SOAP_XML"));
-		
+        setXMLText((String) responseContext.get("SOAP_XML"));
+
+        // подпись XML, если необходимо
+        if (getSignXML()) {
+	        setXMLText(signXML(getXMLText()));
+        }
+        
     	SOAPMessage message2 = createSM(xmlText);
         Object res = null;
         // создать SOAP соединение 
@@ -228,11 +246,11 @@ public class SoapPrep implements SoapPreps {
 		return res;
 	}
 
-	public String getXmlText() {
+	public String getXMLText() {
 		return xmlText;
 	}
 
-	public void setXmlText(String xmlText) {
+	public void setXMLText(String xmlText) {
 		this.xmlText = xmlText;
 	}
 	
@@ -247,4 +265,16 @@ public class SoapPrep implements SoapPreps {
         transformer.transform(sourceContent, result);
     }    
 	
+    /**
+     * Подписать XML
+     * @param xml - XML запрос
+     * @return
+     * @throws Exception 
+     */
+    public String signXML(String xml) throws Exception {
+		Command sc = new SignCommand(null);
+		return sc.signElem(xml, "foo", "foo");
+    	
+    }
+
 }

@@ -66,7 +66,8 @@ public class App
 		
 		//создать бин отправщика SOAP
 		Throwers thrMng = context.getBean(ThrowerMng.class);
-		thrMng.importHouse();
+		thrMng.exportAccountData();
+		//thrMng.importHouseUpd();
 		//thrMng.exportContracts();
 		//thrMng.exportOrgRegistry();
 		System.out.println("Start()");

@@ -29,8 +29,10 @@ public interface SoapPreps {
 	public void changeHost(String host) throws UnknownHostException, MalformedURLException;
 	public String getEndPoint();
 	public void setEndPoint(String endPoint);
-	public void isSignXML(Boolean sign);
+	public void setSignXML(Boolean sign);
+	public boolean getSignXML();
 	public SOAPMessage createSM(String xmlText) throws IOException, SOAPException;
 	public Object sendSOAP(Class portClass, Object req, String meth, Object result, String login, String pass) 
 			throws Exception;
+    public String signXML(String xml) throws Exception;
 }

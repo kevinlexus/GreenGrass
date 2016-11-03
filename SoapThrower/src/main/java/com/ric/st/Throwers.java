@@ -12,4 +12,6 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service
 public interface Throwers {
 
     public void importHouse() throws Exception;
+    public void importHouseUpd() throws Exception;
+    public void exportAccountData() throws Exception;
 }

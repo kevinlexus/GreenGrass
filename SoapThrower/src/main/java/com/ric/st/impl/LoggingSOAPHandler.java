@@ -40,41 +40,39 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {
+		// TODO ИСПРАВИТЬ Eceptions!!!!
+		
 		SOAPMessage soapMsg = context.getMessage();
-		
-		boolean sign = false; 
-		if(context.containsKey("sign")){
-			sign = (Boolean) context.get("sign");
-		}
-		
-		try {
-			Command sc = new SignCommand(null);
-			
-			ByteArrayOutputStream bs = new ByteArrayOutputStream();
-			try {
-				soapMsg.writeTo(bs);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				if (sign) {
-					context.put("SOAP_XML", sc.signElem(bs.toString(), "foo", "foo"));
-					context.setScope("SOAP_XML", MessageContext.Scope.APPLICATION);
-				} else {
-					context.put("SOAP_XML", bs.toString());
-					context.setScope("SOAP_XML", MessageContext.Scope.APPLICATION);
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
+		//boolean sign = false; 
+		//if(context.containsKey("sign")){
+		//	sign = (Boolean) context.get("sign");
+		//}
+		
+		ByteArrayOutputStream bs = new ByteArrayOutputStream();
+		try {
+			soapMsg.writeTo(bs);
 		} catch (SOAPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		// подписать, если надо запрос
+		try {
+			//if (sign) {
+			//		context.put("SOAP_XML", sc.signElem(bs.toString(), "foo", "foo"));
+			//	context.setScope("SOAP_XML", MessageContext.Scope.APPLICATION);
+			//} else {
+				context.put("SOAP_XML", bs.toString());
+				context.setScope("SOAP_XML", MessageContext.Scope.APPLICATION);
+			//}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
