@@ -1,5 +1,9 @@
 package com.ric.bill;
 
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -100,12 +104,36 @@ public class Utl {
 	 * @return
 	 * @throws DatatypeConfigurationException
 	 */
-	public XMLGregorianCalendar getXMLDate(Date dt) throws DatatypeConfigurationException {
+	public static XMLGregorianCalendar getXMLDate(Date dt) throws DatatypeConfigurationException {
 		GregorianCalendar c = new GregorianCalendar();
 		c.setTime(dt);
 		XMLGregorianCalendar xmlDt = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
 		return xmlDt;
 	}
 	
+	/**
+	 * Вернуть хост из строки URL
+	 * @param urlStr - URL
+	 * @return хост-адрес
+	 * @throws UnknownHostException
+	 * @throws MalformedURLException
+	 */
+	public static String getHostFromUrl(String urlStr) throws UnknownHostException, MalformedURLException {
+		
+		InetAddress address = InetAddress.getByName(new URL(urlStr).getHost());
+		
+		return address.getHostAddress();
+	}
 	
+	/**
+	 * Вернуть путь из строки URL
+	 * @param urlStr - URL
+	 * @return хост-адрес
+	 * @throws UnknownHostException
+	 * @throws MalformedURLException
+	 */
+	public static String getPathFromUrl(String urlStr) throws UnknownHostException, MalformedURLException {
+		
+		return new URL(urlStr).getPath();
+	}
 }
