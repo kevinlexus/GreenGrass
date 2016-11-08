@@ -1,66 +1,60 @@
 package com.ric.st.impl;
 
-import ru.gosuslugi.dom.schema.integration.base.OKTMORefType;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ApartmentHouseUOType.BasicCharacteristicts;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ApartmentHouseToCreate;
+import com.ric.st.HouseManagementPreps;
 
-public class HouseManagementPrep {
 
-	private ApartmentHouse ah;
-	private ApartmentHouseToCreate ac;
-	private BasicCharacteristicts bc;
-	private OKTMORefType oktmo;
-	private ImportHouseUORequest req;
+public class HouseManagementPrep implements HouseManagementPreps{
+
+	private String houseGuid;
+	private Double totalSquare;
+	private Integer usedYear;
+	private Boolean cultHerit;
+	private String floorCount;
+	private String oktmo;
+	private String state;
 	
-	HouseManagementPrep(){
-		setAh(new ApartmentHouse());
-    	setAc(new ApartmentHouseToCreate());
-    	setBc(new BasicCharacteristicts());
-    	setOktmo(new OKTMORefType());
-    	setReq(new ImportHouseUORequest());
-		
+	public String getHouseGuid() {
+		return houseGuid;
 	}
-
-	public ApartmentHouse getAh() {
-		return ah;
+	public void setHouseGuid(String houseGuid) {
+		this.houseGuid = houseGuid;
 	}
-
-	public void setAh(ApartmentHouse ah) {
-		this.ah = ah;
+	public Double getTotalSquare() {
+		return totalSquare;
 	}
-
-	public ApartmentHouseToCreate getAc() {
-		return ac;
+	public void setTotalSquare(Double totalSquare) {
+		this.totalSquare = totalSquare;
 	}
-
-	public void setAc(ApartmentHouseToCreate ac) {
-		this.ac = ac;
+	public Integer getUsedYear() {
+		return usedYear;
 	}
-
-	public BasicCharacteristicts getBc() {
-		return bc;
+	public void setUsedYear(Integer usedYear) {
+		this.usedYear = usedYear;
 	}
-
-	public void setBc(BasicCharacteristicts bc) {
-		this.bc = bc;
+	public Boolean getCultHerit() {
+		return cultHerit;
 	}
-
-	public OKTMORefType getOktmo() {
+	public void setCultHerit(Boolean cultHerit) {
+		this.cultHerit = cultHerit;
+	}
+	public String getFloorCount() {
+		return floorCount;
+	}
+	public void setFloorCount(String floorCount) {
+		this.floorCount = floorCount;
+	}
+	public String getOktmo() {
 		return oktmo;
 	}
-
-	public void setOktmo(OKTMORefType oktmo) {
+	public void setOktmo(String oktmo) {
 		this.oktmo = oktmo;
 	}
-
-	public ImportHouseUORequest getReq() {
-		return req;
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	public void setReq(ImportHouseUORequest req) {
-		this.req = req;
-	}
 	
 }

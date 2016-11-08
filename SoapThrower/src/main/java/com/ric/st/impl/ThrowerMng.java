@@ -31,6 +31,7 @@ import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagem
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 import com.ric.bill.Utl;
+import com.ric.st.HouseManagementPreps;
 import com.ric.st.SoapPreps;
 import com.ric.st.Throwers;
 import com.sun.xml.ws.developer.WSBindingProvider;
@@ -47,7 +48,7 @@ public class ThrowerMng implements Throwers{
 	@Autowired
 	private Config config;
 
-    public void importHouse() throws Exception {
+    public void importHouse(HouseManagementPreps hm) throws Exception {
     	// создать сервис и порт
     	HouseManagementService service = new HouseManagementService();
     	HouseManagementPortsType port = service.getHouseManagementPort();
@@ -73,21 +74,27 @@ public class ThrowerMng implements Throwers{
     	ApartmentHouseToCreate ac = new ApartmentHouseToCreate();
     	
     	BasicCharacteristicts bc = new BasicCharacteristicts();
-    	bc.setFIASHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
-    	bc.setTotalSquare(BigDecimal.valueOf(1777d));
-    	bc.setUsedYear(BigDecimal.valueOf(1970d).shortValue());
-    	bc.setCulturalHeritage(false);
+    	//bc.setFIASHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
+    	bc.setFIASHouseGuid(hm.getHouseGuid());
+    	//bc.setTotalSquare(BigDecimal.valueOf(1777d));
+    	bc.setTotalSquare(BigDecimal.valueOf(hm.getTotalSquare()));
+    	//bc.setUsedYear(BigDecimal.valueOf(1970d).shortValue());
+    	bc.setUsedYear(BigDecimal.valueOf(hm.getUsedYear()).shortValue());
+    	//bc.setCulturalHeritage(false);
+    	bc.setCulturalHeritage(hm.getCultHerit());
 
     	bc.setOlsonTZ(config.getTz());
-    	bc.setFloorCount("17");
+    	//bc.setFloorCount("17");
+    	bc.setFloorCount(hm.getFloorCount());
     	bc.setNoRSOGKNEGRPRegistered(true);
     	
     	OKTMORefType oktmo = new OKTMORefType();
-    	oktmo.setCode("32607441101");
+    	//oktmo.setCode("32607441101");
+    	oktmo.setCode(hm.getOktmo());
     	bc.setOKTMO(oktmo);
 
     	NsiRef ns = new NsiRef();
-    	ns.setName("Исправный");
+    	ns.setName(hm.getState()); //TODO! переделать на поиск!
     	ns.setCode("2");
     	ns.setGUID("57c4dbc5-bdd5-4490-92e1-3e687797b32a");
     	bc.setState(ns);

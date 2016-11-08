@@ -13,6 +13,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.ric.st.Configs;
+import com.ric.st.HouseManagementPreps;
 import com.ric.st.Throwers;
 
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service.Fault;
@@ -78,7 +79,16 @@ public class App
 		//thrMng.exportAccountData();
 		System.out.println("Start");
 		
-		thrMng.importHouse();
+		HouseManagementPreps hm = new HouseManagementPrep();
+		hm.setHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
+		hm.setFloorCount("12");
+		hm.setCultHerit(false);
+		hm.setOktmo("32607441101");
+		hm.setState("Исправный");
+		hm.setTotalSquare(1155d);
+		hm.setUsedYear(1970);
+		
+		thrMng.importHouse(hm);
         
 		System.out.println( "Stop" );
 		//thrMng.importHouseUpd();
