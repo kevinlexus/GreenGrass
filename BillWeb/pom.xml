@@ -1,12 +1,11 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ric.bill</groupId>
+	<artifactId>BillWeb</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.ric.bill</groupId>
-  <artifactId>BillWeb</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-	  <properties>
-
-		<!-- Generic properties -->
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -18,33 +17,33 @@
 
 		<!-- Test -->
 		<junit.version>4.12</junit.version>
-		
- 		<start-class>com.ric.web.BillWebApplication</start-class>
+
+		<start-class>com.ric.web.BillWebApplication</start-class>
 		<java.version>1.8</java.version>
-		
+
 	</properties>
-	
- 	<parent>
+
+	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.0.RELEASE</version>
-		<relativePath/> 
-	</parent> 
+		<relativePath />
+	</parent>
 
 	<dependencies>
-	
+
 		<!-- http://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
 		<dependency>
-		    <groupId>org.hibernate.javax.persistence</groupId>
-		    <artifactId>hibernate-jpa-2.1-api</artifactId>
-		    <version>1.0.0.Final</version>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
 		</dependency>
 
 		<dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-starter-web</artifactId>
-	    </dependency>
-	    
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
@@ -69,7 +68,7 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring-framework.version}</version>
 		</dependency>
-		
+
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -77,18 +76,14 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 
-<!--  	    <dependency>
-	       <groupId>org.hibernate</groupId>
-	       <artifactId>hibernate-core</artifactId>
-	       <version>5.1.0.Final</version>
-	    </dependency>
- -->
-	    <dependency>
-	      <groupId>commons-dbcp</groupId>
-	      <artifactId>commons-dbcp</artifactId>
-	      <version>1.2.2</version>
-	    </dependency>
-    
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId> 
+			<version>5.1.0.Final</version> </dependency> -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
 		<!-- Test Artifacts -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -104,18 +99,18 @@
 		</dependency>
 		<!-- http://mvnrepository.com/artifact/org.springframework/spring-aspects -->
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aspects</artifactId>
-		    <version>4.2.6.RELEASE</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>4.2.6.RELEASE</version>
 		</dependency>
-	   
+
 		<!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
- 		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-ehcache</artifactId>
-		    <version>5.2.0.Final</version>
-		</dependency> 
- 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>5.2.0.Final</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -125,85 +120,119 @@
 
 		<!-- https://mvnrepository.com/artifact/c3p0/c3p0 -->
 		<dependency>
-		    <groupId>c3p0</groupId>
-		    <artifactId>c3p0</artifactId>
-		    <version>0.9.1.2</version>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
 		</dependency>
 
-		<!-- Решил добавить - потому что не мог избавиться от зависших сессий  https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0 -->
-	 	<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-c3p0</artifactId>
-		    <version>5.2.2.Final</version>
-		</dependency> 
+		<!-- Решил добавить - потому что не мог избавиться от зависших сессий https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>5.2.2.Final</version>
+		</dependency>
 
 
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-collections4</artifactId>
-		    <version>4.1</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
 		<dependency>
-		    <groupId>com.oracle</groupId>
-		    <artifactId>oracle</artifactId>
-		    <version>10.2.0.2.0</version>
+			<groupId>com.oracle</groupId>
+			<artifactId>oracle</artifactId>
+			<version>10.2.0.2.0</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.0</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
 		</dependency>
 
-	
+
 		<!-- добавил согласно статьи http://zazos79.blogspot.ru/2015/02/spring-boot-12-run-as-windows-service.html -->
-		<dependency> 
-	            <groupId>org.springframework.boot</groupId>
-	            <artifactId>spring-boot-loader</artifactId>
-	            <scope>provided</scope>
-	    </dependency>
-    	
-	</dependencies>	
-  
-  
-<!-- исключить конфигурационные файлы из jar --> 
-<build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3</version>
-        <configuration>
-          <includes>
-            <include>com/ric/bill/Utl.*</include>
-          </includes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-loader</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
 
 
-<!-- исключить конфигурационные файлы из jar - Пример! 
-<build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3</version>
-        <configuration>
-          <excludes>
-            <exclude>**/*.xml</exclude>
-            <exclude>**/*.properties</exclude>
-            <exclude>com/ric/web/*.*</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
--->
-  
+	<build>
+		<plugins>
+<!-- 			исключить конфигурационные файлы из jar
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+                    <excludes>
+                      <exclude>src/main/resources/*.*</exclude>
+                    </excludes>
+				</configuration>
+			</plugin>
+  -->
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+		      <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-loader</artifactId>
+                        </exclude>
+                    </excludes>
+		      </configuration>                
+
+		      <executions>
+		        <execution>
+		          <goals>
+		            <goal>repackage</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+
+            </plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target> <!-- Это нужно, чтобы заработал windows-сервис! -->
+								<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
+									update="true" compress="store">
+									<fileset dir="${project.build.directory}/classes"
+										includes="com/ric/web/Bootstrap.class" />
+								</zip>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+
+	<!-- исключить конфигурационные файлы из jar - Пример! <build> <plugins> 
+		<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> 
+		<version>2.3</version> <configuration> <excludes> <exclude>**/*.xml</exclude> 
+		<exclude>**/*.properties</exclude> <exclude>com/ric/web/*.*</exclude> </excludes> 
+		</configuration> </plugin> </plugins> </build> -->
+
 </project>
