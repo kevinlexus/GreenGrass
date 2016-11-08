@@ -3,8 +3,6 @@ package com.direct.webflow;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.greengrass.house.HibernateUtil;
-
 //класс сессии
 public class DSess {
 
