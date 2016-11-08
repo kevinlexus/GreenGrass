@@ -290,6 +290,25 @@ public class ThrMain extends Thread {
 				System.out.println("Generating menu item: " + itm.getCd());
 				switch (itm.getCd()) {
 
+				case "GEN_ADVANCE": {
+					ds.beginTrans();
+					itm.setDt1(new Date());
+					ds.commitTrans();
+					// переформировать авансовые платежи
+					ret = ex.runWork(36, 0, 0);
+					if (ret==-1) {
+						// Ошибка во время вызова
+						closeGen(menuGenItg, 2, 1, "ThrMain: "+ex.doWorkErrText);
+						return; // выйти при ошибке
+					}
+					ds.beginTrans();
+					itm.setProc(1.0);
+					itm.setDt2(new Date());
+					WebCtrl.incProgress();
+					ds.commitTrans();
+					break;
+				}					
+
 				case "GEN_DIST_VOLS1": {
 					ds.beginTrans();
 					itm.setDt1(new Date());

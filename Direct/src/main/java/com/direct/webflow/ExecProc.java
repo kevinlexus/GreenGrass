@@ -461,6 +461,20 @@ public class ExecProc {
 			break;
 		}
 
+		case 36: {
+		    //Перераспределение авансовых платежей
+			ds.sess.doWork(new Work() {
+				public void execute(Connection connection) throws SQLException {
+					CallableStatement call = connection
+							.prepareCall("{ call scott.c_dist_pay.dist_pay_lsk_avnc_force() }");
+					call.execute();
+					doWorkRet = 0;
+				}
+			});
+	
+			break;
+		}
+		
 		default: {
 			doWorkErrText="ThrMain.doWork: не найдено вхождение case!";
 			System.out.println("ThrMain.doWork: не найдено вхождение case!");

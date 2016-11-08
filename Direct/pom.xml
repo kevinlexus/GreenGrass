@@ -1,99 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.direct.webapp</groupId>
-    <artifactId>dwapp</artifactId>
-    <version>0.0.2</version>
+	<groupId>com.direct.webapp</groupId>
+	<artifactId>dwapp</artifactId>
+	<version>0.0.2</version>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.5.RELEASE</version>
-    </parent>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.2.5.RELEASE</version>
+	</parent>
 
-    <dependencies>
-<!-- ВНИМАНИЕ! ВЫПОЛНЯТЬ maven install НА РОДИТЕЛЬСКОМ ПРОЕКТЕ ИНАЧЕ НЕ СМОЖЕТ НАЙТИ dependency -->
+	<dependencies>
+		<!-- ВНИМАНИЕ! ВЫПОЛНЯТЬ maven install НА РОДИТЕЛЬСКОМ ПРОЕКТЕ ИНАЧЕ НЕ 
+			СМОЖЕТ НАЙТИ dependency -->
 		<dependency>
-		    <groupId>com.greengrass.house</groupId>  <!-- НЕ УДАЛЯТЬ, ЭТО ССЫЛКА НА РОДИТЕЛЬСКИЙ ПРОЕКТ -->
-		    <artifactId>greengrasshouse</artifactId>
-		    <version>0.0.1</version>
+			<groupId>com.greengrass.house</groupId>  <!-- НЕ УДАЛЯТЬ, ЭТО ССЫЛКА НА РОДИТЕЛЬСКИЙ ПРОЕКТ -->
+			<artifactId>greengrasshouse</artifactId>
+			<version>0.0.1</version>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-	    <dependency>
+		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
 
 		<!-- Json -->
 		<dependency>
-		 <groupId>org.json</groupId>
-		 <artifactId>json</artifactId>
-		 <version>20151123</version>
-		</dependency>  
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20151123</version>
+		</dependency>
 
-<!-- 	<dependency>  ПОКА ЗАКОММЕНТИРОВАЛ - БЕЗОПАСНОСТЬ 
-	  <groupId>org.springframework.boot</groupId>
-	  <artifactId>spring-boot-starter-security</artifactId>
-	</dependency> -->
-    
-	<!-- Hibernate -->
+		<!-- <dependency> ПОКА ЗАКОММЕНТИРОВАЛ - БЕЗОПАСНОСТЬ <groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-security</artifactId> </dependency> -->
 
-	<dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-entitymanager</artifactId>
-		<version>${hibernate.version}</version>
-	</dependency>
-	<dependency>
-	    <groupId>javax</groupId>
-	    <artifactId>javaee-api</artifactId>
-	    <version>7.0</version>
-	</dependency>
+		<!-- Hibernate -->
 
-    </dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+		</dependency>
+
+	</dependencies>
 
 
-    <properties>
-        <java.version>1.8</java.version>
+	<properties>
+		<java.version>1.8</java.version>
 
 		<!-- Hibernate / JPA -->
 		<hibernate.version>4.2.1.Final</hibernate.version>
 
-		<!--Logging --> 
+		<!--Logging -->
 		<logback.version>1.0.13</logback.version>
 		<slf4j.version>1.7.5</slf4j.version>
 
 		<!-- Spring -->
 		<spring-framework.version>4.2.1.RELEASE</spring-framework.version>
-        
-    </properties>
+
+	</properties>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 
-<!--     <repositories>
-        <repository>
-            <id>spring-releases</id>
-            <url>https://repo.spring.io/libs-release</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-releases</id>
-            <url>https://repo.spring.io/libs-release</url>
-        </pluginRepository>
-    </pluginRepositories>
- -->
- </project>
+			<!-- исключить конфигурационные файлы из jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<includes>
+						<include>com/direct/webflow.*</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+
+	</build>
+
+	<!-- <repositories> <repository> <id>spring-releases</id> <url>https://repo.spring.io/libs-release</url> 
+		</repository> </repositories> <pluginRepositories> <pluginRepository> <id>spring-releases</id> 
+		<url>https://repo.spring.io/libs-release</url> </pluginRepository> </pluginRepositories> -->
+</project>
