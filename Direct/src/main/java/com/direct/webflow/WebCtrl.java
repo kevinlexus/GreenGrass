@@ -139,8 +139,9 @@ public class WebCtrl {
         
     }
 
-	public static void main(String[] args) throws Exception {
+/*	public static void main(String[] args) throws Exception {
 	   
         SpringApplication.run(WebCtrl.class, args);
     }
-}
+*/
+	}
