@@ -5,6 +5,8 @@ import javax.xml.ws.BindingProvider;
 import org.springframework.stereotype.Service;
 
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
+import ru.gosuslugi.dom.signature.demo.commands.Command;
+import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
 
 import com.ric.st.Configs;
 
@@ -18,7 +20,7 @@ public class Config implements Configs {
 	public NsiRef getTz() {
     	NsiRef tz = new NsiRef();
     	tz.setCode("10");
-    	tz.setGUID("8538e485-b925-5aa7-923f-3b6755e27d4b");
+    	tz.setGUID("8538e485-b925-4aa7-923f-3b6755e27d4b");
     	return tz;
 	}
 

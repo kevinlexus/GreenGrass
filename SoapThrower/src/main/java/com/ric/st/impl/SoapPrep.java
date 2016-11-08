@@ -272,8 +272,7 @@ public class SoapPrep implements SoapPreps {
      * @throws Exception 
      */
     public String signXML(String xml) throws Exception {
-		Command sc = new SignCommand(null);
-		return sc.signElem(xml, "foo", "foo");
+		return App.sc.signElem(xml, "foo", "foo");
     	
     }
 

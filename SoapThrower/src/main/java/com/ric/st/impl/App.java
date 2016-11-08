@@ -9,12 +9,15 @@ import javax.xml.soap.SOAPException;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.ric.st.Configs;
 import com.ric.st.Throwers;
 
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service.Fault;
+import ru.gosuslugi.dom.signature.demo.commands.Command;
+import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
 
 /**
  * Точка входа в приложение
@@ -22,6 +25,9 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service
  */
 public class App 
 {
+	
+	static Command sc;
+	
     public static void main( String[] args )
     {
         System.out.println( "Started" );
@@ -53,7 +59,6 @@ public class App
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        System.out.println( "Ended" );
         
     }
     
@@ -61,17 +66,26 @@ public class App
     	
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
 		Configs cfg = context.getBean(Config.class);
+		
+		//Создать объект подписывания XML
+		sc = new SignCommand();
+
 		//включить логгирование XML
 		cfg.setXmlLog();
 		
 		//создать бин отправщика SOAP
 		Throwers thrMng = context.getBean(ThrowerMng.class);
 		//thrMng.exportAccountData();
-		thrMng.importHouseUpd();
+		System.out.println("Start");
+		
+		thrMng.importHouse();
+        
+		System.out.println( "Stop" );
+		//thrMng.importHouseUpd();
 		//thrMng.exportContracts();
 		//thrMng.exportOrgRegistry();
-		System.out.println("Start()");
     	
+		((AbstractApplicationContext) context).close();
     	
     }
 }

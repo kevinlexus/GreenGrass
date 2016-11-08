@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.terracotta.modules.ehcache.async.AsyncConfig;
 
+import ru.gosuslugi.dom.schema.integration.base.OKTMORefType;
 import ru.gosuslugi.dom.schema.integration.house_management.ApartmentHouseUOType.BasicCharacteristicts;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportAccountRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportAccountResult;
@@ -72,18 +73,18 @@ public class ThrowerMng implements Throwers{
     	ApartmentHouseToCreate ac = new ApartmentHouseToCreate();
     	
     	BasicCharacteristicts bc = new BasicCharacteristicts();
-    	bc.setFIASHouseGuid("810321c3-f0b4-454a-9a1c-cad82adebd58");
-    	bc.setTotalSquare(BigDecimal.valueOf(1000d));
+    	bc.setFIASHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
+    	bc.setTotalSquare(BigDecimal.valueOf(1777d));
     	bc.setUsedYear(BigDecimal.valueOf(1970d).shortValue());
     	bc.setCulturalHeritage(false);
 
-    	NsiRef tz = new NsiRef();
-    	tz.setCode("10");
-    	tz.setGUID("8538e485-b925-5aa7-923f-3b6755e27d4b");
-    	
-    	bc.setOlsonTZ(tz);
-    	bc.setFloorCount("10");
+    	bc.setOlsonTZ(config.getTz());
+    	bc.setFloorCount("17");
     	bc.setNoRSOGKNEGRPRegistered(true);
+    	
+    	OKTMORefType oktmo = new OKTMORefType();
+    	oktmo.setCode("32607441101");
+    	bc.setOKTMO(oktmo);
 
     	NsiRef ns = new NsiRef();
     	ns.setName("Исправный");
@@ -91,13 +92,13 @@ public class ThrowerMng implements Throwers{
     	ns.setGUID("57c4dbc5-bdd5-4490-92e1-3e687797b32a");
     	bc.setState(ns);
     	
-    	ac.setUndergroundFloorCount("0");
+    	ac.setUndergroundFloorCount("7");
     	ac.setMinFloorCount((byte)0);
     	ac.setTransportGUID(Utl.getRndUuid().toString());
     	
     	ac.setBasicCharacteristicts(bc);
     	ah.setApartmentHouseToCreate(ac);
-
+    	
     	req.setVersion("10.0.1.1");
     	req.setApartmentHouse(ah);
     	
@@ -147,11 +148,7 @@ public class ThrowerMng implements Throwers{
     	bc.setUsedYear(BigDecimal.valueOf(1974d).shortValue());
     	bc.setCulturalHeritage(false);
 
-    	NsiRef tz = new NsiRef();
-    	tz.setCode("10");
-    	tz.setGUID("8538e485-b925-4aa7-923f-3b6755e27d4b");
-    	
-    	bc.setOlsonTZ(tz);
+    	bc.setOlsonTZ(config.getTz());
     	bc.setFloorCount("10");
     	bc.setNoRSOGKNEGRPRegistered(true);
 
