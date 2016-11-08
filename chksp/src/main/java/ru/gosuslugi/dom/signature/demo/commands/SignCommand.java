@@ -35,13 +35,17 @@ import java.security.cert.X509Certificate;
  * Выполняет подписание XML-документа.
  */
 public class SignCommand implements Command {
-    private SignParameters parameters;
 
+	private SignParameters parameters;
+    private XadesSigner signer;
+    
+    //конструктор
     public SignCommand(SignParameters parameters) {
         this.parameters = parameters;
     }
 
-    public String signElem(String doc, String signedElementId, String containerElementId) throws Exception {
+    //конструктор
+    public SignCommand() throws Exception {
         // инициализируем Apache Santuario
         org.apache.xml.security.Init.init();
 
@@ -84,16 +88,16 @@ public class SignCommand implements Command {
                 .create();
 
         // создаем объект, ответственный за создание подписи
-        XadesSigner signer = profile.newSigner();
+        signer = profile.newSigner();
+    
+    }
+    
+    public String signElem(String doc, String signedElementId, String containerElementId) throws Exception {
 
         // загружаем проверяемый XML-документ
         //Document document = XMLParser.parseXml(parameters.getInputFile());
         Document document = XMLParser.parseXml(doc);
         
-        // выводим результат в stdout
-        //System.out.println("BEFORE: "+XMLPrinter.toString(document));
-        
-
         // объявляем атрибут Id в качестве идентифицирующего
         IdResolver.resolveIds(document.getDocumentElement());
 
@@ -126,13 +130,6 @@ public class SignCommand implements Command {
         SignedDataObjects dataObjs = new SignedDataObjects(obj);
         signer.sign(dataObjs, signatureContainer, SignatureAppendingStrategies.AsFirstChild);
 
-        // выводим результат в stdout
-        //System.out.println("AFTER: "+XMLPrinter.toString(document));
-
-        // выводим результат в файл
-/*        byte[] xmlBytes = XMLPrinter.toBytes(document);
-        FileUtils.writeByteArrayToFile(parameters.getOutputFile(), xmlBytes);
-*/        
         return XMLPrinter.toString(document);
     }
 
