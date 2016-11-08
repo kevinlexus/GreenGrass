@@ -1,7 +1,8 @@
 package com.ric.web;
 
-import java.lang.management.ManagementFactory;
+import javax.security.auth.message.config.AuthConfigFactory;
 
+import org.apache.catalina.authenticator.jaspic.AuthConfigFactoryImpl;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +23,10 @@ public class BillWebApplication {
 	public static void main(String[] args) {
         String mode = args != null && args.length > 0 ? args[0] : null;
 
+		if (AuthConfigFactory.getFactory() == null) {
+            AuthConfigFactory.setFactory(new AuthConfigFactoryImpl());
+        }
+        
         if (applicationContext != null && mode != null && "stop".equals(mode)) {
             System.exit(SpringApplication.exit(applicationContext, new ExitCodeGenerator() {
                 @Override
