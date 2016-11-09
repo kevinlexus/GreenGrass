@@ -115,7 +115,7 @@ public class ThrowerMng implements Throwers{
     	
     	Attachment atch = new Attachment(); 
     	at.setAttachment(atch);
-    	at.setAttachmentHASH("23154661313541");
+    	at.setAttachmentHASH("F2C7D90C3A5E12569898EB1B62447717");
     	atch.setAttachmentGUID("1d6c3ba4-10b0-4989-9710-55111c7f475c");
     	
     	
@@ -158,7 +158,7 @@ public class ThrowerMng implements Throwers{
     	
     	Attachment atch2 = new Attachment(); 
     	at2.setAttachment(atch2);
-    	at2.setAttachmentHASH("23154661313541");
+    	at2.setAttachmentHASH("F2C7D90C3A5E12569898EB1B62447717");
     	atch2.setAttachmentGUID("1d6c3ba4-10b0-4989-9710-55111c7f475c");
 
     	bm.setAgreement(at2);

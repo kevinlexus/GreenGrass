@@ -13,6 +13,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.ric.st.Configs;
+import com.ric.st.FileExchanges;
 import com.ric.st.Throwers;
 import com.ric.st.prep.HouseManagementPreps;
 import com.ric.st.prep.impl.HouseManagementPrep;
@@ -70,7 +71,7 @@ public class App
 		Configs cfg = context.getBean(Config.class);
 		
 		//Создать объект подписывания XML
-		sc = new SignCommand();
+		//sc = new SignCommand();
 
 		//включить логгирование XML
 		cfg.setXmlLog();
@@ -95,7 +96,10 @@ public class App
 		thrMng.importHouse(hm);
 */
 		
-		thrMng.importContractData();
+		//thrMng.importContractData();
+		
+		FileExchanges fe = new FileExchange();  
+		fe.send();
 		
 		System.out.println( "Stop" );
 		//thrMng.importHouseUpd();
