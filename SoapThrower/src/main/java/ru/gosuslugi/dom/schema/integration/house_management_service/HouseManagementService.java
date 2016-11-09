@@ -19,7 +19,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "HouseManagementService", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/house-management-service/", wsdlLocation = "file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.10.0.2.3/hcs_wsdl_xsd_v.10.0.2.3/house-management/hcs-house-management-service.wsdl")
+@WebServiceClient(name = "HouseManagementService", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/house-management-service/", wsdlLocation = "file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.10.0.2.10/hcs_wsdl_xsd_v.10.0.2.10/house-management/hcs-house-management-service.wsdl")
 public class HouseManagementService
     extends Service
 {
@@ -32,7 +32,7 @@ public class HouseManagementService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.10.0.2.3/hcs_wsdl_xsd_v.10.0.2.3/house-management/hcs-house-management-service.wsdl");
+            url = new URL("file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.10.0.2.10/hcs_wsdl_xsd_v.10.0.2.10/house-management/hcs-house-management-service.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

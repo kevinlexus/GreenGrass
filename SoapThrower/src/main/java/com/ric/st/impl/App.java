@@ -13,8 +13,9 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.ric.st.Configs;
-import com.ric.st.HouseManagementPreps;
 import com.ric.st.Throwers;
+import com.ric.st.prep.HouseManagementPreps;
+import com.ric.st.prep.impl.HouseManagementPrep;
 
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service.Fault;
 import ru.gosuslugi.dom.signature.demo.commands.Command;
@@ -79,17 +80,23 @@ public class App
 		//thrMng.exportAccountData();
 		System.out.println("Start");
 		
-		HouseManagementPreps hm = new HouseManagementPrep();
+/*		HouseManagementPreps hm = new HouseManagementPrep();
 		hm.setHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
-		hm.setFloorCount("12");
+		hm.setFloorCount("22");
 		hm.setCultHerit(false);
 		hm.setOktmo("32607441101");
 		hm.setState("Исправный");
-		hm.setTotalSquare(1155d);
-		hm.setUsedYear(1970);
-		
+		hm.setTotalSquare(5555d);
+		hm.setUsedYear(1972);
+		hm.setUnderFloorCount("2");
+		hm.setNoRSOGKNEGRP(true);
+		hm.setMinFloorCount(2);
+
 		thrMng.importHouse(hm);
-        
+*/
+		
+		thrMng.importContractData();
+		
 		System.out.println( "Stop" );
 		//thrMng.importHouseUpd();
 		//thrMng.exportContracts();

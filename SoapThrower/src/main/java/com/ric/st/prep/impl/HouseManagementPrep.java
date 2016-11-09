@@ -1,6 +1,6 @@
-package com.ric.st.impl;
+package com.ric.st.prep.impl;
 
-import com.ric.st.HouseManagementPreps;
+import com.ric.st.prep.HouseManagementPreps;
 
 
 public class HouseManagementPrep implements HouseManagementPreps{
@@ -12,6 +12,9 @@ public class HouseManagementPrep implements HouseManagementPreps{
 	private String floorCount;
 	private String oktmo;
 	private String state;
+	private String underFloorCount;
+	private Boolean NoRSOGKNEGRP;
+	private Integer minFloorCount;
 	
 	public String getHouseGuid() {
 		return houseGuid;
@@ -54,6 +57,24 @@ public class HouseManagementPrep implements HouseManagementPreps{
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getUnderFloorCount() {
+		return underFloorCount;
+	}
+	public void setUnderFloorCount(String underFloorCount) {
+		this.underFloorCount = underFloorCount;
+	}
+	public Boolean getNoRSOGKNEGRP() {
+		return NoRSOGKNEGRP;
+	}
+	public void setNoRSOGKNEGRP(Boolean noRSOGKNEGRP) {
+		NoRSOGKNEGRP = noRSOGKNEGRP;
+	}
+	public Integer getMinFloorCount() {
+		return minFloorCount;
+	}
+	public void setMinFloorCount(Integer minFloorCount) {
+		this.minFloorCount = minFloorCount;
 	}
 
 	

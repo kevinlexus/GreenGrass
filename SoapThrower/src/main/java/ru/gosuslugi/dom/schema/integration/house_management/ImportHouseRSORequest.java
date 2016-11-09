@@ -27,7 +27,7 @@ import ru.gosuslugi.dom.schema.integration.base.BaseType;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;choice>
+ *                   &lt;choice minOccurs="0">
  *                     &lt;element name="ApartmentHouseToCreate">
  *                       &lt;complexType>
  *                         &lt;complexContent>
@@ -173,7 +173,7 @@ import ru.gosuslugi.dom.schema.integration.base.BaseType;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;choice>
+ *                   &lt;choice minOccurs="0">
  *                     &lt;element name="LivingHouseToCreate">
  *                       &lt;complexType>
  *                         &lt;complexContent>
@@ -402,7 +402,7 @@ public class ImportHouseRSORequest
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;choice>
+     *         &lt;choice minOccurs="0">
      *           &lt;element name="ApartmentHouseToCreate">
      *             &lt;complexType>
      *               &lt;complexContent>
@@ -1656,7 +1656,7 @@ public class ImportHouseRSORequest
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;choice>
+     *         &lt;choice minOccurs="0">
      *           &lt;element name="LivingHouseToCreate">
      *             &lt;complexType>
      *               &lt;complexContent>

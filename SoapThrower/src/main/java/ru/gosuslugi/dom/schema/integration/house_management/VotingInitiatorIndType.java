@@ -32,7 +32,7 @@ import ru.gosuslugi.dom.schema.integration.individual_registry_base.FIOType;
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="DateOfBirth" type="{http://www.w3.org/2001/XMLSchema}date"/>
+ *         &lt;element name="DateOfBirth" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;choice>
  *           &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/individual-registry-base/}SNILS"/>
  *           &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/house-management/}VotingInitiatorIndID"/>
@@ -67,7 +67,7 @@ public class VotingInitiatorIndType
 
     @XmlElement(name = "Sex")
     protected String sex;
-    @XmlElement(name = "DateOfBirth", required = true)
+    @XmlElement(name = "DateOfBirth")
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar dateOfBirth;
     @XmlElement(name = "SNILS", namespace = "http://dom.gosuslugi.ru/schema/integration/individual-registry-base/")

@@ -1,4 +1,4 @@
-package com.ric.st;
+package com.ric.st.prep;
 
 public interface HouseManagementPreps {
 
@@ -16,4 +16,10 @@ public interface HouseManagementPreps {
 	public void setOktmo(String oktmo);
 	public String getState();
 	public void setState(String state);
+	public String getUnderFloorCount();
+	public void setUnderFloorCount(String underFloorCount);
+	public Boolean getNoRSOGKNEGRP();
+	public void setNoRSOGKNEGRP(Boolean noRSOGKNEGRP);
+	public Integer getMinFloorCount();
+	public void setMinFloorCount(Integer minFloorCount);
 }
