@@ -71,7 +71,7 @@ public class App
 		Configs cfg = context.getBean(Config.class);
 		
 		//Создать объект подписывания XML
-		//sc = new SignCommand();
+		sc = new SignCommand();
 
 		//включить логгирование XML
 		cfg.setXmlLog();
@@ -96,10 +96,11 @@ public class App
 		thrMng.importHouse(hm);
 */
 		
-		//thrMng.importContractData();
+		//FileExchanges fe = new FileExchange();  
+		//fe.send();
+
+		thrMng.importContractData();
 		
-		FileExchanges fe = new FileExchange();  
-		fe.send();
 		
 		System.out.println( "Stop" );
 		//thrMng.importHouseUpd();

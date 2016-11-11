@@ -7,6 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.ws.BindingProvider;
 
+import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.crypto.digests.GOST3411Digest;
+import org.bouncycastle.util.Memoable;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -43,6 +46,7 @@ import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagem
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 import com.ric.bill.Utl;
+import com.ric.st.FileExchanges;
 import com.ric.st.SoapPreps;
 import com.ric.st.Throwers;
 import com.ric.st.prep.HouseManagementPreps;
@@ -65,7 +69,11 @@ public class ThrowerMng implements Throwers{
 	 * @throws Exception
 	 */
 	public void importContractData() throws Exception {
-    	// создать сервис и порт
+		//Отправить файл, получить GUID его
+		FileExchanges fe = new FileExchange();  
+		String fileGuid = fe.send();
+		
+		// создать сервис и порт
     	HouseManagementService service = new HouseManagementService();
     	HouseManagementPortsType port = service.getHouseManagementPort();
 
@@ -110,14 +118,30 @@ public class ThrowerMng implements Throwers{
 
     	AttachmentType at = new AttachmentType(); 
     	pc.getContractAttachment().add(at);
-    	at.setName("договор");
+    	at.setName("scan.jpg");
     	at.setDescription("описание");
     	
     	Attachment atch = new Attachment(); 
     	at.setAttachment(atch);
-    	at.setAttachmentHASH("F2C7D90C3A5E12569898EB1B62447717");
-    	atch.setAttachmentGUID("1d6c3ba4-10b0-4989-9710-55111c7f475c");
     	
+    	
+    	String hash= "B4BAF7A65C7DC737279879B1324BD8AF633E0063DBB961843A2750807C1E189E";
+
+/*    	GOST3411Digest gd = new GOST3411Digest(); 
+    	gd.update(hash.getBytes(), 0, hash.length());
+    	gd.
+    	System.out.println("Algorithm:"+gd.getAlgorithmName());
+    	Memoable mo = gd.copy();
+*/
+
+    	//byte[] bytesEncoded = Base64.encodeBase64(hash.getBytes());
+    	//String hash2 = new String(bytesEncoded);
+    	
+    	String hash2 = hash;
+    	
+    	System.out.println("HASH OF FILE:"+hash2);
+    	at.setAttachmentHASH(hash2);
+    	atch.setAttachmentGUID(fileGuid);
     	
     	PeriodMetering pm = new PeriodMetering(); 
     	dd.setPeriodMetering(pm);
@@ -153,13 +177,13 @@ public class ThrowerMng implements Throwers{
 
 
     	AttachmentType at2 = new AttachmentType(); 
-    	at2.setName("соглашение");
+    	at2.setName("scan.jpg");
     	at2.setDescription("описание");
     	
     	Attachment atch2 = new Attachment(); 
     	at2.setAttachment(atch2);
-    	at2.setAttachmentHASH("F2C7D90C3A5E12569898EB1B62447717");
-    	atch2.setAttachmentGUID("1d6c3ba4-10b0-4989-9710-55111c7f475c");
+    	at2.setAttachmentHASH(hash2);
+    	atch2.setAttachmentGUID(fileGuid);
 
     	bm.setAgreement(at2);
     	
