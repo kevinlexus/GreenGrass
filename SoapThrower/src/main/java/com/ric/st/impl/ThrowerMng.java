@@ -1,6 +1,7 @@
 package com.ric.st.impl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.xml.ws.BindingProvider;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.bouncycastle.crypto.digests.GOST3411Digest;
 import org.bouncycastle.util.Memoable;
 import org.junit.runner.RunWith;
@@ -98,7 +100,6 @@ public class ThrowerMng implements Throwers{
     	req.getContract().add(contr);
     	contr.setTransportGUID(Utl.getRndUuid().toString());
     	
-    	
     	PlacingContract pc = new PlacingContract();
     	contr.setPlacingContract(pc);
 
@@ -125,7 +126,7 @@ public class ThrowerMng implements Throwers{
     	at.setAttachment(atch);
     	
     	
-    	String hash= "B4BAF7A65C7DC737279879B1324BD8AF633E0063DBB961843A2750807C1E189E";
+    	String hash= "009AACB5498D3E7D339D681BB6541D8AB4EF2A4A81D2235502FEEEC19BD9BFC1";
 
 /*    	GOST3411Digest gd = new GOST3411Digest(); 
     	gd.update(hash.getBytes(), 0, hash.length());
@@ -137,7 +138,8 @@ public class ThrowerMng implements Throwers{
     	//byte[] bytesEncoded = Base64.encodeBase64(hash.getBytes());
     	//String hash2 = new String(bytesEncoded);
     	
-    	String hash2 = hash;
+    	String hash2 = Hex.encodeHexString(hash.getBytes());
+    	//String hash2 = hash;
     	
     	System.out.println("HASH OF FILE:"+hash2);
     	at.setAttachmentHASH(hash2);
