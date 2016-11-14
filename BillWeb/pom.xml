@@ -1,9 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>com.ric.bill</groupId>
 	<artifactId>BillWeb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -56,6 +58,7 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring-framework.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
@@ -104,6 +107,13 @@
 			<version>4.2.6.RELEASE</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		    <version>4.3.3.RELEASE</version>
+		</dependency>
+		
 		<!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -202,7 +212,7 @@
 
             </plugin>
 
-			<plugin>
+ 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.8</version>
@@ -210,7 +220,7 @@
 					<execution>
 						<phase>package</phase>
 						<configuration>
-							<target> <!-- Это нужно, чтобы заработал windows-сервис! -->
+							<target> Это нужно, чтобы заработал windows-сервис!
 								<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
 									update="true" compress="store">
 									<fileset dir="${project.build.directory}/classes"
@@ -224,8 +234,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
-		</plugins>
+ 		</plugins>
 	</build>
 
 

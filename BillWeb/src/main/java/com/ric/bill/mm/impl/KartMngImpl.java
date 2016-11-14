@@ -550,7 +550,7 @@ public class KartMngImpl implements KartMng {
 
 	
 	//все лицевые по определённому критерию
-	public List<Kart> findAll() {
-		return kDao.findAll();
+	public List<Kart> findAll(Integer houseId) {
+		return kDao.findAll(houseId);
 	}
 }

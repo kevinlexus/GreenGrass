@@ -88,16 +88,24 @@ public class BillingController {
     } 
     
     @RequestMapping("/chrgall")
-    public String chrgAll(@RequestParam(value="dist", defaultValue="0") String dist) {
-    	Calc.mess("BillingController.chrgAll",2);
+    public String chrgAll(@RequestParam(value="dist", defaultValue="0") String dist, 
+    					  @RequestParam(value="chrg", defaultValue="0") String chrg,
+    					  @RequestParam(value="houseId") Integer houseId) {
+    	Calc.mess("BillingController.chrgAll dist="+dist+" chrg="+chrg,2);
     	Future<Result> fut = null;
-		boolean isDist;
+		boolean isDist, isChrg;
     	if (dist.equals("1")) {
 			isDist = true;
 		} else {
 			isDist = false;
 		}
-    	fut = billServ.chrgAll(isDist);
+    	if (chrg.equals("1")) {
+			isChrg = true;
+		} else {
+			isChrg = false;
+		}
+
+    	fut = billServ.chrgAll(isDist, isChrg, houseId);
     	
 		 while (!fut.isDone()) {
 	         try {
@@ -125,44 +133,5 @@ public class BillingController {
 				return "ERROR";
 		}
     }
-
-    /**
-	 * выполнить начисление по дому
-	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
-	 */
-	/*public void chrgHouse(int houseId) throws ErrorWhileChrg {
-
-		House h = em.find(House.class, houseId);
-		Calc.setInit(false);
-		//перебрать все квартиры и лиц.счета в них
-		for (Kw kw : h.getKw()) {
-			for (Kart kart : kw.getLsk()) {
-		    	//System.out.println("kart="+kart);
-		    	System.out.println("kart="+kart.getLsk());
-
-				//if (kart.getLsk().equals("26074227")) {
-					long startTime;
-					long endTime;
-					long totalTime;
-					startTime = System.currentTimeMillis();
-				    //расчитать начисление
-					if (chrgServ.chrgLsk(kart) ==0){
-						//сохранить расчет
-						chrgServ.save(kart.getLsk());
-					} else {
-						//выполнилось с ошибкой
-						return;
-					}
-
-					endTime   = System.currentTimeMillis();
-					totalTime = endTime - startTime;
-				    Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по лиц счету:"+kart.getLsk()+" ="+totalTime,2);
-				//	break; //##################
-				//}
-			}
-			//break; //##################
-		}
-	    Calc.mess("Выполнено!",2);
-	}*/
-    
+   
 }

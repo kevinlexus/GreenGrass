@@ -166,6 +166,11 @@ public class DistGen {
 			Calc.mess("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
 		}
 
+		//if (ml.getId()==7521) {
+		//	Calc.mess("Найден счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
+		//}
+
+		
 		String mLogTp = ml.getTp().getCd(); //тип лог счетчика
 		Serv servChrg = ml.getServ().getServChrg(); //получить основную услугу, для начисления
 		if (servChrg == null) {

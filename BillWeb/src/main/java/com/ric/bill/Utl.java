@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -135,5 +137,23 @@ public class Utl {
 	public static String getPathFromUrl(String urlStr) throws UnknownHostException, MalformedURLException {
 		
 		return new URL(urlStr).getPath();
+	}
+	
+	/**
+	 * Вернуть дату по формату
+	 * @param dt
+	 * @return
+	 */
+	public static Date getDateFromStr(String dt) {
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+		Date date = null;
+        try {
+            date = formatter.parse(dt);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+		return date;
 	}
 }

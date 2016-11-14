@@ -22,6 +22,7 @@ import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
+import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 
 /**
@@ -143,11 +144,14 @@ public class BillServ {
     };
     
     /**
-	 * выполнить начисление по всем домам в потоках
-	 */
+     * выполнить распределение объемов и начисление по всем домам в потоках
+     * @param isDist - распределять ли объемы
+     * @param isChrg - выполнять ли начисление
+     * @return
+     */
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)    
-    public Future<Result> chrgAll(boolean dist) {
+    public Future<Result> chrgAll(boolean isDist, boolean isChrg, Integer houseId) {
     	Calc.setDbgLvl(2);
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
@@ -167,106 +171,107 @@ public class BillServ {
 		startTime = System.currentTimeMillis();
 		DistServ distServ = ctx.getBean(DistServ.class);
 
-	    if (dist) {
+	    if (isDist) {
 	    	 Calc calc=new Calc();
-			 distServ.distAll(calc);
+			 distServ.distAll(calc, houseId);
 			 Calc.mess("BillServ.chrgAll: Распределение по всем домам выполнено!", 2);
 		}
 	    
-	    //if (1==1) {
-	    //	return new AsyncResult<Result>(res);
-	    //}
-	    
-		long startTime3 = System.currentTimeMillis();
-		//загрузить все Лиц.счета
-		kartThr = kartMng.findAll();
-		cntLsk = kartThr.size(); 
-	    //флаг ошибки, произошедшей в потоке
-	    errThread=false;
-	    
-		while (true) {
-			Calc.mess("BillServ.chrgAll: Loading karts for threads", 2);
-			//получить следующие N лиц.счетов, рассчитать их в потоке
-			long startTime2;
-			long endTime2;
-			long totalTime2;
-			startTime2 = System.currentTimeMillis();
-
-			List<Kart> kartWork = getNextKart(cntThreads);
-			if (kartWork.isEmpty()) {
-				//выйти, если все услуги обработаны
-				break;
-			}
-
-			List<Future<Result>> frl = new ArrayList<Future<Result>>();
-
-			for (Kart kart : kartWork) {
-
-					Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
-					Future<Result> fut = null;
-					ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
-
-				    //под каждый поток - свой Calc
-					Calc calc=new Calc();
-				    calc.setWho(2);
-
-				    calc.setKart(kart);
-				    calc.setHouse(kart.getKw().getHouse());
-				    
-				    try {
-						fut = chrgServThr.chrgAndSaveLsk(calc);
-					} catch (ErrorWhileChrg e) {
+	    if (isChrg) {
+			long startTime3 = System.currentTimeMillis();
+			//загрузить все необходимые Лиц.счета
+			kartThr = kartMng.findAll(houseId);
+			cntLsk = kartThr.size(); 
+		    //флаг ошибки, произошедшей в потоке
+		    errThread=false;
+		    
+			while (true) {
+				Calc.mess("BillServ.chrgAll: Loading karts for threads", 2);
+				//получить следующие N лиц.счетов, рассчитать их в потоке
+				long startTime2;
+				long endTime2;
+				long totalTime2;
+				startTime2 = System.currentTimeMillis();
+	
+				List<Kart> kartWork = getNextKart(cntThreads);
+				if (kartWork.isEmpty()) {
+					//выйти, если все услуги обработаны
+					break;
+				}
+	
+				List<Future<Result>> frl = new ArrayList<Future<Result>>();
+	
+				for (Kart kart : kartWork) {
+	
+						Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
+						Future<Result> fut = null;
+						ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
+	
+					    //под каждый поток - свой Calc
+						Calc calc=new Calc();
+					    calc.setWho(2);
+	
+					    calc.setKart(kart);
+					    calc.setHouse(kart.getKw().getHouse());
+					    
+					    try {
+							fut = chrgServThr.chrgAndSaveLsk(calc);
+						} catch (ErrorWhileChrg e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				    	frl.add(fut);
+						Calc.mess("BillServ.chrgAll: Begins thread for lsk="+kart.getLsk());
+				}
+				
+				
+				//проверить окончание всех потоков
+			    int flag2 = 0;
+				while (flag2==0) {
+					Calc.mess("BillServ.chrgAll: ========================================== Waiting for threads-2");
+					flag2=1;
+					for (Future<Result> fut : frl) {
+						if (!fut.isDone()) {
+							flag2=0;
+						} else {
+							try {
+								Calc.mess("ChrgServ: Done Result.err:="+fut.get().err);
+								if (fut.get().err==1) {
+									errThread=true;
+								}
+							} catch (InterruptedException | ExecutionException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						
+						}
+					}
+					
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-			    	frl.add(fut);
-					Calc.mess("BillServ.chrgAll: Begins thread for lsk="+kart.getLsk());
-			}
-			
-			
-			//проверить окончание всех потоков
-		    int flag2 = 0;
-			while (flag2==0) {
-				Calc.mess("BillServ.chrgAll: ========================================== Waiting for threads-2");
-				flag2=1;
-				for (Future<Result> fut : frl) {
-					if (!fut.isDone()) {
-						flag2=0;
-					} else {
-						try {
-							Calc.mess("ChrgServ: Done Result.err:="+fut.get().err);
-							if (fut.get().err==1) {
-								errThread=true;
-							}
-						} catch (InterruptedException | ExecutionException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
 					
-					}
 				}
 				
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				endTime2   = System.currentTimeMillis();
+				totalTime2 = endTime2 - startTime2;
+			    Calc.mess("Time for chrg One Lsk:"+totalTime2/cntThreads,2);
+	
 			}
-			
-			endTime2   = System.currentTimeMillis();
-			totalTime2 = endTime2 - startTime2;
-		    Calc.mess("Time for chrg One Lsk:"+totalTime2/cntThreads,2);
-
-		}
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		totalTime3 = endTime - startTime3;
-	    Calc.mess("Ver=2.0",2);
-	    Calc.mess("Counted lsk:"+cntLsk,2);
-	    Calc.mess("Time for all process:"+totalTime,2);
-	    Calc.mess("Time per one Lsk: "+totalTime3/cntLsk+" ms.",2);
+			endTime   = System.currentTimeMillis();
+			totalTime = endTime - startTime;
+			totalTime3 = endTime - startTime3;
+		    Calc.mess("Ver=2.0",2);
+		    Calc.mess("Counted lsk:"+cntLsk,2);
+		    Calc.mess("Time for all process:"+totalTime,2);
+		    if (cntLsk > 0) {
+			    Calc.mess("Time per one Lsk: "+totalTime3/cntLsk+" ms.",2);
+		    }
+	    }
+	    
     	return new AsyncResult<Result>(res);
 	}
     
@@ -283,7 +288,7 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
-		Calc.setDbgLvl(1);
+		Calc.setDbgLvl(2);
 		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		//ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 		DistServ distServ = ctx.getBean(DistServ.class);
@@ -329,57 +334,6 @@ public class BillServ {
 		}
     	return fut;
 	}
-
-    
-    
-    
-    
-    /**
-	 * выполнить начисление по дому
-	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
-	 */
-/*	public void chrgHouse(int houseId) { TODO
-    	ChrgServ chrgServ = (ChrgServ) ctx.getBean("chrgServ"); 
-
-		House h = em.find(House.class, houseId);
-
-		Calc calc=new Calc();
-
-		Calc.mess("Charging");
-		Calc.mess("House: id="+calc.getHouse().getId());
-		Calc.mess("House: klsk="+calc.getHouse().getKlsk());
-		
-		//перебрать все квартиры и лиц.счета в них
-		for (Kw kw : h.getKw()) {
-			for (Kart kart : kw.getLsk()) {
-				//if (kart.getLsk().equals("26074227")) {
-					long startTime;
-					long endTime;
-					long totalTime;
-					startTime = System.currentTimeMillis();
-				    //расчитать начисление
-					try {
-						if (chrgServ.chrgLsk(calc) ==0){
-							//сохранить расчет
-							chrgServ.save(kart.getLsk());
-						} else {
-							//выполнилось с ошибкой
-							//ничего не предпринимать, считать дальше
-						}
-					} catch (ErrorWhileChrg e) {
-						e.printStackTrace();
-					}
-
-					endTime   = System.currentTimeMillis();
-					totalTime = endTime - startTime;
-				    Calc.mess("Time for this one lsk:"+kart.getLsk()+" ="+totalTime,2);
-					//break; //##################
-				//}
-			}
-			//break; //##################
-		}
-	}*/
-
 
     
 }

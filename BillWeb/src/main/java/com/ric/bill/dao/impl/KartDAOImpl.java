@@ -38,7 +38,7 @@ public class KartDAOImpl implements KartDAO {
     	
     }
     
-	public List<Kart> findAll() {
+	public List<Kart> findAll(Integer houseId) {
 		@SqlResultSetMapping(name= STATEMENT_SQLMAP, classes = { //эту часть кода можно закинуть в любое место
 		        @ConstructorResult(targetClass = ResultSetKlsk.class,
 		            columns = {
@@ -51,7 +51,8 @@ public class KartDAOImpl implements KartDAO {
 		Query q;
 		List<Kart> lstKart = null;
 		try {
-			q = em.createNativeQuery("select distinct k.lsk "+
+			if (houseId == null) {
+				q = em.createNativeQuery("select distinct k.lsk "+
 						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
 						   "where k.fk_kw = kw.id "+
 						   "and h.id = kw.fk_house "+
@@ -62,7 +63,24 @@ public class KartDAOImpl implements KartDAO {
 						   //"and k.lsk between 276500 and 276535 "+
 						   //"and k.flsk between '36010100' and '36010106' "+
 						   "order by k.lsk ",  STATEMENT_SQLMAP);
-			q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
+				q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
+			} else {
+				q = em.createNativeQuery("select distinct k.lsk "+
+						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
+						   "where k.fk_kw = kw.id "+
+						   "and h.id = kw.fk_house "+
+						   "and o.reu in ('Z4', 'F4', 'J4', 'G4') /*'D8'*/ "+
+						   "and o.parent_id=u.id /*and h.id=1744*/ "+
+						   "and k.fk_uk = u.id "+
+						   "and ? between k.dt1 and k.dt2 "+
+						   "and h.id = ? "+
+						   //"and k.lsk between 276500 and 276535 "+
+						   //"and k.flsk between '36010100' and '36010106' "+
+						   "order by k.lsk ",  STATEMENT_SQLMAP);
+				q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
+				q.setParameter(2, houseId);
+			}
+			
 			
 			List<ResultSetKlsk> lst = q.getResultList();
 			lstKart = new ArrayList<Kart>();

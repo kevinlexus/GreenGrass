@@ -100,7 +100,7 @@ public class DistServ {
 	 */
     private void delHouseVolServ() {
 
-    	Calc.mess("Удаление объемов по Дому: id="+calc.getHouse().getId(), 2);
+    	Calc.mess("Удаление объемов по Дому: id="+calc.getHouse().getId()+" по услуге cd="+calc.getServ().getCd(), 2);
 
 		delHouseServVolTp(calc.getServ().getServMet(), 1);
 		delHouseServVolTp(calc.getServ().getServMet(), 0);
@@ -141,24 +141,17 @@ public class DistServ {
 	}
 	
 	/**
-	 * Очистить кэш
+	 * Распределить объемы по домам
+	 * @param calc
 	 */
-	/*@Caching(evict = {
-			@CacheEvict(cacheNames="readWriteCache", allEntries=true),
-			@CacheEvict(cacheNames="readOnlyCache", allEntries=true)
-	})
-	public void clearCache(){
-		
-	}*/
-
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void distAll(Calc calc) {
+    public void distAll(Calc calc, Integer houseId) {
 			//distGen = ctx.getBean(DistGen.class);
 			this.calc=calc;
 			long startTime;
 			long endTime;
 			long totalTime;
-			for (House o: houseMng.findAll2()) {
+			for (House o: houseMng.findAll2(houseId)) {
 				System.out.println("ДОМ:"+o.getId());
 				//dist.clearCache();
 				//распределить объемы
