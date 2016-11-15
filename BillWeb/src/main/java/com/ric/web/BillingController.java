@@ -88,9 +88,9 @@ public class BillingController {
     } 
     
     @RequestMapping("/chrgall")
-    public String chrgAll(@RequestParam(value="dist", defaultValue="0") String dist, 
-    					  @RequestParam(value="chrg", defaultValue="0") String chrg,
-    					  @RequestParam(value="houseId") Integer houseId) {
+    public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist, 
+    					  @RequestParam(value="chrg", defaultValue="0", required=true) String chrg,
+    					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
     	Calc.mess("BillingController.chrgAll dist="+dist+" chrg="+chrg,2);
     	Future<Result> fut = null;
 		boolean isDist, isChrg;

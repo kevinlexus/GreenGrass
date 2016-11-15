@@ -190,7 +190,7 @@ public class DistGen {
 								//добавить объем в объект объема
 								//умножить объем на процент существования и на долю дня
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=v.getVol1() * e.getPrc() / config.getCntCurDays();
+									vl=v.getVol1() * Utl.nvl(m.getTrRatio(), 0d) * e.getPrc() / config.getCntCurDays();
 								}
 							}
 						}

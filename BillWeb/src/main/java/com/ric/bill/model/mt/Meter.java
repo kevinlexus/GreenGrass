@@ -78,6 +78,10 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@BatchSize(size = 50)
 	private List<MeterExs> exs = new ArrayList<MeterExs>(0);
 
+	@Column(name = "TRANS_RATIO", updatable = true, nullable = true)
+	private Double trRatio; 
+	
+	
 /*	public Date getDt1() {
 		return dt1;
 	}
@@ -116,6 +120,14 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 
 	public void setExs(List<MeterExs> exs) {
 		this.exs = exs;
+	}
+	
+	public Double getTrRatio() {
+		return trRatio;
+	}
+
+	public void setTrRatio(Double trRatio) {
+		this.trRatio = trRatio;
 	}
 
 	public boolean equals(Object o) {
