@@ -6,6 +6,7 @@ import java.util.Date;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ public final class Calc {
 
 	private Integer who; //кто?
 	
+
 	public Serv getServ() {
 		return this.serv;
 	}

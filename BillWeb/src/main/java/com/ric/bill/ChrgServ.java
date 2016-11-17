@@ -21,6 +21,7 @@ import javax.persistence.StoredProcedureQuery;
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.keyvalue.MultiKey;
 import org.apache.commons.collections4.map.MultiKeyMap;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -88,7 +89,9 @@ public class ChrgServ {
     //флаг ошибки, произошедшей в потоке
     private static Boolean errThread;
     
-    //конструктор
+	final static Logger logger = Logger.getLogger(ChrgServ.class);
+
+	//конструктор
     public ChrgServ() {
     	super();
     }
@@ -198,7 +201,6 @@ public class ChrgServ {
 		//}
 		
 		prepChrg = new ArrayList<Chrg>(0); 
-		//получить все необходимые услуги для начисления из тарифа по дому
 
 		//для виртуальной услуги	
 		mapServ = new HashMap<Serv, BigDecimal>();  
@@ -432,11 +434,14 @@ public class ChrgServ {
 			}
 		}
 		
-		//Сохранить новое начисление
+		//Сохранить новое начисление (переписать из prepChrg)
 		for (Chrg chrg : prepChrg) {
 			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
 			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
-					chrg.getVol(), chrg.getPrice(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
+					chrg.getVol(), chrg.getPrice(), chrg.getStdt(), chrg.getCntPers(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
+
+			logger.error("Кол-во проживающих:"+ chrg.getCntPers());
+
 			kart.getChrg().add(chrg2); 
 		}
 	}

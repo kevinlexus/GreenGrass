@@ -12,6 +12,7 @@ import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -36,7 +37,7 @@ import com.ric.bill.model.fn.ChrgRec;
 import com.ric.bill.model.fn.ChrgStore;
 
 /**
- * Начисление в потоке
+ * РАСЧЕТ НАЧИСЛЕНИЯ, ВЫЗЫВАЕТСЯ В ПОТОКЕ
  * @author lev
  *
  */
@@ -77,7 +78,9 @@ public class ChrgThr {
 
     private Calc calc;
     
-	//конструктор
+	final static Logger logger = Logger.getLogger(ChrgThr.class);
+
+    //конструктор
 	public ChrgThr() {
 		super();
 	}
@@ -205,7 +208,7 @@ public class ChrgThr {
 			if (!rec.getServ().getVrt()) {
 				if (sum.compareTo(BigDecimal.ZERO) != 0) {
 					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, config.getPeriod(), sum, sum, 
-							vol, rec.getPrice(), chrgTpRnd, rec.getDt1(), rec.getDt2());
+							vol, rec.getPrice(), rec.getStdt(), rec.getCntPers(), chrgTpRnd, rec.getDt1(), rec.getDt2());
 					chrgAdd(chrg);
 				}
 			}
@@ -261,7 +264,6 @@ public class ChrgThr {
 			//Calc.mess(thrName+" CHECK1");
 		}
 
-		//Calc.mess(thrName+" CHECK0.1="+serv.getId()+" dt="+genDt,2);	
 		//получить необходимые услуги
 		stServ = serv.getServSt();
 		upStServ = serv.getServUpst();
@@ -271,34 +273,23 @@ public class ChrgThr {
 			stServ = serv;
 		}
 		
-		//Calc.mess(thrName+" CHECK0.2="+serv.getId()+" dt="+genDt,2);	
-		
 		//контроль наличия услуги св.с.нормы (по ряду услуг)
 		if ((Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d) && serv.getServUpst() == null) {
 			throw new EmptyStorable("По услуге Id="+serv.getId()+" обнаружена пустая услуга свыше соц.нормы");
 		}
 
-		//Calc.mess(thrName+" CHECK0.3="+serv.getId()+" dt="+genDt,2);	
-		
 		//Получить кол-во проживающих 
-		//synchronized (kartMng) {
 		kartMng.getCntPers(kart, serv, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
-		//}
-		//calc.mess("Kart.klsk="+kart.getKlsk(), 2);
-		//calc.mess("Kart.lsk="+kart.getLsk()+" SERV="+stServ.getCd()+" SERV ID="+stServ.getId(), 2);
-		
-		//Calc.mess(thrName+" CHECK0.4="+serv.getId()+" dt="+genDt,2);	
 
 		//получить расценку по норме	
-		//synchronized (kartMng) {
-			stPrice = kartMng.getServPropByCD(calc, stServ, "Цена", genDt);
-		//}
+		stPrice = kartMng.getServPropByCD(calc, stServ, "Цена", genDt);
 		
 		if (stPrice == null) {
 			stPrice = 0d;
 		}
 
+		
 		//Calc.mess(thrName+" CHECK0.5="+serv.getId()+" dt="+genDt,2);	
 		
 		//получить нормативный объем
@@ -308,11 +299,7 @@ public class ChrgThr {
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
 			
 			
-			//synchronized (kartMng) {
-				//Calc.mess(thrName+" CHECK1="+serv.getId()+" dt="+genDt,2);	
-				stdt = kartMng.getStandart(calc, serv, cntPers, genDt);
-				//Calc.mess(thrName+" CHECK2="+serv.getId()+" dt="+genDt,2);	
-			//}
+			stdt = kartMng.getStandart(calc, serv, cntPers, genDt);
 			//здесь же получить расценки по свыше соц.нормы и без проживающих 
 			if (serv.getServUpst() != null) {
 				
@@ -336,8 +323,6 @@ public class ChrgThr {
 		}
 			
 
-		//Calc.mess(thrName+" CHECK3="+serv.getId()+" dt="+genDt,2);	
-		
 		//получить организацию
 		if (serv.getCheckOrg()) {
 		  org = kartMng.getOrg(calc, serv.getServOrg(), genDt);
@@ -348,8 +333,6 @@ public class ChrgThr {
 		
 		//получить базу для начисления
 		baseCD = parMng.getStr(serv, "Name_CD_par_base_charge");
-
-		//Calc.mess(thrName+" CHECK4="+serv.getId()+" dt="+genDt,2);	
 	
 		//получить объем для начисления
 		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по кол-ву точек-1"), 0d) == 1d || 
@@ -372,7 +355,6 @@ public class ChrgThr {
 					//Calc.mess(thrName+" CHECK4.3="+serv.getId()+" dt="+genDt,2);	
 				}
 			}
-			//Calc.mess(thrName+" CHECK4.4="+serv.getId()+" dt="+genDt,2);	
 			
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета для полива"), 0d) == 1d) {
 			//получить объем за месяц
@@ -391,8 +373,6 @@ public class ChrgThr {
 			//получить объем по лицевому счету и услуге за ДЕНЬ
 			SumNodeVol tmpNodeVol = metMng.getVolPeriod(kart, serv.getServMet(), genDt, genDt);
 			vol = tmpNodeVol.getVol();
-			//vol=5d;
-			
 			if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
 				//доля площади в день
 				sqr = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d) / config.getCntCurDays();
@@ -413,14 +393,7 @@ public class ChrgThr {
 			vol = 1 / config.getCntCurDays();
 		}
 
-
-		/*if (true) {
-			return;
-		}*/
-		
 		//ВЫПОЛНИТЬ РАСЧЕТ
-	
-		//Calc.mess(thrName+" CHECK5="+serv.getId()+" dt="+genDt,2);	
 
 		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d ||
 			Utl.nvl(parMng.getDbl(serv, "Вариант расчета по кол-ву точек-1"), 0d) == 1d ||
@@ -429,24 +402,10 @@ public class ChrgThr {
 			//тип расчета, например:Взносы на капремонт
 			//Вариант подразумевает объём, по параметру - базе, жилого фонда РАСПределённый по дням
 	        //тип расчета, например Х.В.ОДН, Г.В.ОДН, Эл.эн.ОДН
-			//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
-			//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
-			chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
-			/*tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
-			if (tmpSum != BigDecimal.ZERO) {
-				Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
-				kart.getChrg().add(chrg);
-			}*/
+			chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), null, cntPers.cnt, stServ, org, uk, genDt);
 		} if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
 			//тип расчета, например:Коммерческий найм, где цена = сумме
-			//tmpSum = BigDecimal.valueOf(stPrice);
-			//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
-			chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
-			
-			/*if (tmpSum != BigDecimal.ZERO) {
-				Chrg chrg = new Chrg(kart, serv, 1, Calc.getPeriod(), tmpSum, tmpSum, vol, stPrice, chrgTpDet, genDt, genDt);
-				kart.getChrg().add(chrg);
-			}*/
+			chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), null, cntPers.cnt, stServ, org, uk, genDt);
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d ||
 				   Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d) {
 			//тип расчета, например:текущее содержание, Х.В., Г.В., Канализ
@@ -463,18 +422,22 @@ public class ChrgThr {
 					tmpVol= stdt.partVol;
 				}
 	
-				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice), 
+								BigDecimal.valueOf(stdt.vol), cntPers.cnt, stServ, org, uk, genDt);
 				//свыше соцнормы
 				tmpVol = absVol - tmpVol;
-				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice), upStServ, org, uk, genDt);
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice), 
+								BigDecimal.valueOf(stdt.vol), cntPers.cnt, upStServ, org, uk, genDt);
 			} else {
 				//нет проживающих
 				if (woKprServ != null) {
 					//если существует услуга "без проживающих"
-					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice), woKprServ, org, uk, genDt);
+					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice), 
+								BigDecimal.valueOf(stdt.vol), cntPers.cnt, woKprServ, org, uk, genDt);
 				} else {
 					//услуги без проживающих не существует, поставить на свыше соц.нормы
-					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), upStServ, org, uk, genDt);
+					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), 
+								BigDecimal.valueOf(stdt.vol), cntPers.cnt, upStServ, org, uk, genDt);
 				}
 				
 			}
@@ -497,13 +460,13 @@ public class ChrgThr {
 					tmpVolD = BigDecimal.valueOf(vol).multiply(cf);
 					//tmpSumD = tmpVolD.multiply(BigDecimal.valueOf(stPrice)); 
 					//addChrg(kart, serv, tmpSumD, vol, stPrice, genDt, chrgTpDet);
-					chStore.addChrg(tmpVolD, BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
+					chStore.addChrg(tmpVolD, BigDecimal.valueOf(stPrice), null, cntPers.cnt, stServ, org, uk, genDt);
 					//свыше соцнормы
 					//tmpVolD = BigDecimal.valueOf(vol).multiply( new BigDecimal("1").subtract(cf) );
 					tmpVolD = BigDecimal.valueOf(vol).subtract(tmpVolD);
 					//tmpSumD = tmpVolD.multiply(BigDecimal.valueOf(upStPrice)); 
 					//addChrg(kart, serv, tmpSumD, vol, upStPrice, genDt, chrgTpDet);
-					chStore.addChrg(tmpVolD, BigDecimal.valueOf(upStPrice), upStServ, org, uk, genDt);
+					chStore.addChrg(tmpVolD, BigDecimal.valueOf(upStPrice), null, cntPers.cnt, upStServ, org, uk, genDt);
 				} else {
 					//нет проживающих
 					if (woKprServ != null) {
@@ -511,13 +474,13 @@ public class ChrgThr {
 						tmpVolD = BigDecimal.valueOf(vol);
 						//tmpSumD = tmpVolD.multiply(BigDecimal.valueOf(woKprPrice)); 
 						//addChrg(kart, serv, tmpSumD, vol, woKprPrice, genDt, chrgTpDet);
-						chStore.addChrg(tmpVolD, BigDecimal.valueOf(woKprPrice), woKprServ, org, uk, genDt);
+						chStore.addChrg(tmpVolD, BigDecimal.valueOf(woKprPrice), null, cntPers.cnt, woKprServ, org, uk, genDt);
 					} else {
 						//если нет услуги "без проживающих", взять расценку, по услуге свыше соц.нормы
 						tmpVolD = BigDecimal.valueOf(vol);
 						//tmpSumD = tmpVolD.multiply(BigDecimal.valueOf(upStPrice)); 
 						//addChrg(kart, serv, tmpSumD, vol, upStPrice, genDt, chrgTpDet);
-						chStore.addChrg(tmpVolD, BigDecimal.valueOf(upStPrice), upStServ, org, uk, genDt);
+						chStore.addChrg(tmpVolD, BigDecimal.valueOf(upStPrice), null, cntPers.cnt, upStServ, org, uk, genDt);
 					}
 					
 				}
@@ -528,12 +491,12 @@ public class ChrgThr {
 				//есть проживающие
 				//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(stPrice) );
 				//addChrg(kart, serv, tmpSum, vol, stPrice, genDt, chrgTpDet);
-				chStore.addChrg( BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), stServ, org, uk, genDt);
+				chStore.addChrg( BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), null, cntPers.cnt, stServ, org, uk, genDt);
 			} else {
 				//нет проживающих
 				//tmpSum = BigDecimal.valueOf(vol).multiply( BigDecimal.valueOf(woKprPrice) );
 				//addChrg(kart, serv, tmpSum, vol, woKprPrice, genDt, chrgTpDet);
-				chStore.addChrg( BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice), woKprServ, org, uk, genDt);
+				chStore.addChrg( BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice), null, cntPers.cnt, woKprServ, org, uk, genDt);
 			}			
 			
 		}
@@ -577,7 +540,6 @@ public class ChrgThr {
 	 */
 	public void putMapVrtVal(Serv serv, BigDecimal sum) {
 		BigDecimal tmpSum;
-		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
 		synchronized (mapVrt) {
 	    for (Map.Entry<Serv, BigDecimal> entry : mapVrt.entrySet()) {
 	    	if (entry.getKey().equals(serv)) {

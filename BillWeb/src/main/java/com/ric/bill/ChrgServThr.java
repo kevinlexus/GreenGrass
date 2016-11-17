@@ -19,7 +19,7 @@ import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.model.tr.TarifKlsk;
 
 /**
- * Поток начисления, выполняет вызовы функций начисления
+ * Асинхронный поток начисления, выполняет вызовы функций начисления
  * сервис необходим, так как @Transactional должно находиться в другом сервисе,
  * подробнее тут: http://stackoverflow.com/questions/11275471/calling-transactional-methods-from-another-thread-runnable
  * @author lev

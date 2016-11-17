@@ -425,7 +425,7 @@ public class KartMngImpl implements KartMng {
 	}
 	
 	/**
-	 * 
+	 * Создать список услуг, по параметру
 	 * @param tc -тарифосодержащий объект
 	 * @param lst -список услуг
 	 * @param cd - параметр, который проверять
@@ -433,12 +433,12 @@ public class KartMngImpl implements KartMng {
 	 * @return - обновленный список услуг
 	 */
     public /*synchronized*/ List<Serv> checkServ(TarifContains tc, List lst, String cd, int cmd) {
-    	//список отключенных услуг
-    	//List lstOff = new ArrayList<Serv>();
+		//Calc.mess("Объект:"+tc.getKlsk(), 2);
     	for (TarifKlsk k : tc.getTarifklsk()) {
 			//if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
+					//Calc.mess("Услуга:"+t.getServ().getCd(), 2);
 					if (t.getServ().getServChrg() != null && t.getServ().getServChrg().equals(t.getServ())) {
 						//искать наличие свойства "Поставщик", оно и определяет наличие услуги
 						if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {

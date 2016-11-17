@@ -38,7 +38,7 @@ public class Chrg implements java.io.Serializable, Simple {
 			
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			BigDecimal sumFull, BigDecimal sumAmnt, BigDecimal vol,
-			BigDecimal price, Lst tp, Date dt1, Date dt2) {
+			BigDecimal price, BigDecimal stdt, Integer cntPers, Lst tp, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -49,6 +49,10 @@ public class Chrg implements java.io.Serializable, Simple {
 		setSumAmnt(sumAmnt.doubleValue());
 		setVol(vol.doubleValue());
 		setPrice(price.doubleValue());
+		if (stdt != null) {
+			setStdt(stdt.doubleValue());
+		}
+		setCntPers(cntPers);
 		setTp(tp);
 		setDt1(dt1);
 		setDt2(dt2);
@@ -56,7 +60,7 @@ public class Chrg implements java.io.Serializable, Simple {
 
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			Double sumFull, Double sumAmnt, Double vol,
-			Double price, Lst tp, Date dt1, Date dt2) {
+			Double price, Double stdt, Integer cntPers, Lst tp, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -67,6 +71,8 @@ public class Chrg implements java.io.Serializable, Simple {
 		setSumAmnt(sumAmnt);
 		setVol(vol);
 		setPrice(price);
+		setStdt(stdt);
+		setCntPers(cntPers);
 		setTp(tp);
 		setDt1(dt1);
 		setDt2(dt2);
@@ -111,6 +117,12 @@ public class Chrg implements java.io.Serializable, Simple {
 	@Column(name = "PRICE")
 	private Double price;
 
+	@Column(name = "STDT")
+	private Double stdt;
+	
+	@Column(name = "CNTPERS")
+	private Integer cntPers; 
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHRG_TP", referencedColumnName="ID")
 	private Lst tp; 
@@ -123,9 +135,12 @@ public class Chrg implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
 	private Org org; 
 
+	
+	
 	public Integer getId() {
 		return this.id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -232,6 +247,22 @@ public class Chrg implements java.io.Serializable, Simple {
 
 	public void setOrg(Org org) {
 		this.org = org;
+	}
+
+	public Double getStdt() {
+		return stdt;
+	}
+
+	public void setStdt(Double stdt) {
+		this.stdt = stdt;
+	}
+
+	public Integer getCntPers() {
+		return cntPers;
+	}
+
+	public void setCntPers(Integer cntPers) {
+		this.cntPers = cntPers;
 	}
 
 	

@@ -19,26 +19,29 @@ public class ChrgRec {
 	private BigDecimal price;
 	private Serv serv;
 	private Org org;
-	private Org uk;
     private Date dt1, dt2;
+	private BigDecimal stdt;
+	private Integer cntPers;
 
     /**
      * конструктор 
      * @param sum - сумма
      * @param vol - объем
      * @param price - расценка
+     * @param stdt - норматив
      * @param serv - услуга
      * @param org - организация
      * @param dt1 - дата начала
      * @param dt2 - дата окончания
      */
-	public ChrgRec(BigDecimal vol, BigDecimal price, Serv serv, Org org, Org uk, Date dt1, Date dt2) {
+	public ChrgRec(BigDecimal vol, BigDecimal price, BigDecimal stdt, Integer cntPers, Serv serv, Org org, Org uk, Date dt1, Date dt2) {
 		super();
 		setVol(vol);
 		setPrice(price);
+		setStdt(stdt);
+		setCntPers(cntPers);
 		setServ(serv);
 		setOrg(org);
-		setUk(uk);
 		setDt1(dt1);
 		setDt2(dt2);
 	}
@@ -91,12 +94,20 @@ public class ChrgRec {
 		this.serv = serv;
 	}
 
-	public Org getUk() {
-		return uk;
+	public BigDecimal getStdt() {
+		return stdt;
 	}
 
-	public void setUk(Org uk) {
-		this.uk = uk;
+	public void setStdt(BigDecimal stdt) {
+		this.stdt = stdt;
+	}
+
+	public Integer getCntPers() {
+		return cntPers;
+	}
+
+	public void setCntPers(Integer cntPers) {
+		this.cntPers = cntPers;
 	}
 
 	

@@ -91,7 +91,7 @@ public class BillingController {
     public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist, 
     					  @RequestParam(value="chrg", defaultValue="0", required=true) String chrg,
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
-    	Calc.mess("BillingController.chrgAll dist="+dist+" chrg="+chrg,2);
+    	Calc.mess("BillingController.chrgAll dist="+dist+" chrg="+chrg+" houseId="+houseId, 2);
     	Future<Result> fut = null;
 		boolean isDist, isChrg;
     	if (dist.equals("1")) {
