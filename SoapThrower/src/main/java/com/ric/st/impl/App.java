@@ -15,6 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.ric.st.Configs;
 import com.ric.st.FileExchanges;
 import com.ric.st.Throwers;
+import com.ric.st.Throwers2;
 import com.ric.st.prep.HouseManagementPreps;
 import com.ric.st.prep.impl.HouseManagementPrep;
 
@@ -78,29 +79,30 @@ public class App
 		
 		//создать бин отправщика SOAP
 		Throwers thrMng = context.getBean(ThrowerMng.class);
+		//Throwers2 thrMng2 = context.getBean(ThrowerMng2.class);
 		//thrMng.exportAccountData();
 		System.out.println("Start");
 		
-/*		HouseManagementPreps hm = new HouseManagementPrep();
-		hm.setHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
-		hm.setFloorCount("22");
+		HouseManagementPreps hm = new HouseManagementPrep();
+		hm.setHouseGuid("810321c3-f0b4-454a-9a1c-cad82adebd58");
+		hm.setFloorCount("33");
 		hm.setCultHerit(false);
 		hm.setOktmo("32607441101");
 		hm.setState("Исправный");
 		hm.setTotalSquare(5555d);
 		hm.setUsedYear(1972);
-		hm.setUnderFloorCount("2");
+		hm.setUnderFloorCount("3");
 		hm.setNoRSOGKNEGRP(true);
-		hm.setMinFloorCount(2);
+		hm.setMinFloorCount(3);
 
-		thrMng.importHouse(hm);
-*/
+//		thrMng.importHouse(hm);
+		thrMng.importHouseUpd(hm);
 		
 		//FileExchanges fe = new FileExchange();  
 		//fe.send();
 
-		thrMng.importContractData();
-		
+		//thrMng.importContractData();
+		//thrMng2.importHouseResidentialPremises(1, hm);
 		
 		System.out.println( "Stop" );
 		//thrMng.importHouseUpd();

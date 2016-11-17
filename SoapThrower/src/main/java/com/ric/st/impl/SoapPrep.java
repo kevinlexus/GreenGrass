@@ -3,6 +3,7 @@ package com.ric.st.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -32,6 +33,8 @@ import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
 
+import org.apache.log4j.Logger;
+
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 import ru.gosuslugi.dom.signature.demo.commands.Command;
 import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
@@ -40,8 +43,12 @@ import com.ric.bill.Utl;
 import com.ric.st.SoapPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
-public class SoapPrep implements SoapPreps {
+public class SoapPrep<T> implements SoapPreps {
 
+	T ob;
+	
+	final static Logger logger = Logger.getLogger(SoapPrep.class);
+	
 	private RequestHeader rh;
 	private BindingProvider bp;
 	private WSBindingProvider ws;
@@ -53,7 +60,8 @@ public class SoapPrep implements SoapPreps {
 	/*
 	 * Конструктор
 	 */
-	public SoapPrep(BindingProvider bs, WSBindingProvider ws){
+	public SoapPrep(T o, BindingProvider bs, WSBindingProvider ws){
+		ob = o;
 		setBindingProvider(bs);
 		setWSBindingProvider(ws);
 		setBinding(bs.getBinding());
@@ -199,7 +207,7 @@ public class SoapPrep implements SoapPreps {
 	 * Отправить SOAP сообщение
 	 * 
 	 */
-	public Object sendSOAP(Class portClass, Object req, String meth, Object result, String login, String pass) throws Exception {
+	public Object sendSOAP(/*Class portClass, */Object req, String meth, Object result, String login, String pass) throws Exception {
 		//получить XML из хэндлера
     	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
         setXMLText((String) responseContext.get("SOAP_XML"));
@@ -218,11 +226,16 @@ public class SoapPrep implements SoapPreps {
         String authorization = new sun.misc.BASE64Encoder().encode((login+":"+pass).getBytes());
         MimeHeaders hd = message2.getMimeHeaders();
         hd.addHeader("Authorization", "Basic " + authorization);
+
+        logger.info("Class-2 : " + ob.getClass().getInterfaces()[0]);
         
-        Method m = portClass.getMethod(meth, req.getClass());
-
+        Method m = ob.getClass().getInterfaces()[0].getMethod(meth, req.getClass());
+        
         WebMethod webmethod = m.getAnnotation(WebMethod.class);
-
+        
+        logger.info("Webmethod : " + webmethod);
+        
+        
         hd.addHeader("SOAPAction", webmethod.action());
         
         System.out.println("Send:"); 

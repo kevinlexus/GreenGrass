@@ -1,17 +1,15 @@
 package com.ric.st.impl;
 
+import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.ws.BindingProvider;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.bouncycastle.crypto.digests.GOST3411Digest;
-import org.bouncycastle.util.Memoable;
+import org.apache.log4j.Logger;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -59,12 +57,15 @@ import com.sun.xml.ws.developer.WSBindingProvider;
 @Service
 public class ThrowerMng implements Throwers{
 
+	final static Logger logger = Logger.getLogger(SoapPrep.class);
+
 	@Autowired
 	private ApplicationContext ctx;
     @PersistenceContext
     private EntityManager em;
 	@Autowired
 	private Config config;
+
 
 	/**
 	 * Импорт договора управления
@@ -80,7 +81,7 @@ public class ThrowerMng implements Throwers{
     	HouseManagementPortsType port = service.getHouseManagementPort();
 
     	// подготовительный объект
-    	SoapPreps sp = new SoapPrep((BindingProvider) port, (WSBindingProvider) port);
+    	SoapPreps sp = new SoapPrep(port, (BindingProvider) port, (WSBindingProvider) port);
 
     	// подписывать XML?
     	sp.setSignXML(true);
@@ -196,7 +197,7 @@ public class ThrowerMng implements Throwers{
     	// отправка SOAP, анмаршаллинг результата
     	// Исправлять классы под соответствующий запрос!
     	ImportResult res = (ImportResult) sp.sendSOAP(  // исправить
-    			HouseManagementPortsType.class,  		// исправить
+    			/*HouseManagementPortsType.class,*/  		// исправить
     			req, 
     			"importContractData", 			 		// исправить
     			new ImportResult(), 			 		// исправить
@@ -211,7 +212,7 @@ public class ThrowerMng implements Throwers{
     	HouseManagementPortsType port = service.getHouseManagementPort();
 
     	// подготовительный объект
-    	SoapPreps sp = new SoapPrep((BindingProvider) port, (WSBindingProvider) port);
+    	SoapPreps sp = new SoapPrep(port, (BindingProvider) port, (WSBindingProvider) port);
 
     	// подписывать XML?
     	sp.setSignXML(true);
@@ -274,7 +275,7 @@ public class ThrowerMng implements Throwers{
     	// отправка SOAP, анмаршаллинг результата
     	// Исправлять классы под соответствующий запрос!
     	ImportResult res = (ImportResult) sp.sendSOAP(  // исправить
-    			HouseManagementPortsType.class,  		// исправить
+    			/*HouseManagementPortsType.class, */ 		// исправить
     			req, 
     			"importHouseUOData", 			 		// исправить
     			new ImportResult(), 			 		// исправить
@@ -288,8 +289,10 @@ public class ThrowerMng implements Throwers{
     	HouseManagementService service = new HouseManagementService();
     	HouseManagementPortsType port = service.getHouseManagementPort();
 
+        logger.info("Class-1 : " + HouseManagementPortsType.class);
+
     	// подготовительный объект
-    	SoapPreps sp = new SoapPrep((BindingProvider) port, (WSBindingProvider) port);
+    	SoapPreps sp = new SoapPrep(port, (BindingProvider) port, (WSBindingProvider) port);
 
     	// подписывать XML?
     	sp.setSignXML(true);
@@ -341,7 +344,7 @@ public class ThrowerMng implements Throwers{
     	// отправка SOAP, анмаршаллинг результата
     	// Исправлять классы под соответствующий запрос!
     	ImportResult res = (ImportResult) sp.sendSOAP(  // исправить
-    			HouseManagementPortsType.class,  		// исправить
+    			/*HouseManagementPortsType.class,*/  		// исправить
     			req, 
     			"importHouseUOData", 			 		// исправить
     			new ImportResult(), 			 		// исправить
@@ -356,7 +359,7 @@ public class ThrowerMng implements Throwers{
     	HouseManagementPortsType port = service.getHouseManagementPort();
 
     	// подготовительный объект
-    	SoapPreps sp = new SoapPrep((BindingProvider) port, (WSBindingProvider) port);
+    	SoapPreps sp = new SoapPrep(port, (BindingProvider) port, (WSBindingProvider) port);
 
     	// подписывать XML?
     	sp.setSignXML(true);
@@ -380,7 +383,7 @@ public class ThrowerMng implements Throwers{
     	// отправка SOAP, анмаршаллинг результата
     	// Исправлять классы под соответствующий запрос!
     	ExportAccountResult res = (ExportAccountResult) sp.sendSOAP(  // исправить
-    			HouseManagementPortsType.class,  		// исправить
+    			/*HouseManagementPortsType.class, */ 		// исправить
     			req, 
     			"exportAccountData", 			 		// исправить
     			new ExportAccountResult(), 			 		// исправить
