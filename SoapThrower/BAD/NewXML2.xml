@@ -1,45 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
-	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
-	<S:Header>
-		<ns2:RequestHeader xmlns="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/bills-base/"
-			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/house-management/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/account-base/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
-			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
-			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-base/">
-			<ns2:Date>2016-11-17T12:50:36.017+06:00</ns2:Date>
-			<ns2:MessageGUID>dce494d8-586f-4c95-be56-6d30aad6c707
-			</ns2:MessageGUID>
-			<ns2:orgPPAGUID>b9fe4d27-020d-44dc-8bfd-b5972a504f45</ns2:orgPPAGUID>
-			<ns2:IsOperatorSignature>true</ns2:IsOperatorSignature>
-		</ns2:RequestHeader>
-	</S:Header>
-	<S:Body>
-		<ns3:importHouseUORequest xmlns="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/bills-base/"
-			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/house-management/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/account-base/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
-			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
-			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			Id="foo" ns2:version="10.0.1.1">
+<soap:Envelope
+	xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
+	xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/payments-base/"
+	xmlns:ns12="http://dom.gosuslugi.ru/schema/integration/bills-base/"
+	xmlns:ns13="http://dom.gosuslugi.ru/schema/integration/house-management/"
+	xmlns:ns3="http://www.w3.org/2000/09/xmldsig#" xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/base/"
+	xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/account-base/"
+	xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
+	xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+	xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+	xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<ns4:ResultHeader>
+			<ns4:Date>2016-11-18T12:40:20.316+03:00</ns4:Date>
+			<ns4:MessageGUID>9ce9d259-45ab-4e41-890d-36cf7686a53d
+			</ns4:MessageGUID>
+		</ns4:ResultHeader>
+	</soap:Header>
+	<soap:Body>
+		<ns13:ImportResult Id="signed-data-container"
+			ns4:version="10.0.1.1">
 			<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-				Id="xmldsig-26a15d8d-3df5-4893-9311-f1cddb38db66">
+				Id="xmldsig-fd15c04a-a2cd-4474-9b10-869b8fccce01">
 				<ds:SignedInfo>
 					<ds:CanonicalizationMethod
-						Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+						Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
 					<ds:SignatureMethod
 						Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411" />
-					<ds:Reference Id="xmldsig-26a15d8d-3df5-4893-9311-f1cddb38db66-ref0"
-						URI="#foo">
+					<ds:Reference URI="#signed-data-container">
 						<ds:Transforms>
 							<ds:Transform
 								Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
@@ -47,104 +36,47 @@
 						</ds:Transforms>
 						<ds:DigestMethod
 							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-						<ds:DigestValue>vhrC8JYd8hkl7tdfwLiCkIC05+dU0EvdZx0B89jZJbM=
+						<ds:DigestValue>6efmD47TBgirAP05HtQzqRwC2FA5kk01d3B5gozWKxg=
 						</ds:DigestValue>
 					</ds:Reference>
 					<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
-						URI="#xmldsig-26a15d8d-3df5-4893-9311-f1cddb38db66-signedprops">
+						URI="#xmldsig-fd15c04a-a2cd-4474-9b10-869b8fccce01-signedprops">
 						<ds:DigestMethod
 							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-						<ds:DigestValue>hnUG4BSnrvXlBRbYsWrYxKufqA0irEvp2pdJVAUYkCg=
+						<ds:DigestValue>FNa1bkn2UMJIilj7t92FE1H0dUMh9sqqVcpjZV+3a9E=
 						</ds:DigestValue>
 					</ds:Reference>
 				</ds:SignedInfo>
-				<ds:SignatureValue
-					Id="xmldsig-26a15d8d-3df5-4893-9311-f1cddb38db66-sigvalue">
-					XgCdnOUceyjaBe14vIKFa4b+s0ryVMU6xHE/29hGTQgU+hqun1oatlKF5uM58ht4/yFaIlxx5Uou
-					Gknl9jGKZA==
+				<ds:SignatureValue>2RdDtUajkoqzVQ/3lHypoPiWV11wxidNG60UpnD+e5iznjTnDa0JbxudS9y6yi8HE1T/kI1D6+MGP7sREP1rRA==
 				</ds:SignatureValue>
 				<ds:KeyInfo>
 					<ds:X509Data>
-						<ds:X509Certificate>
-							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
-							A1UdHwSCASAwggEcMDmgN6A1hjNodHRwOi8vdGF4NC50ZW5zb3IucnUvY2VydGVucm9sbC90ZW5z
-							b3JjYTMtMjAxNS5jcmwwLKAqoCiGJmh0dHA6Ly90ZW5zb3IucnUvY2EvdGVuc29yY2EzLTIwMTUu
-							Y3JsMDmgN6A1hjNodHRwOi8vY3JsLnRlbnNvci5ydS90YXg0L2NhL2NybC90ZW5zb3JjYTMtMjAx
-							NS5jcmwwOqA4oDaGNGh0dHA6Ly9jcmwyLnRlbnNvci5ydS90YXg0L2NhL2NybC90ZW5zb3JjYTMt
-							MjAxNS5jcmwwOqA4oDaGNGh0dHA6Ly9jcmwzLnRlbnNvci5ydS90YXg0L2NhL2NybC90ZW5zb3Jj
-							YTMtMjAxNS5jcmwwggGgBggrBgEFBQcBAQSCAZIwggGOMC8GCCsGAQUFBzABhiNodHRwOi8vdGF4
-							NC50ZW5zb3IucnUvb2NzcC9vY3NwLnNyZjAtBggrBgEFBQcwAoYhaHR0cDovL3RheDQudGVuc29y
-							LnJ1L3RzcC90c3Auc3JmMD8GCCsGAQUFBzAChjNodHRwOi8vdGF4NC50ZW5zb3IucnUvY2VydGVu
-							cm9sbC90ZW5zb3JjYTMtMjAxNS5jcnQwMgYIKwYBBQUHMAKGJmh0dHA6Ly90ZW5zb3IucnUvY2Ev
-							dGVuc29yY2EzLTIwMTUuY3J0MDsGCCsGAQUFBzAChi9odHRwOi8vY3JsLnRlbnNvci5ydS90YXg0
-							L2NhL3RlbnNvcmNhMy0yMDE1LmNydDA8BggrBgEFBQcwAoYwaHR0cDovL2NybDIudGVuc29yLnJ1
-							L3RheDQvY2EvdGVuc29yY2EzLTIwMTUuY3J0MDwGCCsGAQUFBzAChjBodHRwOi8vY3JsMy50ZW5z
-							b3IucnUvdGF4NC9jYS90ZW5zb3JjYTMtMjAxNS5jcnQwKwYDVR0QBCQwIoAPMjAxNjEwMTkwODQ2
-							MDBagQ8yMDE3MTAxOTA4NDYwMFowNgYFKoUDZG8ELQwrItCa0YDQuNC/0YLQvtCf0YDQviBDU1Ai
-							ICjQstC10YDRgdC40Y8gMy42KTCCATMGBSqFA2RwBIIBKDCCASQMKyLQmtGA0LjQv9GC0L7Qn9GA
-							0L4gQ1NQIiAo0LLQtdGA0YHQuNGPIDMuNikMUyLQo9C00L7RgdGC0L7QstC10YDRj9GO0YnQuNC5
-							INGG0LXQvdGC0YAgItCa0YDQuNC/0YLQvtCf0YDQviDQo9CmIiDQstC10YDRgdC40LggMS41DE/Q
-							odC10YDRgtC40YTQuNC60LDRgiDRgdC+0L7RgtCy0LXRgtGB0YLQstC40Y8g4oSWINCh0KQvMTI0
-							LTI3Mzgg0L7RgiAwMS4wNy4yMDE1DE/QodC10YDRgtC40YTQuNC60LDRgiDRgdC+0L7RgtCy0LXR
-							gtGB0YLQstC40Y8g4oSWINCh0KQvMTI4LTIzNTIg0L7RgiAxNS4wNC4yMDE0MAgGBiqFAwICAwNB
-							AI6aN/pymEfBJvl3sY6CHgjn/jPWILGXFNfpVvbukyoge2HOCElDa3XWxgCOFxL7aCfKe1i24yjN
-							K1j71FdP+Tk=
+						<ds:X509Certificate>MIIDAjCCArGgAwIBAgITEgAVyRWEZR3kx8QM8wAAABXJFTAIBgYqhQMCAgMwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDIwHhcNMTYxMDA0MTcwMjIzWhcNMTcwMTA0MTcxMjIzWjARMQ8wDQYDVQQDDAZUUzEwMDQwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARAT5RavuYVtUbVgxrp9M+gs6HT0z1osAFPyIe9bvz28L0qaRvof5+RBbfxq2tF2gRLsy6Wp+MGnM1IFH/+6ls2FaOCAXAwggFsMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUcLAKkPNPMWtH4wfDTUUsQJrKblkwHwYDVR0jBBgwFoAUFTF8sI0a3mbXFZxJUpcXJLkBeoMwWQYDVR0fBFIwUDBOoEygSoZIaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIuY3JsMIGpBggrBgEFBQcBAQSBnDCBmTBhBggrBgEFBQcwAoZVaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQBcn3tilZhzT0vG7xo22x8bZCsywF9RZTQt9q+HGFfcDz4wfyWEV+gxY09C4PA0XcWwxD9GTZo8RDGP4Q+FSt1s
 						</ds:X509Certificate>
 					</ds:X509Data>
 				</ds:KeyInfo>
 				<ds:Object>
 					<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
-						xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" Target="#xmldsig-26a15d8d-3df5-4893-9311-f1cddb38db66">
+						Target="#xmldsig-fd15c04a-a2cd-4474-9b10-869b8fccce01">
 						<xades:SignedProperties
-							Id="xmldsig-26a15d8d-3df5-4893-9311-f1cddb38db66-signedprops">
+							Id="xmldsig-fd15c04a-a2cd-4474-9b10-869b8fccce01-signedprops">
 							<xades:SignedSignatureProperties>
-								<xades:SigningTime>2016-11-17T12:50:36.158+06:00
+								<xades:SigningTime>2016-11-18T12:40:20.320+03:00
 								</xades:SigningTime>
 								<xades:SigningCertificate>
 									<xades:Cert>
 										<xades:CertDigest>
-											<DigestMethod
+											<ds:DigestMethod
 												Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-											<DigestValue>ZM7Vskv+qMZ9yQEAFn3+KRbrAtuD+XoNC4484ub7s4c=
-											</DigestValue>
+											<ds:DigestValue>pFLpW6kFUrUxiIfnFF4T/5yuhme2WuUjmclY/17ZNKY=
+											</ds:DigestValue>
 										</xades:CertDigest>
 										<xades:IssuerSerial>
-											<X509IssuerName>cn=TENSORCA3,ou=Удостоверяющий центр,o=ООО
-												Компания Тензор,l=Ярославль,st=76 Ярославская
-												область,c=RU,1.2.840.113549.1.9.1=root@nalog.tensor.ru,street=Московский
-												проспект
-												д.12,1.2.643.3.131.1.1=007605016030,1.2.643.100.1=1027600787994
-											</X509IssuerName>
-											<X509SerialNumber>328510293966069994261239</X509SerialNumber>
+											<ds:X509IssuerName>cn=CRYPTO-PRO Test Center 2,o=CRYPTO-PRO
+												LLC,l=Moscow,c=RU,1.2.840.113549.1.9.1=support@cryptopro.ru
+											</ds:X509IssuerName>
+											<ds:X509SerialNumber>401420826789807232416437193949005597730261269
+											</ds:X509SerialNumber>
 										</xades:IssuerSerial>
 									</xades:Cert>
 								</xades:SigningCertificate>
@@ -153,30 +85,29 @@
 					</xades:QualifyingProperties>
 				</ds:Object>
 			</ds:Signature>
-			<ns3:ApartmentHouse>
-				<ns3:ApartmentHouseToUpdate>
-					<ns3:BasicCharacteristicts>
-						<ns3:No_RSO_GKN_EGRP_Registered>true</ns3:No_RSO_GKN_EGRP_Registered>
-						<ns3:FIASHouseGuid>7de1d6c3-c7fd-4da6-95a2-40cb97e8201a</ns3:FIASHouseGuid>
-						<ns3:TotalSquare>5555.0</ns3:TotalSquare>
-						<ns3:State>
-							<ns6:Code>2</ns6:Code>
-							<ns6:GUID>57c4dbc5-bdd5-4490-92e1-3e687797b32a</ns6:GUID>
-							<ns6:Name>Исправный</ns6:Name>
-						</ns3:State>
-						<ns3:UsedYear>1972</ns3:UsedYear>
-						<ns3:FloorCount>22</ns3:FloorCount>
-						<ns3:OlsonTZ>
-							<ns6:Code>10</ns6:Code>
-							<ns6:GUID>8538e485-b925-4aa7-923f-3b6755e27d4b</ns6:GUID>
-						</ns3:OlsonTZ>
-						<ns3:CulturalHeritage>false</ns3:CulturalHeritage>
-					</ns3:BasicCharacteristicts>
-					<ns3:UndergroundFloorCount>2</ns3:UndergroundFloorCount>
-					<ns3:MinFloorCount>2</ns3:MinFloorCount>
-					<ns2:TransportGUID>9dc733c6-3f38-4c14-baa9-e880187eff4b</ns2:TransportGUID>
-				</ns3:ApartmentHouseToUpdate>
-			</ns3:ApartmentHouse>
-		</ns3:importHouseUORequest>
-	</S:Body>
-</S:Envelope>
+			<ns13:CommonResult>
+				<ns4:GUID>c6528122-ad75-4dc6-9820-8820122eb9e5</ns4:GUID>
+				<ns4:TransportGUID>f79fef78-7f50-4326-bbc0-feb7aaff07f4
+				</ns4:TransportGUID>
+				<ns4:UniqueNumber>PHc00004</ns4:UniqueNumber>
+				<ns4:UpdateDate>2016-11-18T12:40:19.982+03:00</ns4:UpdateDate>
+				<ns13:ImportHouseUO>
+					<ns13:GKNRelationshipStatus>
+						<ns13:Status>N</ns13:Status>
+						<ns13:AppartmentHouseAcceptedParameter>OKTMO</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>CulturalHeritage</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>FiasHouseGuid</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>OlsonTZ</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>UndergroundFloorCount</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>FloorCount</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>TotalSquare</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>MinFloorCount</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>State</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>UsedYear</ns13:AppartmentHouseAcceptedParameter>
+					</ns13:GKNRelationshipStatus>
+					<ns13:EGRPRelationshipStatus />
+				</ns13:ImportHouseUO>
+			</ns13:CommonResult>
+		</ns13:ImportResult>
+	</soap:Body>
+</soap:Envelope>

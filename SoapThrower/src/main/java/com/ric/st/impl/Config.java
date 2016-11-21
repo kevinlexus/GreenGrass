@@ -36,7 +36,8 @@ public class Config implements Configs {
 	 * Получить URL тестового сервера
 	 */
 	public String getSrvTestHost() {
-		return "http://127.0.0.1:8085";		
+//		return "http://127.0.0.1:8085";
+		return "http://217.107.108.156:10082";
 	}
 
 	/**
@@ -47,17 +48,24 @@ public class Config implements Configs {
 	}
 	
 	/**
+	 * Получить fingerprint
+	 */
+	public String getFingerPrint() {
+		return "2021d448e368a0b39c2bfcd4435574c05ca8c435";
+	}
+
+	/**
 	 * Получить логин basic-авторизации
 	 */
 	public String getBscLogin() {
-		return "lanit";
+		return "sit";
 	}
 	
 	/**
 	 * Получить пароль basic-авторизации
 	 */
 	public String getBscPass() {
-		return "tv,n8!Ya";
+		return "rZ_GG72XS^Vf55ZW";
 	}
 	
 	public void setXmlLog() {

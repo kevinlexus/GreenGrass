@@ -1,21 +1,46 @@
+<ds:CanonicalizationMethod
+	Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></ds:CanonicalizationMethod>
+<ds:SignatureMethod
+	Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411"></ds:SignatureMethod>
+<ds:Reference Id="xmldsig-535dde24-0fce-45c9-8adb-79dceaebf6b2-ref0"
+	URI="#foo">
+	<ds:Transforms>
+		<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></ds:Transform>
+		<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:Transform>
+	</ds:Transforms>
+	<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411"></ds:DigestMethod>
+	<ds:DigestValue>NTnDkjpalzPOkzjaG15mZywD01KwtGxEVeKGueMqfu8=</ds:DigestValue>
+</ds:Reference>
+<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
+	URI="#xmldsig-535dde24-0fce-45c9-8adb-79dceaebf6b2-signedprops">
+	<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411"></ds:DigestMethod>
+	<ds:DigestValue>CEdbe8/fflNXjW9TLtm3+VP3j9Y6p9wFBKyK/MiYgQI=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+15:40:19.171 [main] INFO com.ric.st.impl.SoapPrep - Class-2 : interface
+ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementPortsType
+15:40:19.171 [main] INFO com.ric.st.impl.SoapPrep - Webmethod :
+@javax.jws.WebMethod(action=urn:importHouseUOData, exclude=false,
+operationName=)
+Send:
+
+
 <?xml version="1.0" encoding="UTF-8"?>
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
 	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
 	<S:Header>
 		<ns3:RequestHeader
 			xmlns="http://dom.gosuslugi.ru/schema/integration/house-management/"
-			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/bills-base/"
+			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/bills-base/"
 			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
 			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/account-base/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
-			xmlns:ns8="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/">
-			<ns3:Date>2016-11-08T08:44:02.559+06:00</ns3:Date>
-			<ns3:MessageGUID>2ca04e17-d324-430d-858d-778de37d6d23
+			xmlns:ns4="http://www.w3.org/2000/09/xmldsig#" xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-base/">
+			<ns3:Date>2016-11-18T15:40:16.613+06:00</ns3:Date>
+			<ns3:MessageGUID>9ce9d259-45ab-4e41-890d-36cf7686a53d
 			</ns3:MessageGUID>
 			<ns3:orgPPAGUID>b9fe4d27-020d-44dc-8bfd-b5972a504f45</ns3:orgPPAGUID>
 			<ns3:IsOperatorSignature>true</ns3:IsOperatorSignature>
@@ -24,25 +49,23 @@
 	<S:Body>
 		<importHouseUORequest
 			xmlns="http://dom.gosuslugi.ru/schema/integration/house-management/"
-			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/bills-base/"
+			xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/bills-base/"
 			xmlns:ns2="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
 			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/account-base/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
-			xmlns:ns8="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
+			xmlns:ns4="http://www.w3.org/2000/09/xmldsig#" xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/account-base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+			xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+			xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
 			Id="foo" ns3:version="10.0.1.1">
 			<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-				Id="xmldsig-3e228736-1b36-4b7b-a159-6e427eed4fd4">
+				Id="xmldsig-535dde24-0fce-45c9-8adb-79dceaebf6b2">
 				<ds:SignedInfo>
 					<ds:CanonicalizationMethod
 						Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
 					<ds:SignatureMethod
 						Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411" />
-					<ds:Reference Id="xmldsig-3e228736-1b36-4b7b-a159-6e427eed4fd4-ref0"
+					<ds:Reference Id="xmldsig-535dde24-0fce-45c9-8adb-79dceaebf6b2-ref0"
 						URI="#foo">
 						<ds:Transforms>
 							<ds:Transform
@@ -51,21 +74,21 @@
 						</ds:Transforms>
 						<ds:DigestMethod
 							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-						<ds:DigestValue>BPlAxizZFzAG54nGLwEQ4qOTGdk83upHphPzUlI9ync=
+						<ds:DigestValue>NTnDkjpalzPOkzjaG15mZywD01KwtGxEVeKGueMqfu8=
 						</ds:DigestValue>
 					</ds:Reference>
 					<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
-						URI="#xmldsig-3e228736-1b36-4b7b-a159-6e427eed4fd4-signedprops">
+						URI="#xmldsig-535dde24-0fce-45c9-8adb-79dceaebf6b2-signedprops">
 						<ds:DigestMethod
 							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-						<ds:DigestValue>OHCAWr2zyP8cYR8LMuP5qpl9cZgTfnTe++6CfRoV35U=
+						<ds:DigestValue>CEdbe8/fflNXjW9TLtm3+VP3j9Y6p9wFBKyK/MiYgQI=
 						</ds:DigestValue>
 					</ds:Reference>
 				</ds:SignedInfo>
 				<ds:SignatureValue
-					Id="xmldsig-3e228736-1b36-4b7b-a159-6e427eed4fd4-sigvalue">
-					lFYAMRTnQPcIQaLpJHN5M1rSKDvRYOjT51j8ol1mAzk6TpKJDgYxjwr2fXQRMv8qG9m+O90a+Cg7
-					IsT3U4j/6g==
+					Id="xmldsig-535dde24-0fce-45c9-8adb-79dceaebf6b2-sigvalue">
+					2rqlHtO9DCzvj4ifWozX7PzwoaqJrtePcanBc5K7YAbMft1spZJFE4llwQgW81HXwMs/hRzQK3Lk
+					8y1H3GC3CA==
 				</ds:SignatureValue>
 				<ds:KeyInfo>
 					<ds:X509Data>
@@ -127,29 +150,29 @@
 				</ds:KeyInfo>
 				<ds:Object>
 					<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
-						xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" Target="#xmldsig-3e228736-1b36-4b7b-a159-6e427eed4fd4">
+						xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" Target="#xmldsig-535dde24-0fce-45c9-8adb-79dceaebf6b2">
 						<xades:SignedProperties
-							Id="xmldsig-3e228736-1b36-4b7b-a159-6e427eed4fd4-signedprops">
+							Id="xmldsig-535dde24-0fce-45c9-8adb-79dceaebf6b2-signedprops">
 							<xades:SignedSignatureProperties>
-								<xades:SigningTime>2016-11-08T08:44:02.702+06:00
+								<xades:SigningTime>2016-11-18T15:40:18.166+06:00
 								</xades:SigningTime>
 								<xades:SigningCertificate>
 									<xades:Cert>
 										<xades:CertDigest>
-											<ns8:DigestMethod
+											<ns4:DigestMethod
 												Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-											<ns8:DigestValue>ZM7Vskv+qMZ9yQEAFn3+KRbrAtuD+XoNC4484ub7s4c=
-											</ns8:DigestValue>
+											<ns4:DigestValue>ZM7Vskv+qMZ9yQEAFn3+KRbrAtuD+XoNC4484ub7s4c=
+											</ns4:DigestValue>
 										</xades:CertDigest>
 										<xades:IssuerSerial>
-											<ns8:X509IssuerName>cn=TENSORCA3,ou=Удостоверяющий
+											<ns4:X509IssuerName>cn=TENSORCA3,ou=Удостоверяющий
 												центр,o=ООО Компания Тензор,l=Ярославль,st=76 Ярославская
 												область,c=RU,1.2.840.113549.1.9.1=root@nalog.tensor.ru,street=Московский
 												проспект
 												д.12,1.2.643.3.131.1.1=007605016030,1.2.643.100.1=1027600787994
-											</ns8:X509IssuerName>
-											<ns8:X509SerialNumber>328510293966069994261239
-											</ns8:X509SerialNumber>
+											</ns4:X509IssuerName>
+											<ns4:X509SerialNumber>328510293966069994261239
+											</ns4:X509SerialNumber>
 										</xades:IssuerSerial>
 									</xades:Cert>
 								</xades:SigningCertificate>
@@ -159,33 +182,45 @@
 				</ds:Object>
 			</ds:Signature>
 			<ApartmentHouse>
-				<ApartmentHouseToCreate>
+				<ApartmentHouseToUpdate>
 					<BasicCharacteristicts>
 						<No_RSO_GKN_EGRP_Registered>true</No_RSO_GKN_EGRP_Registered>
-						<FIASHouseGuid>7de1d6c3-c7fd-4da6-95a2-40cb97e8201a
+						<FIASHouseGuid>810321c3-f0b4-454a-9a1c-cad82adebd58
 						</FIASHouseGuid>
-						<TotalSquare>1155.0</TotalSquare>
+						<TotalSquare>3333.0</TotalSquare>
 						<State>
 							<ns2:Code>2</ns2:Code>
 							<ns2:GUID>57c4dbc5-bdd5-4490-92e1-3e687797b32a</ns2:GUID>
 							<ns2:Name>Исправный</ns2:Name>
 						</State>
-						<UsedYear>1970</UsedYear>
-						<FloorCount>12</FloorCount>
-						<OKTMO>
-							<ns3:code>32607441101</ns3:code>
-						</OKTMO>
+						<UsedYear>1972</UsedYear>
+						<FloorCount>3</FloorCount>
 						<OlsonTZ>
 							<ns2:Code>10</ns2:Code>
 							<ns2:GUID>8538e485-b925-4aa7-923f-3b6755e27d4b</ns2:GUID>
 						</OlsonTZ>
 						<CulturalHeritage>false</CulturalHeritage>
 					</BasicCharacteristicts>
-					<UndergroundFloorCount>7</UndergroundFloorCount>
-					<MinFloorCount>0</MinFloorCount>
-					<ns3:TransportGUID>4e3fc0c9-14f5-4864-a3fc-72492589b56f
+					<UndergroundFloorCount>2</UndergroundFloorCount>
+					<MinFloorCount>2</MinFloorCount>
+					<ns3:TransportGUID>f79fef78-7f50-4326-bbc0-feb7aaff07f4
 					</ns3:TransportGUID>
-				</ApartmentHouseToCreate>
+				</ApartmentHouseToUpdate>
+				<ResidentialPremises>
+					<ResidentialPremisesToCreate>
+						<No_RSO_GKN_EGRP_Registered>true</No_RSO_GKN_EGRP_Registered>
+						<PremisesNum>3</PremisesNum>
+						<EntranceNum>1</EntranceNum>
+						<PremisesCharacteristic>
+							<ns2:Code>1</ns2:Code>
+							<ns2:GUID>96a1ce61-b402-46c4-ac6e-34b8670480af</ns2:GUID>
+						</PremisesCharacteristic>
+						<TotalArea>101</TotalArea>
+						<GrossArea>101</GrossArea>
+						<ns3:TransportGUID>3ddf9b9e-f7a0-4ed2-9f3a-5d603dbd2bf4
+						</ns3:TransportGUID>
+					</ResidentialPremisesToCreate>
+				</ResidentialPremises>
 			</ApartmentHouse>
 		</importHouseUORequest>
 	</S:Body>

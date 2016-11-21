@@ -207,7 +207,7 @@ public class SoapPrep<T> implements SoapPreps {
 	 * Отправить SOAP сообщение
 	 * 
 	 */
-	public Object sendSOAP(/*Class portClass, */Object req, String meth, Object result, String login, String pass) throws Exception {
+	public Object sendSOAP(Object req, String meth, Object result, String login, String pass, String fingerPrint) throws Exception {
 		//получить XML из хэндлера
     	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
         setXMLText((String) responseContext.get("SOAP_XML"));
@@ -226,7 +226,9 @@ public class SoapPrep<T> implements SoapPreps {
         String authorization = new sun.misc.BASE64Encoder().encode((login+":"+pass).getBytes());
         MimeHeaders hd = message2.getMimeHeaders();
         hd.addHeader("Authorization", "Basic " + authorization);
-
+        
+        hd.addHeader("X-Client-Cert-Fingerprint", fingerPrint);
+        
         logger.info("Class-2 : " + ob.getClass().getInterfaces()[0]);
         
         Method m = ob.getClass().getInterfaces()[0].getMethod(meth, req.getClass());

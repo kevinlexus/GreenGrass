@@ -32,7 +32,7 @@ public interface SoapPreps {
 	public void setSignXML(Boolean sign);
 	public boolean getSignXML();
 	public SOAPMessage createSM(String xmlText) throws IOException, SOAPException;
-	public Object sendSOAP(/*Class portClass, */Object req, String meth, Object result, String login, String pass) 
+	public Object sendSOAP(Object req, String meth, Object result, String login, String pass, String fingerPrint) 
 			throws Exception;
     public String signXML(String xml) throws Exception;
 }

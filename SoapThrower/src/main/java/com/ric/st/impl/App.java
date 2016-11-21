@@ -7,21 +7,18 @@ import java.net.UnknownHostException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.soap.SOAPException;
 
-import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.ric.st.Configs;
-import com.ric.st.FileExchanges;
-import com.ric.st.PrepImportHouses;
-import com.ric.st.Throwers;
-import com.ric.st.prep.HouseManagementPreps;
-import com.ric.st.prep.impl.HouseManagementPrep;
-
 import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service.Fault;
 import ru.gosuslugi.dom.signature.demo.commands.Command;
 import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
+
+import com.ric.st.Configs;
+import com.ric.st.PrepImportHouses;
+import com.ric.st.prep.HouseManagementPreps;
+import com.ric.st.prep.impl.HouseManagementPrep;
 
 /**
  * Точка входа в приложение
@@ -77,20 +74,21 @@ public class App
 		//включить логгирование XML
 		cfg.setXmlLog();
 		
-		//создать бин отправщика SOAP
-		PrepImportHouses ph = context.getBean(PrepImportHouses.class);
 		//Throwers thrMng = context.getBean(ThrowerMng.class);
 		//thrMng.exportAccountData();
 		System.out.println("Start");
 		
+		//создать бин сервиса SOAP
+		//PrepImportHouses2 ph = context.getBean(PrepImportHouses2.class);
+		PrepImportHouses ph = context.getBean(PrepImportHouses.class);
 		HouseManagementPreps hmp = new HouseManagementPrep();
 		
-		hmp.setHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
-		hmp.setFloorCount("22");
+		hmp.setHouseGuid("810321c3-f0b4-454a-9a1c-cad82adebd58");
+		hmp.setFloorCount("3");
 		hmp.setCultHerit(false);
 		hmp.setOktmo("32607441101");
 		hmp.setState("Исправный");
-		hmp.setTotalSquare(5555d);
+		hmp.setTotalSquare(3333d);
 		hmp.setUsedYear(1972);
 		hmp.setUnderFloorCount("2");
 		hmp.setNoRSOGKNEGRP(true);
@@ -98,7 +96,13 @@ public class App
 		
 		ph.setHm(hmp);
 		ph.importHouseUpd();
-/*
+		//ph.importHouseResidentialPremisesCreate();
+		//вернуло:
+		/*
+		</soap:Envelope>GUID: c6528122-ad75-4dc6-9820-8820122eb9e5
+		Unique nomer: PHc00004 - помещение 1а*/
+		
+		/*
 		thrMng.importHouse(hm);
 */
 		

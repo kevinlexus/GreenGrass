@@ -8,6 +8,7 @@ public interface Configs {
 	public String getOrgPPGuid();
 	public String getSrvTestHost();
 	public boolean isSrvTest();
+	public String getFingerPrint();
 	public String getBscLogin();
 	public String getBscPass();
 	public void setXmlLog();
