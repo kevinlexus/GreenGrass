@@ -2,6 +2,7 @@ package com.direct.webflow;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 //класс сессии
 public class DSess {
@@ -51,7 +52,11 @@ public class DSess {
 
 	//вернуть наличие транзакции
 	public boolean isActiveTrans() {
-		return sess.getTransaction().isActive();
+		if (sess.getTransaction().getStatus() == TransactionStatus.ACTIVE) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }
