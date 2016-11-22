@@ -14,6 +14,7 @@ import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
@@ -21,8 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.excp.EmptyPar;
 import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.EmptyStorable;
+import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.NotFoundODNLimit;
 import com.ric.bill.excp.WrongGetMethod;
@@ -51,6 +54,7 @@ import com.ric.bill.model.mt.Vol;
 
 @Service
 @Scope("prototype")
+@Slf4j
 public class DistGen {
 
 	@Autowired
@@ -142,8 +146,9 @@ public class DistGen {
 	 * @throws NotFoundODNLimit
 	 * @throws NotFoundNode
 	 * @throws EmptyStorable 
+	 * @throws EmptyPar 
 	 */
-	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable {
+	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar {
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		//если рассчитанный узел найден, вернуть готовый объем
 		if (nv != null) { 
@@ -386,27 +391,55 @@ public class DistGen {
 
 		//после рекурсивного расчета дочерних узлов, и только по последней дате, выполнить расчет Лимита ОДН
 		if (tp==1 && mLogTp.equals("ЛОДН") && genDt.getTime() == config.getCurDt2().getTime() /*genDt.equals(Calc.getCurDt2()*/) {
+			SumNodeVol lnkODNVol = null;
+			Lst volTp = lstMng.getByCD("Лимит ОДН");
+			double lmtVol;
 			//по связи по площади и кол.прож. и только по ЛОДН счетчику
 			if (servChrg.getCd().equals("Холодная вода") || servChrg.getCd().equals("Горячая вода")) {
-				SumNodeVol lnkODNVol = null;
-				//получить площадь и кол-во прожив по дому, за месяц  
+				//получить площадь и кол-во прожив по вводу, за месяц  
 				lnkODNVol = metMng.getVolPeriod(ml, tp, config.getCurDt1(), config.getCurDt2());
 				//расчитать лимит кубов
 				//если кол-во прожив. > 0
 				if (lnkODNVol.getPers() > 0d) {
 					double oplMan = lnkODNVol.getArea() /  lnkODNVol.getPers();   
-					double lmtVol = oplLiter(oplMan)/1000;
+					lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
-					Lst volTp = lstMng.getByCD("Лимит ОДН");
 					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2());
 					//saveVol(ml, vol);
 					ml.getVol().add(vol);
 				}
 				
 			} else if (servChrg.getCd().equals("Электроснабжение")) {
+				//получить площадь и кол-во прожив по вводу, за месяц  
+				lnkODNVol = metMng.getVolPeriod(ml, tp, config.getCurDt1(), config.getCurDt2());
+
+				Double areaComm = parMng.getDbl(ml, "Площадь общего имущества.Электроэнергия", genDt);
+				if (areaComm == null) {
+					//log.warn("ВНИМАНИЕ! НЕ проверяется параметр Площадь общего имущества.Электроэнергия!!!!!!");
+					throw new EmptyPar("Не установлен параметр Площадь общего имущества.Электроэнергия во вводе с id="+ml.getId()+" по дате="+genDt);
+				}
 				
+				if (lnkODNVol.getArea() > 0) {
+					Double isLift = parMng.getDbl(ml.getHouse(), "Признак наличия лифта", genDt);
+					if (isLift == null) {
+						log.warn("Отсутствует параметр Признак наличия лифта в доме id="+ml.getHouse().getId()+" по дате="+genDt);
+					} else {
+						// лимит кВт ОДН на м2
+						if (isLift == 1) {
+				            // есть лифт в доме
+							lmtVol = 4.1d * areaComm/lnkODNVol.getArea();
+						} else {
+				            // нет лифта в доме
+							lmtVol = 2.7d * areaComm/lnkODNVol.getArea();
+						}
+						//записать лимит ОДН
+						Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2());
+						//saveVol(ml, vol);
+						ml.getVol().add(vol);
+						//log.warn("ЛИМИТ ОДН по ЭлектроЭнергии="+lmtVol);
+					}
+				}
 			}
-		
 		}
 		
 		Lst volTp=null;

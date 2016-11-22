@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.excp.EmptyPar;
 import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.ErrorWhileChrg;
@@ -391,6 +392,9 @@ public class DistServ {
 			} catch (NotFoundNode e) {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: Не найден нужный счетчик, при вызове BillServ.distNode(): ");
+			} catch (EmptyPar e) {
+				e.printStackTrace();
+				throw new ErrorWhileDist("Dist.distGraph: Не найден необходимый параметр объекта, при вызове BillServ.distNode(): ");
 			}
 			//Calc.showTimer(Calc.getCalcTp()+" тип");
 			
