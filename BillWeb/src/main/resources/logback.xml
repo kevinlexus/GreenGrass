@@ -8,6 +8,9 @@
     </encoder>
   </appender>
 
+  <logger name="org.hibernate.type" level="INFO" />
+  <logger name="org.hibernate" level="INFO" />
+  
   <!-- Setting the root level of logging to INFO - Здесь менять уровни логгинга в Spring Boot-->
   <root level="debug">
     <appender-ref ref="STDOUT" />

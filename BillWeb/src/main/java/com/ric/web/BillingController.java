@@ -50,20 +50,10 @@ public class BillingController {
     @Autowired
     private BillServ billServ;
 
-    @Autowired
-    private Config config;
-
     @RequestMapping("/chrglsk") 
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist) {
 		
-    	try {
-			config.load();
-		} catch (EmptyStorable e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	
     	log.error("TEST LOG!");
 
     	Calc.mess("BillingController.chrgLsk",2);
