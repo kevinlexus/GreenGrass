@@ -57,7 +57,12 @@ public class Config {
 	}
 	
 	@PostConstruct
-	private void setUp() throws EmptyStorable {
+	private void setUp()  {
+	}
+
+	public void load() throws EmptyStorable {
+		
+		System.out.println("CONFIG:load");
 		//Объект приложения, получить даты текущего периода
 		Obj obj = objMng.getByCD("Модуль начисления");
 		
@@ -86,7 +91,7 @@ public class Config {
 		//доля одного дня в периоде
 		setPartDays(1/getCntCurDays());
 	}
-
+	
 	public void setCurDt2(Date curDt2) {
 		this.curDt2 = curDt2;
 	}
