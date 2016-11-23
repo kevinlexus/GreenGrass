@@ -18,10 +18,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.keyvalue.MultiKey;
 import org.apache.commons.collections4.map.MultiKeyMap;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -53,6 +54,7 @@ import com.ric.bill.model.fn.Chrg;
  */
 @Service
 @Scope("prototype")
+@Slf4j
 public class ChrgServ {
 
 	@Autowired
@@ -89,8 +91,6 @@ public class ChrgServ {
     //флаг ошибки, произошедшей в потоке
     private static Boolean errThread;
     
-	final static Logger logger = Logger.getLogger(ChrgServ.class);
-
 	//конструктор
     public ChrgServ() {
     	super();
@@ -440,7 +440,7 @@ public class ChrgServ {
 			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
 					chrg.getVol(), chrg.getPrice(), chrg.getStdt(), chrg.getCntPers(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
 
-			logger.error("Кол-во проживающих:"+ chrg.getCntPers());
+			log.error("Кол-во проживающих:"+ chrg.getCntPers());
 
 			kart.getChrg().add(chrg2); 
 		}

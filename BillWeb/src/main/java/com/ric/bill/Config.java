@@ -65,12 +65,7 @@ public class Config {
 		//calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
 		calendar.clear(Calendar.ZONE_OFFSET);
 		
-		//Calc.setGenDt(calendar.getTime()); //??????
-		//1 день месяца
-		//calendar.set(Calendar.DATE, 1); 
-		//Calc.mess("OBJ=="+obj,2);
-		//Date ddd = parMng.getDate(obj, "Начало расчетного периода");
-		//Calc.mess("ddd=="+ddd,2);
+		obj.getDw().size();
 		
 		calendar.setTime(parMng.getDate(obj, "Начало расчетного периода"));
 		setCurDt1(calendar.getTime());

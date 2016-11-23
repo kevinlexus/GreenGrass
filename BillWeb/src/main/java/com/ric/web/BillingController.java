@@ -4,8 +4,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ric.bill.BillServ;
 import com.ric.bill.Calc;
 import com.ric.bill.ChrgThr;
+import com.ric.bill.Config;
 import com.ric.bill.Result;
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Par;
@@ -33,6 +38,7 @@ import com.ric.bill.model.bs.Par;
 @EntityScan(basePackages = "com.ric.bill")
 @EnableAutoConfiguration
 @Scope("prototype")
+@Slf4j
 public class BillingController {
 
     @PersistenceContext
@@ -47,6 +53,9 @@ public class BillingController {
     @RequestMapping("/chrglsk") 
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist) {
+		
+    	log.error("TEST LOG!");
+
     	Calc.mess("BillingController.chrgLsk",2);
     	Future<Result> fut = null;
 		boolean isDist;

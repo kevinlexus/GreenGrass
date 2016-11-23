@@ -12,7 +12,6 @@ import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -21,7 +20,6 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 import com.ric.bill.excp.EmptyOrg;
-import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.InvalidServ;
 import com.ric.bill.mm.KartMng;
@@ -78,8 +76,6 @@ public class ChrgThr {
 
     private Calc calc;
     
-	final static Logger logger = Logger.getLogger(ChrgThr.class);
-
     //конструктор
 	public ChrgThr() {
 		super();
