@@ -8,8 +8,10 @@
     </encoder>
   </appender>
 
-  <logger name="org.hibernate.type" level="INFO" />
-  <logger name="org.hibernate" level="INFO" />
+ <!-- <logger name="org.hibernate.type" level="INFO" />
+  <logger name="org.hibernate" level="INFO" /> -->
+  
+  <logger name="org.hibernate.engine.loading.internal.CollectionLoadContext" level="INFO"/>
   
   <!-- Setting the root level of logging to INFO - Здесь менять уровни логгинга в Spring Boot-->
   <root level="debug">
