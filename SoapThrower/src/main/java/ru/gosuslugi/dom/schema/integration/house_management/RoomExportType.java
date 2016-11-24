@@ -47,7 +47,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "terminationDate"
 })
 @XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises.LivingRoom.class,
+    ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.ResidentialPremises.LivingRoom.class,
     ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.LivingHouse.LivingRoom.class,
     ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.LivingHouse.Block.LivingRoom.class
 })

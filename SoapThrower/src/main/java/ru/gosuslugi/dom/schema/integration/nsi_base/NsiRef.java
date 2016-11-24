@@ -4,7 +4,6 @@ package ru.gosuslugi.dom.schema.integration.nsi_base;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -42,11 +41,6 @@ import javax.xml.bind.annotation.XmlType;
     "code",
     "guid",
     "name"
-})
-@XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.house_management.ExportSupplyResourceContractRequest.ContractSubject.ServiceType.class,
-    ru.gosuslugi.dom.schema.integration.house_management.ContractSubjectType.ServiceType.class,
-    ru.gosuslugi.dom.schema.integration.house_management.ContractSubjectType.MunicipalResource.class
 })
 public class NsiRef {
 

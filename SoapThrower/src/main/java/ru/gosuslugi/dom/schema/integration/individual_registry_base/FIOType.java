@@ -6,8 +6,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import ru.gosuslugi.dom.schema.integration.house_management.AccountIndType;
-import ru.gosuslugi.dom.schema.integration.house_management.VotingInitiatorIndType;
 
 
 /**
@@ -40,8 +38,6 @@ import ru.gosuslugi.dom.schema.integration.house_management.VotingInitiatorIndTy
     "patronymic"
 })
 @XmlSeeAlso({
-    VotingInitiatorIndType.class,
-    AccountIndType.class,
     IndType.class
 })
 public class FIOType {

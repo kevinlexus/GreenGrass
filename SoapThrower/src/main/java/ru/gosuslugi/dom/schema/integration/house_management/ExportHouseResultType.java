@@ -36,45 +36,45 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *                           &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceExportType">
  *                             &lt;sequence>
  *                               &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *                               &lt;element name="ResidentialPremises" maxOccurs="unbounded" minOccurs="0">
- *                                 &lt;complexType>
- *                                   &lt;complexContent>
- *                                     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}ResidentialPremisesExportType">
- *                                       &lt;sequence>
- *                                         &lt;element name="PremisesUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                                         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *                                         &lt;element name="LivingRoom" maxOccurs="unbounded" minOccurs="0">
- *                                           &lt;complexType>
- *                                             &lt;complexContent>
- *                                               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
- *                                                 &lt;sequence>
- *                                                   &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                                                   &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *                                                   &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
- *                                                 &lt;/sequence>
- *                                               &lt;/extension>
- *                                             &lt;/complexContent>
- *                                           &lt;/complexType>
- *                                         &lt;/element>
- *                                         &lt;element name="PremisesGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
- *                                       &lt;/sequence>
- *                                     &lt;/extension>
- *                                   &lt;/complexContent>
- *                                 &lt;/complexType>
- *                               &lt;/element>
- *                               &lt;element name="Lift" maxOccurs="unbounded" minOccurs="0">
- *                                 &lt;complexType>
- *                                   &lt;complexContent>
- *                                     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}LiftExportType">
- *                                       &lt;sequence>
- *                                         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *                                         &lt;element name="LiftGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
- *                                       &lt;/sequence>
- *                                     &lt;/extension>
- *                                   &lt;/complexContent>
- *                                 &lt;/complexType>
- *                               &lt;/element>
  *                               &lt;element name="EntranceGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+ *                             &lt;/sequence>
+ *                           &lt;/extension>
+ *                         &lt;/complexContent>
+ *                       &lt;/complexType>
+ *                     &lt;/element>
+ *                     &lt;element name="ResidentialPremises" maxOccurs="unbounded" minOccurs="0">
+ *                       &lt;complexType>
+ *                         &lt;complexContent>
+ *                           &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}ResidentialPremisesExportType">
+ *                             &lt;sequence>
+ *                               &lt;element name="PremisesUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                               &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *                               &lt;element name="LivingRoom" maxOccurs="unbounded" minOccurs="0">
+ *                                 &lt;complexType>
+ *                                   &lt;complexContent>
+ *                                     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
+ *                                       &lt;sequence>
+ *                                         &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                                         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *                                         &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+ *                                       &lt;/sequence>
+ *                                     &lt;/extension>
+ *                                   &lt;/complexContent>
+ *                                 &lt;/complexType>
+ *                               &lt;/element>
+ *                               &lt;element name="PremisesGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+ *                             &lt;/sequence>
+ *                           &lt;/extension>
+ *                         &lt;/complexContent>
+ *                       &lt;/complexType>
+ *                     &lt;/element>
+ *                     &lt;element name="Lift" maxOccurs="unbounded" minOccurs="0">
+ *                       &lt;complexType>
+ *                         &lt;complexContent>
+ *                           &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}LiftExportType">
+ *                             &lt;sequence>
+ *                               &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *                               &lt;element name="LiftGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
  *                             &lt;/sequence>
  *                           &lt;/extension>
  *                         &lt;/complexContent>
@@ -292,45 +292,45 @@ public class ExportHouseResultType {
      *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceExportType">
      *                 &lt;sequence>
      *                   &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-     *                   &lt;element name="ResidentialPremises" maxOccurs="unbounded" minOccurs="0">
-     *                     &lt;complexType>
-     *                       &lt;complexContent>
-     *                         &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}ResidentialPremisesExportType">
-     *                           &lt;sequence>
-     *                             &lt;element name="PremisesUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                             &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-     *                             &lt;element name="LivingRoom" maxOccurs="unbounded" minOccurs="0">
-     *                               &lt;complexType>
-     *                                 &lt;complexContent>
-     *                                   &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
-     *                                     &lt;sequence>
-     *                                       &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                                       &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-     *                                       &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-     *                                     &lt;/sequence>
-     *                                   &lt;/extension>
-     *                                 &lt;/complexContent>
-     *                               &lt;/complexType>
-     *                             &lt;/element>
-     *                             &lt;element name="PremisesGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-     *                           &lt;/sequence>
-     *                         &lt;/extension>
-     *                       &lt;/complexContent>
-     *                     &lt;/complexType>
-     *                   &lt;/element>
-     *                   &lt;element name="Lift" maxOccurs="unbounded" minOccurs="0">
-     *                     &lt;complexType>
-     *                       &lt;complexContent>
-     *                         &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}LiftExportType">
-     *                           &lt;sequence>
-     *                             &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-     *                             &lt;element name="LiftGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-     *                           &lt;/sequence>
-     *                         &lt;/extension>
-     *                       &lt;/complexContent>
-     *                     &lt;/complexType>
-     *                   &lt;/element>
      *                   &lt;element name="EntranceGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+     *                 &lt;/sequence>
+     *               &lt;/extension>
+     *             &lt;/complexContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
+     *         &lt;element name="ResidentialPremises" maxOccurs="unbounded" minOccurs="0">
+     *           &lt;complexType>
+     *             &lt;complexContent>
+     *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}ResidentialPremisesExportType">
+     *                 &lt;sequence>
+     *                   &lt;element name="PremisesUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                   &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+     *                   &lt;element name="LivingRoom" maxOccurs="unbounded" minOccurs="0">
+     *                     &lt;complexType>
+     *                       &lt;complexContent>
+     *                         &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
+     *                           &lt;sequence>
+     *                             &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                             &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+     *                             &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+     *                           &lt;/sequence>
+     *                         &lt;/extension>
+     *                       &lt;/complexContent>
+     *                     &lt;/complexType>
+     *                   &lt;/element>
+     *                   &lt;element name="PremisesGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+     *                 &lt;/sequence>
+     *               &lt;/extension>
+     *             &lt;/complexContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
+     *         &lt;element name="Lift" maxOccurs="unbounded" minOccurs="0">
+     *           &lt;complexType>
+     *             &lt;complexContent>
+     *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}LiftExportType">
+     *                 &lt;sequence>
+     *                   &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+     *                   &lt;element name="LiftGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
      *                 &lt;/sequence>
      *               &lt;/extension>
      *             &lt;/complexContent>
@@ -361,6 +361,8 @@ public class ExportHouseResultType {
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "entrance",
+        "residentialPremises",
+        "lift",
         "nonResidentialPremises",
         "houseManagementType"
     })
@@ -370,6 +372,10 @@ public class ExportHouseResultType {
 
         @XmlElement(name = "Entrance")
         protected List<ExportHouseResultType.ApartmentHouse.Entrance> entrance;
+        @XmlElement(name = "ResidentialPremises")
+        protected List<ExportHouseResultType.ApartmentHouse.ResidentialPremises> residentialPremises;
+        @XmlElement(name = "Lift")
+        protected List<ExportHouseResultType.ApartmentHouse.Lift> lift;
         @XmlElement(name = "NonResidentialPremises")
         protected List<ExportHouseResultType.ApartmentHouse.NonResidentialPremises> nonResidentialPremises;
         @XmlElement(name = "HouseManagementType")
@@ -402,6 +408,64 @@ public class ExportHouseResultType {
                 entrance = new ArrayList<ExportHouseResultType.ApartmentHouse.Entrance>();
             }
             return this.entrance;
+        }
+
+        /**
+         * Gets the value of the residentialPremises property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the residentialPremises property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getResidentialPremises().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link ExportHouseResultType.ApartmentHouse.ResidentialPremises }
+         * 
+         * 
+         */
+        public List<ExportHouseResultType.ApartmentHouse.ResidentialPremises> getResidentialPremises() {
+            if (residentialPremises == null) {
+                residentialPremises = new ArrayList<ExportHouseResultType.ApartmentHouse.ResidentialPremises>();
+            }
+            return this.residentialPremises;
+        }
+
+        /**
+         * Gets the value of the lift property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the lift property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getLift().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link ExportHouseResultType.ApartmentHouse.Lift }
+         * 
+         * 
+         */
+        public List<ExportHouseResultType.ApartmentHouse.Lift> getLift() {
+            if (lift == null) {
+                lift = new ArrayList<ExportHouseResultType.ApartmentHouse.Lift>();
+            }
+            return this.lift;
         }
 
         /**
@@ -469,44 +533,6 @@ public class ExportHouseResultType {
          *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceExportType">
          *       &lt;sequence>
          *         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-         *         &lt;element name="ResidentialPremises" maxOccurs="unbounded" minOccurs="0">
-         *           &lt;complexType>
-         *             &lt;complexContent>
-         *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}ResidentialPremisesExportType">
-         *                 &lt;sequence>
-         *                   &lt;element name="PremisesUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *                   &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-         *                   &lt;element name="LivingRoom" maxOccurs="unbounded" minOccurs="0">
-         *                     &lt;complexType>
-         *                       &lt;complexContent>
-         *                         &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
-         *                           &lt;sequence>
-         *                             &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *                             &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-         *                             &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-         *                           &lt;/sequence>
-         *                         &lt;/extension>
-         *                       &lt;/complexContent>
-         *                     &lt;/complexType>
-         *                   &lt;/element>
-         *                   &lt;element name="PremisesGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-         *                 &lt;/sequence>
-         *               &lt;/extension>
-         *             &lt;/complexContent>
-         *           &lt;/complexType>
-         *         &lt;/element>
-         *         &lt;element name="Lift" maxOccurs="unbounded" minOccurs="0">
-         *           &lt;complexType>
-         *             &lt;complexContent>
-         *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}LiftExportType">
-         *                 &lt;sequence>
-         *                   &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-         *                   &lt;element name="LiftGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-         *                 &lt;/sequence>
-         *               &lt;/extension>
-         *             &lt;/complexContent>
-         *           &lt;/complexType>
-         *         &lt;/element>
          *         &lt;element name="EntranceGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
          *       &lt;/sequence>
          *     &lt;/extension>
@@ -519,8 +545,6 @@ public class ExportHouseResultType {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
             "modificationDate",
-            "residentialPremises",
-            "lift",
             "entranceGUID"
         })
         public static class Entrance
@@ -530,10 +554,6 @@ public class ExportHouseResultType {
             @XmlElement(name = "ModificationDate", required = true)
             @XmlSchemaType(name = "dateTime")
             protected XMLGregorianCalendar modificationDate;
-            @XmlElement(name = "ResidentialPremises")
-            protected List<ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises> residentialPremises;
-            @XmlElement(name = "Lift")
-            protected List<ExportHouseResultType.ApartmentHouse.Entrance.Lift> lift;
             @XmlElement(name = "EntranceGUID", required = true)
             protected String entranceGUID;
 
@@ -562,64 +582,6 @@ public class ExportHouseResultType {
             }
 
             /**
-             * Gets the value of the residentialPremises property.
-             * 
-             * <p>
-             * This accessor method returns a reference to the live list,
-             * not a snapshot. Therefore any modification you make to the
-             * returned list will be present inside the JAXB object.
-             * This is why there is not a <CODE>set</CODE> method for the residentialPremises property.
-             * 
-             * <p>
-             * For example, to add a new item, do as follows:
-             * <pre>
-             *    getResidentialPremises().add(newItem);
-             * </pre>
-             * 
-             * 
-             * <p>
-             * Objects of the following type(s) are allowed in the list
-             * {@link ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises }
-             * 
-             * 
-             */
-            public List<ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises> getResidentialPremises() {
-                if (residentialPremises == null) {
-                    residentialPremises = new ArrayList<ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises>();
-                }
-                return this.residentialPremises;
-            }
-
-            /**
-             * Gets the value of the lift property.
-             * 
-             * <p>
-             * This accessor method returns a reference to the live list,
-             * not a snapshot. Therefore any modification you make to the
-             * returned list will be present inside the JAXB object.
-             * This is why there is not a <CODE>set</CODE> method for the lift property.
-             * 
-             * <p>
-             * For example, to add a new item, do as follows:
-             * <pre>
-             *    getLift().add(newItem);
-             * </pre>
-             * 
-             * 
-             * <p>
-             * Objects of the following type(s) are allowed in the list
-             * {@link ExportHouseResultType.ApartmentHouse.Entrance.Lift }
-             * 
-             * 
-             */
-            public List<ExportHouseResultType.ApartmentHouse.Entrance.Lift> getLift() {
-                if (lift == null) {
-                    lift = new ArrayList<ExportHouseResultType.ApartmentHouse.Entrance.Lift>();
-                }
-                return this.lift;
-            }
-
-            /**
              * Gets the value of the entranceGUID property.
              * 
              * @return
@@ -643,363 +605,90 @@ public class ExportHouseResultType {
                 this.entranceGUID = value;
             }
 
+        }
+
+
+        /**
+         * <p>Java class for anonymous complex type.
+         * 
+         * <p>The following schema fragment specifies the expected content contained within this class.
+         * 
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}LiftExportType">
+         *       &lt;sequence>
+         *         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+         *         &lt;element name="LiftGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+         *       &lt;/sequence>
+         *     &lt;/extension>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         * 
+         * 
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "modificationDate",
+            "liftGUID"
+        })
+        public static class Lift
+            extends LiftExportType
+        {
+
+            @XmlElement(name = "ModificationDate", required = true)
+            @XmlSchemaType(name = "dateTime")
+            protected XMLGregorianCalendar modificationDate;
+            @XmlElement(name = "LiftGUID", required = true)
+            protected String liftGUID;
 
             /**
-             * <p>Java class for anonymous complex type.
+             * Gets the value of the modificationDate property.
              * 
-             * <p>The following schema fragment specifies the expected content contained within this class.
-             * 
-             * <pre>
-             * &lt;complexType>
-             *   &lt;complexContent>
-             *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}LiftExportType">
-             *       &lt;sequence>
-             *         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-             *         &lt;element name="LiftGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-             *       &lt;/sequence>
-             *     &lt;/extension>
-             *   &lt;/complexContent>
-             * &lt;/complexType>
-             * </pre>
-             * 
-             * 
+             * @return
+             *     possible object is
+             *     {@link XMLGregorianCalendar }
+             *     
              */
-            @XmlAccessorType(XmlAccessType.FIELD)
-            @XmlType(name = "", propOrder = {
-                "modificationDate",
-                "liftGUID"
-            })
-            public static class Lift
-                extends LiftExportType
-            {
-
-                @XmlElement(name = "ModificationDate", required = true)
-                @XmlSchemaType(name = "dateTime")
-                protected XMLGregorianCalendar modificationDate;
-                @XmlElement(name = "LiftGUID", required = true)
-                protected String liftGUID;
-
-                /**
-                 * Gets the value of the modificationDate property.
-                 * 
-                 * @return
-                 *     possible object is
-                 *     {@link XMLGregorianCalendar }
-                 *     
-                 */
-                public XMLGregorianCalendar getModificationDate() {
-                    return modificationDate;
-                }
-
-                /**
-                 * Sets the value of the modificationDate property.
-                 * 
-                 * @param value
-                 *     allowed object is
-                 *     {@link XMLGregorianCalendar }
-                 *     
-                 */
-                public void setModificationDate(XMLGregorianCalendar value) {
-                    this.modificationDate = value;
-                }
-
-                /**
-                 * Gets the value of the liftGUID property.
-                 * 
-                 * @return
-                 *     possible object is
-                 *     {@link String }
-                 *     
-                 */
-                public String getLiftGUID() {
-                    return liftGUID;
-                }
-
-                /**
-                 * Sets the value of the liftGUID property.
-                 * 
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
-                 *     
-                 */
-                public void setLiftGUID(String value) {
-                    this.liftGUID = value;
-                }
-
+            public XMLGregorianCalendar getModificationDate() {
+                return modificationDate;
             }
 
+            /**
+             * Sets the value of the modificationDate property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link XMLGregorianCalendar }
+             *     
+             */
+            public void setModificationDate(XMLGregorianCalendar value) {
+                this.modificationDate = value;
+            }
 
             /**
-             * <p>Java class for anonymous complex type.
+             * Gets the value of the liftGUID property.
              * 
-             * <p>The following schema fragment specifies the expected content contained within this class.
-             * 
-             * <pre>
-             * &lt;complexType>
-             *   &lt;complexContent>
-             *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}ResidentialPremisesExportType">
-             *       &lt;sequence>
-             *         &lt;element name="PremisesUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
-             *         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-             *         &lt;element name="LivingRoom" maxOccurs="unbounded" minOccurs="0">
-             *           &lt;complexType>
-             *             &lt;complexContent>
-             *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
-             *                 &lt;sequence>
-             *                   &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
-             *                   &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-             *                   &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-             *                 &lt;/sequence>
-             *               &lt;/extension>
-             *             &lt;/complexContent>
-             *           &lt;/complexType>
-             *         &lt;/element>
-             *         &lt;element name="PremisesGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-             *       &lt;/sequence>
-             *     &lt;/extension>
-             *   &lt;/complexContent>
-             * &lt;/complexType>
-             * </pre>
-             * 
-             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
              */
-            @XmlAccessorType(XmlAccessType.FIELD)
-            @XmlType(name = "", propOrder = {
-                "premisesUniqueNumber",
-                "modificationDate",
-                "livingRoom",
-                "premisesGUID"
-            })
-            public static class ResidentialPremises
-                extends ResidentialPremisesExportType
-            {
+            public String getLiftGUID() {
+                return liftGUID;
+            }
 
-                @XmlElement(name = "PremisesUniqueNumber", required = true)
-                protected String premisesUniqueNumber;
-                @XmlElement(name = "ModificationDate", required = true)
-                @XmlSchemaType(name = "dateTime")
-                protected XMLGregorianCalendar modificationDate;
-                @XmlElement(name = "LivingRoom")
-                protected List<ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises.LivingRoom> livingRoom;
-                @XmlElement(name = "PremisesGUID", required = true)
-                protected String premisesGUID;
-
-                /**
-                 * Gets the value of the premisesUniqueNumber property.
-                 * 
-                 * @return
-                 *     possible object is
-                 *     {@link String }
-                 *     
-                 */
-                public String getPremisesUniqueNumber() {
-                    return premisesUniqueNumber;
-                }
-
-                /**
-                 * Sets the value of the premisesUniqueNumber property.
-                 * 
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
-                 *     
-                 */
-                public void setPremisesUniqueNumber(String value) {
-                    this.premisesUniqueNumber = value;
-                }
-
-                /**
-                 * Gets the value of the modificationDate property.
-                 * 
-                 * @return
-                 *     possible object is
-                 *     {@link XMLGregorianCalendar }
-                 *     
-                 */
-                public XMLGregorianCalendar getModificationDate() {
-                    return modificationDate;
-                }
-
-                /**
-                 * Sets the value of the modificationDate property.
-                 * 
-                 * @param value
-                 *     allowed object is
-                 *     {@link XMLGregorianCalendar }
-                 *     
-                 */
-                public void setModificationDate(XMLGregorianCalendar value) {
-                    this.modificationDate = value;
-                }
-
-                /**
-                 * Gets the value of the livingRoom property.
-                 * 
-                 * <p>
-                 * This accessor method returns a reference to the live list,
-                 * not a snapshot. Therefore any modification you make to the
-                 * returned list will be present inside the JAXB object.
-                 * This is why there is not a <CODE>set</CODE> method for the livingRoom property.
-                 * 
-                 * <p>
-                 * For example, to add a new item, do as follows:
-                 * <pre>
-                 *    getLivingRoom().add(newItem);
-                 * </pre>
-                 * 
-                 * 
-                 * <p>
-                 * Objects of the following type(s) are allowed in the list
-                 * {@link ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises.LivingRoom }
-                 * 
-                 * 
-                 */
-                public List<ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises.LivingRoom> getLivingRoom() {
-                    if (livingRoom == null) {
-                        livingRoom = new ArrayList<ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises.LivingRoom>();
-                    }
-                    return this.livingRoom;
-                }
-
-                /**
-                 * Gets the value of the premisesGUID property.
-                 * 
-                 * @return
-                 *     possible object is
-                 *     {@link String }
-                 *     
-                 */
-                public String getPremisesGUID() {
-                    return premisesGUID;
-                }
-
-                /**
-                 * Sets the value of the premisesGUID property.
-                 * 
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
-                 *     
-                 */
-                public void setPremisesGUID(String value) {
-                    this.premisesGUID = value;
-                }
-
-
-                /**
-                 * <p>Java class for anonymous complex type.
-                 * 
-                 * <p>The following schema fragment specifies the expected content contained within this class.
-                 * 
-                 * <pre>
-                 * &lt;complexType>
-                 *   &lt;complexContent>
-                 *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
-                 *       &lt;sequence>
-                 *         &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
-                 *         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-                 *         &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
-                 *       &lt;/sequence>
-                 *     &lt;/extension>
-                 *   &lt;/complexContent>
-                 * &lt;/complexType>
-                 * </pre>
-                 * 
-                 * 
-                 */
-                @XmlAccessorType(XmlAccessType.FIELD)
-                @XmlType(name = "", propOrder = {
-                    "livingRoomUniqueNumber",
-                    "modificationDate",
-                    "livingRoomGUID"
-                })
-                public static class LivingRoom
-                    extends RoomExportType
-                {
-
-                    @XmlElement(name = "LivingRoomUniqueNumber", required = true)
-                    protected String livingRoomUniqueNumber;
-                    @XmlElement(name = "ModificationDate", required = true)
-                    @XmlSchemaType(name = "dateTime")
-                    protected XMLGregorianCalendar modificationDate;
-                    @XmlElement(name = "LivingRoomGUID", required = true)
-                    protected String livingRoomGUID;
-
-                    /**
-                     * Gets the value of the livingRoomUniqueNumber property.
-                     * 
-                     * @return
-                     *     possible object is
-                     *     {@link String }
-                     *     
-                     */
-                    public String getLivingRoomUniqueNumber() {
-                        return livingRoomUniqueNumber;
-                    }
-
-                    /**
-                     * Sets the value of the livingRoomUniqueNumber property.
-                     * 
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
-                     *     
-                     */
-                    public void setLivingRoomUniqueNumber(String value) {
-                        this.livingRoomUniqueNumber = value;
-                    }
-
-                    /**
-                     * Gets the value of the modificationDate property.
-                     * 
-                     * @return
-                     *     possible object is
-                     *     {@link XMLGregorianCalendar }
-                     *     
-                     */
-                    public XMLGregorianCalendar getModificationDate() {
-                        return modificationDate;
-                    }
-
-                    /**
-                     * Sets the value of the modificationDate property.
-                     * 
-                     * @param value
-                     *     allowed object is
-                     *     {@link XMLGregorianCalendar }
-                     *     
-                     */
-                    public void setModificationDate(XMLGregorianCalendar value) {
-                        this.modificationDate = value;
-                    }
-
-                    /**
-                     * Gets the value of the livingRoomGUID property.
-                     * 
-                     * @return
-                     *     possible object is
-                     *     {@link String }
-                     *     
-                     */
-                    public String getLivingRoomGUID() {
-                        return livingRoomGUID;
-                    }
-
-                    /**
-                     * Sets the value of the livingRoomGUID property.
-                     * 
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
-                     *     
-                     */
-                    public void setLivingRoomGUID(String value) {
-                        this.livingRoomGUID = value;
-                    }
-
-                }
-
+            /**
+             * Sets the value of the liftGUID property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
+             */
+            public void setLiftGUID(String value) {
+                this.liftGUID = value;
             }
 
         }
@@ -1114,6 +803,279 @@ public class ExportHouseResultType {
              */
             public void setPremisesGUID(String value) {
                 this.premisesGUID = value;
+            }
+
+        }
+
+
+        /**
+         * <p>Java class for anonymous complex type.
+         * 
+         * <p>The following schema fragment specifies the expected content contained within this class.
+         * 
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}ResidentialPremisesExportType">
+         *       &lt;sequence>
+         *         &lt;element name="PremisesUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+         *         &lt;element name="LivingRoom" maxOccurs="unbounded" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
+         *                 &lt;sequence>
+         *                   &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *                   &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+         *                   &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+         *                 &lt;/sequence>
+         *               &lt;/extension>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="PremisesGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+         *       &lt;/sequence>
+         *     &lt;/extension>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         * 
+         * 
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "premisesUniqueNumber",
+            "modificationDate",
+            "livingRoom",
+            "premisesGUID"
+        })
+        public static class ResidentialPremises
+            extends ResidentialPremisesExportType
+        {
+
+            @XmlElement(name = "PremisesUniqueNumber", required = true)
+            protected String premisesUniqueNumber;
+            @XmlElement(name = "ModificationDate", required = true)
+            @XmlSchemaType(name = "dateTime")
+            protected XMLGregorianCalendar modificationDate;
+            @XmlElement(name = "LivingRoom")
+            protected List<ExportHouseResultType.ApartmentHouse.ResidentialPremises.LivingRoom> livingRoom;
+            @XmlElement(name = "PremisesGUID", required = true)
+            protected String premisesGUID;
+
+            /**
+             * Gets the value of the premisesUniqueNumber property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
+             */
+            public String getPremisesUniqueNumber() {
+                return premisesUniqueNumber;
+            }
+
+            /**
+             * Sets the value of the premisesUniqueNumber property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
+             */
+            public void setPremisesUniqueNumber(String value) {
+                this.premisesUniqueNumber = value;
+            }
+
+            /**
+             * Gets the value of the modificationDate property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link XMLGregorianCalendar }
+             *     
+             */
+            public XMLGregorianCalendar getModificationDate() {
+                return modificationDate;
+            }
+
+            /**
+             * Sets the value of the modificationDate property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link XMLGregorianCalendar }
+             *     
+             */
+            public void setModificationDate(XMLGregorianCalendar value) {
+                this.modificationDate = value;
+            }
+
+            /**
+             * Gets the value of the livingRoom property.
+             * 
+             * <p>
+             * This accessor method returns a reference to the live list,
+             * not a snapshot. Therefore any modification you make to the
+             * returned list will be present inside the JAXB object.
+             * This is why there is not a <CODE>set</CODE> method for the livingRoom property.
+             * 
+             * <p>
+             * For example, to add a new item, do as follows:
+             * <pre>
+             *    getLivingRoom().add(newItem);
+             * </pre>
+             * 
+             * 
+             * <p>
+             * Objects of the following type(s) are allowed in the list
+             * {@link ExportHouseResultType.ApartmentHouse.ResidentialPremises.LivingRoom }
+             * 
+             * 
+             */
+            public List<ExportHouseResultType.ApartmentHouse.ResidentialPremises.LivingRoom> getLivingRoom() {
+                if (livingRoom == null) {
+                    livingRoom = new ArrayList<ExportHouseResultType.ApartmentHouse.ResidentialPremises.LivingRoom>();
+                }
+                return this.livingRoom;
+            }
+
+            /**
+             * Gets the value of the premisesGUID property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
+             */
+            public String getPremisesGUID() {
+                return premisesGUID;
+            }
+
+            /**
+             * Sets the value of the premisesGUID property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
+             */
+            public void setPremisesGUID(String value) {
+                this.premisesGUID = value;
+            }
+
+
+            /**
+             * <p>Java class for anonymous complex type.
+             * 
+             * <p>The following schema fragment specifies the expected content contained within this class.
+             * 
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}RoomExportType">
+             *       &lt;sequence>
+             *         &lt;element name="LivingRoomUniqueNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+             *         &lt;element name="ModificationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+             *         &lt;element name="LivingRoomGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
+             *       &lt;/sequence>
+             *     &lt;/extension>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             * 
+             * 
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "livingRoomUniqueNumber",
+                "modificationDate",
+                "livingRoomGUID"
+            })
+            public static class LivingRoom
+                extends RoomExportType
+            {
+
+                @XmlElement(name = "LivingRoomUniqueNumber", required = true)
+                protected String livingRoomUniqueNumber;
+                @XmlElement(name = "ModificationDate", required = true)
+                @XmlSchemaType(name = "dateTime")
+                protected XMLGregorianCalendar modificationDate;
+                @XmlElement(name = "LivingRoomGUID", required = true)
+                protected String livingRoomGUID;
+
+                /**
+                 * Gets the value of the livingRoomUniqueNumber property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *     
+                 */
+                public String getLivingRoomUniqueNumber() {
+                    return livingRoomUniqueNumber;
+                }
+
+                /**
+                 * Sets the value of the livingRoomUniqueNumber property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *     
+                 */
+                public void setLivingRoomUniqueNumber(String value) {
+                    this.livingRoomUniqueNumber = value;
+                }
+
+                /**
+                 * Gets the value of the modificationDate property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link XMLGregorianCalendar }
+                 *     
+                 */
+                public XMLGregorianCalendar getModificationDate() {
+                    return modificationDate;
+                }
+
+                /**
+                 * Sets the value of the modificationDate property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link XMLGregorianCalendar }
+                 *     
+                 */
+                public void setModificationDate(XMLGregorianCalendar value) {
+                    this.modificationDate = value;
+                }
+
+                /**
+                 * Gets the value of the livingRoomGUID property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *     
+                 */
+                public String getLivingRoomGUID() {
+                    return livingRoomGUID;
+                }
+
+                /**
+                 * Sets the value of the livingRoomGUID property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *     
+                 */
+                public void setLivingRoomGUID(String value) {
+                    this.livingRoomGUID = value;
+                }
+
             }
 
         }

@@ -1,6 +1,8 @@
 
 package ru.gosuslugi.dom.schema.integration.house_management;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -26,6 +28,10 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *         &lt;element name="MeteringDeviceRootGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
  *         &lt;element name="MeteringDeviceVersionGUID" type="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}MeteringDeviceGUIDType"/>
  *         &lt;sequence>
+ *           &lt;choice>
+ *             &lt;element name="CurrentOrganization" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *             &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}orgRootEntityGUID" maxOccurs="100"/>
+ *           &lt;/choice>
  *           &lt;element name="FIASHouseGuid" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
  *           &lt;element name="UpdateDateTime" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *           &lt;choice minOccurs="0">
@@ -39,7 +45,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *           &lt;element name="CommissioningDateFrom" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;/sequence>
  *       &lt;/choice>
- *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="10.0.1.1""/>
+ *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="11.0.0.1""/>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -51,6 +57,8 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 @XmlType(name = "", propOrder = {
     "meteringDeviceRootGUID",
     "meteringDeviceVersionGUID",
+    "currentOrganization",
+    "orgRootEntityGUID",
     "fiasHouseGuid",
     "updateDateTime",
     "meteringDeviceType",
@@ -70,6 +78,10 @@ public class ExportMeteringDeviceDataRequest
     protected String meteringDeviceRootGUID;
     @XmlElement(name = "MeteringDeviceVersionGUID")
     protected String meteringDeviceVersionGUID;
+    @XmlElement(name = "CurrentOrganization")
+    protected Boolean currentOrganization;
+    @XmlElement(namespace = "http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/")
+    protected List<String> orgRootEntityGUID;
     @XmlElement(name = "FIASHouseGuid")
     protected String fiasHouseGuid;
     @XmlElement(name = "UpdateDateTime")
@@ -142,6 +154,59 @@ public class ExportMeteringDeviceDataRequest
      */
     public void setMeteringDeviceVersionGUID(String value) {
         this.meteringDeviceVersionGUID = value;
+    }
+
+    /**
+     * Gets the value of the currentOrganization property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isCurrentOrganization() {
+        return currentOrganization;
+    }
+
+    /**
+     * Sets the value of the currentOrganization property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setCurrentOrganization(Boolean value) {
+        this.currentOrganization = value;
+    }
+
+    /**
+     * Gets the value of the orgRootEntityGUID property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the orgRootEntityGUID property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getOrgRootEntityGUID().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
+     */
+    public List<String> getOrgRootEntityGUID() {
+        if (orgRootEntityGUID == null) {
+            orgRootEntityGUID = new ArrayList<String>();
+        }
+        return this.orgRootEntityGUID;
     }
 
     /**
@@ -370,7 +435,7 @@ public class ExportMeteringDeviceDataRequest
      */
     public String getVersion() {
         if (version == null) {
-            return "10.0.1.1";
+            return "11.0.0.1";
         } else {
             return version;
         }

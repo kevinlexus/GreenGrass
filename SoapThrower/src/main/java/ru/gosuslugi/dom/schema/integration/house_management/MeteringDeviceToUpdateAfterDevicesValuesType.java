@@ -64,6 +64,28 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *           &lt;element name="MunicipalResourceEnergy" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}MunicipalResourceElectricType"/>
  *         &lt;/choice>
  *         &lt;element name="FirstVerificationDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+ *         &lt;choice minOccurs="0">
+ *           &lt;element name="NotLinkedWithMetering" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *           &lt;element name="LinkedWithMetering">
+ *             &lt;complexType>
+ *               &lt;complexContent>
+ *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                   &lt;sequence>
+ *                     &lt;element name="InstallationPlace">
+ *                       &lt;simpleType>
+ *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                           &lt;enumeration value="in"/>
+ *                           &lt;enumeration value="out"/>
+ *                         &lt;/restriction>
+ *                       &lt;/simpleType>
+ *                     &lt;/element>
+ *                     &lt;element name="LinkedMeteringDeviceVersionGUID" type="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}MeteringDeviceGUIDType" maxOccurs="10" minOccurs="0"/>
+ *                   &lt;/sequence>
+ *                 &lt;/restriction>
+ *               &lt;/complexContent>
+ *             &lt;/complexType>
+ *           &lt;/element>
+ *         &lt;/choice>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -82,7 +104,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "accountGUID",
     "municipalResourceNotEnergy",
     "municipalResourceEnergy",
-    "firstVerificationDate"
+    "firstVerificationDate",
+    "notLinkedWithMetering",
+    "linkedWithMetering"
 })
 public class MeteringDeviceToUpdateAfterDevicesValuesType {
 
@@ -106,6 +130,10 @@ public class MeteringDeviceToUpdateAfterDevicesValuesType {
     @XmlElement(name = "FirstVerificationDate")
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar firstVerificationDate;
+    @XmlElement(name = "NotLinkedWithMetering")
+    protected Boolean notLinkedWithMetering;
+    @XmlElement(name = "LinkedWithMetering")
+    protected MeteringDeviceToUpdateAfterDevicesValuesType.LinkedWithMetering linkedWithMetering;
 
     /**
      * Gets the value of the installationDate property.
@@ -333,6 +361,54 @@ public class MeteringDeviceToUpdateAfterDevicesValuesType {
         this.firstVerificationDate = value;
     }
 
+    /**
+     * Gets the value of the notLinkedWithMetering property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isNotLinkedWithMetering() {
+        return notLinkedWithMetering;
+    }
+
+    /**
+     * Sets the value of the notLinkedWithMetering property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setNotLinkedWithMetering(Boolean value) {
+        this.notLinkedWithMetering = value;
+    }
+
+    /**
+     * Gets the value of the linkedWithMetering property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link MeteringDeviceToUpdateAfterDevicesValuesType.LinkedWithMetering }
+     *     
+     */
+    public MeteringDeviceToUpdateAfterDevicesValuesType.LinkedWithMetering getLinkedWithMetering() {
+        return linkedWithMetering;
+    }
+
+    /**
+     * Sets the value of the linkedWithMetering property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link MeteringDeviceToUpdateAfterDevicesValuesType.LinkedWithMetering }
+     *     
+     */
+    public void setLinkedWithMetering(MeteringDeviceToUpdateAfterDevicesValuesType.LinkedWithMetering value) {
+        this.linkedWithMetering = value;
+    }
+
 
     /**
      * <p>Java class for anonymous complex type.
@@ -458,6 +534,101 @@ public class MeteringDeviceToUpdateAfterDevicesValuesType {
          */
         public void setPressureSensorInformation(String value) {
             this.pressureSensorInformation = value;
+        }
+
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="InstallationPlace">
+     *           &lt;simpleType>
+     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *               &lt;enumeration value="in"/>
+     *               &lt;enumeration value="out"/>
+     *             &lt;/restriction>
+     *           &lt;/simpleType>
+     *         &lt;/element>
+     *         &lt;element name="LinkedMeteringDeviceVersionGUID" type="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}MeteringDeviceGUIDType" maxOccurs="10" minOccurs="0"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "installationPlace",
+        "linkedMeteringDeviceVersionGUID"
+    })
+    public static class LinkedWithMetering {
+
+        @XmlElement(name = "InstallationPlace", required = true)
+        protected String installationPlace;
+        @XmlElement(name = "LinkedMeteringDeviceVersionGUID")
+        protected List<String> linkedMeteringDeviceVersionGUID;
+
+        /**
+         * Gets the value of the installationPlace property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getInstallationPlace() {
+            return installationPlace;
+        }
+
+        /**
+         * Sets the value of the installationPlace property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setInstallationPlace(String value) {
+            this.installationPlace = value;
+        }
+
+        /**
+         * Gets the value of the linkedMeteringDeviceVersionGUID property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the linkedMeteringDeviceVersionGUID property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getLinkedMeteringDeviceVersionGUID().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link String }
+         * 
+         * 
+         */
+        public List<String> getLinkedMeteringDeviceVersionGUID() {
+            if (linkedMeteringDeviceVersionGUID == null) {
+                linkedMeteringDeviceVersionGUID = new ArrayList<String>();
+            }
+            return this.linkedMeteringDeviceVersionGUID;
         }
 
     }

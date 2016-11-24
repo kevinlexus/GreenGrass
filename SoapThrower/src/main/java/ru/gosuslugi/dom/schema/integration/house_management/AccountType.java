@@ -83,6 +83,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgVer
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="IndividualServiceReason" type="{http://www.w3.org/2001/XMLSchema}anyType" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -105,7 +106,8 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgVer
     "heatedArea",
     "closed",
     "accommodation",
-    "payerInfo"
+    "payerInfo",
+    "individualServiceReason"
 })
 @XmlSeeAlso({
     ExportAccountResultType.class,
@@ -135,6 +137,8 @@ public class AccountType {
     protected List<AccountType.Accommodation> accommodation;
     @XmlElement(name = "PayerInfo", required = true)
     protected AccountType.PayerInfo payerInfo;
+    @XmlElement(name = "IndividualServiceReason")
+    protected List<Object> individualServiceReason;
 
     /**
      * Gets the value of the isUOAccount property.
@@ -451,6 +455,35 @@ public class AccountType {
      */
     public void setPayerInfo(AccountType.PayerInfo value) {
         this.payerInfo = value;
+    }
+
+    /**
+     * Gets the value of the individualServiceReason property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the individualServiceReason property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getIndividualServiceReason().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Object }
+     * 
+     * 
+     */
+    public List<Object> getIndividualServiceReason() {
+        if (individualServiceReason == null) {
+            individualServiceReason = new ArrayList<Object>();
+        }
+        return this.individualServiceReason;
     }
 
 

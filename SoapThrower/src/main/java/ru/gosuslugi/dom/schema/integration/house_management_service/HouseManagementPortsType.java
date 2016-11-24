@@ -7,6 +7,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import ru.gosuslugi.dom.schema.integration.house_management.ExportAccountIndividualServicesRequest;
+import ru.gosuslugi.dom.schema.integration.house_management.ExportAccountIndividualServicesResult;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportAccountRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportAccountResult;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportCAChRequest;
@@ -23,6 +25,7 @@ import ru.gosuslugi.dom.schema.integration.house_management.ExportSupplyResource
 import ru.gosuslugi.dom.schema.integration.house_management.ExportSupplyResourceContractResult;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportVotingProtocolRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportVotingProtocolResult;
+import ru.gosuslugi.dom.schema.integration.house_management.ImportAccountIndividualServicesRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportAccountRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportCharterRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportContractRequest;
@@ -360,6 +363,38 @@ public interface HouseManagementPortsType {
     public ExportSupplyResourceContractResult exportSupplyResourceContractData(
         @WebParam(name = "exportSupplyResourceContractRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/house-management/", partName = "exportSupplyResourceContractRequest")
         ExportSupplyResourceContractRequest exportSupplyResourceContractRequest)
+        throws Fault
+    ;
+
+    /**
+     * Импорт индивидуальных услуг лицевого счета
+     * 
+     * @param importAccountIndividualServicesRequest
+     * @return
+     *     returns ru.gosuslugi.dom.schema.integration.base.ImportResult
+     * @throws Fault
+     */
+    @WebMethod(action = "urn:importAccountIndividualServices")
+    @WebResult(name = "ImportResult", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/base/", partName = "importAccountIndividualServicesResult")
+    public ru.gosuslugi.dom.schema.integration.base.ImportResult importAccountIndividualServices(
+        @WebParam(name = "importAccountIndividualServicesRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/house-management/", partName = "importAccountIndividualServicesRequest")
+        ImportAccountIndividualServicesRequest importAccountIndividualServicesRequest)
+        throws Fault
+    ;
+
+    /**
+     * Экспорт индивидуальных услуг лицевого счета
+     * 
+     * @param exportAccountIndividualServicesRequest
+     * @return
+     *     returns ru.gosuslugi.dom.schema.integration.house_management.ExportAccountIndividualServicesResult
+     * @throws Fault
+     */
+    @WebMethod(action = "urn:exportAccountIndividualServices")
+    @WebResult(name = "exportAccountIndividualServicesResult", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/house-management/", partName = "exportAccountIndividualServicesResult")
+    public ExportAccountIndividualServicesResult exportAccountIndividualServices(
+        @WebParam(name = "exportAccountIndividualServicesRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/house-management/", partName = "exportAccountIndividualServicesRequest")
+        ExportAccountIndividualServicesRequest exportAccountIndividualServicesRequest)
         throws Fault
     ;
 

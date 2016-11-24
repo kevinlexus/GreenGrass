@@ -55,7 +55,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
     "terminationDate"
 })
 @XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.Entrance.Lift.class
+    ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.Lift.class
 })
 public class LiftExportType {
 

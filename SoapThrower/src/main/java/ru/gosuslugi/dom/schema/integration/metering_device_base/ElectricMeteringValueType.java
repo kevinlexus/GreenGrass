@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import ru.gosuslugi.dom.schema.integration.house_management.MunicipalResourceElectricType;
 
 
 /**
@@ -42,7 +41,10 @@ import ru.gosuslugi.dom.schema.integration.house_management.MunicipalResourceEle
     "readingsSource"
 })
 @XmlSeeAlso({
-    MunicipalResourceElectricType.class
+    ru.gosuslugi.dom.schema.integration.device_metering.ImportMeteringDeviceValuesRequest.MeteringDevicesValues.ElectricDeviceValue.CurrentValue.class,
+    ru.gosuslugi.dom.schema.integration.device_metering.ImportMeteringDeviceValuesRequest.MeteringDevicesValues.ElectricDeviceValue.ControlValue.class,
+    ru.gosuslugi.dom.schema.integration.device_metering.ElectricMeteringValueKindType.CurrentValue.class,
+    ru.gosuslugi.dom.schema.integration.device_metering.ElectricMeteringValueKindType.ControlValue.class
 })
 public class ElectricMeteringValueType {
 

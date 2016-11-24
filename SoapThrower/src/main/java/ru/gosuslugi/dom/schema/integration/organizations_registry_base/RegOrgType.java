@@ -4,7 +4,6 @@ package ru.gosuslugi.dom.schema.integration.organizations_registry_base;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -30,9 +29,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RegOrgType", propOrder = {
     "orgRootEntityGUID"
-})
-@XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.house_management.SupplyResourceContractType.Organization.class
 })
 public class RegOrgType {
 

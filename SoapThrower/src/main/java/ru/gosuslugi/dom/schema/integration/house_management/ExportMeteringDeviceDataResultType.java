@@ -2,6 +2,8 @@
 package ru.gosuslugi.dom.schema.integration.house_management;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -33,6 +35,18 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="VersionNumber" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="StatusVersion" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="UpdateDateTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *         &lt;element name="MeteringOwner">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}orgRootEntityGUID" maxOccurs="100"/>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
+ *         &lt;element name="MeteringDeviceGISGKHNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -48,7 +62,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "meteringDeviceVersionGUID",
     "versionNumber",
     "statusVersion",
-    "updateDateTime"
+    "updateDateTime",
+    "meteringOwner",
+    "meteringDeviceGISGKHNumber"
 })
 public class ExportMeteringDeviceDataResultType
     extends MeteringDeviceFullInformationType
@@ -67,6 +83,10 @@ public class ExportMeteringDeviceDataResultType
     @XmlElement(name = "UpdateDateTime", required = true)
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar updateDateTime;
+    @XmlElement(name = "MeteringOwner", required = true)
+    protected ExportMeteringDeviceDataResultType.MeteringOwner meteringOwner;
+    @XmlElement(name = "MeteringDeviceGISGKHNumber", required = true)
+    protected String meteringDeviceGISGKHNumber;
 
     /**
      * Gets the value of the meteringDeviceRootGUID property.
@@ -210,6 +230,114 @@ public class ExportMeteringDeviceDataResultType
      */
     public void setUpdateDateTime(XMLGregorianCalendar value) {
         this.updateDateTime = value;
+    }
+
+    /**
+     * Gets the value of the meteringOwner property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ExportMeteringDeviceDataResultType.MeteringOwner }
+     *     
+     */
+    public ExportMeteringDeviceDataResultType.MeteringOwner getMeteringOwner() {
+        return meteringOwner;
+    }
+
+    /**
+     * Sets the value of the meteringOwner property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ExportMeteringDeviceDataResultType.MeteringOwner }
+     *     
+     */
+    public void setMeteringOwner(ExportMeteringDeviceDataResultType.MeteringOwner value) {
+        this.meteringOwner = value;
+    }
+
+    /**
+     * Gets the value of the meteringDeviceGISGKHNumber property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMeteringDeviceGISGKHNumber() {
+        return meteringDeviceGISGKHNumber;
+    }
+
+    /**
+     * Sets the value of the meteringDeviceGISGKHNumber property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMeteringDeviceGISGKHNumber(String value) {
+        this.meteringDeviceGISGKHNumber = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}orgRootEntityGUID" maxOccurs="100"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "orgRootEntityGUID"
+    })
+    public static class MeteringOwner {
+
+        @XmlElement(namespace = "http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/", required = true)
+        protected List<String> orgRootEntityGUID;
+
+        /**
+         * Gets the value of the orgRootEntityGUID property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the orgRootEntityGUID property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getOrgRootEntityGUID().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link String }
+         * 
+         * 
+         */
+        public List<String> getOrgRootEntityGUID() {
+            if (orgRootEntityGUID == null) {
+                orgRootEntityGUID = new ArrayList<String>();
+            }
+            return this.orgRootEntityGUID;
+        }
+
     }
 
 }

@@ -30,6 +30,7 @@ import ru.gosuslugi.dom.schema.integration.base.BaseType;
  *                   &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
  *                   &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/account-base/}AccountNumber" minOccurs="0"/>
  *                   &lt;element name="AccountGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType" minOccurs="0"/>
+ *                   &lt;element name="AccountReasons" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}AccountReasonsImportType" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/extension>
  *             &lt;/complexContent>
@@ -129,6 +130,7 @@ public class ImportAccountRequest
      *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
      *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/account-base/}AccountNumber" minOccurs="0"/>
      *         &lt;element name="AccountGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType" minOccurs="0"/>
+     *         &lt;element name="AccountReasons" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}AccountReasonsImportType" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/extension>
      *   &lt;/complexContent>
@@ -141,7 +143,8 @@ public class ImportAccountRequest
     @XmlType(name = "", propOrder = {
         "transportGUID",
         "accountNumber",
-        "accountGUID"
+        "accountGUID",
+        "accountReasons"
     })
     public static class Account
         extends AccountType
@@ -153,6 +156,8 @@ public class ImportAccountRequest
         protected String accountNumber;
         @XmlElement(name = "AccountGUID")
         protected String accountGUID;
+        @XmlElement(name = "AccountReasons")
+        protected AccountReasonsImportType accountReasons;
 
         /**
          * Gets the value of the transportGUID property.
@@ -224,6 +229,30 @@ public class ImportAccountRequest
          */
         public void setAccountGUID(String value) {
             this.accountGUID = value;
+        }
+
+        /**
+         * Gets the value of the accountReasons property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link AccountReasonsImportType }
+         *     
+         */
+        public AccountReasonsImportType getAccountReasons() {
+            return accountReasons;
+        }
+
+        /**
+         * Sets the value of the accountReasons property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link AccountReasonsImportType }
+         *     
+         */
+        public void setAccountReasons(AccountReasonsImportType value) {
+            this.accountReasons = value;
         }
 
     }

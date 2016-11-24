@@ -66,14 +66,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef }
-     * 
-     */
-    public ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef createNsiRef() {
-        return new ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef();
-    }
-
-    /**
      * Create an instance of {@link NsiElementIntegerFieldType }
      * 
      */
@@ -127,6 +119,14 @@ public class ObjectFactory {
      */
     public NsiElementType createNsiElementType() {
         return new NsiElementType();
+    }
+
+    /**
+     * Create an instance of {@link ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef }
+     * 
+     */
+    public ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef createNsiRef() {
+        return new ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef();
     }
 
     /**

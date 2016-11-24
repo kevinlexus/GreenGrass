@@ -30,6 +30,7 @@ public class ObjectFactory {
     private final static QName _ContractVersionGUID_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/house-management/", "ContractVersionGUID");
     private final static QName _CharterGUID_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/house-management/", "CharterGUID");
     private final static QName _CadastralNumber_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/house-management/", "CadastralNumber");
+    private final static QName _AccountIndividualServiceGUID_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/house-management/", "AccountIndividualServiceGUID");
     private final static QName _ContractPaymentsInfoVersionGUID_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/house-management/", "ContractPaymentsInfoVersionGUID");
     private final static QName _ConditionalNumber_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/house-management/", "ConditionalNumber");
     private final static QName _EntranceNum_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/house-management/", "EntranceNum");
@@ -128,6 +129,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ImportAccountIndividualServicesRequest }
+     * 
+     */
+    public ImportAccountIndividualServicesRequest createImportAccountIndividualServicesRequest() {
+        return new ImportAccountIndividualServicesRequest();
+    }
+
+    /**
      * Create an instance of {@link ExportVotingProtocolResult }
      * 
      */
@@ -165,6 +174,14 @@ public class ObjectFactory {
      */
     public ImportContractRequest createImportContractRequest() {
         return new ImportContractRequest();
+    }
+
+    /**
+     * Create an instance of {@link AccountReasonsImportType }
+     * 
+     */
+    public AccountReasonsImportType createAccountReasonsImportType() {
+        return new AccountReasonsImportType();
     }
 
     /**
@@ -373,6 +390,14 @@ public class ObjectFactory {
      */
     public CharterType createCharterType() {
         return new CharterType();
+    }
+
+    /**
+     * Create an instance of {@link MeteringDeviceFullInformationType }
+     * 
+     */
+    public MeteringDeviceFullInformationType createMeteringDeviceFullInformationType() {
+        return new MeteringDeviceFullInformationType();
     }
 
     /**
@@ -672,6 +697,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportAccountResultType.AccountReasons }
+     * 
+     */
+    public ExportAccountResultType.AccountReasons createExportAccountResultTypeAccountReasons() {
+        return new ExportAccountResultType.AccountReasons();
+    }
+
+    /**
      * Create an instance of {@link ExportStatusPublicPropertyContractResultType }
      * 
      */
@@ -728,6 +761,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportMeteringDeviceDataResultType }
+     * 
+     */
+    public ExportMeteringDeviceDataResultType createExportMeteringDeviceDataResultType() {
+        return new ExportMeteringDeviceDataResultType();
+    }
+
+    /**
      * Create an instance of {@link ExportHouseResultType }
      * 
      */
@@ -760,19 +801,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ExportHouseResultType.ApartmentHouse.Entrance }
+     * Create an instance of {@link ExportHouseResultType.ApartmentHouse.ResidentialPremises }
      * 
      */
-    public ExportHouseResultType.ApartmentHouse.Entrance createExportHouseResultTypeApartmentHouseEntrance() {
-        return new ExportHouseResultType.ApartmentHouse.Entrance();
-    }
-
-    /**
-     * Create an instance of {@link ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises }
-     * 
-     */
-    public ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises createExportHouseResultTypeApartmentHouseEntranceResidentialPremises() {
-        return new ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises();
+    public ExportHouseResultType.ApartmentHouse.ResidentialPremises createExportHouseResultTypeApartmentHouseResidentialPremises() {
+        return new ExportHouseResultType.ApartmentHouse.ResidentialPremises();
     }
 
     /**
@@ -792,19 +825,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ExportMeteringDeviceDataResultType }
-     * 
-     */
-    public ExportMeteringDeviceDataResultType createExportMeteringDeviceDataResultType() {
-        return new ExportMeteringDeviceDataResultType();
-    }
-
-    /**
      * Create an instance of {@link ExportVotingProtocolResultType }
      * 
      */
     public ExportVotingProtocolResultType createExportVotingProtocolResultType() {
         return new ExportVotingProtocolResultType();
+    }
+
+    /**
+     * Create an instance of {@link ExportAccountIndividualServicesResultType }
+     * 
+     */
+    public ExportAccountIndividualServicesResultType createExportAccountIndividualServicesResultType() {
+        return new ExportAccountIndividualServicesResultType();
     }
 
     /**
@@ -968,6 +1001,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ImportAccountIndividualServicesRequest.IndividualService }
+     * 
+     */
+    public ImportAccountIndividualServicesRequest.IndividualService createImportAccountIndividualServicesRequestIndividualService() {
+        return new ImportAccountIndividualServicesRequest.IndividualService();
+    }
+
+    /**
+     * Create an instance of {@link ImportAccountIndividualServicesRequest.DeleteIndividualService }
+     * 
+     */
+    public ImportAccountIndividualServicesRequest.DeleteIndividualService createImportAccountIndividualServicesRequestDeleteIndividualService() {
+        return new ImportAccountIndividualServicesRequest.DeleteIndividualService();
+    }
+
+    /**
      * Create an instance of {@link ExportVotingProtocolResult.VotingProtocol }
      * 
      */
@@ -989,6 +1038,14 @@ public class ObjectFactory {
      */
     public ExportVotingProtocolRequest createExportVotingProtocolRequest() {
         return new ExportVotingProtocolRequest();
+    }
+
+    /**
+     * Create an instance of {@link ExportAccountIndividualServicesRequest }
+     * 
+     */
+    public ExportAccountIndividualServicesRequest createExportAccountIndividualServicesRequest() {
+        return new ExportAccountIndividualServicesRequest();
     }
 
     /**
@@ -1037,6 +1094,14 @@ public class ObjectFactory {
      */
     public ExportAccountResult createExportAccountResult() {
         return new ExportAccountResult();
+    }
+
+    /**
+     * Create an instance of {@link ExportAccountIndividualServicesResult }
+     * 
+     */
+    public ExportAccountIndividualServicesResult createExportAccountIndividualServicesResult() {
+        return new ExportAccountIndividualServicesResult();
     }
 
     /**
@@ -1149,14 +1214,6 @@ public class ObjectFactory {
      */
     public PremisesBasicUpdateUOType createPremisesBasicUpdateUOType() {
         return new PremisesBasicUpdateUOType();
-    }
-
-    /**
-     * Create an instance of {@link MeteringDeviceFullInformationType }
-     * 
-     */
-    public MeteringDeviceFullInformationType createMeteringDeviceFullInformationType() {
-        return new MeteringDeviceFullInformationType();
     }
 
     /**
@@ -1832,6 +1889,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AccountIndividualServiceType }
+     * 
+     */
+    public AccountIndividualServiceType createAccountIndividualServiceType() {
+        return new AccountIndividualServiceType();
+    }
+
+    /**
+     * Create an instance of {@link AccountReasonsImportType.SupplyResourceContract }
+     * 
+     */
+    public AccountReasonsImportType.SupplyResourceContract createAccountReasonsImportTypeSupplyResourceContract() {
+        return new AccountReasonsImportType.SupplyResourceContract();
+    }
+
+    /**
+     * Create an instance of {@link AccountReasonsImportType.SocialHireContract }
+     * 
+     */
+    public AccountReasonsImportType.SocialHireContract createAccountReasonsImportTypeSocialHireContract() {
+        return new AccountReasonsImportType.SocialHireContract();
+    }
+
+    /**
      * Create an instance of {@link ApartmentHouseUOType.BasicCharacteristicts }
      * 
      */
@@ -1901,6 +1982,14 @@ public class ObjectFactory {
      */
     public MeteringDeviceToUpdateAfterDevicesValuesType.CollectiveDevice createMeteringDeviceToUpdateAfterDevicesValuesTypeCollectiveDevice() {
         return new MeteringDeviceToUpdateAfterDevicesValuesType.CollectiveDevice();
+    }
+
+    /**
+     * Create an instance of {@link MeteringDeviceToUpdateAfterDevicesValuesType.LinkedWithMetering }
+     * 
+     */
+    public MeteringDeviceToUpdateAfterDevicesValuesType.LinkedWithMetering createMeteringDeviceToUpdateAfterDevicesValuesTypeLinkedWithMetering() {
+        return new MeteringDeviceToUpdateAfterDevicesValuesType.LinkedWithMetering();
     }
 
     /**
@@ -2269,6 +2358,14 @@ public class ObjectFactory {
      */
     public CharterType.MeetingProtocol createCharterTypeMeetingProtocol() {
         return new CharterType.MeetingProtocol();
+    }
+
+    /**
+     * Create an instance of {@link MeteringDeviceFullInformationType.LinkedWithMetering }
+     * 
+     */
+    public MeteringDeviceFullInformationType.LinkedWithMetering createMeteringDeviceFullInformationTypeLinkedWithMetering() {
+        return new MeteringDeviceFullInformationType.LinkedWithMetering();
     }
 
     /**
@@ -2656,6 +2753,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.LinkedWithMetering }
+     * 
+     */
+    public ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.LinkedWithMetering createImportMeteringDeviceDataRequestMeteringDeviceDeviceDataToUpdateLinkedWithMetering() {
+        return new ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.LinkedWithMetering();
+    }
+
+    /**
      * Create an instance of {@link ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.ArchiveDevice }
      * 
      */
@@ -3000,6 +3105,38 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportAccountResultType.AccountReasons.Contract }
+     * 
+     */
+    public ExportAccountResultType.AccountReasons.Contract createExportAccountResultTypeAccountReasonsContract() {
+        return new ExportAccountResultType.AccountReasons.Contract();
+    }
+
+    /**
+     * Create an instance of {@link ExportAccountResultType.AccountReasons.Charter }
+     * 
+     */
+    public ExportAccountResultType.AccountReasons.Charter createExportAccountResultTypeAccountReasonsCharter() {
+        return new ExportAccountResultType.AccountReasons.Charter();
+    }
+
+    /**
+     * Create an instance of {@link ExportAccountResultType.AccountReasons.OverhaulFormingKindProtocol }
+     * 
+     */
+    public ExportAccountResultType.AccountReasons.OverhaulFormingKindProtocol createExportAccountResultTypeAccountReasonsOverhaulFormingKindProtocol() {
+        return new ExportAccountResultType.AccountReasons.OverhaulFormingKindProtocol();
+    }
+
+    /**
+     * Create an instance of {@link ExportAccountResultType.AccountReasons.OverhaulFormingKindOMSDescision }
+     * 
+     */
+    public ExportAccountResultType.AccountReasons.OverhaulFormingKindOMSDescision createExportAccountResultTypeAccountReasonsOverhaulFormingKindOMSDescision() {
+        return new ExportAccountResultType.AccountReasons.OverhaulFormingKindOMSDescision();
+    }
+
+    /**
      * Create an instance of {@link ExportStatusPublicPropertyContractResultType.PublicPropertyContract.PaymentInterval }
      * 
      */
@@ -3088,6 +3225,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportMeteringDeviceDataResultType.MeteringOwner }
+     * 
+     */
+    public ExportMeteringDeviceDataResultType.MeteringOwner createExportMeteringDeviceDataResultTypeMeteringOwner() {
+        return new ExportMeteringDeviceDataResultType.MeteringOwner();
+    }
+
+    /**
      * Create an instance of {@link ExportHouseResultType.LivingHouse.LivingRoom }
      * 
      */
@@ -3104,6 +3249,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportHouseResultType.ApartmentHouse.Entrance }
+     * 
+     */
+    public ExportHouseResultType.ApartmentHouse.Entrance createExportHouseResultTypeApartmentHouseEntrance() {
+        return new ExportHouseResultType.ApartmentHouse.Entrance();
+    }
+
+    /**
+     * Create an instance of {@link ExportHouseResultType.ApartmentHouse.Lift }
+     * 
+     */
+    public ExportHouseResultType.ApartmentHouse.Lift createExportHouseResultTypeApartmentHouseLift() {
+        return new ExportHouseResultType.ApartmentHouse.Lift();
+    }
+
+    /**
      * Create an instance of {@link ExportHouseResultType.ApartmentHouse.NonResidentialPremises }
      * 
      */
@@ -3112,19 +3273,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ExportHouseResultType.ApartmentHouse.Entrance.Lift }
+     * Create an instance of {@link ExportHouseResultType.ApartmentHouse.ResidentialPremises.LivingRoom }
      * 
      */
-    public ExportHouseResultType.ApartmentHouse.Entrance.Lift createExportHouseResultTypeApartmentHouseEntranceLift() {
-        return new ExportHouseResultType.ApartmentHouse.Entrance.Lift();
-    }
-
-    /**
-     * Create an instance of {@link ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises.LivingRoom }
-     * 
-     */
-    public ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises.LivingRoom createExportHouseResultTypeApartmentHouseEntranceResidentialPremisesLivingRoom() {
-        return new ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises.LivingRoom();
+    public ExportHouseResultType.ApartmentHouse.ResidentialPremises.LivingRoom createExportHouseResultTypeApartmentHouseResidentialPremisesLivingRoom() {
+        return new ExportHouseResultType.ApartmentHouse.ResidentialPremises.LivingRoom();
     }
 
     /**
@@ -3195,6 +3348,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://dom.gosuslugi.ru/schema/integration/house-management/", name = "CadastralNumber")
     public JAXBElement<String> createCadastralNumber(String value) {
         return new JAXBElement<String>(_CadastralNumber_QNAME, String.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://dom.gosuslugi.ru/schema/integration/house-management/", name = "AccountIndividualServiceGUID")
+    public JAXBElement<String> createAccountIndividualServiceGUID(String value) {
+        return new JAXBElement<String>(_AccountIndividualServiceGUID_QNAME, String.class, null, value);
     }
 
     /**

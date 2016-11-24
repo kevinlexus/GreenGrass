@@ -82,22 +82,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AttachmentType }
-     * 
-     */
-    public AttachmentType createAttachmentType() {
-        return new AttachmentType();
-    }
-
-    /**
-     * Create an instance of {@link Attachment }
-     * 
-     */
-    public Attachment createAttachment() {
-        return new Attachment();
-    }
-
-    /**
      * Create an instance of {@link GetStateRequest }
      * 
      */
@@ -119,6 +103,14 @@ public class ObjectFactory {
      */
     public AckRequest.Ack createAckRequestAck() {
         return new AckRequest.Ack();
+    }
+
+    /**
+     * Create an instance of {@link Attachment }
+     * 
+     */
+    public Attachment createAttachment() {
+        return new Attachment();
     }
 
     /**
@@ -151,6 +143,14 @@ public class ObjectFactory {
      */
     public ResultHeader createResultHeader() {
         return new ResultHeader();
+    }
+
+    /**
+     * Create an instance of {@link AttachmentType }
+     * 
+     */
+    public AttachmentType createAttachmentType() {
+        return new AttachmentType();
     }
 
     /**

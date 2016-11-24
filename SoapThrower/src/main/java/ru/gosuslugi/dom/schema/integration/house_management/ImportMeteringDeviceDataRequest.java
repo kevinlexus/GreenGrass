@@ -45,6 +45,17 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *                               &lt;choice>
  *                                 &lt;element name="UpdateBeforeDevicesValues" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}MeteringDeviceFullInformationType"/>
  *                                 &lt;element name="UpdateAfterDevicesValues" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}MeteringDeviceToUpdateAfterDevicesValuesType"/>
+ *                                 &lt;element name="LinkedWithMetering">
+ *                                   &lt;complexType>
+ *                                     &lt;complexContent>
+ *                                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                                         &lt;sequence>
+ *                                           &lt;element name="LinkedMeteringDeviceVersionGUID" type="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}MeteringDeviceGUIDType" maxOccurs="10"/>
+ *                                         &lt;/sequence>
+ *                                       &lt;/restriction>
+ *                                     &lt;/complexContent>
+ *                                   &lt;/complexType>
+ *                                 &lt;/element>
  *                                 &lt;element name="ArchiveDevice">
  *                                   &lt;complexType>
  *                                     &lt;complexContent>
@@ -89,7 +100,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *           &lt;/complexType>
  *         &lt;/element>
  *       &lt;/sequence>
- *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="10.0.1.1""/>
+ *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="11.0.0.1""/>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -177,7 +188,7 @@ public class ImportMeteringDeviceDataRequest
      */
     public String getVersion() {
         if (version == null) {
-            return "10.0.1.1";
+            return "11.0.0.1";
         } else {
             return version;
         }
@@ -218,6 +229,17 @@ public class ImportMeteringDeviceDataRequest
      *                     &lt;choice>
      *                       &lt;element name="UpdateBeforeDevicesValues" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}MeteringDeviceFullInformationType"/>
      *                       &lt;element name="UpdateAfterDevicesValues" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}MeteringDeviceToUpdateAfterDevicesValuesType"/>
+     *                       &lt;element name="LinkedWithMetering">
+     *                         &lt;complexType>
+     *                           &lt;complexContent>
+     *                             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *                               &lt;sequence>
+     *                                 &lt;element name="LinkedMeteringDeviceVersionGUID" type="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}MeteringDeviceGUIDType" maxOccurs="10"/>
+     *                               &lt;/sequence>
+     *                             &lt;/restriction>
+     *                           &lt;/complexContent>
+     *                         &lt;/complexType>
+     *                       &lt;/element>
      *                       &lt;element name="ArchiveDevice">
      *                         &lt;complexType>
      *                           &lt;complexContent>
@@ -366,6 +388,17 @@ public class ImportMeteringDeviceDataRequest
          *         &lt;choice>
          *           &lt;element name="UpdateBeforeDevicesValues" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}MeteringDeviceFullInformationType"/>
          *           &lt;element name="UpdateAfterDevicesValues" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}MeteringDeviceToUpdateAfterDevicesValuesType"/>
+         *           &lt;element name="LinkedWithMetering">
+         *             &lt;complexType>
+         *               &lt;complexContent>
+         *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                   &lt;sequence>
+         *                     &lt;element name="LinkedMeteringDeviceVersionGUID" type="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}MeteringDeviceGUIDType" maxOccurs="10"/>
+         *                   &lt;/sequence>
+         *                 &lt;/restriction>
+         *               &lt;/complexContent>
+         *             &lt;/complexType>
+         *           &lt;/element>
          *           &lt;element name="ArchiveDevice">
          *             &lt;complexType>
          *               &lt;complexContent>
@@ -411,6 +444,7 @@ public class ImportMeteringDeviceDataRequest
             "meteringDeviceVersionGUID",
             "updateBeforeDevicesValues",
             "updateAfterDevicesValues",
+            "linkedWithMetering",
             "archiveDevice",
             "replaceDevice"
         })
@@ -422,6 +456,8 @@ public class ImportMeteringDeviceDataRequest
             protected MeteringDeviceFullInformationType updateBeforeDevicesValues;
             @XmlElement(name = "UpdateAfterDevicesValues")
             protected MeteringDeviceToUpdateAfterDevicesValuesType updateAfterDevicesValues;
+            @XmlElement(name = "LinkedWithMetering")
+            protected ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.LinkedWithMetering linkedWithMetering;
             @XmlElement(name = "ArchiveDevice")
             protected ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.ArchiveDevice archiveDevice;
             @XmlElement(name = "ReplaceDevice")
@@ -497,6 +533,30 @@ public class ImportMeteringDeviceDataRequest
              */
             public void setUpdateAfterDevicesValues(MeteringDeviceToUpdateAfterDevicesValuesType value) {
                 this.updateAfterDevicesValues = value;
+            }
+
+            /**
+             * Gets the value of the linkedWithMetering property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.LinkedWithMetering }
+             *     
+             */
+            public ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.LinkedWithMetering getLinkedWithMetering() {
+                return linkedWithMetering;
+            }
+
+            /**
+             * Sets the value of the linkedWithMetering property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.LinkedWithMetering }
+             *     
+             */
+            public void setLinkedWithMetering(ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate.LinkedWithMetering value) {
+                this.linkedWithMetering = value;
             }
 
             /**
@@ -598,6 +658,66 @@ public class ImportMeteringDeviceDataRequest
                  */
                 public void setArchivingReason(NsiRef value) {
                     this.archivingReason = value;
+                }
+
+            }
+
+
+            /**
+             * <p>Java class for anonymous complex type.
+             * 
+             * <p>The following schema fragment specifies the expected content contained within this class.
+             * 
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="LinkedMeteringDeviceVersionGUID" type="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}MeteringDeviceGUIDType" maxOccurs="10"/>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             * 
+             * 
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "linkedMeteringDeviceVersionGUID"
+            })
+            public static class LinkedWithMetering {
+
+                @XmlElement(name = "LinkedMeteringDeviceVersionGUID", required = true)
+                protected List<String> linkedMeteringDeviceVersionGUID;
+
+                /**
+                 * Gets the value of the linkedMeteringDeviceVersionGUID property.
+                 * 
+                 * <p>
+                 * This accessor method returns a reference to the live list,
+                 * not a snapshot. Therefore any modification you make to the
+                 * returned list will be present inside the JAXB object.
+                 * This is why there is not a <CODE>set</CODE> method for the linkedMeteringDeviceVersionGUID property.
+                 * 
+                 * <p>
+                 * For example, to add a new item, do as follows:
+                 * <pre>
+                 *    getLinkedMeteringDeviceVersionGUID().add(newItem);
+                 * </pre>
+                 * 
+                 * 
+                 * <p>
+                 * Objects of the following type(s) are allowed in the list
+                 * {@link String }
+                 * 
+                 * 
+                 */
+                public List<String> getLinkedMeteringDeviceVersionGUID() {
+                    if (linkedMeteringDeviceVersionGUID == null) {
+                        linkedMeteringDeviceVersionGUID = new ArrayList<String>();
+                    }
+                    return this.linkedMeteringDeviceVersionGUID;
                 }
 
             }

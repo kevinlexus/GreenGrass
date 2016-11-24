@@ -13,8 +13,8 @@
 	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Header>
 		<ns4:ResultHeader>
-			<ns4:Date>2016-11-18T12:40:20.316+03:00</ns4:Date>
-			<ns4:MessageGUID>9ce9d259-45ab-4e41-890d-36cf7686a53d
+			<ns4:Date>2016-11-21T12:56:04.936+03:00</ns4:Date>
+			<ns4:MessageGUID>0dbf3c7b-057d-49fe-a6f4-919df27c624a
 			</ns4:MessageGUID>
 		</ns4:ResultHeader>
 	</soap:Header>
@@ -22,7 +22,7 @@
 		<ns13:ImportResult Id="signed-data-container"
 			ns4:version="10.0.1.1">
 			<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-				Id="xmldsig-fd15c04a-a2cd-4474-9b10-869b8fccce01">
+				Id="xmldsig-32d09f07-eea3-495c-b03d-39803e70b009">
 				<ds:SignedInfo>
 					<ds:CanonicalizationMethod
 						Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
@@ -36,18 +36,18 @@
 						</ds:Transforms>
 						<ds:DigestMethod
 							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-						<ds:DigestValue>6efmD47TBgirAP05HtQzqRwC2FA5kk01d3B5gozWKxg=
+						<ds:DigestValue>D6f2NXDHygks6Vg+9M/tXWixHmyqmeSdJ4Xc4WwkH2I=
 						</ds:DigestValue>
 					</ds:Reference>
 					<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
-						URI="#xmldsig-fd15c04a-a2cd-4474-9b10-869b8fccce01-signedprops">
+						URI="#xmldsig-32d09f07-eea3-495c-b03d-39803e70b009-signedprops">
 						<ds:DigestMethod
 							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-						<ds:DigestValue>FNa1bkn2UMJIilj7t92FE1H0dUMh9sqqVcpjZV+3a9E=
+						<ds:DigestValue>mdzjgWIz3lfbhZ5BzHVzTL3KafBR1pvWtnKWY1KmkSQ=
 						</ds:DigestValue>
 					</ds:Reference>
 				</ds:SignedInfo>
-				<ds:SignatureValue>2RdDtUajkoqzVQ/3lHypoPiWV11wxidNG60UpnD+e5iznjTnDa0JbxudS9y6yi8HE1T/kI1D6+MGP7sREP1rRA==
+				<ds:SignatureValue>OeVIfpTY8ndRarLnwKmS+8egOo1G5aN7zKdeoImuZA3Xv7MSyHZ4UuRwX1IIdY541fxomvxMiOz6FDrSaJDnlQ==
 				</ds:SignatureValue>
 				<ds:KeyInfo>
 					<ds:X509Data>
@@ -57,11 +57,11 @@
 				</ds:KeyInfo>
 				<ds:Object>
 					<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
-						Target="#xmldsig-fd15c04a-a2cd-4474-9b10-869b8fccce01">
+						Target="#xmldsig-32d09f07-eea3-495c-b03d-39803e70b009">
 						<xades:SignedProperties
-							Id="xmldsig-fd15c04a-a2cd-4474-9b10-869b8fccce01-signedprops">
+							Id="xmldsig-32d09f07-eea3-495c-b03d-39803e70b009-signedprops">
 							<xades:SignedSignatureProperties>
-								<xades:SigningTime>2016-11-18T12:40:20.320+03:00
+								<xades:SigningTime>2016-11-21T12:56:04.939+03:00
 								</xades:SigningTime>
 								<xades:SigningCertificate>
 									<xades:Cert>
@@ -86,24 +86,61 @@
 				</ds:Object>
 			</ds:Signature>
 			<ns13:CommonResult>
-				<ns4:GUID>c6528122-ad75-4dc6-9820-8820122eb9e5</ns4:GUID>
-				<ns4:TransportGUID>f79fef78-7f50-4326-bbc0-feb7aaff07f4
+				<ns4:GUID>1278bfa0-0e31-49bc-877b-e18e7c804ecf</ns4:GUID>
+				<ns4:TransportGUID>15f6dd86-9364-4682-8499-27cc5dfc14c0
 				</ns4:TransportGUID>
-				<ns4:UniqueNumber>PHc00004</ns4:UniqueNumber>
-				<ns4:UpdateDate>2016-11-18T12:40:19.982+03:00</ns4:UpdateDate>
+				<ns4:UniqueNumber>yXE00019</ns4:UniqueNumber>
+				<ns4:UpdateDate>2016-11-21T12:56:04.871+03:00</ns4:UpdateDate>
 				<ns13:ImportHouseUO>
 					<ns13:GKNRelationshipStatus>
 						<ns13:Status>N</ns13:Status>
-						<ns13:AppartmentHouseAcceptedParameter>OKTMO</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>CulturalHeritage</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>FiasHouseGuid</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>OlsonTZ</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>UndergroundFloorCount</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>FloorCount</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>TotalSquare</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>MinFloorCount</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>State</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>UsedYear</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>OKTMO
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>CulturalHeritage
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>FiasHouseGuid
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>OlsonTZ
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>UndergroundFloorCount
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>FloorCount
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>TotalSquare
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>MinFloorCount
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>State
+						</ns13:AppartmentHouseAcceptedParameter>
+						<ns13:AppartmentHouseAcceptedParameter>UsedYear
+						</ns13:AppartmentHouseAcceptedParameter>
+					</ns13:GKNRelationshipStatus>
+					<ns13:EGRPRelationshipStatus />
+				</ns13:ImportHouseUO>
+			</ns13:CommonResult>
+			<ns13:CommonResult>
+				<ns4:GUID>de1afc8b-f52a-4c93-a600-1964760bd4a3</ns4:GUID>
+				<ns4:TransportGUID>9b02b8db-8fca-4993-b6fc-0f3a25f1e027
+				</ns4:TransportGUID>
+				<ns4:UpdateDate>2016-11-21T12:56:04.885+03:00</ns4:UpdateDate>
+			</ns13:CommonResult>
+			<ns13:CommonResult>
+				<ns4:GUID>bdc7ff71-0683-494a-8860-c25610ee1d22</ns4:GUID>
+				<ns4:TransportGUID>2ee4738d-74e4-4367-83ab-c3586aa9313c
+				</ns4:TransportGUID>
+				<ns4:UniqueNumber>9yXE0001900002</ns4:UniqueNumber>
+				<ns4:UpdateDate>2016-11-21T12:56:04.922+03:00</ns4:UpdateDate>
+				<ns13:ImportHouseUO>
+					<ns13:GKNRelationshipStatus>
+						<ns13:Status>N</ns13:Status>
+						<ns13:ResidentialPremiseAcceptedParameter>PremisesNum
+						</ns13:ResidentialPremiseAcceptedParameter>
+						<ns13:ResidentialPremiseAcceptedParameter>GrossArea
+						</ns13:ResidentialPremiseAcceptedParameter>
+						<ns13:ResidentialPremiseAcceptedParameter>PremisesCharacteristic
+						</ns13:ResidentialPremiseAcceptedParameter>
+						<ns13:ResidentialPremiseAcceptedParameter>TotalArea
+						</ns13:ResidentialPremiseAcceptedParameter>
 					</ns13:GKNRelationshipStatus>
 					<ns13:EGRPRelationshipStatus />
 				</ns13:ImportHouseUO>
@@ -111,3 +148,15 @@
 		</ns13:ImportResult>
 	</soap:Body>
 </soap:Envelope>
+GUID: 1278bfa0-0e31-49bc-877b-e18e7c804ecf
+Unique nomer: yXE00019
+Transport GUID: 15f6dd86-9364-4682-8499-27cc5dfc14c0
+GUID:
+de1afc8b-f52a-4c93-a600-1964760bd4a3
+Unique nomer: null
+Transport GUID:
+9b02b8db-8fca-4993-b6fc-0f3a25f1e027
+GUID:
+bdc7ff71-0683-494a-8860-c25610ee1d22
+Unique nomer: 9yXE0001900002
+Transport GUID: 2ee4738d-74e4-4367-83ab-c3586aa9313c

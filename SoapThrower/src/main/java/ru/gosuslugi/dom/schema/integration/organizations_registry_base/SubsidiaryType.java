@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -82,6 +83,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "fiasHouseGuid",
     "activityEndDate",
     "sourceName"
+})
+@XmlSeeAlso({
+    ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryResultType.OrgVersion.Subsidiary.class
 })
 public class SubsidiaryType {
 

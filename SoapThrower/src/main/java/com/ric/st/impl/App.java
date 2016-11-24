@@ -17,6 +17,7 @@ import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
 
 import com.ric.st.Configs;
 import com.ric.st.PrepImportHouses;
+import com.ric.st.PrepImportHouses2;
 import com.ric.st.prep.HouseManagementPreps;
 import com.ric.st.prep.impl.HouseManagementPrep;
 
@@ -79,11 +80,11 @@ public class App
 		System.out.println("Start");
 		
 		//создать бин сервиса SOAP
-		//PrepImportHouses2 ph = context.getBean(PrepImportHouses2.class);
-		PrepImportHouses ph = context.getBean(PrepImportHouses.class);
+		PrepImportHouses2 ph = context.getBean(PrepImportHouses2.class);
+		//PrepImportHouses ph = context.getBean(PrepImportHouses.class);
 		HouseManagementPreps hmp = new HouseManagementPrep();
 		
-		hmp.setHouseGuid("810321c3-f0b4-454a-9a1c-cad82adebd58");
+		hmp.setHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
 		hmp.setFloorCount("3");
 		hmp.setCultHerit(false);
 		hmp.setOktmo("32607441101");
@@ -95,8 +96,9 @@ public class App
 		hmp.setMinFloorCount(2);
 		
 		ph.setHm(hmp);
-		ph.importHouseUpd();
-		//ph.importHouseResidentialPremisesCreate();
+		//ph.importHouseUpd();
+		ph.importHouseResidentialPremisesCreate();
+		//ph.importHouseEntranceCreate();
 		//вернуло:
 		/*
 		</soap:Envelope>GUID: c6528122-ad75-4dc6-9820-8820122eb9e5

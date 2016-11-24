@@ -22,7 +22,10 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *   &lt;complexContent>
  *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}PremisesBasicUOType">
  *       &lt;sequence>
- *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceNum"/>
+ *         &lt;choice>
+ *           &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceNum"/>
+ *           &lt;element name="HasNoEntrance" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;/choice>
  *         &lt;element name="PremisesCharacteristic" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef"/>
  *         &lt;element name="TotalArea" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}PremisesAreaType"/>
  *         &lt;element name="GrossArea" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}PremisesAreaType"/>
@@ -37,6 +40,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResidentialPremisesUOType", propOrder = {
     "entranceNum",
+    "hasNoEntrance",
     "premisesCharacteristic",
     "totalArea",
     "grossArea"
@@ -48,8 +52,10 @@ public class ResidentialPremisesUOType
     extends PremisesBasicUOType
 {
 
-    @XmlElement(name = "EntranceNum", required = true)
+    @XmlElement(name = "EntranceNum")
     protected String entranceNum;
+    @XmlElement(name = "HasNoEntrance")
+    protected Boolean hasNoEntrance;
     @XmlElement(name = "PremisesCharacteristic", required = true)
     protected NsiRef premisesCharacteristic;
     @XmlElement(name = "TotalArea", required = true)
@@ -79,6 +85,30 @@ public class ResidentialPremisesUOType
      */
     public void setEntranceNum(String value) {
         this.entranceNum = value;
+    }
+
+    /**
+     * Gets the value of the hasNoEntrance property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isHasNoEntrance() {
+        return hasNoEntrance;
+    }
+
+    /**
+     * Sets the value of the hasNoEntrance property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setHasNoEntrance(Boolean value) {
+        this.hasNoEntrance = value;
     }
 
     /**

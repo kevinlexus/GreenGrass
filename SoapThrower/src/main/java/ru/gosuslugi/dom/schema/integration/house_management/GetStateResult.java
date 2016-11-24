@@ -33,8 +33,9 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
  *         &lt;element name="exportAccountResult" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}exportAccountResultType" maxOccurs="unbounded"/>
  *         &lt;element name="exportVotingProtocolResult" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}exportVotingProtocolResultType" maxOccurs="unbounded"/>
  *         &lt;element name="exportSupplyResourceContractResult" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}exportSupplyResourceContractResultType" maxOccurs="unbounded"/>
+ *         &lt;element name="exportAccountIndividualServicesResult" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}exportAccountIndividualServicesResultType" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/choice>
- *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="10.0.1.1""/>
+ *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="11.0.0.1""/>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -53,7 +54,8 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
     "exportStatusPublicPropertyContractResult",
     "exportAccountResult",
     "exportVotingProtocolResult",
-    "exportSupplyResourceContractResult"
+    "exportSupplyResourceContractResult",
+    "exportAccountIndividualServicesResult"
 })
 @XmlRootElement(name = "getStateResult")
 public class GetStateResult
@@ -72,6 +74,7 @@ public class GetStateResult
     protected List<ExportAccountResultType> exportAccountResult;
     protected List<ExportVotingProtocolResultType> exportVotingProtocolResult;
     protected List<ExportSupplyResourceContractResultType> exportSupplyResourceContractResult;
+    protected List<ExportAccountIndividualServicesResultType> exportAccountIndividualServicesResult;
     @XmlAttribute(name = "version", namespace = "http://dom.gosuslugi.ru/schema/integration/base/", required = true)
     protected String version;
 
@@ -356,6 +359,35 @@ public class GetStateResult
     }
 
     /**
+     * Gets the value of the exportAccountIndividualServicesResult property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the exportAccountIndividualServicesResult property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getExportAccountIndividualServicesResult().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ExportAccountIndividualServicesResultType }
+     * 
+     * 
+     */
+    public List<ExportAccountIndividualServicesResultType> getExportAccountIndividualServicesResult() {
+        if (exportAccountIndividualServicesResult == null) {
+            exportAccountIndividualServicesResult = new ArrayList<ExportAccountIndividualServicesResultType>();
+        }
+        return this.exportAccountIndividualServicesResult;
+    }
+
+    /**
      * Gets the value of the version property.
      * 
      * @return
@@ -365,7 +397,7 @@ public class GetStateResult
      */
     public String getVersion() {
         if (version == null) {
-            return "10.0.1.1";
+            return "11.0.0.1";
         } else {
             return version;
         }
