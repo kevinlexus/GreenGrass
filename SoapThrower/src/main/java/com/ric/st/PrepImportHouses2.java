@@ -69,4 +69,17 @@ public interface PrepImportHouses2 {
 	 * @throws Exception
 	 */
 	public String ExportHouseData(String houseGUID,String pUn,String nPun) throws Exception; 
+	/**
+	 * Получение списка справочников
+	 * @throws Exception
+	 * TypeList = (NSI,NSIRAW)
+	 */
+	public void ExportNsiList(String TypeList) throws Exception;
+	/**
+	 * Получение справочника
+	 * @throws Exception
+	 * TypeList = (NSI,NSIRAO)
+	 * TypeItem - код справочника
+	 */
+	public void ExportNsiItem(String TypeList,String TypeItem) throws Exception;
 }

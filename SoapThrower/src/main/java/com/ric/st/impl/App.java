@@ -78,26 +78,29 @@ public class App
 		//Throwers thrMng = context.getBean(ThrowerMng.class);
 		//thrMng.exportAccountData();
 		System.out.println("Start");
+
+		ActionController ac = context.getBean(ActionController.class);
+		ac.searchActions();
 		
 		//создать бин сервиса SOAP
-		PrepImportHouses2 ph = context.getBean(PrepImportHouses2.class);
-		//PrepImportHouses ph = context.getBean(PrepImportHouses.class);
-		HouseManagementPreps hmp = new HouseManagementPrep();
-		
-		hmp.setHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
-		hmp.setFloorCount("3");
-		hmp.setCultHerit(false);
-		hmp.setOktmo("32607441101");
-		hmp.setState("Исправный");
-		hmp.setTotalSquare(3333d);
-		hmp.setUsedYear(1972);
-		hmp.setUnderFloorCount("2");
-		hmp.setNoRSOGKNEGRP(true);
-		hmp.setMinFloorCount(2);
-		
-		ph.setHm(hmp);
-		//ph.importHouseUpd();
-		ph.importHouseResidentialPremisesCreate();
+//		PrepImportHouses2 ph = context.getBean(PrepImportHouses2.class);
+//		//PrepImportHouses ph = context.getBean(PrepImportHouses.class);
+//		HouseManagementPreps hmp = new HouseManagementPrep();
+//		
+//		hmp.setHouseGuid("7de1d6c3-c7fd-4da6-95a2-40cb97e8201a");
+//		hmp.setFloorCount("3");
+//		hmp.setCultHerit(false);
+//		hmp.setOktmo("32607441101");
+//		hmp.setState("Исправный");
+//		hmp.setTotalSquare(3333d);
+//		hmp.setUsedYear(1972);
+//		hmp.setUnderFloorCount("2");
+//		hmp.setNoRSOGKNEGRP(true);
+//		hmp.setMinFloorCount(2);
+//		
+//		ph.setHm(hmp);
+//		//ph.importHouseUpd();
+//		ph.importHouseResidentialPremisesCreate();
 		//ph.importHouseEntranceCreate();
 		//вернуло:
 		/*

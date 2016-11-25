@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import ru.gosuslugi.dom.schema.integration.base.OKTMORefType;
 import ru.gosuslugi.dom.schema.integration.house_management.AccountIndType;
 import ru.gosuslugi.dom.schema.integration.house_management.ApartmentHouseUOType;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportHouseRequest;
@@ -47,7 +46,19 @@ import ru.gosuslugi.dom.schema.integration.house_management.ImportResult.CommonR
 import ru.gosuslugi.dom.schema.integration.house_management.MeteringDeviceBasicCharacteristicsType.ResidentialPremiseDevice;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementPortsType;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementService;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementBooleanFieldType;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementNsiFieldType;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementStringFieldType;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiItemInfoType;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiListType;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemRequest;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListResult;
+import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiPortsType;
+import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiService;
 
 import com.ric.bill.Utl;
 import com.ric.st.PrepImportHouses2;
@@ -56,7 +67,7 @@ import com.ric.st.prep.HouseManagementPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Service
-public class PrepImportHouse2 implements PrepImportHouses2 {
+public class HouseManagementBindingPrep implements PrepImportHouses2 {
 
 	@Autowired
 	private ApplicationContext ctx;
@@ -72,13 +83,16 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	private SoapPreps sp;
 	private ImportHouseUORequest req;
 	private ApartmentHouse ah;
+	private EntranceToUpdate etu;
+
+	private NsiService service_nsi;
+	private NsiPortsType port_nsi;
 	
 	@PostConstruct
 	public void init() throws Exception {
-		// создать сервис и порт
+    	// создать сервис и порт
     	service = new HouseManagementService();
     	port = service.getHouseManagementPort();
-
     	// подготовительный объект
     	sp = new SoapPrep(port, (BindingProvider) port, (WSBindingProvider) port);
   
@@ -100,12 +114,11 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	 */
 	private ImportResult getImpResult (ImportHouseUORequest req) throws Exception {
     	// Исправлять классы под соответствующий запрос!
-    	return (ImportResult) sp.sendSOAP(   // исправить
+		return (ImportResult) sp.sendSOAP(   // исправить
     			req, 
     			"importHouseUOData", 		// исправить
     			new ImportResult(),	 		// исправить
-    			config.getBscLogin(), config.getBscPass(),
-    			config.getFingerPrint());
+    			config.getBscLogin(), config.getBscPass()); 
 	}
 
 	public HouseManagementPreps getHm() {
@@ -128,8 +141,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	 * @throws Exception
 	 */
 	private void prepApartmentHouseUpd() {
-    	ah = new ApartmentHouse();    	
-
+   	
     	ApartmentHouseToUpdate ac = new ApartmentHouseToUpdate();
     	HouseBasicUpdateUOType bc = new HouseBasicUpdateUOType();
        	bc.setFIASHouseGuid(hm.getHouseGuid());
@@ -158,7 +170,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	 * @throws Exception
 	 */
 	private void prepApartmentHouseCrt() {
-    	ah = new ApartmentHouse();    	
+   	
     	ApartmentHouseToCreate ac = new ApartmentHouseToCreate();
     	ApartmentHouseUOType.BasicCharacteristicts bc = new ApartmentHouseUOType.BasicCharacteristicts();
        	bc.setFIASHouseGuid(hm.getHouseGuid());
@@ -168,12 +180,6 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
     	bc.setOlsonTZ(config.getTz());
     	bc.setFloorCount(hm.getFloorCount());
     	bc.setNoRSOGKNEGRPRegistered(hm.getNoRSOGKNEGRP());
-    	
-    	OKTMORefType oktmo = new OKTMORefType();  
-    	oktmo.setCode(hm.getOktmo());
-    	oktmo.setName(hm.getOktmo());
-    	bc.setOKTMO(oktmo);
-
     	NsiRef ns = new NsiRef();
     	ns.setName(hm.getState()); //TODO! переделать на поиск!
     	ns.setCode("2");
@@ -212,31 +218,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	public void importHouseApartmentHouseCreate() throws Exception{
 	   	
     	prepApartmentHouseCrt();
-    	ApartmentHouseToCreate ac = new ApartmentHouseToCreate();
-    	ApartmentHouseUOType.BasicCharacteristicts bc = new ApartmentHouseUOType.BasicCharacteristicts();
-    	bc.setFIASHouseGuid(hm.getHouseGuid());
-    	bc.setTotalSquare(BigDecimal.valueOf(hm.getTotalSquare()));
-    	bc.setUsedYear(BigDecimal.valueOf(hm.getUsedYear()).shortValue());
-    	bc.setCulturalHeritage(hm.getCultHerit());
-    	bc.setOlsonTZ(config.getTz());
-    	bc.setFloorCount(hm.getFloorCount());
-    	bc.setNoRSOGKNEGRPRegistered(hm.getNoRSOGKNEGRP());
-    	NsiRef ns = new NsiRef();
-    	ns.setName(hm.getState()); //TODO! переделать на поиск!
-    	ns.setCode("2");
-    	ns.setGUID("57c4dbc5-bdd5-4490-92e1-3e687797b32a");
-    	bc.setState(ns);
-       	ac.setUndergroundFloorCount(hm.getUnderFloorCount());
-    	ac.setMinFloorCount(hm.getMinFloorCount().byteValue());
-    	ac.setTransportGUID(Utl.getRndUuid().toString());
-    	
-    	ac.setBasicCharacteristicts(bc);
-    	    	
-    	ah.setApartmentHouseToCreate(ac);
-
-    	prepReqImp();
-    	req.setApartmentHouse(ah);
-    	
+    	 	
     	// создание XML, маршаллинг
     	port.importHouseUOData(req);
     	// отправка SOAP, анмаршаллинг результата
@@ -246,17 +228,15 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 		
 	}
 	/**
-	 * Обновление подъездов
+	 * Общее Обновление подъездов
 	 * @throws Exception
 	 */
-	public void importHouseEntranceUpdate() throws Exception {
+	private void prepHouseEntranceUpd() throws Exception {
 	   		
 		prepApartmentHouseUpd();
 	   	
 	   	EntranceToUpdate etu = new EntranceToUpdate();
 		ah.getEntranceToUpdate().add(etu);
-		EntranceToCreate etc = new EntranceToCreate();
-	   	ah.getEntranceToCreate().add(etc);
 	   	//Дата постройки
 		etu.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("01.01.2015")));
 		//Номер подъезда
@@ -265,10 +245,19 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 		etu.setStoreysCount((byte)9);
 		//ID транспорт ID
 		etu.setTransportGUID(Utl.getRndUuid().toString());
-		
+		//GUID подъезда
+		etu.setEntranceGUID("");
+	}
+	/**
+	 * Обновление подъездов
+	 * @throws Exception
+	 */
+	public void importHouseEntranceUpdate() throws Exception {
+	   		
+		prepApartmentHouseUpd();
+		//prepHouseEntranceUpd();
 		prepReqImp();
     	req.setApartmentHouse(ah);
-    	
     	// создание XML, маршаллинг
     	port.importHouseUOData(req);
     	// отправка SOAP, анмаршаллинг результата
@@ -294,7 +283,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	    //Дата постройки
 		etc.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("01.01.2015")));
 		//Номер подъезда
-		etc.setEntranceNum("2");
+		etc.setEntranceNum("3");
 		//Количество этажей
 		etc.setStoreysCount((byte)5);
 		//ID транспорт ID
@@ -321,6 +310,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	public void importHouseLiftUpdate() throws Exception {
 	   		    	
 		prepApartmentHouseUpd();
+		//prepHouseEntranceUpd();
 	    LiftToUpdate ltu = new LiftToUpdate();
 	    ah.getLiftToUpdate().add(ltu);
 	    //Заводской номер
@@ -336,6 +326,8 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 		//nr.setGUID(value);
 		//ID транспорт ID
 		ltu.setTransportGUID(Utl.getRndUuid().toString());
+		//GUID лифта
+		ltu.setLiftGUID("");
 	    	
 		prepReqImp();
     	req.setApartmentHouse(ah);
@@ -358,6 +350,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	public void importHouseLiftCreate() throws Exception {
 	   		    	
 		prepApartmentHouseUpd();
+		//prepHouseEntranceUpd();
 	    LiftToCreate ltc = new LiftToCreate();
 	  	ah.getLiftToCreate().add(ltc);
 	   	//Заводской номер
@@ -394,8 +387,9 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	 * @throws Exception
 	 */
 	public void importHouseResidentialPremisesUpdate() throws Exception {
-		prepApartmentHouseUpd();
-	   	   	
+	   	    	
+		//prepHouseEntranceUpd();
+		prepApartmentHouseUpd();   	
 	   	ResidentialPremises rp = new ResidentialPremises();
 	   	ah.getResidentialPremises().add(rp);
 	   	ResidentialPremisesToUpdate rpu = new ResidentialPremisesToUpdate();
@@ -403,7 +397,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	   	//Нет кадастрового номера
 	   	rpu.setNoRSOGKNEGRPRegistered(true);
 	    //Номер помещения
-	    rpu.setPremisesNum("1а");
+	    rpu.setPremisesNum("1");
 	    //Номер подъезда
 	    rpu.setEntranceNum("1");
 	    //Общая площадь помещения
@@ -432,7 +426,8 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	    rpu.setTransportGUID(Utl.getRndUuid().toString());
 	    //Дата закрытия помещения
 	    //rpu.setTerminationDate(Utl.getXMLDate(Utl.getDateFromStr("10.01.2016")));
-	    
+	    //GUID жилого помещения
+	    rpu.setPremisesGUID("");
 	    prepReqImp();
     	req.setApartmentHouse(ah);
     	
@@ -453,45 +448,20 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	 * @throws Exception
 	 */
 	public void importHouseResidentialPremisesCreate() throws Exception {
-		prepApartmentHouseUpd();
-		//prepApartmentHouseCrt();
-		
-/*	    EntranceToCreate etc = new EntranceToCreate();
-	    ah.getEntranceToCreate().add(etc);
-	    //Дата постройки
-		etc.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("01.01.2015")));
-		//Номер подъезда
-		etc.setEntranceNum("4");
-		//Количество этажей
-		etc.setStoreysCount((byte)5);
-		//ID транспорт ID
-		etc.setTransportGUID(Utl.getRndUuid().toString());
-*/	
-		
-	   	EntranceToUpdate etu = new EntranceToUpdate();
-		ah.getEntranceToUpdate().add(etu);
-	   	//Дата постройки
-		etu.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("01.01.2015")));
-		//Номер подъезда
-		etu.setEntranceNum("4");
-		//Количество этажей
-		etu.setStoreysCount((byte)9);
-		//ID транспорт ID
-		etu.setTransportGUID(Utl.getRndUuid().toString());
-		etu.setEntranceGUID("de1afc8b-f52a-4c93-a600-1964760bd4a3");
-		
-		
+	   	    	
+		//prepHouseEntranceUpd();
+		prepApartmentHouseUpd();   	
 	   	ResidentialPremises rp = new ResidentialPremises();
 	   	ah.getResidentialPremises().add(rp);
 	    ResidentialPremisesToCreate rptc = new ResidentialPremisesToCreate();
 	    rp.setResidentialPremisesToCreate(rptc);
-	    // Нет кадастрового номера
+	    //Нет кадастрового номера
 		rptc.setNoRSOGKNEGRPRegistered(true);
-		// Номер помещения
-		rptc.setPremisesNum("2А");
-		// Номер подъезда
-		rptc.setEntranceNum("4");
-		// Общая площадь помещения
+		//Номер помещения
+		rptc.setPremisesNum("1а");
+		//Номер подъезда
+		rptc.setEntranceNum("1");
+		//Общая площадь помещения
 		rptc.setTotalArea(BigDecimal.valueOf(101));
 		//
 		rptc.setGrossArea(BigDecimal.valueOf(101));
@@ -508,10 +478,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 		//nr.setGUID("35b515c6-5b2a-48c8-94e7-5745b0406635");
 		rptc.setPremisesCharacteristic(nr);
 		//ID транспорт ID
-		
 		rptc.setTransportGUID(Utl.getRndUuid().toString());
-
-		System.out.println("GUID rptc="+rptc.getTransportGUID());
 		//Дата закрытия помещения
 		//rptc.setTerminationDate(Utl.getXMLDate(Utl.getDateFromStr("10.01.2016")));
 		prepReqImp();
@@ -548,7 +515,8 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	    //nrpu.setPremisesGUID("9PHc0000400001");
 	    //ID транспорт ID
 	    nrpu.setTransportGUID(Utl.getRndUuid().toString());
-	   	   	
+	    //GUID нежилого помещения 
+	    nrpu.setPremisesGUID("");
 	    prepReqImp();
     	req.setApartmentHouse(ah);
     	
@@ -688,8 +656,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
     			req, 
     			"importAccountData", 			 		// исправить
     			new ImportResult(), 			 		// исправить
-    			config.getBscLogin(), config.getBscPass(),
-    			config.getFingerPrint());
+    			config.getBscLogin(), config.getBscPass());
 
     	System.out.println("res:"+res.getCommonResult());
     }
@@ -794,8 +761,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
    	   			req, 
    	   			"ImportMeteringDeviceData", 			 		// исправить
    	   			new ImportResult(), 			 		// исправить
-   	   			config.getBscLogin(), config.getBscPass(),
-    			config.getFingerPrint());
+   	   			config.getBscLogin(), config.getBscPass());
 	   	System.out.println("res:"+res.getCommonResult());
 	    } 
 	/**
@@ -903,8 +869,7 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
    	   			req, 
    	   			"ImportMeteringDeviceData", 			 		// исправить
    	   			new ImportResult(), 			 		// исправить
-   	   			config.getBscLogin(), config.getBscPass(),
-    			config.getFingerPrint());
+   	   			config.getBscLogin(), config.getBscPass());
 	   	System.out.println("res:"+res.getCommonResult());
 	    }  
 	/**
@@ -929,28 +894,31 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 	   			req, 
 	   			"ExportHouseData", 			 		// исправить
 	   			new ExportHouseResult(), 			 		// исправить
-	   			config.getBscLogin(), config.getBscPass(),
-    			config.getFingerPrint());
+	   			config.getBscLogin(), config.getBscPass());
 	   	if (pUn == null && nPun == null) { 
+	   	 System.out.println("N house_uni: "+res.getExportHouseResult().getHouseUniqueNumber());
+	   	 for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.NonResidentialPremises enp : res.getExportHouseResult().getApartmentHouse().getNonResidentialPremises()) { 
+		   	   System.out.println("	N nrp : "+enp.getPremisesNum());
+	           System.out.println("	nrp_guid: "+enp.getPremisesGUID());
+	           System.out.println("	nrp_uni: "+enp.getPremisesUniqueNumber());
+		   	  }
+	   	 for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.ResidentialPremises ep : res.getExportHouseResult().getApartmentHouse().getResidentialPremises()) { 
+		   	   System.out.println("	N rp : "+ep.getPremisesNum());
+	           System.out.println("	rp_guid: "+ep.getPremisesGUID());
+	           System.out.println("	rp_uni: "+ep.getPremisesUniqueNumber());
+		   	  }
 	   	 for (Entrance ent : res.getExportHouseResult().getApartmentHouse().getEntrance()) {
 	   	  System.out.println("N entrance: "+ent.getEntranceNum());
 	   	  System.out.println("N entrance GUID: "+ent.getEntranceGUID());
-/*	   	  for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises ep : ent.getResidentialPremises()) { 
-	   	   System.out.println("	N p : "+ep.getPremisesNum());
-           System.out.println("	p_guid: "+ep.getPremisesGUID());
-           System.out.println("	p_uni: "+ep.getPremisesUniqueNumber());
-	   	  }
-*/	   	 }
+	   	 }
 	   	return " ";
 	   	};
 	   	if (pUn != null) {
-	   	 for (Entrance ent : res.getExportHouseResult().getApartmentHouse().getEntrance()) {
-/*	   	  for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.Entrance.ResidentialPremises epr : ent.getResidentialPremises()) { 
+	   	 for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.ResidentialPremises epr : res.getExportHouseResult().getApartmentHouse().getResidentialPremises()) { 
 	   	   if (epr.getPremisesNum() == pUn){
 	   		 lret = epr.getPremisesGUID().toString();
 	   	   }
-	   	  }
-*/	   	 }
+	   	 }
 	   	};
 	   	if (nPun != null) {
 		 for (NonResidentialPremises nrpr : res.getExportHouseResult().getApartmentHouse().getNonResidentialPremises()) {
@@ -960,5 +928,91 @@ public class PrepImportHouse2 implements PrepImportHouses2 {
 		 }
 	   	}
 	   return lret;
+	}
+	/**
+	 * Получение списка справочников
+	 * @throws Exception
+	 * TypeList = (NSI,NSIBASE)
+	 */
+	public void ExportNsiList(String TypeList) throws Exception { 
+	   	TypeList ="NSI";	    	
+	   	ExportNsiListRequest req = new ExportNsiListRequest();
+	    req.setListGroup(TypeList);
+	    // создать сервис и порт
+    	service_nsi = new NsiService();
+    	port_nsi = service_nsi.getNsiPort();
+    	// подготовительный объект
+    	sp = new SoapPrep(port_nsi, (BindingProvider) port_nsi, (WSBindingProvider) port_nsi);
+  
+    	// подписывать XML?
+    	sp.setSignXML(false);
+    	// заменить Endpoint, если надо 
+    	if (config.isSrvTest()) {
+    		sp.changeHost(config.getSrvTestHost());
+    	};
+    	// создать и подготовить заголовок запроса
+    	sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid(), true);
+	   	port_nsi.exportNsiList(req);
+	   	// отправка SOAP, анмаршаллинг результата
+	   	// Исправлять классы под соответствующий запрос!
+	   	ExportNsiListResult res = (ExportNsiListResult) sp.sendSOAP(  // исправить
+	   			req, 
+	   			"ExportNsiList", 			 		// исправить
+	   			new ExportNsiListResult(), 			 		// исправить
+	   			config.getBscLogin(), config.getBscPass());
+	   	for (NsiItemInfoType nli : res.getNsiList().getNsiItemInfo()) {
+	   		 System.out.println("Name_registry:"+nli.getName());	
+	   		 System.out.println("Num registry:"+nli.getRegistryNumber());
+	   		 System.out.println("Data_modify:"+nli.getModified());
+			  }
+	   	System.out.println("res:"+res.getNsiList());
+	   
+	}
+	/**
+	 * Получение справочника
+	 * @throws Exception
+	 * TypeList = (NSI,NSIBASE)
+	 * TypeItem - код справочника
+	 */
+	public void ExportNsiItem(String TypeList,String TypeItem) throws Exception {
+		TypeList = "NSI";
+	   	TypeItem ="30";	    	
+	   	ExportNsiItemRequest req = new ExportNsiItemRequest();
+	    req.setListGroup(TypeList);;
+	    // создать сервис и порт
+    	service_nsi = new NsiService();
+    	port_nsi = service_nsi.getNsiPort();
+    	// подготовительный объект
+    	sp = new SoapPrep(port_nsi, (BindingProvider) port_nsi, (WSBindingProvider) port_nsi);
+  
+    	// подписывать XML?
+    	sp.setSignXML(false);
+    	// заменить Endpoint, если надо 
+    	if (config.isSrvTest()) {
+    		sp.changeHost(config.getSrvTestHost());
+    	};
+    	// создать и подготовить заголовок запроса
+    	sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid(), true);
+	   	port_nsi.exportNsiItem(req);
+	   	// отправка SOAP, анмаршаллинг результата
+	   	// Исправлять классы под соответствующий запрос!
+	   	ExportNsiItemResult res = (ExportNsiItemResult) sp.sendSOAP(  // исправить
+	   			req, 
+	   			"ExportNsiList", 			 		// исправить
+	   			new ExportNsiListResult(), 			 		// исправить
+	   			config.getBscLogin(), config.getBscPass());
+	
+	   	for (NsiElementType ni : res.getNsiItem().getNsiElement()) {
+	   		 System.out.println("code:"+ni.getCode());	
+	   		 System.out.println("Guid:"+ni.getGUID());
+	   		 System.out.println("Data modify:"+ni.getModified());
+	   		 System.out.println("Data start:"+ni.getStartDate());
+	   		 System.out.println("Data end:"+ni.getEndDate());
+	   		//for (NsiElementNsiFieldType nft : ni.getNsiElementField()) {
+	   	//		
+	   		//}
+		}
+	   	System.out.println("res:"+res.getNsiItem());
+	   
 	}
 }
