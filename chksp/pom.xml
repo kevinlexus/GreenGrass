@@ -58,12 +58,12 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-		<dependency>
+<!-- 		<dependency>
 		    <groupId>org.slf4j</groupId>
 		    <artifactId>slf4j-simple</artifactId>
 		    <version>1.7.13</version>
 		</dependency>
-
+ -->
 <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
 <dependency>
     <groupId>org.bouncycastle</groupId>
