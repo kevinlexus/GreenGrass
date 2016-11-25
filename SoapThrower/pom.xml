@@ -44,12 +44,12 @@
 		    <version>4.5.2</version>
 		</dependency>
 
-
- 		<dependency>
+  		<dependency>
 			<groupId>com.ric.bill</groupId>
 			<artifactId>BillWeb</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency> 
+		
  		<dependency>
 			<groupId>checkSoap</groupId>
 			<artifactId>chksp</artifactId>
@@ -58,7 +58,7 @@
 			    <exclusion>
 			        <groupId>org.slf4j</groupId>
 			        <artifactId>slf4j-log4j12</artifactId>
-			    </exclusion>
+			    </exclusion> 
 			</exclusions> 
  -->		</dependency> 
 
@@ -185,6 +185,15 @@
 		</dependency>
 
 	</dependencies>
+
+<build>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering> 
+        </resource>
+    </resources>
+</build> 
 
 <!-- пробовал shade filter  <build>
     <plugins>
