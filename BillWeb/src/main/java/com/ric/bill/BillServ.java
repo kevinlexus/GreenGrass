@@ -22,7 +22,6 @@ import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
-import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 
 /**

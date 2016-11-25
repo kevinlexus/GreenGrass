@@ -49,63 +49,54 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
+			</dependency>
 
 		<!-- Spring and Transactions -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
+			</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
+			</dependency>
 
 		<!-- Support for Ehcache and others -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
+			</dependency>
 
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
+			</dependency>
 
 		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId> 
 			<version>5.1.0.Final</version> </dependency> -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
-			<version>1.2.2</version>
-		</dependency>
+			</dependency>
 
 		<!-- Test Artifacts -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring-framework.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- http://mvnrepository.com/artifact/org.springframework/spring-aspects -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
-			<version>4.2.6.RELEASE</version>
-		</dependency>
+			</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
 		<dependency>
@@ -177,18 +168,16 @@
 
 	<build>
 		<plugins>
-<!-- 			исключить конфигурационные файлы из jar
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-                    <excludes>
-                      <exclude>src/main/resources/*.*</exclude>
-                    </excludes>
-				</configuration>
-			</plugin>
-  -->
+<!-- 		исключить конфиг logback -  не надо, пока перенёс его в src/test/java
+ 	      <plugin> 
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <configuration>
+	          <excludes>
+	            <exclude>**/logback.xml</exclude>
+	          </excludes>
+	        </configuration>
+	      </plugin>-->
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -220,7 +209,7 @@
 					<execution>
 						<phase>package</phase>
 						<configuration>
-							<target> Это нужно, чтобы заработал windows-сервис!
+							<target> 
 								<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
 									update="true" compress="store">
 									<fileset dir="${project.build.directory}/classes"
