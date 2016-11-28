@@ -12,6 +12,8 @@ import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -43,6 +45,7 @@ import com.ric.bill.model.fn.ChrgStore;
 
 @Component
 @Scope("prototype") //собственный бин для каждого потока
+@Slf4j
 public class ChrgThr {
 	
 	@Autowired
@@ -122,9 +125,9 @@ public class ChrgThr {
 		//Объект, временно хранящий записи начисления
 		chStore = new ChrgStore(); 
 		//if (serv.getId()==32) {
-		Calc.mess("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
+		log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
 		if (serv.getId()==72) {
-			Calc.mess("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
+			log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
 		}
 		
 		//}
@@ -156,7 +159,7 @@ public class ChrgThr {
 				//Org uk = kartMng.getUk(kart, genDt);
 				
 				if (tpOwn == null) {
-					Calc.mess("ОШИБКА! Не указанна форма собственности! lsk="+kart.getLsk(), 2);
+					log.info("ОШИБКА! Не указанна форма собственности! lsk="+kart.getLsk(), 2);
 				}
 				//где лиц.счет является нежилым помещением, не начислять за данный день
 				if (tpOwn.equals("Нежилое собственное") || tpOwn.equals("Нежилое муниципальное")
@@ -212,7 +215,6 @@ public class ChrgThr {
 
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;
-        //Calc.mess("ChrThr: Поток завершён "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId(),2);
 		return new AsyncResult<Result>(res);
 	}
 
@@ -254,11 +256,6 @@ public class ChrgThr {
 		Double tmp = 0d;
 		BigDecimal cf = BigDecimal.ZERO;
 		BigDecimal tmpVolD = BigDecimal.ZERO;
-		//BigDecimal tmpSumD = BigDecimal.ZERO;
-		
-		if (serv.getId()==32) {
-			//Calc.mess(thrName+" CHECK1");
-		}
 
 		//получить необходимые услуги
 		stServ = serv.getServSt();
@@ -285,9 +282,6 @@ public class ChrgThr {
 			stPrice = 0d;
 		}
 
-		
-		//Calc.mess(thrName+" CHECK0.5="+serv.getId()+" dt="+genDt,2);	
-		
 		//получить нормативный объем
 		if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d ||
@@ -299,7 +293,6 @@ public class ChrgThr {
 			//здесь же получить расценки по свыше соц.нормы и без проживающих 
 			if (serv.getServUpst() != null) {
 				
-				//Calc.mess(thrName+" CHECK!"+kart,2 );
 				upStPrice = kartMng.getServPropByCD(calc, upStServ, "Цена", genDt);
 				if (upStPrice == null) {
 					upStPrice = 0d;
@@ -335,7 +328,6 @@ public class ChrgThr {
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-1"), 0d) == 1d ||
 				Utl.nvl(parMng.getDbl(serv, "Вариант расчета по общей площади-2"), 0d) == 1d) {
 			//получить объем одного дня
-			//Calc.mess(thrName+" CHECK4.1="+serv.getId()+" dt="+genDt,2);	
 			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
 			
 			vol = vol / config.getCntCurDays();
@@ -346,9 +338,7 @@ public class ChrgThr {
 					return;
 				} else {
 					//применить льготу по капремонту по 70 - летним
-					//Calc.mess(thrName+" CHECK4.2="+serv.getId()+" dt="+genDt,2);	
 					vol = vol * kartMng.getCapPrivs(kart, genDt);
-					//Calc.mess(thrName+" CHECK4.3="+serv.getId()+" dt="+genDt,2);	
 				}
 			}
 			
@@ -496,13 +486,10 @@ public class ChrgThr {
 			}			
 			
 		}
-		//Calc.mess(thrName+" CHECK_END="+serv.getId()+" dt="+genDt,2);	
-		
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;
 		if (totalTime >10) {
- 	      Calc.mess("ВРЕМЯ НАЧИСЛЕНИЯ по дате "+genDt.toLocaleString()+" услуге:"+totalTime);
-		  
+		  log.trace("ВРЕМЯ НАЧИСЛЕНИЯ по дате "+genDt.toLocaleString()+" услуге:"+totalTime);
 		}
 		
 	}
@@ -520,7 +507,6 @@ public class ChrgThr {
 	    	if (entry.getKey().equals(serv)) { 
 	    		tmpSum = Utl.nvl(entry.getValue(), BigDecimal.ZERO);
 	    		tmpSum = tmpSum.add(sum);
-	    		//Calc.mess("Write serv id="+serv.getId()+" val="+sum,2);
 	    	    mapServ.put(entry.getKey(), tmpSum);
 	    		return;
 	    	}

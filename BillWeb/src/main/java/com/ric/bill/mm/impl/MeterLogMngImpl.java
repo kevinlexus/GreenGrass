@@ -74,16 +74,12 @@ public class MeterLogMngImpl implements MeterLogMng {
 	@Cacheable(cacheNames="rrr1", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
 	public synchronized List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
-		//Calc.mess("getAllMetLogByServTp задано:"+serv.getCd()+" "+serv.getId()+" "+tp);
 		for (MLogs ml : mm.getMlog()) {
-			//Calc.mess("getAllMetLogByServTp НАЙДЕНО:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getCd());
 			//по типу, если указано
 			if (tp == null || ml.getTp().getCd().equals(tp)) {
-				//Calc.mess("MeterLogMngImpl.getAllMetLogByServTp "+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd()+" "+ml.getServ().getId());
 				//и услуге
 				Serv sss = ml.getServ();
 				if (ml.getServ().equals(serv)) {
-					//Calc.mess("getAllMetLogByServTp Соответствует:"+ml.getId()+" "+ ml.getName()+" "+ml.getTp().getCd());
 					lstMlg.add(ml);
 				}
 			}
@@ -144,18 +140,12 @@ public class MeterLogMngImpl implements MeterLogMng {
 	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId(), #tp, #dt1, #dt2 }")
     public synchronized SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
-		//Calc.mess("MeterLogMngImpl.getVolPeriod mLog1 "+mLog.getId());
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
 			//по всему соотв.периоду 
-    		//Calc.mess("MeterLogMngImpl.getVolPeriod mLog "+v.getMLog().getId());
-    		//Calc.mess("MeterLogMngImpl.getVolPeriod vol1 "+v.getVol1());
-    		//Calc.mess("MeterLogMngImpl.getVolPeriod cd "+v.getTp().getCd());
-
     		if (Utl.between(v.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
 				Utl.between(v.getDt2(), dt1, dt2)	
 					) {
-		        	//Calc.mess("проверка объема id="+v.getId()+" vol="+v.getVol1());
 		    		if (v.getTp().getCd().equals("Фактический объем") ){
 		    			lnkVol.addVol(v.getVol1());
 		    		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
@@ -253,22 +243,13 @@ public class MeterLogMngImpl implements MeterLogMng {
 		int i=0;
 */		
 		//удалять итератором, иначе java.util.ConcurrentModificationException
-    	//Calc.mess("MeterLogMngImpl.delNodeVol mLog.id="+mLog.getId()+", tp="+tp+" genDt="+genDt);
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
-	    	//Calc.mess("Check del1=========:"+config.getCurDt1().toLocaleString()+","+config.getCurDt2().toLocaleString());
 		    Vol vol = iterator.next();
-	    	//Calc.mess("Check del2=========:"+vol.getTp().getCd());
 		    if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН") ) {
 		    	//проверить период
-		    	//Calc.mess("Check del3=========:"+config.getCurDt1().toLocaleString()+","+config.getCurDt2().toLocaleString());
 		    	if (dt1.getTime() <= vol.getDt1().getTime() && dt2.getTime() >= vol.getDt2().getTime()) {  //здесь диапазон дат "снаружи"
-			    	//Calc.mess("MeterLogMngImpl.delNodeVol удаление объема: mLog.id="+mLog.getId()+", vol.id="+vol.getId(),2);
-
 					iterator.remove();
-				    
-					
 					//em.remove(vol); //добавил здесь удаление еще - оно не нужно!!! удаляется и так
-					
 		    	}
 			}
 		}
@@ -284,15 +265,9 @@ public class MeterLogMngImpl implements MeterLogMng {
 						 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 						 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
 							delNodeVol(g.getSrc(), tp, dt1, dt2);
-//							i++;
 				}
 			}
 		}
-
-/*		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-	    Calc.mess("ВРЕМЯ УДАЛЕНИЯ ОБЪЕМА mLog.id="+mLog.getId()+" ms="+totalTime+" итераций="+i,2);
-*/
 
 	}
 	

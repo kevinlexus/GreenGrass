@@ -3,6 +3,8 @@ package com.ric.bill.mm.impl;
 import java.util.Date;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
@@ -10,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.BillServ;
 import com.ric.bill.Calc;
 import com.ric.bill.Storable;
 import com.ric.bill.Utl;
@@ -23,6 +26,7 @@ import com.ric.bill.model.bs.Par;
 
 
 @Service
+@Slf4j
 public class ParMngImpl implements ParMng {
 
 	@Autowired
@@ -144,7 +148,7 @@ public class ParMngImpl implements ParMng {
 		Par par = getByCD(cd);
 		try {
 			for (Dw d: st.getDw()) {
-				Calc.mess("ParMngImpl.getDate="+d.getPar().getCd());
+				log.trace("ParMngImpl.getDate="+d.getPar().getCd());
 				if (d.getPar().equals(par)) {
 					if (d.getPar().getTp().equals("DT")) {
 						if (d.getPar().getDataTp().equals("SI")) {

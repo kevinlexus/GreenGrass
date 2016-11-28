@@ -44,25 +44,13 @@ public class TarifMngImpl implements TarifMng {
 	public /*synchronized*/ Double getProp(TarifContains tc, Serv serv, String cd, Date genDt) {
 		//Prop prop = getPropByCD(cd);//так и не понял, как быстрее, искать тариф предварительно getPropByCD, или непосредственно через.getCd()
 		//искать сперва по наборам тарифа объекта 
-		//Calc.mess("getProp Looking for serv="+serv.getCd(),2);
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//по соотв.периоду
 			//if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
-					//Calc.mess("getProp serv="+t.getServ().getCd(),2);
-					//Calc.mess("getProp prop="+t.getProp().getCd(),2);
-					//Calc.mess("getProp n1="+t.getN1(),2);
 					
 					if (Utl.between(genDt, t.getDt1(), k.getDt2())) {
-						/*if (t.getServ().equals(serv)) {
-							Calc.mess("getProp 1",2);
-						}
-						
-						if (t.getProp().getCd().equals(cd)) {
-							Calc.mess("getProp 2",2);
-						}
-*/
 						if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
 							return t.getN1();
 						}

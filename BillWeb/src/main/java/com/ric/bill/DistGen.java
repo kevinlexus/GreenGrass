@@ -161,14 +161,9 @@ public class DistGen {
 		calc.setKart(kart); 
 
 		if (!ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
-			Calc.mess("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
+			log.trace("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
 		}
 
-		//if (ml.getId()==7521) {
-		//	Calc.mess("Найден счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
-		//}
-
-		
 		String mLogTp = ml.getTp().getCd(); //тип лог счетчика
 		Serv servChrg = ml.getServ().getServChrg(); //получить основную услугу, для начисления
 		if (servChrg == null) {
@@ -196,7 +191,6 @@ public class DistGen {
 				}
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
-				//Calc.mess("before:");
 				vl = kartMng.getStandart(calc, ml.getServ(), null, genDt).partVol;
 			}
 				
@@ -238,17 +232,16 @@ public class DistGen {
 			if (lnkODPU == null) {
 				// не найден счетчик (лог.счетчик должен быть обязательно, а физ.сч. к нему привязанных, может и не быть!)
 			    //переделал из ошибки в Warning:
-				//Calc.mess("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(),2);
-				calc.mess("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(), 2);
+				log.info("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(), 2);
 				return null;
 			} else {
 				lnkODPUVol = metMng.getVolPeriod(lnkODPU, tp, config.getCurDt1(), config.getCurDt2());
 			}
 
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
-	    	Calc.mess("check id="+lnkLODN.getId());
+			log.trace("check id="+lnkLODN.getId());
 			lnkODNVol = metMng.getVolPeriod(lnkLODN, tp, config.getCurDt1(), config.getCurDt2());
-			Calc.mess("объем по ЛОДН id="+lnkLODN.getId()+" vol="+lnkODNVol.getVol()+" pers="+lnkODNVol.getPers()+" area="+lnkODNVol.getArea());
+			log.trace("объем по ЛОДН id="+lnkLODN.getId()+" vol="+lnkODNVol.getVol()+" pers="+lnkODNVol.getPers()+" area="+lnkODNVol.getArea());
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
 			SumNodeVol sumVol = metMng.getVolPeriod(ml, tp, config.getCurDt1(), config.getCurDt2());
 			
@@ -274,7 +267,7 @@ public class DistGen {
 					//получить основную услугу
 					Serv mainServ = servMng.findMain(servChrg);
 					//получить счетчик основной услуги
-					Calc.mess("check serv="+mainServ.getServMet().getId());
+					log.trace("check serv="+mainServ.getServMet().getId());
 					double tmpVol=0d;
 					SumNodeVol sumMainVol;
 					List<MLogs> lstMain = metMng.getAllMetLogByServTp(kart, mainServ.getServMet(), null);
@@ -315,8 +308,8 @@ public class DistGen {
 			
 		} else if (tp==3 && mLogTp.equals("Лсчетчик")) {
 			if (ml.getId()==12945 || ml.getId()==17138){
-				Calc.mess("CHECK: tp="+tp,2);
-				Calc.mess("CHECK: calc.getCalcTp="+calc.getCalcTp(),2);
+				log.info("CHECK: tp="+tp,2);
+				log.info("CHECK: calc.getCalcTp="+calc.getCalcTp(),2);
 			}
 			//по расчетной связи пропорц.площади (Отопление например)
 			MLogs lnkLODN = null;
@@ -327,7 +320,7 @@ public class DistGen {
 		        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+ml.getId());  
 			}
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
-	    	Calc.mess("check id="+lnkLODN.getId());
+			log.trace("check id="+lnkLODN.getId());
 			SumNodeVol lnkODNVol = metMng.getVolPeriod(lnkLODN, tp, genDt, genDt);
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
 			SumNodeVol sumVol = metMng.getVolPeriod(ml, tp, genDt, genDt);
@@ -348,13 +341,12 @@ public class DistGen {
 		nv.addVol(vl);
 		
 		if (ml.getId()==3661161/* && tp==0*/) {
-			Calc.mess("stop");
+			log.trace("stop");
 		}
 		
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
-		//Calc.mess("Найдено входящих направлений ="+mLog.getDst().size());
 		if (ml.getInside().size() > 0) {
-			Calc.mess("{");
+			log.trace("{");
 		}
 		for (MeterLogGraph g : ml.getInside()) {
 			//по соотв.периоду
@@ -374,12 +366,11 @@ public class DistGen {
 			}
 		}
 		if (ml.getInside().size() > 0) {
-			Calc.mess("}");
+			log.trace("}");
 		}
 		
 		if (ml.getId()==3625218 && tp==0) {
-			Calc.mess("счетчик!");
-			//Calc.mess("Лиц счет счетчика="+ml.getKart().getLsk());
+			log.trace("счетчик!");
 		}
 
 		//после рекурсивного расчета дочерних узлов, и только по последней дате, выполнить расчет Лимита ОДН
@@ -441,14 +432,8 @@ public class DistGen {
 			//расчетная связь, расчетная связь ОДН
 			volTp = lstMng.getByCD("Фактический объем");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt);
-			
-			//saveVol(ml, vol);
 			ml.getVol().add(vol);
 			
-			//if (ml.getId()==3670885 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
-//			if (ml.getId()==3670885) {
-//				Calc.mess("записан объем по счетчику id="+ml.getId()+" по типу tp="+tp+" по дате genDt="+genDt.toLocaleString()+" vol="+vol.getVol1());
-//			}
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.getByCD("Площадь и проживающие");
@@ -458,7 +443,7 @@ public class DistGen {
 			//saveVol(ml, vol);
 
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
-				Calc.mess("записана площадь по счетчику id="+ml.getId()+" area="+nv.getPartArea()+" pers="+nv.getPartPers());
+				log.trace("записана площадь по счетчику id="+ml.getId()+" area="+nv.getPartArea()+" pers="+nv.getPartPers());
 			}
 		}
 		
@@ -482,7 +467,6 @@ public class DistGen {
 	private /*synchronized */NodeVol findLstCheck(int id, int tp, Date genDt) { //
 		for (Check c : lstCheck) {
 			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
-				  //Calc.mess("НАЙДЕНО ВХОЖДЕНИЕ id="+id+" tp="+tp+" genDt="+genDt.toLocaleString());
 				return c.getNodeVol();
 			}
 		}
@@ -497,9 +481,6 @@ public class DistGen {
 	 */
 	private void addLstCheck(int id, int tp, Date genDt, NodeVol nodeVol) {
 		  lstCheck.add(new Check(id, tp, genDt, nodeVol));
-/*		  if (id==3670885) {
-			  Calc.mess("Записано id="+id+" tp="+tp+" genDt="+genDt.toLocaleString(), 2);
-		  }*/
 	}
 
 	/**

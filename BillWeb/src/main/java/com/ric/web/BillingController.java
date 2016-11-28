@@ -54,9 +54,7 @@ public class BillingController {
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist) {
 		
-    	log.error("TEST LOG!");
-
-    	Calc.mess("BillingController.chrgLsk",2);
+    	log.info("BillingController.chrgLsk",2);
     	Future<Result> fut = null;
 		boolean isDist;
     	if (dist.equals("1")) {
@@ -100,7 +98,7 @@ public class BillingController {
     public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist, 
     					  @RequestParam(value="chrg", defaultValue="0", required=true) String chrg,
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
-    	Calc.mess("BillingController.chrgAll dist="+dist+" chrg="+chrg+" houseId="+houseId, 2);
+    	log.info("BillingController.chrgAll dist="+dist+" chrg="+chrg+" houseId="+houseId, 2);
     	Future<Result> fut = null;
 		boolean isDist, isChrg;
     	if (dist.equals("1")) {

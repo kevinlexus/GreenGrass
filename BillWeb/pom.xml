@@ -168,17 +168,6 @@
 
 	<build>
 		<plugins>
-<!-- 		исключить конфиг logback -  не надо, пока перенёс его в src/test/java
- 	      <plugin> 
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-jar-plugin</artifactId>
-	        <configuration>
-	          <excludes>
-	            <exclude>**/logback.xml</exclude>
-	          </excludes>
-	        </configuration>
-	      </plugin>-->
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -213,7 +202,12 @@
 								<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
 									update="true" compress="store">
 									<fileset dir="${project.build.directory}/classes"
-										includes="com/ric/web/Bootstrap.class" />
+										includes="com/ric/bill/*.class" /> 
+								</zip>
+								<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
+									update="true" compress="store">
+									<fileset dir="${project.build.directory}/classes"
+										includes="com/ric/web/*.class" />
 								</zip>
 							</target>
 						</configuration>

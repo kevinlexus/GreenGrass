@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationContext;
@@ -41,6 +43,7 @@ import com.ric.bill.model.mt.MLogs;
  */
 @Service
 @Scope("prototype")
+@Slf4j
 public class DistServ {
 
 	@Autowired
@@ -81,7 +84,7 @@ public class DistServ {
 	 */
 /*	private void setFilters() {
 		Session session = em.unwrap(Session.class);
-		Calc.mess("Установлен фильтр: c:"+Calc.getCurDt1()+" по:"+Calc.getCurDt2());
+		log.trace("Установлен фильтр: c:"+Calc.getCurDt1()+" по:"+Calc.getCurDt2());
 		session.enableFilter("FILTER_GEN_DT_OUTER").setParameter("DT1", Calc.getCurDt1())
 		   .setParameter("DT2", Calc.getCurDt2());
 		//отдельно установить фильтр существования счетчиков
@@ -101,7 +104,7 @@ public class DistServ {
 	 */
     private void delHouseVolServ() {
 
-    	Calc.mess("Удаление объемов по Дому: id="+calc.getHouse().getId()+" по услуге cd="+calc.getServ().getCd(), 2);
+    	log.info("Удаление объемов по Дому: id="+calc.getHouse().getId()+" по услуге cd="+calc.getServ().getCd(), 2);
 
 		delHouseServVolTp(calc.getServ().getServMet(), 1);
 		delHouseServVolTp(calc.getServ().getServMet(), 0);
@@ -134,8 +137,6 @@ public class DistServ {
 
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-			//Calc.mess("ПРОВЕРКА, УБРАТЬ1! " +ml.getInside().size(),2);
-			//Calc.mess("ПРОВЕРКА, УБРАТЬ2! " +ml.getOutside().size(),2);
 			metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2());
 		}
 		
@@ -191,16 +192,16 @@ public class DistServ {
 
 		//найти все необходимые услуги для удаления объемов, здесь только по типу 0 и только те услуги, которые надо удалить для ЛС 
 		for (Serv serv : servMng.findForDistVolForKart()) {
-				Calc.mess("Удаление объема по услуге"+serv.getCd());
+				log.trace("Удаление объема по услуге"+serv.getCd());
 				delKartServVolTp(kart, serv, 0);
 		}
 		
-		Calc.mess("Распределение объемов");
+		log.trace("Распределение объемов");
 		//найти все необходимые услуги для распределения
 		 
 		 try {
 			for (Serv serv : servMng.findForDistVol()) {
-				Calc.mess("Распределение услуги: "+serv.getCd());
+				log.trace("Распределение услуги: "+serv.getCd());
 				  distKartServTp(kart, serv);
 			}
 		} catch (ErrorWhileDist e) {
@@ -217,7 +218,7 @@ public class DistServ {
 	 * @param tp - тип расчета
 	 */
 	private void delKartServVolTp(Kart kart, Serv serv, int tp) {
-		Calc.mess("delKartServVolTp: kart.lsk="+kart.getLsk()+", serv.cd="+serv.getCd()+" tp="+tp);
+		log.trace("delKartServVolTp: kart.lsk="+kart.getLsk()+", serv.cd="+serv.getCd()+" tp="+tp);
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
@@ -269,17 +270,8 @@ public class DistServ {
 		//установить инициализацию дома
     	//установить дом и счет
 		calc.setHouse(h);
-		/*Calc.mess("Дом: 1============================================================",2);
-		h = em.find(House.class, 1737);
-		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
-		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));
-
-		Calc.mess("Дом: 2============================================================",2);
-		h = em.find(House.class, 1744);
-		//System.out.println("Парам="+parMng.getDbl(h, "Площадь.Жилая", Calc.getCurDt1()));
-		Calc.mess("Парам="+parMng.getDbl(h, "RRR-CHECK", Calc.getCurDt1()));*/
 		
-		Calc.mess("DistServ.distHouseVol: Очистка объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
+		log.info("DistServ.distHouseVol: Очистка объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
 		//почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
@@ -289,16 +281,12 @@ public class DistServ {
 				delHouseVolServ();
 		}
 
-		//if (1==1) {
-		//	return;
-		//}
-		
-		Calc.mess("DistServ.distHouseVol: Распределение объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
+		log.info("DistServ.distHouseVol: Распределение объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
 		//найти все необходимые услуги для распределения
 		try {
 			for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
-				Calc.mess("DistServ.distHouseVol: Распределение услуги: "+s.getCd(),2);
+				log.info("DistServ.distHouseVol: Распределение услуги: "+s.getCd(),2);
 				  distHouseServ();
 			}
 		} catch (ErrorWhileDist e) {
@@ -317,7 +305,7 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	private void distHouseServ() throws ErrorWhileDist {
-		Calc.mess("******************Услуга*************="+calc.getServ().getCd());
+		log.trace("******************Услуга*************="+calc.getServ().getCd());
 		calc.setCalcTp(1);
 		distHouseServTp(calc.getServ().getServMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);
@@ -338,10 +326,10 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	private void distHouseServTp(Serv serv) throws ErrorWhileDist {
-		Calc.mess("Распределение по типу:"+calc.getCalcTp());
+		log.trace("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-				Calc.mess("Вызов distGraph c id="+ml.getId());
+				log.trace("Вызов distGraph c id="+ml.getId());
 				distGraph(ml);
 		}
 	}
@@ -352,7 +340,7 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	private void distGraph (MLogs ml) throws ErrorWhileDist {
-		Calc.mess("DistServ.distGraph: Распределение счетчика:"+ml.getId());
+		log.trace("DistServ.distGraph: Распределение счетчика:"+ml.getId());
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
@@ -369,13 +357,10 @@ public class DistServ {
 		
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			calc.setGenDt(c.getTime());
-			//Calc.beginTimer();
-			//Calc.mess("по дате="+Calc.getGenDt(), 2);
 			@SuppressWarnings("unused")
 			NodeVol dummy;
 			try {
 				dummy=distGen.distNode(calc, ml, calc.getCalcTp(), calc.getGenDt());
-				
 				
 			} catch (WrongGetMethod e) {
 				e.printStackTrace();

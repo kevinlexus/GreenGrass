@@ -173,27 +173,7 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	public Result chrgLsk(Calc calc) throws ErrorWhileChrg {
-		/*Set<Control> ctrlSet = new HashSet();
-		Control a=new Control(11,11);
-		Control b=new Control(11,11);
-		ctrlSet.add(a);	
-	    ctrlSet.add(b);	
-	    
-		if (ctrlSet.contains(b)) {
-			Calc.mess("Eq", 2);
-			Calc.mess(Integer.toString(a.hashCode()), 2);
-			Calc.mess(Integer.toString(b.hashCode()), 2);
-			Calc.mess("Size"+ctrlSet.size(), 2);
-			
-		} else {
-			Calc.mess("Not Eq", 2);
-			Calc.mess(Integer.toString(a.hashCode()), 2);
-			Calc.mess(Integer.toString(b.hashCode()), 2);
-			Calc.mess("Size"+ctrlSet.size(), 2);
-			
-		}*/
-		  
-		Calc.mess("ChrgServ.chrgLsk Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk(), 2);
+		log.info("ChrgServ.chrgLsk Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk(), 2);
 		Result res = new Result();
 		res.err=0;
 		//if (1==1) {
@@ -218,10 +198,10 @@ public class ChrgServ {
 		errThread=false;
 
 		for (Serv serv: servThr) {
-			Calc.mess("ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
+			log.trace("ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
 		}
 		while (true) {
-			Calc.mess("ChrgServ: Loading servs for threads");
+			log.trace("ChrgServ: Loading servs for threads");
 			//получить следующие N услуг, рассчитать их в потоке
 			List<Serv> servWork = getNextServ(10);
 			if (servWork.isEmpty()) {
@@ -237,21 +217,19 @@ public class ChrgServ {
  					chrgThr.set(calc, serv, mapServ, mapVrt, prepChrg);
 			    	fut = chrgThr.run1();
 			    	frl.add(fut);
-					Calc.mess("ChrgServ: Begins "+serv.getCd());
+			    	log.trace("ChrgServ: Begins "+serv.getCd());
 
 			}
 			
 			//проверить окончание всех потоков
 		    int flag2 = 0;
 			while (flag2==0) {
-				//Calc.mess("ChrgServ: ========================================== Waiting for threads-1");
 				flag2=1;
 				for (Future<Result> fut : frl) {
 					if (!fut.isDone()) {
 						flag2=0;
 					} else {
 						try {
-							//Calc.mess("ChrgServ: Done Result.err:="+fut.get().err);
 							if (fut.get().err==1) {
 								errThread=true;
 							}
@@ -276,11 +254,9 @@ public class ChrgServ {
 		
 		
 		
-		//Calc.mess("*******************ALL THREADS FINISHED!********************", 2);
-
 		//если была ошибка в потоке - приостановить выполнение, выйти
 		if (errThread) {
-			Calc.mess("ChrgServ.chrgLsk: Error in thread, exiting!", 2);
+			log.info("ChrgServ.chrgLsk: Error in thread, exiting!", 2);
 			res.err=1;
 			return res;
 		}
@@ -299,9 +275,6 @@ public class ChrgServ {
 						boolean flag = false; //флаг, чтобы больше не корректировать, если уже раз найдено
 						for (Chrg chrg : prepChrg) {
 							if (!flag && chrg.getStatus() == 1 && chrg.getServ().equals(servRound)) {
-								/*if (kart.getLsk().equals("26074227")) {
-									Calc.mess("Коррекция услуги="+chrg.getServ().getId()+" на сумму="+diff,2);
-								}*/
 								flag = true;
 								chrg.setSumAmnt(BigDecimal.valueOf(chrg.getSumAmnt()).add(diff).doubleValue()) ;
 								chrg.setSumFull(BigDecimal.valueOf(chrg.getSumFull()).add(diff).doubleValue()) ;
@@ -328,7 +301,6 @@ public class ChrgServ {
 	    //коллекция для сумм по укрупнённым услугам, для нового начисления 
 	    MultiKeyMap mapDeb = new MultiKeyMap();
 
-	    //Calc.mess("CHECK9",2);	
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
 		
 		//ДЕЛЬТА
@@ -345,19 +317,13 @@ public class ChrgServ {
 			    e.printStackTrace();
 				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 			}
-			//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
-			//Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 			//Сохранить сумму по укрупнённой услуге, для расчета дельты для debt
-			//if (lsk.equals("14024244")) {
-			//	  Calc.mess("Сохранить дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(chrg.getSumAmnt()),2);
-			//	}
 			putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(chrg.getSumAmnt()));
 		}
 
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
-			//Calc.mess("CHECK status="+chrg.getStatus()+"period="+chrg.getPeriod(), 2);
 			if (chrg.getStatus()==1 && chrg.getPeriod().equals(config.getPeriod())) {
 				Serv servMain = null;
 				try {
@@ -369,12 +335,7 @@ public class ChrgServ {
 					//servMain = chrg.getServ();
 					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 				}
-				//получить организацию из текущей сессии, по ID, так как орг. из запроса будет иметь другой идентификатор
-				//Org orgMain = em.find(Org.class, chrg.getOrg().getId());
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
-				//if (lsk.equals("14024244")) {
- 				//  Calc.mess("Вычесть дельту: Lsk="+lsk+", servDet="+chrg.getServ().getId()+", servMain="+servMain+", serv="+servMain.getId()+" org="+chrg.getOrg().getId()+" sum="+BigDecimal.valueOf(-1d * chrg.getSumAmnt()),2);
-				//}
 				putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
 			}
 		}
@@ -399,20 +360,15 @@ public class ChrgServ {
 		while (it.hasNext()) {
 			it.next();
 			MultiKey mk = (MultiKey) it.getKey();
-			//Calc.mess("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
+			//log.trace("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
 			BigDecimal val = (BigDecimal)it.getValue();
 			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
 			//if (lsk.equals("14024244")) {
-			  Calc.mess("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+			  log.info("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
 			  //проверка на дубли
 			  if (ctrlSet.contains(new Control(((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId()))) {
 					throw new ErrorWhileChrg("ChrgServ.save: Found dublicate elements while sending delta");
 			  }
-				// TODO Auto-generated catch block
-				//Calc.mess("Проверка дельты1: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
-				//Calc.mess("Проверка дельты2: org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
-				//Calc.mess("Проверка дельты2: serv="+((Serv) mk.getKey(0)).getId()+" sum="+it.getValue(),2);
-			//}			  
 			  //вызвать хранимую функцию, для пересчёта долга
 			  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
 			  qr.registerStoredProcedureParameter("P_LSK", Integer.class, ParameterMode.IN);
@@ -436,11 +392,9 @@ public class ChrgServ {
 		
 		//Сохранить новое начисление (переписать из prepChrg)
 		for (Chrg chrg : prepChrg) {
-			//Calc.mess("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
+			//log.info("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
 			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
 					chrg.getVol(), chrg.getPrice(), chrg.getStdt(), chrg.getCntPers(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
-
-			log.error("Кол-во проживающих:"+ chrg.getCntPers());
 
 			kart.getChrg().add(chrg2); 
 		}

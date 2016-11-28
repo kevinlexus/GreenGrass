@@ -15,9 +15,12 @@ import javax.persistence.Query;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TemporalType;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ric.bill.BillServ;
 import com.ric.bill.Calc;
 import com.ric.bill.Config;
 import com.ric.bill.Result;
@@ -28,6 +31,7 @@ import com.ric.bill.model.ar.House;
 
 
 @Repository
+@Slf4j
 public class HouseDAOImpl implements HouseDAO {
 
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
@@ -90,7 +94,7 @@ public class HouseDAOImpl implements HouseDAO {
 			List<ResultSet> lst = q.getResultList();
 			lstHouse = new ArrayList<House>();
 			for (ResultSet rs: lst) {
-				Calc.mess("Found house id="+rs.getId(), 2);
+				log.info("Found house id="+rs.getId(), 2);
 				lstHouse.add(em.find(House.class, rs.getId()));
 			}
 		} catch (Exception e) {

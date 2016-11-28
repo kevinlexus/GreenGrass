@@ -9,6 +9,8 @@ import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationContext;
@@ -32,6 +34,7 @@ import com.ric.bill.model.ar.Kart;
 @ContextConfiguration(locations = { "classpath:spring.xml" })
 @Service
 @Scope("prototype")
+@Slf4j
 public class BillServ {
 
 	@Autowired
@@ -53,64 +56,6 @@ public class BillServ {
     public BillServ() {
 
     }
-    
-	/**
-	 * выполнить начисление по всем домам
-	 */
-/*    @Async
-    public Future<Result> chrgAll(boolean dist) {
-    	Calc.setDbgLvl(2);
-    	
-    	Result res = new Result();
-		res.err=0;
-		long startTime;
-		long endTime;
-		long totalTime;
-
-		long startTime2;
-		long endTime2;
-		long totalTime2;
-
-		startTime = System.currentTimeMillis();
-		
-	    Calc calc=new Calc();
-
-	    if (dist) {
-			 distServ.distAll();
-		}
-		
-		for (Kart kart : kartMng.findAll()) {
-			//расчитать начисление по лиц.счету
-			try {
-				startTime2 = System.currentTimeMillis();
-		    	//установить дом и счет
-				
-		    	calc.setHouse(kart.getKw().getHouse());
-		    	calc.setKart(kart);
-				
-				if (chrgServ.chrgLsk(calc) ==0){
-					//сохранить расчет
-					chrgServ.save(kart.getLsk());
-				} else {
-					//выполнилось с ошибкой
-					//ничего не предпринимать, считать дальше
-				}
-				endTime2   = System.currentTimeMillis();
-				totalTime2 = endTime2 - startTime2;
-			    Calc.mess("Time for this one lsk:"+kart.getLsk()+" ="+totalTime2,2);
-				
-			} catch (ErrorWhileChrg e) {
-				//выполнилось с ошибкой, вывести стек
-				e.printStackTrace();
-			}
-			
-		}
-
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-	    Calc.mess("Time for all process:"+totalTime,2);
-    	return new AsyncResult<Result>(res);
-	}*/
 	
 	//получить список N следующих лиц.счетов, для расчета в потоках
     private List<Kart> getNextKart(int cnt) {
@@ -151,7 +96,6 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)    
     public Future<Result> chrgAll(boolean isDist, boolean isChrg, Integer houseId) {
-    	Calc.setDbgLvl(2);
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
     	
@@ -173,7 +117,7 @@ public class BillServ {
 	    if (isDist) {
 	    	 Calc calc=new Calc();
 			 distServ.distAll(calc, houseId);
-			 Calc.mess("BillServ.chrgAll: Распределение по всем домам выполнено!", 2);
+			 log.info("BillServ.chrgAll: Распределение по всем домам выполнено!");
 		}
 	    
 	    if (isChrg) {
@@ -185,7 +129,7 @@ public class BillServ {
 		    errThread=false;
 		    
 			while (true) {
-				Calc.mess("BillServ.chrgAll: Loading karts for threads", 2);
+				log.info("BillServ.chrgAll: Loading karts for threads");
 				//получить следующие N лиц.счетов, рассчитать их в потоке
 				long startTime2;
 				long endTime2;
@@ -202,7 +146,7 @@ public class BillServ {
 	
 				for (Kart kart : kartWork) {
 	
-						Calc.mess("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
+						log.trace("BillServ.chrgAll: Prepare thread for lsk="+kart.getLsk());
 						Future<Result> fut = null;
 						ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 	
@@ -220,21 +164,21 @@ public class BillServ {
 							e.printStackTrace();
 						}
 				    	frl.add(fut);
-						Calc.mess("BillServ.chrgAll: Begins thread for lsk="+kart.getLsk());
+				    	log.trace("BillServ.chrgAll: Begins thread for lsk="+kart.getLsk());
 				}
 				
 				
 				//проверить окончание всех потоков
 			    int flag2 = 0;
 				while (flag2==0) {
-					Calc.mess("BillServ.chrgAll: ========================================== Waiting for threads-2");
+					log.trace("BillServ.chrgAll: ========================================== Waiting for threads-2");
 					flag2=1;
 					for (Future<Result> fut : frl) {
 						if (!fut.isDone()) {
 							flag2=0;
 						} else {
 							try {
-								Calc.mess("ChrgServ: Done Result.err:="+fut.get().err);
+								log.trace("ChrgServ: Done Result.err:="+fut.get().err);
 								if (fut.get().err==1) {
 									errThread=true;
 								}
@@ -257,17 +201,17 @@ public class BillServ {
 				
 				endTime2   = System.currentTimeMillis();
 				totalTime2 = endTime2 - startTime2;
-			    Calc.mess("Time for chrg One Lsk:"+totalTime2/cntThreads,2);
+				log.info("Time for chrg One Lsk:"+totalTime2/cntThreads,2);
 	
 			}
 			endTime   = System.currentTimeMillis();
 			totalTime = endTime - startTime;
 			totalTime3 = endTime - startTime3;
-		    Calc.mess("Ver=2.0",2);
-		    Calc.mess("Counted lsk:"+cntLsk,2);
-		    Calc.mess("Time for all process:"+totalTime,2);
+			log.info("Ver=2.0",2);
+			log.info("Counted lsk:"+cntLsk,2);
+			log.info("Time for all process:"+totalTime,2);
 		    if (cntLsk > 0) {
-			    Calc.mess("Time per one Lsk: "+totalTime3/cntLsk+" ms.",2);
+		    	log.info("Time per one Lsk: "+totalTime3/cntLsk+" ms.",2);
 		    }
 	    }
 	    
@@ -287,7 +231,6 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
-		Calc.setDbgLvl(2);
 		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		//ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 		DistServ distServ = ctx.getBean(DistServ.class);

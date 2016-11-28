@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,7 @@ import com.ric.bill.model.tr.TarifKlsk;
 import com.ric.bill.model.tr.TarifServProp;
 
 @Service
+@Slf4j
 public class KartMngImpl implements KartMng {
 
 	@Autowired
@@ -227,7 +230,7 @@ public class KartMngImpl implements KartMng {
 	//@Cacheable(cacheNames="rrr1")
 	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk(), #serv.getId(), #genDt }") 
 	public /*synchronized*/ Standart getStandart (Calc calc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable {
-		Calc.mess("STANDART1="+serv.getId()+" dt="+genDt);	
+		log.trace("STANDART1="+serv.getId()+" dt="+genDt);	
 		//получить услугу основную, для начисления
 		Serv servChrg = serv.getServChrg();
 		//получить услугу, по которой записывается норматив (в справочнике 
@@ -240,14 +243,14 @@ public class KartMngImpl implements KartMng {
 			//если кол-во проживающих не передано, получить его
 
 			cntPers= new CntPers();
-			Calc.mess("STANDART2="+serv.getId()+" dt="+genDt);	
+			log.trace("STANDART2="+serv.getId()+" dt="+genDt);	
 			getCntPers(calc.getKart(), servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
-			Calc.mess("STANDART3="+serv.getId()+" dt="+genDt);	
+			log.trace("STANDART3="+serv.getId()+" dt="+genDt);	
 		}
-		//Calc.mess("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
+		//log.trace("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
 		
-		Calc.mess("STANDART4="+serv.getId()+" dt="+genDt);	
-		Calc.mess("===="+Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d));
+		log.trace("STANDART4="+serv.getId()+" dt="+genDt);	
+		log.trace("===="+Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d));
 		
 		if (Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
 				|| Utl.nvl(parMng.getDbl(servChrg, "Вариант расчета по объему-2"), 0d)==1d) {
@@ -332,7 +335,7 @@ public class KartMngImpl implements KartMng {
 			st.vol = 0d;
 			st.partVol= 0d;
 		}
-		Calc.mess("STANDART_END="+serv.getId()+" dt="+genDt);	
+		log.trace("STANDART_END="+serv.getId()+" dt="+genDt);	
 		return st;
 		
 	}
@@ -347,7 +350,7 @@ public class KartMngImpl implements KartMng {
 		for (Lskxorg lxo: kart.getLskxorg()) {
 			if (Utl.between(genDt, lxo.getDt1(), lxo.getDt2())) {
 				if (lxo.getUk() == null) {
-					Calc.mess("CHEEEEEEEEEEEEK Lsk="+lxo.getLsk(), 2);
+					log.trace("CHEEEEEEEEEEEEK Lsk="+lxo.getLsk(), 2);
 				}
 				return lxo.getUk();
 			}			
@@ -433,12 +436,9 @@ public class KartMngImpl implements KartMng {
 	 * @return - обновленный список услуг
 	 */
     public /*synchronized*/ List<Serv> checkServ(TarifContains tc, List lst, String cd, int cmd) {
-		//Calc.mess("Объект:"+tc.getKlsk(), 2);
     	for (TarifKlsk k : tc.getTarifklsk()) {
-			//if (Utl.between2(config.getCurDt1(), config.getCurDt2(), k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
-					//Calc.mess("Услуга:"+t.getServ().getCd(), 2);
 					if (t.getServ().getServChrg() != null && t.getServ().getServChrg().equals(t.getServ())) {
 						//искать наличие свойства "Поставщик", оно и определяет наличие услуги
 						if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {

@@ -61,7 +61,6 @@ public class ServMngImpl implements ServMng {
 
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }")
 	public synchronized Serv getByCD(String cd) {
-		//Calc.mess("################### ПРОВЕРКА КЭША ####################",2);
 		return sDao.getByCD(cd);
 	}
 
