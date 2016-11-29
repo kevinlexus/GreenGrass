@@ -24,8 +24,6 @@ public final class Calc {
 	private Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
 	private Serv serv; //текущая услуга (распределяемая, начисляемая)
 
-	private Integer who; //кто?
-	
 
 	public Serv getServ() {
 		return this.serv;
@@ -74,14 +72,6 @@ public final class Calc {
 
 	public Date getGenDt() {
 		return this.genDt;
-	}
-
-	public Integer getWho() {
-		return who;
-	}
-
-	public void setWho(Integer who) {
-		this.who = who;
 	}
 
 }

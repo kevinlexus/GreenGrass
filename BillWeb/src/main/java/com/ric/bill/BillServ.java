@@ -152,7 +152,6 @@ public class BillServ {
 	
 					    //под каждый поток - свой Calc
 						Calc calc=new Calc();
-					    calc.setWho(2);
 	
 					    calc.setKart(kart);
 					    calc.setHouse(kart.getKw().getHouse());
@@ -248,7 +247,6 @@ public class BillServ {
 	    	}
 		}
 	    Calc calc=new Calc();
-    	calc.setWho(1);
 	    
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());

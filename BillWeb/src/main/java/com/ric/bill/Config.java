@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.excp.EmptyStorable;
@@ -21,6 +22,7 @@ import com.ric.bill.model.bs.Obj;
  *
  */
 @Service
+@Scope("prototype") //-сделал прототип 28.11.2016!!!
 public class Config {
 
 	

@@ -176,7 +176,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		SumNodeVol amntSum = new SumNodeVol();
 		
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
-		for (MeterLog mLog: mc.getMlog()) {     // <-------ТОРМОЗИТ из за обращения к house TODO
+		for (MeterLog mLog: mc.getMlog()) {
 			//по заданной услуге
 			if (mLog.getServ().equals(serv)) {
 				SumNodeVol tmp = getVolPeriod(mLog, 0, dt1, dt2);
@@ -236,12 +236,9 @@ public class MeterLogMngImpl implements MeterLogMng {
 	@Cacheable("rrr1") 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
 	public synchronized void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2) {
-/*		long startTime;
-		long endTime;
-		long totalTime;
-		startTime = System.currentTimeMillis();
-		int i=0;
-*/		
+
+		//em.detach(mLog); // отсоединить объект от базы
+		
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();

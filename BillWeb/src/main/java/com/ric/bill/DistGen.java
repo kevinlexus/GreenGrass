@@ -147,7 +147,7 @@ public class DistGen {
 		if (nv != null) { 
 			return nv; 
 		}
-		
+
 		Double partArea =0d; //текущая доля площади, по узлу
 		Double partPers =0d; //текущая доля кол-ва прожив, по узлу
 		Double vl =0d; //текущая доля объема, по узлу
@@ -338,7 +338,11 @@ public class DistGen {
 		//добавить собственные объемы
 		nv.addPartArea(partArea);
 		nv.addPartPers(partPers);
+		
 		nv.addVol(vl);
+		if (ml.getId()==168447) {
+			log.info("Счетчик id={}, объем={}", ml.getId(), vl);
+		}
 		
 		if (ml.getId()==3661161/* && tp==0*/) {
 			log.trace("stop");
