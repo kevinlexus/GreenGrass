@@ -99,7 +99,7 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 	@JoinColumn(name="FK_UK", referencedColumnName="ID", updatable = false, insertable = false)
 	private Org uk;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ")
 	@BatchSize(size = 50)
 	private List<MeterLog> mlog = new ArrayList<MeterLog>(0);
@@ -228,7 +228,129 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 	public void setKlskObj(Integer klskObj) {
 		this.klskObj = klskObj;
 	}
+	
+/*	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((chrg == null) ? 0 : chrg.hashCode());
+		result = prime * result + ((dw == null) ? 0 : dw.hashCode());
+		result = prime * result + ((fkKw == null) ? 0 : fkKw.hashCode());
+		result = prime * result + ((flsk == null) ? 0 : flsk.hashCode());
+		result = prime * result + ((klskObj == null) ? 0 : klskObj.hashCode());
+		result = prime * result + ((kw == null) ? 0 : kw.hashCode());
+		result = prime * result + ((lsk == null) ? 0 : lsk.hashCode());
+		result = prime * result + ((mlog == null) ? 0 : mlog.hashCode());
+		result = prime * result + ((reg == null) ? 0 : reg.hashCode());
+		result = prime * result
+				+ ((regState == null) ? 0 : regState.hashCode());
+		result = prime * result
+				+ ((tarifklsk == null) ? 0 : tarifklsk.hashCode());
+		result = prime * result + ((uk == null) ? 0 : uk.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Kart)) {
+			return false;
+		}
+		Kart other = (Kart) obj;
+		if (chrg == null) {
+			if (other.chrg != null) {
+				return false;
+			}
+		} else if (!chrg.equals(other.chrg)) {
+			return false;
+		}
+		if (dw == null) {
+			if (other.dw != null) {
+				return false;
+			}
+		} else if (!dw.equals(other.dw)) {
+			return false;
+		}
+		if (fkKw == null) {
+			if (other.fkKw != null) {
+				return false;
+			}
+		} else if (!fkKw.equals(other.fkKw)) {
+			return false;
+		}
+		if (flsk == null) {
+			if (other.flsk != null) {
+				return false;
+			}
+		} else if (!flsk.equals(other.flsk)) {
+			return false;
+		}
+		if (klskObj == null) {
+			if (other.klskObj != null) {
+				return false;
+			}
+		} else if (!klskObj.equals(other.klskObj)) {
+			return false;
+		}
+		if (kw == null) {
+			if (other.kw != null) {
+				return false;
+			}
+		} else if (!kw.equals(other.kw)) {
+			return false;
+		}
+		if (lsk == null) {
+			if (other.lsk != null) {
+				return false;
+			}
+		} else if (!lsk.equals(other.lsk)) {
+			return false;
+		}
+		if (mlog == null) {
+			if (other.mlog != null) {
+				return false;
+			}
+		} else if (!mlog.equals(other.mlog)) {
+			return false;
+		}
+		if (reg == null) {
+			if (other.reg != null) {
+				return false;
+			}
+		} else if (!reg.equals(other.reg)) {
+			return false;
+		}
+		if (regState == null) {
+			if (other.regState != null) {
+				return false;
+			}
+		} else if (!regState.equals(other.regState)) {
+			return false;
+		}
+		if (tarifklsk == null) {
+			if (other.tarifklsk != null) {
+				return false;
+			}
+		} else if (!tarifklsk.equals(other.tarifklsk)) {
+			return false;
+		}
+		if (uk == null) {
+			if (other.uk != null) {
+				return false;
+			}
+		} else if (!uk.equals(other.uk)) {
+			return false;
+		}
+		return true;
+	}
 
+*/
+	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof Kart))

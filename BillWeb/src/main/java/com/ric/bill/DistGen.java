@@ -154,12 +154,15 @@ public class DistGen {
 		//занулить текущие, расчетные объемы
 		nv = new NodeVol();
 		//получить лицевой счет, к которому привязан счетчик, для удобства
-		Kart kart = ml.getKart();
+		//Kart kart = ml.getKart();
 		//Kart kart = metMng.getKart(ml); <--тормозит!
-
+		Kart kart = calc.getKart();
 		//присвоить лиц.счет, чтобы использовать calc в подсчете например нормативов
-		calc.setKart(kart); 
+		//calc.setKart(kart); 
 
+		log.info("Kart 4 hash={}", ml.getKart().hashCode());
+		log.info("Kart 4 lsk={}", ml.getKart().getLsk());
+		
 		if (!ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
 			log.trace("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
 		}
@@ -340,9 +343,6 @@ public class DistGen {
 		nv.addPartPers(partPers);
 		
 		nv.addVol(vl);
-		if (ml.getId()==168447) {
-			log.info("Счетчик id={}, объем={}", ml.getId(), vl);
-		}
 		
 		if (ml.getId()==3661161/* && tp==0*/) {
 			log.trace("stop");
@@ -437,6 +437,16 @@ public class DistGen {
 			volTp = lstMng.getByCD("Фактический объем");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt);
 			ml.getVol().add(vol);
+
+			if (ml.getId()==168447) {
+				log.info("### Распределение внутри, добавлен объем={}", vol.getVol1());
+				log.info("### Распределение внутри Kart={}", metMng.getVolCnt(ml.getKart(), 168447));
+				log.info("### Распределение внутри Kart.hash={}", ml.getKart().hashCode());
+				log.info("### Распределение внутри Calc.Kart.hash={}", calc.getKart().hashCode());
+				log.info("### Распределение внутри Равны ли ={}", calc.getKart().equals(ml.getKart()));
+				log.info("### Распределение внутри Равны ли ={}", calc.getKart() );
+				
+			}
 			
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 

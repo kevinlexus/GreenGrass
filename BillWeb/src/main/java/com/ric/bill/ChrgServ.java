@@ -295,7 +295,6 @@ public class ChrgServ {
 	 * @param lsk - лиц.счет передавать строкой!
 	 * @throws ErrorWhileChrg 
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (Integer lsk) throws ErrorWhileChrg {
 		
 	    //коллекция для сумм по укрупнённым услугам, для нового начисления 

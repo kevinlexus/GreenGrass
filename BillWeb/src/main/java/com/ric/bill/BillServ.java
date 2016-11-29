@@ -19,12 +19,16 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.mt.MLogs;
+import com.ric.bill.model.mt.MeterLog;
 
 /**
  * Главный сервис биллинга
@@ -157,8 +161,8 @@ public class BillServ {
 					    calc.setHouse(kart.getKw().getHouse());
 					    
 					    try {
-							fut = chrgServThr.chrgAndSaveLsk(calc);
-						} catch (ErrorWhileChrg e) {
+							fut = chrgServThr.chrgAndSaveLsk(calc, false);
+						} catch (ErrorWhileChrg | ErrorWhileDist e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -229,14 +233,49 @@ public class BillServ {
 	 */
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
 		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		//ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
-		DistServ distServ = ctx.getBean(DistServ.class);
+		//DistServ distServ = ctx.getBean(DistServ.class);
+		
 		
 		Result res = new Result();
 		Future<Result> fut = new AsyncResult<Result>(res);
 
+		log.info("Check: ");
+		
+		Kart kart2 = em.find(Kart.class, 275699);
+		//em.detach(kart2);
+		
+		for (MLogs ml: kart2.getMlog()) {
+			if (ml.getId().equals(168447)) {
+				ml.setName("2");
+				log.info("Id1={}", ml.getId());
+				log.info("Name1={}", ml.getName());
+				log.info("Hash1={}", ml.hashCode());
+			}
+		}
+
+		for (MLogs ml: kart2.getMlog()) {
+			if (ml.getId().equals(168447)) {
+				log.info("Id2={}", ml.getId());
+				log.info("Name2={}", ml.getName());
+				log.info("Hash2={}", ml.hashCode());
+			}
+		}
+		
+		MLogs ml2 = em.find(MeterLog.class, 168447);
+
+		log.info("Id3={}", ml2.getId());
+		log.info("Name3={}", ml2.getName());
+		log.info("Hash3={}", ml2.hashCode());
+		
+		
+		
+		
+		if (1==2) {
+			
 		res.err=0;
 		//Если был передан идентификатор лицевого, то найти лиц.счет
     	if (lsk != null) {
@@ -251,7 +290,7 @@ public class BillServ {
     	//установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
     	calc.setKart(kart);
-		if (dist) {
+/*		if (dist) {
 			try {
 				distServ.distKartVol(calc);
 			} catch (ErrorWhileDist e) {
@@ -260,17 +299,18 @@ public class BillServ {
 				return fut;
 			}
 		}
-
+*/
 		//присвоить обратно лиц.счет, который мог быть занулён в distServ.distKartVol(calc);
 		calc.setKart(kart); 
 
 		//расчитать начисление
 	    try {
-			fut = chrgServThr.chrgAndSaveLsk(calc);
-		} catch (ErrorWhileChrg e) {
+			fut = chrgServThr.chrgAndSaveLsk(calc, dist);
+		} catch (ErrorWhileChrg | ErrorWhileDist e) {
 			e.printStackTrace();
 			res.err=1;
 			return fut;
+		}
 		}
     	return fut;
 	}

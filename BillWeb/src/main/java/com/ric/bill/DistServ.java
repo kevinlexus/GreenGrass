@@ -180,7 +180,7 @@ public class DistServ {
 	 * распределить объем по всем услугам, по лиц.счету
 	 * @throws ErrorWhileDist 
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distKartVol(Calc calc) throws ErrorWhileDist {
 		this.calc=calc;
 
@@ -208,6 +208,7 @@ public class DistServ {
 			e.printStackTrace();
 			throw new ErrorWhileDist("Dist.distHouseVol: ");
 		}
+			//log.info("Распределение кол-во 4 ={}", metMng.getVolCnt(calc.getKart(), 168447));
 
 	}
 	
@@ -255,6 +256,8 @@ public class DistServ {
 		for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
 				distGraph(ml);
 		}
+		//log.info("Распределение кол-во 3 ={}", metMng.getVolCnt(calc.getKart(), 168447));
+		
 	}
 	
 	/**
@@ -332,6 +335,7 @@ public class DistServ {
 				log.trace("Вызов distGraph c id="+ml.getId());
 				distGraph(ml);
 		}
+		
 	}
 	
 	/**
@@ -361,7 +365,8 @@ public class DistServ {
 			NodeVol dummy;
 			try {
 				dummy=distGen.distNode(calc, ml, calc.getCalcTp(), calc.getGenDt());
-				
+				//log.info("Распределение кол-во 2 ={}", metMng.getVolCnt(calc.getKart(), 168447));
+
 			} catch (WrongGetMethod e) {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: При расчете счетчика MeterLog.Id="+ml.getId()+" , обнаружен замкнутый цикл");  
