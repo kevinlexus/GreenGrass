@@ -340,10 +340,10 @@ public class DistGen {
 		nv.addPartPers(partPers);
 		
 		nv.addVol(vl);
-/*		if (ml.getId()==168447) {
+		if (ml.getId()==168447) {
 			log.info("Счетчик id={}, объем={}", ml.getId(), vl);
 		}
-*/		
+		
 		if (ml.getId()==3661161/* && tp==0*/) {
 			log.trace("stop");
 		}
@@ -436,17 +436,13 @@ public class DistGen {
 			//расчетная связь, расчетная связь ОДН
 			volTp = lstMng.getByCD("Фактический объем");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt);
-
 			ml.getVol().add(vol);
-
-			if (ml.getId()==168447) {
-				log.info("Счетчик id={}, объем={}", ml.getId(), vol.getVol1());
-				log.info("Объем кол-во ={} ", metMng.getVolCnt(calc.getKart(), 168447));
-			}
+			
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.getByCD("Площадь и проживающие");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt);
+
 			ml.getVol().add(vol);
 			//saveVol(ml, vol);
 

@@ -62,7 +62,7 @@ public class BillingController {
 		} else {
 			isDist = false;
 		}
-    	fut = billServ.chrgLsk(null, lsk, isDist);
+    	fut = billServ.chrgLsk(lsk, isDist);
     	
 	   	//проверить окончание потока 
 	    while (!fut.isDone()) {

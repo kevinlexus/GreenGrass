@@ -234,9 +234,11 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @return 
      */
 	@Cacheable("rrr1") 
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
 	public synchronized void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2) {
 
+		//em.detach(mLog); // отсоединить объект от базы
+		
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();
@@ -291,14 +293,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 	*/
 
 
-	public Integer getVolCnt(Kart kart, Integer id) {
-		for (MLogs ml: kart.getMlog()) {
-			if (ml.getId().equals(id)) {
-				return ml.getVol().size();
-			}
-		}
-		return null;
-	}
 	
 	
 }

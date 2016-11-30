@@ -99,7 +99,7 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 	@JoinColumn(name="FK_UK", referencedColumnName="ID", updatable = false, insertable = false)
 	private Org uk;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ")
 	@BatchSize(size = 50)
 	private List<MeterLog> mlog = new ArrayList<MeterLog>(0);

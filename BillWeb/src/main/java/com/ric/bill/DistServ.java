@@ -180,7 +180,7 @@ public class DistServ {
 	 * распределить объем по всем услугам, по лиц.счету
 	 * @throws ErrorWhileDist 
 	 */
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distKartVol(Calc calc) throws ErrorWhileDist {
 		this.calc=calc;
 
