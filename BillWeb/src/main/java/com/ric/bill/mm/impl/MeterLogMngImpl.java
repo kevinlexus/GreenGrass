@@ -10,8 +10,6 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
 import com.ric.bill.Config;
-import com.ric.bill.DistGen;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Utl;
@@ -38,7 +35,6 @@ import com.ric.bill.model.mt.Vol;
 
 //включил кэш - стало хуже, по скорости - 61 сек.
 @Service
-@Slf4j
 public class MeterLogMngImpl implements MeterLogMng {
 
 	@Autowired
@@ -152,11 +148,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 					) {
 		    		if (v.getTp().getCd().equals("Фактический объем") ){
 		    			lnkVol.addVol(v.getVol1());
-
-		    			if (mLog.getId()==168447) {
-		    				log.info("Счетчик id={}, объем={}", mLog.getId(), v.getVol1());
-		    			}
-		    			
 		    		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
 		    			lnkVol.addArea(v.getVol1());
 		    			lnkVol.addPers(v.getVol2());
@@ -246,10 +237,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
 	public synchronized void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2) {
 
-		if (mLog.getId()==168447) {
-			log.info(" mLog={}", mLog);
-		}
-		
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();
@@ -303,9 +290,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	}
 	*/
 
-	/*
-	 * Получить кол-во строк объема по счетчику
-	 */
+
 	public Integer getVolCnt(Kart kart, Integer id) {
 		for (MLogs ml: kart.getMlog()) {
 			if (ml.getId().equals(id)) {
@@ -314,8 +299,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 		}
 		return null;
 	}
-
-
 	
 	
 }

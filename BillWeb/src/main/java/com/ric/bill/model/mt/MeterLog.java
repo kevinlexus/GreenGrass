@@ -71,7 +71,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@BatchSize(size = 50)
 	private List<Meter> meter = new ArrayList<Meter>(0);
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH, orphanRemoval=true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID", updatable = false) //внимание! если здесь убрать updatable = false то будет update kmp_meter_vol fk_meter_log!
 	//@BatchSize(size = 50)
 	@Fetch(FetchMode.SUBSELECT)
@@ -200,115 +200,6 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 		this.outside = outside;
 	}
 
-/*	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((house == null) ? 0 : house.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((inside == null) ? 0 : inside.hashCode());
-		result = prime * result + ((kart == null) ? 0 : kart.hashCode());
-		result = prime * result + ((klskObj == null) ? 0 : klskObj.hashCode());
-		result = prime * result + ((meter == null) ? 0 : meter.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((outside == null) ? 0 : outside.hashCode());
-		result = prime * result + ((serv == null) ? 0 : serv.hashCode());
-		result = prime * result + ((tp == null) ? 0 : tp.hashCode());
-		result = prime * result + ((vol == null) ? 0 : vol.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (!(obj instanceof MeterLog)) {
-			return false;
-		}
-		MeterLog other = (MeterLog) obj;
-		if (house == null) {
-			if (other.house != null) {
-				return false;
-			}
-		} else if (!house.equals(other.house)) {
-			return false;
-		}
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		if (inside == null) {
-			if (other.inside != null) {
-				return false;
-			}
-		} else if (!inside.equals(other.inside)) {
-			return false;
-		}
-		if (kart == null) {
-			if (other.kart != null) {
-				return false;
-			}
-		} else if (!kart.equals(other.kart)) {
-			return false;
-		}
-		if (klskObj == null) {
-			if (other.klskObj != null) {
-				return false;
-			}
-		} else if (!klskObj.equals(other.klskObj)) {
-			return false;
-		}
-		if (meter == null) {
-			if (other.meter != null) {
-				return false;
-			}
-		} else if (!meter.equals(other.meter)) {
-			return false;
-		}
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		if (outside == null) {
-			if (other.outside != null) {
-				return false;
-			}
-		} else if (!outside.equals(other.outside)) {
-			return false;
-		}
-		if (serv == null) {
-			if (other.serv != null) {
-				return false;
-			}
-		} else if (!serv.equals(other.serv)) {
-			return false;
-		}
-		if (tp == null) {
-			if (other.tp != null) {
-				return false;
-			}
-		} else if (!tp.equals(other.tp)) {
-			return false;
-		}
-		if (vol == null) {
-			if (other.vol != null) {
-				return false;
-			}
-		} else if (!vol.equals(other.vol)) {
-			return false;
-		}
-		return true;
-	}
-*/
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof MeterLog))

@@ -295,12 +295,13 @@ public class ChrgServ {
 	 * @param lsk - лиц.счет передавать строкой!
 	 * @throws ErrorWhileChrg 
 	 */
-	public void save (Integer lsk) throws ErrorWhileChrg {
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void save (Calc calc) throws ErrorWhileChrg {
 		
 	    //коллекция для сумм по укрупнённым услугам, для нового начисления 
 	    MultiKeyMap mapDeb = new MultiKeyMap();
 
-		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
+		//Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
 		
 		//ДЕЛЬТА
 		//ПОДГОТОВИТЬСЯ для сохранения дельты
@@ -321,7 +322,7 @@ public class ChrgServ {
 		}
 
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
-		for (Chrg chrg : kart.getChrg()) {
+		for (Chrg chrg : calc.getKart().getChrg()) {
 			//Только необходимые строки
 			if (chrg.getStatus()==1 && chrg.getPeriod().equals(config.getPeriod())) {
 				Serv servMain = null;
@@ -346,7 +347,7 @@ public class ChrgServ {
 				//+ "and t.dt2 between :dt1 and :dt2 "
 				+ "and t.period=:period"
 				);
-		query.setParameter("lsk", kart.getLsk());
+		query.setParameter("lsk", calc.getKart().getLsk());
 		//query.setParameter("dt1", Calc.getCurDt1());
 		//query.setParameter("dt2", Calc.getCurDt2());
 		query.setParameter("period", config.getPeriod());
@@ -363,7 +364,7 @@ public class ChrgServ {
 			BigDecimal val = (BigDecimal)it.getValue();
 			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
 			//if (lsk.equals("14024244")) {
-			  log.info("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+			  log.info("Отправка дельты: Lsk="+calc.getKart().getFlsk()+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
 			  //проверка на дубли
 			  if (ctrlSet.contains(new Control(((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId()))) {
 					throw new ErrorWhileChrg("ChrgServ.save: Found dublicate elements while sending delta");
@@ -377,7 +378,7 @@ public class ChrgServ {
 			  qr.registerStoredProcedureParameter("P_SUMMA_CHNG", Double.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
 			  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
-			  qr.setParameter("P_LSK", kart.getLsk());
+			  qr.setParameter("P_LSK", calc.getKart().getLsk());
 			  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
 			  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
 			  qr.setParameter("P_PERIOD", config.getPeriod());
@@ -392,10 +393,10 @@ public class ChrgServ {
 		//Сохранить новое начисление (переписать из prepChrg)
 		for (Chrg chrg : prepChrg) {
 			//log.info("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
-			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
+			Chrg chrg2 = new Chrg(calc.getKart(), chrg.getServ(), chrg.getOrg(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
 					chrg.getVol(), chrg.getPrice(), chrg.getStdt(), chrg.getCntPers(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
 
-			kart.getChrg().add(chrg2); 
+			calc.getKart().getChrg().add(chrg2); 
 		}
 	}
 	

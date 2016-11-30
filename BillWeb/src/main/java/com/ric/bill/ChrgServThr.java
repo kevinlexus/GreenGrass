@@ -23,8 +23,6 @@ import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.mt.MeterLog;
-import com.ric.bill.model.mt.Vol;
 import com.ric.bill.model.tr.TarifKlsk;
 
 /**
@@ -48,49 +46,10 @@ public class ChrgServThr {
 	
 	@Async
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public Future<Result> chrgAndSaveLsk(Calc calc, boolean dist) throws ErrorWhileChrg, ErrorWhileDist {
-
-		Kart kart = calc.getKart(); 
-		log.info("Kart1={}", metMng.getVolCnt(kart, 168447));
-		log.info("Kart2={}", metMng.getVolCnt(calc.getKart(), 168447));
-		
-		em.detach(calc.getKart()); // отсоединить объект от базы
-		
-		if (dist) {
-			DistServ distServ = ctx.getBean(DistServ.class);
-			distServ.distKartVol(calc);
-		}
-
-		log.info("Kart 1 hash={}", kart.hashCode());
-		log.info("Kart 1 id={}", kart.getId());
-		log.info("Kart 1 lsk={}", kart.getLsk());
-		log.info("Kart 2 hash={}", calc.getKart().hashCode());
-		log.info("Kart 2 id={}", calc.getKart().getId());
-		log.info("Kart 2 lsk={}", calc.getKart().getLsk());
-		
-		log.info("Kart equals?={}", calc.getKart().equals(kart));
-		
-
-		log.info("Kart3={}", metMng.getVolCnt(kart, 168447));
-		log.info("Kart4={}", metMng.getVolCnt(calc.getKart(), 168447));
-
-		log.info("Распределение 1 кол-во={}", metMng.getVolCnt(calc.getKart(), 168447));
-		
-/*		for (MeterLog ml: kart.getMlog()) {
-			if (ml.getId()==168447) {
-				for (Vol oo: ml.getVol()) {
-					log.info("Распределение Счетчик id={}, проверен объем={}, даты {}-{}", ml.getId(), oo.getVol1(), oo.getDt1(), oo.getDt2());
-				}
-			}
-		}
-*/		
-		//присвоить обратно лиц.счет, который мог быть занулён в distServ.distKartVol(calc);
-		log.info("Kart5={}", metMng.getVolCnt(kart, 168447));
-		log.info("Kart6={}", metMng.getVolCnt(calc.getKart(), 168447));
-		calc.setKart(kart); 
-		
-
+	public Future<Result> chrgAndSaveLsk(Calc calc, boolean dist) throws ErrorWhileChrg {
 		ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
+		DistServ distServ = ctx.getBean(DistServ.class);
+		
 		//загрузить все Lazy параметры, чтобы не было concurrensy issue в потоках например, на getDbl()
 		//ну или использовать EAGER в дочерних коллекциях, что более затратно
 		calc.getKart().getDw().size();
@@ -109,21 +68,22 @@ public class ChrgServThr {
 		for (TarifKlsk k : calc.getArea().getTarifklsk()) {
 			k.getTarprop().size();
 		}
+
+		Kart kart = calc.getKart();
+		if (dist) {
+			try {
+				distServ.distKartVol(calc);
+			} catch (ErrorWhileDist e) {
+				e.printStackTrace();
+			}
+		}
+		
+		calc.setKart(kart);
 		//Выполнить начисление
 		Result res = chrgServ.chrgLsk(calc);
-		log.info("Начисление кол-во={}", metMng.getVolCnt(calc.getKart(), 168447));
-
-/*		for (MeterLog ml: kart.getMlog()) {
-			if (ml.getId()==168447) {
-				for (Vol oo: ml.getVol()) {
-					log.info("Начисление Счетчик id={}, проверен объем={}, даты {}-{}", ml.getId(), oo.getVol1(), oo.getDt1(), oo.getDt2());
-				}
-			}
-		}*/
-
 		//Сохранить результат
 		if (res.err==0) {
-			chrgServ.save(calc.getKart().getLsk()); 
+			chrgServ.save(calc); 
 		}
 		
 		return new AsyncResult<Result>(res);

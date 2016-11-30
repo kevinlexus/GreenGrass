@@ -24,6 +24,5 @@ public interface MeterLogMng {
 	public void delNodeVol(MLogs ml, int tp, Date dt1, Date dt2);
 	public Kart getKart(MLogs mLog);
 	public Integer getVolCnt(Kart kart, Integer id);
-	//public House getHouse(MLogs mLog);
 
 }
