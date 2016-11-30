@@ -22,10 +22,9 @@ import com.ric.bill.model.bs.Obj;
  *
  */
 @Service
-@Scope("prototype") //-сделал прототип 28.11.2016!!!
+//@Scope("prototype") //-сделал прототип 28.11.2016!!! - не работают Unit -тесты из за этого!
 public class Config {
 
-	
 	@Autowired
 	private ParMng parMng;
 	@Autowired
