@@ -229,8 +229,9 @@ public class BillServ {
 	 */
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
-	public Future<Result> chrgLsk(Integer lsk, boolean dist) {
-		ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
+	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
+    	
+    	ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		//ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 		DistServ distServ = ctx.getBean(DistServ.class);
 		
@@ -239,12 +240,13 @@ public class BillServ {
 
 		res.err=0;
 		//Если был передан идентификатор лицевого, то найти лиц.счет
-		Kart kart = em.find(Kart.class, lsk);
-    	if (kart ==null) {
-    		res.err=1;
-    		return fut;
-    	}
-    	
+    	if (lsk != null) {
+	    	kart = em.find(Kart.class, lsk);
+	    	if (kart ==null) {
+	    		res.err=1;
+	    		return fut;
+	    	}
+		}
 	    Calc calc=new Calc();
 	    
     	//установить дом и счет
