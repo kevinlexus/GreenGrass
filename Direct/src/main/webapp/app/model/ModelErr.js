@@ -7,7 +7,7 @@ Ext.define('TestApp.model.ModelErr', {
                 type: 'ajax',
 	        api: {
                 create  : '',
-                read    : 'http://localhost:8090/getPrepErr',
+                read    : 'http://127.0.0.1:8090/getPrepErr',
                 destroy : ''
                 },
                 reader: {

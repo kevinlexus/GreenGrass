@@ -59,7 +59,7 @@ Ext.define('TestApp.view.main.MainController', {
         );
         //Проверить, идёт ли формирование
         Ext.Ajax.request({
-            url: 'http://localhost:8090/getStateGen',
+            url: 'http://127.0.0.1:8090/getStateGen',
             method: "GET",
             success: function (response) {
                 state = response.responseText;
@@ -76,7 +76,7 @@ Ext.define('TestApp.view.main.MainController', {
         me=this;
         //проверить наличие ошибки в последнем формировании
         Ext.Ajax.request({
-            url: 'http://localhost:8090/getErrGen',
+            url: 'http://127.0.0.1:8090/getErrGen',
             method: "GET",
             success: function (response) {
                 state = response.responseText;
@@ -120,7 +120,7 @@ Ext.define('TestApp.view.main.MainController', {
             sel=0;
         }
         Ext.Ajax.request({
-            url: 'http://localhost:8090/checkItms',
+            url: 'http://127.0.0.1:8090/checkItms',
             success: function (response) {
                 var grid = me.lookupReference('grid1');
                 grid.getStore().load();
@@ -137,7 +137,7 @@ Ext.define('TestApp.view.main.MainController', {
     // Начало формирования
     onStartGen: function () {
 	    Ext.Ajax.request({
-	       url: 'http://localhost:8090/startGen'
+	       url: 'http://127.0.0.1:8090/startGen'
 	    });
         this.getTask().start();// обращение к локальной переменной контроллера task
     },
@@ -145,7 +145,7 @@ Ext.define('TestApp.view.main.MainController', {
     // Остановка формирования
     onStopGen: function () {
         Ext.Ajax.request({
-            url: 'http://localhost:8090/stopGen'
+            url: 'http://127.0.0.1:8090/stopGen'
         });
     },
 
@@ -155,7 +155,7 @@ Ext.define('TestApp.view.main.MainController', {
         refreshFlag=false;
         //проверить прогресс формирования
         Ext.Ajax.request({
-            url: 'http://localhost:8090/getProgress',
+            url: 'http://127.0.0.1:8090/getProgress',
             method: "GET",
             success: function (response) {
                 if (progress != response.responseText) {
@@ -167,7 +167,7 @@ Ext.define('TestApp.view.main.MainController', {
 
                 // вложенный запрос
                 Ext.Ajax.request({
-                    url: 'http://localhost:8090/getStateGen',
+                    url: 'http://127.0.0.1:8090/getStateGen',
                     method: "GET",
                     success: function (response) {
                         state = response.responseText;

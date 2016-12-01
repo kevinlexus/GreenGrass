@@ -19,8 +19,8 @@ Ext.define('TestApp.model.Model1', {
                 type: 'ajax',
 	        api: {
                 create  : '',
-                read    : 'http://localhost:8090/getSprgenitm',
-                update  : 'http://localhost:8090/editSprgenitm',
+                read    : 'http://127.0.0.1:8090/getSprgenitm',
+                update  : 'http://127.0.0.1:8090/editSprgenitm',
                 destroy : ''
                 },
                 reader: {
