@@ -506,6 +506,12 @@ public class ThrMain extends Thread {
 					if (smplGen(menuGenItg, itm, 28, 1.0)) {
 						return; // выйти при ошибке
 					}
+					
+					//проверить распр.пени, после того как она переписана в архив
+					if (check2(menuGenItg, 37)) { //1
+						return;
+					}
+					
 					break;
 				}				
 				

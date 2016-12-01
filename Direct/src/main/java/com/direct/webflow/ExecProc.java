@@ -129,7 +129,7 @@ public class ExecProc {
 			break;
 		}
 			//основные проверки
-		case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15:{
+		case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 37:{
 			ds.sess.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					CallableStatement call = connection
@@ -162,6 +162,9 @@ public class ExecProc {
 						  break;
 					case 15:
 						  call.setInt(3, 8);
+						  break;
+					case 37:
+						  call.setInt(3, 9);
 						  break;
 					}
 					
