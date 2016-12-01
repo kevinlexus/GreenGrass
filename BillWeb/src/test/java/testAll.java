@@ -14,7 +14,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.BillServ;
+import com.ric.bill.Calc;
+import com.ric.bill.Config;
 import com.ric.bill.DistServ;
+import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
 import com.ric.bill.mm.ParMng;
 import com.ric.web.AppConfig;
@@ -49,9 +52,15 @@ public class testAll {
 
 	@Test
 	public void testChrg() {
-		//BillServ billServ = ctx.getBean(BillServ.class);
+		Config config = ctx.getBean(Config.class);
+		
     	Future<Result> fut = null;
-    	fut = billServ.chrgLsk(null, 275699, true);
+
+    	RequestConfig reqConfig = new RequestConfig(); 
+    	reqConfig.setChangeId(1121);
+    	reqConfig.setIsDist(true);
+    	
+    	fut = billServ.chrgLsk(reqConfig, null, 275699);
     	
 	   	//проверить окончание потока 
 	    while (!fut.isDone()) {

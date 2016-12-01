@@ -14,16 +14,27 @@ import com.ric.bill.model.bs.Serv;
  * @author lev
  *
  */
-@Slf4j
 public final class Calc {
-	private Date genDt; //рассчитываемая дата
-	private int calcTp; //тип обработки расчёта
+	// рассчитываемая дата
+	private Date genDt;
+	// тип обработки расчёта
+	private int calcTp;
     
-	private Area area; //текущий город 
-	private House house; //текущий дом (распределяемый, начисляемый)
-	private Kart kart; //текущий лиц.счет (распределяемый, начисляемый)
-	private Serv serv; //текущая услуга (распределяемая, начисляемая)
+	// текущий город
+	private Area area; 
+	// текущий дом (распределяемый, начисляемый)
+	private House house;
+	// текущий лиц.счет (распределяемый, начисляемый)
+	private Kart kart; 
+	// текущая услуга (распределяемая, начисляемая)
+	private Serv serv; 
 
+	// параметры из запроса
+	private RequestConfig reqConfig;
+	
+	public Calc(RequestConfig reqConfig) {
+		this.reqConfig = reqConfig; 
+	}
 
 	public Serv getServ() {
 		return this.serv;
@@ -72,6 +83,14 @@ public final class Calc {
 
 	public Date getGenDt() {
 		return this.genDt;
+	}
+
+	public RequestConfig getReqConfig() {
+		return reqConfig;
+	}
+
+	public void setReqConfig(RequestConfig reqConfig) {
+		this.reqConfig = reqConfig;
 	}
 
 }

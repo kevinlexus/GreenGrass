@@ -25,6 +25,7 @@ import com.ric.bill.BillServ;
 import com.ric.bill.Calc;
 import com.ric.bill.ChrgThr;
 import com.ric.bill.Config;
+import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
 import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.ErrorWhileChrg;
@@ -52,17 +53,34 @@ public class BillingController {
 
     @RequestMapping("/chrglsk") 
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
-    					  @RequestParam(value="dist", defaultValue="0") String dist) {
+    					  @RequestParam(value="dist", defaultValue="0") String dist,
+    					  @RequestParam(value="tp", defaultValue="0") String tp
+    		) {
 		
     	log.info("got /chrglsk");
+    	
     	Future<Result> fut = null;
-		boolean isDist;
+
+    	RequestConfig reqConfig = new RequestConfig(); 
+    	reqConfig.setChangeId(1118);
+    	
     	if (dist.equals("1")) {
-			isDist = true;
+    		// распределять
+    		reqConfig.setIsDist(true);
 		} else {
-			isDist = false;
+			// не распределять
+    		reqConfig.setIsDist(false);
 		}
-    	fut = billServ.chrgLsk(null, lsk, isDist);
+
+    	if (tp.equals("0")) {
+			// начисление
+    		reqConfig.setOperTp(0);
+		} else if (tp.equals("1")) {
+    		// перерасчет
+    		reqConfig.setOperTp(1);
+		}
+    	
+    	fut = billServ.chrgLsk(reqConfig, null, lsk);
     	
 	   	//проверить окончание потока 
 	    while (!fut.isDone()) {
@@ -95,24 +113,31 @@ public class BillingController {
     } 
     
     @RequestMapping("/chrgall")
-    public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist, 
-    					  @RequestParam(value="chrg", defaultValue="0", required=true) String chrg,
+    public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist,
+			  			  @RequestParam(value="tp", defaultValue="0") String tp,
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
-    	log.info("got /chrgall dist="+dist+" chrg="+chrg+" houseId="+houseId);
+    	log.info("got /chrgall dist="+dist+" tp="+tp+" houseId="+houseId);
     	Future<Result> fut = null;
-		boolean isDist, isChrg;
+    	
+    	RequestConfig reqConfig = new RequestConfig(); 
+    	
     	if (dist.equals("1")) {
-			isDist = true;
+    		// распределять
+    		reqConfig.setIsDist(true);
 		} else {
-			isDist = false;
-		}
-    	if (chrg.equals("1")) {
-			isChrg = true;
-		} else {
-			isChrg = false;
+			// не распределять
+    		reqConfig.setIsDist(false);
 		}
 
-    	fut = billServ.chrgAll(isDist, isChrg, houseId);
+    	if (tp.equals("0")) {
+			// начисление
+    		reqConfig.setOperTp(0);
+		} else if (tp.equals("1")) {
+    		// перерасчет
+    		reqConfig.setOperTp(1);
+		}
+
+    	fut = billServ.chrgAll(reqConfig, houseId);
     	
 		 while (!fut.isDone()) {
 	         try {

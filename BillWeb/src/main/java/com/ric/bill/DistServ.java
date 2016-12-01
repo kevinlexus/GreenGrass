@@ -91,12 +91,6 @@ public class DistServ {
 	}*/
 
     
-    //конструктор
-    public DistServ() {
-    	//расчетный объект
-    	this.calc=new Calc();
-    }
-    
 	/**
 	 * Удалить объем по вводам дома
 	 * 

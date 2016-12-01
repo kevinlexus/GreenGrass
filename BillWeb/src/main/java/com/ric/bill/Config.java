@@ -22,7 +22,6 @@ import com.ric.bill.model.bs.Obj;
  *
  */
 @Service
-//@Scope("prototype") //-сделал прототип 28.11.2016!!! - не работают Unit -тесты из за этого!
 public class Config {
 
 	@Autowired
@@ -31,20 +30,20 @@ public class Config {
 	private ObjMng objMng;
 
 	private Calendar calendar;
-	//доля одного дня в периоде
+	// доля одного дня в периоде
 	double partDays;
-	//кол-во дней в периоде
+	// кол-во дней в периоде
 	double cntCurDays;
-	//период для партицирования
+	// период для партицирования
 	String period;
 	static Date lastDt;//=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
-	//наиболее ранняя и поздние даты в биллинге, константы
+	// наиболее ранняя и поздние даты в биллинге, константы
 	static Date firstDt;//=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
-	//даты текущего периода
-	Date curDt2;
+	// даты текущего периода
 	Date curDt1;
+	Date curDt2;
 
-	//конструктор
+	// конструктор
 	public Config() {
 		TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
 		
@@ -138,6 +137,4 @@ public class Config {
 		return period;
 	}
 
-	
-	
 }

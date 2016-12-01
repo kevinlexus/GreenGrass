@@ -173,7 +173,9 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	public Result chrgLsk(Calc calc) throws ErrorWhileChrg {
-		log.info("ChrgServ.chrgLsk Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk(), 2);
+		log.info("Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk());
+		log.info("ChangeID={}", calc.getReqConfig().getChangeId());
+		
 		Result res = new Result();
 		res.err=0;
 		//if (1==1) {

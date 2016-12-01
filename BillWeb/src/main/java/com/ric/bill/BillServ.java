@@ -95,15 +95,15 @@ public class BillServ {
      */
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)    
-    public Future<Result> chrgAll(boolean isDist, boolean isChrg, Integer houseId) {
+    public Future<Result> chrgAll(RequestConfig reqConfig, Integer houseId) {
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
     	
     	Result res = new Result();
 		res.err=0;
-		//кол-во потоков
+		// кол-во потоков
 		int cntThreads = 10;
-		//кол-во обраб.лиц.сч.
+		// кол-во обраб.лиц.сч.
 		int cntLsk = 0;
 		
 		long startTime;
@@ -114,23 +114,25 @@ public class BillServ {
 		startTime = System.currentTimeMillis();
 		DistServ distServ = ctx.getBean(DistServ.class);
 
-	    if (isDist) {
-	    	 Calc calc=new Calc();
+	    // РАСПРЕДЕЛЕНИЕ ОБЪЕМОВ
+		if (reqConfig.getIsDist()) {
+	    	 Calc calc=new Calc(reqConfig);
 			 distServ.distAll(calc, houseId);
 			 log.info("BillServ.chrgAll: Распределение по всем домам выполнено!");
 		}
 	    
-	    if (isChrg) {
+		// РАСЧЕТ НАЧИСЛЕНИЯ ПО ЛС В ПОТОКАХ
+	    if (reqConfig.getOperTp()==0) {
 			long startTime3 = System.currentTimeMillis();
 			//загрузить все необходимые Лиц.счета
 			kartThr = kartMng.findAll(houseId);
 			cntLsk = kartThr.size(); 
-		    //флаг ошибки, произошедшей в потоке
+		    // флаг ошибки, произошедшей в потоке
 		    errThread=false;
 		    
 			while (true) {
 				log.info("BillServ.chrgAll: Loading karts for threads");
-				//получить следующие N лиц.счетов, рассчитать их в потоке
+				// получить следующие N лиц.счетов, рассчитать их в потоке
 				long startTime2;
 				long endTime2;
 				long totalTime2;
@@ -151,8 +153,8 @@ public class BillServ {
 						ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 	
 					    //под каждый поток - свой Calc
-						Calc calc=new Calc();
-	
+						Calc calc=new Calc(reqConfig);
+						
 					    calc.setKart(kart);
 					    calc.setHouse(kart.getKw().getHouse());
 					    
@@ -167,7 +169,7 @@ public class BillServ {
 				}
 				
 				
-				//проверить окончание всех потоков
+				// проверить окончание всех потоков
 			    int flag2 = 0;
 				while (flag2==0) {
 					log.trace("BillServ.chrgAll: ========================================== Waiting for threads-2");
@@ -229,17 +231,15 @@ public class BillServ {
 	 */
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
-	public Future<Result> chrgLsk(Kart kart, Integer lsk, boolean dist) {
-    	
+	public Future<Result> chrgLsk(RequestConfig reqConfig, Kart kart, Integer lsk) {
     	ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
-		//ChrgServ chrgServ = ctx.getBean(ChrgServ.class);
 		DistServ distServ = ctx.getBean(DistServ.class);
 		
 		Result res = new Result();
 		Future<Result> fut = new AsyncResult<Result>(res);
 
 		res.err=0;
-		//Если был передан идентификатор лицевого, то найти лиц.счет
+		// Если был передан идентификатор лицевого, то найти лиц.счет
     	if (lsk != null) {
 	    	kart = em.find(Kart.class, lsk);
 	    	if (kart ==null) {
@@ -247,12 +247,14 @@ public class BillServ {
 	    		return fut;
 	    	}
 		}
-	    Calc calc=new Calc();
+	    Calc calc=new Calc(reqConfig);
 	    
-    	//установить дом и счет
+    	// установить дом и счет
     	calc.setHouse(kart.getKw().getHouse());
     	calc.setKart(kart);
-		if (dist) {
+
+    	// РАСПРЕДЕЛЕНИЕ ОБЪЕМОВ 
+		if (reqConfig.getIsDist()) {
 			try {
 				distServ.distKartVol(calc);
 			} catch (ErrorWhileDist e) {
@@ -265,7 +267,7 @@ public class BillServ {
 		//присвоить обратно лиц.счет, который мог быть занулён в distServ.distKartVol(calc);
 		calc.setKart(kart); 
 
-		//расчитать начисление
+		// РАСЧЕТ НАЧИСЛЕНИЯ ПО 1 ЛС
 	    try {
 			fut = chrgServThr.chrgAndSaveLsk(calc);
 		} catch (ErrorWhileChrg e) {

@@ -20,6 +20,7 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.mt.MeterLog;
 
 /**
  * Результат начисления
@@ -135,6 +136,9 @@ public class Chrg implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
 	private Org org; 
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
+	private Chng chng; 
 	
 	
 	public Integer getId() {
@@ -263,6 +267,14 @@ public class Chrg implements java.io.Serializable, Simple {
 
 	public void setCntPers(Integer cntPers) {
 		this.cntPers = cntPers;
+	}
+
+	public Chng getChng() {
+		return chng;
+	}
+
+	public void setChng(Chng chng) {
+		this.chng = chng;
 	}
 
 	
