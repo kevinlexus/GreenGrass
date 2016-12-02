@@ -140,7 +140,6 @@ public class Chrg implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
 	private Chng chng; 
 	
-	
 	public Integer getId() {
 		return this.id;
 	}

@@ -76,7 +76,8 @@ public class DistServ {
     private EntityManager em;
 
     private Calc calc;
-    
+    // статус записи объёма зависит от типа операции (0 - начисление, 1 - перерасчет)
+    private Integer statusVol;
     
     /**
 	 * Установить фильтры для сессии -убрал пока
@@ -131,7 +132,7 @@ public class DistServ {
 
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-			metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2());
+			metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
 		}
 		
 	}
@@ -144,6 +145,15 @@ public class DistServ {
     public void distAll(Calc calc, Integer houseId) {
 			//distGen = ctx.getBean(DistGen.class);
 			this.calc=calc;
+			// статус записи зависит от типа операции (0 - начисление, 1 - перерасчет)
+			switch (calc.getReqConfig().getOperTp()) {
+				case 0: 
+					statusVol = 0;
+					break;
+				case 1: 
+					statusVol = 1;
+					break;
+			}
 			long startTime;
 			long endTime;
 			long totalTime;
@@ -177,21 +187,31 @@ public class DistServ {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distKartVol(Calc calc) throws ErrorWhileDist {
 		this.calc=calc;
-
+		// статус записи объема зависит от типа операции (0 - начисление, 1 - перерасчет)
+		switch (calc.getReqConfig().getOperTp()) {
+		case 0: 
+			statusVol = 0;
+			break;
+		case 1: 
+			statusVol = 1;
+			break;
+		}
+		
+		// установить тип обработки = 0, для удаления только объемов расчетных счетчиков
 		calc.setCalcTp(0);
 
 		Kart kart = em.find(Kart.class, calc.getKart().getLsk());
-		//почистить коллекцию обработанных счетчиков
+		// почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
-		//найти все необходимые услуги для удаления объемов, здесь только по типу 0 и только те услуги, которые надо удалить для ЛС 
+		// найти все необходимые услуги для удаления объемов, здесь только по типу 0 и только те услуги, которые надо удалить для ЛС 
 		for (Serv serv : servMng.findForDistVolForKart()) {
 				log.trace("Удаление объема по услуге"+serv.getCd());
 				delKartServVolTp(kart, serv, 0);
 		}
 		
 		log.trace("Распределение объемов");
-		//найти все необходимые услуги для распределения
+		// найти все необходимые услуги для распределения
 		 
 		 try {
 			for (Serv serv : servMng.findForDistVol()) {
@@ -230,9 +250,8 @@ public class DistServ {
 		//найти все счетчики по Лиц.счету, по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			calc.setGenDt(c.getTime());
-			
 			for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
-				metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2());
+				metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
 			}
 			
 		}

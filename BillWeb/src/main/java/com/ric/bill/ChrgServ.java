@@ -90,6 +90,7 @@ public class ChrgServ {
     
     //флаг ошибки, произошедшей в потоке
     private static Boolean errThread;
+    private Calc calc;
     
 	//конструктор
     public ChrgServ() {
@@ -173,9 +174,8 @@ public class ChrgServ {
 	 * @throws ErrorWhileChrg 
 	 */
 	public Result chrgLsk(Calc calc) throws ErrorWhileChrg {
+    	this.calc=calc;
 		log.info("Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk());
-		log.info("ChangeID={}", calc.getReqConfig().getChangeId());
-		
 		Result res = new Result();
 		res.err=0;
 		//if (1==1) {

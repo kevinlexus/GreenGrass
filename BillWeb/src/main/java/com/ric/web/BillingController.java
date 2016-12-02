@@ -62,7 +62,6 @@ public class BillingController {
     	Future<Result> fut = null;
 
     	RequestConfig reqConfig = new RequestConfig(); 
-    	reqConfig.setChangeId(1118);
     	
     	if (dist.equals("1")) {
     		// распределять

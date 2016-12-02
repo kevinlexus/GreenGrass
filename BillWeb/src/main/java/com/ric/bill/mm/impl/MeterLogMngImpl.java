@@ -6,9 +6,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
+import com.ric.bill.ChrgServ;
 import com.ric.bill.Config;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
@@ -35,6 +39,7 @@ import com.ric.bill.model.mt.Vol;
 
 //включил кэш - стало хуже, по скорости - 61 сек.
 @Service
+@Slf4j
 public class MeterLogMngImpl implements MeterLogMng {
 
 	@Autowired
@@ -138,12 +143,22 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 */
 	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId(), #tp, #dt1, #dt2 }")
-    public synchronized SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2) {
+    public synchronized SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
 		SumNodeVol lnkVol = new SumNodeVol();
+		
+/*		JAVA 8!!!	
+ * mLog.getVol().parallelStream()
+	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(status) &&
+	            			Utl.between(t.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
+	        				Utl.between(t.getDt2(), dt1, dt2))
+	                .filter(t -> t.getTp().getCd().equals("Фактический объем"))
+	                .forEach(t -> lnkVol.addVol(t.getVol1()));
+*/		
     	//так что, простая итерация
     	for (Vol v: mLog.getVol()) {
 			//по всему соотв.периоду 
-    		if (Utl.between(v.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
+    		if (Utl.nvl(v.getStatus(), 0).equals(status) &&
+    			Utl.between(v.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
 				Utl.between(v.getDt2(), dt1, dt2)	
 					) {
 		    		if (v.getTp().getCd().equals("Фактический объем") ){
@@ -172,14 +187,14 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 */
 	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr1", key="{ #mc.getId(), #serv.getId(), #dt1, #dt2 }")
-	public synchronized SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2) {
+	public synchronized SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2, Integer status) {
 		SumNodeVol amntSum = new SumNodeVol();
 		
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
 		for (MeterLog mLog: mc.getMlog()) {
 			//по заданной услуге
 			if (mLog.getServ().equals(serv)) {
-				SumNodeVol tmp = getVolPeriod(mLog, 0, dt1, dt2);
+				SumNodeVol tmp = getVolPeriod(mLog, 0, dt1, dt2, status);
 				amntSum.addArea(tmp.getArea());
 				amntSum.addPers(tmp.getPers());
 				amntSum.addVol(tmp.getVol());
@@ -235,18 +250,16 @@ public class MeterLogMngImpl implements MeterLogMng {
      */
 	@Cacheable("rrr1") 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
-	public synchronized void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2) {
+	public synchronized void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
 
-		//em.detach(mLog); // отсоединить объект от базы
-		
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
 		    Vol vol = iterator.next();
-		    if (vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН") ) {
+		    if (Utl.nvl(vol.getStatus(),0).equals(status) && //учитывая статус записи (распред/перерасч.) 
+		    		(vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН"))) {
 		    	//проверить период
 		    	if (dt1.getTime() <= vol.getDt1().getTime() && dt2.getTime() >= vol.getDt2().getTime()) {  //здесь диапазон дат "снаружи"
 					iterator.remove();
-					//em.remove(vol); //добавил здесь удаление еще - оно не нужно!!! удаляется и так
 		    	}
 			}
 		}
@@ -261,7 +274,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 						 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 						 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 						 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-							delNodeVol(g.getSrc(), tp, dt1, dt2);
+							delNodeVol(g.getSrc(), tp, dt1, dt2, status);
 				}
 			}
 		}

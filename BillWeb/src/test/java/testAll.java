@@ -4,6 +4,9 @@ import static org.junit.Assert.assertThat;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import lombok.extern.slf4j.Slf4j;
 
 import org.junit.Test;
@@ -20,6 +23,7 @@ import com.ric.bill.DistServ;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
 import com.ric.bill.mm.ParMng;
+import com.ric.bill.model.fn.Chng;
 import com.ric.web.AppConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,7 +41,10 @@ public class testAll {
 	@Autowired
     private BillServ billServ;
 
-	@Test
+    @PersistenceContext
+    private EntityManager em;
+
+    @Test
 	public void testPar1() {
 		assertThat("Проверка наличия параметра Комната",
 				parMng.getByCD("Комната").getCd(), is("Комната"));
@@ -53,11 +60,12 @@ public class testAll {
 	@Test
 	public void testChrg() {
 		Config config = ctx.getBean(Config.class);
-		
     	Future<Result> fut = null;
 
-    	RequestConfig reqConfig = new RequestConfig(); 
-    	reqConfig.setChangeId(1121);
+    	RequestConfig reqConfig = new RequestConfig();
+    	Chng chng = em.find(Chng.class, 1021);
+    	reqConfig.setChng(chng);
+    	reqConfig.setOperTp(1); // перерасчёт
     	reqConfig.setIsDist(true);
     	
     	fut = billServ.chrgLsk(reqConfig, null, 275699);

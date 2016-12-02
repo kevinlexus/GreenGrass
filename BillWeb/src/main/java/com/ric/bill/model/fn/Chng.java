@@ -15,9 +15,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.mt.Meter;
+import com.ric.bill.model.mt.Vol;
 
 /**
  * Перерасчет
@@ -41,9 +44,13 @@ public class Chng implements java.io.Serializable, Simple {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
-	@BatchSize(size = 50)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<Chrg> chrg = new ArrayList<Chrg>(0);
 
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<Vol> vol = new ArrayList<Vol>(0);
 	
 	public Integer getId() {
 		return id;
@@ -61,5 +68,35 @@ public class Chng implements java.io.Serializable, Simple {
 		this.chrg = chrg;
 	}
 
+	public List<Vol> getVol() {
+		return vol;
+	}
+
+	public void setVol(List<Vol> vol) {
+		this.vol = vol;
+	}
+
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof Chng))
+	        return false;
+
+	    Chng other = (Chng)o;
+
+	    if (id == other.getId()) return true;
+	    if (id == null) return false;
+
+	    // equivalence by id
+	    return id.equals(other.getId());
+	}
+
+	public int hashCode() {
+	    if (id != null) {
+	        return id.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
+	}
+	
 }
 

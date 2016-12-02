@@ -23,6 +23,7 @@ import org.hibernate.annotations.FetchMode;
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
+import com.ric.bill.model.fn.Chng;
 
 /**
  * Объемы счетчика 
@@ -38,13 +39,16 @@ public class Vol implements java.io.Serializable, Simple {
 		
 	}
 
-	public Vol (MeterLog ml, Lst tp, Double vol1, Double vol2, Date date, Date date2){
+	public Vol (MeterLog ml, Lst tp, Double vol1, Double vol2, Date date, Date date2, Integer status, Chng chng, Integer statusVol){
 		setMLog(ml);
 		setTp(tp);
 		setVol1(vol1);
 		setVol2(vol2);
 		setDt1(date);
 		setDt2(date2);
+		setStatus(status);
+		setChng(chng);
+		setStatus(statusVol);
 	}
 
 	@Id
@@ -71,14 +75,22 @@ public class Vol implements java.io.Serializable, Simple {
     @Column(name = "VOL2", updatable = true, nullable = true)
 	private Double vol2; 
 
-    //даты начала и окончания произведенного объема
+    // даты начала и окончания произведенного объема
     @Column(name = "DT1", updatable = false, nullable = true)
     private Date dt1;
 
     @Column(name = "DT2", updatable = false, nullable = true)
     private Date dt2;
 
-    public Integer getId() {
+	// Статус, 0 - текущий расчет, 1 - перерасчет
+	@Column(name = "STATUS", nullable = true)
+	private Integer status;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
+	private Chng chng; 
+
+	public Integer getId() {
 		return this.id;
 	}
 	public void setId(Integer id) {
@@ -137,6 +149,22 @@ public class Vol implements java.io.Serializable, Simple {
 
 	public void setMet(Meter met) {
 		this.met = met;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Chng getChng() {
+		return chng;
+	}
+
+	public void setChng(Chng chng) {
+		this.chng = chng;
 	}
 
 	public boolean equals(Object o) {
