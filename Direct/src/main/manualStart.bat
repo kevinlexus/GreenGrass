@@ -1,2 +1,1 @@
-del 1.txt
-java -jar -Duser.language=en -Duser.region=us dwapp-0.0.2.jar >>1.txt
+javaw -jar -Duser.language=en -Duser.region=us BillWeb-0.0.1-SNAPSHOT.jar
