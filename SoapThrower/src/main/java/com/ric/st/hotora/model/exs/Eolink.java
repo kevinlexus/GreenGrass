@@ -3,6 +3,7 @@ package com.ric.st.hotora.model.exs;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -33,13 +35,15 @@ public class Eolink implements java.io.Serializable  {
 	public Eolink() {
 	}
 
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", updatable = false, nullable = false)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_EXS")
+	@SequenceGenerator(name="SEQ_EXS", sequenceName="EXS.SEQ_EOLINK", allocationSize=1)	
+    @Column(name = "id", unique=true, updatable = false, nullable = false)
 	private Integer id;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_EOLINK", referencedColumnName="ID")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinColumn(name="FK_EOLINK", referencedColumnName="ID", updatable = false)
 	@Fetch(FetchMode.SUBSELECT)
 	private List<Action> action = new ArrayList<Action>(0);
 	
@@ -84,7 +88,7 @@ public class Eolink implements java.io.Serializable  {
 	private String fkExt;
 
 	// Идентификатор объекта в новой разработке
-	@Column(name = "FK_LSK", updatable = true, nullable = true)
+	@Column(name = "FK_KLSK", updatable = true, nullable = true)
 	private Integer fkKlsk;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

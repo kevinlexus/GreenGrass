@@ -3,7 +3,6 @@ package com.ric.st.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -14,7 +13,6 @@ import java.util.UUID;
 
 import javax.jws.WebMethod;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -33,21 +31,17 @@ import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
 
-import org.apache.log4j.Logger;
-
+import lombok.extern.slf4j.Slf4j;
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
-import ru.gosuslugi.dom.signature.demo.commands.Command;
-import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
 
 import com.ric.bill.Utl;
 import com.ric.st.SoapPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
+@Slf4j
 public class SoapPrep<T> implements SoapPreps {
 
 	T ob;
-	
-	final static Logger logger = Logger.getLogger(SoapPrep.class);
 	
 	private RequestHeader rh;
 	private BindingProvider bp;
@@ -229,13 +223,13 @@ public class SoapPrep<T> implements SoapPreps {
         
         hd.addHeader("X-Client-Cert-Fingerprint", fingerPrint);
         
-        logger.info("Class-2 : " + ob.getClass().getInterfaces()[0]);
+        log.info("Class-2 : " + ob.getClass().getInterfaces()[0]);
         
         Method m = ob.getClass().getInterfaces()[0].getMethod(meth, req.getClass());
         
         WebMethod webmethod = m.getAnnotation(WebMethod.class);
         
-        logger.info("Webmethod : " + webmethod);
+        log.info("Webmethod : " + webmethod);
         
         
         hd.addHeader("SOAPAction", webmethod.action());

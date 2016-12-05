@@ -58,7 +58,9 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 	<tx:annotation-driven mode="proxy"
 		transaction-manager="transactionManager" />
 
-	<context:spring-configured />
+<!-- 	<tx:annotation-driven proxy-target-class="true"/> 
+ -->
+ 	<context:spring-configured />
 	<context:annotation-config />
 
 

@@ -15,6 +15,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_common_service
 import ru.gosuslugi.dom.signature.demo.commands.Command;
 import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
 
+import com.ric.st.ActionControllers;
 import com.ric.st.Configs;
 import com.ric.st.PrepImportHouses;
 import com.ric.st.PrepImportHouses2;
@@ -70,7 +71,7 @@ public class App
 		Configs cfg = context.getBean(Config.class);
 		
 		//Создать объект подписывания XML
-		sc = new SignCommand();
+		//sc = new SignCommand();
 
 		//включить логгирование XML
 		cfg.setXmlLog();
@@ -79,7 +80,7 @@ public class App
 		//thrMng.exportAccountData();
 		System.out.println("Start");
 
-		ActionController ac = context.getBean(ActionController.class);
+		ActionControllers ac = context.getBean(ActionControllers.class);
 		ac.searchActions();
 		
 		//создать бин сервиса SOAP
