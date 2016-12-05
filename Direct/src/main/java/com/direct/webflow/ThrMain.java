@@ -76,7 +76,7 @@ public class ThrMain extends Thread {
 			return true; // выйти при ошибке с ошибкой
 		}
 		}
-		return false; // выйти при ошибке без ошибки
+		return false; // выйти без ошибки
 	}
 
 	//вынес модуль проверки-2
