@@ -146,7 +146,7 @@ public class DistServ {
 			//distGen = ctx.getBean(DistGen.class);
 			this.calc=calc;
 			// статус записи зависит от типа операции (0 - начисление, 1 - перерасчет)
-			switch (calc.getReqConfig().getOperTp()) {
+			switch (calc.getReqConfig().getOper()) {
 				case 0: 
 					statusVol = 0;
 					break;
@@ -188,7 +188,7 @@ public class DistServ {
 	public void distKartVol(Calc calc) throws ErrorWhileDist {
 		this.calc=calc;
 		// статус записи объема зависит от типа операции (0 - начисление, 1 - перерасчет)
-		switch (calc.getReqConfig().getOperTp()) {
+		switch (calc.getReqConfig().getOper()) {
 		case 0: 
 			statusVol = 0;
 			break;

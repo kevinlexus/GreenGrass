@@ -73,10 +73,10 @@ public class BillingController {
 
     	if (tp.equals("0")) {
 			// начисление
-    		reqConfig.setOperTp(0);
+    		reqConfig.setOper(0);
 		} else if (tp.equals("1")) {
     		// перерасчет
-    		reqConfig.setOperTp(1);
+    		reqConfig.setOper(1);
 		}
     	
     	fut = billServ.chrgLsk(reqConfig, null, lsk);
@@ -130,10 +130,10 @@ public class BillingController {
 
     	if (tp.equals("0")) {
 			// начисление
-    		reqConfig.setOperTp(0);
+    		reqConfig.setOper(0);
 		} else if (tp.equals("1")) {
     		// перерасчет
-    		reqConfig.setOperTp(1);
+    		reqConfig.setOper(1);
 		}
 
     	fut = billServ.chrgAll(reqConfig, houseId);

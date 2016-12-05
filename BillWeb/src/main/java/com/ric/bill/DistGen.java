@@ -147,7 +147,7 @@ public class DistGen {
 	 */
 	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar {
 		// статус записи объема зависит от типа операции (0 - начисление, 1 - перерасчет)
-		switch (calc.getReqConfig().getOperTp()) {
+		switch (calc.getReqConfig().getOper()) {
 		case 0: 
 			statusVol = 0;
 			break;
@@ -409,7 +409,7 @@ public class DistGen {
 					lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
 					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2(), 
-							calc.getReqConfig().getOperTp(), chng, statusVol);
+							calc.getReqConfig().getOper(), chng, statusVol);
 					//saveVol(ml, vol);
 					ml.getVol().add(vol);
 				}
@@ -439,7 +439,7 @@ public class DistGen {
 						}
 						//записать лимит ОДН
 						Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2(),
-										calc.getReqConfig().getOperTp(), chng, statusVol);
+										calc.getReqConfig().getOper(), chng, statusVol);
 						//saveVol(ml, vol);
 						ml.getVol().add(vol);
 						//log.warn("ЛИМИТ ОДН по ЭлектроЭнергии="+lmtVol);
@@ -454,14 +454,14 @@ public class DistGen {
 			//расчетная связь, расчетная связь ОДН
 			volTp = lstMng.getByCD("Фактический объем");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
-					calc.getReqConfig().getOperTp(), chng, statusVol);
+					calc.getReqConfig().getOper(), chng, statusVol);
 			ml.getVol().add(vol);
 			
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.getByCD("Площадь и проживающие");
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt,
-							calc.getReqConfig().getOperTp(), chng, statusVol);
+							calc.getReqConfig().getOper(), chng, statusVol);
 
 			ml.getVol().add(vol);
 			//saveVol(ml, vol);
