@@ -44,7 +44,7 @@ import com.ric.st.SoapPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Slf4j
-@Service
+//@Service
 public class SoapPrep<T> implements SoapPreps<T> {
 
 	T ob;
@@ -220,7 +220,7 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	 * Отправить SOAP сообщение
 	 * 
 	 */
-	public Object sendSOAP(Object req, String meth, Object result) throws Exception {
+	public Object sendSOAP(Object req, String meth, Object result, Config config) throws Exception {
 		//получить XML из хэндлера
     	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
         setXMLText((String) responseContext.get("SOAP_XML"));
@@ -302,6 +302,5 @@ public class SoapPrep<T> implements SoapPreps<T> {
 		return App.sc.signElem(xml, "foo", "foo");
     	
     }
-
 
 }

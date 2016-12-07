@@ -46,7 +46,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
     private EntityManager em;
 	@Autowired
 	private Config config;
-	@Autowired
+	//@Autowired
 	private SoapPreps sp;
 
 	private ExportNsiListRequest req;
@@ -61,6 +61,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
     	service = new NsiService();
     	port = service.getNsiPort();
     	// подготовительный объект
+    	sp = new SoapPrep(); 
     	sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
 
     	// подписывать XML?
@@ -88,7 +89,8 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	    resList = (ExportNsiListResult) sp.sendSOAP(  // исправить
 	   			req, 
 	   			"exportNsiList", 			 		// исправить
-	   			new ExportNsiListResult());
+	   			new ExportNsiListResult(),
+	   			config);
 	   return resList;
 	}
 	
@@ -109,7 +111,8 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	   	resItem = (ExportNsiItemResult) sp.sendSOAP(  // исправить
 	   			req, 
 	   			"ExportNsiList", 			 		// исправить
-	   			new ExportNsiListResult());
+	   			new ExportNsiListResult(),
+	   			config);
 	
 	   	
 	   	for (NsiElementType ni : resItem.getNsiItem().getNsiElement()) {

@@ -69,7 +69,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     private EntityManager em;
 	@Autowired
 	private Config config;
-	@Autowired
+	//@Autowired
 	private SoapPreps sp;
 
 	private HouseManagementPreps hm;
@@ -88,6 +88,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	service = new HouseManagementService();
     	port = service.getHouseManagementPort();
     	// подготовительный объект
+    	sp = new SoapPrep(); 
     	sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
   
     	// подписывать XML?
@@ -111,7 +112,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	return (ImportResult) sp.sendSOAP(   // исправить
     			req, 
     			"importHouseUOData", 		// исправить
-    			new ImportResult()	 		// исправить
+    			new ImportResult(),	 		// исправить
+    			config
     			);
 	}
 
@@ -727,8 +729,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	ImportResult res = (ImportResult) sp.sendSOAP(  // исправить
     			req, 
     			"importAccountData", 			 		// исправить
-    			new ImportResult() 			 		// исправить
-    			);
+    			new ImportResult(), 			 		// исправить
+    			config);
 
     	System.out.println("res:"+res.getCommonResult());
     }
@@ -830,7 +832,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
    	   	res = (ImportResult) sp.sendSOAP(  // исправить
    	   			req, 
    	   			"ImportMeteringDeviceData", 			 		// исправить
-   	   			new ImportResult() 			 		// исправить
+   	   			new ImportResult(), 			 		// исправить
+   	   			config
    	   			);
 	   	System.out.println("res:"+res.getCommonResult());
 	    } 
@@ -938,7 +941,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
    	   	res = (ImportResult) sp.sendSOAP(  // исправить
    	   			req, 
    	   			"ImportMeteringDeviceData", 			 		// исправить
-   	   			new ImportResult() 			 		// исправить
+   	   			new ImportResult(), 			 		// исправить
+   	   			config
    	   			);
 	   	System.out.println("res:"+res.getCommonResult());
 	    }  
@@ -964,7 +968,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 				// исправить
 				req,
 				"ExportHouseData", // исправить
-				new ExportHouseResult() // исправить
+				new ExportHouseResult(), // исправить
+				config
 				);
 		if (pUn == null && nPun == null) {
 			System.out.println("N house_uni: "
