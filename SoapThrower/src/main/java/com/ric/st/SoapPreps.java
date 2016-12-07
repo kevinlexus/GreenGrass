@@ -13,15 +13,18 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.BindingProvider;
 
+import com.ric.bill.Config;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementPortsType;
 
-public interface SoapPreps {
+public interface SoapPreps<T> {
+
 	public RequestHeader getRh();
 	public void setRh(RequestHeader rh);
-	public void createRh(Date dt, UUID rUuid, String orgPpaGuid, boolean isSetOperSign ) throws DatatypeConfigurationException;
+	public void setUp(T o, BindingProvider bs, WSBindingProvider ws);
+	public void createRh(Date dt, UUID rUuid, String orgPpaGuid, boolean isSetOperSign) throws DatatypeConfigurationException;
 	public BindingProvider getBindingProvider();
 	public void setBindingProvider(BindingProvider bindingProvider);
 	public WSBindingProvider getWSBindingProvider();
@@ -32,7 +35,7 @@ public interface SoapPreps {
 	public void setSignXML(Boolean sign);
 	public boolean getSignXML();
 	public SOAPMessage createSM(String xmlText) throws IOException, SOAPException;
-	public Object sendSOAP(Object req, String meth, Object result, String login, String pass, String fingerPrint) 
+	public Object sendSOAP(Object req, String meth, Object result) 
 			throws Exception;
     public String signXML(String xml) throws Exception;
 }

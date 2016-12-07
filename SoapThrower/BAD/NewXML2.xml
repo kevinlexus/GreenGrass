@@ -1,162 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope
-	xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-	xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/payments-base/"
-	xmlns:ns12="http://dom.gosuslugi.ru/schema/integration/bills-base/"
-	xmlns:ns13="http://dom.gosuslugi.ru/schema/integration/house-management/"
-	xmlns:ns3="http://www.w3.org/2000/09/xmldsig#" xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/base/"
-	xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/account-base/"
-	xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
-	xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
-	xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
-	xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-	<soap:Header>
-		<ns4:ResultHeader>
-			<ns4:Date>2016-11-21T12:56:04.936+03:00</ns4:Date>
-			<ns4:MessageGUID>0dbf3c7b-057d-49fe-a6f4-919df27c624a
-			</ns4:MessageGUID>
-		</ns4:ResultHeader>
-	</soap:Header>
-	<soap:Body>
-		<ns13:ImportResult Id="signed-data-container"
-			ns4:version="10.0.1.1">
-			<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-				Id="xmldsig-32d09f07-eea3-495c-b03d-39803e70b009">
-				<ds:SignedInfo>
-					<ds:CanonicalizationMethod
-						Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
-					<ds:SignatureMethod
-						Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411" />
-					<ds:Reference URI="#signed-data-container">
-						<ds:Transforms>
-							<ds:Transform
-								Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
-						</ds:Transforms>
-						<ds:DigestMethod
-							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-						<ds:DigestValue>D6f2NXDHygks6Vg+9M/tXWixHmyqmeSdJ4Xc4WwkH2I=
-						</ds:DigestValue>
-					</ds:Reference>
-					<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
-						URI="#xmldsig-32d09f07-eea3-495c-b03d-39803e70b009-signedprops">
-						<ds:DigestMethod
-							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-						<ds:DigestValue>mdzjgWIz3lfbhZ5BzHVzTL3KafBR1pvWtnKWY1KmkSQ=
-						</ds:DigestValue>
-					</ds:Reference>
-				</ds:SignedInfo>
-				<ds:SignatureValue>OeVIfpTY8ndRarLnwKmS+8egOo1G5aN7zKdeoImuZA3Xv7MSyHZ4UuRwX1IIdY541fxomvxMiOz6FDrSaJDnlQ==
-				</ds:SignatureValue>
-				<ds:KeyInfo>
-					<ds:X509Data>
-						<ds:X509Certificate>MIIDAjCCArGgAwIBAgITEgAVyRWEZR3kx8QM8wAAABXJFTAIBgYqhQMCAgMwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDIwHhcNMTYxMDA0MTcwMjIzWhcNMTcwMTA0MTcxMjIzWjARMQ8wDQYDVQQDDAZUUzEwMDQwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARAT5RavuYVtUbVgxrp9M+gs6HT0z1osAFPyIe9bvz28L0qaRvof5+RBbfxq2tF2gRLsy6Wp+MGnM1IFH/+6ls2FaOCAXAwggFsMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUcLAKkPNPMWtH4wfDTUUsQJrKblkwHwYDVR0jBBgwFoAUFTF8sI0a3mbXFZxJUpcXJLkBeoMwWQYDVR0fBFIwUDBOoEygSoZIaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIuY3JsMIGpBggrBgEFBQcBAQSBnDCBmTBhBggrBgEFBQcwAoZVaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQBcn3tilZhzT0vG7xo22x8bZCsywF9RZTQt9q+HGFfcDz4wfyWEV+gxY09C4PA0XcWwxD9GTZo8RDGP4Q+FSt1s
-						</ds:X509Certificate>
-					</ds:X509Data>
-				</ds:KeyInfo>
-				<ds:Object>
-					<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
-						Target="#xmldsig-32d09f07-eea3-495c-b03d-39803e70b009">
-						<xades:SignedProperties
-							Id="xmldsig-32d09f07-eea3-495c-b03d-39803e70b009-signedprops">
-							<xades:SignedSignatureProperties>
-								<xades:SigningTime>2016-11-21T12:56:04.939+03:00
-								</xades:SigningTime>
-								<xades:SigningCertificate>
-									<xades:Cert>
-										<xades:CertDigest>
-											<ds:DigestMethod
-												Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
-											<ds:DigestValue>pFLpW6kFUrUxiIfnFF4T/5yuhme2WuUjmclY/17ZNKY=
-											</ds:DigestValue>
-										</xades:CertDigest>
-										<xades:IssuerSerial>
-											<ds:X509IssuerName>cn=CRYPTO-PRO Test Center 2,o=CRYPTO-PRO
-												LLC,l=Moscow,c=RU,1.2.840.113549.1.9.1=support@cryptopro.ru
-											</ds:X509IssuerName>
-											<ds:X509SerialNumber>401420826789807232416437193949005597730261269
-											</ds:X509SerialNumber>
-										</xades:IssuerSerial>
-									</xades:Cert>
-								</xades:SigningCertificate>
-							</xades:SignedSignatureProperties>
-						</xades:SignedProperties>
-					</xades:QualifyingProperties>
-				</ds:Object>
-			</ds:Signature>
-			<ns13:CommonResult>
-				<ns4:GUID>1278bfa0-0e31-49bc-877b-e18e7c804ecf</ns4:GUID>
-				<ns4:TransportGUID>15f6dd86-9364-4682-8499-27cc5dfc14c0
-				</ns4:TransportGUID>
-				<ns4:UniqueNumber>yXE00019</ns4:UniqueNumber>
-				<ns4:UpdateDate>2016-11-21T12:56:04.871+03:00</ns4:UpdateDate>
-				<ns13:ImportHouseUO>
-					<ns13:GKNRelationshipStatus>
-						<ns13:Status>N</ns13:Status>
-						<ns13:AppartmentHouseAcceptedParameter>OKTMO
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>CulturalHeritage
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>FiasHouseGuid
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>OlsonTZ
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>UndergroundFloorCount
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>FloorCount
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>TotalSquare
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>MinFloorCount
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>State
-						</ns13:AppartmentHouseAcceptedParameter>
-						<ns13:AppartmentHouseAcceptedParameter>UsedYear
-						</ns13:AppartmentHouseAcceptedParameter>
-					</ns13:GKNRelationshipStatus>
-					<ns13:EGRPRelationshipStatus />
-				</ns13:ImportHouseUO>
-			</ns13:CommonResult>
-			<ns13:CommonResult>
-				<ns4:GUID>de1afc8b-f52a-4c93-a600-1964760bd4a3</ns4:GUID>
-				<ns4:TransportGUID>9b02b8db-8fca-4993-b6fc-0f3a25f1e027
-				</ns4:TransportGUID>
-				<ns4:UpdateDate>2016-11-21T12:56:04.885+03:00</ns4:UpdateDate>
-			</ns13:CommonResult>
-			<ns13:CommonResult>
-				<ns4:GUID>bdc7ff71-0683-494a-8860-c25610ee1d22</ns4:GUID>
-				<ns4:TransportGUID>2ee4738d-74e4-4367-83ab-c3586aa9313c
-				</ns4:TransportGUID>
-				<ns4:UniqueNumber>9yXE0001900002</ns4:UniqueNumber>
-				<ns4:UpdateDate>2016-11-21T12:56:04.922+03:00</ns4:UpdateDate>
-				<ns13:ImportHouseUO>
-					<ns13:GKNRelationshipStatus>
-						<ns13:Status>N</ns13:Status>
-						<ns13:ResidentialPremiseAcceptedParameter>PremisesNum
-						</ns13:ResidentialPremiseAcceptedParameter>
-						<ns13:ResidentialPremiseAcceptedParameter>GrossArea
-						</ns13:ResidentialPremiseAcceptedParameter>
-						<ns13:ResidentialPremiseAcceptedParameter>PremisesCharacteristic
-						</ns13:ResidentialPremiseAcceptedParameter>
-						<ns13:ResidentialPremiseAcceptedParameter>TotalArea
-						</ns13:ResidentialPremiseAcceptedParameter>
-					</ns13:GKNRelationshipStatus>
-					<ns13:EGRPRelationshipStatus />
-				</ns13:ImportHouseUO>
-			</ns13:CommonResult>
-		</ns13:ImportResult>
-	</soap:Body>
-</soap:Envelope>
-GUID: 1278bfa0-0e31-49bc-877b-e18e7c804ecf
-Unique nomer: yXE00019
-Transport GUID: 15f6dd86-9364-4682-8499-27cc5dfc14c0
-GUID:
-de1afc8b-f52a-4c93-a600-1964760bd4a3
-Unique nomer: null
-Transport GUID:
-9b02b8db-8fca-4993-b6fc-0f3a25f1e027
-GUID:
-bdc7ff71-0683-494a-8860-c25610ee1d22
-Unique nomer: 9yXE0001900002
-Transport GUID: 2ee4738d-74e4-4367-83ab-c3586aa9313c
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Header>
+		<ns1:RequestHeader xmlns:ns1="http://dom.gosuslugi.ru/schema/integration/base/"
+			xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
+			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/nsi-common/">
+			<ns1:Date>2016-12-07T14:07:35.926+06:00</ns1:Date>
+			<ns1:MessageGUID>e0787bf0-2e0c-4ea2-8cf8-ef8853a86c70
+			</ns1:MessageGUID>
+			<ns1:orgPPAGUID>b9fe4d27-020d-44dc-8bfd-b5972a504f45</ns1:orgPPAGUID>
+			<ns1:IsOperatorSignature>true</ns1:IsOperatorSignature>
+		</ns1:RequestHeader>
+	</S:Header>
+	<S:Body>
+		<ns7:exportNsiListRequest
+			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/nsi-common/"
+			xmlns:ns1="http://dom.gosuslugi.ru/schema/integration/base/"
+			xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
+			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
+			ns1:version="10.0.1.2">
+			<ns6:ListGroup>NSI</ns6:ListGroup>
+		</ns7:exportNsiListRequest>
+	</S:Body>
+</S:Envelope>

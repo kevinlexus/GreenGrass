@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.ws.BindingProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,13 +55,13 @@ import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiPortsType;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiService;
 
 import com.ric.bill.Utl;
-import com.ric.st.HouseManagementBindingPreps2;
+import com.ric.st.HouseManagementBindingBuilders;
 import com.ric.st.SoapPreps;
 import com.ric.st.prep.HouseManagementPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Service
-public class HouseManagementBindingBuilder {
+public class HouseManagementBindingBuilder implements HouseManagementBindingBuilders {
 
 	@Autowired
 	private ApplicationContext ctx;
@@ -70,16 +69,16 @@ public class HouseManagementBindingBuilder {
     private EntityManager em;
 	@Autowired
 	private Config config;
+	@Autowired
+	private SoapPreps sp;
 
 	private HouseManagementPreps hm;
 	private HouseManagementService service;
 	private HouseManagementPortsType port;
 	private ImportResult res;
-	private SoapPreps sp;
 	private ImportHouseUORequest req;
 	private ApartmentHouse ah;
 	private EntranceToUpdate etu;
-
 	private NsiService service_nsi;
 	private NsiPortsType port_nsi;
 	
@@ -89,7 +88,7 @@ public class HouseManagementBindingBuilder {
     	service = new HouseManagementService();
     	port = service.getHouseManagementPort();
     	// подготовительный объект
-    	sp = new SoapPrep(port, (BindingProvider) port, (WSBindingProvider) port);
+    	sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
   
     	// подписывать XML?
     	sp.setSignXML(true);
@@ -112,8 +111,8 @@ public class HouseManagementBindingBuilder {
     	return (ImportResult) sp.sendSOAP(   // исправить
     			req, 
     			"importHouseUOData", 		// исправить
-    			new ImportResult(),	 		// исправить
-    			config.getBscLogin(), config.getBscPass(), config.getSrvTestHost());
+    			new ImportResult()	 		// исправить
+    			);
 	}
 
 	public HouseManagementPreps getHm() {
@@ -224,15 +223,14 @@ public class HouseManagementBindingBuilder {
 	}
 	/**
 	 * Общее Обновление подъездов
-	 * @throws DatatypeConfigurationException 
 	 * @throws Exception
 	 */
-	public void prepHouseEntranceUpd() throws DatatypeConfigurationException {
+	public void prepHouseEntranceUpd() throws Exception {
 	   		
 		EntranceToUpdate etu = new EntranceToUpdate();
 		ah.getEntranceToUpdate().add(etu);
 	   	//Дата постройки
-		etu.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("01.01.2015")));
+		etu.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("28.11.2016")));
 		//Номер подъезда
 		etu.setEntranceNum("3");
 		//Количество этажей
@@ -266,10 +264,9 @@ public class HouseManagementBindingBuilder {
 	    }
 	/**
 	 * Общее создание подъездов
-	 * @throws DatatypeConfigurationException 
 	 * @throws Exception
 	 */
-	public void prepHouseEntranceCrt() throws DatatypeConfigurationException  {
+	public void prepHouseEntranceCrt() throws Exception  {
 	   	
 	    EntranceToCreate etc = new EntranceToCreate();
 	    ah.getEntranceToCreate().add(etc);
@@ -730,8 +727,8 @@ public class HouseManagementBindingBuilder {
     	ImportResult res = (ImportResult) sp.sendSOAP(  // исправить
     			req, 
     			"importAccountData", 			 		// исправить
-    			new ImportResult(), 			 		// исправить
-    			config.getBscLogin(), config.getBscPass(), config.getSrvTestHost());
+    			new ImportResult() 			 		// исправить
+    			);
 
     	System.out.println("res:"+res.getCommonResult());
     }
@@ -776,8 +773,6 @@ public class HouseManagementBindingBuilder {
 	    mDbct.setTemperatureSensor(false);
 	    //Наличие датчиков давления
 	    mDbct.setPressureSensor(false);
-	    
-	    
 	    //Характеристики ИПУ жилого дома (значение справочника "Вид прибора учета" = индивидуальный, тип дома = жилой дом)
 	    //mDbct.setApartmentHouseDevice
 	    //Идентификатор ЛС
@@ -835,8 +830,8 @@ public class HouseManagementBindingBuilder {
    	   	res = (ImportResult) sp.sendSOAP(  // исправить
    	   			req, 
    	   			"ImportMeteringDeviceData", 			 		// исправить
-   	   			new ImportResult(), 			 		// исправить
-   	   			config.getBscLogin(), config.getBscPass(), config.getSrvTestHost());
+   	   			new ImportResult() 			 		// исправить
+   	   			);
 	   	System.out.println("res:"+res.getCommonResult());
 	    } 
 	/**
@@ -943,66 +938,79 @@ public class HouseManagementBindingBuilder {
    	   	res = (ImportResult) sp.sendSOAP(  // исправить
    	   			req, 
    	   			"ImportMeteringDeviceData", 			 		// исправить
-   	   			new ImportResult(), 			 		// исправить
-   	   			config.getBscLogin(), config.getBscPass(), config.getSrvTestHost());
+   	   			new ImportResult() 			 		// исправить
+   	   			);
 	   	System.out.println("res:"+res.getCommonResult());
 	    }  
 	/**
 	 * Получение данных о доме
 	 * @throws Exception
 	 */
-	public String ExportHouseData(String houseGUID,String pUn,String nPun) throws Exception {
-	   	String lret="";    
-			    	
-	   	ExportHouseRequest req = new ExportHouseRequest();
-	   
-	   	if (houseGUID != null){
-	   	req.setFIASHouseGuid(houseGUID);
-	   	}
-	   	else {
-	   	req.setFIASHouseGuid("810321c3-f0b4-454a-9a1c-cad82adebd58");
-	   	}
-	   	port.exportHouseData(req);
-	   	// отправка SOAP, анмаршаллинг результата
-	   	// Исправлять классы под соответствующий запрос!
-	   	ExportHouseResult res = (ExportHouseResult) sp.sendSOAP(  // исправить
-	   			req, 
-	   			"ExportHouseData", 			 		// исправить
-	   			new ExportHouseResult(), 			 		// исправить
-	   			config.getBscLogin(), config.getBscPass(), config.getSrvTestHost());
-	   	if (pUn == null && nPun == null) { 
-	   	 System.out.println("N house_uni: "+res.getExportHouseResult().getHouseUniqueNumber());
-	   	 for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.NonResidentialPremises enp : res.getExportHouseResult().getApartmentHouse().getNonResidentialPremises()) { 
-		   	   System.out.println("	N nrp : "+enp.getPremisesNum());
-	           System.out.println("	nrp_guid: "+enp.getPremisesGUID());
-	           System.out.println("	nrp_uni: "+enp.getPremisesUniqueNumber());
-		   	  }
-	   	 for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.ResidentialPremises ep : res.getExportHouseResult().getApartmentHouse().getResidentialPremises()) { 
-		   	   System.out.println("	N rp : "+ep.getPremisesNum());
-	           System.out.println("	rp_guid: "+ep.getPremisesGUID());
-	           System.out.println("	rp_uni: "+ep.getPremisesUniqueNumber());
-		   	  }
-	   	 for (Entrance ent : res.getExportHouseResult().getApartmentHouse().getEntrance()) {
-	   	  System.out.println("N entrance: "+ent.getEntranceNum());
-	   	  System.out.println("N entrance GUID: "+ent.getEntranceGUID());
-	   	 }
-	   	return " ";
-	   	};
-	   	if (pUn != null) {
-	   	 for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.ResidentialPremises epr : res.getExportHouseResult().getApartmentHouse().getResidentialPremises()) { 
-	   	   if (epr.getPremisesNum() == pUn){
-	   		 lret = epr.getPremisesGUID().toString();
-	   	   }
-	   	 }
-	   	};
-	   	if (nPun != null) {
-		 for (NonResidentialPremises nrpr : res.getExportHouseResult().getApartmentHouse().getNonResidentialPremises()) {
-		  if (nrpr.getPremisesUniqueNumber()== nPun){
-		   lret = nrpr.getPremisesGUID().toString();
-		  }
-		 }
-	   	}
-	   return lret;
+	public String ExportHouseData(String houseGUID, String pUn, String nPun)
+			throws Exception {
+		String lret = "";
+
+		ExportHouseRequest req = new ExportHouseRequest();
+
+		if (houseGUID != null) {
+			req.setFIASHouseGuid(houseGUID);
+		} else {
+			req.setFIASHouseGuid("810321c3-f0b4-454a-9a1c-cad82adebd58");
+		}
+		port.exportHouseData(req);
+		// отправка SOAP, анмаршаллинг результата
+		// Исправлять классы под соответствующий запрос!
+		ExportHouseResult res = (ExportHouseResult) sp.sendSOAP(
+				// исправить
+				req,
+				"ExportHouseData", // исправить
+				new ExportHouseResult() // исправить
+				);
+		if (pUn == null && nPun == null) {
+			System.out.println("N house_uni: "
+					+ res.getExportHouseResult().getHouseUniqueNumber());
+			for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.NonResidentialPremises enp : res
+					.getExportHouseResult().getApartmentHouse()
+					.getNonResidentialPremises()) {
+				System.out.println("	N nrp : " + enp.getPremisesNum());
+				System.out.println("	nrp_guid: " + enp.getPremisesGUID());
+				System.out
+						.println("	nrp_uni: " + enp.getPremisesUniqueNumber());
+			}
+			for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.ResidentialPremises ep : res
+					.getExportHouseResult().getApartmentHouse()
+					.getResidentialPremises()) {
+				System.out.println("	N rp : " + ep.getPremisesNum());
+				System.out.println("	rp_guid: " + ep.getPremisesGUID());
+				System.out.println("	rp_uni: " + ep.getPremisesUniqueNumber());
+			}
+			for (Entrance ent : res.getExportHouseResult().getApartmentHouse()
+					.getEntrance()) {
+				System.out.println("N entrance: " + ent.getEntranceNum());
+				System.out.println("N entrance GUID: " + ent.getEntranceGUID());
+			}
+			return " ";
+		}
+		;
+		if (pUn != null) {
+			for (ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.ResidentialPremises epr : res
+					.getExportHouseResult().getApartmentHouse()
+					.getResidentialPremises()) {
+				if (epr.getPremisesNum() == pUn) {
+					lret = epr.getPremisesGUID().toString();
+				}
+			}
+		}
+		;
+		if (nPun != null) {
+			for (NonResidentialPremises nrpr : res.getExportHouseResult()
+					.getApartmentHouse().getNonResidentialPremises()) {
+				if (nrpr.getPremisesUniqueNumber() == nPun) {
+					lret = nrpr.getPremisesGUID().toString();
+				}
+			}
+		}
+		return lret;
 	}
 
 }

@@ -2,7 +2,7 @@ package com.ric.st;
 
 import com.ric.st.prep.HouseManagementPreps;
 
-public interface HouseManagementBindingPreps2 {
+public interface HouseManagementBindingBuilders {
 
 	public void setHm(HouseManagementPreps hm);
 	public HouseManagementPreps getHm();
@@ -31,7 +31,7 @@ public interface HouseManagementBindingPreps2 {
 	/** Общее Обновление подъездов
 	 * @throws Exception
 	 */
-	public void prepHouseEntranceUpd();
+	public void prepHouseEntranceUpd() throws Exception;
 	/** Обновление подъездов
 	 * @throws Exception
 	 */
@@ -40,7 +40,7 @@ public interface HouseManagementBindingPreps2 {
 	/**Общее создание подъездов
 	 * @throws Exception
 	 */
-	public void prepHouseEntranceCrt();
+	public void prepHouseEntranceCrt() throws Exception;
 	/** создание подъездов
 	 * @throws Exception
 	 */

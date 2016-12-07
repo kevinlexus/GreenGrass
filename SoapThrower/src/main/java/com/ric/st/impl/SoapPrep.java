@@ -31,15 +31,21 @@ import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import lombok.extern.slf4j.Slf4j;
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 
 import com.ric.bill.Utl;
+import com.ric.st.ActionControllers;
+import com.ric.st.Configs;
 import com.ric.st.SoapPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Slf4j
-public class SoapPrep<T> implements SoapPreps {
+@Service
+public class SoapPrep<T> implements SoapPreps<T> {
 
 	T ob;
 	
@@ -51,10 +57,17 @@ public class SoapPrep<T> implements SoapPreps {
 	private String xmlText;
 	private Boolean sign; 
 	
+	@Autowired
+	private Config config;
+	
 	/*
-	 * Конструктор
+	 * установить конфигурационные параметры
 	 */
-	public SoapPrep(T o, BindingProvider bs, WSBindingProvider ws){
+	/* (non-Javadoc)
+	 * @see com.ric.st.impl.kmp#setUp(T, javax.xml.ws.BindingProvider, com.sun.xml.ws.developer.WSBindingProvider)
+	 */
+	@Override
+	public void setUp(T o, BindingProvider bs, WSBindingProvider ws){
 		ob = o;
 		setBindingProvider(bs);
 		setWSBindingProvider(ws);
@@ -65,6 +78,12 @@ public class SoapPrep<T> implements SoapPreps {
 		addHandler();
 	}
 
+/*	@Override
+	public void setUp(Object o, BindingProvider bs, WSBindingProvider ws) {
+		// TODO Auto-generated method stub
+		
+	}
+*/
 	/**
 	 * Добавить хэндлер
 	 */
@@ -201,7 +220,7 @@ public class SoapPrep<T> implements SoapPreps {
 	 * Отправить SOAP сообщение
 	 * 
 	 */
-	public Object sendSOAP(Object req, String meth, Object result, String login, String pass, String fingerPrint) throws Exception {
+	public Object sendSOAP(Object req, String meth, Object result) throws Exception {
 		//получить XML из хэндлера
     	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
         setXMLText((String) responseContext.get("SOAP_XML"));
@@ -217,11 +236,10 @@ public class SoapPrep<T> implements SoapPreps {
         SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
         SOAPConnection soapConnection = soapConnectionFactory.createConnection();
         
-        String authorization = new sun.misc.BASE64Encoder().encode((login+":"+pass).getBytes());
+        String authorization = new sun.misc.BASE64Encoder().encode((config.getBscLogin()+":"+config.getBscPass()).getBytes());
         MimeHeaders hd = message2.getMimeHeaders();
         hd.addHeader("Authorization", "Basic " + authorization);
-        
-        hd.addHeader("X-Client-Cert-Fingerprint", fingerPrint);
+        hd.addHeader("X-Client-Cert-Fingerprint", config.getFingerPrint());
         
         log.info("Class-2 : " + ob.getClass().getInterfaces()[0]);
         
@@ -284,5 +302,6 @@ public class SoapPrep<T> implements SoapPreps {
 		return App.sc.signElem(xml, "foo", "foo");
     	
     }
+
 
 }
