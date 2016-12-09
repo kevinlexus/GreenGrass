@@ -201,6 +201,14 @@
 					<execution>
 						<phase>package</phase>
 						<configuration>
+							<target> <!-- Это нужно, чтобы заработал windows-сервис! -->
+								<zip destfile="${project.build.directory}/${project.build.finalName}.jar" update="true" compress="store">
+									<fileset dir="${project.build.directory}/classes" includes="com/ric/web/Bootstrap.class"/>
+								</zip>
+							</target>
+						</configuration>
+
+<!--						<configuration>
 							<target> 
 								<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
 									update="true" compress="store">
@@ -208,14 +216,15 @@
 										includes="com/ric/bill/*.class" /> 
 								</zip>
 								
-<!-- 			РАСКОММЕНТИРУЙ ЭТО, когда надо выгрузить все классы Андрейке!					
+ 			РАСКОММЕНТИРУЙ ЭТО, когда надо выгрузить все классы Андрейке!					
 				<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
 									update="true" compress="store">
 									<fileset dir="${project.build.directory}/classes"
 										includes="com/ric/web/*.class" />
 								</zip>
- -->							</target>
+ 							</target>
 						</configuration>
+-->
 						<goals>
 							<goal>run</goal>
 						</goals>
