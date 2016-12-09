@@ -14,13 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDateTime;
 
 /**
  * Тип справочника 
@@ -35,7 +31,7 @@ public class UlistTp implements java.io.Serializable  {
 	public UlistTp() {
 	}
 
-	public UlistTp(String cd, String name, LocalDateTime dt1, String grp,
+	public UlistTp(String cd, String name, Date dt1, String grp,
 			List<Ulist> ulist) {
 		super();
 		this.cd = cd;
@@ -61,8 +57,8 @@ public class UlistTp implements java.io.Serializable  {
 	
 	// ИЗ ГИС ЖКХ: Дата и время последнего изменения справочника.
 	@Column(name = "DT1", updatable = true, nullable = true)
-	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-	private LocalDateTime dt1;
+	//@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	private Date dt1;
 
 	// ИЗ ГИС ЖКХ: Группа справочника: NSI - (по умолчанию) общесистемный NSIRAO - ОЖФ
 	@Column(name = "GRP", updatable = true, nullable = true)
@@ -98,11 +94,11 @@ public class UlistTp implements java.io.Serializable  {
 		this.name = name;
 	}
 
-	public LocalDateTime getDt1() {
+	public Date getDt1() {
 		return dt1;
 	}
 
-	public void setDt1(LocalDateTime dt1) {
+	public void setDt1(Date dt1) {
 		this.dt1 = dt1;
 	}
 
