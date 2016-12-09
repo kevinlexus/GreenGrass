@@ -63,14 +63,11 @@ public class testAll {
     	Future<Result> fut = null;
 
     	RequestConfig reqConfig = new RequestConfig();
-    	Chng chng = em.find(Chng.class, 175157);
+    	Chng chng = em.find(Chng.class, 1021);
     	reqConfig.setChng(chng);
-    	reqConfig.setOper(1); // перерасчёт
+    	reqConfig.setOperTp(1); // перерасчёт
     	reqConfig.setIsDist(true);
-		if (chng == null) {
-			log.error("Не найден CHNG={}!!!", chng);
-		}
-
+    	
     	fut = billServ.chrgLsk(reqConfig, null, 275699);
     	
 	   	//проверить окончание потока 

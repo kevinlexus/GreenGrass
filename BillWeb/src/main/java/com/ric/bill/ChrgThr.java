@@ -227,7 +227,7 @@ public class ChrgThr {
 		Kart kart = calc.getKart();
 		// установить статус операции, для получения корректного объема
 		Integer statusVol = null;
-		switch (calc.getReqConfig().getOper()) {
+		switch (calc.getReqConfig().getOperTp()) {
 		case 0: 
 			statusVol = 0;
 			break;

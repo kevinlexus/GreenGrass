@@ -207,12 +207,14 @@
 									<fileset dir="${project.build.directory}/classes"
 										includes="com/ric/bill/*.class" /> 
 								</zip>
-								<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
+								
+<!-- 			РАСКОММЕНТИРУЙ ЭТО, когда надо выгрузить все классы Андрейке!					
+				<zip destfile="${project.build.directory}/${project.build.finalName}.jar"
 									update="true" compress="store">
 									<fileset dir="${project.build.directory}/classes"
 										includes="com/ric/web/*.class" />
 								</zip>
-							</target>
+ -->							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>

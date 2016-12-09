@@ -61,7 +61,7 @@ public class Chrg implements java.io.Serializable, Simple {
 
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			Double sumFull, Double sumAmnt, Double vol,
-			Double price, Double stdt, Integer cntPers, Lst tp, Date dt1, Date dt2, Chng chng) {
+			Double price, Double stdt, Integer cntPers, Lst tp, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -77,7 +77,6 @@ public class Chrg implements java.io.Serializable, Simple {
 		setTp(tp);
 		setDt1(dt1);
 		setDt2(dt2);
-		setChng(chng);
 	}
 
 	@Id

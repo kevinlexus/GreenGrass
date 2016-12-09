@@ -1,5 +1,8 @@
 package com.ric.bill;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import com.ric.bill.model.fn.Chng;
 
 /**
@@ -8,8 +11,8 @@ import com.ric.bill.model.fn.Chng;
  *
  */
 public class RequestConfig {
-	// операция (0-начисление, 1-перерасчет)
-	private Integer oper;
+	// тип операции (0-начисление, 1-перерасчет)
+	private Integer operTp;
 
 	// включить распределение?
 	private Boolean isDist;
@@ -17,12 +20,12 @@ public class RequestConfig {
 	// перерасчет
 	private Chng chng;
 	
-	public Integer getOper() {
-		return oper;
+	public Integer getOperTp() {
+		return operTp;
 	}
 
-	public void setOper(Integer operTp) {
-		this.oper = operTp;
+	public void setOperTp(Integer operTp) {
+		this.operTp = operTp;
 	}
 
 	public Boolean getIsDist() {

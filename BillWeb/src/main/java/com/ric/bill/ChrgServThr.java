@@ -5,8 +5,6 @@ import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -29,7 +27,6 @@ import com.ric.bill.model.tr.TarifKlsk;
  */
 @Service
 @Scope("prototype")
-@Slf4j
 public class ChrgServThr {
 
 	@Autowired

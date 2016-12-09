@@ -122,7 +122,7 @@ public class BillServ {
 		}
 	    
 		// РАСЧЕТ НАЧИСЛЕНИЯ ПО ЛС В ПОТОКАХ
-	    if (reqConfig.getOper()==0) {
+	    if (reqConfig.getOperTp()==0) {
 			long startTime3 = System.currentTimeMillis();
 			//загрузить все необходимые Лиц.счета
 			kartThr = kartMng.findAll(houseId);
