@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.soap.SOAPException;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

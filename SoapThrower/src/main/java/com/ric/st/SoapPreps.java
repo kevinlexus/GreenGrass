@@ -6,18 +6,14 @@ import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.BindingProvider;
 
-import com.ric.bill.Config;
-import com.sun.xml.ws.developer.WSBindingProvider;
-
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
-import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementPortsType;
+
+import com.sun.xml.ws.developer.WSBindingProvider;
 
 public interface SoapPreps<T> {
 

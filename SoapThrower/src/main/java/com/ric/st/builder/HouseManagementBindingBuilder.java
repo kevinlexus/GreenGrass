@@ -1,4 +1,4 @@
-package com.ric.st.impl;
+package com.ric.st.builder;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -13,21 +13,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import ru.gosuslugi.dom.schema.integration.house_management.AccountIndType;
+import ru.gosuslugi.dom.schema.integration.house_management.AccountType.Accommodation;
+import ru.gosuslugi.dom.schema.integration.house_management.AccountType.PayerInfo;
 import ru.gosuslugi.dom.schema.integration.house_management.ApartmentHouseUOType;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportHouseRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResult;
-import ru.gosuslugi.dom.schema.integration.house_management.HouseBasicUpdateUOType;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportAccountRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportMeteringDeviceDataRequest;
-import ru.gosuslugi.dom.schema.integration.house_management.ImportResult;
-import ru.gosuslugi.dom.schema.integration.house_management.MeteringDeviceBasicCharacteristicsType;
-import ru.gosuslugi.dom.schema.integration.house_management.MeteringDeviceFullInformationType;
-import ru.gosuslugi.dom.schema.integration.house_management.AccountType.Accommodation;
-import ru.gosuslugi.dom.schema.integration.house_management.AccountType.PayerInfo;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.Entrance;
 import ru.gosuslugi.dom.schema.integration.house_management.ExportHouseResultType.ApartmentHouse.NonResidentialPremises;
+import ru.gosuslugi.dom.schema.integration.house_management.HouseBasicUpdateUOType;
+import ru.gosuslugi.dom.schema.integration.house_management.ImportAccountRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportAccountRequest.Account;
+import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ApartmentHouseToCreate;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ApartmentHouseToUpdate;
@@ -40,23 +36,24 @@ import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ResidentialPremises;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ResidentialPremises.ResidentialPremisesToCreate;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ResidentialPremises.ResidentialPremisesToUpdate;
+import ru.gosuslugi.dom.schema.integration.house_management.ImportMeteringDeviceDataRequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportMeteringDeviceDataRequest.MeteringDevice;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportMeteringDeviceDataRequest.MeteringDevice.DeviceDataToUpdate;
+import ru.gosuslugi.dom.schema.integration.house_management.ImportResult;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportResult.CommonResult;
+import ru.gosuslugi.dom.schema.integration.house_management.MeteringDeviceBasicCharacteristicsType;
 import ru.gosuslugi.dom.schema.integration.house_management.MeteringDeviceBasicCharacteristicsType.ResidentialPremiseDevice;
+import ru.gosuslugi.dom.schema.integration.house_management.MeteringDeviceFullInformationType;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementPortsType;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementService;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
-import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemRequest;
-import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
-import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
-import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListResult;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiPortsType;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiService;
 
 import com.ric.bill.Utl;
 import com.ric.st.HouseManagementBindingBuilders;
 import com.ric.st.SoapPreps;
+import com.ric.st.impl.Config;
 import com.ric.st.prep.HouseManagementPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
@@ -69,7 +66,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     private EntityManager em;
 	@Autowired
 	private Config config;
-	//@Autowired
+	@Autowired
 	private SoapPreps sp;
 
 	private HouseManagementPreps hm;
@@ -88,7 +85,6 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	service = new HouseManagementService();
     	port = service.getHouseManagementPort();
     	// подготовительный объект
-    	sp = new SoapPrep(); 
     	sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
   
     	// подписывать XML?

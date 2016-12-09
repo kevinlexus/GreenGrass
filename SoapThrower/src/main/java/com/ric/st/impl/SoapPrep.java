@@ -31,20 +31,21 @@ import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 
 import com.ric.bill.Utl;
-import com.ric.st.ActionControllers;
-import com.ric.st.Configs;
 import com.ric.st.SoapPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Slf4j
-//@Service
+@Service
+@Scope("prototype") // prototype, иначе - ошибка, так как другие классы пытаются использовать совместно
 public class SoapPrep<T> implements SoapPreps<T> {
 
 	T ob;
@@ -63,9 +64,6 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	/*
 	 * установить конфигурационные параметры
 	 */
-	/* (non-Javadoc)
-	 * @see com.ric.st.impl.kmp#setUp(T, javax.xml.ws.BindingProvider, com.sun.xml.ws.developer.WSBindingProvider)
-	 */
 	@Override
 	public void setUp(T o, BindingProvider bs, WSBindingProvider ws){
 		ob = o;
@@ -78,12 +76,6 @@ public class SoapPrep<T> implements SoapPreps<T> {
 		addHandler();
 	}
 
-/*	@Override
-	public void setUp(Object o, BindingProvider bs, WSBindingProvider ws) {
-		// TODO Auto-generated method stub
-		
-	}
-*/
 	/**
 	 * Добавить хэндлер
 	 */
@@ -223,6 +215,9 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	public Object sendSOAP(Object req, String meth, Object result, Config config) throws Exception {
 		//получить XML из хэндлера
     	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
+		
+    	log.info("BP={}", responseContext);
+		
         setXMLText((String) responseContext.get("SOAP_XML"));
 
         // подпись XML, если необходимо
@@ -246,9 +241,6 @@ public class SoapPrep<T> implements SoapPreps<T> {
         Method m = ob.getClass().getInterfaces()[0].getMethod(meth, req.getClass());
         
         WebMethod webmethod = m.getAnnotation(WebMethod.class);
-        
-        log.info("Webmethod : " + webmethod);
-        
         
         hd.addHeader("SOAPAction", webmethod.action());
         

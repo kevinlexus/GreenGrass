@@ -44,7 +44,8 @@ public class ActionController implements ActionControllers {
 	private boolean checkNsiUpdates() {
 		// проверить обновление справочников
 		try {
-			ulistMng.refreshNsi();
+			ulistMng.refreshNsi("NSI");
+			ulistMng.refreshNsi("NSIRAO");
 		} catch (Exception e) {
 			// сообщение об ошибке
 			e.printStackTrace();

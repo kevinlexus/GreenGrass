@@ -1,4 +1,4 @@
-package com.ric.st.impl;
+package com.ric.st.builder;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,6 +34,7 @@ import com.ric.bill.Utl;
 import com.ric.st.NsiBindingBuilders;
 import com.ric.st.SoapPreps;
 import com.ric.st.hotora.model.exs.Ulist;
+import com.ric.st.impl.Config;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Service
@@ -46,7 +47,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
     private EntityManager em;
 	@Autowired
 	private Config config;
-	//@Autowired
+	@Autowired
 	private SoapPreps sp;
 
 	private ExportNsiListRequest req;
@@ -61,7 +62,6 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
     	service = new NsiService();
     	port = service.getNsiPort();
     	// подготовительный объект
-    	sp = new SoapPrep(); 
     	sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
 
     	// подписывать XML?
@@ -84,8 +84,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 		req.setListGroup(tp);
 		req.setVersion(req.getVersion());
 		port.exportNsiList(req);
-	   	// отправка SOAP, анмаршаллинг результата
-	   	// Исправлять классы под соответствующий запрос!
+	   	// отправить SOAP, анмаршаллинг результата
 	    resList = (ExportNsiListResult) sp.sendSOAP(  // исправить
 	   			req, 
 	   			"exportNsiList", 			 		// исправить

@@ -2,5 +2,5 @@ package com.ric.st.mm;
 
 public interface UlistMng {
 
-	public void refreshNsi() throws Exception;
+	public void refreshNsi(String grp) throws Exception;
 }

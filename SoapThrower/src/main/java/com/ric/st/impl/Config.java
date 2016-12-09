@@ -68,6 +68,14 @@ public class Config implements Configs {
 		return "rZ_GG72XS^Vf55ZW";
 	}
 	
+	/**
+	 * Вернуть префикс CD элементов в справочниках локальной системы
+	 * @return
+	 */
+	public String getPrefixGis() {
+		return "GIS";
+	}
+	
 	public void setXmlLog() {
 		System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump", "true");
 		System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "true");
