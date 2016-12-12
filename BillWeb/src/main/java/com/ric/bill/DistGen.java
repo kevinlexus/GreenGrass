@@ -3,6 +3,7 @@ package com.ric.bill;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -494,12 +495,21 @@ public class DistGen {
 	@Cacheable(cacheNames="rrr3", key="{ #id, #tp, #genDt }")
 	private NodeVol findLstCheck(int id, int tp, Date genDt) { //TODO переделать на ParallelStream Java 8!!!
 		//log.info("Check size={}", lstCheck.size());
-		for (Check c : lstCheck) {
+		
+		Optional<Check> nv = lstCheck.parallelStream().filter(t -> t.getId()==id && t.getTp()==tp && t.getGenDt().equals(genDt)).findAny();
+		
+/*		for (Check c : lstCheck) {
 			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
 				return c.getNodeVol();
 			}
 		}
 		return null;
+*/		
+		if (nv.isPresent()) {
+			return nv.get().getNodeVol();
+		} else {
+			return null;
+		}
 	}
 	
 	/**
