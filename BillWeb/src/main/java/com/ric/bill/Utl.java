@@ -156,4 +156,15 @@ public class Utl {
         }
 		return date;
 	}
+
+	/**
+	 * Конвертировать XMLGregorianCalendar в Date
+	 * @param cal
+	 * @return
+	 */
+	public static Date getDateFromXmlGregCal(XMLGregorianCalendar cal) {
+		
+		return cal.toGregorianCalendar().getTime();
+		
+	}
 }

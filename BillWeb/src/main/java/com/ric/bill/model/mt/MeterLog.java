@@ -68,7 +68,7 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
-	//@BatchSize(size = 50)
+	@BatchSize(size = 50)
 	@Fetch(FetchMode.SUBSELECT)
 	private List<Meter> meter = new ArrayList<Meter>(0);
 

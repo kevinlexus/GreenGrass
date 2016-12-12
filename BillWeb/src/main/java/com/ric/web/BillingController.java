@@ -115,7 +115,7 @@ public class BillingController {
     public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist,
 			  			  @RequestParam(value="tp", defaultValue="0") String tp,
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
-    	log.info("got /chrgall dist="+dist+" tp="+tp+" houseId="+houseId);
+    	log.info("got /chrgall dist={} tp={} houseId={}", dist, tp, houseId);
     	Future<Result> fut = null;
     	
     	RequestConfig reqConfig = new RequestConfig(); 

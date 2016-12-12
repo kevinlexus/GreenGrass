@@ -180,6 +180,10 @@ public class DistGen {
 			log.trace("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
 		}
 
+		if (ml.getId().equals(319941)) {
+			log.trace("Счетчик!");
+		}
+		
 		String mLogTp = ml.getTp().getCd(); //тип лог счетчика
 		Serv servChrg = ml.getServ().getServChrg(); //получить основную услугу, для начисления
 		if (servChrg == null) {
@@ -199,7 +203,7 @@ public class DistGen {
 								//добавить объем в объект объема
 								//умножить объем на процент существования и на долю дня
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=v.getVol1() * Utl.nvl(m.getTrRatio(), 0d) * e.getPrc() / config.getCntCurDays();
+									vl=v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() / config.getCntCurDays();
 								}
 							}
 						}
@@ -488,7 +492,8 @@ public class DistGen {
 	 * @return - найденный объем
 	 */
 	@Cacheable(cacheNames="rrr3", key="{ #id, #tp, #genDt }")
-	private NodeVol findLstCheck(int id, int tp, Date genDt) { //
+	private NodeVol findLstCheck(int id, int tp, Date genDt) { //TODO переделать на ParallelStream Java 8!!!
+		//log.info("Check size={}", lstCheck.size());
 		for (Check c : lstCheck) {
 			if (c.getId()==id && c.getTp()==tp && c.getGenDt().equals(genDt)) {
 				return c.getNodeVol();
