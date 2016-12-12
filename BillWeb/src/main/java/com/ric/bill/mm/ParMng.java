@@ -15,6 +15,7 @@ public interface ParMng {
 	boolean isExByCd(String cd);
 	//public boolean checkPar(int id, String cd, String dataTp);
 	public Par getByCD(String cd);
+	public Boolean getBool(Storable st, String cd, Date genDt) throws EmptyStorable;
 	public Double getDbl(Storable st, String cd, Date dt1) throws EmptyStorable;
 	public Double getDbl(Storable st, String cd) throws EmptyStorable;
 	public String getStr(Storable st, String cd, Date dt1) throws EmptyStorable;

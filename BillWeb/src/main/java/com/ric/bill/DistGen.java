@@ -430,12 +430,12 @@ public class DistGen {
 				}
 				
 				if (lnkODNVol.getArea() > 0) {
-					Double isLift = parMng.getDbl(ml.getHouse(), "Признак наличия лифта", genDt);
+					Boolean isLift = parMng.getBool(ml.getHouse(), "Признак наличия лифта", genDt);
 					if (isLift == null) {
 						log.warn("Отсутствует параметр Признак наличия лифта в доме id="+ml.getHouse().getId()+" по дате="+genDt);
 					} else {
 						// лимит кВт ОДН на м2
-						if (isLift == 1) {
+						if (isLift) {
 				            // есть лифт в доме
 							lmtVol = 4.1d * areaComm/lnkODNVol.getArea();
 						} else {

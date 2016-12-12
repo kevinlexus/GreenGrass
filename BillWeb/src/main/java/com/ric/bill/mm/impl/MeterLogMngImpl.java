@@ -146,33 +146,20 @@ public class MeterLogMngImpl implements MeterLogMng {
     public synchronized SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
 		SumNodeVol lnkVol = new SumNodeVol();
 		
-/*		JAVA 8!!!	
- * mLog.getVol().parallelStream()
+		mLog.getVol().parallelStream()
 	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(status) &&
 	            			Utl.between(t.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
 	        				Utl.between(t.getDt2(), dt1, dt2))
-	                .filter(t -> t.getTp().getCd().equals("Фактический объем"))
-	                .forEach(t -> lnkVol.addVol(t.getVol1()));
-*/		
-    	//так что, простая итерация
-    	for (Vol v: mLog.getVol()) {
-			//по всему соотв.периоду 
-    		if (Utl.nvl(v.getStatus(), 0).equals(status) &&
-    			Utl.between(v.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
-				Utl.between(v.getDt2(), dt1, dt2)	
-					) {
-		    		if (v.getTp().getCd().equals("Фактический объем") ){
-		    			lnkVol.addVol(v.getVol1());
-		    		} else if (v.getTp().getCd().equals("Площадь и проживающие") ){
-		    			lnkVol.addArea(v.getVol1());
-		    			lnkVol.addPers(v.getVol2());
-		    		} else if (v.getTp().getCd().equals("Лимит ОДН") ){
-		    			lnkVol.setLimit(v.getVol1()); //здесь set вместо add (будет одно значение) (как правило для ЛОДН счетчиков)
-		    		}
-			}
-    	}
-    	
-    	
+					.forEach(t -> {
+								if (t.getTp().getCd().equals("Фактический объем")) {
+					    			lnkVol.addVol(t.getVol1());
+								} else if (t.getTp().getCd().equals("Площадь и проживающие")) {
+					    			lnkVol.addArea(t.getVol1());
+					    			lnkVol.addPers(t.getVol2());
+					    		} else if (t.getTp().getCd().equals("Лимит ОДН") ){
+					    			lnkVol.setLimit(t.getVol1()); //здесь set вместо add (будет одно значение) (как правило для ЛОДН счетчиков)
+					    		}
+							});
 		return lnkVol;
 	}
 

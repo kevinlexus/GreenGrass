@@ -55,15 +55,51 @@ public class ParMngImpl implements ParMng {
 		}
 	}
 
+	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
+	public Boolean getBool(Storable st, String cd, Date genDt) throws EmptyStorable {
+		if (st == null) {
+			throw new EmptyStorable("Параметр st = null");
+		}
+		Par par = getByCD(cd);
+		try {
+			for (Dw d: st.getDw()) {
+    			//по соотв.периоду
+    			if (Utl.between(genDt, d.getDt1(), d.getDt2())) {
+       				if (d.getPar().equals(par)) {
+						if (d.getPar().getTp().equals("BL")) {
+							if (d.getPar().getDataTp().equals("SI")) {
+								if (d.getN1() == null) {
+									return null;
+								} else if (d.getN1()==1) {
+									return true;
+								} else {
+									return false;
+								}
+							} else {
+									throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+							}
+						} else {
+							throw new WrongGetMethod("Попытка получить параметр "+cd+" не являющийся типом BL завершилась ошибкой");
+						}
+					}
+    			}
+			}
+			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
+			if (!isExByCd(cd)) {
+				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
+			};
+		} catch (WrongGetMethod e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства
 	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
 	 */
-	//В кэшах не почувствовал разницы:
-	//@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
-	//@Transactional
 	public/* synchronized*/ Double getDbl(Storable st, String cd, Date genDt) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
@@ -96,7 +132,6 @@ public class ParMngImpl implements ParMng {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
-			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -132,7 +167,6 @@ public class ParMngImpl implements ParMng {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
-			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -166,7 +200,6 @@ public class ParMngImpl implements ParMng {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
-			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -206,7 +239,6 @@ public class ParMngImpl implements ParMng {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
-			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -243,7 +275,6 @@ public class ParMngImpl implements ParMng {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
-			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
