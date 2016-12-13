@@ -37,9 +37,10 @@ public class Chrg implements java.io.Serializable, Simple {
 		
 	}
 			
+	// конструктор для окончательно рассчитанных данных (умноженная расценка на объем)
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			BigDecimal sumFull, BigDecimal sumAmnt, BigDecimal vol,
-			BigDecimal price, BigDecimal stdt, Integer cntPers, Lst tp, Date dt1, Date dt2) {
+			BigDecimal price, BigDecimal stdt, Integer cntPers, BigDecimal area, Lst tp, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -55,13 +56,17 @@ public class Chrg implements java.io.Serializable, Simple {
 		}
 		setCntPers(cntPers);
 		setTp(tp);
+		if (area != null) {
+			setArea(area.doubleValue());
+		}
 		setDt1(dt1);
 		setDt2(dt2);
 	}
 
+	// конструктор для подготовительных данных, рассчитанных в потоке
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			Double sumFull, Double sumAmnt, Double vol,
-			Double price, Double stdt, Integer cntPers, Lst tp, Date dt1, Date dt2) {
+			Double price, Double stdt, Integer cntPers, Double area, Lst tp, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -75,6 +80,7 @@ public class Chrg implements java.io.Serializable, Simple {
 		setStdt(stdt);
 		setCntPers(cntPers);
 		setTp(tp);
+		setArea(area);
 		setDt1(dt1);
 		setDt2(dt2);
 	}
@@ -123,6 +129,9 @@ public class Chrg implements java.io.Serializable, Simple {
 	
 	@Column(name = "CNTPERS")
 	private Integer cntPers; 
+
+	@Column(name = "AREA")
+	private Double area;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHRG_TP", referencedColumnName="ID")
@@ -276,6 +285,13 @@ public class Chrg implements java.io.Serializable, Simple {
 		this.chng = chng;
 	}
 
+	public Double getArea() {
+		return area;
+	}
+
+	public void setArea(Double area) {
+		this.area = area;
+	}
 	
 }
 

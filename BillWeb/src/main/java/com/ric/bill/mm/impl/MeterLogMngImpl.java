@@ -145,7 +145,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId(), #tp, #dt1, #dt2 }")
     public synchronized SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
 		SumNodeVol lnkVol = new SumNodeVol();
-		
+		/* Java 8 */
 		mLog.getVol().parallelStream()
 	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(status) &&
 	            			Utl.between(t.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
