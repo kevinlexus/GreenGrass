@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -27,13 +26,12 @@ import org.hibernate.annotations.FetchMode;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "U_LISTTP", schema="EXS")
-@DynamicUpdate
 public class UlistTp implements java.io.Serializable  {
 
 	public UlistTp() {
 	}
 
-	public UlistTp(String cd, Integer fkExt, String name, Date dt1, String grp,
+	public UlistTp(String cd, String name, Date dt1, String grp,
 			List<Ulist> ulist) {
 		super();
 		this.cd = cd;
@@ -41,7 +39,6 @@ public class UlistTp implements java.io.Serializable  {
 		this.dt1 = dt1;
 		this.grp = grp;
 		this.ulist = ulist;
-		this.fkExt = fkExt;
 	}
 
 	@Id
@@ -51,7 +48,7 @@ public class UlistTp implements java.io.Serializable  {
 	private Integer id;
 
 	// CD элемента (ИЗ ГИС ЖКХ: С префиксом "GIS_" Реестровый номер справочника.)
-	@Column(name = "CD", updatable = false, nullable = true)
+	@Column(name = "CD", updatable = true, nullable = true)
 	private String cd;
 	
 	// Наименование элемента (ИЗ ГИС ЖКХ: Наименование справочника.)
@@ -66,10 +63,6 @@ public class UlistTp implements java.io.Serializable  {
 	// ИЗ ГИС ЖКХ: Группа справочника: NSI - (по умолчанию) общесистемный NSIRAO - ОЖФ
 	@Column(name = "GRP", updatable = true, nullable = true)
 	private String grp;
-
-	// ID элемента во внешней системе (ИЗ ГИС ЖКХ: Реестровый номер справочника.)
-	@Column(name = "FK_EXT", updatable = false, nullable = true)
-	private Integer fkExt;
 
 	// Элементы соответствующие типу
 	@OneToMany(fetch = FetchType.LAZY)
@@ -123,14 +116,6 @@ public class UlistTp implements java.io.Serializable  {
 
 	public void setUlist(List<Ulist> ulist) {
 		this.ulist = ulist;
-	}
-
-	public Integer getFkExt() {
-		return fkExt;
-	}
-
-	public void setFkExt(Integer fkExt) {
-		this.fkExt = fkExt;
 	}
 
 	public boolean equals(Object o) {

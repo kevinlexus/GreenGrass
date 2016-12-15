@@ -1,7 +1,5 @@
 package com.ric.st.hotora.dao.impl;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,24 +27,18 @@ public class UlistDAOImpl implements UlistDAO {
     	
     }
 
-    /*
-     * Получить список заголовочных элементов справочников по группе
-     * @param grp - группа справочника
-     */
-    public List<UlistTp> getListTpByGrp(String grp) {
+    // Получить список элементов справочника по группе 
+    public List<Ulist> getByTp(String tp) {  // TODO - это не то совсем!
+		Query query =em.createQuery("select t from Ulist t left join fetch t.ulistTp tp where tp.grp=:grp");
+		query.setParameter("grp", tp);
+		return query.getResultList();
+    }
+        
+    // Получить список заголовочных элементов справочников по группе
+    public List<UlistTp> getByGrp(String grp) {
 		Query query =em.createQuery("select t from UlistTp t where t.grp=:grp");
 		query.setParameter("grp", grp);
 		return query.getResultList();
     }
 
-    /* Получить список элементов справочника по группе и id
-     * @param grp - группа справочника
-     * @param id - Id справочника
-     */
-    public List<Ulist> getListByGrpId(String grp, BigInteger id) {
-		Query query =em.createQuery("select t from Ulist t join t.ulistTp tp where tp.grp=:grp and tp.id=:id");
-		query.setParameter("grp", grp);
-		query.setParameter("id", id.intValue());
-		return query.getResultList();
-    }
 }

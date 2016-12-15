@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -28,15 +27,12 @@ import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemRequest;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListResult;
-import ru.gosuslugi.dom.schema.integration.nsi_common_service.Fault;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiPortsType;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiService;
 
 import com.ric.bill.Utl;
 import com.ric.st.NsiBindingBuilders;
 import com.ric.st.SoapPreps;
-import com.ric.st.excp.CantSendSoap;
-import com.ric.st.excp.CantSignSoap;
 import com.ric.st.hotora.model.exs.Ulist;
 import com.ric.st.impl.Config;
 import com.sun.xml.ws.developer.WSBindingProvider;
@@ -62,6 +58,14 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	
 	@PostConstruct
 	public void init() throws Exception {
+	}
+
+
+	/**
+	 * Получение списка справочников
+	 * @throws Exception
+	 */
+	public ExportNsiListResult getNsiList(String tp) throws Exception { 
     	// создать сервис и порт
     	service = new NsiService();
     	port = service.getNsiPort();
@@ -70,62 +74,77 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 
     	// подписывать XML?
     	sp.setSignXML(false);
-
+    	// заменить Endpoint, если надо 
+    	if (config.isSrvTest()) {
+    		sp.changeHost(config.getSrvTestHost());
+    	}
     	// создать и подготовить заголовок запроса
-    	//sp.createRh(config.getOrgPPGuid(), true);
 
-    	log.info("Выполнилось init()");
-	}
-
-
-	/**
-	 * Получить список справочников
-	 * @param grp - вид справочника (NSI, NISRAO)
-	 * @throws Fault 
-	 * @throws CantSendSoap 
-	 * @throws CantSignSoap 
-	 * @throws Exception
-	 */
-	public ExportNsiListResult getNsiList(String grp) throws Fault, CantSignSoap, CantSendSoap { 
+		
 		req = new ExportNsiListRequest();
-		req.setListGroup(grp);
+		req.setListGroup(tp);
 		req.setVersion(req.getVersion());
-		req.setId("foo");
-		req.setVersion(req.getVersion());
-    	port.exportNsiList(req);
-	   	// отправить SOAP, анмаршаллинг результата
-	    resList = (ExportNsiListResult) sp.sendSOAP(  
+
+		sp.createRh();
+
+		port.exportNsiList(req);
+
+
+		// отправить SOAP, анмаршаллинг результата
+	    resList = (ExportNsiListResult) sp.sendSOAP(  // исправить
 	   			req, 
-	   			"exportNsiList", 			 		
+	   			"exportNsiList", 			 		// исправить
 	   			new ExportNsiListResult(),
-	   			config,
-	   			true);
+	   			config);
 	   return resList;
 	}
 	
 	/**
-	 * Получить справочник
-	 * @param grp - вид справочника (NSI, NISRAO)
-	 * @throws Fault 
-	 * @throws CantSendSoap 
-	 * @throws CantSignSoap 
+	 * Получение справочника
 	 * @throws Exception
+	 * TypeList = (NSI,NSIRAO)
+	 * TypeItem - код справочника
 	 */
-	public ExportNsiItemResult getNsiItem(String grp, BigInteger id) throws Fault, CantSignSoap, CantSendSoap {
+	public ExportNsiItemResult getNsiItem(String TypeList,BigInteger TypeItem) throws Exception {
+		TypeList = "NSI";
+	   	TypeItem =BigInteger.valueOf(30);	    	
 	   	ExportNsiItemRequest req = new ExportNsiItemRequest();
-	    req.setListGroup(grp);
-	    req.setRegistryNumber(id);
-		req.setId("foo");
-		req.setVersion(req.getVersion());
-	    
+	    req.setListGroup(TypeList);;
 	   	port.exportNsiItem(req);
 	   	// отправка SOAP, анмаршаллинг результата
-	   	resItem = (ExportNsiItemResult) sp.sendSOAP(  
+	   	// Исправлять классы под соответствующий запрос!
+	   	resItem = (ExportNsiItemResult) sp.sendSOAP(  // исправить
 	   			req, 
-	   			"exportNsiItem", 			 		
-	   			new ExportNsiItemResult(),
-	   			config,
-	   			true);
+	   			"ExportNsiList", 			 		// исправить
+	   			new ExportNsiListResult(),
+	   			config);
+	
+	   	
+	   	for (NsiElementType ni : resItem.getNsiItem().getNsiElement()) {
+	   		
+	   		
+	   	}
+	   	
+/*	   	for (NsiElementType ni : resItem.getNsiItem().getNsiElement()) {
+	   		 Ulist nr_tab = new Ulist();
+	    	 nr_tab.setTypref(TypeList);
+	    	 nr_tab.setRegnum(TypeItem);
+	    	 nr_tab.setCode(ni.getCode());
+	    	 nr_tab.setS1(ni.getGUID());
+	   		 nr_tab.setModified(ni.getModified().toGregorianCalendar().getTime());
+	   		for (NsiElementFieldType nft : ni.getNsiElementField()) {
+	   			nr_tab.setValue(nft.getName());
+		   		}
+	   		 System.out.println("code:"+ni.getCode());	
+	   		 System.out.println("Guid:"+ni.getGUID());
+	   		 System.out.println("Data modify:"+ni.getModified());
+	   		 System.out.println("Data start:"+ni.getStartDate());
+	   		 System.out.println("Data end:"+ni.getEndDate());
+	   	    for (NsiElementFieldType nft : ni.getNsiElementField()) {
+	   	     System.out.println("Name:"+nft.getName());
+	   		}
+		}
+*/	   	System.out.println("res:"+resItem.getNsiItem());
 	   return resItem;
 	}
 }

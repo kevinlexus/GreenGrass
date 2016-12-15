@@ -8,8 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.ws.BindingProvider;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -56,11 +54,9 @@ import com.ric.bill.Utl;
 import com.ric.st.HouseManagementBindingBuilders;
 import com.ric.st.SoapPreps;
 import com.ric.st.impl.Config;
-import com.ric.st.impl.SoapPrep;
 import com.ric.st.prep.HouseManagementPreps;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
-@Slf4j
 @Service
 public class HouseManagementBindingBuilder implements HouseManagementBindingBuilders {
 
@@ -89,9 +85,16 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	service = new HouseManagementService();
     	port = service.getHouseManagementPort();
     	// подготовительный объект
-    	//sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
+    	sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
+  
     	// подписывать XML?
-    	//sp.setSignXML(true);
+    	sp.setSignXML(true);
+    	// заменить Endpoint, если надо 
+    	if (config.isSrvTest()) {
+    		sp.changeHost(config.getSrvTestHost());
+    	}
+    	// создать и подготовить заголовок запроса
+    	//sp.createRh(new Date(), Utl.getRndUuid(), config.getOrgPPGuid(), true);
 	}
 
 	/**
@@ -106,8 +109,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     			req, 
     			"importHouseUOData", 		// исправить
     			new ImportResult(),	 		// исправить
-    			config,
-    			true
+    			config
     			);
 	}
 
@@ -118,7 +120,6 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 	public void setHm(HouseManagementPreps hm) {
 		this.hm = hm;
 	}
-
 	/**
 	 * Создать запрос импорта
 	 */
@@ -725,8 +726,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     			req, 
     			"importAccountData", 			 		// исправить
     			new ImportResult(), 			 		// исправить
-    			config,
-    			true);
+    			config);
 
     	System.out.println("res:"+res.getCommonResult());
     }
@@ -829,8 +829,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
    	   			req, 
    	   			"ImportMeteringDeviceData", 			 		// исправить
    	   			new ImportResult(), 			 		// исправить
-   	   			config,
-   	   			true
+   	   			config
    	   			);
 	   	System.out.println("res:"+res.getCommonResult());
 	    } 
@@ -939,8 +938,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
    	   			req, 
    	   			"ImportMeteringDeviceData", 			 		// исправить
    	   			new ImportResult(), 			 		// исправить
-   	   			config,
-   	   			true
+   	   			config
    	   			);
 	   	System.out.println("res:"+res.getCommonResult());
 	    }  
@@ -967,8 +965,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 				req,
 				"ExportHouseData", // исправить
 				new ExportHouseResult(), // исправить
-				config,
-				true
+				config
 				);
 		if (pUn == null && nPun == null) {
 			System.out.println("N house_uni: "
