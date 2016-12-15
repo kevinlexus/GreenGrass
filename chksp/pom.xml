@@ -96,7 +96,9 @@
         </configuration>
       </plugin>
  -->
-<!--       <plugin>
+<!-- Разкомментировать, для получения chksp-0.0.1-SNAPSHOT-jar-with-dependencies.jar (для выполнения приложения из коммандной строки)
+
+       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.5.1</version>
         <configuration>
