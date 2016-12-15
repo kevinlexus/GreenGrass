@@ -113,7 +113,7 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	 * @throws DatatypeConfigurationException 
 	 */
 	private void createRh(boolean isSetOperSign) throws DatatypeConfigurationException {
-		rh = new RequestHeader();
+		//rh = new RequestHeader();
     	rh.setOrgPPAGUID(config.getOrgPPGuid());
     	if (isSetOperSign) {
     		rh.setIsOperatorSignature(true);
