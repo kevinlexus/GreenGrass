@@ -1,5 +1,7 @@
 package com.ric.st.mm.impl;
 
+import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -15,11 +17,18 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiItemInfoType;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListResult;
+import ru.gosuslugi.dom.schema.integration.nsi_common_service.Fault;
 
+import com.diffplug.common.base.Errors;
 import com.ric.bill.Utl;
 import com.ric.st.builder.NsiBindingBuilder;
+import com.ric.st.excp.CantSendSoap;
+import com.ric.st.excp.CantSignSoap;
+import com.ric.st.excp.CantUpdNSI;
 import com.ric.st.hotora.dao.UlistDAO;
+import com.ric.st.hotora.model.exs.Ulist;
 import com.ric.st.hotora.model.exs.UlistTp;
 import com.ric.st.impl.Config;
 import com.ric.st.mm.UlistMng;
@@ -45,66 +54,114 @@ public class UlistMngImpl implements UlistMng {
 		return config.getPrefixGis()+"_"+grp+"_"+cd;
 	}
 	
-//	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	// узнать можно ли параллельно вызывать, не будет ли concurrent excp?
+	private void updNsiItem(String grp, BigInteger id) throws CantUpdNSI {
+		String prefix = getPrefixedCD(id.toString(), grp);
+		// получить из нашей базы 
+		List<Ulist> lst =  ulistDao.getListByGrpId(grp, id);
+		// получить из ГИС справочник
+		ExportNsiItemResult res;
+		try {
+			res = nsiBuilder.getNsiItem(grp, id);
+		} catch (Fault | CantSignSoap | CantSendSoap e) {
+			e.printStackTrace();
+			throw new CantUpdNSI("Ошибка при обновлении справочника NSI grp="+ grp+", id="+ id);
+		} 
+		
+/*		res.getNsiItem().getNsiElement().stream().forEach(
+			{
+			// найти элемент в нашей базе
+			Optional<Ulist> el = lst.stream()
+					.filter(t-> t.getCd().equals(prefix))
+					.findAny();
+			if (!el.isPresent()) {
+				// не найден элемент, создать новый
+				(String cd, String name, String s1, Date dt1, Date dt2,
+						Boolean actual, UlistTp ulistTp)
+						
+				Ulist lst = new Ulist()
+				
+				log.info("Создан элемент справочника List :{}", prefix);
+			} else {
+				// найден элемент, проверить дату обновления
+				log.info("Обновлён элемент справочника List :{}", prefix);
+				
+			}
+		}
+*/	}
+	
 	/**
 	 * Создать или обновить справочник NSI или NSIRAO
 	 * @param lst
 	 * @param nsiItem
 	 * @param grp
+	 * @throws CantUpdNSI 
+	 * @throws Exception 
 	 */
-	private void updNsiList(List<UlistTp> lst, NsiItemInfoType nsiItem, String grp) {
-		TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
+	private void updNsiList(List<UlistTp> lst, NsiItemInfoType nsiItem, String grp) throws CantUpdNSI {
 		String prefix = getPrefixedCD(nsiItem.getRegistryNumber().toString(), grp);
-		// найти заголовочный элемент справочника
+		// найти элемент в нашей базе
 		Optional<UlistTp> el = lst.stream()
 				.filter(t-> t.getCd().equals(prefix))
 				.findAny();
 		if (!el.isPresent()) {
-			// не найден заголовочный элемент, создать новый
-			log.info("Создан заголовок :{}", prefix);
-			UlistTp lstTp = new UlistTp(prefix, nsiItem.getName(), 
+			// не найден элемент, создать новый
+			UlistTp lstTp = new UlistTp(prefix, nsiItem.getRegistryNumber().intValue(), nsiItem.getName(), 
 					Utl.getDateFromXmlGregCal(nsiItem.getModified()),
 					grp, null);
 			em.persist(lstTp);
+			log.info("Создан заголовочный элемент ListTp :{}", prefix);
 		} else {
-			// найден заголовок, проверить дату обновления
-			//if (!el.get().getDt1().equals(Utl.getDate(nsiItem.getModified()))) {
-			if (el.get().getDt1().getTime() != Utl.getDateFromXmlGregCal(nsiItem.getModified()).getTime() ) {
-				log.info("Обновить справочник: {}", prefix);
-				log.info("2 = dt1={}, dt2={}", el.get().getDt1().getTime(), Utl.getDateFromXmlGregCal(nsiItem.getModified()).getTime());
-				
-				//log.info("1 = dt1={}, dt2={}", el.get().getDt1(), Utl.getDate(nsiItem.getModified()));
-				//log.info("2 = dt1={}, dt2={}", el.get().getDt1().toDate(), Utl.getDate(nsiItem.getModified()));
+			// найден элемент, проверить дату обновления
+			if (el.get().getDt1() == null || el.get().getDt1().getTime() != Utl.getDateFromXmlGregCal(nsiItem.getModified()).getTime()) {
+				el.get().setDt1(Utl.getDateFromXmlGregCal(nsiItem.getModified()));
 
-				/*DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss:S z");
-				String reportDate = df.format(el.get().getDt1());
-				log.info("formatted date1 = {}", reportDate);
-				reportDate = df.format(Utl.getDate(nsiItem.getModified()));
-				log.info("formatted date2 = {}", reportDate);
-				*/
-				// обновить справочник (дата обновилась)
-				
-			} else {
-				log.info("Всё пучком! {}", prefix);
+				// обновить справочник
+				updNsiItem(grp, nsiItem.getRegistryNumber());
+				log.info("Обновлён справочник: {}", prefix);
 			}
+			
+			//проверить Name
+			if (!el.get().getName().equals(nsiItem.getName())) {
+				//обновить Name
+				el.get().setName(nsiItem.getName());
+				log.info("Обновлён заголовочный элемент, Name справочника: {}", prefix);
+				
+			}
+			
 		}
 		
 	}
 	
+	void eat(NsiItemInfoType food) throws CantUpdNSI {}
+	
 	/**
 	 * Обновить NSI справочники
-	 * @throws Exception 
+	 * @return 
+	 * @throws CantSendSoap 
+	 * @throws CantSignSoap 
+	 * @throws Fault 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void refreshNsi(String grp) throws Exception {
+	public void refreshNsi(String grp) throws CantUpdNSI {
 		
-		
+		// Обновить виды справочников
 		// получить из нашей базы 
-		List<UlistTp> lst =  ulistDao.getByGrp(grp);
-		lst.stream().forEach(t -> log.trace("Элемент из HOTORA: {}",t.getName()));
-		ExportNsiListResult res = nsiBuilder.getNsiList(grp); //здесь не менять, это тип справочников
-		
-		res.getNsiList().getNsiItemInfo().stream().forEach(t -> log.trace("Элемент из списка справочников ГИС: {}",t.getName()));
-		res.getNsiList().getNsiItemInfo().stream().forEach(t -> updNsiList(lst, t, grp));
+		List<UlistTp> lst =  ulistDao.getListTpByGrp(grp);
+		// получить из ГИС
+		ExportNsiListResult res;
+		try {
+			res = nsiBuilder.getNsiList(grp);
+		} catch (Fault | CantSignSoap | CantSendSoap e1) {
+			e1.printStackTrace();
+			throw new CantUpdNSI("Ошибка обновления справочника NSI");
 		}
+		if (1==1) {
+		  throw new CantUpdNSI("KMP!");
+		}		
+		res.getNsiList().getNsiItemInfo().stream().forEach(t -> log.trace("Элемент из списка справочников ГИС: {}",t.getName()));
+		// обработать каждый справочник
+		res.getNsiList().getNsiItemInfo().stream().forEach(Errors.rethrow().wrap(t -> {updNsiList(lst, t, grp);}));
+		
+	}
 }

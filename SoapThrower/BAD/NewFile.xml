@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
 	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
@@ -9,8 +10,9 @@
 			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
 			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
 			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/nsi-common/">
-			<ns1:Date>2016-12-15T12:56:01.255+06:00</ns1:Date>
-			<ns1:MessageGUID>770b27a3-2d95-4f14-9122-7d7660ac9ee1</ns1:MessageGUID>
+			<ns1:Date>2016-12-15T14:24:46.038+07:00</ns1:Date>
+			<ns1:MessageGUID>76279642-acff-4e6b-9db9-06ebd63618eb
+			</ns1:MessageGUID>
 			<ns1:orgPPAGUID>b9fe4d27-020d-44dc-8bfd-b5972a504f45</ns1:orgPPAGUID>
 			<ns1:IsOperatorSignature>true</ns1:IsOperatorSignature>
 		</ns1:RequestHeader>
@@ -23,7 +25,7 @@
 			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
 			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
 			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
+			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/" Id="foo"
 			ns1:version="10.0.1.2">
 			<ns6:ListGroup>NSI</ns6:ListGroup>
 		</ns7:exportNsiListRequest>

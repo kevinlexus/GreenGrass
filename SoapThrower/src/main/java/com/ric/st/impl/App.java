@@ -3,6 +3,7 @@ package com.ric.st.impl;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.soap.SOAPException;
@@ -67,12 +68,13 @@ public class App
     }
     
     public static void checkSoap() throws Exception {
-    	
+		TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
+
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
 		Configs cfg = context.getBean(Config.class);
 		
 		//Создать объект подписывания XML
-		//sc = new SignCommand();
+		sc = new SignCommand();
 
 		//включить логгирование XML
 		cfg.setXmlLog();

@@ -34,6 +34,18 @@ public class Ulist implements java.io.Serializable  {
     @Column(name = "id", unique=true, updatable = false, nullable = false)
 	private Integer id;
 
+	public Ulist(String cd, String name, String s1, Date dt1, Date dt2,
+			Boolean actual, UlistTp ulistTp) {
+		super();
+		this.cd = cd;
+		this.name = name;
+		this.s1 = s1;
+		this.dt1 = dt1;
+		this.dt2 = dt2;
+		this.actual = actual;
+		this.ulistTp = ulistTp;
+	}
+
 	// CD элемента
 	@Column(name = "CD", updatable = true, nullable = true)
 	private String cd;
