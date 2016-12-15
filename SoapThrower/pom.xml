@@ -184,6 +184,13 @@
 			<version>2.2.10</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.diffplug.durian/durian -->
+		<dependency>
+		    <groupId>com.diffplug.durian</groupId>
+		    <artifactId>durian</artifactId>
+		    <version>3.4.0</version>
+		</dependency>
+
 	</dependencies>
 
 <build>

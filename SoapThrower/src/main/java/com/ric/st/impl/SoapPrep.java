@@ -41,6 +41,8 @@ import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 
 import com.ric.bill.Utl;
 import com.ric.st.SoapPreps;
+import com.ric.st.excp.CantSendSoap;
+import com.ric.st.excp.CantSignSoap;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Slf4j
@@ -74,12 +76,14 @@ public class SoapPrep<T> implements SoapPreps<T> {
 		setRh(new RequestHeader());
 		// добавить хэндлер
 		addHandler();
+    	log.info("Выполнилось setUp");
+		
 	}
 
 	/**
 	 * Добавить хэндлер
 	 */
-	public void addHandler() {
+	private void addHandler() {
     	//добавить хэндлер, для установщика подписи ЭЦП
     	List<Handler> handlerChain = binding.getHandlerChain();
     	handlerChain.add(new LoggingSOAPHandler());
@@ -90,14 +94,14 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	/**
 	 * Установить заголовок запроса 
 	 */
-	public void setRh(RequestHeader rh) {
+	private void setRh(RequestHeader rh) {
 		this.rh=rh;
 	}
 
 	/**
 	 * Получить заголовок запроса 
 	 */
-	public RequestHeader getRh() {
+	private RequestHeader getRh() {
 		return this.rh;
 	}
 	
@@ -108,32 +112,36 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	 * @param orgPpaGuid
 	 * @throws DatatypeConfigurationException 
 	 */
-	public void createRh(Date dt, UUID rUuid, String orgPpaGuid, boolean isSetOperSign ) throws DatatypeConfigurationException {
-		GregorianCalendar c = new GregorianCalendar();
-    	c.setTime(dt);
-    	XMLGregorianCalendar cl = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-
-    	rh = new RequestHeader();
-    	rh.setDate(cl);
-    	rh.setMessageGUID(rUuid.toString());
-    	rh.setOrgPPAGUID(orgPpaGuid);
+	private void createRh(boolean isSetOperSign) throws DatatypeConfigurationException {
+		rh = new RequestHeader();
+    	rh.setOrgPPAGUID(config.getOrgPPGuid());
     	if (isSetOperSign) {
     		rh.setIsOperatorSignature(true);
     	}
+
+    	// установить Random Message GUID и дату
+    	GregorianCalendar c = new GregorianCalendar();
+		c.setTime(new Date());
+		XMLGregorianCalendar cl = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+		rh.setDate(cl);
+    	UUID messGUID = Utl.getRndUuid();
+		rh.setMessageGUID(messGUID.toString());
+    	
     	ws.setOutboundHeaders(rh);
+    	log.info("Выполнилось createRh");
 	}
 
 	/**
 	 * Получить байнд-провайдер
 	 */
-	public BindingProvider getBindingProvider() {
+	private BindingProvider getBindingProvider() {
 		return bp;
 	}
 
 	/**
 	 * Задать байнд-провайдер
 	 */
-	public void setBindingProvider(BindingProvider bs) {
+	private void setBindingProvider(BindingProvider bs) {
 		//сохранить Endpoint
 		setEndPoint((String) bs.getRequestContext().get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY));
 
@@ -143,18 +151,18 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	/**
 	 * Получить WS-байнд-провайдер
 	 */
-	public WSBindingProvider getWSBindingProvider() {
+	private WSBindingProvider getWSBindingProvider() {
 		return this.ws;
 	}
 
 	/**
 	 * Задать WS-байнд-провайдер
 	 */
-	public void setWSBindingProvider(WSBindingProvider ws) {
+	private void setWSBindingProvider(WSBindingProvider ws) {
 		this.ws = ws;
 	}
 
-	public void changeHost(String host) throws UnknownHostException, MalformedURLException {
+	private void changeHost(String host) throws UnknownHostException, MalformedURLException {
 		String urlStr = getEndPoint();
 		String path = Utl.getPathFromUrl(urlStr);
 		getBindingProvider().getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, 
@@ -163,19 +171,19 @@ public class SoapPrep<T> implements SoapPreps<T> {
 		setEndPoint(host+path);
 	}
 
-	public String getEndPoint() {
+	private String getEndPoint() {
 		return endPoint;
 	}
 
-	public void setEndPoint(String endPoint) {
+	private void setEndPoint(String endPoint) {
 		this.endPoint = endPoint;
 	}
 
-	public Binding getBinding() {
+	private Binding getBinding() {
 		return binding;
 	}
 
-	public void setBinding(Binding binding) {
+	private void setBinding(Binding binding) {
 		this.binding = binding;
 	}
     
@@ -194,14 +202,14 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	 * @param sign
 	 * @return 
 	 */
-	public boolean getSignXML() {
+	private boolean getSignXML() {
     	return sign;
 	}
 
 	/**
 	 * Создать SOAP сообщение
 	 */
-	public SOAPMessage createSM(String xmlText) throws IOException, SOAPException {
+	private SOAPMessage createSM(String xmlText) throws IOException, SOAPException {
     	MessageFactory factory;
     	SOAPMessage message2 = null;
 		factory = MessageFactory.newInstance();
@@ -212,64 +220,94 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	 * Отправить SOAP сообщение
 	 * 
 	 */
-	public Object sendSOAP(Object req, String meth, Object result, Config config) throws Exception {
+	public Object sendSOAP(Object req, String meth, Object result, Config config, boolean isSetOperSign) throws CantSignSoap, CantSendSoap {
+		
+    	// заменить Endpoint, если надо 
+		try {
+	    	if (config.isSrvTest()) {
+	    		changeHost(config.getSrvTestHost());
+	    	}
+		} catch (UnknownHostException | MalformedURLException e1) {
+			throw new CantSendSoap("Ошибка при замене IP адреса хоста SOAP запроса!");
+		}
+		
+		// создать и подготовить заголовок
+		try {
+			createRh(isSetOperSign);
+		} catch (DatatypeConfigurationException e1) {
+			e1.printStackTrace();
+			throw new CantSendSoap("Ошибка при подготовке заголовка SOAP запроса!");
+		}
+		
+		log.info("CHECK1={}", rh.getDate());
+		log.info("CHECK2={}", rh.getMessageGUID());
+		
 		//получить XML из хэндлера
     	Map<String, Object> responseContext = getBindingProvider().getResponseContext();
-		
-    	log.info("BP={}", responseContext);
 		
         setXMLText((String) responseContext.get("SOAP_XML"));
 
         // подпись XML, если необходимо
         if (getSignXML()) {
-	        setXMLText(signXML(getXMLText()));
+	        try {
+				setXMLText(signXML(getXMLText()));
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new CantSignSoap("Ошибка при подписи SOAP запроса!");
+			}
         }
         
-    	SOAPMessage message2 = createSM(xmlText);
         Object res = null;
-        // создать SOAP соединение 
-        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-        
-        String authorization = new sun.misc.BASE64Encoder().encode((config.getBscLogin()+":"+config.getBscPass()).getBytes());
-        MimeHeaders hd = message2.getMimeHeaders();
-        hd.addHeader("Authorization", "Basic " + authorization);
-        hd.addHeader("X-Client-Cert-Fingerprint", config.getFingerPrint());
-        
-        log.info("Class-2 : " + ob.getClass().getInterfaces()[0]);
-        
-        Method m = ob.getClass().getInterfaces()[0].getMethod(meth, req.getClass());
-        
-        WebMethod webmethod = m.getAnnotation(WebMethod.class);
-        
-        hd.addHeader("SOAPAction", webmethod.action());
-        
-        System.out.println("Send:"); 
-        System.out.println("");
-        System.out.println("");
-        printSOAPmessage(message2);
-        // отправить SOAP сообщение на Endpoint
-        SOAPMessage soapResponse = soapConnection.call(message2, getEndPoint());
+        try {
+	    	SOAPMessage message2 = createSM(xmlText);
+	        // создать SOAP соединение 
+	        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+	        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+	        
+	        String authorization = new sun.misc.BASE64Encoder().encode((config.getBscLogin()+":"+config.getBscPass()).getBytes());
+	        MimeHeaders hd = message2.getMimeHeaders();
+	        hd.addHeader("Authorization", "Basic " + authorization);
+	        hd.addHeader("X-Client-Cert-Fingerprint", config.getFingerPrint());
+	        
+	        log.info("Class-2 : " + ob.getClass().getInterfaces()[0]);
+	        
+	        Method m = ob.getClass().getInterfaces()[0].getMethod(meth, req.getClass());
+	        
+	        WebMethod webmethod = m.getAnnotation(WebMethod.class);
+	        
+	        hd.addHeader("SOAPAction", webmethod.action());
+	        
+	        System.out.println("Send:"); 
+	        System.out.println("");
+	        System.out.println("");
+	        printSOAPmessage(message2);
 
-        System.out.println("");
-        System.out.println("");
-        System.out.println("Recv:");
-        printSOAPmessage(soapResponse);
+	        // отправить SOAP сообщение на Endpoint
+	        SOAPMessage soapResponse = soapConnection.call(message2, getEndPoint());
+	
+	        System.out.println("");
+	        System.out.println("");
+	        System.out.println("Recv:");
+	        printSOAPmessage(soapResponse);
 
-    	JAXBContext context = JAXBContext.newInstance(result.getClass());
-    	Unmarshaller unmarshaller = JAXBContext.newInstance(result.getClass()).createUnmarshaller();
-    	res = unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
-
-    	// закрыть SOAP соединение 
-        soapConnection.close();
+	        JAXBContext context = JAXBContext.newInstance(result.getClass());
+	    	Unmarshaller unmarshaller = JAXBContext.newInstance(result.getClass()).createUnmarshaller();
+	    	res = unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
+	
+	    	// закрыть SOAP соединение 
+	        soapConnection.close();
+        } catch (Exception e) {
+			e.printStackTrace();
+			throw new CantSendSoap("Ошибка при отправке SOAP запроса!");
+		}
 		return res;
 	}
 
-	public String getXMLText() {
+	private String getXMLText() {
 		return xmlText;
 	}
 
-	public void setXMLText(String xmlText) {
+	private void setXMLText(String xmlText) {
 		this.xmlText = xmlText;
 	}
 	
@@ -290,7 +328,7 @@ public class SoapPrep<T> implements SoapPreps<T> {
      * @return
      * @throws Exception 
      */
-    public String signXML(String xml) throws Exception {
+    private String signXML(String xml) throws Exception {
 		return App.sc.signElem(xml, "foo", "foo");
     	
     }

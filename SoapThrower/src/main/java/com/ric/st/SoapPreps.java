@@ -13,24 +13,13 @@ import javax.xml.ws.BindingProvider;
 
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 
+import com.ric.st.excp.CantSendSoap;
+import com.ric.st.excp.CantSignSoap;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 public interface SoapPreps<T> {
 
-	public RequestHeader getRh();
-	public void setRh(RequestHeader rh);
 	public void setUp(T o, BindingProvider bs, WSBindingProvider ws);
-	public void createRh(Date dt, UUID rUuid, String orgPpaGuid, boolean isSetOperSign) throws DatatypeConfigurationException;
-	public BindingProvider getBindingProvider();
-	public void setBindingProvider(BindingProvider bindingProvider);
-	public WSBindingProvider getWSBindingProvider();
-	public void setWSBindingProvider(WSBindingProvider port);
-	public void changeHost(String host) throws UnknownHostException, MalformedURLException;
-	public String getEndPoint();
-	public void setEndPoint(String endPoint);
 	public void setSignXML(Boolean sign);
-	public boolean getSignXML();
-	public SOAPMessage createSM(String xmlText) throws IOException, SOAPException;
-	public Object sendSOAP(Object req, String meth, Object result, com.ric.st.impl.Config config) throws Exception;
-    public String signXML(String xml) throws Exception;
+	public Object sendSOAP(Object req, String meth, Object result, com.ric.st.impl.Config config, boolean isSetOperSign) throws CantSignSoap, CantSendSoap;
 }
