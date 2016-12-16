@@ -9,10 +9,10 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import org.w3._2000._09.xmldsig_.SignatureType;
-import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportDataProviderRequest;
-import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportDataProviderResult;
-import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryRequest;
-import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportOrgRegistryResult;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemRequest;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListResult;
 
 
 /**
@@ -42,12 +42,12 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_common.ExportO
     "signature"
 })
 @XmlSeeAlso({
-    ImportResult.class,
-    ExportDataProviderResult.class,
-    ExportDataProviderRequest.class,
-    ExportOrgRegistryResult.class,
-    ExportOrgRegistryRequest.class,
-    BaseAsyncResponseType.class
+    ExportNsiItemResult.class,
+    ExportNsiListResult.class,
+    ExportNsiItemRequest.class,
+    ExportNsiListRequest.class,
+    BaseAsyncResponseType.class,
+    ImportResult.class
 })
 public class BaseType {
 

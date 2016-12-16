@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -54,6 +55,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "ogrnip",
     "stateRegistrationDate",
     "inn"
+})
+@XmlSeeAlso({
+    ru.gosuslugi.dom.schema.integration.licenses.DisqualifiedPersonType.Org.Entrp.class,
+    ru.gosuslugi.dom.schema.integration.licenses.LicenseOrganizationType.Entrp.class
 })
 public class EntpsType {
 

@@ -66,6 +66,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link NsiItemType }
+     * 
+     */
+    public NsiItemType createNsiItemType() {
+        return new NsiItemType();
+    }
+
+    /**
+     * Create an instance of {@link NsiListType }
+     * 
+     */
+    public NsiListType createNsiListType() {
+        return new NsiListType();
+    }
+
+    /**
      * Create an instance of {@link NsiElementIntegerFieldType }
      * 
      */
@@ -106,14 +122,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link NsiListType }
-     * 
-     */
-    public NsiListType createNsiListType() {
-        return new NsiListType();
-    }
-
-    /**
      * Create an instance of {@link NsiElementType }
      * 
      */
@@ -127,14 +135,6 @@ public class ObjectFactory {
      */
     public ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef createNsiRef() {
         return new ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef();
-    }
-
-    /**
-     * Create an instance of {@link NsiItemType }
-     * 
-     */
-    public NsiItemType createNsiItemType() {
-        return new NsiItemType();
     }
 
     /**

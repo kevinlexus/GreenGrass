@@ -19,7 +19,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "NsiService", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/nsi-common-service/", wsdlLocation = "file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.11.0.0.3/hcs_wsdl_xsd_v.11.0.0.3/nsi-common/hcs-nsi-common-service.wsdl")
+@WebServiceClient(name = "NsiService", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/nsi-common-service/", wsdlLocation = "file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.11.0.0.5/hcs_wsdl_xsd_v.11.0.0.5/nsi-common/hcs-nsi-common-service.wsdl")
 public class NsiService
     extends Service
 {
@@ -32,7 +32,7 @@ public class NsiService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.11.0.0.3/hcs_wsdl_xsd_v.11.0.0.3/nsi-common/hcs-nsi-common-service.wsdl");
+            url = new URL("file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.11.0.0.5/hcs_wsdl_xsd_v.11.0.0.5/nsi-common/hcs-nsi-common-service.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

@@ -107,8 +107,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     			"importHouseUOData", 		// исправить
     			new ImportResult(),	 		// исправить
     			config,
-    			true
-    			);
+    			true,
+    			0);
 	}
 
 	public HouseManagementPreps getHm() {
@@ -726,7 +726,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     			"importAccountData", 			 		// исправить
     			new ImportResult(), 			 		// исправить
     			config,
-    			true);
+    			true,
+    			0);
 
     	System.out.println("res:"+res.getCommonResult());
     }
@@ -830,8 +831,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
    	   			"ImportMeteringDeviceData", 			 		// исправить
    	   			new ImportResult(), 			 		// исправить
    	   			config,
-   	   			true
-   	   			);
+   	   			true,
+   	   			0);
 	   	System.out.println("res:"+res.getCommonResult());
 	    } 
 	/**
@@ -940,8 +941,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
    	   			"ImportMeteringDeviceData", 			 		// исправить
    	   			new ImportResult(), 			 		// исправить
    	   			config,
-   	   			true
-   	   			);
+   	   			true,
+   	   			0);
 	   	System.out.println("res:"+res.getCommonResult());
 	    }  
 	/**
@@ -968,8 +969,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 				"ExportHouseData", // исправить
 				new ExportHouseResult(), // исправить
 				config,
-				true
-				);
+				true,
+				0);
 		if (pUn == null && nPun == null) {
 			System.out.println("N house_uni: "
 					+ res.getExportHouseResult().getHouseUniqueNumber());

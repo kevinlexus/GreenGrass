@@ -1,10 +1,16 @@
 package com.ric.st.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -33,6 +39,7 @@ import javax.xml.ws.handler.Handler;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -128,7 +135,6 @@ public class SoapPrep<T> implements SoapPreps<T> {
 		rh.setMessageGUID(messGUID.toString());
     	
     	ws.setOutboundHeaders(rh);
-    	log.info("Выполнилось createRh");
 	}
 
 	/**
@@ -220,7 +226,7 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	 * Отправить SOAP сообщение
 	 * 
 	 */
-	public Object sendSOAP(Object req, String meth, Object result, Config config, boolean isSetOperSign) throws CantSignSoap, CantSendSoap {
+	public Object sendSOAP(Object req, String meth, Object result, Config config, boolean isSetOperSign, int tp) throws CantSignSoap, CantSendSoap {
 		
     	// заменить Endpoint, если надо 
 		try {
@@ -277,9 +283,37 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	        System.out.println("");
 	        System.out.println("");
 	        System.out.println("Recv:");
+	        
+	        
+	        //if (tp==1) {
+
+	        	//List<String> contents = Files.readAllLines(Paths.get("C:\\temp\\#29\\1.txt"), StandardCharsets.UTF_8);
+	        	//InputStream f = new FileInputStream("C:\\temp\\#29\\1.txt");
+/*	        	String str =StringEscapeUtils.escapeXml("<ns13:exportNsiItemResult Id=\"signed-data-container\"	ns4:version=\"10.0.1.2\"><ns13:NsiItem>"
+	        			+ "<ns6:NsiItemRegistryNumber>10</ns6:NsiItemRegistryNumber>"
+	        			+ "<ns6:Created>2016-12-16T04:36:23.619+03:00</ns6:Created>"
+	        			+ "<ns6:NsiElement>"
+	        			+ "<ns6:Code>2</ns6:Code>"
+	        			+ "<ns6:GUID>53907977-1ecc-43e7-a152-749176455cb9</ns6:GUID>"
+	        			+ "<ns6:Modified>2015-01-27T21:06:45.029+03:00</ns6:Modified>"
+	        			+ "<ns6:IsActual>true</ns6:IsActual>"
+	        			+ "<ns6:NsiElementField xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+	        			+ "xsi:type=\"ns6:NsiElementStringFieldType\">"
+	        			+ "<ns6:Name>Вид лица</ns6:Name>"
+	        			+ "<ns6:Value>Арендатор</ns6:Value>"
+	        			+ "</ns6:NsiElementField>"
+	        			+ "</ns6:NsiElement>"
+	        			+ "</ns13:NsiItem>"
+	        			+ "</ns13:exportNsiItemResult>");*/
+/*	        	String str = "&lt;BLA&gt;";
+
+	        	soapResponse.getSOAPBody().
+	        }*/
+	        
 	        printSOAPmessage(soapResponse);
 
-	        JAXBContext context = JAXBContext.newInstance(result.getClass());
+	        
+	        //JAXBContext context = JAXBContext.newInstance(result.getClass());
 	    	Unmarshaller unmarshaller = JAXBContext.newInstance(result.getClass()).createUnmarshaller();
 	    	res = unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
 	

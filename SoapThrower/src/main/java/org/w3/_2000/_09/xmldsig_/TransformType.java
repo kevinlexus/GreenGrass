@@ -68,9 +68,9 @@ public class TransformType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
+     * {@link Element }
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link String }
-     * {@link Element }
      * {@link Object }
      * 
      * 

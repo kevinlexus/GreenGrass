@@ -22,5 +22,5 @@ public interface SoapPreps<T> {
 	public void setUp(T o, BindingProvider bs, WSBindingProvider ws);
 	public void createRh(boolean isSetOperSign) throws DatatypeConfigurationException;
 	public void setSignXML(Boolean sign);
-	public Object sendSOAP(Object req, String meth, Object result, com.ric.st.impl.Config config, boolean isSetOperSign) throws CantSignSoap, CantSendSoap;
+	public Object sendSOAP(Object req, String meth, Object result, com.ric.st.impl.Config config, boolean isSetOperSign, int tp) throws CantSignSoap, CantSendSoap;
 }

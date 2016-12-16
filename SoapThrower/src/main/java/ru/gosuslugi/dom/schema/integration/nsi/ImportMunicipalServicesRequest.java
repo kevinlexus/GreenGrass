@@ -34,8 +34,13 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *                   &lt;/sequence>
  *                   &lt;element name="MunicipalServiceRef" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef"/>
  *                   &lt;element name="GeneralNeeds" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *                   &lt;element name="SelfProduced" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *                   &lt;element name="MainMunicipalServiceName" type="{http://dom.gosuslugi.ru/schema/integration/base/}String100Type"/>
- *                   &lt;element name="MunicipalResourceRef" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef"/>
+ *                   &lt;element name="MunicipalResourceRef" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef" maxOccurs="unbounded"/>
+ *                   &lt;choice>
+ *                     &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}OKEI"/>
+ *                     &lt;element name="StringDimensionUnit" type="{http://dom.gosuslugi.ru/schema/integration/base/}String100Type"/>
+ *                   &lt;/choice>
  *                   &lt;choice>
  *                     &lt;element name="SortOrder">
  *                       &lt;simpleType>
@@ -78,7 +83,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *           &lt;/complexType>
  *         &lt;/element>
  *       &lt;/sequence>
- *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="10.0.1.2""/>
+ *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="11.0.0.4""/>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -203,7 +208,7 @@ public class ImportMunicipalServicesRequest
      */
     public String getVersion() {
         if (version == null) {
-            return "10.0.1.2";
+            return "11.0.0.4";
         } else {
             return version;
         }
@@ -321,8 +326,13 @@ public class ImportMunicipalServicesRequest
      *         &lt;/sequence>
      *         &lt;element name="MunicipalServiceRef" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef"/>
      *         &lt;element name="GeneralNeeds" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+     *         &lt;element name="SelfProduced" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
      *         &lt;element name="MainMunicipalServiceName" type="{http://dom.gosuslugi.ru/schema/integration/base/}String100Type"/>
-     *         &lt;element name="MunicipalResourceRef" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef"/>
+     *         &lt;element name="MunicipalResourceRef" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef" maxOccurs="unbounded"/>
+     *         &lt;choice>
+     *           &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}OKEI"/>
+     *           &lt;element name="StringDimensionUnit" type="{http://dom.gosuslugi.ru/schema/integration/base/}String100Type"/>
+     *         &lt;/choice>
      *         &lt;choice>
      *           &lt;element name="SortOrder">
      *             &lt;simpleType>
@@ -348,8 +358,11 @@ public class ImportMunicipalServicesRequest
         "elementGuid",
         "municipalServiceRef",
         "generalNeeds",
+        "selfProduced",
         "mainMunicipalServiceName",
         "municipalResourceRef",
+        "okei",
+        "stringDimensionUnit",
         "sortOrder",
         "sortOrderNotDefined"
     })
@@ -363,10 +376,16 @@ public class ImportMunicipalServicesRequest
         protected NsiRef municipalServiceRef;
         @XmlElement(name = "GeneralNeeds")
         protected Boolean generalNeeds;
+        @XmlElement(name = "SelfProduced")
+        protected Boolean selfProduced;
         @XmlElement(name = "MainMunicipalServiceName", required = true)
         protected String mainMunicipalServiceName;
         @XmlElement(name = "MunicipalResourceRef", required = true)
-        protected NsiRef municipalResourceRef;
+        protected List<NsiRef> municipalResourceRef;
+        @XmlElement(name = "OKEI", namespace = "http://dom.gosuslugi.ru/schema/integration/base/")
+        protected String okei;
+        @XmlElement(name = "StringDimensionUnit")
+        protected String stringDimensionUnit;
         @XmlElement(name = "SortOrder")
         protected String sortOrder;
         @XmlElement(name = "SortOrderNotDefined")
@@ -469,6 +488,30 @@ public class ImportMunicipalServicesRequest
         }
 
         /**
+         * Gets the value of the selfProduced property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link Boolean }
+         *     
+         */
+        public Boolean isSelfProduced() {
+            return selfProduced;
+        }
+
+        /**
+         * Sets the value of the selfProduced property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link Boolean }
+         *     
+         */
+        public void setSelfProduced(Boolean value) {
+            this.selfProduced = value;
+        }
+
+        /**
          * Gets the value of the mainMunicipalServiceName property.
          * 
          * @return
@@ -495,25 +538,78 @@ public class ImportMunicipalServicesRequest
         /**
          * Gets the value of the municipalResourceRef property.
          * 
-         * @return
-         *     possible object is
-         *     {@link NsiRef }
-         *     
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the municipalResourceRef property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getMunicipalResourceRef().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link NsiRef }
+         * 
+         * 
          */
-        public NsiRef getMunicipalResourceRef() {
-            return municipalResourceRef;
+        public List<NsiRef> getMunicipalResourceRef() {
+            if (municipalResourceRef == null) {
+                municipalResourceRef = new ArrayList<NsiRef>();
+            }
+            return this.municipalResourceRef;
         }
 
         /**
-         * Sets the value of the municipalResourceRef property.
+         * Единница измерения из справочника ОКЕИ.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getOKEI() {
+            return okei;
+        }
+
+        /**
+         * Sets the value of the okei property.
          * 
          * @param value
          *     allowed object is
-         *     {@link NsiRef }
+         *     {@link String }
          *     
          */
-        public void setMunicipalResourceRef(NsiRef value) {
-            this.municipalResourceRef = value;
+        public void setOKEI(String value) {
+            this.okei = value;
+        }
+
+        /**
+         * Gets the value of the stringDimensionUnit property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getStringDimensionUnit() {
+            return stringDimensionUnit;
+        }
+
+        /**
+         * Sets the value of the stringDimensionUnit property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setStringDimensionUnit(String value) {
+            this.stringDimensionUnit = value;
         }
 
         /**

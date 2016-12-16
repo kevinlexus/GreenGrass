@@ -1,33 +1,46 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
-<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
-	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
-	<S:Header>
-		<ns1:RequestHeader xmlns:ns1="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/nsi-common/">
-			<ns1:Date>2016-12-15T14:24:46.038+07:00</ns1:Date>
-			<ns1:MessageGUID>76279642-acff-4e6b-9db9-06ebd63618eb
-			</ns1:MessageGUID>
-			<ns1:orgPPAGUID>b9fe4d27-020d-44dc-8bfd-b5972a504f45</ns1:orgPPAGUID>
-			<ns1:IsOperatorSignature>true</ns1:IsOperatorSignature>
-		</ns1:RequestHeader>
-	</S:Header>
-	<S:Body>
-		<ns7:exportNsiListRequest
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/nsi-common/"
-			xmlns:ns1="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/" Id="foo"
-			ns1:version="10.0.1.2">
-			<ns6:ListGroup>NSI</ns6:ListGroup>
-		</ns7:exportNsiListRequest>
-	</S:Body>
-</S:Envelope>
+<soap:Envelope
+	xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
+	
+	xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/payments-base/"
+	xmlns:ns12="http://dom.gosuslugi.ru/schema/integration/bills-base/"
+	xmlns:ns13="http://dom.gosuslugi.ru/schema/integration/nsi-common/"
+	xmlns:ns3="http://www.w3.org/2000/09/xmldsig#" 
+	
+	xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/base/"
+	
+	xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/account-base/"
+	
+	xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
+	
+	xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+	xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+	xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<ns4:ResultHeader>
+			<ns4:Date>2016-12-16T04:36:23.621+03:00</ns4:Date>
+			<ns4:MessageGUID>1d0e7274-d60f-467e-89f8-96604104afe7
+			</ns4:MessageGUID>
+		</ns4:ResultHeader>
+	</soap:Header>
+	<soap:Body>
+		<ns13:exportNsiItemResult Id="signed-data-container"
+			ns4:version="10.0.1.2">
+			<ns13:NsiItem>
+				<ns6:NsiItemRegistryNumber>10</ns6:NsiItemRegistryNumber>
+				<ns6:Created>2016-12-16T04:36:23.619+03:00</ns6:Created>
+				<ns6:NsiElement>
+					<ns6:Code>2</ns6:Code>
+					<ns6:GUID>53907977-1ecc-43e7-a152-749176455cb9</ns6:GUID>
+					<ns6:Modified>2015-01-27T21:06:45.029+03:00</ns6:Modified>
+					<ns6:IsActual>true</ns6:IsActual>
+					<ns6:NsiElementField xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+						xsi:type="ns6:NsiElementStringFieldType">
+						<ns6:Name>Вид лица</ns6:Name>
+						<ns6:Value>Арендатор</ns6:Value>
+					</ns6:NsiElementField>
+				</ns6:NsiElement>
+			</ns13:NsiItem>
+		</ns13:exportNsiItemResult>
+	</soap:Body>

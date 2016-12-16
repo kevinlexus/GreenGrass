@@ -1,19 +1,168 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
-<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
-	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
-	<SOAP-ENV:Header />
-	<S:Body>
-		<ns7:exportNsiListRequest
-			xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/nsi-common/"
-			xmlns:ns1="http://dom.gosuslugi.ru/schema/integration/base/"
-			xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns3="http://dom.gosuslugi.ru/schema/integration/organizations-registry-common/"
-			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
-			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
-			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/" Id="foo"
-			ns1:version="10.0.1.2">
-			<ns6:ListGroup>NSI</ns6:ListGroup>
-		</ns7:exportNsiListRequest>
-	</S:Body>
-</S:Envelope>
+<soap:Envelope
+	xmlns:ns10="http://dom.gosuslugi.ru/schema/integration/organizations-base/"
+	xmlns:ns11="http://dom.gosuslugi.ru/schema/integration/payments-base/"
+	xmlns:ns12="http://dom.gosuslugi.ru/schema/integration/bills-base/"
+	xmlns:ns13="http://dom.gosuslugi.ru/schema/integration/nsi-common/"
+	xmlns:ns3="http://www.w3.org/2000/09/xmldsig#" xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/base/"
+	xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/account-base/"
+	
+	xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
+	
+	xmlns:ns7="http://dom.gosuslugi.ru/schema/integration/individual-registry-base/"
+	xmlns:ns8="http://dom.gosuslugi.ru/schema/integration/metering-device-base/"
+	xmlns:ns9="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
+	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<ns4:ResultHeader>
+			<ns4:Date>2016-12-16T04:36:21.119+03:00</ns4:Date>
+			<ns4:MessageGUID>970339b4-dc43-4284-b9d9-1fbe6f12320b</ns4:MessageGUID>
+		</ns4:ResultHeader>
+	</soap:Header>
+	<soap:Body>
+		<ns13:exportNsiListResult Id="signed-data-container"
+			ns4:version="10.0.1.2">
+			<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+				Id="xmldsig-70a1110d-e885-4bf0-b575-04ef1d7fcba2">
+				<ds:SignedInfo>
+					<ds:CanonicalizationMethod
+						Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+					<ds:SignatureMethod
+						Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411" />
+					<ds:Reference URI="#signed-data-container">
+						<ds:Transforms>
+							<ds:Transform
+								Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+						</ds:Transforms>
+						<ds:DigestMethod
+							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
+						<ds:DigestValue>bGggkrxfrpPlX6o5vOlKOqXyukDJF2C++VUink+0c6Y=</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
+						URI="#xmldsig-70a1110d-e885-4bf0-b575-04ef1d7fcba2-signedprops">
+						<ds:DigestMethod
+							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
+						<ds:DigestValue>6HPvKdvAvAX1XsMwE3ZBKHLOf6ab42wCrAg9/mH+7qk=</ds:DigestValue>
+					</ds:Reference>
+				</ds:SignedInfo>
+				<ds:SignatureValue>DyVTeuFwnd/L2D8SnW5Hht31bg5o/RVGSCdU5EALijSEIO4q+yaVH2/teMqU80VtJVWjPOWLqm36+xOIhWA7SQ==</ds:SignatureValue>
+				<ds:KeyInfo>
+					<ds:X509Data>
+						<ds:X509Certificate>MIIDAjCCArGgAwIBAgITEgAVyRWEZR3kx8QM8wAAABXJFTAIBgYqhQMCAgMwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDIwHhcNMTYxMDA0MTcwMjIzWhcNMTcwMTA0MTcxMjIzWjARMQ8wDQYDVQQDDAZUUzEwMDQwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARAT5RavuYVtUbVgxrp9M+gs6HT0z1osAFPyIe9bvz28L0qaRvof5+RBbfxq2tF2gRLsy6Wp+MGnM1IFH/+6ls2FaOCAXAwggFsMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUcLAKkPNPMWtH4wfDTUUsQJrKblkwHwYDVR0jBBgwFoAUFTF8sI0a3mbXFZxJUpcXJLkBeoMwWQYDVR0fBFIwUDBOoEygSoZIaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIuY3JsMIGpBggrBgEFBQcBAQSBnDCBmTBhBggrBgEFBQcwAoZVaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQBcn3tilZhzT0vG7xo22x8bZCsywF9RZTQt9q+HGFfcDz4wfyWEV+gxY09C4PA0XcWwxD9GTZo8RDGP4Q+FSt1s</ds:X509Certificate>
+					</ds:X509Data>
+				</ds:KeyInfo>
+				<ds:Object>
+					<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+						Target="#xmldsig-70a1110d-e885-4bf0-b575-04ef1d7fcba2">
+						<xades:SignedProperties
+							Id="xmldsig-70a1110d-e885-4bf0-b575-04ef1d7fcba2-signedprops">
+							<xades:SignedSignatureProperties>
+								<xades:SigningTime>2016-12-16T04:36:21.123+03:00</xades:SigningTime>
+								<xades:SigningCertificate>
+									<xades:Cert>
+										<xades:CertDigest>
+											<ds:DigestMethod
+												Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
+											<ds:DigestValue>pFLpW6kFUrUxiIfnFF4T/5yuhme2WuUjmclY/17ZNKY=</ds:DigestValue>
+										</xades:CertDigest>
+										<xades:IssuerSerial>
+											<ds:X509IssuerName>cn=CRYPTO-PRO Test Center 2,o=CRYPTO-PRO
+												LLC,l=Moscow,c=RU,1.2.840.113549.1.9.1=support@cryptopro.ru</ds:X509IssuerName>
+											<ds:X509SerialNumber>401420826789807232416437193949005597730261269</ds:X509SerialNumber>
+										</xades:IssuerSerial>
+									</xades:Cert>
+								</xades:SigningCertificate>
+							</xades:SignedSignatureProperties>
+						</xades:SignedProperties>
+					</xades:QualifyingProperties>
+				</ds:Object>
+			</ds:Signature>
+			<ns13:NsiList>
+				<ns6:Created>2016-12-16T04:36:20.799+03:00</ns6:Created>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>283</ns6:RegistryNumber>
+					<ns6:Name>Cостав норматива</ns6:Name>
+					<ns6:Modified>2016-12-07T14:21:51.549+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>317</ns6:RegistryNumber>
+					<ns6:Name>Аудитория пользователя</ns6:Name>
+					<ns6:Modified>2016-10-11T05:17:00.262+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>225</ns6:RegistryNumber>
+					<ns6:Name>Вид административного наказания</ns6:Name>
+					<ns6:Modified>2015-07-07T14:28:40.403+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>34</ns6:RegistryNumber>
+					<ns6:Name>Вид водозаборного сооружения</ns6:Name>
+					<ns6:Modified>2016-03-29T22:24:39.135+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>234</ns6:RegistryNumber>
+					<ns6:Name>Вид документа (готовность к сезонной эксплуатации)</ns6:Name>
+					<ns6:Modified>2015-08-25T13:10:57.690+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>64</ns6:RegistryNumber>
+					<ns6:Name>Вид документа по результатам проверки</ns6:Name>
+					<ns6:Modified>2015-01-27T21:06:47.312+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>79</ns6:RegistryNumber>
+					<ns6:Name>Вид документа программы</ns6:Name>
+					<ns6:Modified>2016-10-11T05:17:13.317+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>235</ns6:RegistryNumber>
+					<ns6:Name>Вид документа (соответствие требованиям
+						энергоэффективности)</ns6:Name>
+					<ns6:Modified>2015-08-25T13:10:57.699+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>50</ns6:RegistryNumber>
+					<ns6:Name>Вид жилищной услуги</ns6:Name>
+					<ns6:Modified>2016-10-11T05:17:13.467+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>231</ns6:RegistryNumber>
+					<ns6:Name>Вид жилого помещения</ns6:Name>
+					<ns6:Modified>2015-08-25T13:10:57.557+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>293</ns6:RegistryNumber>
+					<ns6:Name>Вид информации ГИС ЖКХ</ns6:Name>
+					<ns6:Modified>2016-11-29T11:08:19.590+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>291</ns6:RegistryNumber>
+					<ns6:Name>Вид информационной системы</ns6:Name>
+					<ns6:Modified>2016-07-04T16:28:16.585+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>2</ns6:RegistryNumber>
+					<ns6:Name>Вид коммунального ресурса</ns6:Name>
+					<ns6:Modified>2015-02-06T22:23:44.885+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>3</ns6:RegistryNumber>
+					<ns6:Name>Вид коммунальной услуги</ns6:Name>
+					<ns6:Modified>2016-08-17T19:24:13.096+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>10</ns6:RegistryNumber>
+					<ns6:Name>Вид лица</ns6:Name>
+					<ns6:Modified>2015-01-27T21:06:47.913+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>46</ns6:RegistryNumber>
+					<ns6:Name>Вид мощности</ns6:Name>
+					<ns6:Modified>2015-01-27T21:06:45.744+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>
+				<ns6:NsiItemInfo>
+					<ns6:RegistryNumber>282</ns6:RegistryNumber>
+					<ns6:Name>Вид норматива</ns6:Name>
+					<ns6:Modified>2016-08-17T19:24:12.979+03:00</ns6:Modified>
+				</ns6:NsiItemInfo>

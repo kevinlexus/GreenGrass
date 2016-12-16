@@ -67,28 +67,29 @@ public class UlistMngImpl implements UlistMng {
 			e.printStackTrace();
 			throw new CantUpdNSI("Ошибка при обновлении справочника NSI grp="+ grp+", id="+ id);
 		} 
-		
-/*		res.getNsiItem().getNsiElement().stream().forEach(
+
+		/*		
+		res.getNsiItem().getNsiElement().stream().forEach(t ->
 			{
-			// найти элемент в нашей базе
-			Optional<Ulist> el = lst.stream()
-					.filter(t-> t.getCd().equals(prefix))
-					.findAny();
-			if (!el.isPresent()) {
-				// не найден элемент, создать новый
-				(String cd, String name, String s1, Date dt1, Date dt2,
-						Boolean actual, UlistTp ulistTp)
-						
-				Ulist lst = new Ulist()
-				
-				log.info("Создан элемент справочника List :{}", prefix);
-			} else {
-				// найден элемент, проверить дату обновления
-				log.info("Обновлён элемент справочника List :{}", prefix);
-				
-			}
-		}
-*/	}
+				// найти элемент в нашей базе
+				Optional<Ulist> el = lst.stream()
+						.filter(v-> v.getCd().equals(prefix))
+						.findAny();
+				if (!el.isPresent()) {
+					// не найден элемент, создать новый
+					(String cd, String name, String s1, Date dt1, Date dt2,
+							Boolean actual, UlistTp ulistTp)
+					Ulist lst = new Ulist()
+					
+					log.info("Создан элемент справочника List :{}", prefix);
+				} else {
+					// найден элемент, проверить дату обновления
+					log.info("Обновлён элемент справочника List :{}", prefix);
+					
+				}
+		    });
+*/			
+	}
 	
 	/**
 	 * Создать или обновить справочник NSI или NSIRAO
@@ -156,9 +157,6 @@ public class UlistMngImpl implements UlistMng {
 			e1.printStackTrace();
 			throw new CantUpdNSI("Ошибка обновления справочника NSI");
 		}
-		if (1==1) {
-		  throw new CantUpdNSI("KMP!");
-		}		
 		res.getNsiList().getNsiItemInfo().stream().forEach(t -> log.trace("Элемент из списка справочников ГИС: {}",t.getName()));
 		// обработать каждый справочник
 		res.getNsiList().getNsiItemInfo().stream().forEach(Errors.rethrow().wrap(t -> {updNsiList(lst, t, grp);}));

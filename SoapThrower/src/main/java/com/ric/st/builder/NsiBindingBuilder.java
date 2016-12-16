@@ -1,10 +1,6 @@
 package com.ric.st.builder;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -18,13 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementBooleanFieldType;
-import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementFieldType;
-import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementNsiFieldType;
-import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementNsiRefFieldType;
-import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementStringFieldType;
-import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
-import ru.gosuslugi.dom.schema.integration.nsi_base.NsiItemInfoType;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemRequest;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
@@ -33,12 +22,10 @@ import ru.gosuslugi.dom.schema.integration.nsi_common_service.Fault;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiPortsType;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiService;
 
-import com.ric.bill.Utl;
 import com.ric.st.NsiBindingBuilders;
 import com.ric.st.SoapPreps;
 import com.ric.st.excp.CantSendSoap;
 import com.ric.st.excp.CantSignSoap;
-import com.ric.st.hotora.model.exs.Ulist;
 import com.ric.st.impl.Config;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
@@ -55,9 +42,8 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	@Autowired
 	private SoapPreps sp;
 
-	private ExportNsiListRequest req;
 	private ExportNsiListResult resList;
-	private ExportNsiItemResult resItem;
+	private ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult resItem;
 	private NsiService service;
 	private NsiPortsType port;
 	
@@ -90,15 +76,16 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	public ExportNsiListResult getNsiList(String grp) throws Fault, CantSignSoap, CantSendSoap { 
 		// создать и подготовить заголовок
 		try {
-			sp.createRh(false);
+			sp.createRh(true);
 		} catch (DatatypeConfigurationException e1) {
 			e1.printStackTrace();
 			throw new CantSendSoap("Ошибка при подготовке заголовка SOAP запроса!");
 		}
 
+		// подписывать
 		sp.setSignXML(true);
 		
-		req = new ExportNsiListRequest();
+		ExportNsiListRequest req = new ExportNsiListRequest();
 		req.setListGroup(grp);
 		req.setVersion(req.getVersion());
 		req.setId("foo");
@@ -112,7 +99,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	   			"exportNsiList", 			 		
 	   			new ExportNsiListResult(),
 	   			config,
-	   			true);
+	   			true, 0);
 	   return resList;
 	}
 	
@@ -125,12 +112,6 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	 * @throws Exception
 	 */
 	public ExportNsiItemResult getNsiItem(String grp, BigInteger id) throws Fault, CantSignSoap, CantSendSoap {
-	   	ExportNsiItemRequest req = new ExportNsiItemRequest();
-	    req.setListGroup(grp);
-	    req.setRegistryNumber(id);
-		req.setId("foo");
-		req.setVersion(req.getVersion());
-	    
 		// создать и подготовить заголовок
 		try {
 			sp.createRh(true);
@@ -139,6 +120,15 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 			throw new CantSendSoap("Ошибка при подготовке заголовка SOAP запроса!");
 		}
 
+		// подписывать
+		sp.setSignXML(true);
+
+		ExportNsiItemRequest req = new ExportNsiItemRequest();
+	    req.setListGroup(grp);
+	    req.setRegistryNumber(id);
+		req.setId("foo");
+		req.setVersion(req.getVersion());
+	    
 	   	port.exportNsiItem(req);
 	   	// отправка SOAP, анмаршаллинг результата
 	   	resItem = (ExportNsiItemResult) sp.sendSOAP(  
@@ -146,7 +136,8 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	   			"exportNsiItem", 			 		
 	   			new ExportNsiItemResult(),
 	   			config,
-	   			true);
+	   			true, 1);
+	   	
 	   return resItem;
 	}
 }

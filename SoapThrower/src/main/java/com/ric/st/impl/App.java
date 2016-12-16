@@ -8,7 +8,6 @@ import java.util.TimeZone;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.soap.SOAPException;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -19,10 +18,6 @@ import ru.gosuslugi.dom.signature.demo.commands.SignCommand;
 
 import com.ric.st.ActionControllers;
 import com.ric.st.Configs;
-import com.ric.st.PrepImportHouses;
-import com.ric.st.PrepImportHouses2;
-import com.ric.st.prep.HouseManagementPreps;
-import com.ric.st.prep.impl.HouseManagementPrep;
 
 /**
  * Точка входа в приложение
