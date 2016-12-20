@@ -6,8 +6,8 @@
 			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
 			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
 			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-common/">
-			<ns1:Date>2016-12-20T14:01:44.939+07:00</ns1:Date>
-			<ns1:MessageGUID>40c5cddf-05e9-48ed-9286-1a6595a3f029
+			<ns1:Date>2016-12-20T14:32:07.013+07:00</ns1:Date>
+			<ns1:MessageGUID>f6fa3a60-bf0a-4991-8cc9-b7c99b8e6f92
 			</ns1:MessageGUID>
 			<ns1:orgPPAGUID>b9fe4d27-020d-44dc-8bfd-b5972a504f45</ns1:orgPPAGUID>
 			<ns1:IsOperatorSignature>true</ns1:IsOperatorSignature>
@@ -26,4 +26,3 @@
 		</ns6:exportNsiItemRequest>
 	</S:Body>
 </S:Envelope>
-  

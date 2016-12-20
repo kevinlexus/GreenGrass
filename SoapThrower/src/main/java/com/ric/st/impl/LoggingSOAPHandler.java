@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.Name;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPBodyElement;
@@ -80,10 +81,6 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 			e.printStackTrace();
 		}
 		
-		log.info(" ");
-		log.info("Before Signed XML={}", (String) bs.toString());
-		log.info(" ");
-
 		// подпись элемента
 				String sgn = null;
         try {
@@ -97,7 +94,9 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 		log.info("Signed XML={}", sgn);
 		log.info(" ");
         
-/*
+
+		Node nd = null;
+		
 		// Получить элемент подписи
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         try {
@@ -110,12 +109,32 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
             //javax.xml.xpath.XPathExpression expr = xpath.compile("//*:SignedInfo");
             Object result = expr.evaluate(dDoc, XPathConstants.NODESET);
             NodeList nodes = (NodeList) result;
-            Node nd = nodes.item(0);
+
+            nd = nodes.item(0);
             
-            System.out.println("Check0 "+nodes.item(0));
-            System.out.println("Check1 "+nodes.item(0).getLocalName());
-            System.out.println("Check2 "+nodes.item(0).getNodeName());
-            NamedNodeMap attributes = nodes.item(0).getAttributes();
+            System.out.println("Check "+nd);
+            System.out.println("Check local name "+nd.getLocalName());
+            System.out.println("Check node name "+nd.getNodeName());
+            System.out.println("Check prefix "+nd.getPrefix());
+            //System.out.println("Check text"+nd.getTextContent()); - здесь подпись
+            
+            for (int i=0; i < nd.getChildNodes().getLength(); i++) {
+            	Node itm = nd.getChildNodes().item(i);
+            	if (itm.getNodeName().equals("ds:SignatureValue")) {
+	            	log.info("Child={}", nd.getChildNodes().item(i).getNodeName());
+	            	log.info("Child baseURI={}", nd.getChildNodes().item(i).getBaseURI());
+	            	//log.info("Child text={}", nd.getChildNodes().item(i).getTextContent());
+
+	            	for (int a=0; a < itm.getAttributes().getLength(); a++) {
+		            	log.info("Attrib ={}", itm.getAttributes().item(a).getNodeName() );
+		            	log.info("Attrib ={}", itm.getAttributes().item(a).getBaseURI() );
+		            	log.info("Attrib ={}", itm.getAttributes().item(a).getNamespaceURI());
+		            	log.info("Attrib ={}", itm.getAttributes().item(a).getLocalName());
+	            	}
+	        	}
+            }
+            
+            NamedNodeMap attributes = nd.getAttributes();
             for (int i = 0; i < attributes.getLength(); i++) {
                 System.out.println("Check3 "+attributes.item(i));
             }
@@ -124,25 +143,28 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
             //log.info("Element2={}", nd.getNodeValue());
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
         // 
         
-/*		try {
+		try {
 	        SOAPBody body = soapMsg.getSOAPBody();
-			//SOAPBodyElement bodyElement;
-			//bodyElement = body.addBodyElement(new QName("http://blog.jdevelop.eu/securitymessage", "message"));
-			//bodyElement.addTextNode("Security through obscurity");
+			SOAPBodyElement bodyElement;
+			bodyElement = body.addBodyElement(new QName("http://blog.jdevelop.eu/securitymessage", "message"));
+			bodyElement.addTextNode("Security through obscurity");
+
 			NodeList blst = body.getElementsByTagName("ns6:exportNsiItemRequest");
-			for (int i=0; i <= blst.getLength(); i++) {
-				log.info("item2= {}", blst.item(i));
-			}
-				
+			
+			log.info("item2= {}", blst.item(0));
+			
+			//Node itm = blst.item(0);
+			//itm.appendChild(nd);
+			
 			// сохранить XML
 			soapMsg.saveChanges();
 		} catch (SOAPException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}*/
+		}
 		
 		
 		log.info(" ");
