@@ -69,7 +69,7 @@ public class App
 		Configs cfg = context.getBean(Config.class);
 		
 		//Создать объект подписывания XML
-		//sc = new SignCommand();
+		sc = new SignCommand();
 
 		//включить логгирование XML
 		cfg.setXmlLog();

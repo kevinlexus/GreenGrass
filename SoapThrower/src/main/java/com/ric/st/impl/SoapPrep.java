@@ -357,7 +357,7 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	    	
 *
 */
-	    	res = unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
+	    	res = unmarshaller.unmarshal(soapResponse.extractContentAsDocument());
 	
 	    	// закрыть SOAP соединение 
 	        soapConnection.close();
