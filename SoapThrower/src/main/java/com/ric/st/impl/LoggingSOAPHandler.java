@@ -99,6 +99,9 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 		
 		// Получить элемент подписи
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+        String signValueId = null;
+        String signValueCtx = null;
+        
         try {
             DocumentBuilder builder = domFactory.newDocumentBuilder();
             InputSource is = new InputSource(new StringReader(sgn));
@@ -118,26 +121,30 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
             System.out.println("Check prefix "+nd.getPrefix());
             //System.out.println("Check text"+nd.getTextContent()); - здесь подпись
             
+            NamedNodeMap attributes = nd.getAttributes();
+            for (int b = 0; b < attributes.getLength(); b++) {
+                System.out.println("Check3 "+attributes.item(b));
+            }
+
             for (int i=0; i < nd.getChildNodes().getLength(); i++) {
             	Node itm = nd.getChildNodes().item(i);
+            	log.info("Child={}", itm.getNodeName());
+            	
             	if (itm.getNodeName().equals("ds:SignatureValue")) {
-	            	log.info("Child={}", nd.getChildNodes().item(i).getNodeName());
-	            	log.info("Child baseURI={}", nd.getChildNodes().item(i).getBaseURI());
-	            	//log.info("Child text={}", nd.getChildNodes().item(i).getTextContent());
 
 	            	for (int a=0; a < itm.getAttributes().getLength(); a++) {
-		            	log.info("Attrib ={}", itm.getAttributes().item(a).getNodeName() );
-		            	log.info("Attrib ={}", itm.getAttributes().item(a).getBaseURI() );
-		            	log.info("Attrib ={}", itm.getAttributes().item(a).getNamespaceURI());
-		            	log.info("Attrib ={}", itm.getAttributes().item(a).getLocalName());
+		            	log.info("Attrib ={}", itm.getAttributes().item(a));
+		            	//log.info("Attrib ={}", itm.getAttributes().item(a).getNodeName());
+		            	log.info("Attrib ={}", itm.getAttributes().item(a).getNodeValue());
+		            	signValueId = itm.getAttributes().item(a).getNodeValue();
+		            	
 	            	}
+	            	log.info("Attrib ={}", itm.getTextContent());
+	            	signValueCtx = itm.getTextContent();
 	        	}
+
             }
             
-            NamedNodeMap attributes = nd.getAttributes();
-            for (int i = 0; i < attributes.getLength(); i++) {
-                System.out.println("Check3 "+attributes.item(i));
-            }
             
             //log.info("Element1={}", nd);
             //log.info("Element2={}", nd.getNodeValue());
@@ -148,16 +155,22 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
         
 		try {
 	        SOAPBody body = soapMsg.getSOAPBody();
-			SOAPBodyElement bodyElement;
-			bodyElement = body.addBodyElement(new QName("http://blog.jdevelop.eu/securitymessage", "message"));
-			bodyElement.addTextNode("Security through obscurity");
-
+			//SOAPBodyElement bodyElement;
+			//bodyElement = body.addBodyElement(new QName("http://blog.jdevelop.eu/securitymessage", "message"));
+			//bodyElement.addTextNode("Security through obscurity");
+			
+			
+			
 			NodeList blst = body.getElementsByTagName("ns6:exportNsiItemRequest");
 			
-			log.info("item2= {}", blst.item(0));
+			//log.info("item2= {}", blst.item(0));
 			
-			//Node itm = blst.item(0);
-			//itm.appendChild(nd);
+			Node itm = blst.item(0);
+
+			Document doc = body.getOwnerDocument();
+			doc.adoptNode(nd);   // ПРОВЕРИТЬ ЭТО!!!!!!!!!!!!!
+			
+			itm.appendChild(nd);
 			
 			// сохранить XML
 			soapMsg.saveChanges();
