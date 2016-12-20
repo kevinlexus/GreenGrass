@@ -1,11 +1,14 @@
 
 package ru.gosuslugi.dom.schema.integration.capital_repair;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import ru.gosuslugi.dom.schema.integration.base.CommonResultType;
+import ru.gosuslugi.dom.schema.integration.base.BaseType;
+import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
 
 
 /**
@@ -18,10 +21,11 @@ import ru.gosuslugi.dom.schema.integration.base.CommonResultType;
  * <pre>
  * &lt;complexType name="CapRemImportResultType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/base/}CommonResultType">
- *       &lt;sequence minOccurs="0">
- *         &lt;element name="AccountSpecialGuid" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType" minOccurs="0"/>
- *       &lt;/sequence>
+ *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/base/}BaseType">
+ *       &lt;choice>
+ *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}ErrorMessage"/>
+ *         &lt;element name="CommonResult" type="{http://dom.gosuslugi.ru/schema/integration/capital-repair/}CapRemCommonResultType" maxOccurs="unbounded"/>
+ *       &lt;/choice>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -31,37 +35,69 @@ import ru.gosuslugi.dom.schema.integration.base.CommonResultType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CapRemImportResultType", propOrder = {
-    "accountSpecialGuid"
+    "errorMessage",
+    "commonResult"
 })
 public class CapRemImportResultType
-    extends CommonResultType
+    extends BaseType
 {
 
-    @XmlElement(name = "AccountSpecialGuid")
-    protected String accountSpecialGuid;
+    @XmlElement(name = "ErrorMessage", namespace = "http://dom.gosuslugi.ru/schema/integration/base/")
+    protected ErrorMessageType errorMessage;
+    @XmlElement(name = "CommonResult")
+    protected List<CapRemCommonResultType> commonResult;
 
     /**
-     * Gets the value of the accountSpecialGuid property.
+     * Gets the value of the errorMessage property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link ErrorMessageType }
      *     
      */
-    public String getAccountSpecialGuid() {
-        return accountSpecialGuid;
+    public ErrorMessageType getErrorMessage() {
+        return errorMessage;
     }
 
     /**
-     * Sets the value of the accountSpecialGuid property.
+     * Sets the value of the errorMessage property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link ErrorMessageType }
      *     
      */
-    public void setAccountSpecialGuid(String value) {
-        this.accountSpecialGuid = value;
+    public void setErrorMessage(ErrorMessageType value) {
+        this.errorMessage = value;
+    }
+
+    /**
+     * Gets the value of the commonResult property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the commonResult property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getCommonResult().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link CapRemCommonResultType }
+     * 
+     * 
+     */
+    public List<CapRemCommonResultType> getCommonResult() {
+        if (commonResult == null) {
+            commonResult = new ArrayList<CapRemCommonResultType>();
+        }
+        return this.commonResult;
     }
 
 }

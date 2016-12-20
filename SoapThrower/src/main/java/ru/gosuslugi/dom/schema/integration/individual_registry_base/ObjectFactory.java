@@ -42,6 +42,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link FIOType }
+     * 
+     */
+    public FIOType createFIOType() {
+        return new FIOType();
+    }
+
+    /**
      * Create an instance of {@link ID }
      * 
      */
@@ -55,14 +63,6 @@ public class ObjectFactory {
      */
     public IndType createIndType() {
         return new IndType();
-    }
-
-    /**
-     * Create an instance of {@link FIOType }
-     * 
-     */
-    public FIOType createFIOType() {
-        return new FIOType();
     }
 
     /**

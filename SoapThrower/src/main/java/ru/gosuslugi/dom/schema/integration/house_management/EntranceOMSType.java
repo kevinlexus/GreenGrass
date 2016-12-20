@@ -4,10 +4,8 @@ package ru.gosuslugi.dom.schema.integration.house_management;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -23,6 +21,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceNum"/>
+ *         &lt;element name="FIASChildHouseGuid" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}FIASHouseGUIDType" minOccurs="0"/>
  *         &lt;element name="StoreysCount" minOccurs="0">
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}byte">
@@ -31,7 +30,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="CreationDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+ *         &lt;element name="CreationYear" type="{http://dom.gosuslugi.ru/schema/integration/base/}YearType" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -43,8 +42,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EntranceOMSType", propOrder = {
     "entranceNum",
+    "fiasChildHouseGuid",
     "storeysCount",
-    "creationDate"
+    "creationYear"
 })
 @XmlSeeAlso({
     ru.gosuslugi.dom.schema.integration.house_management.ImportHouseOMSRequest.ApartmentHouse.EntranceToCreate.class
@@ -53,11 +53,12 @@ public class EntranceOMSType {
 
     @XmlElement(name = "EntranceNum", required = true)
     protected String entranceNum;
+    @XmlElement(name = "FIASChildHouseGuid")
+    protected String fiasChildHouseGuid;
     @XmlElement(name = "StoreysCount")
     protected Byte storeysCount;
-    @XmlElement(name = "CreationDate")
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar creationDate;
+    @XmlElement(name = "CreationYear")
+    protected Short creationYear;
 
     /**
      * Gets the value of the entranceNum property.
@@ -81,6 +82,30 @@ public class EntranceOMSType {
      */
     public void setEntranceNum(String value) {
         this.entranceNum = value;
+    }
+
+    /**
+     * Gets the value of the fiasChildHouseGuid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFIASChildHouseGuid() {
+        return fiasChildHouseGuid;
+    }
+
+    /**
+     * Sets the value of the fiasChildHouseGuid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFIASChildHouseGuid(String value) {
+        this.fiasChildHouseGuid = value;
     }
 
     /**
@@ -108,27 +133,27 @@ public class EntranceOMSType {
     }
 
     /**
-     * Gets the value of the creationDate property.
+     * Gets the value of the creationYear property.
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Short }
      *     
      */
-    public XMLGregorianCalendar getCreationDate() {
-        return creationDate;
+    public Short getCreationYear() {
+        return creationYear;
     }
 
     /**
-     * Sets the value of the creationDate property.
+     * Sets the value of the creationYear property.
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link Short }
      *     
      */
-    public void setCreationDate(XMLGregorianCalendar value) {
-        this.creationDate = value;
+    public void setCreationYear(Short value) {
+        this.creationYear = value;
     }
 
 }

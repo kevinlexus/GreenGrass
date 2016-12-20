@@ -126,6 +126,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportUnscheduledExaminationSubjectInfoType }
+     * 
+     */
+    public ExportUnscheduledExaminationSubjectInfoType createExportUnscheduledExaminationSubjectInfoType() {
+        return new ExportUnscheduledExaminationSubjectInfoType();
+    }
+
+    /**
      * Create an instance of {@link ExaminationType }
      * 
      */
@@ -163,14 +171,6 @@ public class ObjectFactory {
      */
     public ExportExaminationResultsType createExportExaminationResultsType() {
         return new ExportExaminationResultsType();
-    }
-
-    /**
-     * Create an instance of {@link UnscheduledExaminationSubjectInPlanInfoType }
-     * 
-     */
-    public UnscheduledExaminationSubjectInPlanInfoType createUnscheduledExaminationSubjectInPlanInfoType() {
-        return new UnscheduledExaminationSubjectInPlanInfoType();
     }
 
     /**
@@ -283,6 +283,14 @@ public class ObjectFactory {
      */
     public CancelledInfoWithAttachmentsType createCancelledInfoWithAttachmentsType() {
         return new CancelledInfoWithAttachmentsType();
+    }
+
+    /**
+     * Create an instance of {@link ExportCitizenInfoType }
+     * 
+     */
+    public ExportCitizenInfoType createExportCitizenInfoType() {
+        return new ExportCitizenInfoType();
     }
 
     /**
@@ -486,6 +494,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportUnscheduledExaminationSubjectInfoType.Organization }
+     * 
+     */
+    public ExportUnscheduledExaminationSubjectInfoType.Organization createExportUnscheduledExaminationSubjectInfoTypeOrganization() {
+        return new ExportUnscheduledExaminationSubjectInfoType.Organization();
+    }
+
+    /**
+     * Create an instance of {@link ExportUnscheduledExaminationSubjectInfoType.Individual }
+     * 
+     */
+    public ExportUnscheduledExaminationSubjectInfoType.Individual createExportUnscheduledExaminationSubjectInfoTypeIndividual() {
+        return new ExportUnscheduledExaminationSubjectInfoType.Individual();
+    }
+
+    /**
      * Create an instance of {@link ExaminationType.RegulatoryAuthorityInformation }
      * 
      */
@@ -547,22 +571,6 @@ public class ObjectFactory {
      */
     public ExportExaminationResultsType.IdentifiedOffencesInfo createExportExaminationResultsTypeIdentifiedOffencesInfo() {
         return new ExportExaminationResultsType.IdentifiedOffencesInfo();
-    }
-
-    /**
-     * Create an instance of {@link UnscheduledExaminationSubjectInPlanInfoType.Organization }
-     * 
-     */
-    public UnscheduledExaminationSubjectInPlanInfoType.Organization createUnscheduledExaminationSubjectInPlanInfoTypeOrganization() {
-        return new UnscheduledExaminationSubjectInPlanInfoType.Organization();
-    }
-
-    /**
-     * Create an instance of {@link UnscheduledExaminationSubjectInPlanInfoType.Individual }
-     * 
-     */
-    public UnscheduledExaminationSubjectInPlanInfoType.Individual createUnscheduledExaminationSubjectInPlanInfoTypeIndividual() {
-        return new UnscheduledExaminationSubjectInPlanInfoType.Individual();
     }
 
     /**

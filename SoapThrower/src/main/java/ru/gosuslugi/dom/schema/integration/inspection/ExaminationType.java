@@ -52,6 +52,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *                                 &lt;complexContent>
  *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                     &lt;sequence>
+ *                                       &lt;element name="UnscheduledType" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef" minOccurs="0"/>
  *                                       &lt;element name="Subject" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}UnscheduledExaminationSubjectInfoType"/>
  *                                     &lt;/sequence>
  *                                   &lt;/restriction>
@@ -78,6 +79,13 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
  *                   &lt;element name="FunctionRegistryNumber" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}FunctionRegistryNumberType"/>
+ *                   &lt;element name="RegulatoryAuthorityID" minOccurs="0">
+ *                     &lt;simpleType>
+ *                       &lt;restriction base="{http://dom.gosuslugi.ru/schema/integration/inspection/}RegulatoryAuthorityIDType">
+ *                         &lt;pattern value="\d{1,22}"/>
+ *                       &lt;/restriction>
+ *                     &lt;/simpleType>
+ *                   &lt;/element>
  *                   &lt;element name="AuthorizedPersons" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type" minOccurs="0"/>
  *                   &lt;element name="InvolvedExperts" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type" minOccurs="0"/>
  *                 &lt;/sequence>
@@ -987,6 +995,7 @@ public class ExaminationType {
      *                       &lt;complexContent>
      *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                           &lt;sequence>
+     *                             &lt;element name="UnscheduledType" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef" minOccurs="0"/>
      *                             &lt;element name="Subject" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}UnscheduledExaminationSubjectInfoType"/>
      *                           &lt;/sequence>
      *                         &lt;/restriction>
@@ -1206,6 +1215,7 @@ public class ExaminationType {
          *             &lt;complexContent>
          *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *                 &lt;sequence>
+         *                   &lt;element name="UnscheduledType" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef" minOccurs="0"/>
          *                   &lt;element name="Subject" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}UnscheduledExaminationSubjectInfoType"/>
          *                 &lt;/sequence>
          *               &lt;/restriction>
@@ -1346,6 +1356,7 @@ public class ExaminationType {
              *   &lt;complexContent>
              *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
              *       &lt;sequence>
+             *         &lt;element name="UnscheduledType" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef" minOccurs="0"/>
              *         &lt;element name="Subject" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}UnscheduledExaminationSubjectInfoType"/>
              *       &lt;/sequence>
              *     &lt;/restriction>
@@ -1357,12 +1368,39 @@ public class ExaminationType {
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = {
+                "unscheduledType",
                 "subject"
             })
             public static class Unscheduled {
 
+                @XmlElement(name = "UnscheduledType")
+                protected NsiRef unscheduledType;
                 @XmlElement(name = "Subject", required = true)
                 protected UnscheduledExaminationSubjectInfoType subject;
+
+                /**
+                 * Gets the value of the unscheduledType property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link NsiRef }
+                 *     
+                 */
+                public NsiRef getUnscheduledType() {
+                    return unscheduledType;
+                }
+
+                /**
+                 * Sets the value of the unscheduledType property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link NsiRef }
+                 *     
+                 */
+                public void setUnscheduledType(NsiRef value) {
+                    this.unscheduledType = value;
+                }
 
                 /**
                  * Gets the value of the subject property.
@@ -1641,6 +1679,13 @@ public class ExaminationType {
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
      *         &lt;element name="FunctionRegistryNumber" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}FunctionRegistryNumberType"/>
+     *         &lt;element name="RegulatoryAuthorityID" minOccurs="0">
+     *           &lt;simpleType>
+     *             &lt;restriction base="{http://dom.gosuslugi.ru/schema/integration/inspection/}RegulatoryAuthorityIDType">
+     *               &lt;pattern value="\d{1,22}"/>
+     *             &lt;/restriction>
+     *           &lt;/simpleType>
+     *         &lt;/element>
      *         &lt;element name="AuthorizedPersons" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type" minOccurs="0"/>
      *         &lt;element name="InvolvedExperts" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type" minOccurs="0"/>
      *       &lt;/sequence>
@@ -1654,6 +1699,7 @@ public class ExaminationType {
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "functionRegistryNumber",
+        "regulatoryAuthorityID",
         "authorizedPersons",
         "involvedExperts"
     })
@@ -1661,6 +1707,8 @@ public class ExaminationType {
 
         @XmlElement(name = "FunctionRegistryNumber", required = true)
         protected String functionRegistryNumber;
+        @XmlElement(name = "RegulatoryAuthorityID")
+        protected String regulatoryAuthorityID;
         @XmlElement(name = "AuthorizedPersons")
         protected String authorizedPersons;
         @XmlElement(name = "InvolvedExperts")
@@ -1688,6 +1736,30 @@ public class ExaminationType {
          */
         public void setFunctionRegistryNumber(String value) {
             this.functionRegistryNumber = value;
+        }
+
+        /**
+         * Gets the value of the regulatoryAuthorityID property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getRegulatoryAuthorityID() {
+            return regulatoryAuthorityID;
+        }
+
+        /**
+         * Sets the value of the regulatoryAuthorityID property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setRegulatoryAuthorityID(String value) {
+            this.regulatoryAuthorityID = value;
         }
 
         /**

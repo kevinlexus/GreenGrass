@@ -322,14 +322,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ExportOrgPeriodResultType }
-     * 
-     */
-    public ExportOrgPeriodResultType createExportOrgPeriodResultType() {
-        return new ExportOrgPeriodResultType();
-    }
-
-    /**
      * Create an instance of {@link InsuranceProductType }
      * 
      */
@@ -418,14 +410,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ExportOrgPeriodResult }
-     * 
-     */
-    public ExportOrgPeriodResult createExportOrgPeriodResult() {
-        return new ExportOrgPeriodResult();
-    }
-
-    /**
      * Create an instance of {@link ru.gosuslugi.dom.schema.integration.bills.PaymentRecalculation }
      * 
      */
@@ -463,14 +447,6 @@ public class ObjectFactory {
      */
     public ExportInsuranceProductRequest createExportInsuranceProductRequest() {
         return new ExportInsuranceProductRequest();
-    }
-
-    /**
-     * Create an instance of {@link ExportOrgPeriodRequest }
-     * 
-     */
-    public ExportOrgPeriodRequest createExportOrgPeriodRequest() {
-        return new ExportOrgPeriodRequest();
     }
 
     /**

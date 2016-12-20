@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -54,13 +53,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "address",
     "fiasHouseGuid",
     "activityEndDate"
-})
-@XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.licenses.DisqualifiedPersonType.Org.Legal.class,
-    ru.gosuslugi.dom.schema.integration.licenses.LicenseOrganizationType.Legal.class,
-    ru.gosuslugi.dom.schema.integration.licenses.LicenseType.LicensingAuthority.class,
-    ru.gosuslugi.dom.schema.integration.licenses.CorrectLicenseType.LicensingAuthority.class,
-    ru.gosuslugi.dom.schema.integration.licenses.AccompanyingDocumentType.Document.DecisionOrg.class
 })
 public class LegalType {
 

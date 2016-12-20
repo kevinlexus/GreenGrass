@@ -26,6 +26,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceNum"/>
+ *         &lt;element name="FIASChildHouseGuid" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}FIASHouseGUIDType" minOccurs="0"/>
  *         &lt;element name="FactoryNum" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="Type" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef" minOccurs="0"/>
  *         &lt;element name="OperatingLimit" minOccurs="0">
@@ -49,6 +50,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "LiftUpdateOMSType", propOrder = {
     "entranceNum",
+    "fiasChildHouseGuid",
     "factoryNum",
     "type",
     "operatingLimit",
@@ -62,6 +64,8 @@ public class LiftUpdateOMSType {
 
     @XmlElement(name = "EntranceNum", required = true)
     protected String entranceNum;
+    @XmlElement(name = "FIASChildHouseGuid")
+    protected String fiasChildHouseGuid;
     @XmlElement(name = "FactoryNum")
     protected String factoryNum;
     @XmlElement(name = "Type")
@@ -96,6 +100,30 @@ public class LiftUpdateOMSType {
      */
     public void setEntranceNum(String value) {
         this.entranceNum = value;
+    }
+
+    /**
+     * Gets the value of the fiasChildHouseGuid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFIASChildHouseGuid() {
+        return fiasChildHouseGuid;
+    }
+
+    /**
+     * Sets the value of the fiasChildHouseGuid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFIASChildHouseGuid(String value) {
+        this.fiasChildHouseGuid = value;
     }
 
     /**

@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "PaymentsServiceAsync", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/payment-service-async/", wsdlLocation = "file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.11.0.0.3/hcs_wsdl_xsd_v.11.0.0.3/payment/hcs-payment-service-async.wsdl")
+@WebServiceClient(name = "PaymentsServiceAsync", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/payment-service-async/", wsdlLocation = "file:/C:/work/GIS_MUP/GIS11_5/hcs_wsdl_xsd_v.11.0.0.5/payment/hcs-payment-service-async.wsdl")
 public class PaymentsServiceAsync
     extends Service
 {
@@ -30,7 +30,7 @@ public class PaymentsServiceAsync
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/C:/work/GIS_MUP/\u0413\u0418\u0421%20\u0416\u041a\u0425_\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f_v.11.0.0.3/hcs_wsdl_xsd_v.11.0.0.3/payment/hcs-payment-service-async.wsdl");
+            url = new URL("file:/C:/work/GIS_MUP/GIS11_5/hcs_wsdl_xsd_v.11.0.0.5/payment/hcs-payment-service-async.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

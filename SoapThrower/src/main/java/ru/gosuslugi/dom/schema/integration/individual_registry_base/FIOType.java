@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import ru.gosuslugi.dom.schema.integration.payment.Individual;
 
 
 /**
@@ -38,7 +39,8 @@ import javax.xml.bind.annotation.XmlType;
     "patronymic"
 })
 @XmlSeeAlso({
-    IndType.class
+    IndType.class,
+    Individual.class
 })
 public class FIOType {
 

@@ -11,10 +11,15 @@
 <!--   <logger name="org.hibernate.engine.loading.internal.CollectionLoadContext" level="INFO"/>
  -->  
   <!-- Setting the root level of logging to INFO - Здесь менять уровни логгинга в Spring Boot-->
-<!--   <logger name="org.hibernate.type" level="TRACE"/>
+   <logger name="org.hibernate.type" level="ERROR"/>
+<!--   System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump", "true");
+System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "true");
+System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "true");
+System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "true");
  -->
+
   <logger name="com.ric" level="INFO"/>
-  <root level="ERROR">
+  <root level="INFO">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

@@ -19,7 +19,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  * <pre>
  * &lt;complexType name="exportSupplyResourceContractResultType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}SupplyResourceContractType">
+ *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}ExportSupplyResourceContractType">
  *       &lt;sequence>
  *         &lt;element name="ContractRootGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
  *         &lt;element name="ContractGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
@@ -79,7 +79,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
     "annulmentContract"
 })
 public class ExportSupplyResourceContractResultType
-    extends SupplyResourceContractType
+    extends ExportSupplyResourceContractType
 {
 
     @XmlElement(name = "ContractRootGUID", required = true)

@@ -26,6 +26,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *           &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceNum"/>
  *           &lt;element name="HasNoEntrance" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;/choice>
+ *         &lt;element name="FIASChildHouseGuid" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}FIASHouseGUIDType" minOccurs="0"/>
  *         &lt;element name="PremisesCharacteristic" type="{http://dom.gosuslugi.ru/schema/integration/nsi-base/}nsiRef" minOccurs="0"/>
  *         &lt;element name="TotalArea" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}PremisesAreaType" minOccurs="0"/>
  *       &lt;/sequence>
@@ -40,6 +41,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 @XmlType(name = "ResidentialPremisesUpdateRSOType", propOrder = {
     "entranceNum",
     "hasNoEntrance",
+    "fiasChildHouseGuid",
     "premisesCharacteristic",
     "totalArea"
 })
@@ -54,6 +56,8 @@ public class ResidentialPremisesUpdateRSOType
     protected String entranceNum;
     @XmlElement(name = "HasNoEntrance")
     protected Boolean hasNoEntrance;
+    @XmlElement(name = "FIASChildHouseGuid")
+    protected String fiasChildHouseGuid;
     @XmlElement(name = "PremisesCharacteristic")
     protected NsiRef premisesCharacteristic;
     @XmlElement(name = "TotalArea")
@@ -105,6 +109,30 @@ public class ResidentialPremisesUpdateRSOType
      */
     public void setHasNoEntrance(Boolean value) {
         this.hasNoEntrance = value;
+    }
+
+    /**
+     * Gets the value of the fiasChildHouseGuid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFIASChildHouseGuid() {
+        return fiasChildHouseGuid;
+    }
+
+    /**
+     * Sets the value of the fiasChildHouseGuid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFIASChildHouseGuid(String value) {
+        this.fiasChildHouseGuid = value;
     }
 
     /**

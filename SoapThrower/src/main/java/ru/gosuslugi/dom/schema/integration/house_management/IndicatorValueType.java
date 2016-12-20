@@ -49,6 +49,7 @@ import javax.xml.bind.annotation.XmlType;
     "correspond"
 })
 @XmlSeeAlso({
+    ru.gosuslugi.dom.schema.integration.house_management.ExportSupplyResourceContractType.Quality.IndicatorValue.class,
     ru.gosuslugi.dom.schema.integration.house_management.SupplyResourceContractType.Quality.IndicatorValue.class
 })
 public class IndicatorValueType {

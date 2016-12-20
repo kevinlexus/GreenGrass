@@ -4,7 +4,6 @@ package ru.gosuslugi.dom.schema.integration.payments_base;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -40,9 +39,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "PaymentInformationKeyType", propOrder = {
     "bankBIK",
     "operatingAccountNumber"
-})
-@XmlSeeAlso({
-    ru.gosuslugi.dom.schema.integration.bills.ImportPaymentDocumentRequest.PaymentInformation.class
 })
 public class PaymentInformationKeyType {
 

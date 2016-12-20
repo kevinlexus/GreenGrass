@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import ru.gosuslugi.dom.schema.integration.base.AttachmentType;
@@ -130,7 +129,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
  *               &lt;complexContent>
  *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                   &lt;choice>
- *                     &lt;element name="RegOrg" type="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}RegOrgType"/>
+ *                     &lt;element name="RegOrg" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}DRSORegOrgType"/>
  *                     &lt;element name="Ind" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}DRSOIndType"/>
  *                   &lt;/choice>
  *                 &lt;/restriction>
@@ -142,7 +141,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
  *               &lt;complexContent>
  *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                   &lt;choice>
- *                     &lt;element name="RegOrg" type="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}RegOrgType"/>
+ *                     &lt;element name="RegOrg" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}DRSORegOrgType"/>
  *                     &lt;element name="Ind" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}DRSOIndType"/>
  *                   &lt;/choice>
  *                 &lt;/restriction>
@@ -413,9 +412,6 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
     "billingDate",
     "paymentDate",
     "providingInformationDate"
-})
-@XmlSeeAlso({
-    ExportSupplyResourceContractResultType.class
 })
 public class SupplyResourceContractType {
 
@@ -969,7 +965,7 @@ public class SupplyResourceContractType {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;choice>
-     *         &lt;element name="RegOrg" type="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}RegOrgType"/>
+     *         &lt;element name="RegOrg" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}DRSORegOrgType"/>
      *         &lt;element name="Ind" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}DRSOIndType"/>
      *       &lt;/choice>
      *     &lt;/restriction>
@@ -987,7 +983,7 @@ public class SupplyResourceContractType {
     public static class ApartmentBuildingOwner {
 
         @XmlElement(name = "RegOrg")
-        protected RegOrgType regOrg;
+        protected DRSORegOrgType regOrg;
         @XmlElement(name = "Ind")
         protected DRSOIndType ind;
 
@@ -996,10 +992,10 @@ public class SupplyResourceContractType {
          * 
          * @return
          *     possible object is
-         *     {@link RegOrgType }
+         *     {@link DRSORegOrgType }
          *     
          */
-        public RegOrgType getRegOrg() {
+        public DRSORegOrgType getRegOrg() {
             return regOrg;
         }
 
@@ -1008,10 +1004,10 @@ public class SupplyResourceContractType {
          * 
          * @param value
          *     allowed object is
-         *     {@link RegOrgType }
+         *     {@link DRSORegOrgType }
          *     
          */
-        public void setRegOrg(RegOrgType value) {
+        public void setRegOrg(DRSORegOrgType value) {
             this.regOrg = value;
         }
 
@@ -1505,7 +1501,7 @@ public class SupplyResourceContractType {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;choice>
-     *         &lt;element name="RegOrg" type="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}RegOrgType"/>
+     *         &lt;element name="RegOrg" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}DRSORegOrgType"/>
      *         &lt;element name="Ind" type="{http://dom.gosuslugi.ru/schema/integration/house-management/}DRSOIndType"/>
      *       &lt;/choice>
      *     &lt;/restriction>
@@ -1523,7 +1519,7 @@ public class SupplyResourceContractType {
     public static class LivingHouseOwner {
 
         @XmlElement(name = "RegOrg")
-        protected RegOrgType regOrg;
+        protected DRSORegOrgType regOrg;
         @XmlElement(name = "Ind")
         protected DRSOIndType ind;
 
@@ -1532,10 +1528,10 @@ public class SupplyResourceContractType {
          * 
          * @return
          *     possible object is
-         *     {@link RegOrgType }
+         *     {@link DRSORegOrgType }
          *     
          */
-        public RegOrgType getRegOrg() {
+        public DRSORegOrgType getRegOrg() {
             return regOrg;
         }
 
@@ -1544,10 +1540,10 @@ public class SupplyResourceContractType {
          * 
          * @param value
          *     allowed object is
-         *     {@link RegOrgType }
+         *     {@link DRSORegOrgType }
          *     
          */
-        public void setRegOrg(RegOrgType value) {
+        public void setRegOrg(DRSORegOrgType value) {
             this.regOrg = value;
         }
 

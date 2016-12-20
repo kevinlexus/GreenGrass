@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/house-management/}PremisesBasicUpdateUOType">
  *       &lt;sequence>
+ *         &lt;element name="FIASChildHouseGuid" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}FIASHouseGUIDType" minOccurs="0"/>
  *         &lt;element name="TotalArea" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}PremisesAreaType" minOccurs="0"/>
  *         &lt;element name="IsCommonProperty" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *       &lt;/sequence>
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "NonResidentialPremisesUpdateUOType", propOrder = {
+    "fiasChildHouseGuid",
     "totalArea",
     "isCommonProperty"
 })
@@ -43,10 +45,36 @@ public class NonResidentialPremisesUpdateUOType
     extends PremisesBasicUpdateUOType
 {
 
+    @XmlElement(name = "FIASChildHouseGuid")
+    protected String fiasChildHouseGuid;
     @XmlElement(name = "TotalArea")
     protected BigDecimal totalArea;
     @XmlElement(name = "IsCommonProperty")
     protected Boolean isCommonProperty;
+
+    /**
+     * Gets the value of the fiasChildHouseGuid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFIASChildHouseGuid() {
+        return fiasChildHouseGuid;
+    }
+
+    /**
+     * Sets the value of the fiasChildHouseGuid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFIASChildHouseGuid(String value) {
+        this.fiasChildHouseGuid = value;
+    }
 
     /**
      * Gets the value of the totalArea property.

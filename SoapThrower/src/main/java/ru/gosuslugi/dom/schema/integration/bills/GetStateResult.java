@@ -26,7 +26,6 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
  *       &lt;choice minOccurs="0">
  *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}ErrorMessage"/>
  *         &lt;element name="ImportResult" type="{http://dom.gosuslugi.ru/schema/integration/base/}CommonResultType" maxOccurs="unbounded"/>
- *         &lt;element name="exportOrgPeriodResult" type="{http://dom.gosuslugi.ru/schema/integration/bills/}exportOrgPeriodResultType" maxOccurs="unbounded"/>
  *         &lt;element name="exportPaymentDocResult" type="{http://dom.gosuslugi.ru/schema/integration/bills/}exportPaymentDocumentResultType" maxOccurs="unbounded"/>
  *         &lt;element name="exportNotificationsOfOrderExecutionResult" type="{http://dom.gosuslugi.ru/schema/integration/bills/}exportNotificationsOfOrderExecutionResultType" maxOccurs="unbounded"/>
  *         &lt;element name="InsuranceProduct" type="{http://dom.gosuslugi.ru/schema/integration/bills/}InsuranceProductType" maxOccurs="unbounded"/>
@@ -44,7 +43,6 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
 @XmlType(name = "", propOrder = {
     "errorMessage",
     "importResult",
-    "exportOrgPeriodResult",
     "exportPaymentDocResult",
     "exportNotificationsOfOrderExecutionResult",
     "insuranceProduct",
@@ -59,7 +57,6 @@ public class GetStateResult
     protected ErrorMessageType errorMessage;
     @XmlElement(name = "ImportResult")
     protected List<CommonResultType> importResult;
-    protected List<ExportOrgPeriodResultType> exportOrgPeriodResult;
     protected List<ExportPaymentDocumentResultType> exportPaymentDocResult;
     protected List<ExportNotificationsOfOrderExecutionResultType> exportNotificationsOfOrderExecutionResult;
     @XmlElement(name = "InsuranceProduct")
@@ -120,35 +117,6 @@ public class GetStateResult
             importResult = new ArrayList<CommonResultType>();
         }
         return this.importResult;
-    }
-
-    /**
-     * Gets the value of the exportOrgPeriodResult property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the exportOrgPeriodResult property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getExportOrgPeriodResult().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ExportOrgPeriodResultType }
-     * 
-     * 
-     */
-    public List<ExportOrgPeriodResultType> getExportOrgPeriodResult() {
-        if (exportOrgPeriodResult == null) {
-            exportOrgPeriodResult = new ArrayList<ExportOrgPeriodResultType>();
-        }
-        return this.exportOrgPeriodResult;
     }
 
     /**

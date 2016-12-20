@@ -68,11 +68,35 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportCitizenCompensationType }
+     * 
+     */
+    public ExportCitizenCompensationType createExportCitizenCompensationType() {
+        return new ExportCitizenCompensationType();
+    }
+
+    /**
      * Create an instance of {@link ExportCategoryType }
      * 
      */
     public ExportCategoryType createExportCategoryType() {
         return new ExportCategoryType();
+    }
+
+    /**
+     * Create an instance of {@link ExportCitizenSubsidyType }
+     * 
+     */
+    public ExportCitizenSubsidyType createExportCitizenSubsidyType() {
+        return new ExportCitizenSubsidyType();
+    }
+
+    /**
+     * Create an instance of {@link ExportCitizenSubsidyResult }
+     * 
+     */
+    public ExportCitizenSubsidyResult createExportCitizenSubsidyResult() {
+        return new ExportCitizenSubsidyResult();
     }
 
     /**
@@ -92,6 +116,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportCitizenSubsidyRequest }
+     * 
+     */
+    public ExportCitizenSubsidyRequest createExportCitizenSubsidyRequest() {
+        return new ExportCitizenSubsidyRequest();
+    }
+
+    /**
+     * Create an instance of {@link ExportCitizenCompensationResult }
+     * 
+     */
+    public ExportCitizenCompensationResult createExportCitizenCompensationResult() {
+        return new ExportCitizenCompensationResult();
+    }
+
+    /**
+     * Create an instance of {@link ExportCitizenCompensationRequest }
+     * 
+     */
+    public ExportCitizenCompensationRequest createExportCitizenCompensationRequest() {
+        return new ExportCitizenCompensationRequest();
+    }
+
+    /**
      * Create an instance of {@link ExportCategoriesResult }
      * 
      */
@@ -100,11 +148,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ActType }
+     * Create an instance of {@link FixedCompensationType }
      * 
      */
-    public ActType createActType() {
-        return new ActType();
+    public FixedCompensationType createFixedCompensationType() {
+        return new FixedCompensationType();
     }
 
     /**
@@ -116,19 +164,67 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ServiceCompensationType }
-     * 
-     */
-    public ServiceCompensationType createServiceCompensationType() {
-        return new ServiceCompensationType();
-    }
-
-    /**
      * Create an instance of {@link DecisionType }
      * 
      */
     public DecisionType createDecisionType() {
         return new DecisionType();
+    }
+
+    /**
+     * Create an instance of {@link StandardCompensationType }
+     * 
+     */
+    public StandardCompensationType createStandardCompensationType() {
+        return new StandardCompensationType();
+    }
+
+    /**
+     * Create an instance of {@link ExportCitizenSubsidyCalculationType }
+     * 
+     */
+    public ExportCitizenSubsidyCalculationType createExportCitizenSubsidyCalculationType() {
+        return new ExportCitizenSubsidyCalculationType();
+    }
+
+    /**
+     * Create an instance of {@link PaymentType }
+     * 
+     */
+    public PaymentType createPaymentType() {
+        return new PaymentType();
+    }
+
+    /**
+     * Create an instance of {@link CitizenCompensationCalculationType }
+     * 
+     */
+    public CitizenCompensationCalculationType createCitizenCompensationCalculationType() {
+        return new CitizenCompensationCalculationType();
+    }
+
+    /**
+     * Create an instance of {@link ActType }
+     * 
+     */
+    public ActType createActType() {
+        return new ActType();
+    }
+
+    /**
+     * Create an instance of {@link ActualCompensationType }
+     * 
+     */
+    public ActualCompensationType createActualCompensationType() {
+        return new ActualCompensationType();
+    }
+
+    /**
+     * Create an instance of {@link ExportPaymentType }
+     * 
+     */
+    public ExportPaymentType createExportPaymentType() {
+        return new ExportPaymentType();
     }
 
     /**
@@ -156,11 +252,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PaymentType }
+     * Create an instance of {@link ExportCitizenCompensationCalculationType }
      * 
      */
-    public PaymentType createPaymentType() {
-        return new PaymentType();
+    public ExportCitizenCompensationCalculationType createExportCitizenCompensationCalculationType() {
+        return new ExportCitizenCompensationCalculationType();
     }
 
     /**
@@ -169,14 +265,6 @@ public class ObjectFactory {
      */
     public CitizenCompensationOverviewType createCitizenCompensationOverviewType() {
         return new CitizenCompensationOverviewType();
-    }
-
-    /**
-     * Create an instance of {@link CitizenCompensationCalculationType }
-     * 
-     */
-    public CitizenCompensationCalculationType createCitizenCompensationCalculationType() {
-        return new CitizenCompensationCalculationType();
     }
 
     /**
@@ -212,6 +300,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportCitizenCompensationType.Overview }
+     * 
+     */
+    public ExportCitizenCompensationType.Overview createExportCitizenCompensationTypeOverview() {
+        return new ExportCitizenCompensationType.Overview();
+    }
+
+    /**
      * Create an instance of {@link ExportCategoryType.Territory }
      * 
      */
@@ -225,6 +321,22 @@ public class ObjectFactory {
      */
     public ExportCategoryType.Actual createExportCategoryTypeActual() {
         return new ExportCategoryType.Actual();
+    }
+
+    /**
+     * Create an instance of {@link ExportCitizenSubsidyType.Overview }
+     * 
+     */
+    public ExportCitizenSubsidyType.Overview createExportCitizenSubsidyTypeOverview() {
+        return new ExportCitizenSubsidyType.Overview();
+    }
+
+    /**
+     * Create an instance of {@link ExportCitizenSubsidyType.Payment }
+     * 
+     */
+    public ExportCitizenSubsidyType.Payment createExportCitizenSubsidyTypePayment() {
+        return new ExportCitizenSubsidyType.Payment();
     }
 
     /**

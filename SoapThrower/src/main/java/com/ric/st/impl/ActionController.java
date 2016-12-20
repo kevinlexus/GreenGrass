@@ -1,6 +1,5 @@
 package com.ric.st.impl;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -8,15 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.excp.EmptyStorable;
 import com.ric.st.ActionControllers;
 import com.ric.st.hotora.dao.ActionDAO;
 import com.ric.st.hotora.dao.EolinkDAO;
 import com.ric.st.hotora.model.exs.Action;
-import com.ric.st.hotora.model.exs.Eolink;
 import com.ric.st.mm.UlistMng;
 
 @Slf4j

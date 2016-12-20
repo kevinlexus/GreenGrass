@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.FIELD) //NsiElementFieldType
 @XmlType(name = "NsiElementFieldType", propOrder = {
     "name"
 })

@@ -31,7 +31,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="CreditContractGUID" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+ *         &lt;element name="CreditContractGUID" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -61,7 +61,7 @@ public class ExportCreditContractType
     @XmlElement(name = "Status", required = true)
     protected String status;
     @XmlElement(name = "CreditContractGUID", required = true)
-    protected Object creditContractGUID;
+    protected String creditContractGUID;
 
     /**
      * Gets the value of the holder property.
@@ -164,10 +164,10 @@ public class ExportCreditContractType
      * 
      * @return
      *     possible object is
-     *     {@link Object }
+     *     {@link String }
      *     
      */
-    public Object getCreditContractGUID() {
+    public String getCreditContractGUID() {
         return creditContractGUID;
     }
 
@@ -176,10 +176,10 @@ public class ExportCreditContractType
      * 
      * @param value
      *     allowed object is
-     *     {@link Object }
+     *     {@link String }
      *     
      */
-    public void setCreditContractGUID(Object value) {
+    public void setCreditContractGUID(String value) {
         this.creditContractGUID = value;
     }
 

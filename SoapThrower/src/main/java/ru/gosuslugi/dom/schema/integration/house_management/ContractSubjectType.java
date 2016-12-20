@@ -78,6 +78,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
     "plannedVolume"
 })
 @XmlSeeAlso({
+    ru.gosuslugi.dom.schema.integration.house_management.ExportSupplyResourceContractType.ContractSubject.class,
     ru.gosuslugi.dom.schema.integration.house_management.SupplyResourceContractType.ContractSubject.class
 })
 public class ContractSubjectType {

@@ -93,7 +93,7 @@ import ru.gosuslugi.dom.schema.integration.base.BaseType;
  *           &lt;/complexType>
  *         &lt;/element>
  *       &lt;/sequence>
- *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="10.0.2.3""/>
+ *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="11.0.0.5""/>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -154,7 +154,7 @@ public class ImportExaminationsRequest
      */
     public String getVersion() {
         if (version == null) {
-            return "10.0.2.3";
+            return "11.0.0.5";
         } else {
             return version;
         }

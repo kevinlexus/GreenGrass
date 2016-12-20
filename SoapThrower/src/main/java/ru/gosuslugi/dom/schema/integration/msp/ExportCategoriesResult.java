@@ -23,7 +23,7 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
  *   &lt;complexContent>
  *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/base/}BaseType">
  *       &lt;choice>
- *         &lt;element name="Category" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ExportCategoryType" maxOccurs="1000" minOccurs="0"/>
+ *         &lt;element name="Category" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ExportCategoryType" maxOccurs="1000"/>
  *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}ErrorMessage"/>
  *       &lt;/choice>
  *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="11.0.0.1""/>

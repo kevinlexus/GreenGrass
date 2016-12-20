@@ -34,7 +34,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "NsiItemInfoType", propOrder = {
+@XmlType(name = "NsiItemInfoType2", propOrder = {
     "registryNumber",
     "name",
     "modified"

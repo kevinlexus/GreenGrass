@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiItemInfoType;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListResult;
@@ -63,7 +64,13 @@ public class UlistMngImpl implements UlistMng {
 		ExportNsiItemResult res;
 		try {
 			res = nsiBuilder.getNsiItem(grp, id);
-		} catch (Fault | CantSignSoap | CantSendSoap e) {
+		} catch (Fault  e) {
+			e.printStackTrace();
+			throw new CantUpdNSI("Ошибка при обновлении справочника NSI grp="+ grp+", id="+ id);
+		} catch (CantSignSoap e) {
+			e.printStackTrace();
+			throw new CantUpdNSI("Ошибка при обновлении справочника NSI grp="+ grp+", id="+ id);
+		} catch (CantSendSoap e) {
 			e.printStackTrace();
 			throw new CantUpdNSI("Ошибка при обновлении справочника NSI grp="+ grp+", id="+ id);
 		} 
@@ -102,9 +109,9 @@ public class UlistMngImpl implements UlistMng {
 	private void updNsiList(List<UlistTp> lst, NsiItemInfoType nsiItem, String grp) throws CantUpdNSI {
 		String prefix = getPrefixedCD(nsiItem.getRegistryNumber().toString(), grp);
 		// найти элемент в нашей базе
-		Optional<UlistTp> el = lst.stream()
+		Optional<UlistTp> el = null/* lst.stream()
 				.filter(t-> t.getCd().equals(prefix))
-				.findAny();
+				.findAny()*/;
 		if (!el.isPresent()) {
 			// не найден элемент, создать новый
 			UlistTp lstTp = new UlistTp(prefix, nsiItem.getRegistryNumber().intValue(), nsiItem.getName(), 
@@ -134,8 +141,6 @@ public class UlistMngImpl implements UlistMng {
 		
 	}
 	
-	void eat(NsiItemInfoType food) throws CantUpdNSI {}
-	
 	/**
 	 * Обновить NSI справочники
 	 * @return 
@@ -146,9 +151,42 @@ public class UlistMngImpl implements UlistMng {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void refreshNsi(String grp) throws CantUpdNSI {
 		
+		//********* проверка ***************
+		//Ulist lst = em.find(Ulist.class, 25713660);
+		//log.info("Ulist.cd={}",lst.getCd());
+		// получить из ГИС справочник
+		ExportNsiItemResult res;
+		try {
+			res = nsiBuilder.getNsiItem("NSI", BigInteger.valueOf(268));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CantUpdNSI("Ошибка при обновлении справочника NSI!!!");
+		}
+		
+		for (NsiElementType e: res.getNsiItem().getNsiElement()){
+			log.info("CHECK2 = {}, {}", e.getCode(), e.getGUID());
+		}
+		
+		/*ExportNsiListResult res;
+		try {
+			res = nsiBuilder.getNsiList(grp);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CantUpdNSI("Ошибка обновления справочника NSI");
+		}
+		
+		for (NsiItemInfoType u: res.getNsiList().getNsiItemInfo()) {
+			log.info("Check:{}", u.getName());
+		}*/
+		
+		//********* проверка ***************
+		
+		
+		
+		
 		// Обновить виды справочников
 		// получить из нашей базы 
-		List<UlistTp> lst =  ulistDao.getListTpByGrp(grp);
+/*		List<UlistTp> lst =  ulistDao.getListTpByGrp(grp);
 		// получить из ГИС
 		ExportNsiListResult res;
 		try {
@@ -160,6 +198,6 @@ public class UlistMngImpl implements UlistMng {
 		res.getNsiList().getNsiItemInfo().stream().forEach(t -> log.trace("Элемент из списка справочников ГИС: {}",t.getName()));
 		// обработать каждый справочник
 		res.getNsiList().getNsiItemInfo().stream().forEach(Errors.rethrow().wrap(t -> {updNsiList(lst, t, grp);}));
-		
+*/
 	}
 }

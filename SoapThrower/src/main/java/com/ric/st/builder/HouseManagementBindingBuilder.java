@@ -58,7 +58,6 @@ import com.ric.st.SoapPreps;
 import com.ric.st.impl.Config;
 import com.ric.st.impl.SoapPrep;
 import com.ric.st.prep.HouseManagementPreps;
-import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Slf4j
 @Service
@@ -227,7 +226,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 		EntranceToUpdate etu = new EntranceToUpdate();
 		ah.getEntranceToUpdate().add(etu);
 	   	//Дата постройки
-		etu.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("28.11.2016")));
+		//etu.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("28.11.2016")));
 		//Номер подъезда
 		etu.setEntranceNum("3");
 		//Количество этажей
@@ -268,7 +267,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 	    EntranceToCreate etc = new EntranceToCreate();
 	    ah.getEntranceToCreate().add(etc);
 	    //Дата постройки
-		etc.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("01.01.2015")));
+		//etc.setCreationDate(Utl.getXMLDate(Utl.getDateFromStr("01.01.2015")));
 		//Номер подъезда
 		etc.setEntranceNum("3");
 		//Количество этажей

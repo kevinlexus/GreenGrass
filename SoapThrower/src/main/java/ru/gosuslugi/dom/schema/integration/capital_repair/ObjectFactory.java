@@ -242,11 +242,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CapRemImportResultType }
+     * Create an instance of {@link CapRemCommonResultType }
      * 
      */
-    public CapRemImportResultType createCapRemImportResultType() {
-        return new CapRemImportResultType();
+    public CapRemCommonResultType createCapRemCommonResultType() {
+        return new CapRemCommonResultType();
     }
 
     /**
@@ -367,6 +367,14 @@ public class ObjectFactory {
      */
     public ExportCreditContractRequest createExportCreditContractRequest() {
         return new ExportCreditContractRequest();
+    }
+
+    /**
+     * Create an instance of {@link CapRemImportResultType }
+     * 
+     */
+    public CapRemImportResultType createCapRemImportResultType() {
+        return new CapRemImportResultType();
     }
 
     /**

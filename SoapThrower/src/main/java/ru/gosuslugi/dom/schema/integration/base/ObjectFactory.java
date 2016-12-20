@@ -30,9 +30,9 @@ public class ObjectFactory {
     private final static QName _Year_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/base/", "Year");
     private final static QName _ISRequestHeader_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/base/", "ISRequestHeader");
     private final static QName _TransportGUID_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/base/", "TransportGUID");
+    private final static QName _ModificationDate_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/base/", "ModificationDate");
     private final static QName _OKEI_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/base/", "OKEI");
     private final static QName _Month_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/base/", "Month");
-    private final static QName _ModificationDate_QNAME = new QName("http://dom.gosuslugi.ru/schema/integration/base/", "ModificationDate");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ru.gosuslugi.dom.schema.integration.base
@@ -58,19 +58,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetStateRequest }
+     * Create an instance of {@link BaseAsyncResponseType }
      * 
      */
-    public GetStateRequest createGetStateRequest() {
-        return new GetStateRequest();
-    }
-
-    /**
-     * Create an instance of {@link ImportResult }
-     * 
-     */
-    public ImportResult createImportResult() {
-        return new ImportResult();
+    public BaseAsyncResponseType createBaseAsyncResponseType() {
+        return new BaseAsyncResponseType();
     }
 
     /**
@@ -87,6 +79,38 @@ public class ObjectFactory {
      */
     public ErrorMessageType createErrorMessageType() {
         return new ErrorMessageType();
+    }
+
+    /**
+     * Create an instance of {@link OKTMORefType }
+     * 
+     */
+    public OKTMORefType createOKTMORefType() {
+        return new OKTMORefType();
+    }
+
+    /**
+     * Create an instance of {@link RegionType }
+     * 
+     */
+    public RegionType createRegionType() {
+        return new RegionType();
+    }
+
+    /**
+     * Create an instance of {@link GetStateRequest }
+     * 
+     */
+    public GetStateRequest createGetStateRequest() {
+        return new GetStateRequest();
+    }
+
+    /**
+     * Create an instance of {@link ImportResult }
+     * 
+     */
+    public ImportResult createImportResult() {
+        return new ImportResult();
     }
 
     /**
@@ -146,35 +170,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RegionType }
-     * 
-     */
-    public RegionType createRegionType() {
-        return new RegionType();
-    }
-
-    /**
-     * Create an instance of {@link BaseAsyncResponseType }
-     * 
-     */
-    public BaseAsyncResponseType createBaseAsyncResponseType() {
-        return new BaseAsyncResponseType();
-    }
-
-    /**
      * Create an instance of {@link DocumentPortalType }
      * 
      */
     public DocumentPortalType createDocumentPortalType() {
         return new DocumentPortalType();
-    }
-
-    /**
-     * Create an instance of {@link OKTMORefType }
-     * 
-     */
-    public OKTMORefType createOKTMORefType() {
-        return new OKTMORefType();
     }
 
     /**
@@ -239,6 +239,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link XMLGregorianCalendar }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://dom.gosuslugi.ru/schema/integration/base/", name = "ModificationDate")
+    public JAXBElement<XMLGregorianCalendar> createModificationDate(XMLGregorianCalendar value) {
+        return new JAXBElement<XMLGregorianCalendar>(_ModificationDate_QNAME, XMLGregorianCalendar.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
@@ -254,15 +263,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://dom.gosuslugi.ru/schema/integration/base/", name = "Month")
     public JAXBElement<Integer> createMonth(Integer value) {
         return new JAXBElement<Integer>(_Month_QNAME, Integer.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link XMLGregorianCalendar }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://dom.gosuslugi.ru/schema/integration/base/", name = "ModificationDate")
-    public JAXBElement<XMLGregorianCalendar> createModificationDate(XMLGregorianCalendar value) {
-        return new JAXBElement<XMLGregorianCalendar>(_ModificationDate_QNAME, XMLGregorianCalendar.class, null, value);
     }
 
 }

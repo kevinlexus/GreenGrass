@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import ru.gosuslugi.dom.schema.integration.base.AckRequest;
 import ru.gosuslugi.dom.schema.integration.base.GetStateRequest;
 import ru.gosuslugi.dom.schema.integration.msp.ExportCategoriesRequest;
+import ru.gosuslugi.dom.schema.integration.msp.ExportCitizenCompensationRequest;
+import ru.gosuslugi.dom.schema.integration.msp.ExportCitizenSubsidyRequest;
 import ru.gosuslugi.dom.schema.integration.msp.GetStateResult;
 import ru.gosuslugi.dom.schema.integration.msp.ImportCitizenCompensationRequest;
 import ru.gosuslugi.dom.schema.integration.msp.ImportCitizenSubsidyRequest;
@@ -95,6 +97,38 @@ public interface MSPAsyncPort {
     public AckRequest exportCategories(
         @WebParam(name = "exportCategoriesRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/msp/", partName = "exportCategoriesRequest")
         ExportCategoriesRequest exportCategoriesRequest)
+        throws Fault
+    ;
+
+    /**
+     * Экспорт сведений о гражданах, получающих субсидии
+     * 
+     * @param exportCitizenSubsidyRequest
+     * @return
+     *     returns ru.gosuslugi.dom.schema.integration.base.AckRequest
+     * @throws Fault
+     */
+    @WebMethod(action = "urn:exportCitizenSubsidy")
+    @WebResult(name = "AckRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/base/", partName = "exportCitizenSubsidyResult")
+    public AckRequest exportCitizenSubsidy(
+        @WebParam(name = "exportCitizenSubsidyRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/msp/", partName = "exportCitizenSubsidyRequest")
+        ExportCitizenSubsidyRequest exportCitizenSubsidyRequest)
+        throws Fault
+    ;
+
+    /**
+     * Экспорт сведений о гражданах, получающих компенсации расходов
+     * 
+     * @param exportCitizenCompensationRequest
+     * @return
+     *     returns ru.gosuslugi.dom.schema.integration.base.AckRequest
+     * @throws Fault
+     */
+    @WebMethod(action = "urn:exportCitizenCompensation")
+    @WebResult(name = "AckRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/base/", partName = "exportCitizenCompensationResult")
+    public AckRequest exportCitizenCompensation(
+        @WebParam(name = "exportCitizenCompensationRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/msp/", partName = "exportCitizenCompensationRequest")
+        ExportCitizenCompensationRequest exportCitizenCompensationRequest)
         throws Fault
     ;
 

@@ -27,6 +27,8 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
  *         &lt;element name="ImportResult" type="{http://dom.gosuslugi.ru/schema/integration/base/}CommonResultType" maxOccurs="unbounded"/>
  *         &lt;element name="Category" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ExportCategoryType" maxOccurs="unbounded"/>
  *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}ErrorMessage"/>
+ *         &lt;element name="CitizenSubsidy" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ExportCitizenSubsidyType" maxOccurs="1000"/>
+ *         &lt;element name="CitizenCompensation" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ExportCitizenCompensationType" maxOccurs="1000"/>
  *       &lt;/choice>
  *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="11.0.0.1""/>
  *     &lt;/extension>
@@ -40,7 +42,9 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
 @XmlType(name = "", propOrder = {
     "importResult",
     "category",
-    "errorMessage"
+    "errorMessage",
+    "citizenSubsidy",
+    "citizenCompensation"
 })
 @XmlRootElement(name = "getStateResult")
 public class GetStateResult
@@ -53,6 +57,10 @@ public class GetStateResult
     protected List<ExportCategoryType> category;
     @XmlElement(name = "ErrorMessage", namespace = "http://dom.gosuslugi.ru/schema/integration/base/")
     protected ErrorMessageType errorMessage;
+    @XmlElement(name = "CitizenSubsidy")
+    protected List<ExportCitizenSubsidyType> citizenSubsidy;
+    @XmlElement(name = "CitizenCompensation")
+    protected List<ExportCitizenCompensationType> citizenCompensation;
     @XmlAttribute(name = "version", namespace = "http://dom.gosuslugi.ru/schema/integration/base/", required = true)
     protected String version;
 
@@ -136,6 +144,64 @@ public class GetStateResult
      */
     public void setErrorMessage(ErrorMessageType value) {
         this.errorMessage = value;
+    }
+
+    /**
+     * Gets the value of the citizenSubsidy property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the citizenSubsidy property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getCitizenSubsidy().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ExportCitizenSubsidyType }
+     * 
+     * 
+     */
+    public List<ExportCitizenSubsidyType> getCitizenSubsidy() {
+        if (citizenSubsidy == null) {
+            citizenSubsidy = new ArrayList<ExportCitizenSubsidyType>();
+        }
+        return this.citizenSubsidy;
+    }
+
+    /**
+     * Gets the value of the citizenCompensation property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the citizenCompensation property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getCitizenCompensation().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ExportCitizenCompensationType }
+     * 
+     * 
+     */
+    public List<ExportCitizenCompensationType> getCitizenCompensation() {
+        if (citizenCompensation == null) {
+            citizenCompensation = new ArrayList<ExportCitizenCompensationType>();
+        }
+        return this.citizenCompensation;
     }
 
     /**

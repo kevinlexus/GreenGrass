@@ -1,9 +1,7 @@
 package com.ric.st.hotora.dao.impl;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,7 +9,6 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
-import com.ric.bill.model.bs.Lst;
 import com.ric.st.hotora.dao.UlistDAO;
 import com.ric.st.hotora.model.exs.Ulist;
 import com.ric.st.hotora.model.exs.UlistTp;

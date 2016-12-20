@@ -9,14 +9,14 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
 
 
 /**
- * Сведения о субъекте проверки для внеплановой проверки в плане
+ * Сведения о субъекте проверки для внеплановой проверки в реестре (экспорт)
  * 
- * <p>Java class for UnscheduledExaminationSubjectInPlanInfoType complex type.
+ * <p>Java class for ExportUnscheduledExaminationSubjectInfoType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="UnscheduledExaminationSubjectInPlanInfoType">
+ * &lt;complexType name="ExportUnscheduledExaminationSubjectInfoType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;choice>
@@ -26,6 +26,7 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
  *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}RegOrgType">
  *                 &lt;sequence>
  *                   &lt;element name="ActualActivityPlace" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type"/>
+ *                   &lt;element name="OtherPersons" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/extension>
  *             &lt;/complexContent>
@@ -37,12 +38,13 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
  *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}RegOrgType">
  *                 &lt;sequence>
  *                   &lt;element name="ActualActivityPlace" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type"/>
+ *                   &lt;element name="OtherPersons" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/extension>
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
- *         &lt;element name="Citizen" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}CitizenInfoType"/>
+ *         &lt;element name="Citizen" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}ExportCitizenInfoType"/>
  *       &lt;/choice>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -52,29 +54,29 @@ import ru.gosuslugi.dom.schema.integration.organizations_registry_base.RegOrgTyp
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UnscheduledExaminationSubjectInPlanInfoType", propOrder = {
+@XmlType(name = "ExportUnscheduledExaminationSubjectInfoType", propOrder = {
     "organization",
     "individual",
     "citizen"
 })
-public class UnscheduledExaminationSubjectInPlanInfoType {
+public class ExportUnscheduledExaminationSubjectInfoType {
 
     @XmlElement(name = "Organization")
-    protected UnscheduledExaminationSubjectInPlanInfoType.Organization organization;
+    protected ExportUnscheduledExaminationSubjectInfoType.Organization organization;
     @XmlElement(name = "Individual")
-    protected UnscheduledExaminationSubjectInPlanInfoType.Individual individual;
+    protected ExportUnscheduledExaminationSubjectInfoType.Individual individual;
     @XmlElement(name = "Citizen")
-    protected CitizenInfoType citizen;
+    protected ExportCitizenInfoType citizen;
 
     /**
      * Gets the value of the organization property.
      * 
      * @return
      *     possible object is
-     *     {@link UnscheduledExaminationSubjectInPlanInfoType.Organization }
+     *     {@link ExportUnscheduledExaminationSubjectInfoType.Organization }
      *     
      */
-    public UnscheduledExaminationSubjectInPlanInfoType.Organization getOrganization() {
+    public ExportUnscheduledExaminationSubjectInfoType.Organization getOrganization() {
         return organization;
     }
 
@@ -83,10 +85,10 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      * 
      * @param value
      *     allowed object is
-     *     {@link UnscheduledExaminationSubjectInPlanInfoType.Organization }
+     *     {@link ExportUnscheduledExaminationSubjectInfoType.Organization }
      *     
      */
-    public void setOrganization(UnscheduledExaminationSubjectInPlanInfoType.Organization value) {
+    public void setOrganization(ExportUnscheduledExaminationSubjectInfoType.Organization value) {
         this.organization = value;
     }
 
@@ -95,10 +97,10 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      * 
      * @return
      *     possible object is
-     *     {@link UnscheduledExaminationSubjectInPlanInfoType.Individual }
+     *     {@link ExportUnscheduledExaminationSubjectInfoType.Individual }
      *     
      */
-    public UnscheduledExaminationSubjectInPlanInfoType.Individual getIndividual() {
+    public ExportUnscheduledExaminationSubjectInfoType.Individual getIndividual() {
         return individual;
     }
 
@@ -107,10 +109,10 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      * 
      * @param value
      *     allowed object is
-     *     {@link UnscheduledExaminationSubjectInPlanInfoType.Individual }
+     *     {@link ExportUnscheduledExaminationSubjectInfoType.Individual }
      *     
      */
-    public void setIndividual(UnscheduledExaminationSubjectInPlanInfoType.Individual value) {
+    public void setIndividual(ExportUnscheduledExaminationSubjectInfoType.Individual value) {
         this.individual = value;
     }
 
@@ -119,10 +121,10 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      * 
      * @return
      *     possible object is
-     *     {@link CitizenInfoType }
+     *     {@link ExportCitizenInfoType }
      *     
      */
-    public CitizenInfoType getCitizen() {
+    public ExportCitizenInfoType getCitizen() {
         return citizen;
     }
 
@@ -131,10 +133,10 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      * 
      * @param value
      *     allowed object is
-     *     {@link CitizenInfoType }
+     *     {@link ExportCitizenInfoType }
      *     
      */
-    public void setCitizen(CitizenInfoType value) {
+    public void setCitizen(ExportCitizenInfoType value) {
         this.citizen = value;
     }
 
@@ -150,6 +152,7 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}RegOrgType">
      *       &lt;sequence>
      *         &lt;element name="ActualActivityPlace" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type"/>
+     *         &lt;element name="OtherPersons" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/extension>
      *   &lt;/complexContent>
@@ -160,7 +163,8 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "actualActivityPlace"
+        "actualActivityPlace",
+        "otherPersons"
     })
     public static class Individual
         extends RegOrgType
@@ -168,6 +172,8 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
 
         @XmlElement(name = "ActualActivityPlace", required = true)
         protected String actualActivityPlace;
+        @XmlElement(name = "OtherPersons")
+        protected String otherPersons;
 
         /**
          * Gets the value of the actualActivityPlace property.
@@ -191,6 +197,30 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
          */
         public void setActualActivityPlace(String value) {
             this.actualActivityPlace = value;
+        }
+
+        /**
+         * Gets the value of the otherPersons property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getOtherPersons() {
+            return otherPersons;
+        }
+
+        /**
+         * Sets the value of the otherPersons property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setOtherPersons(String value) {
+            this.otherPersons = value;
         }
 
     }
@@ -207,6 +237,7 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/}RegOrgType">
      *       &lt;sequence>
      *         &lt;element name="ActualActivityPlace" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type"/>
+     *         &lt;element name="OtherPersons" type="{http://dom.gosuslugi.ru/schema/integration/inspection/}String2000Type" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/extension>
      *   &lt;/complexContent>
@@ -217,7 +248,8 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "actualActivityPlace"
+        "actualActivityPlace",
+        "otherPersons"
     })
     public static class Organization
         extends RegOrgType
@@ -225,6 +257,8 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
 
         @XmlElement(name = "ActualActivityPlace", required = true)
         protected String actualActivityPlace;
+        @XmlElement(name = "OtherPersons")
+        protected String otherPersons;
 
         /**
          * Gets the value of the actualActivityPlace property.
@@ -248,6 +282,30 @@ public class UnscheduledExaminationSubjectInPlanInfoType {
          */
         public void setActualActivityPlace(String value) {
             this.actualActivityPlace = value;
+        }
+
+        /**
+         * Gets the value of the otherPersons property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getOtherPersons() {
+            return otherPersons;
+        }
+
+        /**
+         * Sets the value of the otherPersons property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setOtherPersons(String value) {
+            this.otherPersons = value;
         }
 
     }

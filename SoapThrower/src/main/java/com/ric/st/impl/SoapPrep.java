@@ -2,15 +2,19 @@ package com.ric.st.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -19,10 +23,13 @@ import java.util.UUID;
 
 import javax.jws.WebMethod;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
 import javax.xml.soap.SOAPConnection;
@@ -40,13 +47,18 @@ import javax.xml.ws.handler.Handler;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.dom4j.Document;
+import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
 
 import com.ric.bill.Utl;
+import com.ric.st.NamespaceBindingShim;
 import com.ric.st.SoapPreps;
 import com.ric.st.excp.CantSendSoap;
 import com.ric.st.excp.CantSignSoap;
@@ -73,13 +85,17 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	/*
 	 * установить конфигурационные параметры
 	 */
-	@Override
 	public void setUp(T o, BindingProvider bs, WSBindingProvider ws){
 		ob = o;
 		setBindingProvider(bs);
 		setWSBindingProvider(ws);
 		setBinding(bs.getBinding());
-		// установить хедеры
+		
+/*		List<Handler> handlerChain = new ArrayList<Handler>();
+		handlerChain.add(new NamespaceBindingShim());
+		
+		bs.getBinding().setHandlerChain(handlerChain);
+*/		// установить хедеры
 		setRh(new RequestHeader());
 		// добавить хэндлер
 		addHandler();
@@ -233,7 +249,9 @@ public class SoapPrep<T> implements SoapPreps<T> {
 	    	if (config.isSrvTest()) {
 	    		changeHost(config.getSrvTestHost());
 	    	}
-		} catch (UnknownHostException | MalformedURLException e1) {
+		} catch (UnknownHostException e1) { 
+  		  throw new CantSendSoap("Ошибка при замене IP адреса хоста SOAP запроса!");
+		} catch (MalformedURLException e1) {
 			throw new CantSendSoap("Ошибка при замене IP адреса хоста SOAP запроса!");
 		}
 		
@@ -314,7 +332,31 @@ public class SoapPrep<T> implements SoapPreps<T> {
 
 	        
 	        //JAXBContext context = JAXBContext.newInstance(result.getClass());
+	        
 	    	Unmarshaller unmarshaller = JAXBContext.newInstance(result.getClass()).createUnmarshaller();
+	        
+	    	
+/*	    	String newNode = "<node>value</node>"; // Convert this to XML
+	    	SAXReader reader = new SAXReader();
+	    	Document newNodeDocument = reader.read(new StringReader(Node));
+*/	    	  
+	    	//nd.g
+	    	//res = unmarshaller.un .unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
+	    	//res = unmarshaller.unmarshal(new File("C:\\TEMP\\#29\\1.txt"));
+	    	//org.w3c.dom.Document doc = new org.w3c.dom.Document();
+	    	
+/*	    	DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	    	InputSource is = new InputSource();
+	    	//File fl = new File("C:\\TEMP\\#29\\1.txt");
+	    	StringReader sr = new StringReader(new String(Files.readAllBytes(Paths.get("C:\\TEMP\\#29\\1.txt")))); 
+	    	//is.setCharacterStream(new StringReader("<root><nod1></nod1></root>"));
+	    	is.setCharacterStream(sr);
+
+	    	log.info("File={}", sr);
+	    	org.w3c.dom.Document doc = db.parse(is);
+	    	
+*
+*/
 	    	res = unmarshaller.unmarshal(soapResponse.getSOAPBody().extractContentAsDocument());
 	
 	    	// закрыть SOAP соединение 

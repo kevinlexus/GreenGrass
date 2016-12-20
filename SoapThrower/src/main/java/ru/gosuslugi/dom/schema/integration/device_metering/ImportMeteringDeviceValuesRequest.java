@@ -48,6 +48,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *                                   &lt;complexContent>
  *                                     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}OneRateMeteringValueType">
  *                                       &lt;sequence>
+ *                                         &lt;element name="DateValue" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *                                         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
  *                                       &lt;/sequence>
  *                                     &lt;/extension>
@@ -101,6 +102,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
  *                                   &lt;complexContent>
  *                                     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}ElectricMeteringValueType">
  *                                       &lt;sequence>
+ *                                         &lt;element name="DateValue" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *                                         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
  *                                       &lt;/sequence>
  *                                     &lt;/extension>
@@ -283,6 +285,7 @@ public class ImportMeteringDeviceValuesRequest
      *                         &lt;complexContent>
      *                           &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}OneRateMeteringValueType">
      *                             &lt;sequence>
+     *                               &lt;element name="DateValue" type="{http://www.w3.org/2001/XMLSchema}date"/>
      *                               &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
      *                             &lt;/sequence>
      *                           &lt;/extension>
@@ -336,6 +339,7 @@ public class ImportMeteringDeviceValuesRequest
      *                         &lt;complexContent>
      *                           &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}ElectricMeteringValueType">
      *                             &lt;sequence>
+     *                               &lt;element name="DateValue" type="{http://www.w3.org/2001/XMLSchema}date"/>
      *                               &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
      *                             &lt;/sequence>
      *                           &lt;/extension>
@@ -518,6 +522,7 @@ public class ImportMeteringDeviceValuesRequest
          *             &lt;complexContent>
          *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}ElectricMeteringValueType">
          *                 &lt;sequence>
+         *                   &lt;element name="DateValue" type="{http://www.w3.org/2001/XMLSchema}date"/>
          *                   &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
          *                 &lt;/sequence>
          *               &lt;/extension>
@@ -763,6 +768,7 @@ public class ImportMeteringDeviceValuesRequest
              *   &lt;complexContent>
              *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}ElectricMeteringValueType">
              *       &lt;sequence>
+             *         &lt;element name="DateValue" type="{http://www.w3.org/2001/XMLSchema}date"/>
              *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
              *       &lt;/sequence>
              *     &lt;/extension>
@@ -774,14 +780,42 @@ public class ImportMeteringDeviceValuesRequest
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = {
+                "dateValue",
                 "transportGUID"
             })
             public static class CurrentValue
                 extends ElectricMeteringValueType
             {
 
+                @XmlElement(name = "DateValue", required = true)
+                @XmlSchemaType(name = "date")
+                protected XMLGregorianCalendar dateValue;
                 @XmlElement(name = "TransportGUID", namespace = "http://dom.gosuslugi.ru/schema/integration/base/", required = true)
                 protected String transportGUID;
+
+                /**
+                 * Gets the value of the dateValue property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link XMLGregorianCalendar }
+                 *     
+                 */
+                public XMLGregorianCalendar getDateValue() {
+                    return dateValue;
+                }
+
+                /**
+                 * Sets the value of the dateValue property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link XMLGregorianCalendar }
+                 *     
+                 */
+                public void setDateValue(XMLGregorianCalendar value) {
+                    this.dateValue = value;
+                }
 
                 /**
                  * Gets the value of the transportGUID property.
@@ -1083,6 +1117,7 @@ public class ImportMeteringDeviceValuesRequest
          *             &lt;complexContent>
          *               &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}OneRateMeteringValueType">
          *                 &lt;sequence>
+         *                   &lt;element name="DateValue" type="{http://www.w3.org/2001/XMLSchema}date"/>
          *                   &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
          *                 &lt;/sequence>
          *               &lt;/extension>
@@ -1323,6 +1358,7 @@ public class ImportMeteringDeviceValuesRequest
              *   &lt;complexContent>
              *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/metering-device-base/}OneRateMeteringValueType">
              *       &lt;sequence>
+             *         &lt;element name="DateValue" type="{http://www.w3.org/2001/XMLSchema}date"/>
              *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}TransportGUID"/>
              *       &lt;/sequence>
              *     &lt;/extension>
@@ -1334,14 +1370,42 @@ public class ImportMeteringDeviceValuesRequest
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = {
+                "dateValue",
                 "transportGUID"
             })
             public static class CurrentValue
                 extends OneRateMeteringValueType
             {
 
+                @XmlElement(name = "DateValue", required = true)
+                @XmlSchemaType(name = "date")
+                protected XMLGregorianCalendar dateValue;
                 @XmlElement(name = "TransportGUID", namespace = "http://dom.gosuslugi.ru/schema/integration/base/", required = true)
                 protected String transportGUID;
+
+                /**
+                 * Gets the value of the dateValue property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link XMLGregorianCalendar }
+                 *     
+                 */
+                public XMLGregorianCalendar getDateValue() {
+                    return dateValue;
+                }
+
+                /**
+                 * Sets the value of the dateValue property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link XMLGregorianCalendar }
+                 *     
+                 */
+                public void setDateValue(XMLGregorianCalendar value) {
+                    this.dateValue = value;
+                }
 
                 /**
                  * Gets the value of the transportGUID property.

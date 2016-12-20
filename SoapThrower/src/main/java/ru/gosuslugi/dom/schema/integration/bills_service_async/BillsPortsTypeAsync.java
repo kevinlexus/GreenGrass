@@ -12,7 +12,6 @@ import ru.gosuslugi.dom.schema.integration.base.GetStateRequest;
 import ru.gosuslugi.dom.schema.integration.bills.CloseHousePaymentPeriodRequest;
 import ru.gosuslugi.dom.schema.integration.bills.ExportInsuranceProductRequest;
 import ru.gosuslugi.dom.schema.integration.bills.ExportNotificationsOfOrderExecutionRequest;
-import ru.gosuslugi.dom.schema.integration.bills.ExportOrgPeriodRequest;
 import ru.gosuslugi.dom.schema.integration.bills.ExportPaymentDocumentRequest;
 import ru.gosuslugi.dom.schema.integration.bills.ExportSettlementsRequest;
 import ru.gosuslugi.dom.schema.integration.bills.GetStateResult;
@@ -123,22 +122,6 @@ public interface BillsPortsTypeAsync {
     public AckRequest exportPaymentDocumentData(
         @WebParam(name = "exportPaymentDocumentRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/bills/", partName = "exportPaymentDocumentDataRequest")
         ExportPaymentDocumentRequest exportPaymentDocumentDataRequest)
-        throws Fault
-    ;
-
-    /**
-     * ВИ_ИЛС_РПО_ЭКСП. получить расчетные периоды организации
-     * 
-     * @param exportOrgPeriodDataRequest
-     * @return
-     *     returns ru.gosuslugi.dom.schema.integration.base.AckRequest
-     * @throws Fault
-     */
-    @WebMethod(action = "urn:exportOrgPeriodData")
-    @WebResult(name = "AckRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/base/", partName = "exportOrgPeriodDataResult")
-    public AckRequest exportOrgPeriodData(
-        @WebParam(name = "exportOrgPeriodRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/bills/", partName = "exportOrgPeriodDataRequest")
-        ExportOrgPeriodRequest exportOrgPeriodDataRequest)
         throws Fault
     ;
 

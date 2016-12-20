@@ -401,6 +401,46 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExportSupplyResourceContractType }
+     * 
+     */
+    public ExportSupplyResourceContractType createExportSupplyResourceContractType() {
+        return new ExportSupplyResourceContractType();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.Quality }
+     * 
+     */
+    public ExportSupplyResourceContractType.Quality createExportSupplyResourceContractTypeQuality() {
+        return new ExportSupplyResourceContractType.Quality();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.ObjectAddress }
+     * 
+     */
+    public ExportSupplyResourceContractType.ObjectAddress createExportSupplyResourceContractTypeObjectAddress() {
+        return new ExportSupplyResourceContractType.ObjectAddress();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.ObjectAddress.Pair }
+     * 
+     */
+    public ExportSupplyResourceContractType.ObjectAddress.Pair createExportSupplyResourceContractTypeObjectAddressPair() {
+        return new ExportSupplyResourceContractType.ObjectAddress.Pair();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.Period }
+     * 
+     */
+    public ExportSupplyResourceContractType.Period createExportSupplyResourceContractTypePeriod() {
+        return new ExportSupplyResourceContractType.Period();
+    }
+
+    /**
      * Create an instance of {@link ImportContractRequest.Contract }
      * 
      */
@@ -1521,6 +1561,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DRSORegOrgType }
+     * 
+     */
+    public DRSORegOrgType createDRSORegOrgType() {
+        return new DRSORegOrgType();
+    }
+
+    /**
      * Create an instance of {@link ClosedAccountAttributesType }
      * 
      */
@@ -2366,6 +2414,126 @@ public class ObjectFactory {
      */
     public MeteringDeviceFullInformationType.LinkedWithMetering createMeteringDeviceFullInformationTypeLinkedWithMetering() {
         return new MeteringDeviceFullInformationType.LinkedWithMetering();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.IsContract }
+     * 
+     */
+    public ExportSupplyResourceContractType.IsContract createExportSupplyResourceContractTypeIsContract() {
+        return new ExportSupplyResourceContractType.IsContract();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.IsNotContract }
+     * 
+     */
+    public ExportSupplyResourceContractType.IsNotContract createExportSupplyResourceContractTypeIsNotContract() {
+        return new ExportSupplyResourceContractType.IsNotContract();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.ApartmentBuildingOwner }
+     * 
+     */
+    public ExportSupplyResourceContractType.ApartmentBuildingOwner createExportSupplyResourceContractTypeApartmentBuildingOwner() {
+        return new ExportSupplyResourceContractType.ApartmentBuildingOwner();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.LivingHouseOwner }
+     * 
+     */
+    public ExportSupplyResourceContractType.LivingHouseOwner createExportSupplyResourceContractTypeLivingHouseOwner() {
+        return new ExportSupplyResourceContractType.LivingHouseOwner();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.Organization }
+     * 
+     */
+    public ExportSupplyResourceContractType.Organization createExportSupplyResourceContractTypeOrganization() {
+        return new ExportSupplyResourceContractType.Organization();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.ContractSubject }
+     * 
+     */
+    public ExportSupplyResourceContractType.ContractSubject createExportSupplyResourceContractTypeContractSubject() {
+        return new ExportSupplyResourceContractType.ContractSubject();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.OtherQualityIndicator }
+     * 
+     */
+    public ExportSupplyResourceContractType.OtherQualityIndicator createExportSupplyResourceContractTypeOtherQualityIndicator() {
+        return new ExportSupplyResourceContractType.OtherQualityIndicator();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.TemperatureChart }
+     * 
+     */
+    public ExportSupplyResourceContractType.TemperatureChart createExportSupplyResourceContractTypeTemperatureChart() {
+        return new ExportSupplyResourceContractType.TemperatureChart();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.BillingDate }
+     * 
+     */
+    public ExportSupplyResourceContractType.BillingDate createExportSupplyResourceContractTypeBillingDate() {
+        return new ExportSupplyResourceContractType.BillingDate();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.PaymentDate }
+     * 
+     */
+    public ExportSupplyResourceContractType.PaymentDate createExportSupplyResourceContractTypePaymentDate() {
+        return new ExportSupplyResourceContractType.PaymentDate();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.ProvidingInformationDate }
+     * 
+     */
+    public ExportSupplyResourceContractType.ProvidingInformationDate createExportSupplyResourceContractTypeProvidingInformationDate() {
+        return new ExportSupplyResourceContractType.ProvidingInformationDate();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.Quality.IndicatorValue }
+     * 
+     */
+    public ExportSupplyResourceContractType.Quality.IndicatorValue createExportSupplyResourceContractTypeQualityIndicatorValue() {
+        return new ExportSupplyResourceContractType.Quality.IndicatorValue();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.ObjectAddress.Pair.HeatingSystemType }
+     * 
+     */
+    public ExportSupplyResourceContractType.ObjectAddress.Pair.HeatingSystemType createExportSupplyResourceContractTypeObjectAddressPairHeatingSystemType() {
+        return new ExportSupplyResourceContractType.ObjectAddress.Pair.HeatingSystemType();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.Period.Start }
+     * 
+     */
+    public ExportSupplyResourceContractType.Period.Start createExportSupplyResourceContractTypePeriodStart() {
+        return new ExportSupplyResourceContractType.Period.Start();
+    }
+
+    /**
+     * Create an instance of {@link ExportSupplyResourceContractType.Period.End }
+     * 
+     */
+    public ExportSupplyResourceContractType.Period.End createExportSupplyResourceContractTypePeriodEnd() {
+        return new ExportSupplyResourceContractType.Period.End();
     }
 
     /**

@@ -9,10 +9,17 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import org.w3._2000._09.xmldsig_.SignatureType;
-import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemRequest;
-import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
-import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
-import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListResult;
+import ru.gosuslugi.dom.schema.integration.services.ExportCompletedWorksRequest;
+import ru.gosuslugi.dom.schema.integration.services.ExportCompletedWorksResult;
+import ru.gosuslugi.dom.schema.integration.services.ExportHMServicesTarifsRequest;
+import ru.gosuslugi.dom.schema.integration.services.ExportHMServicesTarifsResult;
+import ru.gosuslugi.dom.schema.integration.services.ExportWorkingListRequest;
+import ru.gosuslugi.dom.schema.integration.services.ExportWorkingListResult;
+import ru.gosuslugi.dom.schema.integration.services.ExportWorkingPlanRequest;
+import ru.gosuslugi.dom.schema.integration.services.ExportWorkingPlanResult;
+import ru.gosuslugi.dom.schema.integration.services.ImportCompletedWorksRequest;
+import ru.gosuslugi.dom.schema.integration.services.ImportWorkingListRequest;
+import ru.gosuslugi.dom.schema.integration.services.ImportWorkingPlanRequest;
 
 
 /**
@@ -42,12 +49,19 @@ import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListResult;
     "signature"
 })
 @XmlSeeAlso({
-    ExportNsiItemResult.class,
-    ExportNsiListResult.class,
-    ExportNsiItemRequest.class,
-    ExportNsiListRequest.class,
-    BaseAsyncResponseType.class,
-    ImportResult.class
+    ImportResult.class,
+    ExportWorkingListRequest.class,
+    ImportWorkingListRequest.class,
+    ImportWorkingPlanRequest.class,
+    ExportHMServicesTarifsResult.class,
+    ExportWorkingListResult.class,
+    ExportWorkingPlanRequest.class,
+    ExportWorkingPlanResult.class,
+    ExportCompletedWorksResult.class,
+    ExportCompletedWorksRequest.class,
+    ExportHMServicesTarifsRequest.class,
+    ImportCompletedWorksRequest.class,
+    BaseAsyncResponseType.class
 })
 public class BaseType {
 

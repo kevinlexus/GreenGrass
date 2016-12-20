@@ -23,6 +23,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/house-management/}EntranceNum"/>
+ *         &lt;element name="FIASChildHouseGuid" type="{http://dom.gosuslugi.ru/schema/integration/premises-base/}FIASHouseGUIDType" minOccurs="0"/>
  *         &lt;element name="TerminationDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -35,6 +36,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EntranceUpdateRSOType", propOrder = {
     "entranceNum",
+    "fiasChildHouseGuid",
     "terminationDate"
 })
 @XmlSeeAlso({
@@ -44,6 +46,8 @@ public class EntranceUpdateRSOType {
 
     @XmlElement(name = "EntranceNum", required = true)
     protected String entranceNum;
+    @XmlElement(name = "FIASChildHouseGuid")
+    protected String fiasChildHouseGuid;
     @XmlElement(name = "TerminationDate")
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar terminationDate;
@@ -70,6 +74,30 @@ public class EntranceUpdateRSOType {
      */
     public void setEntranceNum(String value) {
         this.entranceNum = value;
+    }
+
+    /**
+     * Gets the value of the fiasChildHouseGuid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFIASChildHouseGuid() {
+        return fiasChildHouseGuid;
+    }
+
+    /**
+     * Sets the value of the fiasChildHouseGuid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFIASChildHouseGuid(String value) {
+        this.fiasChildHouseGuid = value;
     }
 
     /**

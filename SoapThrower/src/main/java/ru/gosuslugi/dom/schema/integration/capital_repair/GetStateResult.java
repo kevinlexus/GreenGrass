@@ -24,7 +24,7 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
  *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/base/}BaseAsyncResponseType">
  *       &lt;choice>
  *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}ErrorMessage"/>
- *         &lt;element name="ImportResult" type="{http://dom.gosuslugi.ru/schema/integration/capital-repair/}CapRemImportResultType" maxOccurs="unbounded"/>
+ *         &lt;element name="ImportResult" type="{http://dom.gosuslugi.ru/schema/integration/capital-repair/}CapRemCommonResultType" maxOccurs="unbounded"/>
  *         &lt;element name="Contract" type="{http://dom.gosuslugi.ru/schema/integration/capital-repair/}exportFullContractType" maxOccurs="1000"/>
  *         &lt;element name="Plan" type="{http://dom.gosuslugi.ru/schema/integration/capital-repair/}exportPlanType" maxOccurs="1000"/>
  *         &lt;element name="Account" type="{http://dom.gosuslugi.ru/schema/integration/capital-repair/}ExportAccountType" maxOccurs="1000"/>
@@ -59,7 +59,7 @@ public class GetStateResult
     @XmlElement(name = "ErrorMessage", namespace = "http://dom.gosuslugi.ru/schema/integration/base/")
     protected ErrorMessageType errorMessage;
     @XmlElement(name = "ImportResult")
-    protected List<CapRemImportResultType> importResult;
+    protected List<CapRemCommonResultType> importResult;
     @XmlElement(name = "Contract")
     protected List<ExportFullContractType> contract;
     @XmlElement(name = "Plan")
@@ -117,13 +117,13 @@ public class GetStateResult
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link CapRemImportResultType }
+     * {@link CapRemCommonResultType }
      * 
      * 
      */
-    public List<CapRemImportResultType> getImportResult() {
+    public List<CapRemCommonResultType> getImportResult() {
         if (importResult == null) {
-            importResult = new ArrayList<CapRemImportResultType>();
+            importResult = new ArrayList<CapRemCommonResultType>();
         }
         return this.importResult;
     }

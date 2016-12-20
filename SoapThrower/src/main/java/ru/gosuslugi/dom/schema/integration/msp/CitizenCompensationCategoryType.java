@@ -26,7 +26,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="CategoryGuid" type="{http://dom.gosuslugi.ru/schema/integration/base/}GUIDType"/>
  *         &lt;element name="PeriodFrom" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="PeriodTo" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
- *         &lt;element name="Service" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ServiceType" maxOccurs="12"/>
+ *         &lt;element name="Service" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ServiceType" maxOccurs="12" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -52,7 +52,7 @@ public class CitizenCompensationCategoryType {
     @XmlElement(name = "PeriodTo")
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar periodTo;
-    @XmlElement(name = "Service", required = true)
+    @XmlElement(name = "Service")
     @XmlSchemaType(name = "string")
     protected List<ServiceType> service;
 

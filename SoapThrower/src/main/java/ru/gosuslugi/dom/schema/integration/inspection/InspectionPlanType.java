@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Основные реквизиты плана проверок.
+ * Основные реквизиты плана проверок.(экспорт)
  * 
  * <p>Java class for InspectionPlanType complex type.
  * 

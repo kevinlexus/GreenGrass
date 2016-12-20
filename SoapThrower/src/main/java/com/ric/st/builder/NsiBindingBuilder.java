@@ -1,12 +1,24 @@
 package com.ric.st.builder;
 
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.MessageContext;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemRequest;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
@@ -22,6 +36,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_common_service.Fault;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiPortsType;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiService;
 
+import com.ric.bill.Utl;
 import com.ric.st.NsiBindingBuilders;
 import com.ric.st.SoapPreps;
 import com.ric.st.excp.CantSendSoap;
@@ -53,11 +68,13 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
     	service = new NsiService();
     	port = service.getNsiPort();
     	// подготовительный объект
-    	sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
+    	//sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
 
     	// подписывать XML?
-    	sp.setSignXML(false);
+    	//sp.setSignXML(false);
 
+
+    	
     	// создать и подготовить заголовок запроса
     	//sp.createRh(config.getOrgPPGuid(), true);
 
@@ -83,12 +100,12 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 		}
 
 		// подписывать
-		sp.setSignXML(true);
+		sp.setSignXML(false);
 		
 		ExportNsiListRequest req = new ExportNsiListRequest();
 		req.setListGroup(grp);
 		req.setVersion(req.getVersion());
-		req.setId("foo");
+		//req.setId("foo");
 		req.setVersion(req.getVersion());
 
 		
@@ -113,31 +130,87 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	 */
 	public ExportNsiItemResult getNsiItem(String grp, BigInteger id) throws Fault, CantSignSoap, CantSendSoap {
 		// создать и подготовить заголовок
-		try {
+		/*try {
 			sp.createRh(true);
 		} catch (DatatypeConfigurationException e1) {
 			e1.printStackTrace();
 			throw new CantSendSoap("Ошибка при подготовке заголовка SOAP запроса!");
-		}
+		}*/
 
 		// подписывать
-		sp.setSignXML(true);
+		//sp.setSignXML(false);
+		
+		
+		BindingProvider bp = (BindingProvider) port;
+		WSBindingProvider ws = (WSBindingProvider) port;
 
+		RequestHeader rh = new RequestHeader();
+				
+		rh.setOrgPPAGUID(config.getOrgPPGuid());
+    	//if (isSetOperSign) {
+    		rh.setIsOperatorSignature(true);
+    	//}
+
+    	// установить Random Message GUID и дату
+    	GregorianCalendar c = new GregorianCalendar();
+		c.setTime(new Date());
+		XMLGregorianCalendar cl = null;
+		try {
+			cl = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+		} catch (DatatypeConfigurationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		rh.setDate(cl);
+    	UUID messGUID = Utl.getRndUuid();
+		rh.setMessageGUID(messGUID.toString());
+    	
+    	ws.setOutboundHeaders(rh);
+		
+		String endPoint = (String) bp.getRequestContext().get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
+		String urlStr = endPoint;
+		String path = null;
+		try {
+			path = Utl.getPathFromUrl(urlStr);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		log.info("Request to={}", path);
+		
+		Map<String, List<String>> requestHeaders = new HashMap<>();
+		//requestHeaders.put("Auth-User", Arrays.asList("BILL_GATES"));
+        String authorization = new sun.misc.BASE64Encoder().encode((config.getBscLogin()+":"+config.getBscPass()).getBytes());
+		requestHeaders.put("Authorization", Arrays.asList("Basic " + authorization));
+		requestHeaders.put("X-Client-Cert-Fingerprint", Arrays.asList(config.getFingerPrint()));
+		
+		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, 
+				"http://217.107.108.156:10082"+path);
+		
+		bp.getRequestContext().put(MessageContext.HTTP_REQUEST_HEADERS, requestHeaders);
+		
+		//задать новый Endpoint
+		//setEndPoint(host+path);
+		
 		ExportNsiItemRequest req = new ExportNsiItemRequest();
 	    req.setListGroup(grp);
 	    req.setRegistryNumber(id);
-		req.setId("foo");
+		//req.setId("foo");
 		req.setVersion(req.getVersion());
 	    
-	   	port.exportNsiItem(req);
+		ExportNsiItemResult ex = port.exportNsiItem(req);
+	   	
 	   	// отправка SOAP, анмаршаллинг результата
-	   	resItem = (ExportNsiItemResult) sp.sendSOAP(  
+	   	/*resItem = (ExportNsiItemResult) sp.sendSOAP(  
 	   			req, 
 	   			"exportNsiItem", 			 		
 	   			new ExportNsiItemResult(),
 	   			config,
-	   			true, 1);
+	   			true, 1);*/
 	   	
-	   return resItem;
+	   return ex;
 	}
 }

@@ -94,19 +94,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PaymentInformationType }
-     * 
-     */
-    public PaymentInformationType createPaymentInformationType() {
-        return new PaymentInformationType();
-    }
-
-    /**
      * Create an instance of {@link NotificationOfOrderExecutionCancellationType }
      * 
      */
     public NotificationOfOrderExecutionCancellationType createNotificationOfOrderExecutionCancellationType() {
         return new NotificationOfOrderExecutionCancellationType();
+    }
+
+    /**
+     * Create an instance of {@link PaymentInformationType }
+     * 
+     */
+    public PaymentInformationType createPaymentInformationType() {
+        return new PaymentInformationType();
     }
 
     /**

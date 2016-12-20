@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -27,8 +28,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="PeriodFrom" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="PeriodTo" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="CalculationDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="ServiceCompensation" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ServiceCompensationType" maxOccurs="12"/>
  *         &lt;element name="CompensationSum" type="{http://dom.gosuslugi.ru/schema/integration/msp/}MoneyType"/>
+ *         &lt;sequence minOccurs="0">
+ *           &lt;element name="Actual" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ActualCompensationType" maxOccurs="12" minOccurs="0"/>
+ *         &lt;/sequence>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -42,8 +45,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "periodFrom",
     "periodTo",
     "calculationDate",
-    "serviceCompensation",
-    "compensationSum"
+    "compensationSum",
+    "actual"
+})
+@XmlSeeAlso({
+    ExportCitizenCompensationCalculationType.class
 })
 public class CitizenCompensationCalculationType {
 
@@ -56,10 +62,10 @@ public class CitizenCompensationCalculationType {
     @XmlElement(name = "CalculationDate", required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar calculationDate;
-    @XmlElement(name = "ServiceCompensation", required = true)
-    protected List<ServiceCompensationType> serviceCompensation;
     @XmlElement(name = "CompensationSum", required = true)
     protected BigDecimal compensationSum;
+    @XmlElement(name = "Actual")
+    protected List<ActualCompensationType> actual;
 
     /**
      * Gets the value of the periodFrom property.
@@ -134,35 +140,6 @@ public class CitizenCompensationCalculationType {
     }
 
     /**
-     * Gets the value of the serviceCompensation property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the serviceCompensation property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getServiceCompensation().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ServiceCompensationType }
-     * 
-     * 
-     */
-    public List<ServiceCompensationType> getServiceCompensation() {
-        if (serviceCompensation == null) {
-            serviceCompensation = new ArrayList<ServiceCompensationType>();
-        }
-        return this.serviceCompensation;
-    }
-
-    /**
      * Gets the value of the compensationSum property.
      * 
      * @return
@@ -184,6 +161,35 @@ public class CitizenCompensationCalculationType {
      */
     public void setCompensationSum(BigDecimal value) {
         this.compensationSum = value;
+    }
+
+    /**
+     * Gets the value of the actual property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the actual property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getActual().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ActualCompensationType }
+     * 
+     * 
+     */
+    public List<ActualCompensationType> getActual() {
+        if (actual == null) {
+            actual = new ArrayList<ActualCompensationType>();
+        }
+        return this.actual;
     }
 
 }

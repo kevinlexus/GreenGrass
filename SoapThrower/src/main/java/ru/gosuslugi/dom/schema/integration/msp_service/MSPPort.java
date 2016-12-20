@@ -10,6 +10,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import ru.gosuslugi.dom.schema.integration.base.ImportResult;
 import ru.gosuslugi.dom.schema.integration.msp.ExportCategoriesRequest;
 import ru.gosuslugi.dom.schema.integration.msp.ExportCategoriesResult;
+import ru.gosuslugi.dom.schema.integration.msp.ExportCitizenCompensationRequest;
+import ru.gosuslugi.dom.schema.integration.msp.ExportCitizenCompensationResult;
+import ru.gosuslugi.dom.schema.integration.msp.ExportCitizenSubsidyRequest;
+import ru.gosuslugi.dom.schema.integration.msp.ExportCitizenSubsidyResult;
 import ru.gosuslugi.dom.schema.integration.msp.ImportCitizenCompensationRequest;
 import ru.gosuslugi.dom.schema.integration.msp.ImportCitizenSubsidyRequest;
 
@@ -78,6 +82,38 @@ public interface MSPPort {
     public ExportCategoriesResult exportCategories(
         @WebParam(name = "exportCategoriesRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/msp/", partName = "exportCategoriesRequest")
         ExportCategoriesRequest exportCategoriesRequest)
+        throws Fault
+    ;
+
+    /**
+     * Экспорт сведений о гражданах, получающих субсидии
+     * 
+     * @param exportCitizenSubsidyRequest
+     * @return
+     *     returns ru.gosuslugi.dom.schema.integration.msp.ExportCitizenSubsidyResult
+     * @throws Fault
+     */
+    @WebMethod(action = "urn:exportCitizenSubsidy")
+    @WebResult(name = "exportCitizenSubsidyResult", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/msp/", partName = "exportCitizenSubsidyResult")
+    public ExportCitizenSubsidyResult exportCitizenSubsidy(
+        @WebParam(name = "exportCitizenSubsidyRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/msp/", partName = "exportCitizenSubsidyRequest")
+        ExportCitizenSubsidyRequest exportCitizenSubsidyRequest)
+        throws Fault
+    ;
+
+    /**
+     * Экспорт сведений о гражданах, получающих компенсации расходов
+     * 
+     * @param exportCitizenCompensationRequest
+     * @return
+     *     returns ru.gosuslugi.dom.schema.integration.msp.ExportCitizenCompensationResult
+     * @throws Fault
+     */
+    @WebMethod(action = "urn:exportCitizenCompensation")
+    @WebResult(name = "exportCitizenCompensationResult", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/msp/", partName = "exportCitizenCompensationResult")
+    public ExportCitizenCompensationResult exportCitizenCompensation(
+        @WebParam(name = "exportCitizenCompensationRequest", targetNamespace = "http://dom.gosuslugi.ru/schema/integration/msp/", partName = "exportCitizenCompensationRequest")
+        ExportCitizenCompensationRequest exportCitizenCompensationRequest)
         throws Fault
     ;
 

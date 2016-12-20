@@ -1,5 +1,5 @@
 
-package ru.gosuslugi.dom.schema.integration.bills;
+package ru.gosuslugi.dom.schema.integration.msp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +23,10 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
  *   &lt;complexContent>
  *     &lt;extension base="{http://dom.gosuslugi.ru/schema/integration/base/}BaseType">
  *       &lt;choice>
+ *         &lt;element name="CitizenCompensation" type="{http://dom.gosuslugi.ru/schema/integration/msp/}ExportCitizenCompensationType" maxOccurs="unbounded"/>
  *         &lt;element ref="{http://dom.gosuslugi.ru/schema/integration/base/}ErrorMessage"/>
- *         &lt;element name="OrgPeriod" type="{http://dom.gosuslugi.ru/schema/integration/bills/}exportOrgPeriodResultType" maxOccurs="unbounded"/>
  *       &lt;/choice>
- *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="10.0.1.1""/>
+ *       &lt;attribute ref="{http://dom.gosuslugi.ru/schema/integration/base/}version use="required" fixed="11.0.0.5""/>
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -36,20 +36,49 @@ import ru.gosuslugi.dom.schema.integration.base.ErrorMessageType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "errorMessage",
-    "orgPeriod"
+    "citizenCompensation",
+    "errorMessage"
 })
-@XmlRootElement(name = "exportOrgPeriodResult")
-public class ExportOrgPeriodResult
+@XmlRootElement(name = "exportCitizenCompensationResult")
+public class ExportCitizenCompensationResult
     extends BaseType
 {
 
+    @XmlElement(name = "CitizenCompensation")
+    protected List<ExportCitizenCompensationType> citizenCompensation;
     @XmlElement(name = "ErrorMessage", namespace = "http://dom.gosuslugi.ru/schema/integration/base/")
     protected ErrorMessageType errorMessage;
-    @XmlElement(name = "OrgPeriod")
-    protected List<ExportOrgPeriodResultType> orgPeriod;
     @XmlAttribute(name = "version", namespace = "http://dom.gosuslugi.ru/schema/integration/base/", required = true)
     protected String version;
+
+    /**
+     * Gets the value of the citizenCompensation property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the citizenCompensation property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getCitizenCompensation().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ExportCitizenCompensationType }
+     * 
+     * 
+     */
+    public List<ExportCitizenCompensationType> getCitizenCompensation() {
+        if (citizenCompensation == null) {
+            citizenCompensation = new ArrayList<ExportCitizenCompensationType>();
+        }
+        return this.citizenCompensation;
+    }
 
     /**
      * Gets the value of the errorMessage property.
@@ -76,35 +105,6 @@ public class ExportOrgPeriodResult
     }
 
     /**
-     * Gets the value of the orgPeriod property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the orgPeriod property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getOrgPeriod().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ExportOrgPeriodResultType }
-     * 
-     * 
-     */
-    public List<ExportOrgPeriodResultType> getOrgPeriod() {
-        if (orgPeriod == null) {
-            orgPeriod = new ArrayList<ExportOrgPeriodResultType>();
-        }
-        return this.orgPeriod;
-    }
-
-    /**
      * Gets the value of the version property.
      * 
      * @return
@@ -114,7 +114,7 @@ public class ExportOrgPeriodResult
      */
     public String getVersion() {
         if (version == null) {
-            return "10.0.1.1";
+            return "11.0.0.5";
         } else {
             return version;
         }
