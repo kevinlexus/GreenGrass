@@ -70,9 +70,6 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	
 	@PostConstruct
 	public void init() throws Exception {
-    	// создать сервис и порт
-    	service = new NsiService();
-    	port = service.getNsiPort();
     	// подготовительный объект
     	//sp.setUp(port, (BindingProvider) port, (WSBindingProvider) port);
 
@@ -146,6 +143,9 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 		// подписывать
 		//sp.setSignXML(false);
 		
+    	// создать сервис и порт
+    	service = new NsiService();
+    	port = service.getNsiPort();
 		
 		BindingProvider bp = (BindingProvider) port;
 		WSBindingProvider ws = (WSBindingProvider) port;
@@ -206,7 +206,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	    req.setRegistryNumber(id);
 		req.setId("foo");
 		req.setVersion(req.getVersion());
-	    
+		
 		// получить XML
 		// добавить хэндлер, для установщика подписи ЭЦП
 		Binding binding = bp.getBinding();

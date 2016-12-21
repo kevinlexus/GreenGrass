@@ -56,7 +56,6 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 	public boolean handleMessage(SOAPMessageContext context) {
 		log.info("**************** HANDLER2 *************");
 
-		
 	     Boolean outboundProperty = (Boolean)
 	    		 context.get (MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
@@ -88,6 +87,12 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 		
 		log.info("**************** TRYING TO SIGN *************");
 
+		log.info("******************************************************************************");
+		log.info("******************************************************************************");
+		log.info("Before sign XML={}", (String) bs.toString());
+		log.info("******************************************************************************");
+		log.info("******************************************************************************");
+
 		// подпись элемента
 				String sgn = null;
         try {
@@ -97,9 +102,11 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 			e1.printStackTrace();
 		}
 
-		log.info(" ");
+		log.info("******************************************************************************");
+		log.info("******************************************************************************");
 		log.info("Signed XML={}", sgn);
-		log.info(" ");
+		log.info("******************************************************************************");
+		log.info("******************************************************************************");
         
 
 		Node nd = null;
@@ -169,19 +176,22 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 			
 			
 			NodeList blst = body.getElementsByTagName("ns6:exportNsiItemRequest");
-			NodeList blst2 = body.getElementsByTagName("ns6:RegistryNumber");
+			//NodeList blst2 = body.getElementsByTagName("ns6:RegistryNumber");
 			
 			//log.info("item2= {}", blst.item(0));
 			
 			Node itm = blst.item(0);
-			Node itm2 = blst2.item(0);
-
+			//Node itm2 = blst2.item(0);
+			Node itm2 = itm.getFirstChild();
+			
+			
 			Document doc = body.getOwnerDocument();
-			doc.adoptNode(nd);   // ПРОВЕРИТЬ ЭТО!!!!!!!!!!!!!
+			doc.adoptNode(nd);
 			
 			//itm.appendChild(nd);
 			itm.insertBefore(nd, itm2);
 			
+	
 			// сохранить XML
 			soapMsg.saveChanges();
 		} catch (SOAPException e1) {
@@ -189,7 +199,23 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 			e1.printStackTrace();
 		}
 		
+
+		try {
+			soapMsg.writeTo(bs);
+		} catch (SOAPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		log.info("******************************************************************************");
+		log.info("******************************************************************************");
+		log.info("Sended XML={}", (String) bs.toString());
+		log.info("******************************************************************************");
+		log.info("******************************************************************************");
+
 		/*log.info(" ");
         log.info("Sent XML={}", (String) bs.toString());
         log.info(" ");

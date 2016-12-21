@@ -157,10 +157,10 @@ public class UlistMngImpl implements UlistMng {
 		//Ulist lst = em.find(Ulist.class, 25713660);
 		//log.info("Ulist.cd={}",lst.getCd());
 		// получить из ГИС справочник
-		ExportNsiItemResult res;
 
 		log.info("TRY - 1");
 
+		ExportNsiItemResult res;
 		try {
 			res = nsiBuilder.getNsiItem("NSI", BigInteger.valueOf(268));
 		} catch (Exception e) {
