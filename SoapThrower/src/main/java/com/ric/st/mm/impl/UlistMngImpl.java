@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementFieldType;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementStringFieldType;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiItemInfoType;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
@@ -167,8 +169,23 @@ public class UlistMngImpl implements UlistMng {
 		}
 		
 		for (NsiElementType e: res.getNsiItem().getNsiElement()){
-			log.info("CHECK2 = {}, {}", e.getCode(), e.getGUID());
+
+			log.info("CHECK1 = {}", e.getCode());
+			
+			for (NsiElementFieldType nef :  e.getNsiElementField()) {
+				log.info("CHECK2 field name = {}", nef.getName());
+				log.info("CHECK2 field class = {}", nef.getClass());
+				if (nef.getClass().equals(NsiElementStringFieldType.class)) {
+					NsiElementStringFieldType ns = (NsiElementStringFieldType) nef;
+					log.info("CHECK3 field name = {}", ns.getName());
+					log.info("CHECK3 field value = {}", ns.getValue());
+					
+				}
+			}
+			
 		}
+		
+
 		
 		/*ExportNsiListResult res;
 		try {
