@@ -156,6 +156,9 @@ public class UlistMngImpl implements UlistMng {
 		//log.info("Ulist.cd={}",lst.getCd());
 		// получить из ГИС справочник
 		ExportNsiItemResult res;
+
+		log.info("TRY - 1");
+
 		try {
 			res = nsiBuilder.getNsiItem("NSI", BigInteger.valueOf(268));
 		} catch (Exception e) {

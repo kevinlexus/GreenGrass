@@ -50,19 +50,24 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 	}
 
 	public boolean handleFault(SOAPMessageContext arg0) {
-		return false;
+		return true;
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {
+		log.info("**************** HANDLER2 *************");
+
+		
+	     Boolean outboundProperty = (Boolean)
+	    		 context.get (MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+
+       if (outboundProperty.booleanValue()) {
+	     
 		//TODO разобраться с эксепшнс
 		SOAPMessage soapMsg = context.getMessage();
 		
 		SOAPEnvelope soapEnv = null;
 		try {
 			soapEnv = soapMsg.getSOAPPart().getEnvelope();
-			
-			//QName bodyName = new QName("http://wombat.ztrade.com", "GetLastTradePrice", "m");
-			//soapEnv.getBody().addChildElement(bodyName);
 			
 		} catch (SOAPException e) {
 			// TODO Auto-generated catch block
@@ -81,6 +86,8 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 			e.printStackTrace();
 		}
 		
+		log.info("**************** TRYING TO SIGN *************");
+
 		// подпись элемента
 				String sgn = null;
         try {
@@ -162,15 +169,18 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 			
 			
 			NodeList blst = body.getElementsByTagName("ns6:exportNsiItemRequest");
+			NodeList blst2 = body.getElementsByTagName("ns6:RegistryNumber");
 			
 			//log.info("item2= {}", blst.item(0));
 			
 			Node itm = blst.item(0);
+			Node itm2 = blst2.item(0);
 
 			Document doc = body.getOwnerDocument();
 			doc.adoptNode(nd);   // ПРОВЕРИТЬ ЭТО!!!!!!!!!!!!!
 			
-			itm.appendChild(nd);
+			//itm.appendChild(nd);
+			itm.insertBefore(nd, itm2);
 			
 			// сохранить XML
 			soapMsg.saveChanges();
@@ -180,7 +190,7 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 		}
 		
 		
-		log.info(" ");
+		/*log.info(" ");
         log.info("Sent XML={}", (String) bs.toString());
         log.info(" ");
 
@@ -189,8 +199,9 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 				context.setScope("SOAP_XML", MessageContext.Scope.APPLICATION);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 		
+	    }
 		// продолжить выполнение - true
 		return true;
 	}

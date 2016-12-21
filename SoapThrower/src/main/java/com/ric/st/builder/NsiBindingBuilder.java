@@ -216,7 +216,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 
 		ExportNsiItemResult ex = port.exportNsiItem(req);
 
-		Map<String, Object> responseContext = bp.getResponseContext();
+		//Map<String, Object> responseContext = bp.getResponseContext();
         
 	   	// отправка SOAP, анмаршаллинг результата
 	   	/*resItem = (ExportNsiItemResult) sp.sendSOAP(  
