@@ -6,8 +6,8 @@
 			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
 			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
 			xmlns:ns6="http://dom.gosuslugi.ru/schema/integration/nsi-common/">
-			<ns2:Date>2016-12-21T11:53:53.292+07:00</ns2:Date>
-			<ns2:MessageGUID>c7867a3c-cf6e-4fc2-86fb-ff5095e9ea2c
+			<ns2:Date>2016-12-21T16:58:12.252+07:00</ns2:Date>
+			<ns2:MessageGUID>c12d620c-af83-410c-a13d-db53e3be9a6d
 			</ns2:MessageGUID>
 			<ns2:orgPPAGUID>b9fe4d27-020d-44dc-8bfd-b5972a504f45</ns2:orgPPAGUID>
 			<ns2:IsOperatorSignature>true</ns2:IsOperatorSignature>
@@ -21,6 +21,128 @@
 			xmlns:ns4="http://dom.gosuslugi.ru/schema/integration/nsi-base/"
 			xmlns:ns5="http://dom.gosuslugi.ru/schema/integration/organizations-registry-base/"
 			Id="foo" ns2:version="10.0.1.2">
+			<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+				Id="xmldsig-09164fb1-2563-4192-9e94-a55c7177e3f5">
+				<ds:SignedInfo>
+					<ds:CanonicalizationMethod
+						Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+					<ds:SignatureMethod
+						Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411" />
+					<ds:Reference Id="xmldsig-09164fb1-2563-4192-9e94-a55c7177e3f5-ref0"
+						URI="#foo">
+						<ds:Transforms>
+							<ds:Transform
+								Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+							<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+						</ds:Transforms>
+						<ds:DigestMethod
+							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
+						<ds:DigestValue>9dNwZHFRK1b4pnfzvr+CZFhEA+eN7hhKDCRZh25mNaM=
+						</ds:DigestValue>
+					</ds:Reference>
+					<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
+						URI="#xmldsig-09164fb1-2563-4192-9e94-a55c7177e3f5-signedprops">
+						<ds:DigestMethod
+							Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
+						<ds:DigestValue>YrCbGRc51bxEd+knkU9WgLiMzgAZgt61GdHkJyknlO4=
+						</ds:DigestValue>
+					</ds:Reference>
+				</ds:SignedInfo>
+				<ds:SignatureValue
+					Id="xmldsig-09164fb1-2563-4192-9e94-a55c7177e3f5-sigvalue">
+					0oPvz7TWdGYc3zksN9JcIJoCvfHRAj6GiXRyouKfyHM8PvIoAiuyGaxJid7H/fyE7QanujzFes7k
+					gdavo37DMg==
+				</ds:SignatureValue>
+				<ds:KeyInfo>
+					<ds:X509Data>
+						<ds:X509Certificate>
+							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
+							A1UdHwSCASAwggEcMDmgN6A1hjNodHRwOi8vdGF4NC50ZW5zb3IucnUvY2VydGVucm9sbC90ZW5z
+							b3JjYTMtMjAxNS5jcmwwLKAqoCiGJmh0dHA6Ly90ZW5zb3IucnUvY2EvdGVuc29yY2EzLTIwMTUu
+							Y3JsMDmgN6A1hjNodHRwOi8vY3JsLnRlbnNvci5ydS90YXg0L2NhL2NybC90ZW5zb3JjYTMtMjAx
+							NS5jcmwwOqA4oDaGNGh0dHA6Ly9jcmwyLnRlbnNvci5ydS90YXg0L2NhL2NybC90ZW5zb3JjYTMt
+							MjAxNS5jcmwwOqA4oDaGNGh0dHA6Ly9jcmwzLnRlbnNvci5ydS90YXg0L2NhL2NybC90ZW5zb3Jj
+							YTMtMjAxNS5jcmwwggGgBggrBgEFBQcBAQSCAZIwggGOMC8GCCsGAQUFBzABhiNodHRwOi8vdGF4
+							NC50ZW5zb3IucnUvb2NzcC9vY3NwLnNyZjAtBggrBgEFBQcwAoYhaHR0cDovL3RheDQudGVuc29y
+							LnJ1L3RzcC90c3Auc3JmMD8GCCsGAQUFBzAChjNodHRwOi8vdGF4NC50ZW5zb3IucnUvY2VydGVu
+							cm9sbC90ZW5zb3JjYTMtMjAxNS5jcnQwMgYIKwYBBQUHMAKGJmh0dHA6Ly90ZW5zb3IucnUvY2Ev
+							dGVuc29yY2EzLTIwMTUuY3J0MDsGCCsGAQUFBzAChi9odHRwOi8vY3JsLnRlbnNvci5ydS90YXg0
+							L2NhL3RlbnNvcmNhMy0yMDE1LmNydDA8BggrBgEFBQcwAoYwaHR0cDovL2NybDIudGVuc29yLnJ1
+							L3RheDQvY2EvdGVuc29yY2EzLTIwMTUuY3J0MDwGCCsGAQUFBzAChjBodHRwOi8vY3JsMy50ZW5z
+							b3IucnUvdGF4NC9jYS90ZW5zb3JjYTMtMjAxNS5jcnQwKwYDVR0QBCQwIoAPMjAxNjEwMTkwODQ2
+							MDBagQ8yMDE3MTAxOTA4NDYwMFowNgYFKoUDZG8ELQwrItCa0YDQuNC/0YLQvtCf0YDQviBDU1Ai
+							ICjQstC10YDRgdC40Y8gMy42KTCCATMGBSqFA2RwBIIBKDCCASQMKyLQmtGA0LjQv9GC0L7Qn9GA
+							0L4gQ1NQIiAo0LLQtdGA0YHQuNGPIDMuNikMUyLQo9C00L7RgdGC0L7QstC10YDRj9GO0YnQuNC5
+							INGG0LXQvdGC0YAgItCa0YDQuNC/0YLQvtCf0YDQviDQo9CmIiDQstC10YDRgdC40LggMS41DE/Q
+							odC10YDRgtC40YTQuNC60LDRgiDRgdC+0L7RgtCy0LXRgtGB0YLQstC40Y8g4oSWINCh0KQvMTI0
+							LTI3Mzgg0L7RgiAwMS4wNy4yMDE1DE/QodC10YDRgtC40YTQuNC60LDRgiDRgdC+0L7RgtCy0LXR
+							gtGB0YLQstC40Y8g4oSWINCh0KQvMTI4LTIzNTIg0L7RgiAxNS4wNC4yMDE0MAgGBiqFAwICAwNB
+							AI6aN/pymEfBJvl3sY6CHgjn/jPWILGXFNfpVvbukyoge2HOCElDa3XWxgCOFxL7aCfKe1i24yjN
+							K1j71FdP+Tk=
+						</ds:X509Certificate>
+					</ds:X509Data>
+				</ds:KeyInfo>
+				<ds:Object>
+					<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+						xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" Target="#xmldsig-09164fb1-2563-4192-9e94-a55c7177e3f5">
+						<xades:SignedProperties
+							Id="xmldsig-09164fb1-2563-4192-9e94-a55c7177e3f5-signedprops">
+							<xades:SignedSignatureProperties>
+								<xades:SigningTime>2016-12-21T16:58:12.396+07:00
+								</xades:SigningTime>
+								<xades:SigningCertificate>
+									<xades:Cert>
+										<xades:CertDigest>
+											<DigestMethod
+												Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411" />
+											<DigestValue>ZM7Vskv+qMZ9yQEAFn3+KRbrAtuD+XoNC4484ub7s4c=
+											</DigestValue>
+										</xades:CertDigest>
+										<xades:IssuerSerial>
+											<X509IssuerName>cn=TENSORCA3,ou=Удостоверяющий центр,o=ООО
+												Компания Тензор,l=Ярославль,st=76 Ярославская
+												область,c=RU,1.2.840.113549.1.9.1=root@nalog.tensor.ru,street=Московский
+												проспект
+												д.12,1.2.643.3.131.1.1=007605016030,1.2.643.100.1=1027600787994
+											</X509IssuerName>
+											<X509SerialNumber>328510293966069994261239</X509SerialNumber>
+										</xades:IssuerSerial>
+									</xades:Cert>
+								</xades:SigningCertificate>
+							</xades:SignedSignatureProperties>
+						</xades:SignedProperties>
+					</xades:QualifyingProperties>
+				</ds:Object>
+			</ds:Signature>
 			<ns6:RegistryNumber>268</ns6:RegistryNumber>
 			<ns4:ListGroup>NSI</ns4:ListGroup>
 		</ns6:exportNsiItemRequest>

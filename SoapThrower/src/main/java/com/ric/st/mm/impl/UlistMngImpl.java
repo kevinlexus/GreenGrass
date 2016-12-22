@@ -158,13 +158,12 @@ public class UlistMngImpl implements UlistMng {
 		//log.info("Ulist.cd={}",lst.getCd());
 		// получить из ГИС справочник
 
-		log.info("TRY - 1");
-
 		ExportNsiItemResult res;
 		try {
 			res = nsiBuilder.getNsiItem("NSI", BigInteger.valueOf(268));
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.info("ОШИБКА при обновлении справочника NSI!!!");
 			throw new CantUpdNSI("Ошибка при обновлении справочника NSI!!!");
 		}
 		
