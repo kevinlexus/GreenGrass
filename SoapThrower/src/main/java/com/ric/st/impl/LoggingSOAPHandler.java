@@ -51,8 +51,13 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 	   
 	   Boolean outboundProperty = (Boolean)
 	    		 context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+	   SOAPMessage soapMsg = context.getMessage();
 
-       if (outboundProperty.booleanValue()) {
+	   if (!outboundProperty.booleanValue()) {
+	   		log.info("Inbound XML:");
+	   		dumpSOAPMessage(soapMsg);
+    	   
+       } else {
 		Boolean sign = false;
 		if(context.containsKey("sign")){
 		  sign = true;
@@ -60,9 +65,6 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 		  sign = false;
 		}
 	     
-		//TODO разобраться с эксепшнс
-		SOAPMessage soapMsg = context.getMessage();
-		
 		SOAPEnvelope soapEnv = null;
 		try {
 			soapEnv = soapMsg.getSOAPPart().getEnvelope();

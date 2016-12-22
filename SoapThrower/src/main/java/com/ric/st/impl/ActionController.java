@@ -40,7 +40,7 @@ public class ActionController implements ActionControllers {
 		// проверить обновление справочников
 		try {
 			//ulistMng.refreshNsi("NSI");
-			ulistMng.refreshNsi("NSIRAO");
+			ulistMng.refreshNsi("NSI");
 		} catch (Exception e) {
 			// сообщение об ошибке
 			e.printStackTrace();

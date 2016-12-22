@@ -35,7 +35,7 @@ public class Ulist implements java.io.Serializable  {
 	private Integer id;
 
 	public Ulist(String cd, String name, String s1, Date dt1, Date dt2,
-			Boolean actual, UlistTp ulistTp) {
+			Boolean actual, UlistTp ulistTp, Integer npp) {
 		super();
 		this.cd = cd;
 		this.name = name;
@@ -44,6 +44,7 @@ public class Ulist implements java.io.Serializable  {
 		this.dt2 = dt2;
 		this.actual = actual;
 		this.ulistTp = ulistTp;
+		this.npp = npp;
 	}
 
 	// CD элемента
@@ -75,6 +76,10 @@ public class Ulist implements java.io.Serializable  {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="FK_LISTTP", referencedColumnName="ID")
 	private UlistTp ulistTp; 
+
+	// Номер порядковый
+	@Column(name = "NPP", updatable = true, nullable = false)
+	private Integer npp;
 
 	public Integer getId() {
 		return id;
@@ -140,6 +145,14 @@ public class Ulist implements java.io.Serializable  {
 		this.actual = actual;
 	}
 
+	public Integer getNpp() {
+		return npp;
+	}
+
+	public void setNpp(Integer npp) {
+		this.npp = npp;
+	}
+
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof Ulist))
@@ -161,6 +174,7 @@ public class Ulist implements java.io.Serializable  {
 	        return super.hashCode();
 	    }
 	}
+
 
 }
 

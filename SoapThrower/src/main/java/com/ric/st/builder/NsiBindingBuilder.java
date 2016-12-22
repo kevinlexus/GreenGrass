@@ -73,7 +73,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 
     	// подоготовительный объект для SOAP
     	SoapBuilder sb = ctx.getBean(SoapBuilder.class);
-		sb.setUp((BindingProvider) port, (WSBindingProvider) port, true);
+		sb.setUp((BindingProvider) port, (WSBindingProvider) port, false);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 
 		ExportNsiListRequest req = new ExportNsiListRequest();
 		req.setListGroup(grp);
-		req.setId("foo");
+		//req.setId("foo");
 		req.setVersion(req.getVersion());
 
 		
@@ -113,7 +113,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 		ExportNsiItemRequest req = new ExportNsiItemRequest();
 	    req.setListGroup(grp);
 	    req.setRegistryNumber(id);
-		req.setId("foo");
+		//req.setId("foo");
 		req.setVersion(req.getVersion());
 		
 		ExportNsiItemResult ex = port.exportNsiItem(req);
