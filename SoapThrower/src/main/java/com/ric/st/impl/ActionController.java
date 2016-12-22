@@ -40,10 +40,7 @@ public class ActionController implements ActionControllers {
 		// проверить обновление справочников
 		try {
 			//ulistMng.refreshNsi("NSI");
-			for (int i=1; i<100; i++) {
-				log.info("Попытка: {}", i);
-				ulistMng.refreshNsi("NSIRAO");
-			}
+			ulistMng.refreshNsi("NSIRAO");
 		} catch (Exception e) {
 			// сообщение об ошибке
 			e.printStackTrace();

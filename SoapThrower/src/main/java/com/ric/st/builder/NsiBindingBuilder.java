@@ -66,14 +66,14 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	private NsiPortsType port;
 	private SoapBuilder sb; 
 
-	private void init() throws CantSendSoap {
+	private void setUp() throws CantSendSoap {
     	// создать сервис и порт
 		service = new NsiService();
     	port = service.getNsiPort();
 
     	// подоготовительный объект для SOAP
     	SoapBuilder sb = ctx.getBean(SoapBuilder.class);
-		sb.setUp((BindingProvider) port, (WSBindingProvider) port);
+		sb.setUp((BindingProvider) port, (WSBindingProvider) port, true);
 	}
 
 	/**
@@ -85,35 +85,17 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	 * @throws Exception
 	 */
 	public ExportNsiListResult getNsiList(String grp) throws Fault, CantSignSoap, CantSendSoap { 
-		
-		init();
-		// создать и подготовить заголовок
-		/*try {
-			sp.createRh(true);
-		} catch (DatatypeConfigurationException e1) {
-			e1.printStackTrace();
-			throw new CantSendSoap("Ошибка при подготовке заголовка SOAP запроса!");
-		}*/
+		// выполнить инициализацию
+		setUp();
 
-		// подписывать
-		//sp.setSignXML(false);
-		
 		ExportNsiListRequest req = new ExportNsiListRequest();
 		req.setListGroup(grp);
-		req.setVersion(req.getVersion());
-		//req.setId("foo");
+		req.setId("foo");
 		req.setVersion(req.getVersion());
 
 		
-		//port.exportNsiList(req);
-	   	// отправить SOAP, анмаршаллинг результата
-	   /* resList = (ExportNsiListResult) sp.sendSOAP(  
-	   			req, 
-	   			"exportNsiList", 			 		
-	   			new ExportNsiListResult(),
-	   			config,
-	   			true, 0);*/
-	   return null;
+		ExportNsiListResult ex = port.exportNsiList(req);
+		return ex;
 	}
 	
 	/**
@@ -126,7 +108,7 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	 */
 	public ExportNsiItemResult getNsiItem(String grp, BigInteger id) throws Fault, CantSignSoap, CantSendSoap {
 		// выполнить инициализацию
-		init();
+		setUp();
 		
 		ExportNsiItemRequest req = new ExportNsiItemRequest();
 	    req.setListGroup(grp);
@@ -134,7 +116,6 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 		req.setId("foo");
 		req.setVersion(req.getVersion());
 		
-		// получить XML
 		ExportNsiItemResult ex = port.exportNsiItem(req);
 
 		// освободить ресурсы

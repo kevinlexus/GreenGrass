@@ -40,14 +40,18 @@ public class SoapBuilder {
 	private WSBindingProvider ws;
 	private RequestHeader rh;
 
-	public void setUp(BindingProvider port, WSBindingProvider port2) throws CantSendSoap {
+	public void setUp(BindingProvider port, WSBindingProvider port2, boolean sign) throws CantSendSoap {
 		bp = (BindingProvider) port;
 		ws = (WSBindingProvider) port;
 		rh = new RequestHeader();
 
 		rh.setOrgPPAGUID(config.getOrgPPGuid());
     	rh.setIsOperatorSignature(true);
-
+    	// подписывать ли XML?
+    	if (sign) {
+        	bp.getRequestContext().put("sign", "");
+    	}
+    	
     	// установить Random Message GUID и дату
     	GregorianCalendar c = new GregorianCalendar();
 		c.setTime(new Date());

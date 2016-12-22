@@ -158,16 +158,16 @@ public class UlistMngImpl implements UlistMng {
 		//log.info("Ulist.cd={}",lst.getCd());
 		// получить из ГИС справочник
 
-		ExportNsiItemResult res;
+		ExportNsiItemResult res2;
 		try {
-			res = nsiBuilder.getNsiItem("NSI", BigInteger.valueOf(268));
+			res2 = nsiBuilder.getNsiItem("NSI", BigInteger.valueOf(268));
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.info("ОШИБКА при обновлении справочника NSI!!!");
 			throw new CantUpdNSI("Ошибка при обновлении справочника NSI!!!");
 		}
 		
-		for (NsiElementType e: res.getNsiItem().getNsiElement()){
+		for (NsiElementType e: res2.getNsiItem().getNsiElement()){
 
 			log.info("CHECK1 = {}", e.getCode());
 			
@@ -184,31 +184,17 @@ public class UlistMngImpl implements UlistMng {
 			
 		}
 		
-
-		
-		/*ExportNsiListResult res;
-		try {
-			res = nsiBuilder.getNsiList(grp);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new CantUpdNSI("Ошибка обновления справочника NSI");
+		if (1==1) {
+			return;
 		}
-		
-		for (NsiItemInfoType u: res.getNsiList().getNsiItemInfo()) {
-			log.info("Check:{}", u.getName());
-		}*/
-		
-		//********* проверка ***************
-		
-		
-		
 		
 		// Обновить виды справочников
 		// получить из нашей базы 
-/*		List<UlistTp> lst =  ulistDao.getListTpByGrp(grp);
+		List<UlistTp> lst =  ulistDao.getListTpByGrp(grp);
 		// получить из ГИС
 		ExportNsiListResult res;
 		try {
+			log.info("Запрос на заголовки справочников");
 			res = nsiBuilder.getNsiList(grp);
 		} catch (Fault | CantSignSoap | CantSendSoap e1) {
 			e1.printStackTrace();
@@ -217,6 +203,6 @@ public class UlistMngImpl implements UlistMng {
 		res.getNsiList().getNsiItemInfo().stream().forEach(t -> log.trace("Элемент из списка справочников ГИС: {}",t.getName()));
 		// обработать каждый справочник
 		res.getNsiList().getNsiItemInfo().stream().forEach(Errors.rethrow().wrap(t -> {updNsiList(lst, t, grp);}));
-*/
+
 	}
 }

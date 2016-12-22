@@ -28,6 +28,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.ric.st.excp.CantSignSoap;
+
 @Slf4j
 public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 
@@ -46,12 +48,17 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {
-		log.info("**************** HANDLER2 *************");
-
-	     Boolean outboundProperty = (Boolean)
-	    		 context.get (MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+	   
+	   Boolean outboundProperty = (Boolean)
+	    		 context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
        if (outboundProperty.booleanValue()) {
+		Boolean sign = false;
+		if(context.containsKey("sign")){
+		  sign = true;
+		} else {
+		  sign = false;
+		}
 	     
 		//TODO разобраться с эксепшнс
 		SOAPMessage soapMsg = context.getMessage();
@@ -80,62 +87,82 @@ public class LoggingSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 		}
 		
 		// подпись элемента
-		String sgn = null;
-        try {
-			sgn = App.sc.signElem((String) bs.toString(), "foo", "foo");
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
 		Node nd = null;
-		
-		// Получить элемент подписи
-        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        
-        try {
-            DocumentBuilder builder = domFactory.newDocumentBuilder();
-            InputSource is = new InputSource(new StringReader(sgn));
-            Document dDoc = builder.parse(is);
-
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            javax.xml.xpath.XPathExpression expr = xpath.compile("//*[local-name()='Signature']");
-            Object result = expr.evaluate(dDoc, XPathConstants.NODESET);
-            NodeList nodes = (NodeList) result;
-
-            nd = nodes.item(0);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		if (sign) {
+			String sgn = null;
+	        try {
+				sgn = App.sc.signElem((String) bs.toString(), "foo", "foo");
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			// Получить элемент подписи
+	        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+	        try {
+	            DocumentBuilder builder = domFactory.newDocumentBuilder();
+	            InputSource is = new InputSource(new StringReader(sgn));
+	            Document dDoc = builder.parse(is);
+	
+	            XPath xpath = XPathFactory.newInstance().newXPath();
+	            javax.xml.xpath.XPathExpression expr = xpath.compile("//*[local-name()='Signature']");
+	            Object result = expr.evaluate(dDoc, XPathConstants.NODESET);
+	            NodeList nodes = (NodeList) result;
+	
+	            nd = nodes.item(0);
+	            
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		}
         // 
         
-		try {
-	        SOAPBody body = soapMsg.getSOAPBody();
-			NodeList blst = body.getElementsByTagName("ns6:exportNsiItemRequest");
-			Node itm = blst.item(0);
-			Node itm2 = itm.getFirstChild();
-			
-			Document doc = body.getOwnerDocument();
-			doc.adoptNode(nd);
-			itm.insertBefore(nd, itm2);
-	
-			// сохранить XML
-			soapMsg.saveChanges();
-			log.info("XML saved!");
-		} catch (SOAPException e1) {
-			log.info("XML DOESN'T saved!");
-			e1.printStackTrace();
-		}
+		if (sign) {
+	        Node itm = null;
+			try {
+		        SOAPBody body = soapMsg.getSOAPBody();
+				//NodeList blst = body.getElementsByTagNameNS("*", "exportNsiItemRequest");
+				
+		        itm = findElem(body, "Id", "foo");
+				Node itm2 = itm.getFirstChild();
+				
+				Document doc = body.getOwnerDocument();
+				doc.adoptNode(nd);
+				itm.insertBefore(nd, itm2);
 		
-		log.info("Sended XML:");
-		dumpSOAPMessage(soapMsg);
-
+				// сохранить XML
+				soapMsg.saveChanges();
+				log.info("XML saved!");
+			} catch (SOAPException e1) {
+				log.info("XML DOESN'T saved!");
+				e1.printStackTrace();
+			}
+			log.info("Sended XML:");
+			dumpSOAPMessage(soapMsg);
+		    }
 	    }
 		// продолжить выполнение - true
 		return true;
 	}
 
+	// найти элемент с идентификатором
+	private Node findElem(SOAPBody body, String id, String val) {
+        NodeList blst = body.getChildNodes();
+		for (int i=0; i <= blst.getLength(); i++) {
+			if(blst.item(i) != null) {
+			NamedNodeMap nm = blst.item(i).getAttributes();
+			for (int a=0; a <=nm.getLength(); a++) {
+				if ( nm.item(a) != null && nm.item(a).getNodeName().equals(id) && nm.item(a).getNodeValue().equals(val)) {
+					log.info("Node attr={}", nm.item(a).getNodeName());
+					log.info("Node attr={}", nm.item(a).getNodeValue());
+			        return blst.item(0);
+				}
+			}
+			}
+		}
+		return null;
+	}
+	
 	public Set<QName> getHeaders() {
 		return null;
 	}
