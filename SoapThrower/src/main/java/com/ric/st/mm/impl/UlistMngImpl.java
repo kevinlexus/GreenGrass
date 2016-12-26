@@ -55,8 +55,8 @@ public class UlistMngImpl implements UlistMng {
 	private int idx=0;
 	
 	// префикс для элементов справочника
-	private String getPrefixedCD(String cd, String grp, String id) {
-		return getPrefixedCD(cd, grp)+"_"+id;
+	private String getPrefixedCD(String cd, String grp, String code) {
+		return getPrefixedCD(cd, grp)+"_"+code+"_"+idx++;
 	}
 
 	// префикс для заголовка справочника
@@ -88,8 +88,8 @@ public class UlistMngImpl implements UlistMng {
 			
 			res.getNsiItem().getNsiElement().stream().forEach(t ->
 				{
-					// получить cd
-					String cd = getPrefixedCD(id.toString(), grp, t.getCode())+"_"+idx++;
+					// получить cd новой записи
+					String cd = getPrefixedCD(id.toString(), grp, t.getCode());
 					// найти элемент в нашей базе
 					Optional<Ulist> el = lst.stream()
 							.filter(v-> v.getCd().equals(cd))
@@ -98,21 +98,51 @@ public class UlistMngImpl implements UlistMng {
 					if (!el.isPresent()) {
 						// не найден элемент, создать новый
 						List<NsiElementFieldType> lst2 =  t.getNsiElementField();
-						for (NsiElementFieldType n: lst2) {
-							if (n.getClass().equals(NsiElementStringFieldType.class)) {
-								NsiElementStringFieldType fld = (NsiElementStringFieldType) n;
-								//log.info("Check {}", fld.getName());
-								log.info("getCode={}", Integer.valueOf(t.getCode()) );
+
+						// создать запись главного элемента с CD в Ulist
+						log.info("Check1={}", Utl.nvl(t.getCode(), "-------"));
+						String code = null;
+						if (t.getCode()==null || t.getCode().length()==0) {
+							code = "------";
+						} else {
+							code = t.getCode();
+						}
+						Ulist main = new Ulist(cd, code, t.getGUID(), 
+								Utl.getDateFromXmlGregCal(t.getStartDate()), Utl.getDateFromXmlGregCal(t.getEndDate()),
+								t.isIsActual(), ulistTp, idx, null, null
+								);
+						em.persist(main);
+						log.info("Создана запись Code={}", Integer.valueOf(t.getCode()) );
+						
+						// создать записи fields в Ulist
+						lst2.stream().forEach(d -> {
+
+							// получить cd новой записи
+							String fldCd = getPrefixedCD(id.toString(), grp, t.getCode());
+							if (d.getClass().equals(NsiElementStringFieldType.class)) {
+								NsiElementStringFieldType fld = (NsiElementStringFieldType) d;
 								// создать запись в Ulist
-								Ulist ulist = new Ulist(cd, Utl.nvl(fld.getValue(), "-------"), t.getGUID(), 
-										Utl.getDateFromXmlGregCal(t.getStartDate()), Utl.getDateFromXmlGregCal(t.getEndDate()),
-										t.isIsActual(), ulistTp, Integer.valueOf(t.getCode())
+								//log.info("Check2={}, {} ", fld.getValue(), Utl.nvl(fld.getValue(), "-------"));
+								String name = null;
+								if (fld.getName()==null || fld.getName().length()==0) {
+									name = "------";
+								} else {
+									name = fld.getName();
+								}
+								Ulist ulist = new Ulist(fldCd, name, null, 
+										null, null, null, ulistTp, idx, fld.getValue(), main
 										);
 								em.persist(ulist);
 								log.info("Создан элемент справочника  List: {}", fld.getValue());
-								break;
 							}
-						}
+							
+							
+						});
+						
+						//for (NsiElementFieldType n: lst2) {
+							
+							
+						//}
 						
 						
 						log.info("Создан элемент справочника List :{}", cd);
@@ -137,6 +167,15 @@ public class UlistMngImpl implements UlistMng {
 	 * @throws Exception 
 	 */
 	private void updNsiList(List<UlistTp> lst, NsiItemInfoType nsiItem, String grp) throws CantUpdNSI {
+		// по каким то причинам не загружается справочник № 70
+		if (nsiItem.getRegistryNumber().equals( new BigInteger("70") )) {
+			return;
+		}
+		// пока работать только со справочником 
+		if (!nsiItem.getRegistryNumber().equals( new BigInteger("32") )) {
+			return;
+		}
+
 		String prefix = getPrefixedCD(nsiItem.getRegistryNumber().toString(), grp);
 		// найти элемент в нашей базе
 		Optional<UlistTp> el = lst.stream()
@@ -190,9 +229,9 @@ public class UlistMngImpl implements UlistMng {
 		//log.info("Ulist.cd={}",lst.getCd());
 		// получить из ГИС справочник
 
-	/*	ExportNsiItemResult res2;
+/*		ExportNsiItemResult res2;
 		try {
-			res2 = nsiBuilder.getNsiItem("NSI", BigInteger.valueOf(232));
+			res2 = nsiBuilder.getNsiItem("NSIRAO", BigInteger.valueOf(71));
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.info("ОШИБКА при обновлении справочника NSI!!!");
@@ -218,7 +257,8 @@ public class UlistMngImpl implements UlistMng {
 		
 		if (1==1) {
 			return;
-		} */
+		} 
+		*/
 		
 		// Обновить виды справочников
 		// получить из нашей базы 

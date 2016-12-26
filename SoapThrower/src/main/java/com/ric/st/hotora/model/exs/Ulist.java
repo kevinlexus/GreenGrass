@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -35,16 +36,18 @@ public class Ulist implements java.io.Serializable  {
 	private Integer id;
 
 	public Ulist(String cd, String name, String s1, Date dt1, Date dt2,
-			Boolean actual, UlistTp ulistTp, Integer npp) {
+			Boolean actual, UlistTp ulistTp, Integer npp, String value, Ulist parentUlist) {
 		super();
 		this.cd = cd;
 		this.name = name;
-		this.s1 = s1;
+		this.guid = s1;
 		this.dt1 = dt1;
 		this.dt2 = dt2;
 		this.actual = actual;
 		this.ulistTp = ulistTp;
 		this.npp = npp;
+		this.value = value;
+		this.parentUlist = parentUlist;
 	}
 
 	// CD элемента
@@ -55,9 +58,13 @@ public class Ulist implements java.io.Serializable  {
 	@Column(name = "NAME", updatable = true, nullable = true)
 	private String name;
 	
-	// ИЗ ГИС ЖКХ: GUID элемента
+	// Значение элемента
 	@Column(name = "S1", updatable = true, nullable = true)
-	private String s1;
+	private String value;
+	
+	// ИЗ ГИС ЖКХ: GUID элемента
+	@Column(name = "GUID", updatable = true, nullable = true)
+	private String guid;
 
 	// ИЗ ГИС ЖКХ: Дата начала действия значения
 	@Column(name = "DT1", updatable = true, nullable = true)
@@ -80,6 +87,11 @@ public class Ulist implements java.io.Serializable  {
 	// Номер порядковый
 	@Column(name = "NPP", updatable = true, nullable = false)
 	private Integer npp;
+
+	// Родительский элемент
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="PARENT_ID", referencedColumnName="ID")
+	private Ulist parentUlist; 
 
 	public Integer getId() {
 		return id;
@@ -113,12 +125,12 @@ public class Ulist implements java.io.Serializable  {
 		this.ulistTp = ulistTp;
 	}
 
-	public String getS1() {
-		return s1;
+	public String getGuid() {
+		return guid;
 	}
 
 	public void setS1(String s1) {
-		this.s1 = s1;
+		this.guid = s1;
 	}
 
 	public Date getDt1() {
@@ -153,6 +165,14 @@ public class Ulist implements java.io.Serializable  {
 		this.npp = npp;
 	}
 
+	public Ulist getParentUlist() {
+		return parentUlist;
+	}
+
+	public void setParentUlist(Ulist parentUlist) {
+		this.parentUlist = parentUlist;
+	}
+
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof Ulist))
@@ -173,6 +193,14 @@ public class Ulist implements java.io.Serializable  {
 	    } else {
 	        return super.hashCode();
 	    }
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 
