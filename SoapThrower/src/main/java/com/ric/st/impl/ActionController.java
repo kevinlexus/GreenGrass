@@ -61,6 +61,12 @@ public class ActionController implements ActionControllers {
 	 * Поиск новых действий для обработки 
 	 */
 	public void searchActions() {
+		
+		System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump", "false");
+		System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "false");
+		System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "false");
+		System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "false");
+		
 		// получить необходимые справочники, поместить в хранилище
 		setrStore(new RefStore()); 
 		try {

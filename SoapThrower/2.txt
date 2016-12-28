@@ -6,12 +6,12 @@
 [INFO] 
 [INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ SoapThrower ---
 [INFO] com.ric.soap-base:SoapThrower:jar:0.0.1-SNAPSHOT
+[INFO] +- org.apache.httpcomponents:httpmime:jar:4.5.2:compile
+[INFO] |  \- (org.apache.httpcomponents:httpclient:jar:4.5.2:compile - omitted for duplicate)
 [INFO] +- org.apache.httpcomponents:httpclient:jar:4.5.2:compile
 [INFO] |  +- org.apache.httpcomponents:httpcore:jar:4.4.4:compile
 [INFO] |  +- commons-logging:commons-logging:jar:1.2:compile
 [INFO] |  \- commons-codec:commons-codec:jar:1.9:compile
-[INFO] +- org.apache.httpcomponents:httpmime:jar:4.5.2:compile
-[INFO] |  \- (org.apache.httpcomponents:httpclient:jar:4.5.2:compile - omitted for duplicate)
 [INFO] +- com.ric.bill:BillWeb:jar:0.0.1-SNAPSHOT:compile
 [INFO] |  +- (org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final:compile - omitted for duplicate)
 [INFO] |  +- org.springframework.boot:spring-boot-starter-web:jar:1.4.0.RELEASE:compile
@@ -72,8 +72,6 @@
 [INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
 [INFO] |  +- commons-collections:commons-collections:jar:3.2.2:compile
 [INFO] |  +- commons-io:commons-io:jar:2.4:compile
-[INFO] |  +- org.slf4j:slf4j-simple:jar:1.7.13:compile
-[INFO] |  |  \- org.slf4j:slf4j-api:jar:1.7.13:compile
 [INFO] |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.55:compile
 [INFO] |  |  \- org.bouncycastle:bcprov-jdk15on:jar:1.55:compile
 [INFO] |  \- org.signserver.xades4j:xades4j:jar:1.3.2-signserver4:compile
@@ -141,7 +139,7 @@
 [INFO] |  +- (org.jboss.logging:jboss-logging:jar:3.3.0.Final:compile - omitted for duplicate)
 [INFO] |  +- (org.hibernate:hibernate-core:jar:5.2.0.Final:compile - omitted for conflict with 5.1.0.Final)
 [INFO] |  \- net.sf.ehcache:ehcache:jar:2.10.1:compile
-[INFO] |     \- (org.slf4j:slf4j-api:jar:1.7.7:compile - omitted for conflict with 1.7.13)
+[INFO] |     \- org.slf4j:slf4j-api:jar:1.7.7:compile
 [INFO] +- org.projectlombok:lombok:jar:1.16.8:provided
 [INFO] +- xml-apis:xml-apis:jar:1.4.01:compile
 [INFO] +- org.apache.commons:commons-collections4:jar:4.1:compile
@@ -180,7 +178,7 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 3.035 s
-[INFO] Finished at: 2016-12-16T10:42:03+06:00
-[INFO] Final Memory: 19M/356M
+[INFO] Total time: 2.919 s
+[INFO] Finished at: 2016-12-28T13:10:00+06:00
+[INFO] Final Memory: 20M/355M
 [INFO] ------------------------------------------------------------------------

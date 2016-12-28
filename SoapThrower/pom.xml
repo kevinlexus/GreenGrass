@@ -56,7 +56,7 @@
 			<groupId>com.ric.bill</groupId>
 			<artifactId>BillWeb</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-<!--  			<exclusions> НЕ УДАЛЯТЬ! ПОЛНОСТЬЮ исключил log4, наследованный от BillWeb
+  			<!--<exclusions> НЕ УДАЛЯТЬ! ПОЛНОСТЬЮ исключил log4, наследованный от BillWeb
 			    <exclusion>
 			        <groupId>ch.qos.logback</groupId>
 			        <artifactId>logback-classic</artifactId>
@@ -81,8 +81,8 @@
 			        <groupId>org.slf4j</groupId>
 			        <artifactId>log4j-over-slf4j</artifactId>
 			    </exclusion> 
-			</exclusions> 			
- -->		</dependency> 
+			</exclusions> 			-->
+		</dependency> 
 		
  		<dependency>
 			<groupId>checkSoap</groupId>
