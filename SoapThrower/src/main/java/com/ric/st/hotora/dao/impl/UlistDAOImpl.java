@@ -46,4 +46,10 @@ public class UlistDAOImpl implements UlistDAO {
 		query.setParameter("id", id.intValue());
 		return query.getResultList();
     }
+    
+    public void delListByListTp(UlistTp ulistTp) {
+		Query query =em.createQuery("delete from Ulist where ulistTp=:ulistTp");
+		query.setParameter("ulistTp", ulistTp);
+		query.executeUpdate();
+    }
 }

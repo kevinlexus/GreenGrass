@@ -1,10 +1,8 @@
 package com.ric.st.mm.impl;
 
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.TimeZone;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,6 +15,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementFieldType;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementNsiRefFieldType;
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementNsiRefFieldType.NsiRef;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementStringFieldType;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiItemInfoType;
@@ -27,6 +27,7 @@ import ru.gosuslugi.dom.schema.integration.nsi_common_service.Fault;
 import com.diffplug.common.base.Errors;
 import com.ric.bill.Utl;
 import com.ric.st.builder.NsiBindingBuilder;
+import com.ric.st.excp.CantGetNSI;
 import com.ric.st.excp.CantSendSoap;
 import com.ric.st.excp.CantSignSoap;
 import com.ric.st.excp.CantUpdNSI;
@@ -66,8 +67,9 @@ public class UlistMngImpl implements UlistMng {
 	
 	// узнать можно ли параллельно вызывать, не будет ли concurrent excp?
 	private void updNsiItem(UlistTp ulistTp, String grp, BigInteger id) throws CantUpdNSI {
-		// получить элементы справочника из нашей базы 
-		List<Ulist> lst =  ulistDao.getListByGrpId(grp, id);
+		// удалить элементы в нашей базе по данному справочнику
+		ulistDao.delListByListTp(ulistTp);
+		
 		// получить из ГИС справочник
 		ExportNsiItemResult res;
 		try {
@@ -90,13 +92,7 @@ public class UlistMngImpl implements UlistMng {
 				{
 					// получить cd новой записи
 					String cd = getPrefixedCD(id.toString(), grp, t.getCode());
-					// найти элемент в нашей базе
-					Optional<Ulist> el = lst.stream()
-							.filter(v-> v.getCd().equals(cd))
-							.findAny();
-					
-					if (!el.isPresent()) {
-						// не найден элемент, создать новый
+						// создать новый элемент
 						List<NsiElementFieldType> lst2 =  t.getNsiElementField();
 
 						// создать запись главного элемента с CD в Ulist
@@ -109,7 +105,7 @@ public class UlistMngImpl implements UlistMng {
 						}
 						Ulist main = new Ulist(cd, code, t.getGUID(), 
 								Utl.getDateFromXmlGregCal(t.getStartDate()), Utl.getDateFromXmlGregCal(t.getEndDate()),
-								t.isIsActual(), ulistTp, idx, null, null
+								t.isIsActual(), ulistTp, idx, null, null, null, null, null
 								);
 						em.persist(main);
 						log.info("Создана запись Code={}", Integer.valueOf(t.getCode()) );
@@ -119,39 +115,46 @@ public class UlistMngImpl implements UlistMng {
 
 							// получить cd новой записи
 							String fldCd = getPrefixedCD(id.toString(), grp, t.getCode());
+							Ulist ulist = null;
 							if (d.getClass().equals(NsiElementStringFieldType.class)) {
 								NsiElementStringFieldType fld = (NsiElementStringFieldType) d;
 								// создать запись в Ulist
-								//log.info("Check2={}, {} ", fld.getValue(), Utl.nvl(fld.getValue(), "-------"));
 								String name = null;
 								if (fld.getName()==null || fld.getName().length()==0) {
 									name = "------";
 								} else {
 									name = fld.getName();
 								}
-								Ulist ulist = new Ulist(fldCd, name, null, 
-										null, null, null, ulistTp, idx, fld.getValue(), main
+								ulist = new Ulist(fldCd, name, null, 
+										null, null, null, ulistTp, idx, fld.getValue(), main, null, null, "ST"
 										);
+							} else if (d.getClass().equals(NsiElementNsiRefFieldType.class)) {
+								NsiElementNsiRefFieldType fld = (NsiElementNsiRefFieldType) d;
+								// создать запись в Ulist
+								String name = null;
+								if (fld.getName()==null || fld.getName().length()==0) {
+									name = "------";
+								} else {
+									name = fld.getName();
+								}
+								NsiRef nRef = fld.getNsiRef();
+								if (nRef != null) {
+									ulist = new Ulist(fldCd, name, null, 
+											null, null, null, ulistTp, idx, null, main, 
+											nRef.getRef().getCode(), 
+											nRef.getRef().getGUID(), "RF"
+											);
+								}
+							}
+							
+							if (ulist!=null) {
 								em.persist(ulist);
-								log.info("Создан элемент справочника  List: {}", fld.getValue());
+								log.info("Создан элемент справочника  List: {}", ulist.getName());
 							}
 							
 							
 						});
-						
-						//for (NsiElementFieldType n: lst2) {
-							
-							
-						//}
-						
-						
 						log.info("Создан элемент справочника List :{}", cd);
-					} else {
-						// найден элемент, проверить дату обновления
-						log.info("Обновлён элемент справочника List :{}", cd);
-						
-					}
-					
 			    });
 		} else {
 			log.info("Нет элементов в базе ГИС по справочнику grp={}, id={}", grp, id);
@@ -172,12 +175,12 @@ public class UlistMngImpl implements UlistMng {
 			return;
 		}
 		// пока работать только со справочником 
-		if (!nsiItem.getRegistryNumber().equals( new BigInteger("32") )) {
-			return;
+		if (!nsiItem.getRegistryNumber().equals( new BigInteger("262") )) {
+			//return;
 		}
 
 		String prefix = getPrefixedCD(nsiItem.getRegistryNumber().toString(), grp);
-		// найти элемент в нашей базе
+		// найти заголовочный элемент в нашей базе
 		Optional<UlistTp> el = lst.stream()
 				.filter(t-> t.getCd().equals(prefix))
 				.findAny();
@@ -214,6 +217,48 @@ public class UlistMngImpl implements UlistMng {
 		
 	}
 	
+	
+	/**
+	 * Получить справочник Nsi
+	 * @param grp - группа, например NSI, NSIRAO
+	 * @param id - идентификатор справочника
+	 * @return
+	 * @throws CantGetNSI
+	 */
+	public ExportNsiItemResult getNsi(String grp, BigInteger id) throws CantGetNSI {
+		// получить из ГИС
+		ExportNsiItemResult res;
+		try {
+			log.info("Запрос справочника grp={}, id={}", grp, id);
+			res = nsiBuilder.getNsiItem(grp, id);
+		} catch (Fault | CantSignSoap | CantSendSoap e1) {
+			e1.printStackTrace();
+			throw new CantGetNSI("Ошибка получения справочника NSI по группе grp="+grp);
+		}
+		return res;
+	}
+	
+	/**
+	 * Получить элемент справочника по соответствию полей имя и значение
+	 * @param res - справочник
+	 * @param name - имя искомого элемента
+	 */
+	public NsiElementType getNsiElem(ExportNsiItemResult res, String name, String value) {
+		Optional<NsiElementType> elem = res.getNsiItem().getNsiElement().stream().filter(t -> 
+					
+					t.getNsiElementField().stream().filter(v -> v.getClass().equals(NsiElementStringFieldType.class) && v.getName().equals(name))
+							.anyMatch(v -> ((NsiElementStringFieldType) v).getValue().equals(value))
+
+				)
+					
+					.findFirst();
+		if (elem.isPresent()) {
+			return elem.get();
+		} else {
+			return null;
+		}
+	}
+	
 	/**
 	 * Обновить NSI справочники
 	 * @return 
@@ -223,56 +268,19 @@ public class UlistMngImpl implements UlistMng {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void refreshNsi(String grp) throws CantUpdNSI {
-		
-		//********* проверка не удалять! ***************
-		//Ulist lst = em.find(Ulist.class, 25713660);
-		//log.info("Ulist.cd={}",lst.getCd());
-		// получить из ГИС справочник
-
-/*		ExportNsiItemResult res2;
-		try {
-			res2 = nsiBuilder.getNsiItem("NSIRAO", BigInteger.valueOf(71));
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.info("ОШИБКА при обновлении справочника NSI!!!");
-			throw new CantUpdNSI("Ошибка при обновлении справочника NSI!!!");
-		}
-		
-		for (NsiElementType e: res2.getNsiItem().getNsiElement()){
-
-			log.info("CHECK1 = {}", e.getCode());
-			
-			for (NsiElementFieldType nef :  e.getNsiElementField()) {
-				log.info("CHECK2 field name = {}", nef.getName());
-				log.info("CHECK2 field class = {}", nef.getClass());
-				if (nef.getClass().equals(NsiElementStringFieldType.class)) {
-					NsiElementStringFieldType ns = (NsiElementStringFieldType) nef;
-					log.info("CHECK3 field name = {}", ns.getName());
-					log.info("CHECK3 field value = {}", ns.getValue());
-					
-				}
-			}
-			
-		}
-		
-		if (1==1) {
-			return;
-		} 
-		*/
-		
 		// Обновить виды справочников
 		// получить из нашей базы 
 		List<UlistTp> lst =  ulistDao.getListTpByGrp(grp);
 		// получить из ГИС
 		ExportNsiListResult res;
 		try {
-			log.info("Запрос заголовков справочников");
+			log.info("Запрос справочников группы grp={}", grp);
 			res = nsiBuilder.getNsiList(grp);
 		} catch (Fault | CantSignSoap | CantSendSoap e1) {
 			e1.printStackTrace();
-			throw new CantUpdNSI("Ошибка обновления справочника NSI");
+			throw new CantUpdNSI("Ошибка обновления группы справочников grp="+grp);
 		}
-		res.getNsiList().getNsiItemInfo().stream().forEach(t -> log.info("Элемент из списка справочников ГИС: {}",t.getName()));
+		res.getNsiList().getNsiItemInfo().stream().forEach(t -> log.info("Заголовок справочника из ГИС: {}", t.getName()));
 		// обработать каждый справочник
 		res.getNsiList().getNsiItemInfo().stream().forEach(Errors.rethrow().wrap(t -> {updNsiList(lst, t, grp);}));
 

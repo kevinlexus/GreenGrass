@@ -16,14 +16,19 @@ public class Config implements Configs {
 	
 	/**
 	 * Получить объект текущей временной зоны
+	 * @return 
 	 */
-	public NsiRef getTz() {
+	/*public NsiRef getTz() {
     	NsiRef tz = new NsiRef();
     	tz.setCode("10");
     	tz.setGUID("8538e485-b925-4aa7-923f-3b6755e27d4b");
     	return tz;
-	}
+	}*/
 
+	// использовать ли подпись SOAP запросов?
+	public boolean getUseSign() {
+		return false;
+	}
 	/**
 	 *	Получить OrgPPGUID организации 
 	 */

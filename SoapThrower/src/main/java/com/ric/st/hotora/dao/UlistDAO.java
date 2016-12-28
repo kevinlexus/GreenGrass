@@ -12,4 +12,5 @@ public interface UlistDAO {
 
 	public List<UlistTp> getListTpByGrp(String grp);
 	public List<Ulist> getListByGrpId(String grp, BigInteger id);
+	public void delListByListTp(UlistTp ulistTp);
 }

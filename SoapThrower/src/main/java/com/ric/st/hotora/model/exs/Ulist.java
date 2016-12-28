@@ -36,7 +36,8 @@ public class Ulist implements java.io.Serializable  {
 	private Integer id;
 
 	public Ulist(String cd, String name, String s1, Date dt1, Date dt2,
-			Boolean actual, UlistTp ulistTp, Integer npp, String value, Ulist parentUlist) {
+			Boolean actual, UlistTp ulistTp, Integer npp, String value, Ulist parentUlist,
+			String refCode, String refGuid, String tp) {
 		super();
 		this.cd = cd;
 		this.name = name;
@@ -48,6 +49,9 @@ public class Ulist implements java.io.Serializable  {
 		this.npp = npp;
 		this.value = value;
 		this.parentUlist = parentUlist;
+		this.refCode = refCode;
+		this.refGuid = refGuid;
+		this.tp = tp;
 	}
 
 	// CD элемента
@@ -87,6 +91,18 @@ public class Ulist implements java.io.Serializable  {
 	// Номер порядковый
 	@Column(name = "NPP", updatable = true, nullable = false)
 	private Integer npp;
+
+	// Ref code
+	@Column(name = "REF_CODE", updatable = true, nullable = true)
+	private String refCode;
+
+	// Ref GUID 
+	@Column(name = "REF_GUID", updatable = true, nullable = true)
+	private String refGuid;
+	
+	// ИЗ ГИС ЖКХ: [(NM)number;  (ST)string;  (DT)date;  (BL) boolean (RF) reference (OK) OkeiRefFieldType]
+	@Column(name = "TP", updatable = true, nullable = true)
+	private String tp;
 
 	// Родительский элемент
 	@OneToOne(fetch = FetchType.LAZY)
@@ -201,6 +217,30 @@ public class Ulist implements java.io.Serializable  {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String getRefCode() {
+		return refCode;
+	}
+
+	public void setRefCode(String refCode) {
+		this.refCode = refCode;
+	}
+
+	public String getRefGuid() {
+		return refGuid;
+	}
+
+	public void setRefGuid(String refGuid) {
+		this.refGuid = refGuid;
+	}
+
+	public String getTp() {
+		return tp;
+	}
+
+	public void setTp(String tp) {
+		this.tp = tp;
 	}
 
 

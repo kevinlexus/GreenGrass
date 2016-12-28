@@ -4,7 +4,8 @@ import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
 
 public interface Configs {
 
-	public NsiRef getTz();
+	//public NsiRef getTz();
+	public boolean getUseSign();
 	public String getOrgPPGuid();
 	public String getSrvTestHost();
 	public boolean isSrvTest();

@@ -1,5 +1,7 @@
 package com.ric.st.impl;
 
+import java.math.BigInteger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -8,7 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
+
 import com.ric.st.ActionControllers;
+import com.ric.st.RefStore;
+import com.ric.st.excp.CantGetNSI;
 import com.ric.st.hotora.dao.ActionDAO;
 import com.ric.st.hotora.dao.EolinkDAO;
 import com.ric.st.hotora.model.exs.Action;
@@ -30,6 +36,7 @@ public class ActionController implements ActionControllers {
 	@PersistenceContext
     private EntityManager em;
 
+	private RefStore rStore; 
 
 	/**
 	 * Выполнить инициализацию объекта 
@@ -40,7 +47,7 @@ public class ActionController implements ActionControllers {
 		// проверить обновление справочников
 		try {
 			ulistMng.refreshNsi("NSI");
-			//ulistMng.refreshNsi("NSIRAO");
+			ulistMng.refreshNsi("NSIRAO");
 		} catch (Exception e) {
 			// сообщение об ошибке
 			e.printStackTrace();
@@ -54,6 +61,28 @@ public class ActionController implements ActionControllers {
 	 * Поиск новых действий для обработки 
 	 */
 	public void searchActions() {
+		// получить необходимые справочники, поместить в хранилище
+		setrStore(new RefStore()); 
+		try {
+			getrStore().add(ulistMng.getNsi("NSI", BigInteger.valueOf(32)), "NSI");
+			log.info("CHECK={}", getrStore().getByGrp("NSI", BigInteger.valueOf(32)).getVersion() );
+		} catch (CantGetNSI e) {
+			log.error("Произошла ошибка получения справочников NSI, выход из программы!");
+			return;
+		}
+		
+		NsiElementType dd = ulistMng.getNsiElem(getrStore().getByGrp("NSI", BigInteger.valueOf(32)), "Часовая зона", "Asia/Novokuznetsk");
+		
+		if (dd != null) {
+			log.info("GUID={}", dd.getGUID());
+		}
+
+		//dd = ulistMng.getNsiElem(rStore.getByGrp("NSI", BigInteger.valueOf(32)), "Состояние дома", "Исправный");
+		
+		if (dd != null) {
+			log.info("GUID2={}", dd.getGUID());
+		}
+
 		if (!checkNsiUpdates()) {
 			log.error("Произошла ошибка обновления справочников NSI, выход из программы!");
 			return;
@@ -71,6 +100,16 @@ public class ActionController implements ActionControllers {
 		}
 		
 		
+	}
+
+
+	public RefStore getrStore() {
+		return rStore;
+	}
+
+
+	public void setrStore(RefStore rStore) {
+		this.rStore = rStore;
 	}
 
 

@@ -1,38 +1,17 @@
 package com.ric.st.builder;
 
-import java.io.IOException;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.handler.MessageContext;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.w3._2000._09.xmldsig_.SignatureType;
-import org.w3._2000._09.xmldsig_.SignatureValueType;
 
-import ru.gosuslugi.dom.schema.integration.base.RequestHeader;
-import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemRequest;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
 import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
@@ -41,15 +20,10 @@ import ru.gosuslugi.dom.schema.integration.nsi_common_service.Fault;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiPortsType;
 import ru.gosuslugi.dom.schema.integration.nsi_common_service.NsiService;
 
-import com.ric.bill.DistServ;
-import com.ric.bill.Utl;
 import com.ric.st.NsiBindingBuilders;
-import com.ric.st.SoapPreps;
 import com.ric.st.excp.CantSendSoap;
 import com.ric.st.excp.CantSignSoap;
-import com.ric.st.impl.App;
 import com.ric.st.impl.Config;
-import com.ric.st.impl.LoggingSOAPHandler;
 import com.ric.st.impl.SoapBuilder;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
@@ -61,7 +35,9 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 	private ApplicationContext ctx;
     @PersistenceContext
     private EntityManager em;
-	
+	@Autowired
+	private Config config;
+    
 	private NsiService service;
 	private NsiPortsType port;
 	private SoapBuilder sb; 
@@ -90,7 +66,9 @@ public class NsiBindingBuilder implements NsiBindingBuilders {
 
 		ExportNsiListRequest req = new ExportNsiListRequest();
 		req.setListGroup(grp);
-		//req.setId("foo");
+		if (config.getUseSign()) {
+			req.setId("foo");
+		}
 		req.setVersion(req.getVersion());
 
 		
