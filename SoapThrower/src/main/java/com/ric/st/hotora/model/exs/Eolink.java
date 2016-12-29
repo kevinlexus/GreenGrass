@@ -84,8 +84,8 @@ public class Eolink implements java.io.Serializable  {
 	private String guid;
 	
 	// ID объекта во внешней системе (алфавитно-цифровой)
-	@Column(name = "FK_EXT", updatable = true, nullable = true)
-	private String fkExt;
+	@Column(name = "CD_EXT", updatable = true, nullable = true)
+	private String cdExt;
 
 	// Идентификатор объекта в новой разработке
 	@Column(name = "FK_KLSK", updatable = true, nullable = true)
@@ -188,12 +188,12 @@ public class Eolink implements java.io.Serializable  {
 		this.guid = guid;
 	}
 
-	public String getFkExt() {
-		return fkExt;
+	public String getCdExt() {
+		return cdExt;
 	}
 
-	public void setFkExt(String fkExt) {
-		this.fkExt = fkExt;
+	public void setCdExt(String cdExt) {
+		this.cdExt = cdExt;
 	}
 
 	public Integer getFkKlsk() {

@@ -13,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import ru.gosuslugi.dom.schema.integration.base.OKTMORefType;
 import ru.gosuslugi.dom.schema.integration.house_management.ApartmentHouseUOType;
+import ru.gosuslugi.dom.schema.integration.house_management.HouseBasicUpdateUOType;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ApartmentHouseToCreate;
+import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ApartmentHouseToUpdate;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.EntranceToUpdate;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportResult;
 import ru.gosuslugi.dom.schema.integration.house_management_service.Fault;
@@ -24,6 +27,7 @@ import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagem
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementService;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiRef;
+import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiListRequest;
 
 import com.ric.bill.Utl;
 import com.ric.st.HouseManagementBindingBuilders;
@@ -56,9 +60,6 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 	private HouseManagementService service;
 	private HouseManagementPortsType port;
 	private ImportResult res;
-	private ImportHouseUORequest req;
-	private ApartmentHouse ah;
-	private EntranceToUpdate etu;
 	
 	private void setUp() throws CantSendSoap {
     	// создать сервис и порт
@@ -71,16 +72,21 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 	}
 
 	/**
-	 * Общее Обновление Основных характеристик много квартирного дома
+	 * Первичное размещение основных характеристик много квартирного дома
 	 * @return 
 	 * @throws CantSendSoap 
 	 * @throws Fault 
-	 * @throws Exception
 	 */
 	public ImportResult createApartmentHouse() throws CantSendSoap, Fault {
 		// выполнить инициализацию
 		setUp();
 		
+		ImportHouseUORequest req = new ImportHouseUORequest();
+		if (config.getUseSign()) {
+			req.setId("foo");
+		}
+		req.setVersion(req.getVersion());
+
     	ApartmentHouseToCreate ac = new ApartmentHouseToCreate();
     	ApartmentHouseUOType.BasicCharacteristicts bc = new ApartmentHouseUOType.BasicCharacteristicts();
        	bc.setFIASHouseGuid(hm.getHouseGuid());
@@ -89,25 +95,27 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	bc.setCulturalHeritage(hm.getCultHerit());
     	
     	// установить часовую зону
-    	NsiRef tz = new NsiRef();
-    	NsiElementType el = ulistMng.getNsiElem(
-    			aControl.getrStore().getByGrp("NSI", 
-    					BigInteger.valueOf(32)), "Часовая зона", "Asia/Novokuznetsk");
-    	tz.setCode(el.getCode());
-    	tz.setCode(el.getGUID());
-    	bc.setOlsonTZ(tz);
+    	bc.setOlsonTZ(config.getTz());
 
     	bc.setFloorCount(hm.getFloorCount());
     	bc.setNoRSOGKNEGRPRegistered(hm.getNoRSOGKNEGRP());
 
+    	// установить ОКТМО
+    	OKTMORefType oktmo = new OKTMORefType();  
+    	oktmo.setCode(hm.getOktmo());
+    	oktmo.setName(hm.getOktmo());
+    	bc.setOKTMO(oktmo);
+    	
     	// установить состояние объекта 
-    	el = ulistMng.getNsiElem(
-    			aControl.getrStore().getByGrp("NSI", 
+    	NsiElementType el = ulistMng.getNsiElem(
+    			config.getrStore().getByGrpId("NSI", 
     					BigInteger.valueOf(24)), "Состояние дома", "Исправный");
     	NsiRef ns = new NsiRef();
     	ns.setName(hm.getState());
     	ns.setCode(el.getCode());
     	ns.setGUID(el.getGUID());
+
+    	
     	bc.setState(ns);
     	
     	ac.setUndergroundFloorCount(hm.getUnderFloorCount());
@@ -115,7 +123,74 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	ac.setTransportGUID(Utl.getRndUuid().toString());
     	
     	ac.setBasicCharacteristicts(bc);
+    	
+    	ApartmentHouse ah = new ApartmentHouse();
     	ah.setApartmentHouseToCreate(ac);
+    	
+    	req.setVersion(req.getVersion());
+		if (config.getUseSign()) {
+			req.setId("foo");
+		}
+    	req.setApartmentHouse(ah);
+    	res = port.importHouseUOData(req);
+    	return res;
+	}
+
+	/**
+	 * Обновление основных характеристик много квартирного дома
+	 * @return 
+	 * @throws CantSendSoap 
+	 * @throws Fault 
+	 */
+	public ImportResult updateApartmentHouse() throws CantSendSoap, Fault {
+		// выполнить инициализацию
+		setUp();
+		
+		ImportHouseUORequest req = new ImportHouseUORequest();
+		if (config.getUseSign()) {
+			req.setId("foo");
+		}
+		req.setVersion(req.getVersion());
+
+    	ApartmentHouseToUpdate ac = new ApartmentHouseToUpdate();
+    	HouseBasicUpdateUOType bc = new HouseBasicUpdateUOType();
+       	bc.setFIASHouseGuid(hm.getHouseGuid());
+    	bc.setTotalSquare(BigDecimal.valueOf(hm.getTotalSquare()));
+    	bc.setUsedYear(BigDecimal.valueOf(hm.getUsedYear()).shortValue());
+    	bc.setCulturalHeritage(hm.getCultHerit());
+    	
+    	// установить часовую зону
+    	bc.setOlsonTZ(config.getTz());
+
+    	bc.setFloorCount(hm.getFloorCount());
+    	bc.setNoRSOGKNEGRPRegistered(hm.getNoRSOGKNEGRP());
+
+    	// установить ОКТМО
+    	OKTMORefType oktmo = new OKTMORefType();  
+    	oktmo.setCode(hm.getOktmo());
+    	oktmo.setName(hm.getOktmo());
+    	bc.setOKTMO(oktmo);
+    	
+    	// установить состояние объекта 
+    	NsiElementType el = ulistMng.getNsiElem(
+    			config.getrStore().getByGrpId("NSI", 
+    					BigInteger.valueOf(24)), "Состояние дома", "Исправный");
+    	NsiRef ns = new NsiRef();
+    	ns.setName(hm.getState());
+    	ns.setCode(el.getCode());
+    	ns.setGUID(el.getGUID());
+
+    	
+    	bc.setState(ns);
+    	
+    	ac.setUndergroundFloorCount(hm.getUnderFloorCount());
+    	ac.setMinFloorCount(hm.getMinFloorCount().byteValue());
+    	ac.setTransportGUID(Utl.getRndUuid().toString());
+    	
+    	ac.setBasicCharacteristicts(bc);
+    	
+    	ApartmentHouse ah = new ApartmentHouse();
+    	ah.setApartmentHouseToUpdate(ac);
     	
     	req.setVersion(req.getVersion());
 		if (config.getUseSign()) {

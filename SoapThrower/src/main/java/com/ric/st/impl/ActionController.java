@@ -10,33 +10,38 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ru.gosuslugi.dom.schema.integration.house_management.ImportResult;
+import ru.gosuslugi.dom.schema.integration.house_management_service.Fault;
 import ru.gosuslugi.dom.schema.integration.nsi_base.NsiElementType;
 
 import com.ric.st.ActionControllers;
 import com.ric.st.RefStore;
+import com.ric.st.builder.HouseManagementBindingBuilder;
 import com.ric.st.excp.CantGetNSI;
+import com.ric.st.excp.CantSendSoap;
 import com.ric.st.hotora.dao.ActionDAO;
 import com.ric.st.hotora.dao.EolinkDAO;
 import com.ric.st.hotora.model.exs.Action;
 import com.ric.st.mm.UlistMng;
+import com.ric.st.prep.HouseManagementPreps;
+import com.ric.st.prep.impl.HouseManagementPrep;
 
 @Slf4j
 @Service
 public class ActionController implements ActionControllers {
 
 	@Autowired
-	ActionDAO actionDao; 
-
+	private ActionDAO actionDao; 
 	@Autowired
-	EolinkDAO eolinkDao;
-	
+	private EolinkDAO eolinkDao;
 	@Autowired
-	UlistMng ulistMng;
-
+	private UlistMng ulistMng;
+	@Autowired
+	private Config config;
 	@PersistenceContext
     private EntityManager em;
-
-	private RefStore rStore; 
+	@Autowired
+	private HouseManagementBindingBuilder hb;
 
 	/**
 	 * Выполнить инициализацию объекта 
@@ -62,38 +67,11 @@ public class ActionController implements ActionControllers {
 	 */
 	public void searchActions() {
 		
-		System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump", "false");
-		System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "false");
-		System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "false");
-		System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "false");
+		// загрузить конфиг
+		config.setUp();
 		
-		// получить необходимые справочники, поместить в хранилище
-		setrStore(new RefStore()); 
-		try {
-			getrStore().add(ulistMng.getNsi("NSI", BigInteger.valueOf(32)), "NSI");
-			log.info("CHECK={}", getrStore().getByGrp("NSI", BigInteger.valueOf(32)).getVersion() );
-		} catch (CantGetNSI e) {
-			log.error("Произошла ошибка получения справочников NSI, выход из программы!");
-			return;
-		}
 		
-		NsiElementType dd = ulistMng.getNsiElem(getrStore().getByGrp("NSI", BigInteger.valueOf(32)), "Часовая зона", "Asia/Novokuznetsk");
-		
-		if (dd != null) {
-			log.info("GUID={}", dd.getGUID());
-		}
-
-		//dd = ulistMng.getNsiElem(rStore.getByGrp("NSI", BigInteger.valueOf(32)), "Состояние дома", "Исправный");
-		
-		if (dd != null) {
-			log.info("GUID2={}", dd.getGUID());
-		}
-
-		if (!checkNsiUpdates()) {
-			log.error("Произошла ошибка обновления справочников NSI, выход из программы!");
-			return;
-		}
-		
+	
 		log.info(" ********************** search Actions:");
 		
 		//Eolink eo = em.find(Eolink.class, 2);
@@ -101,22 +79,66 @@ public class ActionController implements ActionControllers {
 		//eo.getAction().add(ac);	
 		
 		// ОСНОВНОЙ ЦИКЛ
-		for (Action action: actionDao.getAllUnprocessed()) {
-			log.info(" Action:"+action.getAction());
+		for (Action ac: actionDao.getAllUnprocessed()) {
+			String act = ac.getAction(); 
+			String objTp = ac.getEolink().getAddrTp().getCd();
+
+			if (objTp.equals("Дом")) {
+
+				HouseManagementPreps hm = new HouseManagementPrep();
+				hm.setCultHerit(false);
+				hm.setFloorCount("14");
+				hm.setHouseGuid("bdc2d006-7f83-4ab2-be27-30ae0b725ade");
+				hm.setMinFloorCount(4);
+				hm.setNoRSOGKNEGRP(true);
+				hm.setOktmo("32607441101");
+				hm.setState("Исправный");
+				hm.setTotalSquare(1113D);
+				hm.setUnderFloorCount("0");
+				hm.setUsedYear(1984);
+				hb.setHm(hm);
+				
+				if (act.equals("INS")) {
+					// добавление дома
+					ImportResult res = null;
+					try {
+						res = hb.createApartmentHouse();
+					} catch (CantSendSoap | Fault e) {
+						e.printStackTrace();
+						log.info("Попытка добавления дома!");
+						log.info("Ошибка добавления дома, выход!");
+						return;
+					}
+					if (res.getErrorMessage() != null) {
+						log.info("Результат:{}", res.getErrorMessage().getErrorCode());
+					}
+				} else if (act.equals("UPD")) {
+					// обновление дома	
+					ImportResult res = null;
+					try {
+						log.info("Попытка обновления дома!");
+						res = hb.updateApartmentHouse();;
+					} catch (CantSendSoap | Fault e) {
+						e.printStackTrace();
+						log.info("Ошибка обновления дома, выход!");
+						return;
+					}
+					if (res.getErrorMessage() != null) {
+						log.info("Результат:{}", res.getErrorMessage().getErrorCode());
+					}
+
+				}
+				
+				
+			}
+
+			
+			log.info(" Action:{}, tp={}",ac.getAction(), ac.getEolink().getAddrTp().getCd());
 		}
 		
 		
 	}
 
-
-	public RefStore getrStore() {
-		return rStore;
-	}
-
-
-	public void setrStore(RefStore rStore) {
-		this.rStore = rStore;
-	}
 
 
 }

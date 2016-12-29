@@ -2,6 +2,7 @@ package com.ric.st;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,42 @@ import ru.gosuslugi.dom.schema.integration.nsi_common.ExportNsiItemResult;
  * Хранилище справочников, полученных от ГИС
  */
 public class RefStore {
-    private Map<String, ExportNsiItemResult> mapRef;
-
+	private List<Row> mapRef;
+    
+    // вложенный класс - запись 
+    private class Row {
+    	private String grp; // группа справочника
+    	private BigInteger id; // id справочника
+    	private ExportNsiItemResult res; // справочник
+    	// конструктор
+    	public Row (ExportNsiItemResult res, String grp, BigInteger id) {
+    		this.setRes(res);
+    		this.setGrp(grp);
+    		this.setId(id);
+    	}
+		public String getGrp() {
+			return grp;
+		}
+		public void setGrp(String grp) {
+			this.grp = grp;
+		}
+		public BigInteger getId() {
+			return id;
+		}
+		public void setId(BigInteger id) {
+			this.id = id;
+		}
+		public ExportNsiItemResult getRes() {
+			return res;
+		}
+		public void setRes(ExportNsiItemResult res) {
+			this.res = res;
+		}
+    }
+    
     // конструктор
     public RefStore() {
-    	mapRef = new HashMap<String, ExportNsiItemResult>();
+    	mapRef = new ArrayList<Row>();
     }
     
 	/**
@@ -30,8 +62,8 @@ public class RefStore {
 	 * @param res - справочник
 	 * @param grp - группа
 	 */
-	public void add(ExportNsiItemResult res, String grp) {
-		mapRef.put(grp, res);
+	public void add(ExportNsiItemResult res, String grp, BigInteger id) {
+		mapRef.add(new Row(res, grp, id));
 	}
 	
 	/**
@@ -40,10 +72,10 @@ public class RefStore {
 	 * @return 
 	 * @return 
 	 */
-	public ExportNsiItemResult getByGrp(String grp, BigInteger id) {
-    	Optional<Entry<String, ExportNsiItemResult>> res = mapRef.entrySet().stream().filter(t -> t.getKey().equals(grp))
-    		.filter(t -> t.getValue().getNsiItem().getNsiItemRegistryNumber().equals(id))
+	public ExportNsiItemResult getByGrpId(String grp, BigInteger id) {
+    	Optional<Row> res = mapRef.stream().filter(t -> t.getGrp().equals(grp))
+    		.filter(t -> t.getId().equals(id))
     		.findAny();
-		return res.get().getValue();
+		return res.get().getRes();
 	}
 }

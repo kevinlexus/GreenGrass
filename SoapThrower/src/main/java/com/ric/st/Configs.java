@@ -13,5 +13,6 @@ public interface Configs {
 	public String getBscLogin();
 	public String getBscPass();
 	public void setXmlLog();
+	public void setUp();
 	
 }

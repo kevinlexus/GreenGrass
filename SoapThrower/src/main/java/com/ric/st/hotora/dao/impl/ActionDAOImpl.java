@@ -26,7 +26,8 @@ public class ActionDAOImpl implements ActionDAO {
     
     //вернуть список необработанных действий
     public List<Action> getAllUnprocessed() {
-			Query query =em.createQuery("from Action t");
+			Query query =em.createQuery("from Action t where t.state = :state");
+			query.setParameter("state", "INS");
 			return query.getResultList();
 	}
     
