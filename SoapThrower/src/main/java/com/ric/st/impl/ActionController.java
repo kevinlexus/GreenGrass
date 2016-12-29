@@ -70,7 +70,6 @@ public class ActionController implements ActionControllers {
 		// загрузить конфиг
 		config.setUp();
 		
-		
 	
 		log.info(" ********************** search Actions:");
 		
@@ -85,47 +84,28 @@ public class ActionController implements ActionControllers {
 
 			if (objTp.equals("Дом")) {
 
+				// подготовительный объект дома
 				HouseManagementPreps hm = new HouseManagementPrep();
+
 				hm.setCultHerit(false);
-				hm.setFloorCount("14");
+				hm.setFloorCount("15");
 				hm.setHouseGuid("bdc2d006-7f83-4ab2-be27-30ae0b725ade");
-				hm.setMinFloorCount(4);
+				hm.setMinFloorCount(5);
 				hm.setNoRSOGKNEGRP(true);
 				hm.setOktmo("32607441101");
 				hm.setState("Исправный");
-				hm.setTotalSquare(1113D);
+				hm.setTotalSquare(1115D);
 				hm.setUnderFloorCount("0");
-				hm.setUsedYear(1984);
+				hm.setUsedYear(1985);
 				hb.setHm(hm);
 				
 				if (act.equals("INS")) {
 					// добавление дома
-					ImportResult res = null;
-					try {
-						res = hb.createApartmentHouse();
-					} catch (CantSendSoap | Fault e) {
-						e.printStackTrace();
-						log.info("Попытка добавления дома!");
-						log.info("Ошибка добавления дома, выход!");
-						return;
-					}
-					if (res.getErrorMessage() != null) {
-						log.info("Результат:{}", res.getErrorMessage().getErrorCode());
-					}
+					hb.addHouse();
+				
 				} else if (act.equals("UPD")) {
 					// обновление дома	
-					ImportResult res = null;
-					try {
-						log.info("Попытка обновления дома!");
-						res = hb.updateApartmentHouse();;
-					} catch (CantSendSoap | Fault e) {
-						e.printStackTrace();
-						log.info("Ошибка обновления дома, выход!");
-						return;
-					}
-					if (res.getErrorMessage() != null) {
-						log.info("Результат:{}", res.getErrorMessage().getErrorCode());
-					}
+					hb.updHouse();
 
 				}
 				

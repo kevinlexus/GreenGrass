@@ -37,6 +37,7 @@ import com.ric.st.impl.Config;
 import com.ric.st.impl.SoapBuilder;
 import com.ric.st.mm.UlistMng;
 import com.ric.st.prep.HouseManagementPreps;
+import com.ric.st.prep.impl.HouseManagementPrep;
 import com.sun.xml.ws.developer.WSBindingProvider;
 
 @Slf4j
@@ -69,6 +70,8 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	// подоготовительный объект для SOAP
     	SoapBuilder sb = ctx.getBean(SoapBuilder.class);
 		sb.setUp((BindingProvider) port, (WSBindingProvider) port, false);
+		
+		
 	}
 
 	/**
@@ -201,6 +204,43 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	return res;
 	}
 
+	public void addHouse() {
+		ImportResult res = null;
+		try {
+			log.info("Попытка добавления дома!");
+			res = createApartmentHouse();
+		} catch (CantSendSoap | Fault e) {
+			e.printStackTrace();
+			log.info("Ошибка добавления дома, выход!");
+			return;
+		}
+		if (res.getCommonResult() != null) {
+			String errCode = res.getCommonResult().get(0).getError().get(0).getErrorCode();
+			log.info("Результат:{}", errCode);
+			if (errCode.equals("SRV004016")) {
+				// ошибка - Данный адрес зарегистрирован в реестре объектов жилищного фонда
+				// выполнить update
+				updHouse();
+			}
+			
+		}
+	}
+
+	public void updHouse() {
+		ImportResult res = null;
+		try {
+			log.info("Попытка обновления дома!");
+			res = updateApartmentHouse();
+		} catch (CantSendSoap | Fault e) {
+			e.printStackTrace();
+			log.info("Ошибка обновления дома, выход!");
+			return;
+		}
+		if (res.getCommonResult() != null) {
+			log.info("Результат:{}", res.getCommonResult().get(0).getError().get(0).getErrorCode());
+		}
+	}
+	
 	public HouseManagementPreps getHm() {
 		return hm;
 	}
