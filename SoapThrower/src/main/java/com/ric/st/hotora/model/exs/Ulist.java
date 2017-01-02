@@ -31,7 +31,7 @@ public class Ulist implements java.io.Serializable  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_EXS")
-	@SequenceGenerator(name="SEQ_EXS", sequenceName="EXS.SEQ_U_LIST", allocationSize=1)	
+	@SequenceGenerator(name="SEQ_EXS", sequenceName="EXS.SEQ_BASE", allocationSize=1)	
     @Column(name = "id", unique=true, updatable = false, nullable = false)
 	private Integer id;
 
@@ -101,7 +101,7 @@ public class Ulist implements java.io.Serializable  {
 	private String refGuid;
 	
 	// ИЗ ГИС ЖКХ: [(NM)number;  (ST)string;  (DT)date;  (BL) boolean (RF) reference (OK) OkeiRefFieldType]
-	@Column(name = "TP", updatable = true, nullable = true)
+	@Column(name = "VAL_TP", updatable = true, nullable = true)
 	private String tp;
 
 	// Родительский элемент

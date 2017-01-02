@@ -70,7 +70,12 @@ public class ActionController implements ActionControllers {
 		// загрузить конфиг
 		config.setUp();
 		
-	
+		log.info(" ********************** проверить справочники:");
+		if (!checkNsiUpdates()) {
+			log.error("Ошибка при обновлении справочников, выход из программы!");
+			return;
+		}
+		
 		log.info(" ********************** search Actions:");
 		
 		//Eolink eo = em.find(Eolink.class, 2);
@@ -99,7 +104,7 @@ public class ActionController implements ActionControllers {
 				hm.setUsedYear(1985);
 				hb.setHm(hm);
 				
-				if (act.equals("INS")) {
+				if (act.equals("ADD")) {
 					// добавление дома
 					hb.addHouse();
 				

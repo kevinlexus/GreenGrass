@@ -32,6 +32,13 @@ public class Config implements Configs {
 	private RefStore rStore;
 	private NsiRef tz; 
 
+	
+	// среда выполнения
+	public int getEnv() {
+		return 0; // HOTORA
+		//return 0; Direct (на прямую))
+	}
+	
 	// использовать ли подпись SOAP запросов?
 	public boolean getUseSign() {
 		return false;

@@ -49,7 +49,7 @@ public class UlistTp implements java.io.Serializable  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_EXS")
-	@SequenceGenerator(name="SEQ_EXS", sequenceName="EXS.SEQ_U_LISTTP", allocationSize=1)	
+	@SequenceGenerator(name="SEQ_EXS", sequenceName="EXS.SEQ_BASE", allocationSize=1)	
     @Column(name = "id", unique=true, updatable = false, nullable = false)
 	private Integer id;
 

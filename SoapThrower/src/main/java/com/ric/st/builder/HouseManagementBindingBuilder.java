@@ -2,6 +2,7 @@ package com.ric.st.builder;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +23,7 @@ import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.ApartmentHouseToUpdate;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportHouseUORequest.ApartmentHouse.EntranceToUpdate;
 import ru.gosuslugi.dom.schema.integration.house_management.ImportResult;
+import ru.gosuslugi.dom.schema.integration.house_management.ImportResult.CommonResult;
 import ru.gosuslugi.dom.schema.integration.house_management_service.Fault;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementPortsType;
 import ru.gosuslugi.dom.schema.integration.house_management_service.HouseManagementService;
@@ -112,7 +114,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	// установить состояние объекта 
     	NsiElementType el = ulistMng.getNsiElem(
     			config.getrStore().getByGrpId("NSI", 
-    					BigInteger.valueOf(24)), "Состояние дома", "Исправный");
+    					BigInteger.valueOf(24)), "Состояние дома", hm.getState());
     	NsiRef ns = new NsiRef();
     	ns.setName(hm.getState());
     	ns.setCode(el.getCode());
@@ -177,7 +179,7 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
     	// установить состояние объекта 
     	NsiElementType el = ulistMng.getNsiElem(
     			config.getrStore().getByGrpId("NSI", 
-    					BigInteger.valueOf(24)), "Состояние дома", "Исправный");
+    					BigInteger.valueOf(24)), "Состояние дома", hm.getState());
     	NsiRef ns = new NsiRef();
     	ns.setName(hm.getState());
     	ns.setCode(el.getCode());
@@ -214,13 +216,17 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 			log.info("Ошибка добавления дома, выход!");
 			return;
 		}
-		if (res.getCommonResult() != null) {
+		if (res.getCommonResult().get(0).getError() != null && res.getCommonResult().get(0).getError().size() > 0) {
 			String errCode = res.getCommonResult().get(0).getError().get(0).getErrorCode();
-			log.info("Результат:{}", errCode);
+			log.info("Ошибка создания дома:{}", errCode);
 			if (errCode.equals("SRV004016")) {
 				// ошибка - Данный адрес зарегистрирован в реестре объектов жилищного фонда
 				// выполнить update
 				updHouse();
+			} else {
+				log.info("Результат обновления дома: GUID={}, UniqNumber={}", res.getCommonResult().get(0).getGUID(),
+						res.getCommonResult().get(0).getUniqueNumber()
+						);
 			}
 			
 		}
@@ -236,8 +242,12 @@ public class HouseManagementBindingBuilder implements HouseManagementBindingBuil
 			log.info("Ошибка обновления дома, выход!");
 			return;
 		}
-		if (res.getCommonResult() != null) {
-			log.info("Результат:{}", res.getCommonResult().get(0).getError().get(0).getErrorCode());
+		if (res.getCommonResult().get(0).getError() != null && res.getCommonResult().get(0).getError().size() > 0) {
+			log.info("Ошибка обновления дома:{}", res.getCommonResult().get(0).getError().get(0).getErrorCode());
+		} else {
+			log.info("Результат обновления дома: GUID={}, UniqNumber={}", res.getCommonResult().get(0).getGUID(),
+					res.getCommonResult().get(0).getUniqueNumber()
+					);
 		}
 	}
 	
