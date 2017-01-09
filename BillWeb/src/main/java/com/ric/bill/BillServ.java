@@ -253,8 +253,8 @@ public class BillServ {
     	calc.setHouse(kart.getKw().getHouse());
     	calc.setKart(kart);
 
-    	// РАСПРЕДЕЛЕНИЕ ОБЪЕМОВ, если задано начисление
-		if (reqConfig.getOperTp()==0 && reqConfig.getIsDist()) {
+    	// РАСПРЕДЕЛЕНИЕ ОБЪЕМОВ, если задано
+		if (reqConfig.getIsDist()) {
 			try {
 				distServ.distKartVol(calc);
 			} catch (ErrorWhileDist e) {

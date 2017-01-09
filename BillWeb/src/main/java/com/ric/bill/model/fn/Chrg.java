@@ -66,7 +66,7 @@ public class Chrg implements java.io.Serializable, Simple {
 	// конструктор для подготовительных данных, рассчитанных в потоке
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			Double sumFull, Double sumAmnt, Double vol,
-			Double price, Double stdt, Integer cntPers, Double area, Lst tp, Date dt1, Date dt2) {
+			Double price, Double stdt, Integer cntPers, Double area, Lst tp, Date dt1, Date dt2, Chng chng) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -83,6 +83,7 @@ public class Chrg implements java.io.Serializable, Simple {
 		setArea(area);
 		setDt1(dt1);
 		setDt2(dt2);
+		setChng(chng);
 	}
 
 	@Id
@@ -91,19 +92,18 @@ public class Chrg implements java.io.Serializable, Simple {
     @Column(name = "ID", unique=true, updatable = false, nullable = false)			
 	private Integer id;
 	
-    // даты начала и окончания произведенного начисления
+    //даты начала и окончания произведенного начисления
     @Column(name = "DT1", updatable = false, nullable = true)
     private Date dt1;
 
     @Column(name = "DT2", updatable = false, nullable = true)
     private Date dt2;
 	
-    // лиц.счет
-    @ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
 	private Kart kart;
 
-	// Статус, 0 - архивная запись, 1-текущее начисление, 2 - подготовка к архиву
+	//Статус, 0 - архивная запись, 1-текущее начисление, 2 - подготовка к архиву
 	@Column(name = "status", nullable = true)
 	private Integer status;
 

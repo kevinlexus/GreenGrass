@@ -132,7 +132,7 @@ public class DistServ {
 
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-			metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
+			metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2(), getStatusVol());
 		}
 		
 	}
@@ -148,10 +148,10 @@ public class DistServ {
 			// статус записи зависит от типа операции (0 - начисление, 1 - перерасчет)
 			switch (calc.getReqConfig().getOperTp()) {
 				case 0: 
-					statusVol = 0;
+					setStatusVol(0);
 					break;
 				case 1: 
-					statusVol = 1;
+					setStatusVol(1);
 					break;
 			}
 			long startTime;
@@ -190,10 +190,10 @@ public class DistServ {
 		// статус записи объема зависит от типа операции (0 - начисление, 1 - перерасчет)
 		switch (calc.getReqConfig().getOperTp()) {
 		case 0: 
-			statusVol = 0;
+			setStatusVol(0);
 			break;
 		case 1: 
-			statusVol = 1;
+			setStatusVol(1);
 			break;
 		}
 		
@@ -251,7 +251,7 @@ public class DistServ {
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			calc.setGenDt(c.getTime());
 			for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
-				metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
+				metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2(), getStatusVol());
 			}
 			
 		}
@@ -400,6 +400,16 @@ public class DistServ {
 		}
 
 		
+	}
+
+
+	public Integer getStatusVol() {
+		return statusVol;
+	}
+
+
+	public void setStatusVol(Integer statusVol) {
+		this.statusVol = statusVol;
 	}
 
 

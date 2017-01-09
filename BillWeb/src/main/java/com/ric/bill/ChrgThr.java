@@ -261,7 +261,7 @@ public class ChrgThr {
 		//доля площади в день
 		Double sqr = 0d;
 		//№ порядк.записи
-		int npp;
+		//int npp;
 		//Временная сумма
 		//BigDecimal tmpSum;
 		//Временный объем

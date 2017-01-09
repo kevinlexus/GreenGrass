@@ -65,10 +65,10 @@ public class testAll {
     	RequestConfig reqConfig = new RequestConfig();
     	Chng chng = em.find(Chng.class, 1021);
     	reqConfig.setChng(chng);
-    	reqConfig.setOperTp(1); // перерасчёт
-    	reqConfig.setIsDist(true);
+    	reqConfig.setOperTp(1);  // перерасчёт
+    	reqConfig.setIsDist(true); // распределять объем
     	
-    	fut = billServ.chrgLsk(reqConfig, null, 275699);
+    	fut = billServ.chrgLsk(reqConfig, null, 453194);
     	
 	   	//проверить окончание потока 
 	    while (!fut.isDone()) {

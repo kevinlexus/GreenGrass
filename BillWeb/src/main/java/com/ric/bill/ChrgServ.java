@@ -43,8 +43,10 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.fn.Chng;
 import com.ric.bill.model.fn.Chrg;
 
 /**
@@ -299,6 +301,14 @@ public class ChrgServ {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (Integer lsk) throws ErrorWhileChrg {
+		Integer status;
+		if (calc.getReqConfig().getOperTp().equals(1)) {
+			// перерасчет
+			status=3;
+		} else {
+			// начисление
+			status=1;
+		}
 		
 	    //коллекция для сумм по укрупнённым услугам, для нового начисления 
 	    MultiKeyMap mapDeb = new MultiKeyMap();
@@ -326,7 +336,7 @@ public class ChrgServ {
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
-			if (chrg.getStatus()==1 && chrg.getPeriod().equals(config.getPeriod())) {
+			if (chrg.getStatus().equals(1) && chrg.getPeriod().equals(config.getPeriod())) {
 				Serv servMain = null;
 				try {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
@@ -343,60 +353,72 @@ public class ChrgServ {
 		}
 		
 		//перенести предыдущий расчет начисления в статус "архив" (1->0)
-		Query query = em.createQuery("update Chrg t set t.status=0 where t.lsk=:lsk "
-				+ "and t.status=1 "
-				//+ "and t.dt1 between :dt1 and :dt2 " -нет смысла, есть period
-				//+ "and t.dt2 between :dt1 and :dt2 "
-				+ "and t.period=:period"
-				);
+		Query query = null;
+
+		if (calc.getReqConfig().getOperTp().equals(0)) {
+			// начисление
+			query = em.createNativeQuery("update fn.chrg t set t.status=0 where t.lsk=:lsk "
+					+ "and t.status=1 "
+					//+ "and t.dt1 between :dt1 and :dt2 " -нет смысла, есть period
+					//+ "and t.dt2 between :dt1 and :dt2 "
+					+ "and t.period=:period"
+					);
+		} else if (calc.getReqConfig().getOperTp().equals(1)) {
+			// перерасчет
+			query = em.createNativeQuery("delete from fn.chrg t where t.lsk=:lsk "
+					+ "and t.status=3 "
+					+ "and t.period=:period"
+					);
+		}
 		query.setParameter("lsk", kart.getLsk());
-		//query.setParameter("dt1", Calc.getCurDt1());
-		//query.setParameter("dt2", Calc.getCurDt2());
 		query.setParameter("period", config.getPeriod());
 		query.executeUpdate();
 		
 		//ДЕЛЬТА
-		//НАЙТИ и передать дельту в функцию долгов
-		Set<Control> ctrlSet = new HashSet();
-		MapIterator it = mapDeb.mapIterator();
-		while (it.hasNext()) {
-			it.next();
-			MultiKey mk = (MultiKey) it.getKey();
-			//log.trace("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
-			BigDecimal val = (BigDecimal)it.getValue();
-			if (!(val.compareTo(BigDecimal.ZERO)==0)) {
-			//if (lsk.equals("14024244")) {
-			  log.info("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
-			  //проверка на дубли
-			  if (ctrlSet.contains(new Control(((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId()))) {
-					throw new ErrorWhileChrg("ChrgServ.save: Found dublicate elements while sending delta");
-			  }
-			  //вызвать хранимую функцию, для пересчёта долга
-			  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
-			  qr.registerStoredProcedureParameter("P_LSK", Integer.class, ParameterMode.IN);
-			  qr.registerStoredProcedureParameter("P_FK_SERV", Integer.class, ParameterMode.IN);
-			  qr.registerStoredProcedureParameter("P_FK_ORG", Integer.class, ParameterMode.IN);
-			  qr.registerStoredProcedureParameter("P_PERIOD", String.class, ParameterMode.IN);
-			  qr.registerStoredProcedureParameter("P_SUMMA_CHNG", Double.class, ParameterMode.IN);
-			  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
-			  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
-			  qr.setParameter("P_LSK", kart.getLsk());
-			  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
-			  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
-			  qr.setParameter("P_PERIOD", config.getPeriod());
-			  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
-			  qr.setParameter("P_TP_CHNG", 1);
-			  qr.setParameter("P_FK_CHNG", 1);
-			  
-			  qr.execute();
+		//НАЙТИ и передать дельту в функцию долгов (выполнить только в начислении)
+		if (calc.getReqConfig().getOperTp().equals(0)) {
+			Set<Control> ctrlSet = new HashSet();
+			MapIterator it = mapDeb.mapIterator();
+			while (it.hasNext()) {
+				it.next();
+				MultiKey mk = (MultiKey) it.getKey();
+				//log.trace("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
+				BigDecimal val = (BigDecimal)it.getValue();
+				if (!(val.compareTo(BigDecimal.ZERO)==0)) {
+				//if (lsk.equals("14024244")) {
+				  log.info("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+				  //проверка на дубли
+				  if (ctrlSet.contains(new Control(((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId()))) {
+						throw new ErrorWhileChrg("ChrgServ.save: Found dublicate elements while sending delta");
+				  }
+				  //вызвать хранимую функцию, для пересчёта долга
+				  StoredProcedureQuery qr = em.createStoredProcedureQuery("fn.transfer_change");
+				  qr.registerStoredProcedureParameter("P_LSK", Integer.class, ParameterMode.IN);
+				  qr.registerStoredProcedureParameter("P_FK_SERV", Integer.class, ParameterMode.IN);
+				  qr.registerStoredProcedureParameter("P_FK_ORG", Integer.class, ParameterMode.IN);
+				  qr.registerStoredProcedureParameter("P_PERIOD", String.class, ParameterMode.IN);
+				  qr.registerStoredProcedureParameter("P_SUMMA_CHNG", Double.class, ParameterMode.IN);
+				  qr.registerStoredProcedureParameter("P_TP_CHNG", Integer.class, ParameterMode.IN);
+				  qr.registerStoredProcedureParameter("P_FK_CHNG", Integer.class, ParameterMode.IN);
+				  qr.setParameter("P_LSK", kart.getLsk());
+				  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
+				  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
+				  qr.setParameter("P_PERIOD", config.getPeriod());
+				  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
+				  qr.setParameter("P_TP_CHNG", 1);
+				  qr.setParameter("P_FK_CHNG", 1);
+				  
+				  qr.execute();
+				}
 			}
 		}
 		
 		//Сохранить новое начисление (переписать из prepChrg)
 		for (Chrg chrg : prepChrg) {
 			//log.info("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
-			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), 1, config.getPeriod(), chrg.getSumAmnt(), chrg.getSumFull(), 
-					chrg.getVol(), chrg.getPrice(), chrg.getStdt(), chrg.getCntPers(), chrg.getArea(), chrg.getTp(), chrg.getDt1(), chrg.getDt2()); 
+			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), status, config.getPeriod(), chrg.getSumFull(), chrg.getSumAmnt(), 
+					chrg.getVol(), chrg.getPrice(), chrg.getStdt(), chrg.getCntPers(), chrg.getArea(),  chrg.getTp(), chrg.getDt1(), chrg.getDt2(), 
+					calc.getReqConfig().getChng()); 
 
 			kart.getChrg().add(chrg2); 
 		}
