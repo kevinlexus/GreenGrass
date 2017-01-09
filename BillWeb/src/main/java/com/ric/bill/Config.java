@@ -8,6 +8,8 @@ import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import com.ric.bill.model.bs.Obj;
  *
  */
 @Service
+@Slf4j
 public class Config {
 
 	@Autowired
@@ -75,6 +78,8 @@ public class Config {
 		//calendar.set(Calendar.DATE, 2);
 		calendar.setTime(parMng.getDate(obj, "Конец расчетного периода"));
 		setCurDt2(calendar.getTime());
+		log.info("Начало расчетного периода = {}", getCurDt1());
+		log.info("Конец расчетного периода = {}", getCurDt2());
 		
 		//задать период для партицирования
 		String yy = String.valueOf(calendar.get(Calendar.YEAR));

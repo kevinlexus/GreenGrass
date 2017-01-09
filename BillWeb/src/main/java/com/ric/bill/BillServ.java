@@ -253,8 +253,8 @@ public class BillServ {
     	calc.setHouse(kart.getKw().getHouse());
     	calc.setKart(kart);
 
-    	// РАСПРЕДЕЛЕНИЕ ОБЪЕМОВ 
-		if (reqConfig.getIsDist()) {
+    	// РАСПРЕДЕЛЕНИЕ ОБЪЕМОВ, если задано начисление
+		if (reqConfig.getOperTp()==0 && reqConfig.getIsDist()) {
 			try {
 				distServ.distKartVol(calc);
 			} catch (ErrorWhileDist e) {
@@ -262,10 +262,10 @@ public class BillServ {
 				res.err=1;
 				return fut;
 			}
+			// присвоить обратно лиц.счет, который мог быть занулён в distServ.distKartVol(calc);
+			calc.setKart(kart); 
 		}
 
-		//присвоить обратно лиц.счет, который мог быть занулён в distServ.distKartVol(calc);
-		calc.setKart(kart); 
 
 		// РАСЧЕТ НАЧИСЛЕНИЯ ПО 1 ЛС
 	    try {
