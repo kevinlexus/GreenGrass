@@ -1,5 +1,6 @@
 package com.ric.bill;
 
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -85,6 +86,7 @@ public class Config {
 		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		//доля одного дня в периоде
 		setPartDays(1/getCntCurDays());
+		
 	}
 
 	public void setCurDt2(Date curDt2) {

@@ -163,8 +163,10 @@ public class Utl {
 	 * @return
 	 */
 	public static Date getDateFromXmlGregCal(XMLGregorianCalendar cal) {
-		
-		return cal.toGregorianCalendar().getTime();
-		
+		if (cal != null) { 
+			return cal.toGregorianCalendar().getTime();
+		} else {
+			return null;
+		}
 	}
 }

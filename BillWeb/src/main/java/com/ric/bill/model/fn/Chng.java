@@ -2,6 +2,7 @@ package com.ric.bill.model.fn;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -23,7 +24,7 @@ import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.Vol;
 
 /**
- * Перерасчет
+ * Заголовочная таблица - перерасчеты
  * @author lev
  *
  */
@@ -52,6 +53,24 @@ public class Chng implements java.io.Serializable, Simple {
 	@Fetch(FetchMode.SUBSELECT)
 	private List<Vol> vol = new ArrayList<Vol>(0);
 	
+	@Column(name = "PRICE_NEW")
+	private Double priceNew;
+	
+	// период (х.з. какой период, уточнить) TODO
+	@Column(name = "PERIOD")
+	private String period;
+
+	// документ-основание перерасчета
+	@Column(name = "ACT_NAME")
+	private String actName;
+
+	// даты начала и окончания произведенного перерасчета
+    @Column(name = "DT1", updatable = false, nullable = true)
+    private Date dt1;
+
+    @Column(name = "DT2", updatable = false, nullable = true)
+    private Date dt2;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -74,6 +93,46 @@ public class Chng implements java.io.Serializable, Simple {
 
 	public void setVol(List<Vol> vol) {
 		this.vol = vol;
+	}
+
+	public Double getPriceNew() {
+		return priceNew;
+	}
+
+	public void setPriceNew(Double priceNew) {
+		this.priceNew = priceNew;
+	}
+
+	public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
+	public Date getDt1() {
+		return dt1;
+	}
+
+	public void setDt1(Date dt1) {
+		this.dt1 = dt1;
+	}
+
+	public Date getDt2() {
+		return dt2;
+	}
+
+	public void setDt2(Date dt2) {
+		this.dt2 = dt2;
+	}
+
+	public String getActName() {
+		return actName;
+	}
+
+	public void setActName(String actName) {
+		this.actName = actName;
 	}
 
 	public boolean equals(Object o) {

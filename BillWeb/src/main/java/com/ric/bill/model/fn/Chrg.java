@@ -91,18 +91,19 @@ public class Chrg implements java.io.Serializable, Simple {
     @Column(name = "ID", unique=true, updatable = false, nullable = false)			
 	private Integer id;
 	
-    //даты начала и окончания произведенного начисления
+    // даты начала и окончания произведенного начисления
     @Column(name = "DT1", updatable = false, nullable = true)
     private Date dt1;
 
     @Column(name = "DT2", updatable = false, nullable = true)
     private Date dt2;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+    // лиц.счет
+    @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
 	private Kart kart;
 
-	//Статус, 0 - архивная запись, 1-текущее начисление, 2 - подготовка к архиву
+	// Статус, 0 - архивная запись, 1-текущее начисление, 2 - подготовка к архиву
 	@Column(name = "status", nullable = true)
 	private Integer status;
 
