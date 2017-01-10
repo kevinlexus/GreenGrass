@@ -1,6 +1,8 @@
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -62,13 +64,14 @@ public class testAll {
 		Config config = ctx.getBean(Config.class);
     	Future<Result> fut = null;
 
-    	RequestConfig reqConfig = new RequestConfig();
-    	Chng chng = em.find(Chng.class, 1021);
+    	RequestConfig reqConfig = new RequestConfig(config);
+    	Chng chng = em.find(Chng.class, 175961); // ID перерасчета = 175961
     	reqConfig.setChng(chng);
     	reqConfig.setOperTp(1);  // перерасчёт
     	reqConfig.setIsDist(true); // распределять объем
     	
-    	fut = billServ.chrgLsk(reqConfig, null, 453194);
+    	
+    	fut = billServ.chrgLsk(reqConfig, null, 453194); // FLSK=85020028
     	
 	   	//проверить окончание потока 
 	    while (!fut.isDone()) {

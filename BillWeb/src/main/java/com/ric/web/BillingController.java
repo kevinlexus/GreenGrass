@@ -44,10 +44,10 @@ public class BillingController {
 
     @PersistenceContext
     private EntityManager em;
-    
 	@Autowired
 	private ApplicationContext ctx;
-
+	@Autowired
+	private Config config;
     @Autowired
     private BillServ billServ;
 
@@ -61,7 +61,7 @@ public class BillingController {
     	
     	Future<Result> fut = null;
 
-    	RequestConfig reqConfig = new RequestConfig(); 
+    	RequestConfig reqConfig = new RequestConfig(config); 
     	
     	if (dist.equals("1")) {
     		// распределять
@@ -118,7 +118,7 @@ public class BillingController {
     	log.info("got /chrgall dist={} tp={} houseId={}", dist, tp, houseId);
     	Future<Result> fut = null;
     	
-    	RequestConfig reqConfig = new RequestConfig(); 
+    	RequestConfig reqConfig = new RequestConfig(config); 
     	
     	if (dist.equals("1")) {
     		// распределять

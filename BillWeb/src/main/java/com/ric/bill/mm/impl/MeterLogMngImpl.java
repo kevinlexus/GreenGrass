@@ -134,7 +134,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	}
 	
 	/**
-	 * Получить объем, по счетчику за период и сам этот счетчик и признак существования его физ сч.
+	 * Получить объем, по СЧЕТЧИКУ, за период и сам этот счетчик и признак существования его физ сч.
 	 * @param mLog - узел
 	 * @param tp - тип распределения (здесь ТОЛЬКО для КЭША!) TODO!!!!!!!!! Разобраться что значит "только для Кэша". зачем нужен неиспользуемый параметр?
 	 * @param dt1 - нач.период
@@ -142,12 +142,12 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - возвращаемый объем
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId(), #tp, #dt1, #dt2 }")
-    public synchronized SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
+	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId(), #tp, #dt1, #dt2}")
+    public synchronized SumNodeVol getVolPeriod (Calc calc, MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
 		/* Java 8 */
 		mLog.getVol().parallelStream()
-	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(status) &&
+	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(calc.getReqConfig().getStatusVol()) &&
 	            			Utl.between(t.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
 	        				Utl.between(t.getDt2(), dt1, dt2))
 					.forEach(t -> {
@@ -160,12 +160,22 @@ public class MeterLogMngImpl implements MeterLogMng {
 					    			lnkVol.setLimit(t.getVol1()); //здесь set вместо add (будет одно значение) (как правило для ЛОДН счетчиков)
 					    		}
 							});
+		// перерасчет
+		if (calc.getReqConfig().getOperTp()==1) {
+			calc.getReqConfig().getChng().getChngLsk().parallelStream().forEach(t -> {
+					t.getChngVal().parallelStream().forEach(v -> {
+						log.info("CHNG VOL={}",v.getVal());
+					});
+			});
+			
+		}
+		
 		return lnkVol;
 	}
 
 
 	/**
-	 * получить совокупный объем по объекту, содержащему счетчики, по услуге, за период
+	 * получить совокупный объем по ОБЪЕКТУ, содержащему счетчики, по услуге, за период
 	 * @param mc - Объект, содержащий объемы
 	 * @param serv - Услуга, по которой искать
 	 * @param dt1 - нач.период
@@ -173,15 +183,15 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - возвращаемый объем
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr1", key="{ #mc.getId(), #serv.getId(), #dt1, #dt2 }")
-	public synchronized SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2, Integer status) {
+	@Cacheable(cacheNames="rrr1", key="{ #mc.getId(), #serv.getId(), #dt1, #dt2}")
+	public synchronized SumNodeVol getVolPeriod (Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2) {
 		SumNodeVol amntSum = new SumNodeVol();
 		
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
 		for (MeterLog mLog: mc.getMlog()) {
 			//по заданной услуге
 			if (mLog.getServ().equals(serv)) {
-				SumNodeVol tmp = getVolPeriod(mLog, 0, dt1, dt2, status);
+				SumNodeVol tmp = getVolPeriod(calc, mLog, 0, dt1, dt2);
 				amntSum.addArea(tmp.getArea());
 				amntSum.addPers(tmp.getPers());
 				amntSum.addVol(tmp.getVol());

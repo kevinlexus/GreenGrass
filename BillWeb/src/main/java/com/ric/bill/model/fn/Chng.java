@@ -51,7 +51,7 @@ public class Chng implements java.io.Serializable, Simple {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
 	@Fetch(FetchMode.SUBSELECT)
-	private List<Vol> vol = new ArrayList<Vol>(0);
+	private List<ChngLsk> chngLsk = new ArrayList<ChngLsk>(0);
 	
 	@Column(name = "PRICE_NEW")
 	private Double priceNew;
@@ -85,14 +85,6 @@ public class Chng implements java.io.Serializable, Simple {
 
 	public void setChrg(List<Chrg> chrg) {
 		this.chrg = chrg;
-	}
-
-	public List<Vol> getVol() {
-		return vol;
-	}
-
-	public void setVol(List<Vol> vol) {
-		this.vol = vol;
 	}
 
 	public Double getPriceNew() {
@@ -133,6 +125,14 @@ public class Chng implements java.io.Serializable, Simple {
 
 	public void setActName(String actName) {
 		this.actName = actName;
+	}
+
+	public List<ChngLsk> getChngLsk() {
+		return chngLsk;
+	}
+
+	public void setChngLsk(List<ChngLsk> chngLsk) {
+		this.chngLsk = chngLsk;
 	}
 
 	public boolean equals(Object o) {

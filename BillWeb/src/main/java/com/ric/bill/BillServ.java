@@ -49,10 +49,10 @@ public class BillServ {
     @PersistenceContext
     private EntityManager em;
     
-    //коллекция для формирования потоков
+    // коллекция для формирования потоков
     private List<Kart> kartThr;
     
-    //конструктор
+    // конструктор
     public BillServ() {
 
     }
@@ -98,7 +98,6 @@ public class BillServ {
     public Future<Result> chrgAll(RequestConfig reqConfig, Integer houseId) {
 		//Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
-    	
     	Result res = new Result();
 		res.err=0;
 		// кол-во потоков

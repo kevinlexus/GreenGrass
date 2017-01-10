@@ -221,7 +221,7 @@ public class DistGen {
 			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", genDt), 0d) / config.getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
-			kartMng.getCntPers(kart, servChrg, cntPers, 0, genDt);
+			kartMng.getCntPers(calc, kart, servChrg, cntPers, 0, genDt);
 			partPers = cntPers.cnt / config.getCntCurDays();
 		} else if (tp==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
@@ -256,15 +256,15 @@ public class DistGen {
 				log.info("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(), 2);
 				return null;
 			} else {
-				lnkODPUVol = metMng.getVolPeriod(lnkODPU, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
+				lnkODPUVol = metMng.getVolPeriod(calc, lnkODPU, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			}
 
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
 			log.trace("check id="+lnkLODN.getId());
-			lnkODNVol = metMng.getVolPeriod(lnkLODN, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
+			lnkODNVol = metMng.getVolPeriod(calc, lnkLODN, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			log.trace("объем по ЛОДН id="+lnkLODN.getId()+" vol="+lnkODNVol.getVol()+" pers="+lnkODNVol.getPers()+" area="+lnkODNVol.getArea());
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
-			SumNodeVol sumVol = metMng.getVolPeriod(ml, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
+			SumNodeVol sumVol = metMng.getVolPeriod(calc, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			
 			if (metMng.checkExsMet(lnkODPU, genDt) && lnkODPUVol.getVol() >= 0d) {
 				//при наличии счетчика(ков) ОДПУ и объема по нему
@@ -294,7 +294,7 @@ public class DistGen {
 					List<MLogs> lstMain = metMng.getAllMetLogByServTp(kart, mainServ.getServMet(), null);
 					for (MLogs mLog2 : lstMain) {
 						//получить объем за период, по лог счетчику основной услуги, если найден
-						sumMainVol = metMng.getVolPeriod(mLog2, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
+						sumMainVol = metMng.getVolPeriod(calc, mLog2, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 						tmpVol = tmpVol + sumMainVol.getVol();
 					}
 					
@@ -342,9 +342,9 @@ public class DistGen {
 			}
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
 			log.trace("check id="+lnkLODN.getId());
-			SumNodeVol lnkODNVol = metMng.getVolPeriod(lnkLODN, tp, genDt, genDt, statusVol);
+			SumNodeVol lnkODNVol = metMng.getVolPeriod(calc, lnkLODN, tp, genDt, genDt);
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
-			SumNodeVol sumVol = metMng.getVolPeriod(ml, tp, genDt, genDt, statusVol);
+			SumNodeVol sumVol = metMng.getVolPeriod(calc, ml, tp, genDt, genDt);
 			//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
 			Double tmp =parMng.getDbl(lnkLODN, "VOL_SQ_MT", genDt);
 			if (tmp != null) {
@@ -399,21 +399,21 @@ public class DistGen {
 		}
 
 		//после рекурсивного расчета дочерних узлов, и только по последней дате, выполнить расчет Лимита ОДН
-		if (tp==1 && mLogTp.equals("ЛОДН") && genDt.getTime() == config.getCurDt2().getTime() /*genDt.equals(Calc.getCurDt2()*/) {
+		if (tp==1 && mLogTp.equals("ЛОДН") && genDt.getTime() == calc.getReqConfig().getCurDt2().getTime() /*genDt.equals(Calc.getCurDt2()*/) {
 			SumNodeVol lnkODNVol = null;
 			Lst volTp = lstMng.getByCD("Лимит ОДН");
 			double lmtVol;
 			//по связи по площади и кол.прож. и только по ЛОДН счетчику
 			if (servChrg.getCd().equals("Холодная вода") || servChrg.getCd().equals("Горячая вода")) {
 				//получить площадь и кол-во прожив по вводу, за месяц  
-				lnkODNVol = metMng.getVolPeriod(ml, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
+				lnkODNVol = metMng.getVolPeriod(calc, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 				//расчитать лимит кубов
 				//если кол-во прожив. > 0
 				if (lnkODNVol.getPers() > 0d) {
 					double oplMan = lnkODNVol.getArea() /  lnkODNVol.getPers();   
 					lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
-					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2(), 
+					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
 							calc.getReqConfig().getOperTp(), chng, statusVol);
 					//saveVol(ml, vol);
 					ml.getVol().add(vol);
@@ -421,7 +421,7 @@ public class DistGen {
 				
 			} else if (servChrg.getCd().equals("Электроснабжение")) {
 				//получить площадь и кол-во прожив по вводу, за месяц  
-				lnkODNVol = metMng.getVolPeriod(ml, tp, config.getCurDt1(), config.getCurDt2(), statusVol);
+				lnkODNVol = metMng.getVolPeriod(calc, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 
 				Double areaComm = parMng.getDbl(ml, "Площадь общего имущества.Электроэнергия", genDt);
 				if (areaComm == null) {
@@ -443,7 +443,7 @@ public class DistGen {
 							lmtVol = 2.7d * areaComm/lnkODNVol.getArea();
 						}
 						//записать лимит ОДН
-						Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, config.getCurDt1(), config.getCurDt2(),
+						Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
 										calc.getReqConfig().getOperTp(), chng, statusVol);
 						//saveVol(ml, vol);
 						ml.getVol().add(vol);

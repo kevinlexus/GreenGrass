@@ -116,8 +116,8 @@ public class ChrgThr {
 
 		//необходимый для формирования диапазон дат
 		Date dt1, dt2, genDt;
-		dt1 = config.getCurDt1();
-		dt2 = config.getCurDt2();
+		dt1 = calc.getReqConfig().getCurDt1();
+		dt2 = calc.getReqConfig().getCurDt2();
 
 		//типы записей начисления
 		Lst chrgTpRnd = lstMng.getByCD("Начислено свернуто, округлено");
@@ -231,16 +231,6 @@ public class ChrgThr {
 	 */
 	private void genChrg(Calc calc, Serv serv, Org uk, String tpOwn, Date genDt) throws EmptyStorable, EmptyOrg, InvalidServ {
 		Kart kart = calc.getKart();
-		// установить статус операции, для получения корректного объема
-		Integer statusVol = null;
-		switch (calc.getReqConfig().getOperTp()) {
-		case 0: 
-			statusVol = 0;
-			break;
-		case 1: 
-			statusVol = 1;
-			break;
-		}
 		long startTime2;
 		long endTime;
 		long totalTime;
@@ -289,7 +279,7 @@ public class ChrgThr {
 		}
 
 		//Получить кол-во проживающих 
-		kartMng.getCntPers(kart, serv, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+		kartMng.getCntPers(calc, kart, serv, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 
 		//получить расценку по норме	
 		stPrice = kartMng.getServPropByCD(calc, stServ, "Цена", genDt);
@@ -354,7 +344,7 @@ public class ChrgThr {
 					return;
 				} else {
 					//применить льготу по капремонту по 70 - летним
-					vol = vol * kartMng.getCapPrivs(kart, genDt);
+					vol = vol * kartMng.getCapPrivs(calc, kart, genDt);
 				}
 			}
 			
@@ -373,7 +363,7 @@ public class ChrgThr {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
 			}
 			//получить объем по лицевому счету и услуге за ДЕНЬ
-			SumNodeVol tmpNodeVol = metMng.getVolPeriod(kart, serv.getServMet(), genDt, genDt, statusVol);
+			SumNodeVol tmpNodeVol = metMng.getVolPeriod(calc, kart, serv.getServMet(), genDt, genDt);
 			vol = tmpNodeVol.getVol();
 			if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
 				//доля площади в день
@@ -388,7 +378,8 @@ public class ChrgThr {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
 			}
 			//получить объем по услуге за период
-			SumNodeVol tmpNodeVol = metMng.getVolPeriod(kart, serv.getServMet(), config.getCurDt1(), config.getCurDt2(), statusVol);
+			SumNodeVol tmpNodeVol = metMng.getVolPeriod(calc, kart, serv.getServMet(), 
+					calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			vol = tmpNodeVol.getVol();
 			vol = vol / config.getCntCurDays();
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {

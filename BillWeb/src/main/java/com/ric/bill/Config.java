@@ -43,7 +43,8 @@ public class Config {
 	static Date lastDt;//=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
 	// наиболее ранняя и поздние даты в биллинге, константы
 	static Date firstDt;//=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
-	// даты текущего периода
+
+	// даты текущего периода (не зависимо от перерасчета)
 	Date curDt1;
 	Date curDt2;
 
@@ -94,13 +95,6 @@ public class Config {
 		
 	}
 
-	public void setCurDt2(Date curDt2) {
-		this.curDt2 = curDt2;
-	}
-
-	public Date getCurDt2() {
-		return curDt2;
-	}
 
 	public void setCurDt1(Date curDt1) {
 		this.curDt1 = curDt1;
@@ -110,6 +104,14 @@ public class Config {
 		return curDt1;
 	}
 	
+	public void setCurDt2(Date curDt2) {
+		this.curDt2 = curDt2;
+	}
+
+	public Date getCurDt2() {
+		return curDt2;
+	}
+
 	public double getCntCurDays() {
 		return this.cntCurDays;
 	}

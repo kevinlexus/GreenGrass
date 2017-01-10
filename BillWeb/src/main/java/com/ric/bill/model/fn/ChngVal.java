@@ -51,9 +51,9 @@ public class ChngVal implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_CHNG_LSK", referencedColumnName="ID", updatable = false)
 	private ChngLsk chngLsk;
 	
-	// новое значение объема (?? Уточнить TODO!)
+	// приращение к старому объему
 	@Column(name = "VAL")
-	private Double volChng;
+	private Double val;
 
 	// Тип значения перерасчета (дни, %, кВт, ...) Куда ведет FK? TODO
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -91,14 +91,6 @@ public class ChngVal implements java.io.Serializable, Simple {
 
 	public void setChngLsk(ChngLsk chngLsk) {
 		this.chngLsk = chngLsk;
-	}
-
-	public Double getVolChng() {
-		return volChng;
-	}
-
-	public void setVolChng(Double volChng) {
-		this.volChng = volChng;
 	}
 
 	public Lst getValTp() {
@@ -139,6 +131,14 @@ public class ChngVal implements java.io.Serializable, Simple {
 
 	public void setDtVal2(Date dtVal2) {
 		this.dtVal2 = dtVal2;
+	}
+
+	public Double getVal() {
+		return val;
+	}
+
+	public void setVal(Double val) {
+		this.val = val;
 	}
 
 	public boolean equals(Object o) {

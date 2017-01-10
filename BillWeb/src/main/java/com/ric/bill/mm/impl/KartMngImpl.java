@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.BillServ;
 import com.ric.bill.Calc;
@@ -79,8 +78,8 @@ public class KartMngImpl implements KartMng {
 	 * Проверить наличие проживающего по постоянной регистрации или по временному присутствию на дату формирования! (на Calc.getGenDt())
 	 */
 	@Cacheable("rrr1")
-	private /*synchronized */boolean checkPersStatus (RegContains regc, Pers p, String status, int tp, Date genDt) {
-		PersStatus ps = checkPersStatusExt (regc, p, status, tp, genDt);
+	private /*synchronized */boolean checkPersStatus (Calc calc, RegContains regc, Pers p, String status, int tp, Date genDt) {
+		PersStatus ps = checkPersStatusExt (calc, regc, p, status, tp, genDt);
 		return ps.exist;
 	}
 
@@ -90,7 +89,7 @@ public class KartMngImpl implements KartMng {
 	 * и вернуть объект, содержащий наличие проживающего и его отношение к нанимателю
 	 */
 	//@Cacheable("rrr1")
-	private /*synchronized */PersStatus checkPersStatusExt (RegContains regc, Pers p, String status, int tp, Date genDt) {
+	private /*synchronized */PersStatus checkPersStatusExt (Calc calc, RegContains regc, Pers p, String status, int tp, Date genDt) {
 		Date dt1, dt2;
 		List<? extends Registrable> rg;
 		if (tp==0) {
@@ -103,14 +102,14 @@ public class KartMngImpl implements KartMng {
 			if (r.getPers()!=null && r.getPers().equals(p)) {
 				if (r.getTp().getCd().equals(status)) {
 					if (r.getDtRegTs() == null ||
-					    r.getDtRegTs().before(config.getCurDt2())) {
+					    r.getDtRegTs().before(calc.getReqConfig().getCurDt2())) {
 						dt1=Utl.nvl(r.getDtReg(), config.getFirstDt());
 					} else {
 						dt1=config.getLastDt();
 					}
 					
 					if (r.getDtUnRegTs() == null ||
-						r.getDtUnRegTs().before(config.getCurDt2())) {
+						r.getDtUnRegTs().before(calc.getReqConfig().getCurDt2())) {
 						dt2=Utl.nvl(r.getDtUnReg(), config.getLastDt());
 					} else {
 						dt2=config.getLastDt();
@@ -135,19 +134,19 @@ public class KartMngImpl implements KartMng {
 	 * Проверить наличие проживающего при fk_pers = null на дату формирования! (на Calc.getGenDt())
 	 */
 	@Cacheable("rrr1")
-	private /*synchronized*/ boolean checkPersNullStatus (Registrable reg, Date genDt) {
+	private /*synchronized*/ boolean checkPersNullStatus (Calc calc, Registrable reg, Date genDt) {
 		//проверить статус, даты
 		Date dt1, dt2;
 		if (reg.getTp().getCd().equals("Временное присутствие")) {
 			if (reg.getDtRegTs() == null ||
-					reg.getDtRegTs().before(config.getCurDt2())) {
+					reg.getDtRegTs().before(calc.getReqConfig().getCurDt2())) {
 				dt1=Utl.nvl(reg.getDtReg(), config.getFirstDt());
 			} else {
 				dt1=config.getLastDt();
 			}
 			
 			if (reg.getDtUnRegTs() == null ||
-					reg.getDtUnRegTs().before(config.getCurDt2())) {
+					reg.getDtUnRegTs().before(calc.getReqConfig().getCurDt2())) {
 				dt2=Utl.nvl(reg.getDtUnReg(), config.getLastDt());
 			} else {
 				dt2=config.getLastDt();
@@ -174,17 +173,17 @@ public class KartMngImpl implements KartMng {
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{ #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
 	//@Transactional
-	public /*synchronized*/ void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
+	public /*synchronized*/ void getCntPers(Calc calc, RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
 		//поиск сперва по постоянной регистрации 
 		for (Registrable p : rc.getReg()) {
 			if (p.getPers()!=null && !foundPers(counted, p.getPers())) {
-				if (checkPersStatus(rc, p.getPers(), "Постоянная прописка", 0, genDt)) {
+				if (checkPersStatus(calc, rc, p.getPers(), "Постоянная прописка", 0, genDt)) {
 					//постоянная регистрация есть, проверить временное отсутствие, если надо по этой услуге
 					if (!serv.getInclAbsn()) {
-						if (!checkPersStatus(rc, p.getPers(), "Временное отсутствие", 1, genDt)) {
+						if (!checkPersStatus(calc, rc, p.getPers(), "Временное отсутствие", 1, genDt)) {
 							//временного отсутствия нет, считать проживающего
 							cntPers.cnt++;
 						}
@@ -195,7 +194,7 @@ public class KartMngImpl implements KartMng {
 					cntPers.cntEmpt++;
 				} else {
 					//нет постоянной регистрации, поискать временную прописку
-					if (checkPersStatus(rc, p.getPers(), "Временная прописка", 0, genDt)) {
+					if (checkPersStatus(calc, rc, p.getPers(), "Временная прописка", 0, genDt)) {
 						//временное присутствие есть, считать проживающего
 						if (serv.getInclPrsn()) {
 							cntPers.cnt++;
@@ -210,7 +209,7 @@ public class KartMngImpl implements KartMng {
 		for (Registrable p : rc.getRegState()) {
 			//там где NULL fk_pers,- обычно временно зарег., считать их
 			if (p.getPers()==null) {
-				if (tp==0 && checkPersNullStatus(p, genDt)){
+				if (tp==0 && checkPersNullStatus(calc, p, genDt)){
 					if (serv.getInclPrsn()) {
 						cntPers.cnt++;
 					}
@@ -244,7 +243,7 @@ public class KartMngImpl implements KartMng {
 
 			cntPers= new CntPers();
 			log.trace("STANDART2="+serv.getId()+" dt="+genDt);	
-			getCntPers(calc.getKart(), servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+			getCntPers(calc, calc.getKart(), servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 			log.trace("STANDART3="+serv.getId()+" dt="+genDt);	
 		}
 		//log.trace("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
@@ -435,13 +434,13 @@ public class KartMngImpl implements KartMng {
 	 * @param cmd - добавлять ли услугу в список(0) или удалять(1)?
 	 * @return - обновленный список услуг
 	 */
-    public /*synchronized*/ List<Serv> checkServ(TarifContains tc, List lst, String cd, int cmd) {
+    public /*synchronized*/ List<Serv> checkServ(Calc calc, TarifContains tc, List lst, String cd, int cmd) {
     	for (TarifKlsk k : tc.getTarifklsk()) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					if (t.getServ().getServChrg() != null && t.getServ().getServChrg().equals(t.getServ())) {
-						//искать наличие свойства "Поставщик", оно и определяет наличие услуги
-						if (Utl.between2(config.getCurDt1(), config.getCurDt2(), t.getDt1(), t.getDt2())) {
+						//искать наличие свойства, например, "Поставщик", оно и определяет наличие услуги
+						if (Utl.between2(calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), t.getDt1(), t.getDt2())) {
 							if (t.getProp().getCd().equals(cd)) {
 									//найдено свойство cd в этом периоде, добавить или удалить из списка услуг
 									switch (cmd) {
@@ -480,15 +479,15 @@ public class KartMngImpl implements KartMng {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать и добавить по наборам тарифа
 		//дома:
-		lst = checkServ(calc.getHouse(), lst, "Поставщик", 0);
+		lst = checkServ(calc, calc.getHouse(), lst, "Поставщик", 0);
 		//лиц.счета
-		lst = checkServ(calc.getKart(), lst, "Поставщик", 0);
+		lst = checkServ(calc, calc.getKart(), lst, "Поставщик", 0);
 
 		//удалить отключенные услуги по наборам тарифа
 		//дома:
-		lst = checkServ(calc.getHouse(), lst, "Отключение", 1);
+		lst = checkServ(calc, calc.getHouse(), lst, "Отключение", 1);
 		//лиц.счета
-		lst = checkServ(calc.getKart(), lst, "Отключение", 1);
+		lst = checkServ(calc, calc.getKart(), lst, "Отключение", 1);
 		
 		return lst;
 	}
@@ -498,7 +497,7 @@ public class KartMngImpl implements KartMng {
 	 * @param kart
 	 * @param genDt
 	 */
-	public /*synchronized*/ double getCapPrivs(RegContains rc, Date genDt) {
+	public /*synchronized*/ double getCapPrivs(Calc calc, RegContains rc, Date genDt) {
 		boolean above70owner=false;
 		boolean above70=false;
 		boolean under70=false;
@@ -508,7 +507,7 @@ public class KartMngImpl implements KartMng {
 			//если дата рождения - пустая - считать сегодняшней датой
 			Date dtBrn = Utl.nvl(pers.getDtBorn(), new Date());
 			if (pers!=null && !foundPers(counted, pers)) {
-				PersStatus ps = checkPersStatusExt(rc, pers, "Постоянная прописка", 0, genDt);
+				PersStatus ps = checkPersStatusExt(calc, rc, pers, "Постоянная прописка", 0, genDt);
 				if (ps.exist) {
 					//постоянная регистрация есть
 					if (Utl.getDiffYears(dtBrn, genDt) >= 70) {
@@ -526,7 +525,7 @@ public class KartMngImpl implements KartMng {
 					}
 				} else {
 					//нет постоянной регистрации, поискать временную прописку
-					ps = checkPersStatusExt(rc, pers, "Временная прописка", 0, genDt);
+					ps = checkPersStatusExt(calc, rc, pers, "Временная прописка", 0, genDt);
 					if (ps.exist) {
 						//временное присутствие есть
 						if (Utl.getDiffYears(dtBrn, genDt) < 70) {

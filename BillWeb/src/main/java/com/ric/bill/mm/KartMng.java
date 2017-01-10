@@ -21,13 +21,13 @@ import com.ric.bill.model.tr.TarifKlsk;
 
 public interface KartMng  {
 
-	public abstract void getCntPers(RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt);
+	public abstract void getCntPers(Calc calc, RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt);
 	//public Org getUk(Kart kart, Date genDt);
 	public abstract Double getServPropByCD(Calc calc, Serv serv, String string, Date genDt);
 	public abstract Standart getStandart(Calc calc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable;
 	public Org getOrg(Calc calc, Serv serv, Date genDt);
 	public List<Serv> getAllServ(Calc calc);
-	public double getCapPrivs(RegContains rc, Date genDt);
+	public double getCapPrivs(Calc calc, RegContains rc, Date genDt);
 	public boolean getServ(Calc calc, Serv serv, Date genDt);
 	public List<Kart> findAll(Integer houseId);
 }

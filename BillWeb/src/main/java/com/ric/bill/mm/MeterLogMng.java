@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import com.ric.bill.Calc;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Storable;
@@ -18,8 +19,8 @@ public interface MeterLogMng {
 
 	public List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp);
 	public boolean checkExsMet(MLogs mLog, Date genDt);
-    public SumNodeVol getVolPeriod (MLogs mLog, int tp, Date dt1, Date dt2, Integer status);
-	public SumNodeVol getVolPeriod (MeterContains mc, Serv serv, Date dt1, Date dt2, Integer status);
+    public SumNodeVol getVolPeriod (Calc calc, MLogs mLog, int tp, Date dt1, Date dt2);
+	public SumNodeVol getVolPeriod (Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2);
 	public MLogs getLinkedNode(MLogs lnkMLog, String string, Date genDt);
 	public void delNodeVol(MLogs ml, int tp, Date dt1, Date dt2, Integer status);
 	public Kart getKart(MLogs mLog);

@@ -122,17 +122,17 @@ public class DistServ {
 		Date dt1, dt2;
 		if (calc.getCalcTp()==2) {
 			//формирование по ОДН - задать последнюю дату
-			dt1 = config.getCurDt2();
-			dt2 = config.getCurDt2();
+			dt1 = calc.getReqConfig().getCurDt2();
+			dt2 = calc.getReqConfig().getCurDt2();
 		} else {
 			//прочее формирование
-			dt1 = config.getCurDt1();
-			dt2 = config.getCurDt2();
+			dt1 = calc.getReqConfig().getCurDt1();
+			dt2 = calc.getReqConfig().getCurDt2();
 		}
 
 		//найти все вводы по дому и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-			metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2(), getStatusVol());
+			metMng.delNodeVol(ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 		}
 		
 	}
@@ -239,19 +239,19 @@ public class DistServ {
 		Date dt1, dt2;
 		if (calc.getCalcTp()==2) {
 			//формирование по ОДН - задать последнюю дату
-			dt1 = config.getCurDt2();
-			dt2 = config.getCurDt2();
+			dt1 = calc.getReqConfig().getCurDt2();
+			dt2 = calc.getReqConfig().getCurDt2();
 		} else {
 			//прочее формирование
-			dt1 = config.getCurDt1();
-			dt2 = config.getCurDt2();
+			dt1 = calc.getReqConfig().getCurDt1();
+			dt2 = calc.getReqConfig().getCurDt2();
 		}
 
 		//найти все счетчики по Лиц.счету, по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			calc.setGenDt(c.getTime());
 			for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
-				metMng.delNodeVol(ml, tp, config.getCurDt1(), config.getCurDt2(), getStatusVol());
+				metMng.delNodeVol(ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 			}
 			
 		}
@@ -360,14 +360,13 @@ public class DistServ {
 		Date dt1, dt2;
 		if (calc.getCalcTp()==2) {
 			//формирование по ОДН - задать последнюю дату
-			dt1 = config.getCurDt2();
-			dt2 = config.getCurDt2();
+			dt1 = calc.getReqConfig().getCurDt2();
+			dt2 = calc.getReqConfig().getCurDt2();
 		} else {
 			//прочее формирование
-			dt1 = config.getCurDt1();
-			dt2 = config.getCurDt2();
+			dt1 = calc.getReqConfig().getCurDt1();
+			dt2 = calc.getReqConfig().getCurDt2();
 		}
-		
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			calc.setGenDt(c.getTime());
 			@SuppressWarnings("unused")

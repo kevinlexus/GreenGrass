@@ -78,6 +78,12 @@ public class ChngLsk implements java.io.Serializable, Simple {
 	@Column(name = "SUM_CORR")
 	private Double sumCorr;
 
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_CHNG_LSK", referencedColumnName="ID")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<ChngVal> chngVal = new ArrayList<ChngVal>(0);
+
+	
 	public Integer getId() {
 		return id;
 	}
@@ -140,6 +146,14 @@ public class ChngLsk implements java.io.Serializable, Simple {
 
 	public void setSumCorr(Double sumCorr) {
 		this.sumCorr = sumCorr;
+	}
+
+	public List<ChngVal> getChngVal() {
+		return chngVal;
+	}
+
+	public void setChngVal(List<ChngVal> chngVal) {
+		this.chngVal = chngVal;
 	}
 
 	public boolean equals(Object o) {
