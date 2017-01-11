@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.net.aso.d;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -200,43 +201,33 @@ public class DistGen {
 				for (Meter m : ml.getMeter()) { 		// физ.сч
 					for (Vol v : m.getVol()) {    		// фактические объемы
 						if (v.getTp().getCd().equals("Фактический объем") && Utl.between(genDt, v.getDt1(), v.getDt2()) ) {
+							//log.info("Записано1 genDt={}, {}, {}", genDt, v.getDt1(), v.getDt2());
 							for (MeterExs e : m.getExs()) { // периоды сущ.
 								// добавить объем в объект объема
 								// умножить объем на процент существования и на долю дня
-								log.info("CHCK={}", Utl.getPartDays(v.getDt1(), v.getDt2()));
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=vl+v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() *  Utl.getPartDays(v.getDt1(), v.getDt2());//calc.getReqConfig().getCntCurDays();
-
-									log.info("Записано dt1={}, dt2={}, vol={}", v.getDt1(), v.getDt2(), vl);
-									
+									vl=vl+v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() * Utl.getPartDays(v.getDt1(), v.getDt2());//calc.getReqConfig().getCntCurDays();
+									//log.info("Записано dt1={}, dt2={}, vol={}", v.getDt1(), v.getDt2(), v.getVol1());
 								}
 							}
 						}
 					}
 					
-					
-					// перерасчет 
-/*					if (calc.getReqConfig().getOperTp()==1) {
-						calc.getReqConfig().getChng().getChngLsk().parallelStream()
-						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk()) )
-						.forEach(t -> {
-								t.getChngVal().parallelStream()
-									//.filter(v -> v.getMeter().getMeterLog().equals(mLog))
-//									.filter(v -> Utl.between(v.getDtVal1(), dt1, dt2) && //здесь фильтр берет даты снаружи!
-//					        				Utl.between(v.getDtVal2(), dt1, dt2))
-									.forEach(v -> {
-										if (mLog.equals(v.getMeter().getMeterLog()) ) {
-											if (Utl.between(v.getDtVal1(), dt1, dt2)) {
-												log.info("dtVal1={}, dtVal2={}", v.getDtVal1(), v.getDtVal2());
-												log.info("dt1={} dt2={}", dt1, dt2);
-												log.info("old={} new={}", mLog.getId(), v.getMeter().getMeterLog().getId() );
-											}
-										}
-//										log.info("CHNG VAL={}",v.getVal());
-									});
-						});
+					// перерасчет, добавляет объем к имеющемуся 
+					if (calc.getReqConfig().getOperTp()==1) {
 						
-					}*/
+						Double vlChng =0d; // объем перерасчета
+						vlChng=calc.getReqConfig().getChng().getChngLsk().parallelStream()
+						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по getChngLsk()
+						.flatMap(t -> t.getChngVal().parallelStream().filter(d -> ml.equals(d.getMeter().getMeterLog()) // фильтр по getChngVal() 
+																	&& Utl.between(genDt, d.getDtVal1(), d.getDtVal2())))
+						.mapToDouble(d -> d.getVal() * Utl.getPartDays(d.getDtVal1(), d.getDtVal2()) ) // преобразовать в массив Double
+						.sum(); // просуммировать
+
+						//log.info(" MET={}",ml.getId());
+						//log.info(" VAL={}",vlChng);
+						vl = vl + vlChng; 
+					}
 					
 					
 				}

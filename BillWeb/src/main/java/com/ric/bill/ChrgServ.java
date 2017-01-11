@@ -367,8 +367,10 @@ public class ChrgServ {
 			// перерасчет
 			query = em.createNativeQuery("delete from fn.chrg t where t.lsk=:lsk "
 					+ "and t.status=3 "
-					+ "and t.period=:period"
+					+ "and t.period=:period "
+					+ "and t.fk_chng=:chngId "
 					);
+			query.setParameter("chngId", calc.getReqConfig().getChng().getId());
 		}
 		query.setParameter("lsk", kart.getLsk());
 		query.setParameter("period", calc.getReqConfig().getPeriod());
