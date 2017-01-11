@@ -67,7 +67,6 @@ public class RequestConfig {
 			setStatusVol(1);
 		}
 		
-		
 		Calendar calendar = new GregorianCalendar();
 		calendar.clear(Calendar.ZONE_OFFSET);
 		calendar.setTime(getCurDt1());

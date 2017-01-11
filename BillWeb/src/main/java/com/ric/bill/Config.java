@@ -72,18 +72,6 @@ public class Config {
 		setCurDt2(calendar.getTime());
 		log.info("Начало расчетного периода = {}", getCurDt1());
 		log.info("Конец расчетного периода = {}", getCurDt2());
-		
-		//задать период для партицирования
-		/*String yy = String.valueOf(calendar.get(Calendar.YEAR));
-		String mm = String.valueOf(calendar.get(Calendar.MONTH)+1);
-		mm = "0"+mm;
-		mm = mm.substring(mm.length()-2, mm.length());
-		setPeriod(yy+mm);
-		//кол-во дней в месяце
-		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-		//доля одного дня в периоде
-		setPartDays(1/getCntCurDays());*/
-		
 	}
 
 

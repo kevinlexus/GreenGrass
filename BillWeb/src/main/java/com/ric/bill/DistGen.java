@@ -195,16 +195,17 @@ public class DistGen {
 		if (tp==0) {
 			//по расчетной связи
 			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
-				//посчитать объемы, по физическим счетчикам, прикрепленным к узлу
-			    //(если такие есть) в пропорции на кол-во дней объема
-				for (Meter m : ml.getMeter()) { 		//физ.сч
-					for (Vol v : m.getVol()) {    		//фактические объемы
+				// посчитать объемы, по физическим счетчикам, прикрепленным к узлу
+			    // (если такие есть) в пропорции на кол-во дней объема
+				for (Meter m : ml.getMeter()) { 		// физ.сч
+					for (Vol v : m.getVol()) {    		// фактические объемы
 						if (v.getTp().getCd().equals("Фактический объем") && Utl.between(genDt, v.getDt1(), v.getDt2()) ) {
-							for (MeterExs e : m.getExs()) { //периоды сущ.
-								//добавить объем в объект объема
-								//умножить объем на процент существования и на долю дня
+							for (MeterExs e : m.getExs()) { // периоды сущ.
+								// добавить объем в объект объема
+								// умножить объем на процент существования и на долю дня
+								log.info("CHCK={}", Utl.getPartDays(v.getDt1(), v.getDt2()));
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=vl+v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() / calc.getReqConfig().getCntCurDays();
+									vl=vl+v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() *  Utl.getPartDays(v.getDt1(), v.getDt2());//calc.getReqConfig().getCntCurDays();
 
 									log.info("Записано dt1={}, dt2={}, vol={}", v.getDt1(), v.getDt2(), vl);
 									

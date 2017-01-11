@@ -16,6 +16,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ric.bill.mm.ParMng;
@@ -25,6 +27,7 @@ import com.ric.bill.mm.ParMng;
  * @author lev
  *
  */
+@Slf4j
 public class Utl {
 
 	/**
@@ -169,4 +172,27 @@ public class Utl {
 			return null;
 		}
 	}
+	
+	/**
+	 * Получить % одного дня для заданного периода
+	 * @return - % дня
+	 */
+	public static double getPartDays(Date dt1, Date dt2) {
+		Calendar cal1 = new GregorianCalendar();
+		Calendar cal2 = new GregorianCalendar();
+		cal1.setTime(dt1);
+		cal2.setTime(dt2);
+		return 1 / (double)daysBetween(cal1.getTime(),cal2.getTime());
+	}
+	
+	/**
+	 * Вернуть кол-во дней между двумя датами
+	 * @param dt1 - нач.дата
+	 * @param dt2 - кон.дата
+	 * @return - кол-во дней
+	 */
+	public static int daysBetween(Date dt1, Date dt2){
+       return (int)( (dt2.getTime() - dt1.getTime()) / (1000 * 60 * 60 * 24)+1);
+	}
 }
+
