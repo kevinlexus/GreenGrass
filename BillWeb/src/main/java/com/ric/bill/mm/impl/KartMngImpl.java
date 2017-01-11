@@ -329,7 +329,7 @@ public class KartMngImpl implements KartMng {
 		}
 		if (stVol!=null) {	
 			st.vol = stVol;
-			st.partVol=cntPers.cnt * stVol/config.getCntCurDays();
+			st.partVol=cntPers.cnt * stVol/calc.getReqConfig().getCntCurDays();
 		} else {
 			st.vol = 0d;
 			st.partVol= 0d;

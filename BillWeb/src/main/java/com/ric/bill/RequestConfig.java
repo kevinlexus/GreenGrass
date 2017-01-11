@@ -32,6 +32,12 @@ public class RequestConfig {
 	// даты текущего периода (могут быть зависимы от перерасчета)
 	Date curDt1;
 	Date curDt2;
+	// доля одного дня в периоде
+	double partDays;
+	// кол-во дней в периоде
+	double cntCurDays;
+	// период для партицирования
+	String period;
 
 	// конструктор
 	public RequestConfig(Config config) {
@@ -60,6 +66,23 @@ public class RequestConfig {
 	    	// установить статус записи объема
 			setStatusVol(1);
 		}
+		
+		
+		Calendar calendar = new GregorianCalendar();
+		calendar.clear(Calendar.ZONE_OFFSET);
+		calendar.setTime(getCurDt1());
+		
+		//задать период для партицирования
+		String yy = String.valueOf(calendar.get(Calendar.YEAR));
+		String mm = String.valueOf(calendar.get(Calendar.MONTH)+1);
+		mm = "0"+mm;
+		mm = mm.substring(mm.length()-2, mm.length());
+		setPeriod(yy+mm);
+		//кол-во дней в месяце
+		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		//доля одного дня в периоде
+		setPartDays(1/getCntCurDays());
+		
 		this.operTp = operTp;
 	}
 
@@ -103,4 +126,29 @@ public class RequestConfig {
 		this.statusVol = statusVol;
 	}
 
+	public double getCntCurDays() {
+		return this.cntCurDays;
+	}
+
+	public void setCntCurDays(double cntCurDays) {
+		this.cntCurDays = cntCurDays;
+	}
+	
+	public void setPartDays(double partDays) {
+		this.partDays = partDays;
+	}
+
+	public double getPartDays() {
+		return this.partDays;
+	}
+
+	
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
+	public String getPeriod() {
+		return period;
+	}
+	
 }

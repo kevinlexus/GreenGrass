@@ -336,7 +336,7 @@ public class ChrgServ {
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
-			if (chrg.getStatus().equals(1) && chrg.getPeriod().equals(config.getPeriod())) {
+			if (chrg.getStatus().equals(1) && chrg.getPeriod().equals(calc.getReqConfig().getPeriod())) {
 				Serv servMain = null;
 				try {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
@@ -371,7 +371,7 @@ public class ChrgServ {
 					);
 		}
 		query.setParameter("lsk", kart.getLsk());
-		query.setParameter("period", config.getPeriod());
+		query.setParameter("period", calc.getReqConfig().getPeriod());
 		query.executeUpdate();
 		
 		//ДЕЛЬТА
@@ -403,7 +403,7 @@ public class ChrgServ {
 				  qr.setParameter("P_LSK", kart.getLsk());
 				  qr.setParameter("P_FK_SERV", ((Serv) mk.getKey(0)).getId());
 				  qr.setParameter("P_FK_ORG", ((Org) mk.getKey(1)).getId());
-				  qr.setParameter("P_PERIOD", config.getPeriod());
+				  qr.setParameter("P_PERIOD", calc.getReqConfig().getPeriod());
 				  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
 				  qr.setParameter("P_TP_CHNG", 1);
 				  qr.setParameter("P_FK_CHNG", 1);
@@ -416,7 +416,7 @@ public class ChrgServ {
 		//Сохранить новое начисление (переписать из prepChrg)
 		for (Chrg chrg : prepChrg) {
 			//log.info("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
-			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), status, config.getPeriod(), chrg.getSumFull(), chrg.getSumAmnt(), 
+			Chrg chrg2 = new Chrg(kart, chrg.getServ(), chrg.getOrg(), status, calc.getReqConfig().getPeriod(), chrg.getSumFull(), chrg.getSumAmnt(), 
 					chrg.getVol(), chrg.getPrice(), chrg.getStdt(), chrg.getCntPers(), chrg.getArea(),  chrg.getTp(), chrg.getDt1(), chrg.getDt2(), 
 					calc.getReqConfig().getChng()); 
 

@@ -66,8 +66,8 @@ public class testAll {
 
     	RequestConfig reqConfig = new RequestConfig(config);
     	Chng chng = em.find(Chng.class, 175961); // ID перерасчета = 175961
-    	reqConfig.setChng(chng);
-    	reqConfig.setOperTp(1);  // перерасчёт
+    	//reqConfig.setChng(chng);
+    	reqConfig.setOperTp(0);  // перерасчёт
     	reqConfig.setIsDist(true); // распределять объем
     	
     	

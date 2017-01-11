@@ -199,16 +199,45 @@ public class DistGen {
 			    //(если такие есть) в пропорции на кол-во дней объема
 				for (Meter m : ml.getMeter()) { 		//физ.сч
 					for (Vol v : m.getVol()) {    		//фактические объемы
-						if (v.getTp().getCd().equals("Фактический объем")) {
+						if (v.getTp().getCd().equals("Фактический объем") && Utl.between(genDt, v.getDt1(), v.getDt2()) ) {
 							for (MeterExs e : m.getExs()) { //периоды сущ.
 								//добавить объем в объект объема
 								//умножить объем на процент существования и на долю дня
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() / config.getCntCurDays();
+									vl=vl+v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() / calc.getReqConfig().getCntCurDays();
+
+									log.info("Записано dt1={}, dt2={}, vol={}", v.getDt1(), v.getDt2(), vl);
+									
 								}
 							}
 						}
 					}
+					
+					
+					// перерасчет 
+/*					if (calc.getReqConfig().getOperTp()==1) {
+						calc.getReqConfig().getChng().getChngLsk().parallelStream()
+						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk()) )
+						.forEach(t -> {
+								t.getChngVal().parallelStream()
+									//.filter(v -> v.getMeter().getMeterLog().equals(mLog))
+//									.filter(v -> Utl.between(v.getDtVal1(), dt1, dt2) && //здесь фильтр берет даты снаружи!
+//					        				Utl.between(v.getDtVal2(), dt1, dt2))
+									.forEach(v -> {
+										if (mLog.equals(v.getMeter().getMeterLog()) ) {
+											if (Utl.between(v.getDtVal1(), dt1, dt2)) {
+												log.info("dtVal1={}, dtVal2={}", v.getDtVal1(), v.getDtVal2());
+												log.info("dt1={} dt2={}", dt1, dt2);
+												log.info("old={} new={}", mLog.getId(), v.getMeter().getMeterLog().getId() );
+											}
+										}
+//										log.info("CHNG VAL={}",v.getVal());
+									});
+						});
+						
+					}*/
+					
+					
 				}
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
@@ -218,11 +247,11 @@ public class DistGen {
 		} else if (tp==1 && (mLogTp.equals("ЛНрм") || mLogTp.equals("ЛИПУ") || mLogTp.equals("Лсчетчик"))) {
 			//по связи по площади и кол.прож. (только по Лнрм, ЛИПУ) в доле 1 дня
 			//площадь
-			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", genDt), 0d) / config.getCntCurDays(); 
+			partArea = Utl.nvl(parMng.getDbl(kart, "Площадь.Общая", genDt), 0d) / calc.getReqConfig().getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
 			kartMng.getCntPers(calc, kart, servChrg, cntPers, 0, genDt);
-			partPers = cntPers.cnt / config.getCntCurDays();
+			partPers = cntPers.cnt / calc.getReqConfig().getCntCurDays();
 		} else if (tp==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
 			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии

@@ -148,7 +148,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		/* Java 8 */
 		mLog.getVol().parallelStream()
 	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(calc.getReqConfig().getStatusVol()) &&
-	            			Utl.between(t.getDt1(), dt1, dt2) && //внимание! здесь фильтр берет даты снаружи!
+	            			Utl.between(t.getDt1(), dt1, dt2) && //здесь фильтр берет даты снаружи!
 	        				Utl.between(t.getDt2(), dt1, dt2))
 					.forEach(t -> {
 								if (t.getTp().getCd().equals("Фактический объем")) {
@@ -160,16 +160,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 					    			lnkVol.setLimit(t.getVol1()); //здесь set вместо add (будет одно значение) (как правило для ЛОДН счетчиков)
 					    		}
 							});
-		// перерасчет
-		if (calc.getReqConfig().getOperTp()==1) {
-			calc.getReqConfig().getChng().getChngLsk().parallelStream().forEach(t -> {
-					t.getChngVal().parallelStream().forEach(v -> {
-						log.info("CHNG VOL={}",v.getVal());
-					});
-			});
-			
-		}
-		
 		return lnkVol;
 	}
 

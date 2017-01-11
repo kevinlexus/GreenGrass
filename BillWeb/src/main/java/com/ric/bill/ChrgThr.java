@@ -212,7 +212,7 @@ public class ChrgThr {
 
 			if (!rec.getServ().getVrt()) {
 				if (sum.compareTo(BigDecimal.ZERO) != 0) {
-					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, config.getPeriod(), sum, sum, 
+					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, calc.getReqConfig().getPeriod(), sum, sum, 
 							vol, rec.getPrice(), rec.getStdt(), rec.getCntPers(), rec.getArea(), chrgTpRnd, rec.getDt1(), rec.getDt2());
 					chrgAdd(chrg);
 				}
@@ -336,7 +336,7 @@ public class ChrgThr {
 			//получить объем одного дня
 			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
 			
-			vol = vol / config.getCntCurDays();
+			vol = vol / calc.getReqConfig().getCntCurDays();
 			//проверить по капремонту, чтобы не была квартира муниципальной
 			if (serv.getCd().equals("Взносы на кап.рем.")) {
 				if (!(tpOwn.equals("Подсобное помещение") || tpOwn.equals("Приватизированная") || tpOwn.equals("Собственная"))) {
@@ -353,7 +353,7 @@ public class ChrgThr {
 			vol = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d);
 			//получить долю объема за день HARD CODE
 			//площадь полива (в доле 1 дня)/100 * 60 дней / 12мес * норматив / среднее кол-во дней в месяце
-			vol = vol/100d*60d/12d*stdt.partVol/30.4d/config.getCntCurDays();
+			vol = vol/100d*60d/12d*stdt.partVol/30.4d/calc.getReqConfig().getCntCurDays();
 			
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-1"), 0d) == 1d ||
 				   Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
@@ -367,7 +367,7 @@ public class ChrgThr {
 			vol = tmpNodeVol.getVol();
 			if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по объему-2"), 0d) == 1d) {
 				//доля площади в день
-				sqr = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d) / config.getCntCurDays();
+				sqr = Utl.nvl(parMng.getDbl(kart, baseCD, genDt), 0d) / calc.getReqConfig().getCntCurDays();
 			}
 			
 			
@@ -381,9 +381,9 @@ public class ChrgThr {
 			SumNodeVol tmpNodeVol = metMng.getVolPeriod(calc, kart, serv.getServMet(), 
 					calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			vol = tmpNodeVol.getVol();
-			vol = vol / config.getCntCurDays();
+			vol = vol / calc.getReqConfig().getCntCurDays();
 		} else if (Utl.nvl(parMng.getDbl(serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
-			vol = 1 / config.getCntCurDays();
+			vol = 1 / calc.getReqConfig().getCntCurDays();
 		}
 
 		/****************************/

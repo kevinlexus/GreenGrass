@@ -34,12 +34,6 @@ public class Config {
 	private ObjMng objMng;
 
 	private Calendar calendar;
-	// доля одного дня в периоде
-	double partDays;
-	// кол-во дней в периоде
-	double cntCurDays;
-	// период для партицирования
-	String period;
 	static Date lastDt;//=new GregorianCalendar(2940, Calendar.JANUARY, 01).getTime();
 	// наиболее ранняя и поздние даты в биллинге, константы
 	static Date firstDt;//=new GregorianCalendar(1940, Calendar.JANUARY, 01).getTime();
@@ -74,16 +68,13 @@ public class Config {
 		
 		calendar.setTime(parMng.getDate(obj, "Начало расчетного периода"));
 		setCurDt1(calendar.getTime());
-		//последний день месяца
-		//calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-		//calendar.set(Calendar.DATE, 2);
 		calendar.setTime(parMng.getDate(obj, "Конец расчетного периода"));
 		setCurDt2(calendar.getTime());
 		log.info("Начало расчетного периода = {}", getCurDt1());
 		log.info("Конец расчетного периода = {}", getCurDt2());
 		
 		//задать период для партицирования
-		String yy = String.valueOf(calendar.get(Calendar.YEAR));
+		/*String yy = String.valueOf(calendar.get(Calendar.YEAR));
 		String mm = String.valueOf(calendar.get(Calendar.MONTH)+1);
 		mm = "0"+mm;
 		mm = mm.substring(mm.length()-2, mm.length());
@@ -91,7 +82,7 @@ public class Config {
 		//кол-во дней в месяце
 		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		//доля одного дня в периоде
-		setPartDays(1/getCntCurDays());
+		setPartDays(1/getCntCurDays());*/
 		
 	}
 
@@ -112,14 +103,6 @@ public class Config {
 		return curDt2;
 	}
 
-	public double getCntCurDays() {
-		return this.cntCurDays;
-	}
-
-	public void setCntCurDays(double cntCurDays) {
-		this.cntCurDays = cntCurDays;
-	}
-
 	public static Date getLastDt() {
 		return lastDt;
 	}
@@ -129,21 +112,5 @@ public class Config {
 	}
 
 
-	public void setPartDays(double partDays) {
-		this.partDays = partDays;
-	}
-
-	public double getPartDays() {
-		return this.partDays;
-	}
-
-	
-	public void setPeriod(String period) {
-		this.period = period;
-	}
-
-	public String getPeriod() {
-		return period;
-	}
 
 }
