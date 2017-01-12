@@ -55,9 +55,6 @@ public class Chng implements java.io.Serializable, Simple {
 	@Fetch(FetchMode.SUBSELECT)
 	private List<ChngLsk> chngLsk = new ArrayList<ChngLsk>(0);
 	
-	@Column(name = "PRICE_NEW")
-	private Double priceNew;
-	
 	// период (х.з. какой период, уточнить) TODO
 	@Column(name = "PERIOD")
 	private String period;
@@ -92,14 +89,6 @@ public class Chng implements java.io.Serializable, Simple {
 
 	public void setChrg(List<Chrg> chrg) {
 		this.chrg = chrg;
-	}
-
-	public Double getPriceNew() {
-		return priceNew;
-	}
-
-	public void setPriceNew(Double priceNew) {
-		this.priceNew = priceNew;
 	}
 
 	public String getPeriod() {

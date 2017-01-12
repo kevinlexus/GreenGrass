@@ -75,8 +75,7 @@ public class RequestConfig {
 	    	setOperTp(1);  // тип-перерасчёт
         	Chng chng = em.find(Chng.class, chngId); // ID перерасчета = 175961
         	setChng(chng);
-        	log.info("tp={}", chng.getTp());
-        	if (chng.getTp().equals("Корректировка показаний ИПУ")) {
+        	if (chng.getTp().getCd().equals("Корректировка показаний ИПУ")) {
 	        	setIsDist(true); // распределять объем
 	        	// статус записи объема - перерасчетный
 	    		setStatusVol(1);
