@@ -54,30 +54,16 @@ public class BillingController {
     @RequestMapping("/chrglsk") 
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist,
-    					  @RequestParam(value="tp", defaultValue="0") String tp
+    					  @RequestParam(value="tp", defaultValue="0") String tp,
+    					  @RequestParam(value="chngId", defaultValue="") String chrgId
     		) {
 		
     	log.info("got /chrglsk");
     	
     	Future<Result> fut = null;
 
-    	RequestConfig reqConfig = new RequestConfig(config); 
-    	
-    	if (dist.equals("1")) {
-    		// распределять
-    		reqConfig.setIsDist(true);
-		} else {
-			// не распределять
-    		reqConfig.setIsDist(false);
-		}
-
-    	if (tp.equals("0")) {
-			// начисление
-    		reqConfig.setOperTp(0);
-		} else if (tp.equals("1")) {
-    		// перерасчет
-    		reqConfig.setOperTp(1);
-		}
+    	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
+    	reqConfig.setUp(config, dist, tp, Integer.valueOf(chrgId)); 
     	
     	fut = billServ.chrgLsk(reqConfig, null, lsk);
     	
@@ -118,23 +104,9 @@ public class BillingController {
     	log.info("got /chrgall dist={} tp={} houseId={}", dist, tp, houseId);
     	Future<Result> fut = null;
     	
-    	RequestConfig reqConfig = new RequestConfig(config); 
+    	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
+    	reqConfig.setUp(config, dist, tp, null); 
     	
-    	if (dist.equals("1")) {
-    		// распределять
-    		reqConfig.setIsDist(true);
-		} else {
-			// не распределять
-    		reqConfig.setIsDist(false);
-		}
-
-    	if (tp.equals("0")) {
-			// начисление
-    		reqConfig.setOperTp(0);
-		} else if (tp.equals("1")) {
-    		// перерасчет
-    		reqConfig.setOperTp(1);
-		}
 
     	fut = billServ.chrgAll(reqConfig, houseId);
     	

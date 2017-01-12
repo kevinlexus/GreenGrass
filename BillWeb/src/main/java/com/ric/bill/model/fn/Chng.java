@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,6 +21,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.Vol;
 
@@ -70,6 +72,11 @@ public class Chng implements java.io.Serializable, Simple {
 
     @Column(name = "DT2", updatable = false, nullable = true)
     private Date dt2;
+	
+	// Тип перерасчета (Корректировка показаний ИПУ, Недопоставка услуги, Изменение расценки (тарифа))
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_CHNG_TP", referencedColumnName="ID")
+	private Lst tp; 
 	
 	public Integer getId() {
 		return id;
@@ -133,6 +140,14 @@ public class Chng implements java.io.Serializable, Simple {
 
 	public void setChngLsk(List<ChngLsk> chngLsk) {
 		this.chngLsk = chngLsk;
+	}
+
+	public Lst getTp() {
+		return tp;
+	}
+
+	public void setTp(Lst tp) {
+		this.tp = tp;
 	}
 
 	public boolean equals(Object o) {

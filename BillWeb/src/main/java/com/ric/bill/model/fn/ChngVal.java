@@ -55,7 +55,7 @@ public class ChngVal implements java.io.Serializable, Simple {
 	@Column(name = "VAL")
 	private Double val;
 
-	// Тип значения перерасчета (дни, %, кВт, ...) Куда ведет FK? TODO
+	// Тип значения перерасчета (дни, %, кВт, ...)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_VAL_TP", referencedColumnName="ID")
 	private Lst valTp; 

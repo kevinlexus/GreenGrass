@@ -147,7 +147,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		SumNodeVol lnkVol = new SumNodeVol();
 		/* Java 8 */
 		mLog.getVol().parallelStream()
-	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(calc.getReqConfig().getStatusVol()) &&
+	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(calc.getReqConfig().getStatusVol()) && // по статусу
 	            			Utl.between(t.getDt1(), dt1, dt2) && //здесь фильтр берет даты снаружи!
 	        				Utl.between(t.getDt2(), dt1, dt2))
 					.forEach(t -> {

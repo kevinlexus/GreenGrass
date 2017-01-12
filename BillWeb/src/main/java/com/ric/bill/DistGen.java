@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import lombok.extern.slf4j.Slf4j;
-import oracle.net.aso.d;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -148,16 +147,6 @@ public class DistGen {
 	 * @throws EmptyPar 
 	 */
 	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar {
-		// статус записи объема зависит от типа операции (0 - начисление, 1 - перерасчет)
-		switch (calc.getReqConfig().getOperTp()) {
-		case 0: 
-			statusVol = 0;
-			break;
-		case 1: 
-			statusVol = 1;
-			break;
-		}
-
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		// вытащить перерасчет, для удобства
 		Chng chng = calc.getReqConfig().getChng();
@@ -204,17 +193,16 @@ public class DistGen {
 							//log.info("Записано1 genDt={}, {}, {}", genDt, v.getDt1(), v.getDt2());
 							for (MeterExs e : m.getExs()) { // периоды сущ.
 								// добавить объем в объект объема
-								// умножить объем на процент существования и на долю дня
+								// умножить объем на процент существования счетчика и на долю дня действия объема 
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=vl+v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() * Utl.getPartDays(v.getDt1(), v.getDt2());//calc.getReqConfig().getCntCurDays();
-									//log.info("Записано dt1={}, dt2={}, vol={}", v.getDt1(), v.getDt2(), v.getVol1());
+									vl=vl+v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() * Utl.getPartDays(v.getDt1(), v.getDt2());
 								}
 							}
 						}
 					}
 					
-					// перерасчет, добавляет объем к имеющемуся 
-					if (calc.getReqConfig().getOperTp()==1) {
+					// перерасчет по изменению показаний ИПУ, добавляет объем к имеющемуся 
+					if (calc.getReqConfig().getOperTp()==1 && calc.getReqConfig().getChng().getTp().getCd().equals("Корректировка показаний ИПУ") ) {
 						
 						Double vlChng =0d; // объем перерасчета
 						vlChng=calc.getReqConfig().getChng().getChngLsk().parallelStream()
@@ -224,8 +212,6 @@ public class DistGen {
 						.mapToDouble(d -> d.getVal() * Utl.getPartDays(d.getDtVal1(), d.getDtVal2()) ) // преобразовать в массив Double
 						.sum(); // просуммировать
 
-						//log.info(" MET={}",ml.getId());
-						//log.info(" VAL={}",vlChng);
 						vl = vl + vlChng; 
 					}
 					
