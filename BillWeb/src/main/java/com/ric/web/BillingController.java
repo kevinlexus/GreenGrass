@@ -58,7 +58,7 @@ public class BillingController {
     					  @RequestParam(value="chngId", defaultValue="") String chrgId
     		) {
 		
-    	log.info("got /chrglsk");
+    	log.info("got /chrglsk with: lsk={}, dist={}, tp={}, chrgId={}", lsk, dist, tp, chrgId);
     	
     	Future<Result> fut = null;
 
@@ -101,7 +101,7 @@ public class BillingController {
     public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist,
 			  			  @RequestParam(value="tp", defaultValue="0") String tp,
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
-    	log.info("got /chrgall dist={} tp={} houseId={}", dist, tp, houseId);
+    	log.info("got /chrgall with: dist={}, tp={}, houseId{}", dist, tp, houseId);
     	Future<Result> fut = null;
     	
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);

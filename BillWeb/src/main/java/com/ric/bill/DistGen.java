@@ -332,10 +332,10 @@ public class DistGen {
 			
 			
 		} else if (tp==3 && mLogTp.equals("Лсчетчик")) {
-			if (ml.getId()==12945 || ml.getId()==17138){
-				log.info("CHECK: tp="+tp,2);
-				log.info("CHECK: calc.getCalcTp="+calc.getCalcTp(),2);
-			}
+			//if (ml.getId()==12945 || ml.getId()==17138){
+				//log.info("CHECK: tp="+tp,2);
+				//log.info("CHECK: calc.getCalcTp="+calc.getCalcTp(),2);
+			//}
 			//по расчетной связи пропорц.площади (Отопление например)
 			MLogs lnkLODN = null;
 			//поиск счетчика ЛОДН
@@ -365,18 +365,18 @@ public class DistGen {
 		nv.addPartPers(partPers);
 		
 		nv.addVol(vl);
-		if (ml.getId()==168447) {
-			log.info("Счетчик id={}, объем={}", ml.getId(), vl);
-		}
+		//if (ml.getId()==168447) {
+		//	log.info("Счетчик id={}, объем={}", ml.getId(), vl);
+		//}
 		
-		if (ml.getId()==3661161/* && tp==0*/) {
-			log.trace("stop");
-		}
+		//if (ml.getId()==3661161/* && tp==0*/) {
+		//	log.trace("stop");
+		//}
 		
 		//найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
-		if (ml.getInside().size() > 0) {
-			log.trace("{");
-		}
+		//if (ml.getInside().size() > 0) {
+		//	log.trace("{");
+		//}
 		for (MeterLogGraph g : ml.getInside()) {
 			//по соотв.периоду
 			if (Utl.between(genDt, g.getDt1(), g.getDt2())) {
