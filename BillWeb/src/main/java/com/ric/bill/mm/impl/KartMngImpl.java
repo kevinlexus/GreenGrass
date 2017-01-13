@@ -435,7 +435,34 @@ public class KartMngImpl implements KartMng {
 	 * @return - обновленный список услуг
 	 */
     public /*synchronized*/ List<Serv> checkServ(Calc calc, TarifContains tc, List lst, String cd, int cmd) {
-    	for (TarifKlsk k : tc.getTarifklsk()) {
+
+    	/* JAVA 8 */
+    	tc.getTarifklsk().parallelStream().forEach(t -> {
+    		t.getTarprop().parallelStream()
+    			.filter(d -> d.getServ().getServChrg() != null && d.getServ().getServChrg().equals(d.getServ()))
+    			.filter(d -> Utl.between2(calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), d.getDt1(), d.getDt2()))
+    			.filter(d -> d.getProp().getCd().equals(cd))
+    			.forEach(d -> {
+					//найдено свойство cd в этом периоде, добавить или удалить из списка услуг
+					switch (cmd) {
+						case 0 :
+							//добавить элемент, если еще не добавлен
+							if (!lst.contains(d.getServ())) {
+								lst.add(d.getServ());
+							}
+						break;
+						case 1 :
+							//удалить элемент, если существует
+							if (lst.contains(d.getServ())) {
+								lst.remove(d.getServ());
+							}
+						
+						break;
+					}
+					});
+    	});
+    	
+/*    	for (TarifKlsk k : tc.getTarifklsk()) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					if (t.getServ().getServChrg() != null && t.getServ().getServChrg().equals(t.getServ())) {
@@ -463,7 +490,7 @@ public class KartMngImpl implements KartMng {
 					}
 				}
 			//}
-		}
+		}*/
 		return lst;
     }
 	

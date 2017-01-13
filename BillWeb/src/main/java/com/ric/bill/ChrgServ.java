@@ -177,7 +177,7 @@ public class ChrgServ {
 	 */
 	public Result chrgLsk(Calc calc) throws ErrorWhileChrg {
     	this.calc=calc;
-		log.info("Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk());
+		//log.info("Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk());
 		Result res = new Result();
 		res.err=0;
 		//if (1==1) {
@@ -301,6 +301,8 @@ public class ChrgServ {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (Integer lsk) throws ErrorWhileChrg {
+		long beginTime = System.currentTimeMillis();
+		
 		Integer status;
 		if (calc.getReqConfig().getOperTp().equals(1)) {
 			// перерасчет
@@ -314,6 +316,9 @@ public class ChrgServ {
 	    MultiKeyMap mapDeb = new MultiKeyMap();
 
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
+		
+		long endTime1=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
 		
 		//ДЕЛЬТА
 		//ПОДГОТОВИТЬСЯ для сохранения дельты
@@ -333,6 +338,9 @@ public class ChrgServ {
 			putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(chrg.getSumAmnt()));
 		}
 
+		long endTime6=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
+
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
@@ -342,7 +350,7 @@ public class ChrgServ {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 					//преобразовать к объекту текущей сессии (потому что начисление взято из таблицы)
 					//servMain = em.find(Serv.class, servMain.getId());
-				}catch(Exception e) {
+				} catch(Exception e) {
 				    e.printStackTrace();
 					//servMain = chrg.getServ();
 					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
@@ -351,6 +359,9 @@ public class ChrgServ {
 				putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
 			}
 		}
+		
+		long endTime2=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
 		
 		//перенести предыдущий расчет начисления в статус "архив" (1->0)
 		Query query = null;
@@ -375,6 +386,9 @@ public class ChrgServ {
 		query.setParameter("lsk", kart.getLsk());
 		query.setParameter("period", calc.getReqConfig().getPeriod());
 		query.executeUpdate();
+		
+		long endTime3=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
 		
 		//ДЕЛЬТА
 		//НАЙТИ и передать дельту в функцию долгов (выполнить только в начислении)
@@ -415,6 +429,9 @@ public class ChrgServ {
 			}
 		}
 		
+		long endTime4=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
+		
 		//Сохранить новое начисление (переписать из prepChrg)
 		for (Chrg chrg : prepChrg) {
 			//log.info("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);
@@ -424,6 +441,10 @@ public class ChrgServ {
 
 			kart.getChrg().add(chrg2); 
 		}
+		
+		long endTime5=System.currentTimeMillis()-beginTime;
+		
+		log.info("TIMING 1={}, 2={}, 3={}, 4={}, 5={}, 6={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
 	}
 	
 	/**

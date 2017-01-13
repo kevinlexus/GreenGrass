@@ -41,7 +41,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @return - свойство
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #tc.getKlsk(), #serv.getId(), #cd, #genDt }") 
-	public /*synchronized*/ Double getProp(TarifContains tc, Serv serv, String cd, Date genDt) {
+	public Double getProp(TarifContains tc, Serv serv, String cd, Date genDt) {
 		//Prop prop = getPropByCD(cd);//так и не понял, как быстрее, искать тариф предварительно getPropByCD, или непосредственно через.getCd()
 		//искать сперва по наборам тарифа объекта 
 		for (TarifKlsk k : tc.getTarifklsk()) {
@@ -50,7 +50,7 @@ public class TarifMngImpl implements TarifMng {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					
-					if (Utl.between(genDt, t.getDt1(), k.getDt2())) {
+					if (Utl.between(genDt, t.getDt1(), t.getDt2())) {
 						if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
 							return t.getN1();
 						}
@@ -70,14 +70,14 @@ public class TarifMngImpl implements TarifMng {
 	 */
 	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr3", key="{ #tc.getKlsk(), #serv.getId(), #genDt }") 
-	public /*synchronized*/ Org getOrg(TarifContains tc, Serv serv, Date genDt) {
+	public Org getOrg(TarifContains tc, Serv serv, Date genDt) {
 
 		for (TarifKlsk k : tc.getTarifklsk()) {
 			//по соотв.периоду
 			//if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
-					if (Utl.between(genDt, t.getDt1(), k.getDt2())) {
+					if (Utl.between(genDt, t.getDt1(), t.getDt2())) {
 						if (t.getServ().equals(serv) && t.getProp().getCd().equals("Поставщик")) {
 							return t.getOrg();
 						}

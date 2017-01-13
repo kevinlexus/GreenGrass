@@ -58,7 +58,7 @@ public class BillingController {
     					  @RequestParam(value="chngId", defaultValue="") String chngId
     		) {
 		
-    	log.info("got /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+    	//log.info("got /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
     	
     	Future<Result> fut = null;
 

@@ -131,7 +131,8 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 	//Записи начисления
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
-	@BatchSize(size = 50)
+//	@BatchSize(size = 50)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<Chrg> chrg = new ArrayList<Chrg>(0);
 
 	public Kw getKw() {
