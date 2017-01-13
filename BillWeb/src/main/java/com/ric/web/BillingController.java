@@ -55,15 +55,23 @@ public class BillingController {
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist,
     					  @RequestParam(value="tp", defaultValue="0") String tp,
-    					  @RequestParam(value="chngId", defaultValue="") String chrgId
+    					  @RequestParam(value="chngId", defaultValue="") String chngId
     		) {
 		
-    	log.info("got /chrglsk with: lsk={}, dist={}, tp={}, chrgId={}", lsk, dist, tp, chrgId);
+    	log.info("got /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
     	
     	Future<Result> fut = null;
 
+    	// если пустой ID перерасчета
+    	Integer chId = null;
+    	if (chngId.length()!=0 && chngId!= null) {
+    		log.info("chngId={}", chngId);
+    		chId=Integer.valueOf(chngId);
+    	}
+    	
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
-    	reqConfig.setUp(config, dist, tp, Integer.valueOf(chrgId)); 
+    	
+    	reqConfig.setUp(config, dist, tp, chId); 
     	
     	fut = billServ.chrgLsk(reqConfig, null, lsk);
     	
