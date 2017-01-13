@@ -23,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.keyvalue.MultiKey;
 import org.apache.commons.collections4.map.MultiKeyMap;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -202,6 +204,7 @@ public class ChrgServ {
 		errThread=false;
 
 		for (Serv serv: servThr) {
+			//log.info("ChrgServ1: serv={}", serv);
 			log.trace("ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
 		}
 		while (true) {
@@ -302,7 +305,7 @@ public class ChrgServ {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void save (Integer lsk) throws ErrorWhileChrg {
 		long beginTime = System.currentTimeMillis();
-		
+
 		Integer status;
 		if (calc.getReqConfig().getOperTp().equals(1)) {
 			// перерасчет
@@ -312,7 +315,13 @@ public class ChrgServ {
 			status=1;
 		}
 		
-	    //коллекция для сумм по укрупнённым услугам, для нового начисления 
+		Session session = em.unwrap(Session.class);
+		Filter filter = session.enableFilter("FILTER_CHRG1");
+		
+		session.enableFilter("FILTER_CHRG1").setParameter("PERIOD", calc.getReqConfig().getPeriod())
+		   .setParameter("STATUS", 1);
+		
+		//коллекция для сумм по укрупнённым услугам, для нового начисления 
 	    MultiKeyMap mapDeb = new MultiKeyMap();
 
 		Kart kart = em.find(Kart.class, lsk); //здесь так, иначе записи не прикрепятся к объекту не из этой сессии!
@@ -339,13 +348,14 @@ public class ChrgServ {
 		}
 
 		long endTime6=System.currentTimeMillis()-beginTime;
-		beginTime = System.currentTimeMillis();
 
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
 			if (chrg.getStatus().equals(1) && chrg.getPeriod().equals(calc.getReqConfig().getPeriod())) {
 				Serv servMain = null;
+				
+				long endTime7;
 				try {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 					//преобразовать к объекту текущей сессии (потому что начисление взято из таблицы)
@@ -357,6 +367,8 @@ public class ChrgServ {
 				}
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
 				putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
+				
+							
 			}
 		}
 		
@@ -444,7 +456,7 @@ public class ChrgServ {
 		
 		long endTime5=System.currentTimeMillis()-beginTime;
 		
-		log.info("TIMING 1={}, 2={}, 3={}, 4={}, 5={}, 6={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
+//		log.info("TIMING 1={}, 2={}, 3={}, 4={}, 5={}, 6={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
 	}
 	
 	/**

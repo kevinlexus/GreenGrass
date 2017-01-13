@@ -3,9 +3,6 @@ package com.ric.bill.model.ar;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
-import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,12 +18,15 @@ import javax.persistence.Table;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.MeterContains;
 import com.ric.bill.RegContains;
-import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
-import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Chrg;
@@ -34,7 +34,6 @@ import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.RegState;
 import com.ric.bill.model.tr.TarifKlsk;
-
 /**
  * Принадлежность лицевого к управляющей компаниии
  * 
@@ -51,11 +50,14 @@ import com.ric.bill.model.tr.TarifKlsk;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "KART", schema="AR")
-/*@AttributeOverride(name = "klsk", column = @Column(name = "FK_KLSK_OBJ"))
-@AssociationOverrides({
-	   @AssociationOverride(name = "dw",
-	      joinColumns = @JoinColumn(referencedColumnName = "FK_KLSK_OBJ")) TODO - не работает, написал на stack пришлось перестать наследовать Base
-	})*/
+@FilterDefs({
+//фильтр, на партицию и статус записи
+@FilterDef(name = "FILTER_CHRG1", defaultCondition = "(STATUS=:STATUS AND PERIOD=:PERIOD)", 
+parameters = {@ParamDef(name = "STATUS", type = "integer"),
+			  @ParamDef(name = "PERIOD", type = "string")
+}
+)
+})
 public class Kart /*extends Base*/ implements java.io.Serializable, MeterContains, TarifContains, RegContains  {
 
 	public Kart() {
@@ -133,6 +135,8 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
 //	@BatchSize(size = 50)
 	@Fetch(FetchMode.SUBSELECT)
+	@Filters({
+	    @Filter(name = "FILTER_CHRG1")})
 	private List<Chrg> chrg = new ArrayList<Chrg>(0);
 
 	public Kw getKw() {

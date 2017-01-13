@@ -42,7 +42,7 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_TARIF", referencedColumnName="FK_TARIF")
-	//@Fetch(FetchMode.SUBSELECT)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<TarifServProp> tarprop = new ArrayList<TarifServProp>(0);
 
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
