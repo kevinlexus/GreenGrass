@@ -58,7 +58,7 @@ public class BillingController {
     					  @RequestParam(value="chngId", defaultValue="") String chngId
     		) {
 		
-    	//log.info("got /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+    	log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
     	
     	Future<Result> fut = null;
 
@@ -89,8 +89,10 @@ public class BillingController {
 
 	    try {
 			if (fut.get().err ==0) {
+		    	log.info("OK /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
 				return "OK";
 			} else {
+		    	log.info("ERROR /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
 				return "ERROR";
 			}
 		} catch (InterruptedException e) {

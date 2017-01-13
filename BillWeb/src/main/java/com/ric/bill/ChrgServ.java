@@ -414,7 +414,7 @@ public class ChrgServ {
 				BigDecimal val = (BigDecimal)it.getValue();
 				if (!(val.compareTo(BigDecimal.ZERO)==0)) {
 				//if (lsk.equals("14024244")) {
-				  log.info("Отправка дельты: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
+				  log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
 				  //проверка на дубли
 				  if (ctrlSet.contains(new Control(((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId()))) {
 						throw new ErrorWhileChrg("ChrgServ.save: Found dublicate elements while sending delta");
@@ -456,7 +456,7 @@ public class ChrgServ {
 		
 		long endTime5=System.currentTimeMillis()-beginTime;
 		
-//		log.info("TIMING 1={}, 2={}, 3={}, 4={}, 5={}, 6={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
+		log.info("TIMING 1={}, 2={}, 3={}, 4={}, 5={}, 6={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
 	}
 	
 	/**

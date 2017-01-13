@@ -267,13 +267,13 @@ public class BillServ {
 
 
 		// РАСЧЕТ НАЧИСЛЕНИЯ ПО 1 ЛС
-	    try {
+	    /*try {
 			fut = chrgServThr.chrgAndSaveLsk(calc);
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
 			res.err=1;
 			return fut;
-		}
+		}*/
     	return fut;
 	}
 

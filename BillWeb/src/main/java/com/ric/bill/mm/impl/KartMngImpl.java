@@ -437,8 +437,8 @@ public class KartMngImpl implements KartMng {
     public /*synchronized*/ List<Serv> checkServ(Calc calc, TarifContains tc, List lst, String cd, int cmd) {
 
     	/* JAVA 8 */
-    	tc.getTarifklsk().parallelStream().forEach(t -> {
-    		t.getTarprop().parallelStream()
+    	tc.getTarifklsk().stream().forEach(t -> {
+    		t.getTarprop().stream()
     			.filter(d -> d.getServ().getServChrg() != null && d.getServ().getServChrg().equals(d.getServ()))
     			.filter(d -> Utl.between2(calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), d.getDt1(), d.getDt2()))
     			.filter(d -> d.getProp().getCd().equals(cd))
@@ -462,7 +462,7 @@ public class KartMngImpl implements KartMng {
 					});
     	});
     	
-/*    	for (TarifKlsk k : tc.getTarifklsk()) {
+    	/*for (TarifKlsk k : tc.getTarifklsk()) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					if (t.getServ().getServChrg() != null && t.getServ().getServChrg().equals(t.getServ())) {

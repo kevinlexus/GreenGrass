@@ -246,7 +246,14 @@ public class MeterLogMngImpl implements MeterLogMng {
 		    		(vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН"))) {
 		    	//проверить период
 		    	if (dt1.getTime() <= vol.getDt1().getTime() && dt2.getTime() >= vol.getDt2().getTime()) {  //здесь диапазон дат "снаружи"
+		    		//log.info("DELETE vol={}, met={}, lsk={}", vol.getId(), vol.getMLog().getId(), vol.getMLog().getKart().getLsk());
+		    		//log.info("DELETE met={}, lsk={}", vol.getMLog().getId(), vol.getMLog().getKart().getLsk());
+		    		//if (vol.getMLog().getKart().getLsk() != mLog.getKart().getLsk()) {
+			    		//log.info("DELETE vol={} lsk1={} lsk2={}", vol.getId(), vol.getMLog().getKart().getLsk(), mLog.getKart().getLsk());
+		    		//}
+		    		
 					iterator.remove();
+		    		//em.remove(vol);
 		    	}
 			}
 		}
