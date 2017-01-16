@@ -17,6 +17,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,7 +60,8 @@ public class BillingController {
     		) {
 		
     	log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
-    	
+		long beginTime = System.currentTimeMillis();
+
     	Future<Result> fut = null;
 
     	// если пустой ID перерасчета
@@ -70,22 +72,43 @@ public class BillingController {
     	}
     	
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
+		long endTime1=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
     	
     	reqConfig.setUp(config, dist, tp, chId); 
+
+		long endTime2=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
     	
     	fut = billServ.chrgLsk(reqConfig, null, lsk);
-    	
-	   	//проверить окончание потока 
-	    while (!fut.isDone()) {
+
+    	long endTime3=System.currentTimeMillis()-beginTime; // время инициализации billServ bean
+		beginTime = System.currentTimeMillis();
+
+		//ждать окончание потока 
+		try {
+			fut.get();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+			return "ERROR";
+		} catch (ExecutionException e1) {
+			e1.printStackTrace();
+			return "ERROR";
+		}
+		
+/*	    while (!fut.isDone()) { // некорректный подход к ожиданию потока, удалить потом
 	         try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 				//100-millisecond задержка
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return "ERROR";
 			} 
-	     }
+	     }*/
+		long endTime4=System.currentTimeMillis()-beginTime;
+
+	    log.info("Время исполнения: 1={},2={},3={},4={}", endTime1, endTime2, endTime3, endTime4);
 
 	    try {
 			if (fut.get().err ==0) {
@@ -104,6 +127,7 @@ public class BillingController {
 			e.printStackTrace();
 			return "ERROR";
 		}
+
 
     } 
     

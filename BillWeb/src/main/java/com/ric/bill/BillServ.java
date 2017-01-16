@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.ContextConfiguration;
 
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
@@ -31,7 +30,6 @@ import com.ric.bill.model.ar.Kart;
  * @author lev
  *
  */
-@ContextConfiguration(locations = { "classpath:spring.xml" })
 @Service
 @Scope("prototype")
 @Slf4j
@@ -231,6 +229,7 @@ public class BillServ {
     @Async
     @CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
 	public Future<Result> chrgLsk(RequestConfig reqConfig, Kart kart, Integer lsk) {
+		long beginTime = System.currentTimeMillis();
     	ChrgServThr chrgServThr = ctx.getBean(ChrgServThr.class);
 		DistServ distServ = ctx.getBean(DistServ.class);
 		
@@ -252,6 +251,9 @@ public class BillServ {
     	calc.setHouse(kart.getKw().getHouse());
     	calc.setKart(kart);
 
+	    long endTime1=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
+
     	// РАСПРЕДЕЛЕНИЕ ОБЪЕМОВ, если задано
 		if (reqConfig.getIsDist()) {
 			try {
@@ -266,15 +268,22 @@ public class BillServ {
 		}
 
 
-		// РАСЧЕТ НАЧИСЛЕНИЯ ПО 1 ЛС
-	    /*try {
+	    long endTime2=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
+
+	    // РАСЧЕТ НАЧИСЛЕНИЯ ПО 1 ЛС
+	    try {
 			fut = chrgServThr.chrgAndSaveLsk(calc);
 		} catch (ErrorWhileChrg e) {
 			e.printStackTrace();
 			res.err=1;
 			return fut;
-		}*/
-    	return fut;
+		}
+
+	    long endTime3=System.currentTimeMillis()-beginTime;
+	    log.info("Время исполнения: 1={}, 2={}, 3={}", endTime1, endTime2, endTime3);
+
+	    return fut;
 	}
 
     

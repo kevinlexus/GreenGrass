@@ -30,6 +30,7 @@ import com.ric.web.AppConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
+//@ContextConfiguration(locations = { "classpath:spring.xml" }) //defines class-level metadata that is used to determine how to load and configure an ApplicationContext for integration tests.
 @Slf4j
 public class testAll {
 

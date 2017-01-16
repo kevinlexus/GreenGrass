@@ -4566,3 +4566,4131 @@ ERROR    time_namelookup:  0,000
  time_starttransfer:  0,000
                     ----------
          time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,015
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,218
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,016
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,219
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,016
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,219
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,016
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,218
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,218
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+OK    time_namelookup:  0,000
+       time_connect:  0,499
+    time_appconnect:  0,000
+   time_pretransfer:  0,499
+      time_redirect:  0,000
+ time_starttransfer:  2,496
+                    ----------
+         time_total:  2,496
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  1,014
+                    ----------
+         time_total:  1,014
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,717
+                    ----------
+         time_total:  0,717
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,717
+                    ----------
+         time_total:  0,717
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,717
+                    ----------
+         time_total:  0,717
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,703
+                    ----------
+         time_total:  0,703
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,717
+                    ----------
+         time_total:  0,717
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,717
+                    ----------
+         time_total:  0,717
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,905
+                    ----------
+         time_total:  0,905
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,795
+                    ----------
+         time_total:  0,795
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,811
+                    ----------
+         time_total:  0,811
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,702
+                    ----------
+         time_total:  0,702
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,592
+                    ----------
+         time_total:  0,592
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,717
+                    ----------
+         time_total:  0,717
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,812
+                    ----------
+         time_total:  0,812
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,016
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,717
+                    ----------
+         time_total:  0,717
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,592
+                    ----------
+         time_total:  0,592
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,592
+                    ----------
+         time_total:  0,592
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,609
+                    ----------
+         time_total:  0,609
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,592
+                    ----------
+         time_total:  0,592
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,624
+                    ----------
+         time_total:  0,624
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,608
+                    ----------
+         time_total:  0,608
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,593
+                    ----------
+         time_total:  0,593
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,718
+                    ----------
+         time_total:  0,718
+ERROR    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,125
+                    ----------
+         time_total:  0,125
+    time_namelookup:  0,000
+       time_connect:  0,015
+    time_appconnect:  0,000
+   time_pretransfer:  0,015
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,046
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,202
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
+    time_namelookup:  0,015
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,218
+    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  0,000
+                    ----------
+         time_total:  0,203
