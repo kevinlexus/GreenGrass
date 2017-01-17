@@ -226,8 +226,7 @@ public class KartMngImpl implements KartMng {
 	 * @param calcCd - CD Варианта расчета начисления 
 	 * @throws EmptyServ 
 	 */
-	//@Cacheable(cacheNames="rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #calc.getKart().getLsk(), #serv.getId(), #genDt }") 
+	@Cacheable(cacheNames="rrr4", key="{ #calc.getKart().getLsk(), #serv.getId(), #genDt }") // сделал отдельный кэш, иначе валится с Cannot Cast Standart to Boolean! 
 	public /*synchronized*/ Standart getStandart (Calc calc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable {
 		log.trace("STANDART1="+serv.getId()+" dt="+genDt);	
 		//получить услугу основную, для начисления
