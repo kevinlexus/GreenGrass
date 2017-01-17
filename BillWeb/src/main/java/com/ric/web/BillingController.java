@@ -134,7 +134,7 @@ public class BillingController {
     @RequestMapping("/chrgall")
     public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist,
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
-    	log.info("got /chrgall with: dist={}, tp={}, houseId{}", dist, houseId);
+    	log.info("got /chrgall with: dist={}, houseId={}", dist, houseId);
     	Future<Result> fut = null;
     	
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
