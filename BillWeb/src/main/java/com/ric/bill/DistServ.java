@@ -185,7 +185,7 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void distKartVol(Calc calc) throws ErrorWhileDist {
+	public synchronized void distKartVol(Calc calc) throws ErrorWhileDist {
 		this.calc=calc;
 		// статус записи объема зависит от типа операции (0 - начисление, 1 - перерасчет)
 		switch (calc.getReqConfig().getOperTp()) {
@@ -263,7 +263,7 @@ public class DistServ {
 	 * @param calcTp - тип обработки
 	 * @throws ErrorWhileDist 
 	 */
-	private void distKartServTp(Kart kart, Serv serv) throws ErrorWhileDist {
+	private synchronized void distKartServTp(Kart kart, Serv serv) throws ErrorWhileDist {
 		//найти все вводы по лиц.счету и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
 				distGraph(ml);
@@ -352,7 +352,7 @@ public class DistServ {
 	 * @param ml - начальный узел распределения
 	 * @throws ErrorWhileDist 
 	 */
-	private void distGraph (MLogs ml) throws ErrorWhileDist {
+	private synchronized void distGraph (MLogs ml) throws ErrorWhileDist {
 		log.trace("DistServ.distGraph: Распределение счетчика:"+ml.getId());
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
