@@ -32,8 +32,8 @@ public class LstMngImpl implements LstMng {
 	@Autowired
 	private LstDAO lstDao;
 
-	@Cacheable("rrr1") //здесь кэш работает очень эффективно!
-	public synchronized Lst getByCD(String cd) {
+	@Cacheable("neverWipe") //здесь кэш работает очень эффективно!
+	public /*synchronized*/ Lst getByCD(String cd) {
 		return lstDao.getByCD(cd);
 	}
 
