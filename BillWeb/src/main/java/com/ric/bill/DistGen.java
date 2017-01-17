@@ -143,7 +143,7 @@ public class DistGen {
 	 * @throws EmptyStorable 
 	 * @throws EmptyPar 
 	 */
-	public synchronized NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar {
+	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar {
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		// вытащить перерасчет, для удобства
 		Chng chng = calc.getReqConfig().getChng();

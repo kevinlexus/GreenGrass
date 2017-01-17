@@ -77,7 +77,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 */
 	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr1", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
-	public synchronized List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+	public /*synchronized*/ List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
 		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
 		for (MLogs ml : mm.getMlog()) {
 			//по типу, если указано
@@ -118,7 +118,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog
 	 */
 	@Cacheable("rrr1")
-	public synchronized boolean checkExsMet(MLogs mLog, Date genDt) {
+	public /*synchronized*/ boolean checkExsMet(MLogs mLog, Date genDt) {
     	//установить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
@@ -201,7 +201,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return лог.счетчик
 	 */
 	@Cacheable("rrr1") 
-	public synchronized MLogs getLinkedNode(MLogs mLog, String tp, Date genDt) {
+	public /*synchronized*/ MLogs getLinkedNode(MLogs mLog, String tp, Date genDt) {
 		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
     	//сперва направленные внутрь
@@ -285,7 +285,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 //	 НЕ ВЗЛЕТЕЛО, медленно выполняется, чем mLog.getKart()
 	//@Cacheable(cacheNames="rrr1", key="{ #mLog.getId() }")
 	@Cacheable(cacheNames="rrr1") 
-	public synchronized Kart getKart(MLogs mLog) {
+	public /*synchronized*/ Kart getKart(MLogs mLog) {
 		return mDao.getKart(mLog);
 	}
 	/**
