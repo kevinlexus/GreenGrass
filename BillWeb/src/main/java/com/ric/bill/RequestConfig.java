@@ -70,6 +70,8 @@ public class RequestConfig {
     			// не распределять объем
         		setIsDist(false);
     		}
+			// установить статус записи объема
+			setStatusVol(0);
     	} else if (tp.equals("1")) {
 			// перерасчет
 	    	setOperTp(1);  // тип-перерасчёт

@@ -70,7 +70,7 @@ public class BillingController {
     		log.info("chngId={}", chngId);
     		chId=Integer.valueOf(chngId);
     	}
-    	
+
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
 		long endTime1=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
@@ -133,13 +133,12 @@ public class BillingController {
     
     @RequestMapping("/chrgall")
     public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist,
-			  			  @RequestParam(value="tp", defaultValue="0") String tp,
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
-    	log.info("got /chrgall with: dist={}, tp={}, houseId{}", dist, tp, houseId);
+    	log.info("got /chrgall with: dist={}, tp={}, houseId{}", dist, houseId);
     	Future<Result> fut = null;
     	
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
-    	reqConfig.setUp(config, dist, tp, null); 
+    	reqConfig.setUp(config, dist, "0", null); 
     	
 
     	fut = billServ.chrgAll(reqConfig, houseId);

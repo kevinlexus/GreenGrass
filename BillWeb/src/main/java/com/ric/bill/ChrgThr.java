@@ -263,6 +263,7 @@ public class ChrgThr {
 		BigDecimal cf = BigDecimal.ZERO;
 		BigDecimal tmpVolD = BigDecimal.ZERO;
 
+		log.trace("Расчет услуги id={}, cd={}, genDt={}", serv.getId(), serv.getCd(), genDt);
 		//получить необходимые услуги
 		stServ = serv.getServSt();
 		upStServ = serv.getServUpst();
