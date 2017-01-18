@@ -58,8 +58,12 @@ public class BillingController {
     					  @RequestParam(value="tp", defaultValue="0") String tp,
     					  @RequestParam(value="chngId", defaultValue="") String chngId
     		) {
-		
     	log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+		
+    	// получить уникальный номер запроса
+    	int rqn = config.incNextReqNum();
+    	
+    	log.info("RQN={}", rqn);
 		long beginTime = System.currentTimeMillis();
 		
 		// получить доступ к лиц.счету
@@ -85,7 +89,7 @@ public class BillingController {
 		long endTime1=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
     	
-    	reqConfig.setUp(config, dist, tp, chId); 
+    	reqConfig.setUp(config, dist, tp, chId, rqn); 
 
 		long endTime2=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
@@ -141,10 +145,15 @@ public class BillingController {
     public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist,
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
     	log.info("got /chrgall with: dist={}, houseId={}", dist, houseId);
+
+    	// получить уникальный номер запроса
+    	int rqn = config.incNextReqNum();
+    	log.info("RQN={}", rqn);
+
     	Future<Result> fut = null;
     	
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
-    	reqConfig.setUp(config, dist, "0", null); 
+    	reqConfig.setUp(config, dist, "0", null, rqn); 
     	
 
     	fut = billServ.chrgAll(reqConfig, houseId);

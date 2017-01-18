@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.Calc;
 import com.ric.bill.dao.ParDAO;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.model.bs.Lst;
@@ -26,9 +27,8 @@ public class ParDAOImpl implements ParDAO {
     private EntityManager em;
     
 	@SuppressWarnings("unchecked")
-	//@Cacheable(cacheNames="rrr1", key="{ #cd }")
-	@Cacheable(cacheNames="rrr1")
-	public/* synchronized */Par getByCd(String cd) {
+	@Cacheable(cacheNames="rrr1", key ="#calc.getReqConfig().getRqn(), #cd " )
+	public/* synchronized */Par getByCd(Calc calc, String cd) {
 		Query query =em.createQuery("from Par t where t.cd = :cd");
 		query.setParameter("cd", cd);
 		return (Par) query.getSingleResult();

@@ -43,7 +43,9 @@ public class RequestConfig {
 	double cntCurDays;
 	// период для партицирования
 	String period;
-
+	// номер запроса
+	private int rqn;
+		
     @PersistenceContext
     private EntityManager em;
 	
@@ -53,10 +55,13 @@ public class RequestConfig {
 	 * @param chng - объект перерасчета
 	 * @param dist - признак распределения
 	 * @param tp - тип операции
+	 * @param chngId - id перерасчета
+	 * @param rqn - уникальный номер запроса
 	 */
-	public void setUp(Config config, String dist, String tp, Integer chngId) {
+	public void setUp(Config config, String dist, String tp, Integer chngId, int rqn) {
 		this.config = config;
-
+		// установить текущий номер запроса
+		setRqn(rqn);
 		// основные настройки
 		
 		// установить тип операции 
@@ -197,6 +202,14 @@ public class RequestConfig {
 
 	public String getPeriod() {
 		return period;
+	}
+
+	public int getRqn() {
+		return rqn;
+	}
+
+	public void setRqn(int rqn) {
+		this.rqn = rqn;
 	}
 	
 }

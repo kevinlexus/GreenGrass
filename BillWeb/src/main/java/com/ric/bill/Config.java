@@ -43,6 +43,9 @@ public class Config {
 	// даты текущего периода (не зависимо от перерасчета)
 	Date curDt1;
 	Date curDt2;
+	
+	// номер текущего запроса 
+	private int reqNum = 0; 
 
 	private List<Integer> workLst; // обрабатываемые лицевые счета 
 	
@@ -71,9 +74,16 @@ public class Config {
 		
 		obj.getDw().size();
 		
-		calendar.setTime(parMng.getDate(obj, "Начало расчетного периода"));
+		// сделать пустой Calc, для получения RQN и доступа к параметрам parMng
+		RequestConfig reqConfig = new RequestConfig(); 
+		Calc calc = new Calc(reqConfig);
+		int rqn = incNextReqNum();
+		calc.getReqConfig().setRqn(rqn);
+		//
+		
+		calendar.setTime(parMng.getDate(calc, obj, "Начало расчетного периода"));
 		setCurDt1(calendar.getTime());
-		calendar.setTime(parMng.getDate(obj, "Конец расчетного периода"));
+		calendar.setTime(parMng.getDate(calc, obj, "Конец расчетного периода"));
 		setCurDt2(calendar.getTime());
 		log.info("Начало расчетного периода = {}", getCurDt1());
 		log.info("Конец расчетного периода = {}", getCurDt2());
@@ -119,4 +129,10 @@ public class Config {
 	public synchronized void unCheckLsk(Integer lsk) {
 		this.workLst.remove(lsk);
 	}
+
+	// получить следующий номер запроса
+	public synchronized int incNextReqNum() {
+		return this.reqNum++;
+	}
+	
 }

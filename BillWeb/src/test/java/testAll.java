@@ -47,7 +47,7 @@ public class testAll {
     @PersistenceContext
     private EntityManager em;
 
-    @Test
+/*    @Test
 	public void testPar1() {
 		assertThat("Проверка наличия параметра Комната",
 				parMng.getByCD("Комната").getCd(), is("Комната"));
@@ -58,17 +58,20 @@ public class testAll {
 	public void testPar2() {
 		assertThat("Проверка наличия параметра Статус жилья",
 				parMng.getByCD("Статус жилья").getCd(), is("Статус жилья"));
-	}
+	}*/
 
 	
 	// проверка ПЕРЕРАСЧЕТА!
 	@Test
 	public void testChng() {
 		Config config = ctx.getBean(Config.class);
+    	// получить уникальный номер запроса
+    	int rqn = config.incNextReqNum();
+
     	Future<Result> fut = null;
 
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
-    	reqConfig.setUp(config, "0", "1", 175961); 
+    	reqConfig.setUp(config, "0", "1", 175961, rqn); 
     	
     	
     	fut = billServ.chrgLsk(reqConfig, null, 453194); // FLSK=85020028
