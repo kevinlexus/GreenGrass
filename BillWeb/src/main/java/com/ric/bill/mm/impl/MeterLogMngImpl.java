@@ -76,8 +76,8 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - искомый список
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr1", key="{ #mm.getKlsk(), #serv.getId(), #tp }") 
-	public /*synchronized*/ List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp) {
+	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mm.getKlsk(), #serv.getId(), #tp }") 
+	public /*synchronized*/ List<MLogs> getAllMetLogByServTp(int rqn, MeterContains mm, Serv serv, String tp) {
 		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
 		for (MLogs ml : mm.getMlog()) {
 			//по типу, если указано
@@ -118,7 +118,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog
 	 */
 	@Cacheable("rrr1")
-	public /*synchronized*/ boolean checkExsMet(MLogs mLog, Date genDt) {
+	public /*synchronized*/ boolean checkExsMet(int rqn, MLogs mLog, Date genDt) {
     	//установить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
@@ -142,8 +142,8 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - возвращаемый объем
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId(), #tp, #dt1, #dt2}")
-    public /*synchronized*/ SumNodeVol getVolPeriod (Calc calc, MLogs mLog, int tp, Date dt1, Date dt2) {
+	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mLog.getId(), #tp, #dt1, #dt2}")
+    public /*synchronized*/ SumNodeVol getVolPeriod (int rqn, Calc calc, MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
 		/* Java 8 */
 		mLog.getVol().parallelStream()
@@ -173,14 +173,14 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - возвращаемый объем
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr1", key="{#calc.getKart().getLsk(), #mc.getId(), #serv.getId(), #dt1, #dt2}")
-	public synchronized SumNodeVol getVolPeriod (Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2) {
+	@Cacheable(cacheNames="rrr1", key="{ #rqn, #calc.getKart().getLsk(), #mc.getId(), #serv.getId(), #dt1, #dt2}")
+	public synchronized SumNodeVol getVolPeriod (int rqn, Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2) {
 		SumNodeVol amntSum = new SumNodeVol();
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
 		for (MeterLog mLog: mc.getMlog()) {
 			//по заданной услуге
 			if (mLog.getServ().equals(serv)) {
-				SumNodeVol tmp = getVolPeriod(calc, mLog, 0, dt1, dt2);
+				SumNodeVol tmp = getVolPeriod(rqn, calc, mLog, 0, dt1, dt2);
 				amntSum.addArea(tmp.getArea());
 				amntSum.addPers(tmp.getPers());
 				amntSum.addVol(tmp.getVol());
@@ -200,7 +200,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return лог.счетчик
 	 */
 	@Cacheable("rrr1") 
-	public /*synchronized*/ MLogs getLinkedNode(MLogs mLog, String tp, Date genDt) {
+	public /*synchronized*/ MLogs getLinkedNode(int rqn, MLogs mLog, String tp, Date genDt) {
 		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
     	//сперва направленные внутрь
@@ -236,7 +236,7 @@ public class MeterLogMngImpl implements MeterLogMng {
      */
 	@Cacheable("rrr1") 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
-	public /*synchronized*/ void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
+	public /*synchronized*/ void delNodeVol(int rqn, MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
 
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
@@ -260,7 +260,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 						 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 						 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 						 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-							delNodeVol(g.getSrc(), tp, dt1, dt2, status);
+							delNodeVol(rqn, g.getSrc(), tp, dt1, dt2, status);
 				}
 			}
 		}
@@ -277,8 +277,8 @@ public class MeterLogMngImpl implements MeterLogMng {
 //	 НЕ ВЗЛЕТЕЛО, медленно выполняется, чем mLog.getKart()
 	//@Cacheable(cacheNames="rrr1", key="{ #mLog.getId() }")
 	@Cacheable(cacheNames="rrr1") 
-	public /*synchronized*/ Kart getKart(MLogs mLog) {
-		return mDao.getKart(mLog);
+	public /*synchronized*/ Kart getKart(int rqn, MLogs mLog) {
+		return mDao.getKart(rqn, mLog);
 	}
 	/**
 	 * Получить дом, содержащий указанный счетчик

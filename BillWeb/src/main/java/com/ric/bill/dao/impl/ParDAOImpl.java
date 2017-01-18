@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.Calc;
 import com.ric.bill.dao.ParDAO;
 import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.model.bs.Lst;
@@ -27,17 +26,16 @@ public class ParDAOImpl implements ParDAO {
     private EntityManager em;
     
 	@SuppressWarnings("unchecked")
-	@Cacheable(cacheNames="rrr1", key ="#calc.getReqConfig().getRqn(), #cd " )
-	public/* synchronized */Par getByCd(Calc calc, String cd) {
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #cd }")
+	public/* synchronized */Par getByCd(int rqn, String cd) {
 		Query query =em.createQuery("from Par t where t.cd = :cd");
 		query.setParameter("cd", cd);
 		return (Par) query.getSingleResult();
 	}
 
 	//работает это медленнее чем была итерация по всем параметрам объекта!
-	//@Cacheable(cacheNames="rrr1", key="{ #id, #cd, #dataTp }")
-	@Cacheable(cacheNames="rrr1")
-	public/* synchronized */boolean checkPar(int id, String cd, String dataTp) {
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #id, #cd, #dataTp }")
+	public/* synchronized */boolean checkPar(int rqn, int id, String cd, String dataTp) {
 		Query query =em.createQuery("from Par t where t.id = :id and t.cd=:cd and t.dataTp=:dataTp");
 		query.setParameter("id", id);
 		query.setParameter("cd", cd);

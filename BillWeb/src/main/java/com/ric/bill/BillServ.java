@@ -234,9 +234,8 @@ public class BillServ {
 	 * @throws ErrorWhileChrg
 	 */
 	@Async
-	@CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true) //чистить кэш, в то время как параллельно выполняется другой поток???
-	// TODO!!!!!!!! УБРАЛ CACHEEVICT!!! ПРОВЕРИТЬ ПОСЛЕДСТВИЯ!!!
-	//
+	//@CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true) //чистить кэш, в то время как параллельно выполняется другой поток???
+	// TODO ОТКЛЮЧИТЬ КЭШ ЗДЕСЬ ПОСЛЕ ВВОДА RQN!
 	public Future<Result> chrgLsk(RequestConfig reqConfig, Kart kart,
 			Integer lsk) {
 		long beginTime = System.currentTimeMillis();

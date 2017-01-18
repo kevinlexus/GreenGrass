@@ -14,8 +14,8 @@ public class ObjMngImpl implements ObjMng {
     @Autowired
 	private ObjDAO oDao;
 
-    public synchronized Obj getByCD(String cd) {
-		return oDao.getByCD(cd);
+    public synchronized Obj getByCD(int rqn, String cd) {
+		return oDao.getByCD(rqn, cd);
 	}
 
 

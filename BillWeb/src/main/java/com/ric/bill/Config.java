@@ -66,7 +66,8 @@ public class Config {
 	@PostConstruct
 	private void setUp() throws EmptyStorable {
 		//Объект приложения, получить даты текущего периода
-		Obj obj = objMng.getByCD("Модуль начисления");
+		// TODO проверить RQN!
+		Obj obj = objMng.getByCD(-1, "Модуль начисления");
 		
 		calendar = new GregorianCalendar();
 		//calendar = new GregorianCalendar(2015, Calendar.OCTOBER, 15);
@@ -74,16 +75,18 @@ public class Config {
 		
 		obj.getDw().size();
 		
-		// сделать пустой Calc, для получения RQN и доступа к параметрам parMng
-		RequestConfig reqConfig = new RequestConfig(); 
-		Calc calc = new Calc(reqConfig);
-		int rqn = incNextReqNum();
-		calc.getReqConfig().setRqn(rqn);
-		//
-		
-		calendar.setTime(parMng.getDate(calc, obj, "Начало расчетного периода"));
+		// TODO проверить что задал RQN=-1!!!
+		// TODO проверить что задал RQN=-1!!!
+		// TODO проверить что задал RQN=-1!!!
+		// TODO проверить что задал RQN=-1!!!
+		// TODO проверить что задал RQN=-1!!!
+		// TODO проверить что задал RQN=-1!!!
+		// TODO проверить что задал RQN=-1!!!
+		// TODO проверить что задал RQN=-1!!!
+		// TODO проверить что задал RQN=-1!!!
+		calendar.setTime(parMng.getDate(-1, obj, "Начало расчетного периода"));
 		setCurDt1(calendar.getTime());
-		calendar.setTime(parMng.getDate(calc, obj, "Конец расчетного периода"));
+		calendar.setTime(parMng.getDate(-1, obj, "Конец расчетного периода"));
 		setCurDt2(calendar.getTime());
 		log.info("Начало расчетного периода = {}", getCurDt1());
 		log.info("Конец расчетного периода = {}", getCurDt2());

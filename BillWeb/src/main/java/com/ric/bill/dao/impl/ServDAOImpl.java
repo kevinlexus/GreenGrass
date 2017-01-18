@@ -26,7 +26,7 @@ public class ServDAOImpl implements ServDAO {
 	 * @return
 	 */
 	//@Cacheable(cacheNames="rrr1", key="{ #serv.getId() }")
-	@Cacheable(cacheNames="rrr1")
+	@Cacheable(cacheNames="neverWipe")
 	public synchronized Serv findMain(Serv serv) {
 		Query query =em.createQuery("from Serv t where t.servOdn=:serv");
 		query.setParameter("serv", serv);
@@ -65,8 +65,7 @@ public class ServDAOImpl implements ServDAO {
 	 * @param cd - услуги
 	 * @return
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #cd }")
-	@Cacheable(cacheNames="rrr1")
+	@Cacheable(cacheNames="neverWipe")
 	public synchronized Serv getByCD(String cd){
 		Query query =em.createQuery("from Serv t where t.cd=:cd");
 		query.setParameter("cd", cd);

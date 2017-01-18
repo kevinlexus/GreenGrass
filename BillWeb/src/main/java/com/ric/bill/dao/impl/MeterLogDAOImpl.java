@@ -39,8 +39,9 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 * @param mLog - Счетчик
 	 * @return
 	 */
-	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId() }") // не применяется RQN - счетчик ВСЕГДА должен смотреть на тот же лиц.счет!
-	public synchronized Kart getKart(MLogs mLog) {
+//	@Cacheable(cacheNames="rrr1")
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #mLog.getId() }")
+	public synchronized Kart getKart(int rqn, MLogs mLog) {
 		Query query =em.createQuery("from Kart t where t.klsk =:klsk");
 		query.setParameter("klsk", mLog.getKlskObj());
 		try {
@@ -49,5 +50,21 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 		  return null;
 		} 
 	}
+
+	/**
+	 * Получить дом, содержащий указанный счетчик
+	 * @param mLog - Счетчик
+	 * @return
+	 */
+/*	@Cacheable(cacheNames="readOnlyCache2", key="{ #mLog.getId() }")
+	public House getHouse(MLogs mLog) {
+		Query query =em.createQuery("from House t where t.klsk =:klsk");
+		query.setParameter("klsk", mLog.getKlskObj());
+		try {
+			  return (House) query.getSingleResult();
+			} catch (NoResultException e) {
+			  return null;
+			} 
+	}*/
 
 }

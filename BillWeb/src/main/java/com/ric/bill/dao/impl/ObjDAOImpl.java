@@ -21,8 +21,8 @@ public class ObjDAOImpl implements ObjDAO {
 	/**
 	 * Найти элемент списка по CD 
 	 */
-	@Cacheable("rrr1") // не применяется RQN - счетчик объект не должен менять свой CD! 
-	public synchronized Obj getByCD(String cd) {
+	@Cacheable("rrr1")
+	public synchronized Obj getByCD(int rqn, String cd) {
 		Query query =em.createQuery("from Obj t where t.cd in (:cd)");
 		query.setParameter("cd", cd);
 		return (Obj) query.getSingleResult();

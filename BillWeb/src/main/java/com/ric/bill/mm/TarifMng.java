@@ -12,8 +12,8 @@ import com.ric.bill.model.tr.Prop;
 public interface TarifMng {
 
 	//public Prop getPropByCD(String cd);
-	public Double getProp(TarifContains tc, Serv serv, String cd, Date genDt);	
-	public Org getOrg(TarifContains tc, Serv serv, Date genDt);
+	public Double getProp(int rqn, TarifContains tc, Serv serv, String cd, Date genDt);	
+	public Org getOrg(int rqn, TarifContains tc, Serv serv, Date genDt);
 	//public List<Serv> getAllServ(TarifContains tc);	
 	//public int getServ(TarifContains tc, Serv serv, Date genDt); 	
 }

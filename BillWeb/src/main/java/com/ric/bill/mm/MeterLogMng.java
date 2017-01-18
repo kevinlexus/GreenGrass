@@ -17,12 +17,12 @@ import com.ric.bill.model.mt.MeterLog;
 
 public interface MeterLogMng {
 
-	public List<MLogs> getAllMetLogByServTp(MeterContains mm, Serv serv, String tp);
-	public boolean checkExsMet(MLogs mLog, Date genDt);
-    public SumNodeVol getVolPeriod (Calc calc, MLogs mLog, int tp, Date dt1, Date dt2);
-	public SumNodeVol getVolPeriod (Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2);
-	public MLogs getLinkedNode(MLogs lnkMLog, String string, Date genDt);
-	public void delNodeVol(MLogs ml, int tp, Date dt1, Date dt2, Integer status);
-	public Kart getKart(MLogs mLog);
+	public List<MLogs> getAllMetLogByServTp(int rqn, MeterContains mm, Serv serv, String tp);
+	public boolean checkExsMet(int rqn, MLogs mLog, Date genDt);
+    public SumNodeVol getVolPeriod (int rqn, Calc calc, MLogs mLog, int tp, Date dt1, Date dt2);
+	public SumNodeVol getVolPeriod (int rqn, Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2);
+	public MLogs getLinkedNode(int rqn, MLogs lnkMLog, String string, Date genDt);
+	public void delNodeVol(int rqn, MLogs ml, int tp, Date dt1, Date dt2, Integer status);
+	public Kart getKart(int rqn, MLogs mLog);
 
 }

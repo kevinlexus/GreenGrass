@@ -97,16 +97,16 @@ public class DistServ {
 	 * 
 	 * @param serv - заданная услуга
 	 */
-    private void delHouseVolServ() {
+    private void delHouseVolServ(int rqn) {
 
     	log.info("Удаление объемов по Дому: id="+calc.getHouse().getId()+" по услуге cd="+calc.getServ().getCd(), 2);
 
-		delHouseServVolTp(calc.getServ().getServMet(), 1);
-		delHouseServVolTp(calc.getServ().getServMet(), 0);
-		delHouseServVolTp(calc.getServ().getServMet(), 2);
-		delHouseServVolTp(calc.getServ().getServMet(), 3);
+		delHouseServVolTp(rqn, calc.getServ().getServMet(), 1);
+		delHouseServVolTp(rqn, calc.getServ().getServMet(), 0);
+		delHouseServVolTp(rqn, calc.getServ().getServMet(), 2);
+		delHouseServVolTp(rqn, calc.getServ().getServMet(), 3);
 		if (calc.getServ().getServOdn() != null){
-			delHouseServVolTp(calc.getServ().getServOdn(), 0);//счетчики ОДН
+			delHouseServVolTp(rqn, calc.getServ().getServOdn(), 0);//счетчики ОДН
 		} 
 	}
 
@@ -115,7 +115,7 @@ public class DistServ {
 	 * Удалить объем по вводу, определённой услуге
 	 * @param serv - услуга
 	 */
-	private void delHouseServVolTp(Serv serv, int tp) {
+	private void delHouseServVolTp(int rqn, Serv serv, int tp) {
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
@@ -131,8 +131,8 @@ public class DistServ {
 		}
 
 		//найти все вводы по дому и по услуге
-		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
-			metMng.delNodeVol(ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
+		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, calc.getHouse(), serv, "Ввод")) {
+			metMng.delNodeVol(rqn, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 		}
 		
 	}
@@ -145,6 +145,7 @@ public class DistServ {
     public void distAll(Calc calc, Integer houseId) {
 			//distGen = ctx.getBean(DistGen.class);
 			this.calc=calc;
+			int rqn = calc.getReqConfig().getRqn();
 			// статус записи зависит от типа операции (0 - начисление, 1 - перерасчет)
 			switch (calc.getReqConfig().getOperTp()) {
 				case 0: 
@@ -166,7 +167,7 @@ public class DistServ {
 				//Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
 		    	
 				try {
-					distHouseVol(o.getId());
+					distHouseVol(rqn, o.getId());
 				} catch (ErrorWhileDist e) {
 					e.printStackTrace();
 				}
@@ -187,6 +188,7 @@ public class DistServ {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void distKartVol(Calc calc) throws ErrorWhileDist {
 		this.calc=calc;
+		int rqn = calc.getReqConfig().getRqn();
 		// статус записи объема зависит от типа операции (0 - начисление, 1 - перерасчет)
 		switch (calc.getReqConfig().getOperTp()) {
 		case 0: 
@@ -207,7 +209,7 @@ public class DistServ {
 		// найти все необходимые услуги для удаления объемов, здесь только по типу 0 и только те услуги, которые надо удалить для ЛС 
 		for (Serv serv : servMng.findForDistVolForKart()) {
 				log.trace("Удаление объема по услуге"+serv.getCd());
-				delKartServVolTp(kart, serv, 0);
+				delKartServVolTp(rqn, kart, serv, 0);
 		}
 		
 		log.trace("Распределение объемов");
@@ -216,7 +218,7 @@ public class DistServ {
 		 try {
 			for (Serv serv : servMng.findForDistVol()) {
 				log.trace("Распределение услуги: "+serv.getCd());
-				  distKartServTp(kart, serv);
+				  distKartServTp(rqn, kart, serv);
 			}
 		} catch (ErrorWhileDist e) {
 			e.printStackTrace();
@@ -231,7 +233,7 @@ public class DistServ {
 	 * @param serv - услуга
 	 * @param tp - тип расчета
 	 */
-	private void delKartServVolTp(Kart kart, Serv serv, int tp) {
+	private void delKartServVolTp(int rqn, Kart kart, Serv serv, int tp) {
 		log.trace("delKartServVolTp: kart.lsk="+kart.getLsk()+", serv.cd="+serv.getCd()+" tp="+tp);
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
@@ -250,8 +252,8 @@ public class DistServ {
 		//найти все счетчики по Лиц.счету, по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			calc.setGenDt(c.getTime());
-			for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
-				metMng.delNodeVol(ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
+			for (MLogs ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
+				metMng.delNodeVol(rqn, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 			}
 			
 		}
@@ -263,9 +265,9 @@ public class DistServ {
 	 * @param calcTp - тип обработки
 	 * @throws ErrorWhileDist 
 	 */
-	private void distKartServTp(Kart kart, Serv serv) throws ErrorWhileDist {
+	private void distKartServTp(int rqn, Kart kart, Serv serv) throws ErrorWhileDist {
 		//найти все вводы по лиц.счету и по услуге
-		for (MLogs ml : metMng.getAllMetLogByServTp(kart, serv, null)) {
+		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
 				distGraph(ml);
 		}
 	}
@@ -276,7 +278,7 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
-	public void distHouseVol(int houseId) throws ErrorWhileDist {
+	public void distHouseVol(int rqn, int houseId) throws ErrorWhileDist {
 		
 
 		House h = em.find(House.class, houseId);
@@ -291,7 +293,7 @@ public class DistServ {
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
-				delHouseVolServ();
+				delHouseVolServ(rqn);
 		}
 
 		log.info("DistServ.distHouseVol: Распределение объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
@@ -300,7 +302,7 @@ public class DistServ {
 			for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
 				log.info("DistServ.distHouseVol: Распределение услуги: "+s.getCd(),2);
-				  distHouseServ();
+				  distHouseServ(rqn);
 			}
 		} catch (ErrorWhileDist e) {
 			e.printStackTrace();
@@ -317,19 +319,19 @@ public class DistServ {
 	 * распределить объем по услуге данного дома
 	 * @throws ErrorWhileDist 
 	 */
-	private void distHouseServ() throws ErrorWhileDist {
+	private void distHouseServ(int rqn) throws ErrorWhileDist {
 		log.trace("******************Услуга*************="+calc.getServ().getCd());
 		calc.setCalcTp(1);
-		distHouseServTp(calc.getServ().getServMet());//Расчет площади, кол-во прожив
+		distHouseServTp(rqn, calc.getServ().getServMet());//Расчет площади, кол-во прожив
 		calc.setCalcTp(0);
-		distHouseServTp(calc.getServ().getServMet());//Распределение объема
+		distHouseServTp(rqn, calc.getServ().getServMet());//Распределение объема
 		calc.setCalcTp(2);
-		distHouseServTp(calc.getServ().getServMet());//Расчет ОДН
+		distHouseServTp(rqn, calc.getServ().getServMet());//Расчет ОДН
 		calc.setCalcTp(3);
-		distHouseServTp(calc.getServ().getServMet());//Расчет пропорц.площади
+		distHouseServTp(rqn, calc.getServ().getServMet());//Расчет пропорц.площади
 		if (calc.getServ().getServOdn() != null){
 			calc.setCalcTp(0);
-			distHouseServTp(calc.getServ().getServOdn());//Суммировать счетчики ОДН
+			distHouseServTp(rqn, calc.getServ().getServOdn());//Суммировать счетчики ОДН
 		}
 	}
 	
@@ -338,10 +340,10 @@ public class DistServ {
 	 * @param calcTp - тип обработки
 	 * @throws ErrorWhileDist 
 	 */
-	private void distHouseServTp(Serv serv) throws ErrorWhileDist {
+	private void distHouseServTp(int rqn, Serv serv) throws ErrorWhileDist {
 		log.trace("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
-		for (MLogs ml : metMng.getAllMetLogByServTp(calc.getHouse(), serv, "Ввод")) {
+		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, calc.getHouse(), serv, "Ввод")) {
 				log.trace("Вызов distGraph c id="+ml.getId());
 				distGraph(ml);
 		}

@@ -37,17 +37,16 @@ public class ParMngImpl implements ParMng {
 	
 	//получить параметр по его CD
 	//@Cacheable(cacheNames="readOnlyCache", key="{ #cd }") - здесь не кэшируется, только в DAO
-	public/* synchronized */Par getByCD(Calc calc, String cd) {
-		return pDao.getByCd(calc, cd);
+	public/* synchronized */Par getByCD(int rqn, String cd) {
+		return pDao.getByCd(rqn, cd);
 	}
 
 	/**
 	 * Узнать существует ли параметр по его CD
 	 */
-	//@Cacheable(cacheNames="rrr1", key="{ #cd }")
-	@Cacheable(cacheNames="rrr1",key="{#calc.getReqConfig().getRqn(), #cd}")
-	public/* synchronized */boolean isExByCd(Calc calc, String cd) {
-		Par p = getByCD(calc, cd);
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #cd }")
+	public/* synchronized */boolean isExByCd(int rqn, String cd) {
+		Par p = getByCD(rqn, cd);
 		if (p != null) {
 			return true;
 		} else {
@@ -55,12 +54,12 @@ public class ParMngImpl implements ParMng {
 		}
 	}
 
-	@Cacheable(cacheNames="rrr1", key="{ #calc.getReqConfig().getRqn(), #st.getKlsk(), #cd, #genDt }")
-	public Boolean getBool(Calc calc, Storable st, String cd, Date genDt) throws EmptyStorable {
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #st.getKlsk(), #cd, #genDt }")
+	public Boolean getBool(int rqn, Storable st, String cd, Date genDt) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
 		}
-		Par par = getByCD(calc, cd);
+		Par par = getByCD(rqn, cd);
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
@@ -85,7 +84,7 @@ public class ParMngImpl implements ParMng {
     			}
 			}
 			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
-			if (!isExByCd(calc, cd)) {
+			if (!isExByCd(rqn, cd)) {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
@@ -99,12 +98,12 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа Double объекта по CD свойства
 	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
 	 */
-	@Cacheable(cacheNames="rrr1", key="{#calc.getReqConfig().getRqn(), #st.getKlsk(), #cd, #genDt }")
-	public/* synchronized*/ Double getDbl(Calc calc, Storable st, String cd, Date genDt) throws EmptyStorable {
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #st.getKlsk(), #cd, #genDt }")
+	public/* synchronized*/ Double getDbl(int rqn, Storable st, String cd, Date genDt) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
 		}
-		Par par = getByCD(calc, cd);
+		Par par = getByCD(rqn, cd);
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
@@ -128,7 +127,7 @@ public class ParMngImpl implements ParMng {
     			}
 			}
 			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
-			if (!isExByCd(calc, cd)) {
+			if (!isExByCd(rqn, cd)) {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
@@ -142,12 +141,12 @@ public class ParMngImpl implements ParMng {
 	 * @throws EmptyServ 
 	 */
 	//@Cacheable(cacheNames="rrr1")
-	@Cacheable(cacheNames="rrr1", key="{ #calc.getReqConfig().getRqn(), #st.getKlsk(), #cd }")
-	public /*synchronized*/ Double getDbl(Calc calc, Storable st, String cd) throws EmptyStorable {
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #st.getKlsk(), #cd }")
+	public /*synchronized*/ Double getDbl(int rqn, Storable st, String cd) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
 		}
-		Par par = getByCD(calc, cd);
+		Par par = getByCD(rqn, cd);
 		try {
 			for (Dw d: st.getDw()) {
 				if (d.getPar().equals(par)) {
@@ -163,7 +162,7 @@ public class ParMngImpl implements ParMng {
 				}
 			}
 			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
-			if (!isExByCd(calc, cd)) {
+			if (!isExByCd(rqn, cd)) {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
@@ -175,12 +174,12 @@ public class ParMngImpl implements ParMng {
 	/**
 	 * получить значение параметра типа Double объекта по CD свойства, без указания даты
 	 */
-	@Cacheable(cacheNames="rrr1", key="{ #calc.getReqConfig().getRqn(), #st.getKlsk(), #cd }")
-	public /*synchronized*/ Date getDate(Calc calc, Storable st, String cd) throws EmptyStorable {
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #st.getKlsk(), #cd }")
+	public /*synchronized*/ Date getDate(int rqn, Storable st, String cd) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
 		}
-		Par par = getByCD(calc, cd);
+		Par par = getByCD(rqn, cd);
 		try {
 			for (Dw d: st.getDw()) {
 				log.trace("ParMngImpl.getDate="+d.getPar().getCd());
@@ -197,7 +196,7 @@ public class ParMngImpl implements ParMng {
 				}
 			}
 			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
-			if (!isExByCd(calc, cd)) {
+			if (!isExByCd(rqn, cd)) {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
@@ -211,12 +210,12 @@ public class ParMngImpl implements ParMng {
 	 * @throws EmptyStorable 
 	 */
 	//@Cacheable(cacheNames="rrr1")
-	@Cacheable(cacheNames="rrr1", key="{#calc.getReqConfig().getRqn(), #st.getKlsk(), #cd, #genDt }")
-	public /*synchronized*/ String getStr(Calc calc, Storable st, String cd, Date genDt) throws EmptyStorable {
+	@Cacheable(cacheNames="rrr1", key="{ #rqn, #st.getKlsk(), #cd, #genDt }")
+	public /*synchronized*/ String getStr(int rqn, Storable st, String cd, Date genDt) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
 		}
-		Par par = getByCD(calc, cd);
+		Par par = getByCD(rqn, cd);
 		try {
 			for (Dw d: st.getDw()) {
     			//по соотв.периоду
@@ -236,7 +235,7 @@ public class ParMngImpl implements ParMng {
     			}
 			}
 			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
-			if (!isExByCd(calc, cd)) {
+			if (!isExByCd(rqn, cd)) {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
@@ -250,12 +249,12 @@ public class ParMngImpl implements ParMng {
 	 * @throws EmptyStorable 
 	 */
 	//@Cacheable("rrr1")
-	@Cacheable(cacheNames="rrr1", key="{#calc.getReqConfig().getRqn(), #st.getKlsk(), #cd }")
-	public /*synchronized*/ String getStr(Calc calc, Storable st, String cd) throws EmptyStorable {
+	@Cacheable(cacheNames="rrr1", key="{ #rqn, #st.getKlsk(), #cd }")
+	public /*synchronized*/ String getStr(int rqn, Storable st, String cd) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
 		}
-		Par par = getByCD(calc, cd);
+		Par par = getByCD(rqn, cd);
 		try {
 			for (Dw d: st.getDw()) {
 					//проверка, что соответствует CD и Number (NM), Единичное (SI)
@@ -272,7 +271,7 @@ public class ParMngImpl implements ParMng {
     			}
 			}
 			//если не найдено, то проверить, существует ли вообще этот параметр, в базе данных
-			if (!isExByCd(calc, cd)) {
+			if (!isExByCd(rqn, cd)) {
 				throw new WrongGetMethod("Параметр "+cd+" не существует в базе данных");
 			};
 		} catch (WrongGetMethod e) {
