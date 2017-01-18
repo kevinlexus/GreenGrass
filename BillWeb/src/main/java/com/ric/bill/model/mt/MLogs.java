@@ -11,9 +11,9 @@ import com.ric.bill.model.bs.Serv;
 
 public interface MLogs extends Storable, Simple {
 
-	public abstract String getName();
+	public abstract String getEntry();
 
-	public abstract void setName(String name);
+	public abstract void setEntry(String entry);
 
 	public abstract List<Meter> getMeter();
 

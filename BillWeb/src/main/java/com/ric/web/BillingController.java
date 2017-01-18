@@ -61,7 +61,17 @@ public class BillingController {
 		
     	log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
 		long beginTime = System.currentTimeMillis();
-
+		
+		// получить доступ к лиц.счету
+		while (!config.checkLsk(lsk)) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return "ERROR";
+			} 
+		}
+		
     	Future<Result> fut = null;
 
     	// если пустой ID перерасчета
@@ -90,22 +100,14 @@ public class BillingController {
 			fut.get();
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
+			config.unCheckLsk(lsk); // снять лицевой с обработки
 			return "ERROR";
 		} catch (ExecutionException e1) {
 			e1.printStackTrace();
+			config.unCheckLsk(lsk); // снять лицевой с обработки
 			return "ERROR";
 		}
 		
-/*	    while (!fut.isDone()) { // некорректный подход к ожиданию потока, удалить потом
-	         try {
-				Thread.sleep(10);
-				//100-millisecond задержка
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return "ERROR";
-			} 
-	     }*/
 		long endTime4=System.currentTimeMillis()-beginTime;
 
 	    log.info("Время исполнения: 1={},2={},3={},4={}", endTime1, endTime2, endTime3, endTime4);
@@ -113,18 +115,22 @@ public class BillingController {
 	    try {
 			if (fut.get().err ==0) {
 		    	log.info("OK /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+				config.unCheckLsk(lsk); // снять лицевой с обработки
 				return "OK";
 			} else {
 		    	log.info("ERROR /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+				config.unCheckLsk(lsk); // снять лицевой с обработки
 				return "ERROR";
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			config.unCheckLsk(lsk); // снять лицевой с обработки
 			return "ERROR";
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			config.unCheckLsk(lsk); // снять лицевой с обработки
 			return "ERROR";
 		}
 

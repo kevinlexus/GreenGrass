@@ -99,7 +99,7 @@ public class ParMngImpl implements ParMng {
 	 * получить значение параметра типа Double объекта по CD свойства
 	 * внимание! дату важно передавать, а не получать из Calc.getGenDt(), так как она влияет на кэш!
 	 */
-	@Cacheable(cacheNames="rrr1", key="{ #st.getKlsk(), #cd, #genDt }")
+	@Cacheable(cacheNames="rrr1", key="{#st.getKlsk(), #cd, #genDt }")
 	public/* synchronized*/ Double getDbl(Storable st, String cd, Date genDt) throws EmptyStorable {
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");

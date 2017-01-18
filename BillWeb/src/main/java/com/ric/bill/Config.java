@@ -1,9 +1,12 @@
 package com.ric.bill;
 
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
@@ -11,7 +14,6 @@ import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.excp.EmptyStorable;
@@ -42,6 +44,8 @@ public class Config {
 	Date curDt1;
 	Date curDt2;
 
+	private List<Integer> workLst; // обрабатываемые лицевые счета 
+	
 	// конструктор
 	public Config() {
 		TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
@@ -53,6 +57,7 @@ public class Config {
 		calendar.clear(Calendar.ZONE_OFFSET);
 		lastDt = calendar.getTime();
 		
+		workLst = new ArrayList<Integer>();
 	}
 	
 	@PostConstruct
@@ -99,6 +104,19 @@ public class Config {
 		return firstDt;
 	}
 
-
-
+	// проверить наличие лицевого и добавить на обработку, если не найден
+	public synchronized boolean checkLsk(Integer lsk) {
+		if (this.workLst.contains(lsk)) {
+			return false;
+		} else {
+			this.workLst.add(lsk);
+			return true;
+		}
+		
+	}
+	
+	// снять с обработки лицевой
+	public synchronized void unCheckLsk(Integer lsk) {
+		this.workLst.remove(lsk);
+	}
 }

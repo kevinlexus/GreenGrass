@@ -165,7 +165,7 @@ public class DistGen {
 		calc.setKart(kart); 
 
 		if (!ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {
-			log.trace("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" наименование:"+ml.getName());
+			log.trace("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" ввод:"+ml.getEntry());
 		}
 
 		if (ml.getId().equals(319941)) {

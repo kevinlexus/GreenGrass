@@ -117,9 +117,9 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
     @Column(name = "FK_KLSK_OBJ", updatable = false, nullable = true)
 	private Integer klskObj;
 
-	//наименование счетчика, комментарий
-    @Column(name = "NAME", updatable = false, nullable = true)
-	private String name;
+	// № ввода
+    @Column(name = "ENTRY", updatable = false, nullable = true)
+	private String entry;
     
 	public Integer getKlskObj() {
 		return klskObj;
@@ -127,14 +127,6 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 
 	public void setKlskObj(Integer klskObj) {
 		this.klskObj=klskObj;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public List<Meter> getMeter() {
@@ -199,6 +191,14 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 
 	public void setOutside(List<MeterLogGraph> outside) {
 		this.outside = outside;
+	}
+
+	public String getEntry() {
+		return entry;
+	}
+
+	public void setEntry(String entry) {
+		this.entry = entry;
 	}
 
 	public boolean equals(Object o) {

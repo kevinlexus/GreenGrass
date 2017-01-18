@@ -143,7 +143,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 */
 	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr1", key="{ #mLog.getId(), #tp, #dt1, #dt2}")
-    public synchronized SumNodeVol getVolPeriod (Calc calc, MLogs mLog, int tp, Date dt1, Date dt2) {
+    public /*synchronized*/ SumNodeVol getVolPeriod (Calc calc, MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
 		/* Java 8 */
 		mLog.getVol().parallelStream()
@@ -173,10 +173,9 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - возвращаемый объем
 	 */
 	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr1", key="{ #mc.getId(), #serv.getId(), #dt1, #dt2}")
+	@Cacheable(cacheNames="rrr1", key="{#calc.getKart().getLsk(), #mc.getId(), #serv.getId(), #dt1, #dt2}")
 	public synchronized SumNodeVol getVolPeriod (Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2) {
 		SumNodeVol amntSum = new SumNodeVol();
-		
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
 		for (MeterLog mLog: mc.getMlog()) {
 			//по заданной услуге
@@ -237,7 +236,7 @@ public class MeterLogMngImpl implements MeterLogMng {
      */
 	@Cacheable("rrr1") 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
-	public synchronized void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
+	public /*synchronized*/ void delNodeVol(MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
 
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
@@ -246,14 +245,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		    		(vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН"))) {
 		    	//проверить период
 		    	if (dt1.getTime() <= vol.getDt1().getTime() && dt2.getTime() >= vol.getDt2().getTime()) {  //здесь диапазон дат "снаружи"
-		    		//log.info("DELETE vol={}, met={}, lsk={}", vol.getId(), vol.getMLog().getId(), vol.getMLog().getKart().getLsk());
-		    		//log.info("DELETE met={}, lsk={}", vol.getMLog().getId(), vol.getMLog().getKart().getLsk());
-		    		//if (vol.getMLog().getKart().getLsk() != mLog.getKart().getLsk()) {
-			    		//log.info("DELETE vol={} lsk1={} lsk2={}", vol.getId(), vol.getMLog().getKart().getLsk(), mLog.getKart().getLsk());
-		    		//}
-		    		
 					iterator.remove();
-		    		//em.remove(vol);
 		    	}
 			}
 		}
