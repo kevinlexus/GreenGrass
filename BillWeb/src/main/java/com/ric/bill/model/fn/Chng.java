@@ -22,6 +22,8 @@ import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.bs.Org;
+import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.Vol;
 
@@ -74,6 +76,16 @@ public class Chng implements java.io.Serializable, Simple {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHNG_TP", referencedColumnName="ID")
 	private Lst tp; 
+	
+	// Организация по перерасчету (для замены)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
+	private Org org; 
+	
+	// Главная услугу по перерасчету
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
+	private Serv serv; 
 	
 	public Integer getId() {
 		return id;
@@ -137,6 +149,22 @@ public class Chng implements java.io.Serializable, Simple {
 
 	public void setTp(Lst tp) {
 		this.tp = tp;
+	}
+
+	public Org getOrg() {
+		return org;
+	}
+
+	public void setOrg(Org org) {
+		this.org = org;
+	}
+
+	public Serv getServ() {
+		return serv;
+	}
+
+	public void setServ(Serv serv) {
+		this.serv = serv;
 	}
 
 	public boolean equals(Object o) {

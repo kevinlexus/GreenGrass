@@ -205,7 +205,7 @@ public class DistGen {
 					if (calc.getReqConfig().getOperTp()==1 && calc.getReqConfig().getChng().getTp().getCd().equals("Корректировка показаний ИПУ") ) {
 						Double vlChng =0d; // объем перерасчета
 						vlChng=calc.getReqConfig().getChng().getChngLsk().parallelStream()
-						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по getChngLsk()
+						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
 						.flatMap(t -> t.getChngVal().parallelStream().filter(d -> ml.equals(d.getMeter().getMeterLog()) // фильтр по getChngVal() 
 																	&& Utl.between(genDt, d.getDtVal1(), d.getDtVal2())))
 						.mapToDouble(d -> d.getVal() * Utl.getPartDays(d.getDtVal1(), d.getDtVal2()) ) // преобразовать в массив Double

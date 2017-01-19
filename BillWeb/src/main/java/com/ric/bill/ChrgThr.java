@@ -7,7 +7,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,6 +35,7 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.fn.ChngVal;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.fn.ChrgRec;
 import com.ric.bill.model.fn.ChrgStore;
@@ -78,6 +82,16 @@ public class ChrgThr {
     private HashMap<Serv, BigDecimal> mapVrt;
 
     private Calc calc;
+    
+    // вспомогательный класс-контейнер для перерасчета
+   /* private class PriceOrg {
+    	public PriceOrg(Double val, Org org2) {
+    		this.price = val;
+    		this.org = org;
+		}
+		Double price;
+    	Org org;
+    }*/
     
     //конструктор
 	public ChrgThr() {
@@ -157,9 +171,6 @@ public class ChrgThr {
 					e.printStackTrace();
 					throw new RuntimeException();
 				}
-				//получить обслуживающую УК
-				Org uk = kart.getUk();
-				//Org uk = kartMng.getUk(kart, genDt);
 				
 				if (tpOwn == null) {
 					log.info("ОШИБКА! Не указанна форма собственности! lsk="+kart.getLsk(), 2);
@@ -170,7 +181,7 @@ public class ChrgThr {
 					continue;
 				}
 					try {
-					  genChrg(calc, serv, uk, tpOwn, genDt);
+					  genChrg(calc, serv, tpOwn, genDt);
 					} catch (EmptyStorable e) {
 						e.printStackTrace();
 						throw new RuntimeException();
@@ -227,12 +238,39 @@ public class ChrgThr {
 		return new AsyncResult<Result>(res);
 	}
 
+	// получить подмененную организацию по перерасчету
+	private Org getChngOrg(Serv serv, Date genDt) {
+		Org org = null; 
+		if ( Utl.between(genDt, calc.getReqConfig().getChng().getDt1(), calc.getReqConfig().getChng().getDt2()) &&
+				calc.getReqConfig().getChng().getServ().equals(serv) ) {
+			org = calc.getReqConfig().getChng().getOrg();
+		}
+		return org;
+	}
+	
+	// получить подмененную организацию по перерасчету
+	private Double getChngPrice(Serv serv, Date genDt) {
+		// получить расценку
+		Double price = null;
+		Optional<ChngVal> chngVal = calc.getReqConfig().getChng().getChngLsk().parallelStream()
+		.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
+		.filter(t -> t.getServ().equals(serv) ) // фильтр по услуге
+		.flatMap(t -> t.getChngVal().parallelStream() // преобразовать в другую коллекцию
+					.filter(d -> Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) // и фильтр по дате
+				).findFirst();
+
+		if (chngVal.isPresent()) {
+			price = chngVal.get().getVal(); 
+		}
+		return price;
+	}
+	
 	/**
-	 * расчитать начисление по услуге
+	 * РАСЧЕТ начисления по услуге
 	 * @param serv - услуга
 	 * @throws InvalidServ 
 	 */
-	private void genChrg(Calc calc, Serv serv, Org uk, String tpOwn, Date genDt) throws EmptyStorable, EmptyOrg, InvalidServ {
+	private void genChrg(Calc calc, Serv serv, String tpOwn, Date genDt) throws EmptyStorable, EmptyOrg, InvalidServ {
 		Kart kart = calc.getKart();
 		long startTime2;
 		long endTime;
@@ -324,13 +362,43 @@ public class ChrgThr {
 			} 
 		}
 			
-
+		
 		//получить организацию
 		if (serv.getCheckOrg()) {
 		  org = kartMng.getOrg(rqn, calc, serv.getServOrg(), genDt);
 		  if (org == null) {
 				throw new EmptyOrg("При расчете л.с.="+kart.getLsk()+" , обнаружена пустая организция по услуге Id="+serv.getServOrg().getId());
 		  }
+		}
+		
+
+		// в случае перерасчета по расценке или по организации, выполнить замену
+		if (calc.getReqConfig().getOperTp()==1 && calc.getReqConfig().getChng().getTp().getCd().equals("Изменение расценки (тарифа)") ) {
+			
+			// организация
+			Org chngOrg = getChngOrg(serv.getServOrg(), genDt);
+			if (chngOrg != null) {
+				org = chngOrg; 
+			}
+
+			// расценка по норме
+			Double chngPrice = getChngPrice(stServ, genDt);
+			if (chngPrice != null) {
+				stPrice = chngPrice; 
+			}
+			
+			// расценка св.нормы
+			chngPrice = getChngPrice(upStServ, genDt);
+			if (chngPrice != null) {
+				upStPrice = chngPrice; 
+			}
+				
+			// расценка без проживающих
+			chngPrice = getChngPrice(woKprServ, genDt);
+			if (chngPrice != null) {
+				woKprPrice = chngPrice; 
+			}
+			
 		}
 		
 		//получить базу для начисления
