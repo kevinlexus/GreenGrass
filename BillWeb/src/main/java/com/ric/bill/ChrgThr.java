@@ -401,6 +401,26 @@ public class ChrgThr {
 			
 		}
 		
+		// при отсутствии ПУ и возможности его установки, применить повышающий коэффициент для определённых услуг
+		String parCd = null;
+		Double raisCoeff = 1d;
+		Boolean isMeterCanSet = null;
+		if (serv.getCd().equals("Горячая вода")) {
+			parCd = "Возможность установки ИПУ по гор. воде";
+		} else if (serv.getCd().equals("Холодная вода")) {
+			parCd = "Возможность установки ИПУ по хол. воде";
+		} else if (serv.getCd().equals("Электроснабжение")) {
+			parCd = "Возможность установки ИПУ по эл/эн";
+		}
+		
+		if (parCd!= null) {
+			if (parMng.getBool(rqn, kart, parCd, genDt) !=null && parMng.getBool(rqn, kart, parCd, genDt)) {
+				// с возможностью установки счетчика
+				raisCoeff = 1.5d; // Hard code установить коэфф 1.5
+			}
+		}
+		
+		
 		//получить базу для начисления
 		baseCD = parMng.getStr(rqn, serv, "Name_CD_par_base_charge");
 	
@@ -491,21 +511,21 @@ public class ChrgThr {
 					tmpVol= stdt.partVol;
 				}
 	
-				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice), 
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice * raisCoeff), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, stServ, org, genDt);
 				//свыше соцнормы
 				tmpVol = absVol - tmpVol;
-				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice), 
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice * raisCoeff), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, upStServ, org, genDt);
 			} else {
 				//нет проживающих
 				if (woKprServ != null) {
 					//если существует услуга "без проживающих"
-					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice), 
+					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice * raisCoeff), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, woKprServ, org, genDt);
 				} else {
 					//услуги без проживающих не существует, поставить на свыше соц.нормы
-					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), 
+					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice * raisCoeff), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, upStServ, org, genDt);
 				}
 				

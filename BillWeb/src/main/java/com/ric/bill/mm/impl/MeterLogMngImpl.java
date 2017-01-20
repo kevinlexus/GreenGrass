@@ -114,12 +114,29 @@ public class MeterLogMngImpl implements MeterLogMng {
 	
 	
 	/**
+	 * проверить существование хотя бы одного физ.счетчика по лиц.счету
+	 * @param rqn   - уникальный номер запроса
+	 * @param kart  - лиц.счет
+	 * @param genDt - дата проверки
+	 * @return - существует/нет
+	 */
+	@Cacheable("rrr1")
+	public boolean checkExsKartMet (int rqn, Kart kart, Date genDt) {
+		for (MLogs mLog : kart.getMlog()) {
+			if (checkExsMet(rqn, mLog, genDt)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * проверить существование физ.счетчика
 	 * @param mLog
 	 */
 	@Cacheable("rrr1")
 	public /*synchronized*/ boolean checkExsMet(int rqn, MLogs mLog, Date genDt) {
-    	//установить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
+    	//получить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
     			//по соотв.периоду

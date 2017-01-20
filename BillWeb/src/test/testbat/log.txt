@@ -96958,3 +96958,51 @@ OK    time_namelookup:  0,000
  time_starttransfer:  0,484
                     ----------
          time_total:  0,484
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  1,248
+                    ----------
+         time_total:  1,248
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  1,185
+                    ----------
+         time_total:  1,185
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  1,217
+                    ----------
+         time_total:  1,217
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  1,155
+                    ----------
+         time_total:  1,155
+OK    time_namelookup:  0,000
+       time_connect:  0,000
+    time_appconnect:  0,000
+   time_pretransfer:  0,000
+      time_redirect:  0,000
+ time_starttransfer:  1,201
+                    ----------
+         time_total:  1,201
+OK    time_namelookup:  0,000
+       time_connect:  0,016
+    time_appconnect:  0,000
+   time_pretransfer:  0,016
+      time_redirect:  0,000
+ time_starttransfer:  0,983
+                    ----------
+         time_total:  0,983
