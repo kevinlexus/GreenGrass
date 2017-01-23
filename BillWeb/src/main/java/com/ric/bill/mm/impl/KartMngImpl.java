@@ -501,8 +501,8 @@ public class KartMngImpl implements KartMng {
 	 */
 	//@Cacheable("rrr1")
 	//@Cacheable(cacheNames="rrr1", key="{ #kart.getLsk() }") - НЕ КЭШИРОВАТЬ!!!
-	@Cacheable(cacheNames="rrr1", key="{int rqn, #calc.getHouse().getId(), #calc.getKart().getLsk() }")
-	public /*synchronized*/ List<Serv> getAllServ(Calc calc) {
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #calc.getHouse().getId(), #calc.getKart().getLsk() }")
+	public /*synchronized*/ List<Serv> getAllServ(int rqn, Calc calc) {
 		List<Serv> lst = new ArrayList<Serv>();
 		//искать и добавить по наборам тарифа
 		//дома:

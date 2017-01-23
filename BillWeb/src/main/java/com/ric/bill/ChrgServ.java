@@ -199,7 +199,7 @@ public class ChrgServ {
 		
 		Kart kart = calc.getKart();
 		//загрузить все услуги
-		servThr = kartMng.getAllServ(calc);
+		servThr = kartMng.getAllServ(calc.getReqConfig().getRqn(), calc);
 		
 		errThread=false;
 
