@@ -218,6 +218,7 @@ public class ChrgServ {
 
 			List<Future<Result>> frl = new ArrayList<Future<Result>>();
 
+			// РАСЧЕТ услуг в потоке
 			for (Serv serv : servWork) {
 					Future<Result> fut = null;
 					ChrgThr chrgThr = ctx.getBean(ChrgThr.class);
@@ -244,21 +245,16 @@ public class ChrgServ {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-					
 					}
 				}
-				
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 			}
-			
 		}
-		
 		
 		
 		//если была ошибка в потоке - приостановить выполнение, выйти
@@ -268,7 +264,7 @@ public class ChrgServ {
 			return res;
 		}
 		
-		//сделать коррекцию на сумму разности между основной и виртуальной услуг
+		// КОРРЕКЦИЯ на сумму разности между основной и виртуальной услуг
 		for (Map.Entry<Serv, BigDecimal> entryVrt : mapVrt.entrySet()) {
 		    Serv servVrt = entryVrt.getKey();
 			//найти сумму, для сравнения, полученную от основных услуг

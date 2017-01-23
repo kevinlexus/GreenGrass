@@ -1,10 +1,9 @@
-package com.ric.bill.model.fn;
+package com.ric.bill;
 
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.ric.bill.Calc;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 

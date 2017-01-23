@@ -165,15 +165,13 @@ public class KartMngImpl implements KartMng {
 	 * Получить кол-во проживающих  на дату формирования! (на Calc.getGenDt())
 	 * @param serv - Рассчитываемая услуга 
 	 * @param rc - Список дат регистрации
-	 * @param tp - Тип вызова (0-для получения нормативного объема, 1-для получения кол-во прож.)
 	 * @param cntPers - объект для заполнения
+	 * @param tp - 0 - для определения объема по нормативу, 1 - для определения доли соц.нормы
 	 * @return
+	 * @throws EmptyStorable 
 	 */
-//	@Cacheable("readOnlyCache")
-	//@Cacheable("rrr1")
-	@Cacheable(cacheNames="rrr1", key="{#rqn, #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
-	//@Transactional
-	public /*synchronized*/ void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, Date genDt){
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #rc.getKlsk(), #serv.getId(), #cntPers, #genDt, #tp }") 
+	public void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, Date genDt, int tp) throws EmptyStorable{
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
@@ -216,6 +214,11 @@ public class KartMngImpl implements KartMng {
 				}
 			}		
 		}
+		
+		// если кол-во проживающих установить невозможно, установить по кол-ву собственников
+		if (tp==0 && cntPers.cnt == 0) {
+			cntPers.cnt = Utl.nvl(parMng.getDbl(rqn, calc.getKart(), "Количество собственников на ЛС", genDt), 0d).intValue();
+		}
 	}
 	
 	/**
@@ -227,7 +230,7 @@ public class KartMngImpl implements KartMng {
 	 * @throws EmptyServ 
 	 */
 	@Cacheable(cacheNames="rrr4", key="{#rqn, #calc.getKart().getLsk(), #serv.getId(), #genDt }") // сделал отдельный кэш, иначе валится с Cannot Cast Standart to Boolean! 
-	public Standart getStandartVol(int rqn, Calc calc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable {
+	public Standart getStandartVol(int rqn, Calc calc, Serv serv, CntPers cntPers, Date genDt, int tp) throws EmptyStorable {
 		log.trace("STANDART1="+serv.getId()+" dt="+genDt);	
 		//получить услугу основную, для начисления
 		Serv servChrg = serv.getServChrg();
@@ -239,10 +242,9 @@ public class KartMngImpl implements KartMng {
 		Double stVol = 0d;
 		if (cntPers == null) {
 			//если кол-во проживающих не передано, получить его
-
 			cntPers= new CntPers();
 			log.trace("STANDART2="+serv.getId()+" dt="+genDt);	
-			getCntPers(rqn, calc, calc.getKart(), servChrg, cntPers, genDt);
+			getCntPers(rqn, calc, calc.getKart(), servChrg, cntPers, genDt, tp);
 			log.trace("STANDART3="+serv.getId()+" dt="+genDt);	
 		}
 		//log.trace("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
@@ -264,7 +266,7 @@ public class KartMngImpl implements KartMng {
 			
 		} else if (Utl.nvl(parMng.getDbl(rqn, servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& !servChrg.getCd().equals("Электроснабжение")) {
-			//попытаться получить норматив, не зависящий от кол-ва прожив (например по х.в., г.в.)
+			// получить норматив, не зависящий от кол-ва прожив (например по Х.В., Г.В.)
 			stVol = getServPropByCD(rqn, calc, servSt, "Норматив", genDt);
 		} else if (Utl.nvl(parMng.getDbl(rqn, servChrg, "Вариант расчета по объему-1"),0d)==1d
 				&& servChrg.getCd().equals("Электроснабжение")) {

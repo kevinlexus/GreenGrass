@@ -37,8 +37,6 @@ import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.ChngVal;
 import com.ric.bill.model.fn.Chrg;
-import com.ric.bill.model.fn.ChrgRec;
-import com.ric.bill.model.fn.ChrgStore;
 
 /**
  * РАСЧЕТ НАЧИСЛЕНИЯ, ВЫЗЫВАЕТСЯ В ПОТОКЕ
@@ -150,6 +148,7 @@ public class ChrgThr {
 		//}
 		Calendar c = Calendar.getInstance();
 		
+		// РАСЧЕТ по дням
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			genDt = c.getTime();
 			//только там, где нет статуса "не начислять" за данный день
@@ -197,7 +196,7 @@ public class ChrgThr {
 			//break;
 		}
 		
-		//окончательно расчитать данные
+		// ОКОНЧАТЕЛЬНО рассчитать данные (умножить расценку на объем, округлить)
 		for (ChrgRec rec : chStore.getStore()) {
 			BigDecimal vol, area, sum;
 			vol = rec.getVol();
@@ -228,7 +227,7 @@ public class ChrgThr {
 				if (sum.compareTo(BigDecimal.ZERO) != 0) {
 					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, calc.getReqConfig().getPeriod(), sum, sum, 
 							vol, rec.getPrice(), rec.getStdt(), rec.getCntPers(), rec.getArea(), chrgTpRnd, rec.getDt1(), rec.getDt2());
-					chrgAdd(chrg);
+					chrgAppend(chrg);
 				}
 			}
 		} 
@@ -324,7 +323,7 @@ public class ChrgThr {
 		}
 
 		//Получить кол-во проживающих 
-		kartMng.getCntPers(rqn, calc, kart, serv, cntPers, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+		kartMng.getCntPers(rqn, calc, kart, serv, cntPers, genDt, 1); //tp=1 (для получения кол-во прож. для расчёта доли соц.нормы)
 
 		//получить расценку по норме	
 		stPrice = kartMng.getServPropByCD(rqn, calc, stServ, "Цена", genDt);
@@ -333,14 +332,14 @@ public class ChrgThr {
 			stPrice = 0d;
 		}
 
-		//получить нормативный объем
+		//получить долю соц.нормы.свыше (не объем!!!)
 		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
 				Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему-1"), 0d) == 1d ||
 				Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему-2"), 0d) == 1d ||
 				Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета для полива"), 0d) == 1d) {
 			
 			
-			stdt = kartMng.getStandartVol(rqn, calc, serv, cntPers, genDt);
+			stdt = kartMng.getStandartVol(rqn, calc, serv, cntPers, genDt, 1); // здесь без разницы, какой tp, кол-во прожив уже получено
 			//здесь же получить расценки по свыше соц.нормы и без проживающих 
 			if (serv.getServUpst() != null) {
 				
@@ -416,7 +415,7 @@ public class ChrgThr {
 		if (parCd!= null) {
 			if (parMng.getBool(rqn, kart, parCd, genDt) !=null && parMng.getBool(rqn, kart, parCd, genDt)) {
 				// с возможностью установки счетчика
-				raisCoeff = 1.5d; // Hard code установить коэфф 1.5
+				raisCoeff = 1.0d; // Hard code установить коэфф 1.5  TODO ВЕРНУТЬ 1.5 !!!!!!!!!!!!!!!!!!!!!!!!
 			}
 		}
 		
@@ -511,22 +510,22 @@ public class ChrgThr {
 					tmpVol= stdt.partVol;
 				}
 	
-				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice * raisCoeff), 
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice * raisCoeff).setScale(2, BigDecimal.ROUND_HALF_UP), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, stServ, org, genDt);
 				//свыше соцнормы
 				tmpVol = absVol - tmpVol;
-				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice * raisCoeff), 
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice * raisCoeff).setScale(2, BigDecimal.ROUND_HALF_UP), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, upStServ, org, genDt);
 			} else {
 				//нет проживающих
 				if (woKprServ != null) {
 					//если существует услуга "без проживающих"
-					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice * raisCoeff), 
-								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, woKprServ, org, genDt);
+					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice * raisCoeff).setScale(2, BigDecimal.ROUND_HALF_UP), 
+								BigDecimal.valueOf(stdt.vol), cntPers.cntEmpt, null, woKprServ, org, genDt);
 				} else {
 					//услуги без проживающих не существует, поставить на свыше соц.нормы
-					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice * raisCoeff), 
-								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, upStServ, org, genDt);
+					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice * raisCoeff).setScale(2, BigDecimal.ROUND_HALF_UP), 
+								BigDecimal.valueOf(stdt.vol), cntPers.cntEmpt, null, upStServ, org, genDt);
 				}
 				
 			}
@@ -605,9 +604,9 @@ public class ChrgThr {
 	 * @param serv - услуга
 	 * @param sum - сумма
 	 */
-	public void putMapServVal(Serv serv, BigDecimal sum) {
+	private void putMapServVal(Serv serv, BigDecimal sum) {
 		BigDecimal tmpSum;
-		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом
+		//HaspMap считает разными услуги, если они одинаковые, но пришли из разных потоков, пришлось искать for - ом - <-- Проверить это TODO!  
 		synchronized (mapServ) {
 		for (Map.Entry<Serv, BigDecimal> entry : mapServ.entrySet()) {
 	    	if (entry.getKey().equals(serv)) { 
@@ -626,7 +625,7 @@ public class ChrgThr {
 	 * @param serv - услуга
 	 * @param sum - сумма
 	 */
-	public void putMapVrtVal(Serv serv, BigDecimal sum) {
+	private void putMapVrtVal(Serv serv, BigDecimal sum) {
 		BigDecimal tmpSum;
 		synchronized (mapVrt) {
 	    for (Map.Entry<Serv, BigDecimal> entry : mapVrt.entrySet()) {
@@ -645,7 +644,7 @@ public class ChrgThr {
 	 * добавить из потока строку начисления 
 	 * @param chrg - строка начисления
 	 */
-	public void chrgAdd(Chrg chrg) {
+	private void chrgAppend(Chrg chrg) {
 		synchronized (prepChrg) {
 		  prepChrg.add(chrg);
 		}

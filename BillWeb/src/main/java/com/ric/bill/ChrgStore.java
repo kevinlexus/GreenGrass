@@ -1,4 +1,4 @@
-package com.ric.bill.model.fn;
+package com.ric.bill;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import com.ric.bill.Calc;
-import com.ric.bill.Utl;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.bs.Serv;
 
@@ -19,7 +17,7 @@ import com.ric.bill.model.bs.Serv;
 public class ChrgStore {
 
 	private List<ChrgRec> store;
-	
+
 	//конструктор
 	public ChrgStore () {
 		super();
