@@ -173,7 +173,7 @@ public class KartMngImpl implements KartMng {
 	//@Cacheable("rrr1")
 	@Cacheable(cacheNames="rrr1", key="{#rqn, #rc.getKlsk(), #serv.getId(), #cntPers, #tp, #genDt }") 
 	//@Transactional
-	public /*synchronized*/ void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, int tp, Date genDt){
+	public /*synchronized*/ void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, Date genDt){
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
@@ -209,7 +209,7 @@ public class KartMngImpl implements KartMng {
 		for (Registrable p : rc.getRegState()) {
 			//там где NULL fk_pers,- обычно временно зарег., считать их
 			if (p.getPers()==null) {
-				if (tp==0 && checkPersNullStatus(rqn, calc, p, genDt)){
+				if (checkPersNullStatus(rqn, calc, p, genDt)){
 					if (serv.getInclPrsn()) {
 						cntPers.cnt++;
 					}
@@ -227,7 +227,7 @@ public class KartMngImpl implements KartMng {
 	 * @throws EmptyServ 
 	 */
 	@Cacheable(cacheNames="rrr4", key="{#rqn, #calc.getKart().getLsk(), #serv.getId(), #genDt }") // сделал отдельный кэш, иначе валится с Cannot Cast Standart to Boolean! 
-	public /*synchronized*/ Standart getStandart (int rqn, Calc calc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable {
+	public Standart getStandartVol(int rqn, Calc calc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable {
 		log.trace("STANDART1="+serv.getId()+" dt="+genDt);	
 		//получить услугу основную, для начисления
 		Serv servChrg = serv.getServChrg();
@@ -242,7 +242,7 @@ public class KartMngImpl implements KartMng {
 
 			cntPers= new CntPers();
 			log.trace("STANDART2="+serv.getId()+" dt="+genDt);	
-			getCntPers(rqn, calc, calc.getKart(), servChrg, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+			getCntPers(rqn, calc, calc.getKart(), servChrg, cntPers, genDt);
 			log.trace("STANDART3="+serv.getId()+" dt="+genDt);	
 		}
 		//log.trace("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));

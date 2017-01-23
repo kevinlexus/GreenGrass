@@ -219,7 +219,7 @@ public class DistGen {
 				}
 			} else if (mLogTp.equals("ЛНрм")){
 				//по нормативу
-				vl = kartMng.getStandart(rqn, calc, ml.getServ(), null, genDt).partVol;
+				vl = kartMng.getStandartVol(rqn, calc, ml.getServ(), null, genDt).partVol;
 			}
 				
 		} else if (tp==1 && (mLogTp.equals("ЛНрм") || mLogTp.equals("ЛИПУ") || mLogTp.equals("Лсчетчик"))) {
@@ -228,7 +228,7 @@ public class DistGen {
 			partArea = Utl.nvl(parMng.getDbl(rqn, kart, "Площадь.Общая", genDt), 0d) / calc.getReqConfig().getCntCurDays(); 
 			//проживающие
 			CntPers cntPers= new CntPers();
-			kartMng.getCntPers(rqn, calc, kart, servChrg, cntPers, 0, genDt);
+			kartMng.getCntPers(rqn, calc, kart, servChrg, cntPers, genDt);
 			partPers = cntPers.cnt / calc.getReqConfig().getCntCurDays();
 		} else if (tp==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)

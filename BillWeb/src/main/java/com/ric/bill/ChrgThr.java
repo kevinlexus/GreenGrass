@@ -324,7 +324,7 @@ public class ChrgThr {
 		}
 
 		//Получить кол-во проживающих 
-		kartMng.getCntPers(rqn, calc, kart, serv, cntPers, 0, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
+		kartMng.getCntPers(rqn, calc, kart, serv, cntPers, genDt); //tp=0 (для получения кол-во прож. для расчёта нормативного объема)
 
 		//получить расценку по норме	
 		stPrice = kartMng.getServPropByCD(rqn, calc, stServ, "Цена", genDt);
@@ -340,7 +340,7 @@ public class ChrgThr {
 				Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета для полива"), 0d) == 1d) {
 			
 			
-			stdt = kartMng.getStandart(rqn, calc, serv, cntPers, genDt);
+			stdt = kartMng.getStandartVol(rqn, calc, serv, cntPers, genDt);
 			//здесь же получить расценки по свыше соц.нормы и без проживающих 
 			if (serv.getServUpst() != null) {
 				
