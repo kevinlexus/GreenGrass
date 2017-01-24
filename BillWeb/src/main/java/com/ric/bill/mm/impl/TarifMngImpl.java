@@ -12,7 +12,7 @@ import com.ric.bill.Utl;
 import com.ric.bill.dao.TarifDAO;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 import com.ric.bill.model.tr.TarifServProp;
 

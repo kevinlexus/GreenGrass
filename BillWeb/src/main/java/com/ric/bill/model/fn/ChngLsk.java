@@ -22,9 +22,9 @@ import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.tr.Serv;
 
 /**
  * Детали перерасчета - лицевые счета

@@ -10,7 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.ric.bill.dao.ServDAO;
-import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Serv;
 
 
 @Repository

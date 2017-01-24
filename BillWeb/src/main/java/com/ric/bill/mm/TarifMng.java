@@ -6,8 +6,8 @@ import java.util.Set;
 
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.tr.Prop;
+import com.ric.bill.model.tr.Serv;
 
 public interface TarifMng {
 

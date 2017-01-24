@@ -14,7 +14,6 @@ import javax.persistence.Table;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Serv;
 
 /**
  * Свойство по услуге по тарифу

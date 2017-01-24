@@ -37,7 +37,7 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Par;
-import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Serv;
 
 
 /**

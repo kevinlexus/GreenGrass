@@ -9,10 +9,10 @@ import com.ric.bill.RegContains;
 import com.ric.bill.Standart;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 
 public interface VolMng  {

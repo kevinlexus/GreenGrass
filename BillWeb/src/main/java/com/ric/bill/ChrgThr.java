@@ -34,9 +34,9 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.fn.ChngVal;
 import com.ric.bill.model.fn.Chrg;
+import com.ric.bill.model.tr.Serv;
 
 /**
  * РАСЧЕТ НАЧИСЛЕНИЯ, ВЫЗЫВАЕТСЯ В ПОТОКЕ
@@ -75,13 +75,14 @@ public class ChrgThr {
 
 	private String thrName;
 	
-    //вспомогательные массивы
+    //вспомогательные коллекции
     private List<Chrg> prepChrg;
+    private List<ChrgMainServRec> prepChrgMainServ;
+    
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
 
     private Calc calc;
-    
     // вспомогательный класс-контейнер для перерасчета
    /* private class PriceOrg {
     	public PriceOrg(Double val, Org org2) {
@@ -108,13 +109,14 @@ public class ChrgThr {
 	public void set(Calc calc, Serv serv,  
 			HashMap<Serv, BigDecimal> mapServ, 
 			HashMap<Serv, BigDecimal> mapVrt, 
-			List<Chrg> prepChrg) {
+			List<Chrg> prepChrg,
+			List<ChrgMainServRec> prepChrgMainServ) {
 		this.calc = calc;
 		this.serv = serv;
 		this.mapServ = mapServ;
 		this.mapVrt = mapVrt;
 		this.prepChrg = prepChrg;
-
+		this.prepChrgMainServ = prepChrgMainServ;
 	}
 
 	@Async
@@ -202,6 +204,9 @@ public class ChrgThr {
 			//break;
 		}
 		
+		// ДОБАВИТЬ сгруппированные по основной услуге суммы начислений
+		chrgMainServAppend(chStore.getStoreMainServ());
+		
 		// ОКОНЧАТЕЛЬНО рассчитать данные (умножить расценку на объем, округлить)
 		for (ChrgRec rec : chStore.getStore()) {
 			BigDecimal vol, area, sum;
@@ -238,11 +243,6 @@ public class ChrgThr {
 			}
 		} 
 
-		// проверить коллекцию
-		for (ChrgMainServRec rec : chStore.getStoreMainServ()) {
-			log.info("CHECK collect= mainServ={}, sum={}, dt={}", rec.getMainServ(), rec.getSum(), rec.getDt());
-		}		
-		
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;
 		return new AsyncResult<Result>(res);
@@ -658,6 +658,16 @@ public class ChrgThr {
 	private void chrgAppend(Chrg chrg) {
 		synchronized (prepChrg) {
 		  prepChrg.add(chrg);
+		}
+	}
+
+	/**
+	 * добавить из потока все строки сумм начислений по основной услуге
+	 * @param list
+	 */
+	private void chrgMainServAppend(List<ChrgMainServRec> lst) {
+		synchronized (prepChrgMainServ) {
+			prepChrgMainServ.addAll(lst);
 		}
 	}
 	

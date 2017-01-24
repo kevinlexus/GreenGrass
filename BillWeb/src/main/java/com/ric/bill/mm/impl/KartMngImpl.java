@@ -26,10 +26,10 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.ps.Pers;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.Registrable;
+import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 import com.ric.bill.model.tr.TarifServProp;
 

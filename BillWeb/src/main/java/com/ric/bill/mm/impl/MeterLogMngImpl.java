@@ -29,13 +29,13 @@ import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.MeterExs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.mt.MeterLogGraph;
 import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.tr.Serv;
 
 //включил кэш - стало хуже, по скорости - 61 сек.
 @Service

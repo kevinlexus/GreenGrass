@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Serv;
 
 /**
  * Хранилище записей начисления
@@ -46,34 +46,36 @@ public class ChrgStore {
 		Serv mainServ = serv.getServChrg();
 		// умножить расценку на объем, получить сумму)
 		BigDecimal sum = vol.multiply(price);
-		if (getStoreMainServ().size() == 0) {
-			//завести новую строку 
-			getStoreMainServ().add(new ChrgMainServRec(sum, mainServ, dt));
-		} else {
-			ChrgMainServRec lastRec = null;
-			//получить последний добавленный элемент по данной дате
-			for (ChrgMainServRec rec : getStoreMainServ()) {
-				if (rec.getDt().equals(dt)) {
-					lastRec = rec;
-				}
-			}
-			if (lastRec == null) {
-				//последний элемент не найден, - создать
+		if (sum.compareTo(BigDecimal.ZERO) != 0) {
+			if (getStoreMainServ().size() == 0) {
+				//завести новую строку 
 				getStoreMainServ().add(new ChrgMainServRec(sum, mainServ, dt));
 			} else {
-				//последний элемент найден, добавить в него сумму начисления
-				//сравнить по дате
-				if (lastRec.getDt().equals(dt)) {
-						//добавить данные в последнюю строку
-						if (lastRec.getSum() != null) {
-							lastRec.setSum(lastRec.getSum().add(sum));
-						} else {
-							lastRec.setSum(sum);
-						}
-					} else {
-						//завести новую строку, если отличается датой
-						getStoreMainServ().add(new ChrgMainServRec(sum, mainServ, dt));
+				ChrgMainServRec lastRec = null;
+				//получить последний добавленный элемент по данной дате
+				for (ChrgMainServRec rec : getStoreMainServ()) {
+					if (rec.getDt().equals(dt)) {
+						lastRec = rec;
 					}
+				}
+				if (lastRec == null) {
+					//последний элемент не найден, - создать
+					getStoreMainServ().add(new ChrgMainServRec(sum, mainServ, dt));
+				} else {
+					//последний элемент найден, добавить в него сумму начисления
+					//сравнить по дате
+					if (lastRec.getDt().equals(dt)) {
+							//добавить данные в последнюю строку
+							if (lastRec.getSum() != null) {
+								lastRec.setSum(lastRec.getSum().add(sum));
+							} else {
+								lastRec.setSum(sum);
+							}
+						} else {
+							//завести новую строку, если отличается датой
+							getStoreMainServ().add(new ChrgMainServRec(sum, mainServ, dt));
+						}
+				}
 			}
 		}
 

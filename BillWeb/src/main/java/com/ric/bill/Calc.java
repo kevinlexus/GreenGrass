@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Serv;
 
 /**
  * Хранилище всех необходимых параметров для расчета

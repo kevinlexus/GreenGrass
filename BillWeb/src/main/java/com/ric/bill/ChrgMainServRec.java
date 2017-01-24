@@ -3,7 +3,8 @@ package com.ric.bill;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import com.ric.bill.model.bs.Serv;
+
+import com.ric.bill.model.tr.Serv;
 
 /**
  * Строка начисления, сгруппированная по главной услуге

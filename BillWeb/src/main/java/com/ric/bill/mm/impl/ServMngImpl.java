@@ -29,7 +29,7 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.ServTree;
 
 @Service

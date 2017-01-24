@@ -7,7 +7,7 @@ import com.ric.bill.Storable;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Serv;
 
 public interface MLogs extends Storable, Simple {
 

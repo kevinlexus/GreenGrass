@@ -26,7 +26,7 @@ import org.hibernate.annotations.ParamDef;
 import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
-import com.ric.bill.model.bs.Serv;
+import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 
 /**

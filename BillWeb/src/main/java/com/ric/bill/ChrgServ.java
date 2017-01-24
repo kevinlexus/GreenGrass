@@ -2,15 +2,17 @@ package com.ric.bill;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
@@ -28,15 +30,11 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.ErrorWhileChrg;
-import com.ric.bill.excp.TooManyRecursiveCalls;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
@@ -45,11 +43,9 @@ import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Serv;
-import com.ric.bill.model.fn.Chng;
 import com.ric.bill.model.fn.Chrg;
+import com.ric.bill.model.tr.Serv;
 
 /**
  * Сервис формирования начисления
@@ -87,6 +83,8 @@ public class ChrgServ {
 
     //вспомогательные коллекции
     private List<Chrg> prepChrg;
+    private List<ChrgMainServRec> prepChrgMainServ;
+    
     private HashMap<Serv, BigDecimal> mapServ;
     private HashMap<Serv, BigDecimal> mapVrt;
     //коллекция для формирования потоков
@@ -96,11 +94,32 @@ public class ChrgServ {
     private static Boolean errThread;
     private Calc calc;
     
+	// текущий уровень очереди
+    Integer servLevel;
+    // коллекция, для проверки зависимых услуг
+	//private ArrayList<Serv> lstDep;
+    
 	//конструктор
     public ChrgServ() {
     	super();
     }
 
+    // внутренний класс-контейнер пачки услуг на обработку
+/*    private class BatchServ {
+    	public int i; // очередь обработки
+    	public List<Serv> lst; // список услуг
+    	
+    	public BatchServ(int i, List<Serv> lst) {
+    		this.i=i;
+    		this.lst = lst; 
+    	}
+    }
+    //коллекция контейнеров очередей услуг по уровням обработки
+    private List<BatchServ> queBatch;
+  */  
+
+    Map<Serv, Integer> queBatch; // ключ - услуга, value - уровень
+    
     //внутренний класс, контроля
     private class Control {
 		Integer orgId;
@@ -155,7 +174,7 @@ public class ChrgServ {
     }
     
 	//получить список N следующих услуг, для расчета в потоках
-    private List<Serv> getNextServ(int cnt) {
+/*    private List<Serv> getNextServ(int cnt) {
     	List<Serv> lst = new ArrayList<Serv>(); 
 		int i=1;
 		Iterator<Serv> itr = servThr.iterator();
@@ -170,7 +189,136 @@ public class ChrgServ {
 		}
 		
     	return lst;
-	}
+	}*/
+    
+    /**
+     * получить список N следующих услуг, для расчета в потоках 
+     * @param cnt // кол-во услуг
+     * @param lstDep // список зависимых услуг
+     * @return // вернуть - список услуг
+     */
+/*    private List<Serv> getNextServ(int cnt) {
+    	List<Serv> lst = new ArrayList<Serv>(); 
+		int i=1;
+		Iterator<Serv> itr = servThr.iterator();
+		while (itr.hasNext()) {
+			Serv serv = itr.next(); 
+    		
+			if (lstDep.size()==0) {
+				// если список зависимых услуг пуст
+				lst.add(serv);
+				lstDep.add(serv);
+	    		itr.remove();
+			} else {
+				// проверить, ссылается ли услуга на родительскую (является ли зависимой)
+				Optional<Serv> parentServ = lstDep.stream().filter(t -> t.equals(serv.getServDep())).findAny();
+				if (parentServ.isPresent()) {
+					// да, ссылается, добавить в список обработки
+					lst.add(serv);
+					lstDep.add(serv);
+		    		itr.remove();
+				}
+			}
+    		
+    		i++;
+			if (i > cnt) {
+				break;
+			}
+		}
+		
+    	return lst;
+	}*/
+
+
+    /**
+     * получить список N следующих услуг, для расчета в потоках 
+     * @param cnt // кол-во услуг
+     */
+    private List<Serv> getNextServ(int cnt) {
+    	List<Serv> lst;
+    	while (true) {
+    		// поискать на текущем уровне
+    		lst = getNextServByLevel(servLevel, cnt);
+			if (lst.size() !=0) {
+				return lst;
+			} else {
+				// увеличить уровень на +1, попробовать поискать услуги
+				servLevel++;
+	    		lst = getNextServByLevel(servLevel, cnt);
+	    		return lst;
+			}
+    	}
+    	
+    }
+    
+    /**
+     * получить список N следующих услуг, по уровню, для расчета в потоках 
+     * @param level // уровень
+     * @param cnt // кол-во услуг
+     */
+    private List<Serv> getNextServByLevel(int level, int cnt) {
+    	List<Serv> lst = new ArrayList<Serv>(); 
+		int i=1;
+    	
+		Iterator<Entry<Serv, Integer>> itr = queBatch.entrySet().iterator();
+		while (itr.hasNext()) {
+			Entry<Serv, Integer> entry =  itr.next();
+			if (entry.getValue().equals(level)) {
+				// добавить услугу по соответствующему уровню
+				
+				log.info("entrySet.serv.cd = {}, level={}", entry.getKey().getCd(), entry.getValue());
+				
+				lst.add(entry.getKey());
+	    		itr.remove();
+	    		i++;
+	    		if (i > cnt) {
+					break;
+				}
+			}
+		}
+		
+		return lst;
+    }
+    
+    
+    /**
+     * заполнить пачки услуг
+     */
+    private void setQueBatch() {
+    	Integer level=0, old=-1;
+    	while (true) {
+    		if (addQueBatch(level, old) != 0){
+        		level++; 
+        		old++;
+    		} else {
+    			break;
+    		}
+    	}
+    }
+
+    /**
+     * заполнить пачки услуг по уровню
+     * @param level - текущий уровень
+     * @param old - предыдущий уровень
+     * @return - вернуть кол-во услуг добавленных
+     */
+    private Integer addQueBatch(Integer level, Integer old) {
+    	Integer len;
+    	if (level==0) {
+     		// 0 уровень - найти независящие ни от каких услуг услуги))
+			Map<Serv, Integer> lst = servThr.parallelStream().filter(t -> t.getServDep() == null).collect(Collectors.toMap( (t) -> t , (t) -> level));
+			queBatch.putAll(lst);
+			len=lst.size();
+    	} else {
+    		// остальные итерации - зависимые услуги от уровня отстающего на -1
+       		// отфильтровать по значению уровня -1, по родительской услуге, записать новый список 
+			Map<Serv, Integer> lst = servThr.parallelStream().filter(t -> queBatch.get(t.getServDep())!=null && queBatch.get(t.getServDep()).equals(old) 
+							).collect(Collectors.toMap( (t) -> t , (t) -> level));
+			queBatch.putAll(lst);
+			len=lst.size();
+    	}
+    	return len;
+    }
     
     /**
 	 * выполнить расчет начисления по лиц.счету
@@ -182,36 +330,44 @@ public class ChrgServ {
 		//log.info("Lsk="+calc.getKart().getLsk()+", FLsk="+calc.getKart().getFlsk());
 		Result res = new Result();
 		res.err=0;
-		//if (1==1) {
-		//	return new AsyncResult<Result>(res);
-		//}
-		
-		prepChrg = new ArrayList<Chrg>(0); 
 
+		prepChrg = new ArrayList<Chrg>(0); 
+		prepChrgMainServ = new ArrayList<ChrgMainServRec>(0);
+		// создать очередь
+		queBatch = new HashMap<Serv, Integer>(0);
+		
 		//для виртуальной услуги	
 		mapServ = new HashMap<Serv, BigDecimal>();  
 		mapVrt = new HashMap<Serv, BigDecimal>();  
 
-		//список потоков
+		// список потоков
 		List<ChrgThr> trl = new ArrayList<ChrgThr>();
+
 		//найти все услуги, действительные в лиц.счете
 		//и создать потоки по кол-ву услуг
 		
 		Kart kart = calc.getKart();
-		//загрузить все услуги
+		//загрузить все услуги по данному л.с.
 		servThr = kartMng.getAllServ(calc.getReqConfig().getRqn(), calc);
+		// сбросить уровень
+		servLevel=0;
+		// создать список обрабатываемых услуг, с очередями
+		setQueBatch();
 		
 		errThread=false;
 
-		for (Serv serv: servThr) {
-			//log.info("ChrgServ1: serv={}", serv);
-			log.trace("ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
-		}
 		while (true) {
 			log.trace("ChrgServ: Loading servs for threads");
 			//получить следующие N услуг, рассчитать их в потоке
 			List<Serv> servWork = getNextServ(10);
-			if (servWork.isEmpty()) {
+
+			for (Serv serv: servWork) {
+				log.info("ПРОВЕРКА!!! ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
+			}
+
+			
+
+			if (servWork.size()==0) {
 				//выйти, если все услуги обработаны
 				break;
 			}
@@ -222,7 +378,7 @@ public class ChrgServ {
 			for (Serv serv : servWork) {
 					Future<Result> fut = null;
 					ChrgThr chrgThr = ctx.getBean(ChrgThr.class);
- 					chrgThr.set(calc, serv, mapServ, mapVrt, prepChrg);
+ 					chrgThr.set(calc, serv, mapServ, mapVrt, prepChrg, prepChrgMainServ);
 			    	fut = chrgThr.run1();
 			    	frl.add(fut);
 			    	log.trace("ChrgServ: Begins "+serv.getCd());
@@ -287,10 +443,14 @@ public class ChrgServ {
 				}
 			}		    
 		}		
+
+		// проверить коллекцию
+		//for (ChrgMainServRec rec : prepChrgMainServ) {
+		//	log.info("CHECK collection: mainServ={}, sum={}, dt={}", rec.getMainServ().getCd(), rec.getSum(), rec.getDt());
+		//}		
 		
 		return res;
 	}
-
 
 
 	/**
@@ -454,6 +614,8 @@ public class ChrgServ {
 		
 		log.info("TIMING 1={}, 2={}, 3={}, 4={}, 5={}, 6={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
 	}
+	
+
 	
 	/**
 	 * сохранить запись о сумме, предназаначенной для сохранения дельты в долгах 

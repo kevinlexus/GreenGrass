@@ -23,9 +23,9 @@ import org.hibernate.annotations.FetchMode;
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.bs.Serv;
 import com.ric.bill.model.mt.Meter;
 import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.tr.Serv;
 
 /**
  * Заголовочная таблица - перерасчеты
