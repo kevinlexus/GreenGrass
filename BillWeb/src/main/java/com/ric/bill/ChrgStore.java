@@ -16,12 +16,18 @@ import com.ric.bill.model.bs.Serv;
  */
 public class ChrgStore {
 
+	// коллекция для группированного начисления
 	private List<ChrgRec> store;
+
+	// сгруппированные до главной услуги записи начисления
+	// нужна для услуг считающих своё начисление от начисления других услуг
+	private List<ChrgMainServRec> storeMainServ;
 
 	//конструктор
 	public ChrgStore () {
 		super();
-		store = new ArrayList<ChrgRec>(0); 
+		setStore(new ArrayList<ChrgRec>(0));
+		setStoreMainServ(new ArrayList<ChrgMainServRec>(0)); 
 	}
 
 	/**
@@ -32,12 +38,49 @@ public class ChrgStore {
      * @param stdt - норматив
 	 * @param serv - услуга
 	 * @param org - организация
-	 * @param dt1 - дата
+	 * @param dt - дата
 	 */
-	public void addChrg (BigDecimal vol, BigDecimal price, BigDecimal stdt, Integer cntPers, BigDecimal area, Serv serv, Org org, Date dt1) {
+	public void addChrg (BigDecimal vol, BigDecimal price, BigDecimal stdt, Integer cntPers, BigDecimal area, Serv serv, Org org, Date dt) {
+		
+		// СГРУППИРОВАТЬ по основной услуге TODO! Это нужно не по всем услугам, а только по тем, где есть дочерние услуги, зависимые от суммы начисления -  поправить использование TODO!
+		Serv mainServ = serv.getServChrg();
+		// умножить расценку на объем, получить сумму)
+		BigDecimal sum = vol.multiply(price);
+		if (getStoreMainServ().size() == 0) {
+			//завести новую строку 
+			getStoreMainServ().add(new ChrgMainServRec(sum, mainServ, dt));
+		} else {
+			ChrgMainServRec lastRec = null;
+			//получить последний добавленный элемент по данной дате
+			for (ChrgMainServRec rec : getStoreMainServ()) {
+				if (rec.getDt().equals(dt)) {
+					lastRec = rec;
+				}
+			}
+			if (lastRec == null) {
+				//последний элемент не найден, - создать
+				getStoreMainServ().add(new ChrgMainServRec(sum, mainServ, dt));
+			} else {
+				//последний элемент найден, добавить в него сумму начисления
+				//сравнить по дате
+				if (lastRec.getDt().equals(dt)) {
+						//добавить данные в последнюю строку
+						if (lastRec.getSum() != null) {
+							lastRec.setSum(lastRec.getSum().add(sum));
+						} else {
+							lastRec.setSum(sum);
+						}
+					} else {
+						//завести новую строку, если отличается датой
+						getStoreMainServ().add(new ChrgMainServRec(sum, mainServ, dt));
+					}
+			}
+		}
+
+		// СГРУППИРОВАТЬ по услуге, организации, расценке, дате
 		if (getStore().size() == 0) {
 			//завести новую строку
-			getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt1, dt1));
+			getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt, dt));
 		} else {
 			ChrgRec lastRec = null;
 			//получить последний добавленный элемент по данной услуге
@@ -48,7 +91,7 @@ public class ChrgStore {
 			}
 			if (lastRec == null) {
 				//последний элемент с данной услугой не найден, - создать
-				getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt1, dt1));
+				getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt, dt));
 			} else {
 				//последний элемент найден
 				//сравнить по-элементно
@@ -74,10 +117,10 @@ public class ChrgStore {
 						}
 						
 						//установить заключительную дату периода
-						lastRec.setDt2(dt1);
+						lastRec.setDt2(dt);
 					} else {
 						//завести новую строку, если отличается расценкой или организацией
-						getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt1, dt1));
+						getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt, dt));
 					}
 			}
 		}
@@ -87,8 +130,17 @@ public class ChrgStore {
 		return store;
 	}
 
-	public void setStore(List<ChrgRec> store) {
+	private void setStore(List<ChrgRec> store) {
 		this.store = store;
 	}
+
+	public List<ChrgMainServRec> getStoreMainServ() {
+		return storeMainServ;
+	}
+
+	private void setStoreMainServ(List<ChrgMainServRec> storeMainServ) {
+		this.storeMainServ = storeMainServ;
+	}
+
 	
 }

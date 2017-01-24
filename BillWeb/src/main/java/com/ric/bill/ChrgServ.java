@@ -460,7 +460,7 @@ public class ChrgServ {
 	 * @param serv - услуга
 	 * @param sum - сумма
 	 */
-	public /*synchronized */void putSumDeb(MultiKeyMap mkMap, Serv serv, Org org, BigDecimal sum) {
+	private /*synchronized */void putSumDeb(MultiKeyMap mkMap, Serv serv, Org org, BigDecimal sum) {
 		BigDecimal s = (BigDecimal) mkMap.get(serv, org);
 		if (s != null) {
 		  s=s.add(sum);

@@ -68,7 +68,8 @@ public class ChrgThr {
     @PersistenceContext
     private EntityManager em;
 
-	private Serv serv;
+	// основная услуга
+    private Serv serv;
 	//временное хранилище записей
 	private ChrgStore chStore;
 
@@ -96,9 +97,14 @@ public class ChrgThr {
 		super();
 	}
 	
-	//установить параметры
-	//				thr1.set(serv, kart, mapServ, mapVrt, prepChrg);
-
+	/**
+	 * 
+	 * @param calc 	   - объект calc
+	 * @param serv 	   - услуга
+	 * @param mapServ  - коллекция для округления
+	 * @param mapVrt   - коллекция для округления
+	 * @param prepChrg - коллекция для сгруппированных записей начисления
+	 */
 	public void set(Calc calc, Serv serv,  
 			HashMap<Serv, BigDecimal> mapServ, 
 			HashMap<Serv, BigDecimal> mapVrt, 
@@ -232,6 +238,11 @@ public class ChrgThr {
 			}
 		} 
 
+		// проверить коллекцию
+		for (ChrgMainServRec rec : chStore.getStoreMainServ()) {
+			log.info("CHECK collect= mainServ={}, sum={}, dt={}", rec.getMainServ(), rec.getSum(), rec.getDt());
+		}		
+		
 		endTime   = System.currentTimeMillis();
 		totalTime = endTime - startTime2;
 		return new AsyncResult<Result>(res);
