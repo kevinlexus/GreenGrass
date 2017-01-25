@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -114,29 +115,30 @@ public class MeterLogMngImpl implements MeterLogMng {
 	
 	
 	/**
-	 * проверить существование хотя бы одного физ.счетчика по лиц.счету
+	 * проверить существование хотя бы одного физ.счетчика по лиц.счету по данной услуге
 	 * @param rqn   - уникальный номер запроса
 	 * @param kart  - лиц.счет
+	 * @param serv  - услуга
 	 * @param genDt - дата проверки
 	 * @return - существует/нет
 	 */
-	@Cacheable("rrr1")
-	public boolean checkExsKartMet (int rqn, Kart kart, Date genDt) {
-		for (MLogs mLog : kart.getMlog()) {
-			if (checkExsMet(rqn, mLog, genDt)) {
-				return true;
-			}
-		}
-		return false;
+	@Cacheable(cacheNames="rrr2", key="{ #rqn, #kart.getLsk(), #serv.getId(), #genDt}")
+	public boolean checkExsKartMet(int rqn, Kart kart, Serv serv, Date genDt) {
+		Optional<MeterLog> mLog = kart.getMlog().stream().filter(t -> t.getServ().equals(serv))
+		                       .filter(t -> t.getMeter().stream()
+		                    		   .anyMatch(d -> d.getExs().stream()
+		                    				   .anyMatch(v -> Utl.between(genDt, v.getDt1(), v.getDt2()) && v.getPrc() > 0d ) ) ).findAny();
+		log.info("CHECK2! = {}", mLog.isPresent());
+		return mLog.isPresent();
 	}
 	
 	/**
-	 * проверить существование физ.счетчика
+	 * проверить существование физ.счетчика (обычно для поиска счетчика ОДПУ
 	 * @param mLog
 	 */
-	@Cacheable("rrr1")
+	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mLog.getId(), #genDt}")
 	public /*synchronized*/ boolean checkExsMet(int rqn, MLogs mLog, Date genDt) {
-    	//получить период существования хотя бы одного из физ счетчиков, по этому лог.сч.
+    	// проверить существование хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
     			//по соотв.периоду

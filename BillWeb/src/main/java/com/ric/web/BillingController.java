@@ -114,7 +114,7 @@ public class BillingController {
 		
 		long endTime4=System.currentTimeMillis()-beginTime;
 
-	    log.info("Время исполнения: 1={},2={},3={},4={}", endTime1, endTime2, endTime3, endTime4);
+	    log.info("TIMING: доступ.к л.с.={}, конфиг={}, инит. bean={}, расчет={}", endTime1, endTime2, endTime3, endTime4);
 
 	    try {
 			if (fut.get().err ==0) {

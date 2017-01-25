@@ -18,7 +18,7 @@ import com.ric.bill.model.tr.Serv;
 public interface MeterLogMng {
 
 	public List<MLogs> getAllMetLogByServTp(int rqn, MeterContains mm, Serv serv, String tp);
-	public boolean checkExsKartMet (int rqn, Kart kart, Date genDt);
+	public boolean checkExsKartMet(int rqn, Kart kart, Serv serv, Date genDt);
 	public boolean checkExsMet(int rqn, MLogs mLog, Date genDt);
     public SumNodeVol getVolPeriod (int rqn, Calc calc, MLogs mLog, int tp, Date dt1, Date dt2);
 	public SumNodeVol getVolPeriod (int rqn, Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2);

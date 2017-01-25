@@ -274,7 +274,7 @@ public class DistGen {
 			SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			
 			if (metMng.checkExsMet(rqn, lnkODPU, genDt) && lnkODPUVol.getVol() >= 0d) {
-				//при наличии счетчика(ков) ОДПУ и объема по нему
+				//при наличии физ.счетчика(ков) ОДПУ и объема по нему
 				if (lnkODNVol.getVol() > 0 && lnkODNVol.getArea() > 0) {
 					//ПЕРЕРАСХОД
 					vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();

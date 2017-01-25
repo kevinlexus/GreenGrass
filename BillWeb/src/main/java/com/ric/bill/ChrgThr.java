@@ -411,25 +411,30 @@ public class ChrgThr {
 			
 		}
 		
+		Double raisCoeff = 0d;
 		// при отсутствии ПУ и возможности его установки, применить повышающий коэффициент для определённых услуг
-		String parCd = null;
-		Double raisCoeff = 1d;
-		Boolean isMeterCanSet = null;
-		if (serv.getCd().equals("Горячая вода")) {
-			parCd = "Возможность установки ИПУ по гор. воде";
-		} else if (serv.getCd().equals("Холодная вода")) {
-			parCd = "Возможность установки ИПУ по хол. воде";
-		} else if (serv.getCd().equals("Электроснабжение")) {
-			parCd = "Возможность установки ИПУ по эл/эн";
-		}
-		
-		if (parCd!= null) {
-			if (parMng.getBool(rqn, kart, parCd, genDt) !=null && parMng.getBool(rqn, kart, parCd, genDt)) {
-				// с возможностью установки счетчика
-				raisCoeff = 1.0d; // Hard code установить коэфф 1.5  TODO ВЕРНУТЬ 1.5 !!!!!!!!!!!!!!!!!!!!!!!!
+		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему осн.род.усл."), 0d) == 1d) {
+			if (!metMng.checkExsKartMet(rqn, kart, serv.getServDep(), genDt)) {	
+				// если не установлен счетчик по основной родительской услуге	
+				String parCd = null;
+				Boolean isMeterCanSet = null;
+				if (serv.getCd().equals("ГВС(инд) п.344 РФ")) {
+					parCd = "Возможность установки ИПУ по гор. воде";
+				} else if (serv.getCd().equals("ХВС(инд) п.344 РФ")) {
+					parCd = "Возможность установки ИПУ по хол. воде";
+				} else if (serv.getCd().equals("Эл/эн(инд) п.344 РФ")) {
+					parCd = "Возможность установки ИПУ по эл/эн";
+				}
+				
+				// проверить наличие параметров возможности установки счетчиков
+				if (parCd!= null) {
+					if (parMng.getBool(rqn, kart, parCd, genDt) !=null && parMng.getBool(rqn, kart, parCd, genDt)) {
+						// с возможностью установки счетчика
+						raisCoeff = 1.5d; // Hard code установить коэфф 1.5  TODO ВЕРНУТЬ 1.
+					}
+				}
 			}
-		}
-		
+		}		
 		
 		//получить базу для начисления
 		baseCD = parMng.getStr(rqn, serv, "Name_CD_par_base_charge");
@@ -495,7 +500,20 @@ public class ChrgThr {
 		// ВЫПОЛНИТЬ РАСЧЕТ
 		/****************************/
 
-		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по общей площади-2"), 0d) == 1d ||
+		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему осн.род.усл."), 0d) == 1d) {
+			
+			Optional<ChrgMainServRec> rec;
+			// обязательно синхронизировать (в prepChrgMainServ идёт запись из других потоков)
+			synchronized(prepChrgMainServ) {
+				 rec = prepChrgMainServ.parallelStream().filter(t -> t.getMainServ().equals(serv.getServDep()) && t.getDt().equals(genDt) ).findAny();
+			}
+			if (rec.isPresent()) {
+				// взять сумму в качестве объема, повыш.коэфф в качестве цены - СТРАННОВАТО! TODO!
+				log.info("CHECK! = {}, {}", rec.get().getSum(), raisCoeff);
+				chStore.addChrg(rec.get().getSum(), BigDecimal.valueOf(raisCoeff), null, null, null, stServ, org, genDt);
+			}
+			
+		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по общей площади-2"), 0d) == 1d ||
 			Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по кол-ву точек-1"), 0d) == 1d ||
 			Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему без исп.норматива-1"), 0d) == 1d) {
 			//без соцнормы и свыше!
@@ -521,21 +539,21 @@ public class ChrgThr {
 					tmpVol= stdt.partVol;
 				}
 	
-				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice * raisCoeff).setScale(2, BigDecimal.ROUND_HALF_UP), 
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(stPrice), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, stServ, org, genDt);
 				//свыше соцнормы
 				tmpVol = absVol - tmpVol;
-				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice * raisCoeff).setScale(2, BigDecimal.ROUND_HALF_UP), 
+				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, null, upStServ, org, genDt);
 			} else {
 				//нет проживающих
 				if (woKprServ != null) {
 					//если существует услуга "без проживающих"
-					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice * raisCoeff).setScale(2, BigDecimal.ROUND_HALF_UP), 
+					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(woKprPrice), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cntEmpt, null, woKprServ, org, genDt);
 				} else {
 					//услуги без проживающих не существует, поставить на свыше соц.нормы
-					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice * raisCoeff).setScale(2, BigDecimal.ROUND_HALF_UP), 
+					chStore.addChrg(BigDecimal.valueOf(vol), BigDecimal.valueOf(stPrice), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cntEmpt, null, upStServ, org, genDt);
 				}
 				
