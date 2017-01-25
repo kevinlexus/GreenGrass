@@ -430,7 +430,7 @@ public class ChrgThr {
 				if (parCd!= null) {
 					if (parMng.getBool(rqn, kart, parCd, genDt) !=null && parMng.getBool(rqn, kart, parCd, genDt)) {
 						// с возможностью установки счетчика
-						raisCoeff = 1.5d; // Hard code установить коэфф 1.5  TODO ВЕРНУТЬ 1.
+						raisCoeff = Utl.nvl(kartMng.getServPropByCD(rqn, calc, serv, "Коэффициент начисления осн.усл.", genDt), 0d); // Hard code установить коэфф 0.5
 					}
 				}
 			}
@@ -509,7 +509,7 @@ public class ChrgThr {
 			}
 			if (rec.isPresent()) {
 				// взять сумму в качестве объема, повыш.коэфф в качестве цены - СТРАННОВАТО! TODO!
-				log.info("CHECK! = {}, {}", rec.get().getSum(), raisCoeff);
+				//log.info("CHECK! = {}, {}", rec.get().getSum(), raisCoeff);
 				chStore.addChrg(rec.get().getSum(), BigDecimal.valueOf(raisCoeff), null, null, null, stServ, org, genDt);
 			}
 			

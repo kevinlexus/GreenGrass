@@ -128,7 +128,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		                       .filter(t -> t.getMeter().stream()
 		                    		   .anyMatch(d -> d.getExs().stream()
 		                    				   .anyMatch(v -> Utl.between(genDt, v.getDt1(), v.getDt2()) && v.getPrc() > 0d ) ) ).findAny();
-		log.info("CHECK2! = {}", mLog.isPresent());
+		//log.info("CHECK2! = {}", mLog.isPresent());
 		return mLog.isPresent();
 	}
 	
