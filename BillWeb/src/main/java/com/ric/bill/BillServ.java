@@ -289,8 +289,8 @@ public class BillServ {
 		}
 
 		long endTime3 = System.currentTimeMillis() - beginTime;
-		log.info("Время исполнения: 1={}, 2={}, 3={}", endTime1, endTime2,
-				endTime3);
+		//log.info("TIMING: найти дом, л.с.={}, распр.объем={}, начислить={}", endTime1, endTime2,
+				//endTime3);
 
 		return fut;
 	}

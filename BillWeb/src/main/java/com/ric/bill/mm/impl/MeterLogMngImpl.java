@@ -76,7 +76,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param tp - Тип, если не указан - по всем
 	 * @return - искомый список
 	 */
-	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mm.getKlsk(), #serv.getId(), #tp }") 
 	public /*synchronized*/ List<MLogs> getAllMetLogByServTp(int rqn, MeterContains mm, Serv serv, String tp) {
 		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
@@ -160,13 +159,12 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param dt2 - кон.период
 	 * @return - возвращаемый объем
 	 */
-	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mLog.getId(), #tp, #dt1, #dt2}")
-    public /*synchronized*/ SumNodeVol getVolPeriod (int rqn, Calc calc, MLogs mLog, int tp, Date dt1, Date dt2) {
+	@Cacheable(cacheNames="rrr1", key="{ #rqn, #statusVol, #mLog.getId(), #tp, #dt1, #dt2}")
+    public  SumNodeVol getVolPeriod(int rqn, Integer statusVol, MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
 		/* Java 8 */
-		mLog.getVol().parallelStream()
-	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(calc.getReqConfig().getStatusVol()) && // по статусу
+		mLog.getVol().stream()  // ВАЖНО! ЗДЕСЬ нельзя parallelStream - получается не предсказуемый результат!!!
+	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(statusVol) && // по статусу
 	            			Utl.between(t.getDt1(), dt1, dt2) && //здесь фильтр берет даты снаружи!
 	        				Utl.between(t.getDt2(), dt1, dt2))
 					.forEach(t -> {
@@ -179,6 +177,9 @@ public class MeterLogMngImpl implements MeterLogMng {
 					    			lnkVol.setLimit(t.getVol1()); //здесь set вместо add (будет одно значение) (как правило для ЛОДН счетчиков)
 					    		}
 							});
+		
+		//return lnkVol;
+		
 		return lnkVol;
 	}
 
@@ -191,15 +192,14 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param dt2 - кон.период
 	 * @return - возвращаемый объем
 	 */
-	//@Cacheable(cacheNames="rrr1") 
-	@Cacheable(cacheNames="rrr1", key="{ #rqn, #calc.getKart().getLsk(), #mc.getId(), #serv.getId(), #dt1, #dt2}")
-	public synchronized SumNodeVol getVolPeriod (int rqn, Calc calc, MeterContains mc, Serv serv, Date dt1, Date dt2) {
+	@Cacheable(cacheNames="rrr1", key="{ #rqn, #statusVol, #mc.getId(), #serv.getId(), #dt1, #dt2}")
+	public synchronized SumNodeVol getVolPeriod (int rqn, Integer statusVol, MeterContains mc, Serv serv, Date dt1, Date dt2) {
 		SumNodeVol amntSum = new SumNodeVol();
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
 		for (MeterLog mLog: mc.getMlog()) {
 			//по заданной услуге
 			if (mLog.getServ().equals(serv)) {
-				SumNodeVol tmp = getVolPeriod(rqn, calc, mLog, 0, dt1, dt2);
+				SumNodeVol tmp = getVolPeriod(rqn, statusVol, mLog, 0, dt1, dt2);
 				amntSum.addArea(tmp.getArea());
 				amntSum.addPers(tmp.getPers());
 				amntSum.addVol(tmp.getVol());

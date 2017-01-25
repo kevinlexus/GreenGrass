@@ -473,7 +473,7 @@ public class ChrgThr {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
 			}
 			//получить объем по лицевому счету и услуге за ДЕНЬ
-			SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc, kart, serv.getServMet(), genDt, genDt);
+			SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), genDt, genDt);
 			vol = tmpNodeVol.getVol();
 			if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему-2"), 0d) == 1d) {
 				//доля площади в день
@@ -488,7 +488,7 @@ public class ChrgThr {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
 			}
 			//получить объем по услуге за период
-			SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc, kart, serv.getServMet(), 
+			SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), 
 					calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			vol = tmpNodeVol.getVol();
 			vol = vol / calc.getReqConfig().getCntCurDays();

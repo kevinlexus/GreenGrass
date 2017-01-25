@@ -607,7 +607,7 @@ public class ChrgServ {
 		
 		long endTime6=System.currentTimeMillis()-beginTime;
 		
-		log.info("TIMING: найти kart={}, групп.до укруп.тек.={}, групп.до укруп.пред.={}, перенос в архив={}, передать дельту={}, сохр.начисл.={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
+		//log.info("TIMING: найти kart={}, групп.до укруп.тек.={}, групп.до укруп.пред.={}, перенос в архив={}, передать дельту={}, сохр.начисл.={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
 	}
 	
 
