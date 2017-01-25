@@ -265,11 +265,9 @@ public class ChrgServ {
 			Entry<Serv, Integer> entry =  itr.next();
 			if (entry.getValue().equals(level)) {
 				// добавить услугу по соответствующему уровню
-				
-				log.info("entrySet.serv.cd = {}, level={}", entry.getKey().getCd(), entry.getValue());
-				
 				lst.add(entry.getKey());
 	    		itr.remove();
+				//log.info("entrySet.serv.cd = {}, level={}", entry.getKey().getCd(), entry.getValue());
 	    		i++;
 	    		if (i > cnt) {
 					break;
@@ -361,9 +359,9 @@ public class ChrgServ {
 			//получить следующие N услуг, рассчитать их в потоке
 			List<Serv> servWork = getNextServ(10);
 
-			for (Serv serv: servWork) {
-				log.info("ПРОВЕРКА!!! ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
-			}
+			//for (Serv serv: servWork) {
+				//log.info("ПРОВЕРКА!!! ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
+			//}
 
 			
 
@@ -503,15 +501,14 @@ public class ChrgServ {
 			putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(chrg.getSumAmnt()));
 		}
 
-		long endTime6=System.currentTimeMillis()-beginTime;
+		long endTime2=System.currentTimeMillis()-beginTime;
+		beginTime = System.currentTimeMillis();
 
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
 			if (chrg.getStatus().equals(1) && chrg.getPeriod().equals(calc.getReqConfig().getPeriod())) {
 				Serv servMain = null;
-				
-				long endTime7;
 				try {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
 					//преобразовать к объекту текущей сессии (потому что начисление взято из таблицы)
@@ -523,12 +520,10 @@ public class ChrgServ {
 				}
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
 				putSumDeb(mapDeb, servMain, chrg.getOrg(), BigDecimal.valueOf(-1d * Utl.nvl(chrg.getSumAmnt(), 0d)));
-				
-							
 			}
 		}
 		
-		long endTime2=System.currentTimeMillis()-beginTime;
+		long endTime3=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
 		
 		//перенести предыдущий расчет начисления в статус "архив" (1->0)
@@ -555,7 +550,7 @@ public class ChrgServ {
 		query.setParameter("period", calc.getReqConfig().getPeriod());
 		query.executeUpdate();
 		
-		long endTime3=System.currentTimeMillis()-beginTime;
+		long endTime4=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
 		
 		//ДЕЛЬТА
@@ -597,7 +592,7 @@ public class ChrgServ {
 			}
 		}
 		
-		long endTime4=System.currentTimeMillis()-beginTime;
+		long endTime5=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
 		
 		//Сохранить новое начисление (переписать из prepChrg)
@@ -610,9 +605,9 @@ public class ChrgServ {
 			kart.getChrg().add(chrg2); 
 		}
 		
-		long endTime5=System.currentTimeMillis()-beginTime;
+		long endTime6=System.currentTimeMillis()-beginTime;
 		
-		log.info("TIMING 1={}, 2={}, 3={}, 4={}, 5={}, 6={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
+		log.info("TIMING: найти kart={}, групп.до укруп.тек.={}, групп.до укруп.пред.={}, перенос в архив={}, передать дельту={}, сохр.начисл.={}", endTime1, endTime2, endTime3, endTime4, endTime5, endTime6);
 	}
 	
 
