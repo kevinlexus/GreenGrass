@@ -30,7 +30,11 @@ public class ParDAOImpl implements ParDAO {
 	public/* synchronized */Par getByCd(int rqn, String cd) {
 		Query query =em.createQuery("from Par t where t.cd = :cd");
 		query.setParameter("cd", cd);
-		return (Par) query.getSingleResult();
+		try {
+			return (Par) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	//работает это медленнее чем была итерация по всем параметрам объекта!

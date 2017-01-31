@@ -75,15 +75,6 @@ public class Config {
 		
 		obj.getDw().size();
 		
-		// TODO проверить что задал RQN=-1!!!
-		// TODO проверить что задал RQN=-1!!!
-		// TODO проверить что задал RQN=-1!!!
-		// TODO проверить что задал RQN=-1!!!
-		// TODO проверить что задал RQN=-1!!!
-		// TODO проверить что задал RQN=-1!!!
-		// TODO проверить что задал RQN=-1!!!
-		// TODO проверить что задал RQN=-1!!!
-		// TODO проверить что задал RQN=-1!!!
 		calendar.setTime(parMng.getDate(-1, obj, "Начало расчетного периода"));
 		setCurDt1(calendar.getTime());
 		calendar.setTime(parMng.getDate(-1, obj, "Конец расчетного периода"));

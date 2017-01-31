@@ -52,12 +52,13 @@ public class KartDAOImpl implements KartDAO {
 		List<Kart> lstKart = null;
 		try {
 			if (houseId == null) {
+				// весь фонд
 				q = em.createNativeQuery("select distinct k.lsk "+
 						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
 						   "where k.fk_kw = kw.id "+
 						   "and h.id = kw.fk_house "+
-						   "and o.reu in ('Z4', 'F4', 'J4', 'G4') /*'D8'*/ "+
-						   "and o.parent_id=u.id and h.id=7468 "+
+//						   "and o.reu in ('Z4', 'F4', 'J4', 'G4') /*'D8'*/ "+
+						   "and o.parent_id=u.id /*and h.id=7468*/ "+
 						   "and k.fk_uk = u.id "+
 						   "and ? between k.dt1 and k.dt2 "+
 						   //"and k.lsk between 276500 and 276535 "+
@@ -69,7 +70,7 @@ public class KartDAOImpl implements KartDAO {
 						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
 						   "where k.fk_kw = kw.id "+
 						   "and h.id = kw.fk_house "+
-						   "and o.reu in ('Z4', 'F4', 'J4', 'G4') /*'D8'*/ "+
+//						   "and o.reu in ('Z4', 'F4', 'J4', 'G4') /*'D8'*/ "+
 						   "and o.parent_id=u.id /*and h.id=1744*/ "+
 						   "and k.fk_uk = u.id "+
 						   "and ? between k.dt1 and k.dt2 "+

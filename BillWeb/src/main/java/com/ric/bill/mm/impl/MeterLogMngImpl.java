@@ -178,8 +178,6 @@ public class MeterLogMngImpl implements MeterLogMng {
 					    		}
 							});
 		
-		//return lnkVol;
-		
 		return lnkVol;
 	}
 

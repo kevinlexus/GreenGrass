@@ -1,6 +1,8 @@
 package com.ric.bill.mm.impl;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +22,10 @@ import com.ric.bill.dao.ParDAO;
 import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.WrongGetMethod;
+import com.ric.bill.excp.WrongSetMethod;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.bs.Dw;
+import com.ric.bill.model.bs.Obj;
 import com.ric.bill.model.bs.Par;
 
 
@@ -53,6 +57,7 @@ public class ParMngImpl implements ParMng {
 			return false;
 		}
 	}
+
 
 	@Cacheable(cacheNames="rrr1", key="{#rqn, #st.getKlsk(), #cd, #genDt }")
 	public Boolean getBool(int rqn, Storable st, String cd, Date genDt) throws EmptyStorable {
@@ -203,6 +208,42 @@ public class ParMngImpl implements ParMng {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * Сохранить значение параметра - дату
+	 * @param rqn - текущий RQN
+	 * @param st - объект
+	 * @param cd - код параметра
+	 * @param dt - значение параметра
+	 * @throws EmptyStorable 
+	 * @throws WrongSetMethod 
+	 */
+	public void setDate(int rqn, Storable st, String cd, Date dt) throws EmptyStorable, WrongSetMethod {
+		Boolean isSet=false;
+		if (st == null) {
+			throw new EmptyStorable("Параметр st = null");
+		}
+		Par par = getByCD(rqn, cd);
+		for (Dw d: st.getDw()) {
+			log.trace("ParMngImpl.getDate="+d.getPar().getCd());
+			if (d.getPar().equals(par)) {
+				if (d.getPar().getTp().equals("DT")) {
+					if (d.getPar().getDataTp().equals("SI")) {
+						d.setDts1(dt);
+						isSet=true;
+					} else {
+							throw new WrongSetMethod("Попытка сохранить параметр "+cd+" не являющийся типом данного SI завершилась ошибкой");
+					}
+				} else {
+					throw new WrongSetMethod("Попытка сохранить параметр "+cd+" не являющийся типом DT завершилась ошибкой");
+				}
+			}
+		}
+		
+		if (!isSet) {
+			throw new WrongSetMethod("Параметр "+cd+" не был установлен");
+		}
 	}
 
 	/**

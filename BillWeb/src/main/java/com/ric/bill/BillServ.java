@@ -1,6 +1,8 @@
 package com.ric.bill;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -18,12 +20,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.ErrorWhileChrg;
 import com.ric.bill.excp.ErrorWhileDist;
+import com.ric.bill.excp.WrongSetMethod;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
+import com.ric.bill.mm.ObjMng;
+import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.bs.Dw;
+import com.ric.bill.model.bs.Obj;
 
 /**
  * Главный сервис биллинга
@@ -43,6 +52,12 @@ public class BillServ {
 	private KartMng kartMng;
 
 	@Autowired
+	private ObjMng objMng; // TODO убрать!
+
+	@Autowired
+	private ParMng parMng;// TODO убрать!
+
+	@Autowired
 	private ApplicationContext ctx;
 
 	@PersistenceContext
@@ -56,6 +71,28 @@ public class BillServ {
 
 	}
 
+	
+    // временно оставил здесь метод выполнения различных скриптов
+	@Transactional(readOnly=false) 
+	public void script1() throws EmptyStorable, WrongSetMethod {
+		log.info("Script1");
+    	int rqn =-1;
+		Obj obj = objMng.getByCD(-1, "Модуль начисления");
+
+		Dw d = em.find(Dw.class, 8214820);
+		Calendar calendar = new GregorianCalendar(2017, Calendar.FEBRUARY, 1);
+		parMng.setDate(rqn, obj, "Начало расчетного периода", calendar.getTime());
+		//d.setDts1(calendar.getTime());
+		
+		calendar = new GregorianCalendar(2017, Calendar.FEBRUARY, 28);
+		parMng.setDate(rqn, obj, "Конец расчетного периода", calendar.getTime());
+		
+		log.info("Check ={}", obj.getId());
+		log.info("Check dt1={}", parMng.getDate(-1, obj, "Начало расчетного периода"));
+    	log.info("Check dt1={}", parMng.getDate(-1, obj, "Конец расчетного периода"));
+    	
+	}
+	
 	// получить список N следующих лиц.счетов, для расчета в потоках
 	private List<Kart> getNextKart(int cnt) {
 		List<Kart> lst = new ArrayList<Kart>();
@@ -159,7 +196,11 @@ public class BillServ {
 
 				calc.setKart(kart);
 				calc.setHouse(kart.getKw().getHouse());
-
+				if (calc.getArea() ==null) {
+					log.error("Ошибка! По записи house.id={}, в его street, не заполнено поле area!");
+					res.err=1;
+				}
+				
 				try {
 					fut = chrgServThr.chrgAndSaveLsk(calc);
 				} catch (ErrorWhileChrg e) {

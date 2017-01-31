@@ -5,6 +5,8 @@ import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -27,6 +29,7 @@ import com.ric.bill.model.tr.TarifKlsk;
  */
 @Service
 @Scope("prototype")
+@Slf4j
 public class ChrgServThr {
 
 	@Autowired
@@ -51,6 +54,9 @@ public class ChrgServThr {
 		for (TarifKlsk k : calc.getHouse().getTarifklsk()) {
 			k.getTarprop().size();
 		}
+		//log.info(" House.id={}", calc.getHouse().getId());
+		//log.info(" Area.id={}", calc.getArea().getId());
+		//log.info(" Tar={}", calc.getArea().getTarifklsk());
 		calc.getArea().getTarifklsk().size();
 		for (TarifKlsk k : calc.getArea().getTarifklsk()) {
 			k.getTarprop().size();

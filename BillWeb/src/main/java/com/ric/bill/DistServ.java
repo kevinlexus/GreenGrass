@@ -24,6 +24,7 @@ import com.ric.bill.excp.ErrorWhileDist;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.NotFoundODNLimit;
 import com.ric.bill.excp.WrongGetMethod;
+import com.ric.bill.excp.WrongValue;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
@@ -285,6 +286,9 @@ public class DistServ {
 		//установить инициализацию дома
     	//установить дом и счет
 		calc.setHouse(h);
+		if (calc.getArea() ==null) {
+			throw new ErrorWhileDist("Ошибка! По записи house.id="+houseId+", в его street, не заполнено поле area!");
+		}
 		
 		log.info("DistServ.distHouseVol: Очистка объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
 		//почистить коллекцию обработанных счетчиков
@@ -394,6 +398,9 @@ public class DistServ {
 			} catch (EmptyPar e) {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: Не найден необходимый параметр объекта, при вызове BillServ.distNode(): ");
+			} catch (WrongValue e) {
+				e.printStackTrace();
+				throw new ErrorWhileDist("Dist.distGraph: Некорректное значение в расчете, при вызове BillServ.distNode(): ");
 			}
 			//Calc.showTimer(Calc.getCalcTp()+" тип");
 			

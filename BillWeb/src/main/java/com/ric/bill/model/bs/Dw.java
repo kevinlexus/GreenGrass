@@ -47,7 +47,7 @@ public class Dw implements java.io.Serializable, Simple {
     private Double n1;
 
     //значение - дата
-    @Column(name = "DTS1", updatable = false)
+    @Column(name = "DTS1", updatable = true)
 	private Date dts1;
     
     // Заменил LAZY на EAGER - стало быстрее... может не правильно тестил? 10.09.2016

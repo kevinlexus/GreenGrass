@@ -70,8 +70,8 @@ public class HouseDAOImpl implements HouseDAO {
 						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
 						   "where k.fk_kw = kw.id "+
 						   "and h.id = kw.fk_house "+
-						   "and o.reu in ('Z4', 'F3', 'F4', 'J4', 'G4') "+
-						   "and o.parent_id=u.id and h.id=7468  "+
+						//   "and o.reu in ('Z4', 'F3', 'F4', 'J4', 'G4') "+
+						   "and o.parent_id=u.id /*and h.id=7468*/  "+
 						   "and k.fk_uk = u.id /*and h.id in (7309,7310)*/ /* and h.id in (162,163,968)*/ "+
 						   "and ? between k.dt1 and k.dt2 "+
 						   "order by h.id ",  STATEMENT_SQLMAP);
@@ -82,7 +82,7 @@ public class HouseDAOImpl implements HouseDAO {
 						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
 						   "where k.fk_kw = kw.id "+
 						   "and h.id = kw.fk_house "+
-						   "and o.reu in ('Z4', 'F3', 'F4', 'J4', 'G4') "+
+						  // "and o.reu in ('Z4', 'F3', 'F4', 'J4', 'G4') "+
 						   "and ? between k.dt1 and k.dt2 "+
 						   "and o.parent_id=u.id and h.id=? "+
 						   "and k.fk_uk = u.id /*and h.id in (7309,7310)*/ /* and h.id in (162,163,968)*/ "+

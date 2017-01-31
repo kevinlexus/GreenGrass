@@ -23,6 +23,7 @@ import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.excp.NotFoundODNLimit;
 import com.ric.bill.excp.WrongGetMethod;
+import com.ric.bill.excp.WrongValue;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
@@ -142,10 +143,15 @@ public class DistGen {
 	 * @throws NotFoundNode
 	 * @throws EmptyStorable 
 	 * @throws EmptyPar 
+	 * @throws WrongValue 
 	 */
-	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar {
+	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar, WrongValue {
 		// номер текущего запроса
 		int rqn = calc.getReqConfig().getRqn();
+		
+		if (ml.getId().equals(468737)) {
+			log.trace("Счетчик!");
+		}
 		
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		// вытащить перерасчет, для удобства
@@ -171,10 +177,6 @@ public class DistGen {
 			log.trace("Счетчик:id="+ml.getId()+" тип="+ml.getTp().getCd()+" ввод:"+ml.getEntry());
 		}
 
-		if (ml.getId().equals(319941)) {
-			log.trace("Счетчик!");
-		}
-		
 		String mLogTp = ml.getTp().getCd(); //тип лог счетчика
 		Serv servChrg = ml.getServ().getServChrg(); //получить основную услугу, для начисления
 		if (servChrg == null) {
@@ -282,7 +284,11 @@ public class DistGen {
 				//при наличии физ.счетчика(ков) ОДПУ и объема по нему
 				if (lnkODNVol.getVol() > 0 && lnkODNVol.getArea() > 0) {
 					//ПЕРЕРАСХОД
-					vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+					if (lnkODNVol.getArea()==0d) {
+						vl = 0d;
+					} else {
+						vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+					}
 					//применить лимит по ОДН
 					Double limitVol = lnkODNVol.getLimit();
 					if (parLimitODN == null) {
@@ -364,7 +370,11 @@ public class DistGen {
 				vl = tmp * sumVol.getArea();
 			} else {
 				//НЕ установлено значение "Введено гкал."
-				vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+				if (lnkODNVol.getArea()==0d) {
+					vl = 0d;
+				} else {
+					vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+				}
 			}
 		}
 		
@@ -422,7 +432,12 @@ public class DistGen {
 				//расчитать лимит кубов
 				//если кол-во прожив. > 0
 				if (lnkODNVol.getPers() > 0d) {
-					double oplMan = lnkODNVol.getArea() /  lnkODNVol.getPers();   
+					double oplMan;
+					if (lnkODNVol.getPers()==0d) {
+						oplMan = 0d;
+					} else {
+						oplMan = lnkODNVol.getArea() /  lnkODNVol.getPers();   
+					}
 					lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
 					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
@@ -436,30 +451,39 @@ public class DistGen {
 				lnkODNVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 				
 				Double areaComm = parMng.getDbl(rqn, ml, "Площадь общего имущества.Электроэнергия", genDt);
-				if (areaComm == null) {
+				if (areaComm != null) {
 					//log.warn("ВНИМАНИЕ! НЕ проверяется параметр Площадь общего имущества.Электроэнергия!!!!!!");
-					throw new EmptyPar("Не установлен параметр Площадь общего имущества.Электроэнергия во вводе с id="+ml.getId()+" по дате="+genDt);
-				}
-				
-				if (lnkODNVol.getArea() > 0) {
-					Boolean isLift = parMng.getBool(rqn, ml.getHouse(), "Признак наличия лифта", genDt);
-					if (isLift == null) {
-						log.warn("Отсутствует параметр Признак наличия лифта в доме id="+ml.getHouse().getId()+" по дате="+genDt);
-					} else {
-						// лимит кВт ОДН на м2
-						if (isLift) {
-				            // есть лифт в доме
-							lmtVol = 4.1d * areaComm/lnkODNVol.getArea();
+					//throw new EmptyPar("Не установлен параметр Площадь общего имущества.Электроэнергия во вводе с id="+ml.getId()+" по дате="+genDt);
+					log.warn("Не установлен параметр Площадь общего имущества.Электроэнергия во вводе с id="+ml.getId()+" по дате="+genDt);
+					
+					if (lnkODNVol.getArea() > 0) {
+						Boolean isLift = parMng.getBool(rqn, ml.getHouse(), "Признак наличия лифта", genDt);
+						if (isLift == null) {
+							log.warn("Отсутствует параметр Признак наличия лифта в доме id="+ml.getHouse().getId()+" по дате="+genDt);
 						} else {
-				            // нет лифта в доме
-							lmtVol = 2.7d * areaComm/lnkODNVol.getArea();
+							// лимит кВт ОДН на м2
+							if (isLift) {
+					            // есть лифт в доме
+								if (lnkODNVol.getArea()==0d) {
+									lmtVol = 0d;
+								} else {
+									lmtVol = 4.1d * areaComm/lnkODNVol.getArea();
+								}
+							} else {
+					            // нет лифта в доме
+								if (lnkODNVol.getArea()==0d) {
+									lmtVol = 0d;
+								} else {
+									lmtVol = 2.7d * areaComm/lnkODNVol.getArea();
+								}
+							}
+							//записать лимит ОДН
+							Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
+											calc.getReqConfig().getOperTp(), chng, calc.getReqConfig().getStatusVol());
+							//saveVol(ml, vol);
+							ml.getVol().add(vol);
+							//log.warn("ЛИМИТ ОДН по ЭлектроЭнергии="+lmtVol);
 						}
-						//записать лимит ОДН
-						Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
-										calc.getReqConfig().getOperTp(), chng, calc.getReqConfig().getStatusVol());
-						//saveVol(ml, vol);
-						ml.getVol().add(vol);
-						//log.warn("ЛИМИТ ОДН по ЭлектроЭнергии="+lmtVol);
 					}
 				}
 			}
@@ -470,6 +494,7 @@ public class DistGen {
 		if ((tp==0||tp==2||tp==3) && nv.getVol() != 0d) {
 			//расчетная связь, расчетная связь ОДН
 			volTp = lstMng.getByCD("Фактический объем");
+
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
 					calc.getReqConfig().getOperTp(), chng, calc.getReqConfig().getStatusVol());
 			ml.getVol().add(vol);
@@ -493,6 +518,15 @@ public class DistGen {
 		addLstCheck(ml.getId(), tp, genDt, nv);
 		//счетчик рекурсии на -1
 		//rec--;
+
+		if (ml.getId().equals(468737)) {
+			log.trace("Счетчик!");
+		}
+
+		//if (nv.getVol().isNaN() || nv.getPartArea().isNaN() || nv.getPartPers().isNaN()) {
+		//	log.info("*********VOL id={}, nv.vol={},{}", ml.getId(), nv.getVol(), nv.getPartArea(), nv.getPartPers());
+		//}
+
 		return nv;
 	}
 	

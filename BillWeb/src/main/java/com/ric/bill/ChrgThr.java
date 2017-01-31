@@ -134,6 +134,9 @@ public class ChrgThr {
 		long totalTime;
 		startTime2 = System.currentTimeMillis();
 
+
+		log.info(serv.getCd());
+		
 		//необходимый для формирования диапазон дат
 		Date dt1, dt2, genDt;
 		dt1 = calc.getReqConfig().getCurDt1();
@@ -183,8 +186,8 @@ public class ChrgThr {
 					log.info("ОШИБКА! Не указанна форма собственности! lsk="+kart.getLsk(), 2);
 				}
 				//где лиц.счет является нежилым помещением, не начислять за данный день
-				if (tpOwn.equals("Нежилое собственное") || tpOwn.equals("Нежилое муниципальное")
-					|| tpOwn.equals("Аренда некоммерч.") || tpOwn.equals("Для внутр. пользования")) {
+				if (tpOwn != null && (tpOwn.equals("Нежилое собственное") || tpOwn.equals("Нежилое муниципальное")
+					|| tpOwn.equals("Аренда некоммерч.") || tpOwn.equals("Для внутр. пользования"))) {
 					continue;
 				}
 					try {
@@ -281,6 +284,7 @@ public class ChrgThr {
 	 * @throws InvalidServ 
 	 */
 	private void genChrg(Calc calc, Serv serv, String tpOwn, Date genDt) throws EmptyStorable, EmptyOrg, InvalidServ {
+		log.info("serv.cd={}", serv.getCd());
 		Kart kart = calc.getKart();
 		long startTime2;
 		long endTime;

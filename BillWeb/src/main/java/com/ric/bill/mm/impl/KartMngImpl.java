@@ -118,7 +118,11 @@ public class KartMngImpl implements KartMng {
 						//наличие статуса подтвердилось,  - проживающий присутствует
 						if (tp==0) {
 							Reg reg = (Reg) r;
-							return new PersStatus(true, reg.getKinship().getCd());
+							if (reg.getKinship()==null) {
+								return new PersStatus(true, null);
+							} else {
+								return new PersStatus(true, reg.getKinship().getCd());
+							}
 						} else {
 							return new PersStatus(true, null);
 						}
@@ -512,6 +516,8 @@ public class KartMngImpl implements KartMng {
 		//лиц.счета
 		lst = checkServ(calc, calc.getKart(), lst, "Поставщик", 0);
 
+		//lst.stream().forEach(t-> log.info("Serv.cd={}", t.getCd()) );
+		
 		//удалить отключенные услуги по наборам тарифа
 		//дома:
 		lst = checkServ(calc, calc.getHouse(), lst, "Отключение", 1);

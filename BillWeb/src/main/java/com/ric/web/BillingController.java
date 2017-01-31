@@ -2,9 +2,7 @@ package com.ric.web;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicLong;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -17,21 +15,14 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ric.bill.BillServ;
-import com.ric.bill.Calc;
-import com.ric.bill.ChrgThr;
 import com.ric.bill.Config;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
-import com.ric.bill.excp.EmptyStorable;
-import com.ric.bill.excp.ErrorWhileChrg;
-import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.bs.Par;
 
 
 @EnableCaching
@@ -146,6 +137,7 @@ public class BillingController {
     					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
     	log.info("got /chrgall with: dist={}, houseId={}", dist, houseId);
 
+
     	// получить уникальный номер запроса
     	int rqn = config.incNextReqNum();
     	log.info("RQN={}", rqn);
@@ -155,7 +147,17 @@ public class BillingController {
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
     	reqConfig.setUp(config, dist, "0", null, rqn); 
     	
-
+    	/*try {
+			billServ.work1();
+		} catch (EmptyStorable | WrongSetMethod e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
+    	if (1==1) {
+    		return "";
+    	}*/
+    	
     	fut = billServ.chrgAll(reqConfig, houseId);
     	
 		 while (!fut.isDone()) {

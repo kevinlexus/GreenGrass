@@ -2,6 +2,8 @@ package com.ric.bill.mm.impl;
 
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.TarifContains;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.TarifDAO;
+import com.ric.bill.dao.impl.HouseDAOImpl;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.tr.Serv;
@@ -21,6 +24,7 @@ import com.ric.bill.model.tr.TarifServProp;
  * @author lev
  *
  */
+@Slf4j
 @Service
 public class TarifMngImpl implements TarifMng {
 	
