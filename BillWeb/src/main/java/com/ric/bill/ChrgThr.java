@@ -135,7 +135,7 @@ public class ChrgThr {
 		startTime2 = System.currentTimeMillis();
 
 
-		log.info(serv.getCd());
+		//log.info(serv.getCd());
 		
 		//необходимый для формирования диапазон дат
 		Date dt1, dt2, genDt;
@@ -284,7 +284,7 @@ public class ChrgThr {
 	 * @throws InvalidServ 
 	 */
 	private void genChrg(Calc calc, Serv serv, String tpOwn, Date genDt) throws EmptyStorable, EmptyOrg, InvalidServ {
-		log.info("serv.cd={}", serv.getCd());
+		//log.info("serv.cd={}", serv.getCd());
 		Kart kart = calc.getKart();
 		long startTime2;
 		long endTime;

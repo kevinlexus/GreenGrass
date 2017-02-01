@@ -346,36 +346,63 @@ public class DistGen {
 			
 			
 		} else if (tp==3 && mLogTp.equals("Лсчетчик")) {
-			//if (ml.getId()==12945 || ml.getId()==17138){
-				//log.info("CHECK: tp="+tp,2);
-				//log.info("CHECK: calc.getCalcTp="+calc.getCalcTp(),2);
-			//}
 			//по расчетной связи пропорц.площади (Отопление например)
 			MLogs lnkLODN = null;
+			MLogs lnkSumODPU = null;
+			MLogs lnkODPU = null;
+
 			//поиск счетчика ЛОДН
 			lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
+			//поиск счетчика ЛСумОдпу
+			lnkSumODPU = metMng.getLinkedNode(rqn, lnkLODN, "ЛСумОДПУ", genDt);
+			// поиск установленного физ.счетчика ОДПУ
+			lnkODPU = metMng.getLinkedNode(rqn, lnkSumODPU, "ЛОДПУ", genDt);
+			
 			if (lnkLODN == null) {
 				// не найден счетчик
 		        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+ml.getId());  
 			}
-			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
-			log.trace("check id="+lnkLODN.getId());
-			SumNodeVol lnkODNVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkLODN, tp, genDt, genDt);
-			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
-			SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, genDt, genDt);
-			//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
-			Double tmp =parMng.getDbl(rqn, lnkLODN, "VOL_SQ_MT", genDt);
-			if (tmp != null) {
-				//установлено значение "Введено гкал." 
-				vl = tmp * sumVol.getArea();
-			} else {
-				//НЕ установлено значение "Введено гкал."
-				if (lnkODNVol.getArea()==0d) {
-					vl = 0d;
+			
+			if (lnkODPU != null) {
+				// если существует физ.счетчик ОДПУ
+				//получить объем за период по счетчику ЛОДН и наличие ОДПУ
+				SumNodeVol lnkODNVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkLODN, tp, genDt, genDt);
+				//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
+				SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, genDt, genDt);
+				//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
+				Double tmp =parMng.getDbl(rqn, lnkLODN, "VOL_SQ_MT", genDt);
+				if (tmp != null) {
+					//установлено значение "Введено гкал." 
+					vl = tmp * sumVol.getArea();
 				} else {
-					vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+					//НЕ установлено значение "Введено гкал."
+					if (lnkODNVol.getArea()==0d) {
+						vl = 0d;
+					} else {
+						vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+					}
 				}
+			} else {
+				// если НЕ существует физ.счетчик ОДПУ
+				// начислить по "Введённое значение объёма на м2"
+				Double tmp =parMng.getDbl(rqn, lnkLODN, "VOL_SQ_MT", genDt);
+				//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
+				SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, genDt, genDt);
+
+				if (tmp != null) {
+					//установлено значение "Введено гкал." 
+					vl = tmp * sumVol.getArea();
+				} else {
+					//НЕ установлено значение "Введено гкал."
+					// TODO сделать ветку если нет параметра "Введённое значение объёма на м2", рассчитать по строительному объему!
+				}
+				
+				
+
+				
 			}
+			
+			
 		}
 		
 		//добавить собственные объемы
@@ -402,6 +429,9 @@ public class DistGen {
 				 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 				 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 				 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
+						//if (g.getSrc().getId() == 478405) {
+						//	log.info("Scr.id={} dt={} tp={}",g.getSrc().getId(), genDt, tp);
+						//}
 						NodeVol nvChld = distNode(calc, g.getSrc(), tp, genDt);
 						if (nvChld != null){
 							//добавить объемы от дочерних узлов

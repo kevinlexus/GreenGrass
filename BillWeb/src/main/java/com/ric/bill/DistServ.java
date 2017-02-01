@@ -200,17 +200,23 @@ public class DistServ {
 			break;
 		}
 		
-		// установить тип обработки = 0, для удаления только объемов расчетных счетчиков
-		calc.setCalcTp(0);
 
 		Kart kart = em.find(Kart.class, calc.getKart().getLsk());
 		// почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
-		// найти все необходимые услуги для удаления объемов, здесь только по типу 0 и только те услуги, которые надо удалить для ЛС 
+		// найти все необходимые услуги для удаления объемов, здесь только по типу 0 и 2 и только те услуги, которые надо удалить для ЛС 
 		for (Serv serv : servMng.findForDistVolForKart()) {
 				log.trace("Удаление объема по услуге"+serv.getCd());
-				delKartServVolTp(rqn, kart, serv, 0);
+				// тип обработки = 0
+				calc.setCalcTp(0);
+				delKartServVolTp(rqn, kart, serv);
+				// тип обработки = 1
+				calc.setCalcTp(1);
+				delKartServVolTp(rqn, kart, serv);
+				// тип обработки = 3
+				calc.setCalcTp(3);
+				delKartServVolTp(rqn, kart, serv);
 		}
 		
 		log.trace("Распределение объемов");
@@ -219,7 +225,17 @@ public class DistServ {
 		 try {
 			for (Serv serv : servMng.findForDistVol()) {
 				log.trace("Распределение услуги: "+serv.getCd());
-				  distKartServTp(rqn, kart, serv);
+				calc.setCalcTp(0);
+			    distKartServTp(rqn, kart, serv);
+			    if (serv.getCd().equals("Отопление")) {
+			    	// только по отоплению
+				    // тип обработки = 1
+					calc.setCalcTp(1);
+				    distKartServTp(rqn, kart, serv);
+					// тип обработки = 3
+					calc.setCalcTp(3);
+				    distKartServTp(rqn, kart, serv);
+			    }
 			}
 		} catch (ErrorWhileDist e) {
 			e.printStackTrace();
@@ -234,8 +250,8 @@ public class DistServ {
 	 * @param serv - услуга
 	 * @param tp - тип расчета
 	 */
-	private void delKartServVolTp(int rqn, Kart kart, Serv serv, int tp) {
-		log.trace("delKartServVolTp: kart.lsk="+kart.getLsk()+", serv.cd="+serv.getCd()+" tp="+tp);
+	private void delKartServVolTp(int rqn, Kart kart, Serv serv) {
+		log.trace("delKartServVolTp: kart.lsk="+kart.getLsk()+", serv.cd="+serv.getCd()+" tp="+calc.getCalcTp());
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
@@ -254,7 +270,7 @@ public class DistServ {
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			calc.setGenDt(c.getTime());
 			for (MLogs ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
-				metMng.delNodeVol(rqn, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
+				metMng.delNodeVol(rqn, ml, calc.getCalcTp(), calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 			}
 			
 		}
@@ -267,7 +283,7 @@ public class DistServ {
 	 * @throws ErrorWhileDist 
 	 */
 	private void distKartServTp(int rqn, Kart kart, Serv serv) throws ErrorWhileDist {
-		//найти все вводы по лиц.счету и по услуге
+		//найти все начальные узлы расчета по лиц.счету и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
 				distGraph(ml);
 		}

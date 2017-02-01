@@ -52,11 +52,12 @@ public class ServDAOImpl implements ServDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Serv> findForDistVolForKart() {
-		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4) order by t.npp2");
+		Query query =em.createQuery("from Serv t where t.cd in (:s1,:s2,:s3,:s4,:s5) order by t.npp2");
 		query.setParameter("s1", "Холодная вода");
 		query.setParameter("s2", "Горячая вода");
 		query.setParameter("s3", "Водоотведение");
-		query.setParameter("s4", "Электроснабжение");
+		query.setParameter("s4", "Отопление");
+		query.setParameter("s5", "Электроснабжение");
 		return query.getResultList();
 	}
 

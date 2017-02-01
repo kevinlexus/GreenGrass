@@ -221,6 +221,7 @@ public class ParMngImpl implements ParMng {
 	 */
 	public void setDate(int rqn, Storable st, String cd, Date dt) throws EmptyStorable, WrongSetMethod {
 		Boolean isSet=false;
+		
 		if (st == null) {
 			throw new EmptyStorable("Параметр st = null");
 		}
