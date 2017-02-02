@@ -154,12 +154,12 @@ public class MeterLogMngImpl implements MeterLogMng {
 	/**
 	 * Получить объем, по СЧЕТЧИКУ, за период и сам этот счетчик и признак существования его физ сч.
 	 * @param mLog - узел
-	 * @param tp - тип распределения (здесь ТОЛЬКО для КЭША!) TODO!!!!!!!!! Разобраться что значит "только для Кэша". зачем нужен неиспользуемый параметр?
+	 * @param tp - тип распределения (здесь ТОЛЬКО для КЭША!) 
 	 * @param dt1 - нач.период
 	 * @param dt2 - кон.период
 	 * @return - возвращаемый объем
 	 */
-	@Cacheable(cacheNames="rrr1", key="{ #rqn, #statusVol, #mLog.getId(), #tp, #dt1, #dt2}")
+	@Cacheable(cacheNames="rrr3", key="{ #rqn, #statusVol, #mLog.getId(), #tp, #dt1, #dt2}")
     public  SumNodeVol getVolPeriod(int rqn, Integer statusVol, MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
 		/* Java 8 */

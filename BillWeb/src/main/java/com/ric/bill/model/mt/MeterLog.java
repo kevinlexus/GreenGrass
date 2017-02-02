@@ -69,25 +69,23 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	@BatchSize(size = 50)
-	@Fetch(FetchMode.SUBSELECT)
+	//@Fetch(FetchMode.SUBSELECT) //ВНИМАНИЕ! НЕ УДАЛЯТЬ КОММЕНТ! ЕСЛИ БУДЕТ SUBSELECT - будет медленно выполняться! TODO-разобраться!
 	private List<Meter> meter = new ArrayList<Meter>(0);
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID", updatable = false) //внимание! если здесь убрать updatable = false то будет update kmp_meter_vol fk_meter_log!
-	//@BatchSize(size = 50)
-	@Fetch(FetchMode.SUBSELECT)
+	@BatchSize(size = 50)
+	//@Fetch(FetchMode.SUBSELECT) //ВНИМАНИЕ! НЕ УДАЛЯТЬ КОММЕНТ! ЕСЛИ БУДЕТ SUBSELECT - будет медленно выполняться! TODO-разобраться!
 	private List<Vol> vol = new ArrayList<Vol>(0);
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
-	//@BatchSize(size = 50)
-	@Fetch(FetchMode.SUBSELECT)
+	@BatchSize(size = 50)
 	private List<MeterLogGraph> outside = new ArrayList<MeterLogGraph>(0);
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="NOD_DST", referencedColumnName="ID")
-	//@BatchSize(size = 50)
-	@Fetch(FetchMode.SUBSELECT)
+	@BatchSize(size = 50)
 	private List<MeterLogGraph> inside = new ArrayList<MeterLogGraph>(0);
 	
 	
