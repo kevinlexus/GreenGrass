@@ -77,7 +77,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - искомый список
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mm.getKlsk(), #serv.getId(), #tp }") 
-	public /*synchronized*/ List<MLogs> getAllMetLogByServTp(int rqn, MeterContains mm, Serv serv, String tp) {
+	public List<MLogs> getAllMetLogByServTp(int rqn, MeterContains mm, Serv serv, String tp) {
 		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
 		for (MLogs ml : mm.getMlog()) {
 			//по типу, если указано
@@ -136,7 +136,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mLog.getId(), #genDt}")
-	public /*synchronized*/ boolean checkExsMet(int rqn, MLogs mLog, Date genDt) {
+	public boolean checkExsMet(int rqn, MLogs mLog, Date genDt) {
     	// проверить существование хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
@@ -217,7 +217,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return лог.счетчик
 	 */
 	@Cacheable("rrr1") 
-	public /*synchronized*/ MLogs getLinkedNode(int rqn, MLogs mLog, String tp, Date genDt) {
+	public MLogs getLinkedNode(int rqn, MLogs mLog, String tp, Date genDt) {
 		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
     	//сперва направленные внутрь
@@ -251,9 +251,9 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @param tp - тип расчета
      * @return 
      */
-	@Cacheable("rrr1") 
+	@Cacheable("rrr1") // пока оставил кэширование, не должно мешать 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
-	public /*synchronized*/ void delNodeVol(int rqn, MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
+	public void delNodeVol(int rqn, MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
 
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {

@@ -566,7 +566,7 @@ public class ChrgServ {
 				if (!(val.compareTo(BigDecimal.ZERO)==0)) {
 				//if (lsk.equals("14024244")) {
 				  //log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
-				  log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: Lsk={} ,serv.id={}, serv.name={}, org.id={}, org.name={}, sum={}"+
+				  log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: Lsk={} ,serv.id={}, serv.name={}, org.id={}, org.name={}, sum={}",
 				     lsk, ((Serv) mk.getKey(0)).getId(), ((Serv) mk.getKey(0)).getName(),
 				          ((Org) mk.getKey(1)).getId(), ((Org) mk.getKey(1)).getName(), it.getValue());
 				  //проверка на дубли

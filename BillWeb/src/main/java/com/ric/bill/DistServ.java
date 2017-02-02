@@ -205,16 +205,16 @@ public class DistServ {
 		// почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
-		// найти все необходимые услуги для удаления объемов, здесь только по типу 0 и 2 и только те услуги, которые надо удалить для ЛС 
+		// найти все необходимые услуги для удаления объемов, здесь только по типу 0,1,2 и только те услуги, которые надо удалить для ЛС 
 		for (Serv serv : servMng.findForDistVolForKart()) {
 				log.trace("Удаление объема по услуге"+serv.getCd());
-				// тип обработки = 0
+				// тип обработки = 0 - расход
 				calc.setCalcTp(0);
 				delKartServVolTp(rqn, kart, serv);
-				// тип обработки = 1
+				// тип обработки = 1 - площадь и кол-во прож.
 				calc.setCalcTp(1);
 				delKartServVolTp(rqn, kart, serv);
-				// тип обработки = 3
+				// тип обработки = 3 - пропорц.площади (отопление)
 				calc.setCalcTp(3);
 				delKartServVolTp(rqn, kart, serv);
 		}
@@ -228,11 +228,10 @@ public class DistServ {
 				calc.setCalcTp(0);
 			    distKartServTp(rqn, kart, serv);
 			    if (serv.getCd().equals("Отопление")) {
-			    	// только по отоплению
-				    // тип обработки = 1
+				    // тип обработки = 1 - площадь и кол-во прож.
 					calc.setCalcTp(1);
 				    distKartServTp(rqn, kart, serv);
-					// тип обработки = 3
+					// тип обработки = 3 - пропорц.площади (отопление)
 					calc.setCalcTp(3);
 				    distKartServTp(rqn, kart, serv);
 			    }
@@ -294,10 +293,7 @@ public class DistServ {
 	 * @param houseId - Id дома, иначе кэшируется, если передавать объект дома
 	 * @throws ErrorWhileDist 
 	 */
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
 	public void distHouseVol(int rqn, int houseId) throws ErrorWhileDist {
-		
-
 		House h = em.find(House.class, houseId);
 		//установить инициализацию дома
     	//установить дом и счет
@@ -328,10 +324,6 @@ public class DistServ {
 			e.printStackTrace();
 			throw new ErrorWhileDist("Dist.distHouseVol: ");
 		}
-
-		//System.gc();
-		//Calc.showAllChecks();
-		
 	}
 	
 	
@@ -418,9 +410,6 @@ public class DistServ {
 				e.printStackTrace();
 				throw new ErrorWhileDist("Dist.distGraph: Некорректное значение в расчете, при вызове BillServ.distNode(): ");
 			}
-			//Calc.showTimer(Calc.getCalcTp()+" тип");
-			
-			//break;
 		}
 
 		

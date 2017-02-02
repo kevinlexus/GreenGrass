@@ -134,9 +134,9 @@ public class DistGen {
 	/**
 	 * Распределить узел, следуя по графу (рекурсивная процедура)
 	 * @param ml - вх.узел
-	 * @param tp - тип распределения
+	 * @param tp - тип распределения (0-по расчетной связи, 1-по связи по площади и кол.прож., 2-по расчетной связи ОДН, 3-по расчетной связи пропорц.площади
 	 * @param genDt - дата формирования
-	 * @return
+	 * @return NodeVol - объект содержащий объемы
 	 * @throws WrongGetMethod
 	 * @throws EmptyServ
 	 * @throws NotFoundODNLimit
@@ -148,10 +148,6 @@ public class DistGen {
 	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar, WrongValue {
 		// номер текущего запроса
 		int rqn = calc.getReqConfig().getRqn();
-		
-		if (ml.getId().equals(468737)) {
-			log.trace("Счетчик!");
-		}
 		
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
 		// вытащить перерасчет, для удобства
@@ -262,8 +258,8 @@ public class DistGen {
 			if (lnkODPU == null) {
 				// не найден счетчик (лог.счетчик должен быть обязательно, а физ.сч. к нему привязанных, может и не быть!)
 			    //переделал из ошибки в Warning:
-				log.info("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(), 2);
-				return null;
+				//log.info("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(), 2);
+				//return null;
 			} else {
 				lnkODPUVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkODPU, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			}
@@ -271,16 +267,10 @@ public class DistGen {
 			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
 			lnkODNVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkLODN, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 
-			//if (lnkLODN.getId()==339430) {
-			//  log.info("check id="+lnkLODN.getId());
-			//  log.info("объем по ЛОДН id="+lnkLODN.getId()+" vol="+lnkODNVol.getVol()+" pers="+lnkODNVol.getPers()+" area="+lnkODNVol.getArea());
-			//  log.info("прочее tp={}, dt1={}, dt2={}=", tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
-			//}
-
 			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
 			SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 			
-			if (metMng.checkExsMet(rqn, lnkODPU, genDt) && lnkODPUVol.getVol() >= 0d) {
+			if (lnkODPU != null && metMng.checkExsMet(rqn, lnkODPU, genDt) && lnkODPUVol.getVol() >= 0d) {
 				//при наличии физ.счетчика(ков) ОДПУ и объема по нему
 				if (lnkODNVol.getVol() > 0 && lnkODNVol.getArea() > 0) {
 					//ПЕРЕРАСХОД
@@ -292,7 +282,7 @@ public class DistGen {
 					//применить лимит по ОДН
 					Double limitVol = lnkODNVol.getLimit();
 					if (parLimitODN == null) {
-						throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
+						throw new NotFoundODNLimit("Не найден параметр рассчитываемый программно - лимит по ОДН в счетчике="+lnkLODN.getId());
 					} else if (parLimitODN == 1 && limitVol > 0) {
 						//если больше лимита - ограничить лимит * площадь
 						if (vl > limitVol * sumVol.getArea()) {
@@ -336,7 +326,8 @@ public class DistGen {
 				//или нет объема по ОДПУ
 				Double limit = parLimitODN;
 				if (limit == null) {
-					throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
+					log.warn("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
+					//throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
 				} else if (limit == 1) {
 					//если больше лимита - ограничить лимит * площадь
 					Double limitVol = lnkODNVol.getLimit();
@@ -405,23 +396,13 @@ public class DistGen {
 			
 		}
 		
-		//добавить собственные объемы
+		// добавить собственные объемы
 		nv.addPartArea(partArea);
 		nv.addPartPers(partPers);
 		
 		nv.addVol(vl);
-		//if (ml.getId()==168447) {
-		//	log.info("Счетчик id={}, объем={}", ml.getId(), vl);
-		//}
-		
-		//if (ml.getId()==3661161/* && tp==0*/) {
-		//	log.trace("stop");
-		//}
-		
-		//найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
-		//if (ml.getInside().size() > 0) {
-		//	log.trace("{");
-		//}
+
+		// найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
 		for (MeterLogGraph g : ml.getInside()) {
 			//по соотв.периоду
 			if (Utl.between(genDt, g.getDt1(), g.getDt2())) {
@@ -429,9 +410,6 @@ public class DistGen {
 				 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 				 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 				 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-						//if (g.getSrc().getId() == 478405) {
-						//	log.info("Scr.id={} dt={} tp={}",g.getSrc().getId(), genDt, tp);
-						//}
 						NodeVol nvChld = distNode(calc, g.getSrc(), tp, genDt);
 						if (nvChld != null){
 							//добавить объемы от дочерних узлов
