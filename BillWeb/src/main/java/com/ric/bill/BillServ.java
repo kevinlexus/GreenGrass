@@ -190,7 +190,7 @@ public class BillServ {
 		errThread = false;
 
 		while (true) {
-			log.info("BillServ.chrgAll: Loading karts for threads");
+			log.trace("BillServ.chrgAll: Loading karts for threads");
 			// получить следующие N лиц.счетов, рассчитать их в потоке
 			long startTime2;
 			long endTime2;

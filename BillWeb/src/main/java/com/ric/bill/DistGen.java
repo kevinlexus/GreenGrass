@@ -403,6 +403,12 @@ public class DistGen {
 		nv.addVol(vl);
 
 		// найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
+		
+//		if (ml.getId()==485158) {
+//			log.info("сч");
+//			log.info("SIZE={}", ml.getInside().size());
+//		}
+		
 		for (MeterLogGraph g : ml.getInside()) {
 			//по соотв.периоду
 			if (Utl.between(genDt, g.getDt1(), g.getDt2())) {
