@@ -165,7 +165,15 @@
 			<artifactId>spring-boot-loader</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
+		
+		<!-- успешно добавил таким образом локальный JAR -->
+		<dependency>
+		    <groupId>mxParser</groupId>
+		    <artifactId>org.mariuszgromada</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/main/resources/mxparser.jar</systemPath>
+		</dependency>		
 	</dependencies>
 
 

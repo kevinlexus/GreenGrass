@@ -109,12 +109,6 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
 	private Serv serv; 
 
-	/*	УБРАЛ связи с kart, house, так как Hibernate пытается их запрашивать каждый раз, даже если они не нужны,
-	 *  (так как нет foreign key сразу на MeterLog, а только через klsk) - НЕ УБИРАТЬ КОММЕНТ! - НЕ ВЗЛЕТЕЛО! (Вернул обратно, описано в MeterLogMngImpl)
-	 * 
-	 *
-	 * 
-	 * */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_KLSK_OBJ", updatable = false, insertable = false)
 	private Kart kart; 

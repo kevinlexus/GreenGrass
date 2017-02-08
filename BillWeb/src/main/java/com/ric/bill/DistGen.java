@@ -210,7 +210,6 @@ public class DistGen {
 						.sum(); // просуммировать
 
 						vl = vl + vlChng; 
-						//log.info("CHNG={}", calc.getReqConfig().getStatusVol());
 					}
 					
 					
@@ -366,7 +365,7 @@ public class DistGen {
 					//установлено значение "Введено гкал." 
 					vl = tmp * sumVol.getArea();
 				} else {
-					//НЕ установлено значение "Введено гкал."
+					//НЕ установлено значение "Введено гкал.", распределить по объему счетчика пропорционально площадей квартир
 					if (lnkODNVol.getArea()==0d) {
 						vl = 0d;
 					} else {
@@ -387,28 +386,15 @@ public class DistGen {
 					//НЕ установлено значение "Введено гкал."
 					// TODO сделать ветку если нет параметра "Введённое значение объёма на м2", рассчитать по строительному объему!
 				}
-				
-				
-
-				
 			}
-			
-			
 		}
 		
 		// добавить собственные объемы
 		nv.addPartArea(partArea);
 		nv.addPartPers(partPers);
-		
 		nv.addVol(vl);
 
 		// найти все направления, с необходимым типом, указывающие в точку из других узлов, получить их объемы
-		
-//		if (ml.getId()==485158) {
-//			log.info("сч");
-//			log.info("SIZE={}", ml.getInside().size());
-//		}
-		
 		for (MeterLogGraph g : ml.getInside()) {
 			//по соотв.периоду
 			if (Utl.between(genDt, g.getDt1(), g.getDt2())) {
