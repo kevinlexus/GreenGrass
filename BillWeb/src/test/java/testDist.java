@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.BillServ;
+import com.ric.bill.dao.ReportDAO;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
@@ -34,7 +35,10 @@ public class testDist {
 	@Autowired
     private BillServ billServ;
 
-    @PersistenceContext
+	@Autowired
+    private ReportDAO repDAO;
+
+	@PersistenceContext
     private EntityManager em;
 
 	// проверка корректности работы hibernate (если SIZE>2 то плохо))
@@ -57,4 +61,11 @@ public class testDist {
 		
 	}
 	
+	@Test
+	public void testSomething3() {
+		System.out.println("Check:Reports:");
+		repDAO.getPeriodsByCD("RptPayDocList", 0).stream().forEach(t -> System.out.println("Reports:"+t.getId()+" "+t.getDt()+" "+t.getMg())
+				);
+		
+	}
 }
