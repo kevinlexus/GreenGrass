@@ -43,7 +43,6 @@ public class PeriodReports implements java.io.Serializable {
     
     @ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name="FK_REPORT", referencedColumnName="ID")
-//	@Fetch(FetchMode.SUBSELECT)  
 	private Obj report; 
     
 	public Integer getId() {

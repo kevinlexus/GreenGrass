@@ -1,5 +1,6 @@
 package com.ric.web;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -17,12 +18,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ric.bill.BillServ;
 import com.ric.bill.Config;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
+import com.ric.bill.mm.ReportMng;
 
 
 @EnableCaching
@@ -42,6 +45,18 @@ public class BillingController {
 	private Config config;
     @Autowired
     private BillServ billServ;
+	@Autowired
+    private ReportMng repMng;
+
+    @RequestMapping("/getPeriodReports") 
+    @ResponseBody
+    public List<PeriodReportsWeb> getPeriodReports(@RequestParam(value="repCd") String repCd,
+ 			    		  @RequestParam(value="tp", defaultValue="0") Integer tp) {
+    	
+    	log.info("GOT /getPeriodReports repCd={}, tp={}", repCd, tp);
+    	return repMng.getPeriodsByCD(repCd, tp);
+    	
+    }
 
     @RequestMapping("/chrglsk") 
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 

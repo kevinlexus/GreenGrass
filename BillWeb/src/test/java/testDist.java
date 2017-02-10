@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.ric.bill.BillServ;
 import com.ric.bill.dao.ReportDAO;
 import com.ric.bill.mm.ParMng;
+import com.ric.bill.mm.ReportMng;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.web.AppConfig;
@@ -36,7 +37,7 @@ public class testDist {
     private BillServ billServ;
 
 	@Autowired
-    private ReportDAO repDAO;
+    private ReportMng repMng;
 
 	@PersistenceContext
     private EntityManager em;
@@ -62,9 +63,11 @@ public class testDist {
 	}
 	
 	@Test
-	public void testSomething3() {
+	public void testComboBoxLst() {
 		System.out.println("Check:Reports:");
-		repDAO.getPeriodsByCD("RptPayDocList", 0).stream().forEach(t -> System.out.println("Reports:"+t.getId()+" "+t.getDt()+" "+t.getMg())
+		repMng.getPeriodsByCD("RptPayDocList", 0).stream().forEach(t -> System.out.println("Reports:"+t.getId()+" "+t.getPeriod())
+				);
+		repMng.getPeriodsByCD("RptPayDocList", 1).stream().forEach(t -> System.out.println("Reports:"+t.getId()+" "+t.getPeriod())
 				);
 		
 	}
