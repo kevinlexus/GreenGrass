@@ -1,3 +1,5 @@
+
+// можно удалить этот файл!
 Ext.define('BillWebApp.store.Personnel', {
     extend: 'Ext.data.Store',
 

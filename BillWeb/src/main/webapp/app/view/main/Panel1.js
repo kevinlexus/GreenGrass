@@ -38,17 +38,21 @@ Ext.define('BillWebApp.view.main.Panel1', {
                 items: [
                     {
                         xtype: 'combobox',
-                        reference: 'states',
-                        publishes: 'value',
                         fieldLabel: 'С',
-                        displayField: 'state'
+                        displayField: 'period',
+                        valueField: 'id',
+                        bind: {
+                            store: '{itemstore}'
+                        }
                     },
                     {
                         xtype: 'combobox',
-                        reference: 'states',
-                        publishes: 'value',
                         fieldLabel: 'По',
-                        displayField: 'state'
+                        displayField: 'period',
+                        valueField: 'id',
+                        bind: {
+                            store: '{itemstore}'
+                        }
                     }, {
                         xtype: 'checkboxfield',
                         name: 'checkbox1',

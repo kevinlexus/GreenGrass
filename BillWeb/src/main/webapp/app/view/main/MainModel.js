@@ -10,6 +10,11 @@ Ext.define('BillWebApp.view.main.MainModel', {
         name: 'BillWebApp',
 
         loremIpsum: 'Редактирование платежек'
+    },
+    stores: {
+        itemstore: {
+            type: 'periodstore1' // refers to the alias you set up on your store definition
+        }
     }
 
     //TODO - add data, formulas and/or methods to support your view

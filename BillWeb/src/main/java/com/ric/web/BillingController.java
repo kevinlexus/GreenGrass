@@ -48,7 +48,13 @@ public class BillingController {
 	@Autowired
     private ReportMng repMng;
 
-    @RequestMapping("/getPeriodReports") 
+    /**
+     * Получить периоды для элементов интерфейса
+     * @param repCd - CD отчета
+     * @param tp - тип периода 0 - по месяцам, 1 - по дням
+     * @return
+     */
+	@RequestMapping("/getPeriodReports") 
     @ResponseBody
     public List<PeriodReportsWeb> getPeriodReports(@RequestParam(value="repCd") String repCd,
  			    		  @RequestParam(value="tp", defaultValue="0") Integer tp) {
