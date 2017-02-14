@@ -8,14 +8,19 @@ Ext.define('BillWebApp.view.main.MainModel', {
 
     data: {
         name: 'BillWebApp',
-
-        loremIpsum: 'Редактирование платежек'
+        loremIpsum: 'Редактирование платежек',
+        periodId1: '',
+        periodId2: ''
     },
+
     stores: {
-        itemstore: {
+        periodstore1: {
+            type: 'periodstore1' // refers to the alias you set up on your store definition
+        },
+
+        periodstore2: {
             type: 'periodstore1' // refers to the alias you set up on your store definition
         }
     }
 
-    //TODO - add data, formulas and/or methods to support your view
 });
