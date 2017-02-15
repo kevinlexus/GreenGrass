@@ -2,17 +2,20 @@ package com.ric.web;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * DTO - Платежные документы в элементах форм Web-интерфейса
  * @author lev
  *
  */
+@Slf4j
 public class PayordDTO {
 
 	// Id
 	private Integer id;
-	// № п.п.
-	private Integer npp;
 	// Наименование
 	private String name;
 	// Fk на тип периода
@@ -22,20 +25,25 @@ public class PayordDTO {
 	// Пользователь
 	private String username;
 	// Дата создания
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Krasnoyarsk")
 	private Date dtf;
 	
 
 	// конструктор
-	public PayordDTO(Integer id, Integer npp, String name, Integer periodTpFk,
+	public PayordDTO(Integer id, String name, Integer periodTpFk,
 			String selDays, String username, Date dtf) {
 		super();
 		this.id = id;
-		this.npp = npp;
 		this.name = name;
 		this.periodTpFk = periodTpFk;
 		this.selDays = selDays;
 		this.username = username;
 		this.dtf = dtf;
+	}
+
+	// Здесь важен default конструктор (иначе не примет обратно данные, методом POST)
+	public PayordDTO() {
+		
 	}
 	
 	public Integer getId() {
@@ -44,16 +52,6 @@ public class PayordDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-
-	public Integer getNpp() {
-		return npp;
-	}
-
-
-	public void setNpp(Integer npp) {
-		this.npp = npp;
 	}
 
 

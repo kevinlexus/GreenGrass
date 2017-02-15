@@ -5,7 +5,7 @@ Ext.define('BillWebApp.view.main.Panel2', {
     title: 'Настройка платежек',
     width: 700,
     height: 400,
-    minWidth: 800,
+    minWidth: 1050,
     minHeight: 600,
     layout: 'fit',
     plain: true,

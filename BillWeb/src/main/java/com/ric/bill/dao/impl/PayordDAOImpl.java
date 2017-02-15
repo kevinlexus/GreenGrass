@@ -12,6 +12,8 @@ import javax.persistence.Query;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.dao.LstDAO;
 import com.ric.bill.dao.PayordDAO;
@@ -20,6 +22,7 @@ import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.PeriodReports;
 import com.ric.bill.model.fn.Payord;
+import com.ric.web.PayordDTO;
 import com.ric.web.PeriodReportsDTO;
 
 
@@ -30,9 +33,11 @@ public class PayordDAOImpl implements PayordDAO {
     @PersistenceContext
     private EntityManager em;
 
-	public List<Payord> getPayOrdAll() {
+	// получить все платежки
+    public List<Payord> getPayordAll() {
 		Query query =em.createQuery("from Payord t");
 		return query.getResultList();
 	}
+
 
 }

@@ -47,10 +47,6 @@ public class Payord implements java.io.Serializable, Simple {
     @Column(name = "ID", updatable = false, nullable = false)
 	private Integer id;
 
-	// № п.п.
-	@Column(name = "NPP")
-	private Integer npp;
-
 	// Наименование
 	@Column(name = "NAME")
 	private String name;
@@ -78,14 +74,6 @@ public class Payord implements java.io.Serializable, Simple {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getNpp() {
-		return npp;
-	}
-
-	public void setNpp(Integer npp) {
-		this.npp = npp;
 	}
 
 	public String getName() {

@@ -6,10 +6,10 @@ Ext.define('BillWebApp.model.Payord', {
     fields: [
         { name: 'id', type: 'int', convert: null},
         { name: 'name', type: 'string' },
-        { name: 'npp', type: 'int', convert: null},
         { name: 'periodFk', type: 'int', convert: null},
         { name: 'selDays', type: 'string' },
-        { name: 'dtf', dateFormat: 'Y-m-d H:i:s', type: 'date' }
+        { name: 'dtf', dateFormat: 'Y-m-d H:i:s', type: 'date' },
+        { name: 'username', type: 'string' }
 
     ]
 });

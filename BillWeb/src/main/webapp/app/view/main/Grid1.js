@@ -5,6 +5,11 @@ Ext.define('BillWebApp.view.main.Grid1', {
     title: 'Платежные поручения',
     iconCls: 'framing-buttons-grid',
 
+    width: 1200,
+    height: 600,
+    minWidth: 1200,
+    minHeight: 200,
+
     requires: [
         'Ext.selection.CellModel'
     ],
@@ -25,8 +30,7 @@ Ext.define('BillWebApp.view.main.Grid1', {
     columns: [
         { text: 'Id',  dataIndex: 'id', width: 50,
             editor: {
-                readOnly:true, //только для чтения
-                allowBlank: false
+                readOnly:true //только для чтения
             }
         },
         { text: 'Наименование',  dataIndex: 'name', width: 400,
@@ -34,16 +38,10 @@ Ext.define('BillWebApp.view.main.Grid1', {
                 allowBlank: false
             }
         },
-        { text: 'periodTpFk',  dataIndex: 'periodTpFk', width: 100,
-            editor: {
-                readOnly:true, //только для чтения
-                allowBlank: false
-            }
-        },{
-            header: 'Light',
+        {
+            header: 'Периодичность',
             dataIndex: 'periodTpFk',
-            flex: 1,
-            width: 230,
+            width: 170,
             editor: {
                 xtype: 'combo',
                 typeAhead: true,
@@ -55,6 +53,7 @@ Ext.define('BillWebApp.view.main.Grid1', {
                     store: '{lststore}'
                 }
             },
+
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                 var store = Ext.getStore('LstStore');
                 var index = store.findExact('id', value);
@@ -64,29 +63,25 @@ Ext.define('BillWebApp.view.main.Grid1', {
                     var rs = store.getAt(index);
                     console.log('rs.display:'+rs.get('name'));
                     return rs.get('name');
-                } else {
-                    return 'жопа';
                 }
-                /*if (index != -1){
-                    var rs = me.getColumnStoreList("id").getAt(index).data;
-                    return rs.value;
-                }*/
-                /*var index = myStore.findExact('value',val);
-                if (index != -1){
-                    var rs = myStore.getAt(index).data;
-                    return rs.display;
-                } else {
-                    return 'жопа';
-                }*/
-
-            }/*,
-            renderer: function(val){
-                index = me.getColumnStoreList("id").findExact('key',val);
-                if (index != -1){
-                    rs = me.getColumnStoreList("id").getAt(index).data;
-                    return rs.value;
-                }
-            }*/
+            }
+        },
+        { text: 'Дни формир.',  dataIndex: 'selDays', width: 150,
+            editor: {
+                allowBlank: true
+            }
+        },
+        { text: 'Создано',  dataIndex: 'dtf', width: 170,
+            formatter: 'date("d-m-Y H:i:s")',
+            editor: {
+                readOnly:true, //только для чтения
+                allowBlank: false
+            }
+        },
+        { text: 'Пользователь',  dataIndex: 'username', width: 150,
+            editor: {
+                readOnly:true //только для чтения
+            }
         }
 
     ],

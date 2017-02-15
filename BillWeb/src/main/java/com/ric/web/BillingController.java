@@ -16,7 +16,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -87,6 +89,14 @@ public class BillingController {
 		
     }
 
+   @RequestMapping(value = "/setPayord", method = RequestMethod.POST, produces="application/json", consumes="application/json")
+   @ResponseBody
+   public String setPayord(@RequestBody List<PayordDTO> lst) {
+
+	   log.info("GOT /setPayord");
+	   lst.stream().forEach(t -> payordMng.savePayordDto(t));
+	   return null;
+   }
 	/**
 	 * Получить список по типу
 	 * @param tp - тип списка

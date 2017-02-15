@@ -25,13 +25,13 @@ public class DTOBuilder {
 public List<PayordDTO> getPayordDTOLst(List<Payord> lst) {
 	List<PayordDTO> lst2 = new ArrayList<PayordDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
-				new PayordDTO(t.getId(), t.getNpp(), t.getName(), (t.getPeriodTp()!=null) ? t.getPeriodTp().getId() : null, t.getSelDays(), t.getUsername(), t.getDtf())
+				new PayordDTO(t.getId(), t.getName(), (t.getPeriodTp()!=null) ? t.getPeriodTp().getId() : null, t.getSelDays(), t.getUsername(), t.getDtf())
 				));
 	return lst2;
 }
 
 /**
- * Построить коллекцию DTO списка 
+ * Построить коллекцию DTO списка (Lst)
  * @param lst
  * @return
  */
