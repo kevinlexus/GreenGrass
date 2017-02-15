@@ -12,8 +12,8 @@ Ext.define('BillWebApp.view.main.MainController', {
     // Проверка при включении чекбокса
     onChangePeriodType: function (chk , newValue , oldValue , eOpts) {
         //получить выбранные id
-        alert('id1:'+this.getViewModel().get('periodId1'));
-        alert('id2:'+this.getViewModel().get('periodId2'));
+        //alert('id1:'+this.getViewModel().get('periodId1'));
+        //alert('id2:'+this.getViewModel().get('periodId2'));
 
         var store = this.getViewModel().getStore('periodstore1');
         if (newValue) {

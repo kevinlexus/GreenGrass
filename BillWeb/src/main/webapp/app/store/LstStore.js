@@ -1,10 +1,11 @@
 /**
  * Created by lev on 13.02.2017.
  */
-Ext.define('BillWebApp.store.PeriodStore1', {
+Ext.define('BillWebApp.store.LstStore', {
     extend: 'Ext.data.Store',
-    alias  : 'store.periodstore1',
-    model: 'BillWebApp.model.Period',
+    alias  : 'store.lststore',
+    storeId: 'LstStore',
+    model: 'BillWebApp.model.Lst',
     config:{
         autoLoad: true,
         autoSync: true
@@ -14,7 +15,7 @@ Ext.define('BillWebApp.store.PeriodStore1', {
         type: 'ajax',
         api: {
             create  : '',
-            read    : 'http://192.168.100.21:8083/getPeriodReports',
+            read    : 'http://192.168.100.21:8083/getLst',
             update  : '',
             destroy : ''
         },
@@ -22,8 +23,7 @@ Ext.define('BillWebApp.store.PeriodStore1', {
             type: 'json'
         },
         extraParams :{
-            repCd : 'RptPayDocList',
-            tp: '0'
+            tp : 'PAYORD_PERIODTP'
         }
     }
 });

@@ -16,7 +16,8 @@ Ext.define('BillWebApp.view.main.Main', {
         'BillWebApp.view.main.MainController',
         'BillWebApp.view.main.MainModel',
         'BillWebApp.view.main.List',
-        'BillWebApp.view.main.Panel1'
+        'BillWebApp.view.main.Panel1',
+        'BillWebApp.view.main.Panel2'
     ],
 
     controller: 'main',
@@ -79,16 +80,15 @@ Ext.define('BillWebApp.view.main.Main', {
     items: [{
         title: 'Платежки',
         iconCls: 'fa-inbox',
-        // The following grid shares a store with the classic version's grid as well!
         items: [{
             xtype: 'panel1'
         }]
     }, {
         title: 'Редактирование',
         iconCls: 'fa-edit',
-        bind: {
-            html: '{loremIpsum}'
-        }
+        items: [{
+            xtype: 'panel2'
+        }]
     }, {
         title: 'Настройки',
         iconCls: 'fa-cog',

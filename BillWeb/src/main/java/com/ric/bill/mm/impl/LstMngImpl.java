@@ -37,5 +37,9 @@ public class LstMngImpl implements LstMng {
 		return lstDao.getByCD(cd);
 	}
 
+	public List<Lst> getByTp(String cdTp) {
+		return lstDao.getByTp(cdTp);
+	}
+
 
 }

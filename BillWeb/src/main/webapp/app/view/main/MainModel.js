@@ -17,9 +17,14 @@ Ext.define('BillWebApp.view.main.MainModel', {
         periodstore1: {
             type: 'periodstore1' // refers to the alias you set up on your store definition
         },
-
         periodstore2: {
-            type: 'periodstore1' // refers to the alias you set up on your store definition
+            type: 'periodstore1'
+        },
+        payordstore: {
+            type: 'payordstore'
+        },
+        lststore: {
+            type: 'lststore'
         }
     }
 

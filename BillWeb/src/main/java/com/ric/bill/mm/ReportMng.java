@@ -2,10 +2,10 @@ package com.ric.bill.mm;
 
 import java.util.List;
 
-import com.ric.web.PeriodReportsWeb;
+import com.ric.web.PeriodReportsDTO;
 
 public interface ReportMng {
 	
-	public List<PeriodReportsWeb> getPeriodsByCD(String repCd, int tp);
+	public List<PeriodReportsDTO> getPeriodsByCD(String repCd, int tp);
 
 }

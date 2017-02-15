@@ -25,7 +25,11 @@ import com.ric.bill.BillServ;
 import com.ric.bill.Config;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
+import com.ric.bill.mm.LstMng;
+import com.ric.bill.mm.PayordMng;
 import com.ric.bill.mm.ReportMng;
+import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.fn.Payord;
 
 
 @EnableCaching
@@ -47,6 +51,12 @@ public class BillingController {
     private BillServ billServ;
 	@Autowired
     private ReportMng repMng;
+	@Autowired
+    private LstMng lstMng;
+	@Autowired
+    private PayordMng payordMng;
+	@Autowired
+    private DTOBuilder dtoBuilder;
 
     /**
      * Получить периоды для элементов интерфейса
@@ -56,7 +66,7 @@ public class BillingController {
      */
 	@RequestMapping("/getPeriodReports") 
     @ResponseBody
-    public List<PeriodReportsWeb> getPeriodReports(@RequestParam(value="repCd") String repCd,
+    public List<PeriodReportsDTO> getPeriodReports(@RequestParam(value="repCd") String repCd,
  			    		  @RequestParam(value="tp", defaultValue="0") Integer tp) {
     	
     	log.info("GOT /getPeriodReports repCd={}, tp={}", repCd, tp);
@@ -64,7 +74,34 @@ public class BillingController {
     	
     }
 
-    @RequestMapping("/chrglsk") 
+	/**
+	 * Получить все платежки
+	 * @return
+	 */
+	@RequestMapping("/getPayord") 
+    @ResponseBody
+    public List<PayordDTO> getPayord() {
+
+		log.info("GOT /getPayord");
+		return dtoBuilder.getPayordDTOLst(payordMng.getPayordAll());
+		
+    }
+
+	/**
+	 * Получить список по типу
+	 * @param tp - тип списка
+	 * @return
+	 */
+	@RequestMapping("/getLst") 
+    @ResponseBody
+    public List<LstDTO> getLst(@RequestParam(value="tp") String tp) {
+
+		log.info("GOT /getLst with tp={}", tp);
+		return dtoBuilder.getLstDTOLst(lstMng.getByTp(tp));
+		
+    }
+
+	@RequestMapping("/chrglsk") 
     public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
     					  @RequestParam(value="dist", defaultValue="0") String dist,
     					  @RequestParam(value="tp", defaultValue="0") String tp,

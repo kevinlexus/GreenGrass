@@ -8,5 +8,7 @@ import com.ric.bill.model.tr.Serv;
 public interface LstMng {
 	
 	public Lst getByCD(String cd);
+
+	public List<Lst> getByTp(String cdTp);
 	
 }

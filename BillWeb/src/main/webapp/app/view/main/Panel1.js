@@ -85,7 +85,7 @@ listeners: {
                         xtype: 'combobox',
                         reference: 'states',
                         publishes: 'value',
-                        fieldLabel: 'Организация',
+                        fieldLabel: 'Платежные поручения',
                         displayField: 'state'
                     },
                     {

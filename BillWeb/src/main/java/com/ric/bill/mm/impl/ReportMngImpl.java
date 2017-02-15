@@ -27,7 +27,7 @@ import com.ric.bill.model.ar.Kw;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.tr.Serv;
-import com.ric.web.PeriodReportsWeb;
+import com.ric.web.PeriodReportsDTO;
 
 @Service
 public class ReportMngImpl implements ReportMng {
@@ -42,7 +42,7 @@ public class ReportMngImpl implements ReportMng {
 	 * @param tp - 0-Выбрать дни, 1-Выбрать месяцы 	 
 	 * @return
 	 */
-	public List<PeriodReportsWeb> getPeriodsByCD(String repCd, int tp) {
+	public List<PeriodReportsDTO> getPeriodsByCD(String repCd, int tp) {
 		
 		return reportDao.getPeriodsByCD(repCd, tp);
 		

@@ -536,8 +536,8 @@
                     "src": "classic/sass/save"
                 }
             }
-        },
-
+        }/*,
+        Закомментировал, иначе ругается во время Build на грид
         "modern": {
             "toolkit": "modern",
             
@@ -549,7 +549,7 @@
                     "src": "modern/sass/save"
                 }
             }
-        }
+        }*/
     },
     
     
