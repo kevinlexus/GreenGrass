@@ -202,9 +202,9 @@ public class BillingController {
     
     @RequestMapping("/chrgall")
     public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist,
-    					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId) {
-    	log.info("got /chrgall with: dist={}, houseId={}", dist, houseId);
-
+    					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId, 
+    					  @RequestParam(value="areaId", defaultValue="", required=false) Integer areaId) {
+    	log.info("got /chrgall with: dist={}, houseId={}, areaId={} ", dist, houseId, areaId);
 
     	// получить уникальный номер запроса
     	int rqn = config.incNextReqNum();
@@ -215,18 +215,7 @@ public class BillingController {
     	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
     	reqConfig.setUp(config, dist, "0", null, rqn); 
     	
-    	/*try {
-			billServ.work1();
-		} catch (EmptyStorable | WrongSetMethod e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	
-    	if (1==1) {
-    		return "";
-    	}*/
-    	
-    	fut = billServ.chrgAll(reqConfig, houseId);
+    	fut = billServ.chrgAll(reqConfig, houseId, areaId);
     	
 		 while (!fut.isDone()) {
 	         try {

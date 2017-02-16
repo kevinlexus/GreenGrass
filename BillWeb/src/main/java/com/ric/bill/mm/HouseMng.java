@@ -10,6 +10,6 @@ import com.ric.bill.model.tr.Serv;
 public interface HouseMng {
 	
 	public List<House> findAll();
-	public List<House> findAll2(Integer houseId);
+	public List<House> findAll2(Integer houseId, Integer areaId);
 	
 }

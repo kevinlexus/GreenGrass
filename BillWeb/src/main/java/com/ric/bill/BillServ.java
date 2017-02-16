@@ -156,7 +156,7 @@ public class BillServ {
 	 */
 	@Async
 	@CacheEvict(value = { "rrr1", "rrr2", "rrr3" }, allEntries = true)
-	public Future<Result> chrgAll(RequestConfig reqConfig, Integer houseId) {
+	public Future<Result> chrgAll(RequestConfig reqConfig, Integer houseId, Integer areaId) {
 		// Logger.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
 		// Logger.getLogger("org.hibernate.type").setLevel(Level.TRACE);
 		Result res = new Result();
@@ -177,14 +177,14 @@ public class BillServ {
 		// РАСПРЕДЕЛЕНИЕ ОБЪЕМОВ, если задано
 		if (reqConfig.getIsDist()) {
 			Calc calc = new Calc(reqConfig);
-			distServ.distAll(calc, houseId);
+			distServ.distAll(calc, houseId, areaId);
 			log.info("BillServ.chrgAll: Распределение по всем домам выполнено!");
 		}
 
 		// РАСЧЕТ НАЧИСЛЕНИЯ ПО ЛС В ПОТОКАХ
 		long startTime3 = System.currentTimeMillis();
 		// загрузить все необходимые Лиц.счета
-		kartThr = kartMng.findAll(houseId);
+		kartThr = kartMng.findAll(houseId, areaId);
 		cntLsk = kartThr.size();
 		// флаг ошибки, произошедшей в потоке
 		errThread = false;

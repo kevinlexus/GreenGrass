@@ -83,15 +83,6 @@ public class ChrgThr {
     private HashMap<Serv, BigDecimal> mapVrt;
 
     private Calc calc;
-    // вспомогательный класс-контейнер для перерасчета
-   /* private class PriceOrg {
-    	public PriceOrg(Double val, Org org2) {
-    		this.price = val;
-    		this.org = org;
-		}
-		Double price;
-    	Org org;
-    }*/
     
     //конструктор
 	public ChrgThr() {

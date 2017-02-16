@@ -28,5 +28,5 @@ public interface KartMng  {
 	public List<Serv> getAllServ(int rqn, Calc calc);
 	public double getCapPrivs(int rqn, Calc calc, RegContains rc, Date genDt);
 	public boolean getServ(int rqn, Calc calc, Serv serv, Date genDt);
-	public List<Kart> findAll(Integer houseId);
+	public List<Kart> findAll(Integer houseId, Integer areaId);
 }

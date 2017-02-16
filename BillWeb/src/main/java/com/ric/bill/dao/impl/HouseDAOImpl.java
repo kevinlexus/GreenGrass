@@ -52,7 +52,7 @@ public class HouseDAOImpl implements HouseDAO {
 
 	}
 
-	public List<House> findAll2(Integer houseId) {
+	public List<House> findAll2(Integer houseId, Integer areaId) {
 		@SqlResultSetMapping(name= STATEMENT_SQLMAP, classes = { //эту часть кода можно закинуть в любое место
 		        @ConstructorResult(targetClass = ResultSet.class,
 		            columns = {
@@ -64,31 +64,42 @@ public class HouseDAOImpl implements HouseDAO {
 		Query q;
 		List<House> lstHouse = null;
 		try {
-			if (houseId == null) {
-				// по всем домам
+			if (areaId != null) {
+				// по городу
 				q = em.createNativeQuery("select distinct h.id "+
-						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
+						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u, ar.street s  "+
 						   "where k.fk_kw = kw.id "+
 						   "and h.id = kw.fk_house "+
-						//   "and o.reu in ('Z4', 'F3', 'F4', 'J4', 'G4') "+
-						   "and o.parent_id=u.id /*and h.id=7468*/  "+
-						   "and k.fk_uk = u.id /*and h.id in (7309,7310)*/ /* and h.id in (162,163,968)*/ "+
 						   "and ? between k.dt1 and k.dt2 "+
+						   "and o.parent_id=u.id "+
+						   "and h.fk_street = s.id and s.fk_area = ? "+
+						   "and k.fk_uk = u.id "+
 						   "order by h.id ",  STATEMENT_SQLMAP);
 				q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
-			} else {
-				//по одному дому
+				q.setParameter(2, areaId);
+			} else if (houseId != null) {
+				// по дому
 				q = em.createNativeQuery("select distinct h.id "+
 						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
 						   "where k.fk_kw = kw.id "+
 						   "and h.id = kw.fk_house "+
-						  // "and o.reu in ('Z4', 'F3', 'F4', 'J4', 'G4') "+
 						   "and ? between k.dt1 and k.dt2 "+
 						   "and o.parent_id=u.id and h.id=? "+
-						   "and k.fk_uk = u.id /*and h.id in (7309,7310)*/ /* and h.id in (162,163,968)*/ "+
+						   "and k.fk_uk = u.id "+
 						   "order by h.id ",  STATEMENT_SQLMAP);
 				q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 				q.setParameter(2, houseId);
+			} else {
+				// весь фонд
+				q = em.createNativeQuery("select distinct h.id "+
+						   "from ar.house h, ar.kart k, ar.kw kw, bs.org o, bs.org u  "+
+						   "where k.fk_kw = kw.id "+
+						   "and h.id = kw.fk_house "+
+						   "and o.parent_id=u.id "+
+						   "and k.fk_uk = u.id "+
+						   "and ? between k.dt1 and k.dt2 "+
+						   "order by h.id ",  STATEMENT_SQLMAP);
+				q.setParameter(1, config.getCurDt1(), TemporalType.DATE);
 			}
 			
 			List<ResultSet> lst = q.getResultList();

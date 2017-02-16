@@ -9,6 +9,6 @@ public interface HouseDAO {
 
 
 	public List<House> findAll();
-	public List<House> findAll2(Integer houseId);
+	public List<House> findAll2(Integer houseId, Integer areaId);
 	
 }

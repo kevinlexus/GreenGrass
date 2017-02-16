@@ -141,9 +141,10 @@ public class DistServ {
 	/**
 	 * Распределить объемы по домам
 	 * @param calc
+	 * @param areaId 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void distAll(Calc calc, Integer houseId) {
+    public void distAll(Calc calc, Integer houseId, Integer areaId) {
 			//distGen = ctx.getBean(DistGen.class);
 			this.calc=calc;
 			int rqn = calc.getReqConfig().getRqn();
@@ -159,7 +160,7 @@ public class DistServ {
 			long startTime;
 			long endTime;
 			long totalTime;
-			for (House o: houseMng.findAll2(houseId)) {
+			for (House o: houseMng.findAll2(houseId, areaId)) {
 				System.out.println("ДОМ:"+o.getId());
 				//dist.clearCache();
 				//распределить объемы
