@@ -139,7 +139,10 @@ public class ChrgThr {
 		
 		//Объект, временно хранящий записи начисления
 		chStore = new ChrgStore(); 
-		//if (serv.getId()==32) {
+		if (serv.getId()==90) {
+			log.trace("Serv");
+		}
+		
 		log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
 		if (serv.getId()==72) {
 			log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
@@ -501,13 +504,15 @@ public class ChrgThr {
 		// ВЫПОЛНИТЬ РАСЧЕТ
 		/****************************/
 
-		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему осн.род.усл."), 0d) == 1d) {
+		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по нормативу и цене род.усл."), 0d) == 1d) {
 			Double tmpNorm = kartMng.getServPropByCD(rqn, calc, serv, "Норматив", genDt);
 			// получить цену родительской услуги
-			Double depServPrice = kartMng.getServPropByCD(rqn, calc, serv.getServDep(), "Цена", genDt);
+			log.info("dep = {}", serv.getServDep().getServSt().getId());
+			Double depServPrice = kartMng.getServPropByCD(rqn, calc, serv.getServDep().getServSt(), "Цена", genDt);
 
 			// произвести расчет цены
-			BigDecimal price = BigDecimal.valueOf(tmpNorm).multiply( BigDecimal.valueOf(depServPrice)  );
+			BigDecimal price = BigDecimal.valueOf(tmpNorm).multiply( BigDecimal.valueOf(depServPrice));
+			price.setScale(2, BigDecimal.ROUND_HALF_UP);
 			
 			chStore.addChrg(BigDecimal.valueOf(sqr), price, 
 							BigDecimal.valueOf(tmpNorm), cntPers.cnt, null, stServ, org, genDt);
