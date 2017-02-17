@@ -510,18 +510,20 @@ public class KartMngImpl implements KartMng {
 	@Cacheable(cacheNames="rrr1", key="{#rqn, #calc.getHouse().getId(), #calc.getKart().getLsk() }")
 	public /*synchronized*/ List<Serv> getAllServ(int rqn, Calc calc) {
 		List<Serv> lst = new ArrayList<Serv>();
-		//искать и добавить по наборам тарифа
-		//дома:
+		// искать и добавить по наборам тарифа
+		// города:
+		lst = checkServ(calc, calc.getArea(), lst, "Поставщик", 0);
+		// дома:
 		lst = checkServ(calc, calc.getHouse(), lst, "Поставщик", 0);
-		//лиц.счета
+		// лиц.счета
 		lst = checkServ(calc, calc.getKart(), lst, "Поставщик", 0);
 
-		//lst.stream().forEach(t-> log.info("Serv.cd={}", t.getCd()) );
-		
-		//удалить отключенные услуги по наборам тарифа
-		//дома:
+		// удалить отключенные услуги по наборам тарифа
+		// города:
+		lst = checkServ(calc, calc.getArea(), lst, "Отключение", 1);
+		// дома:
 		lst = checkServ(calc, calc.getHouse(), lst, "Отключение", 1);
-		//лиц.счета
+		// лиц.счета
 		lst = checkServ(calc, calc.getKart(), lst, "Отключение", 1);
 		
 		return lst;

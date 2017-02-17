@@ -139,7 +139,7 @@ public class ChrgThr {
 		
 		//Объект, временно хранящий записи начисления
 		chStore = new ChrgStore(); 
-		if (serv.getId()==90) {
+		if (serv.getId()==20) {
 			log.trace("Serv");
 		}
 		
@@ -495,16 +495,16 @@ public class ChrgThr {
 			vol = vol / calc.getReqConfig().getCntCurDays();
 		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
 			vol = 1 / calc.getReqConfig().getCntCurDays();
-		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по нормативу и цене род.усл."), 0d) == 1d) {
+		}/* else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по нормативу и цене род.усл."), 0d) == 1d) {
 			//доля площади в день
 			sqr = Utl.nvl(parMng.getDbl(rqn, kart, baseCD, genDt), 0d) / calc.getReqConfig().getCntCurDays();
-		}
+		}*/
 
 		/****************************/
 		// ВЫПОЛНИТЬ РАСЧЕТ
 		/****************************/
 
-		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по нормативу и цене род.усл."), 0d) == 1d) {
+		/*if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по нормативу и цене род.усл."), 0d) == 1d) {
 			Double tmpNorm = kartMng.getServPropByCD(rqn, calc, serv, "Норматив", genDt);
 			// получить цену родительской услуги
 			log.info("dep = {}", serv.getServDep().getServSt().getId());
@@ -518,7 +518,8 @@ public class ChrgThr {
 							BigDecimal.valueOf(tmpNorm), cntPers.cnt, null, stServ, org, genDt);
 
 			
-		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему осн.род.усл."), 0d) == 1d) {
+		} else*/
+		 if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему осн.род.усл."), 0d) == 1d) {
 			
 			Optional<ChrgMainServRec> rec;
 			// обязательно синхронизировать (в prepChrgMainServ идёт запись из других потоков)
