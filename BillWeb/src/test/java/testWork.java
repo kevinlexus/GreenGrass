@@ -59,7 +59,7 @@ public class testWork {
 
     private Calendar calendar;
 
-    @Test
+/*    @Test
 	public void mainWork() {
     	try {
     		
@@ -70,7 +70,7 @@ public class testWork {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
     
 /*    @Transactional(readOnly=false)
 	public void work1() throws EmptyStorable, WrongSetMethod {

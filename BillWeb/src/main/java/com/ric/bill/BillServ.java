@@ -71,49 +71,6 @@ public class BillServ {
 
 	}
 
-	
-    // временно оставил здесь метод выполнения различных скриптов
-	@Transactional(readOnly=false) 
-	public void script1() throws EmptyStorable, WrongSetMethod {
-		log.info("Script1");
-    	int rqn =-1;
-		Obj obj = objMng.getByCD(-1, "Модуль начисления");
-
-		Dw d = em.find(Dw.class, 8214820);
-		Calendar calendar = new GregorianCalendar(2017, Calendar.FEBRUARY, 1);
-		parMng.setDate(rqn, obj, "Начало расчетного периода", calendar.getTime());
-		//d.setDts1(calendar.getTime());
-		
-		calendar = new GregorianCalendar(2017, Calendar.FEBRUARY, 28);
-		parMng.setDate(rqn, obj, "Конец расчетного периода", calendar.getTime());
-		
-		log.info("Check ={}", obj.getId());
-		log.info("Check dt1={}", parMng.getDate(-1, obj, "Начало расчетного периода"));
-    	log.info("Check dt1={}", parMng.getDate(-1, obj, "Конец расчетного периода"));
-    	
-	}
-	
-    // временно оставил здесь метод выполнения различных скриптов
-	@Transactional(readOnly=false) 
-	public void script2() throws EmptyStorable, WrongSetMethod {
-		log.info("Script1");
-    	int rqn =-1;
-		Obj obj = objMng.getByCD(-1, "Модуль начисления");
-
-		Dw d = em.find(Dw.class, 8214820);
-		Calendar calendar = new GregorianCalendar(2017, Calendar.FEBRUARY, 1);
-		parMng.setDate(rqn, obj, "Начало расчетного периода", calendar.getTime());
-		//d.setDts1(calendar.getTime());
-		
-		calendar = new GregorianCalendar(2017, Calendar.FEBRUARY, 28);
-		parMng.setDate(rqn, obj, "Конец расчетного периода", calendar.getTime());
-		
-		log.info("Check ={}", obj.getId());
-		log.info("Check dt1={}", parMng.getDate(-1, obj, "Начало расчетного периода"));
-    	log.info("Check dt1={}", parMng.getDate(-1, obj, "Конец расчетного периода"));
-    	
-	}
-
 	// получить список N следующих лиц.счетов, для расчета в потоках
 	private List<Kart> getNextKart(int cnt) {
 		List<Kart> lst = new ArrayList<Kart>();

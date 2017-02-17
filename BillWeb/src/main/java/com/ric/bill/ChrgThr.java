@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -360,8 +358,13 @@ public class ChrgThr {
 			if (serv.getServWokpr() != null) {
 				woKprPrice = kartMng.getServPropByCD(rqn, calc, woKprServ, "Цена", genDt);
 				if (woKprPrice == null) {
-					woKprPrice = 0d;
-				}
+					// если не найдена цена с 0 проживающими, подставить цену по свыше соц.нормы, если и она не найдена, то по норме
+					if (upStPrice == null) {
+						woKprPrice = stPrice;
+					} else {
+						woKprPrice = upStPrice;
+					}
+				} 
 			} else {
 				woKprPrice = 0d;
 			} 
@@ -431,10 +434,10 @@ public class ChrgThr {
 			}
 		}		
 		
-		//получить базу для начисления
+		// получить базу для начисления
 		baseCD = parMng.getStr(rqn, serv, "Name_CD_par_base_charge");
 	
-		//получить объем для начисления
+		// получить объем для начисления
 		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по кол-ву точек-1"), 0d) == 1d || 
 				Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по общей площади-1"), 0d) == 1d ||
 				Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по общей площади-2"), 0d) == 1d) {
@@ -489,6 +492,9 @@ public class ChrgThr {
 			vol = vol / calc.getReqConfig().getCntCurDays();
 		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
 			vol = 1 / calc.getReqConfig().getCntCurDays();
+		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по нормативу и цене род.усл."), 0d) == 1d) {
+			//доля площади в день
+			sqr = Utl.nvl(parMng.getDbl(rqn, kart, baseCD, genDt), 0d) / calc.getReqConfig().getCntCurDays();
 		}
 
 		/****************************/
@@ -496,6 +502,18 @@ public class ChrgThr {
 		/****************************/
 
 		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему осн.род.усл."), 0d) == 1d) {
+			Double tmpNorm = kartMng.getServPropByCD(rqn, calc, serv, "Норматив", genDt);
+			// получить цену родительской услуги
+			Double depServPrice = kartMng.getServPropByCD(rqn, calc, serv.getServDep(), "Цена", genDt);
+
+			// произвести расчет цены
+			BigDecimal price = BigDecimal.valueOf(tmpNorm).multiply( BigDecimal.valueOf(depServPrice)  );
+			
+			chStore.addChrg(BigDecimal.valueOf(sqr), price, 
+							BigDecimal.valueOf(tmpNorm), cntPers.cnt, null, stServ, org, genDt);
+
+			
+		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему осн.род.усл."), 0d) == 1d) {
 			
 			Optional<ChrgMainServRec> rec;
 			// обязательно синхронизировать (в prepChrgMainServ идёт запись из других потоков)
