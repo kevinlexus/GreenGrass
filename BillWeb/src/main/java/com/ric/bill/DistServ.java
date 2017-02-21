@@ -285,6 +285,7 @@ public class DistServ {
 	private void distKartServTp(int rqn, Kart kart, Serv serv) throws ErrorWhileDist {
 		//найти все начальные узлы расчета по лиц.счету и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
+				//log.info("Услуга: serv.cd={},  Узел id={}", serv.getCd() , ml.getId());
 				distGraph(ml);
 		}
 	}

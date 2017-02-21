@@ -215,8 +215,10 @@ public class DistGen {
 					
 				}
 			} else if (mLogTp.equals("ЛНрм")){
-				// по нормативу
-				vl = kartMng.getStandartVol(rqn, calc, ml.getServ(), null, genDt, 0).partVol;
+				// по нормативу, если не существует физического счетчика
+				if (!metMng.checkExsKartMet(rqn, kart, ml.getServ(), genDt)) {
+					vl = kartMng.getStandartVol(rqn, calc, ml.getServ(), null, genDt, 0).partVol;
+				}
 			}
 				
 		} else if (tp==1 && (mLogTp.equals("ЛНрм") || mLogTp.equals("ЛИПУ") || mLogTp.equals("Лсчетчик"))) {
