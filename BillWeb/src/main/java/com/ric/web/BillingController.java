@@ -126,7 +126,14 @@ public class BillingController {
 		long beginTime = System.currentTimeMillis();
 		
 		// получить доступ к лиц.счету
+		int i = 0;
 		while (!config.checkLsk(lsk)) {
+			i++;
+			if (i > 100) {
+		    	log.info("********ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ! /chrglsk with: lsk={}", lsk);
+		    	log.info("********НЕ ВОЗМОЖНО РАЗБЛОКИРОВАТЬ ЛС В ТЕЧЕНИИ 10 сек! /chrglsk with: lsk={}", lsk);
+				i=0;
+			}
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -163,11 +170,15 @@ public class BillingController {
 			fut.get();
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
+	    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 			config.unCheckLsk(lsk); // снять лицевой с обработки
+	    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
 			return "ERROR";
 		} catch (ExecutionException e1) {
 			e1.printStackTrace();
+	    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 			config.unCheckLsk(lsk); // снять лицевой с обработки
+	    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
 			return "ERROR";
 		}
 		
@@ -177,23 +188,31 @@ public class BillingController {
 
 	    try {
 			if (fut.get().err ==0) {
-		    	log.info("OK /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+		    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 				config.unCheckLsk(lsk); // снять лицевой с обработки
+		    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
+		    	log.info("OK /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
 				return "OK";
 			} else {
-		    	log.info("ERROR /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+		    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 				config.unCheckLsk(lsk); // снять лицевой с обработки
+		    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
+		    	log.info("ERROR /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
 				return "ERROR";
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+	    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 			config.unCheckLsk(lsk); // снять лицевой с обработки
+	    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
 			return "ERROR";
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+	    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 			config.unCheckLsk(lsk); // снять лицевой с обработки
+	    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
 			return "ERROR";
 		}
 

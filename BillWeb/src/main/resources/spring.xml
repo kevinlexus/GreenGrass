@@ -27,9 +27,9 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 		destroy-method="close">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.100.92:1521:DEVDB" />
-		<!--<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.100.188:1521:RKCDB" />-->
-<!-- 		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.100.187:1521:RKCDB" />
- -->		<property name="user" value="lev" />
+		<!--<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.100.188:1521:RKCDB" />
+ 		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.100.187:1521:RKCDB" />-->
+ 		<property name="user" value="lev" />
 		<property name="password" value="testtest1" />
 		<property name="maxStatements" value="1000" />
 		<property name="maxIdleTime" value="30" />
