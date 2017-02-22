@@ -358,6 +358,7 @@ public class ChrgServ {
 			log.trace("ChrgServ: Loading servs for threads");
 			//получить следующие N услуг, рассчитать их в потоке
 			List<Serv> servWork = getNextServ(10);
+			//log.info("******** УБРАТЬ *********");
 
 			//for (Serv serv: servWork) {
 				//log.info("ПРОВЕРКА!!! ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
@@ -598,6 +599,12 @@ public class ChrgServ {
 		long endTime5=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
 		
+		//for (Chrg chrg : prepChrg) {
+			//if (chrg.getServ().getId()==71) {
+			//	log.info("SAVE serv.id={}, dt1={}, dt2={}, vol={}", chrg.getServ().getId(), chrg.getDt1(), chrg.getDt2(), chrg.getVol());
+			//}
+		//}
+
 		//Сохранить новое начисление (переписать из prepChrg)
 		for (Chrg chrg : prepChrg) {
 			//log.info("Save услуга="+chrg.getServ().getId()+" объем="+chrg.getVol()+" расценка="+chrg.getPrice()+" сумма="+chrg.getSumFull(),2);

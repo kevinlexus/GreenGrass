@@ -542,7 +542,10 @@ public class ChrgThr {
 				}
 	
 				BigDecimal tmpSqr = BigDecimal.ZERO;
-				
+				/*if (serv.getId() == 71) {
+					log.info("норма dt={}, tmpVol={}", genDt, tmpVol);
+				}*/
+
 				if ( BigDecimal.valueOf(tmpVol * Math.signum(vol)) != BigDecimal.ZERO &&
 						BigDecimal.valueOf(stPrice) != BigDecimal.ZERO ) {
 					// записать площадь только в одну из услуг, по норме или свыше, где есть объем и цена!
@@ -561,6 +564,9 @@ public class ChrgThr {
 					tmpSqr = BigDecimal.ZERO;
 				}
 				tmpVol = absVol - tmpVol;
+				/*if (serv.getId() == 71) {
+					log.info("свыше dt={}, tmpVol={}", genDt, tmpVol);
+				}*/
 				chStore.addChrg(BigDecimal.valueOf(tmpVol * Math.signum(vol)), BigDecimal.valueOf(upStPrice), 
 								BigDecimal.valueOf(stdt.vol), cntPers.cnt, tmpSqr, upStServ, org, genDt);
 			} else {
@@ -571,6 +577,9 @@ public class ChrgThr {
 					// записать площадь только в одну из услуг, по норме или свыше, где есть объем и цена!
 					tmpSqr = BigDecimal.valueOf(sqr);
 				}
+/*				if (serv.getId() == 71) {
+					log.info("нет прож dt={}, vol={}", genDt, vol);
+				}*/
 				
 				if (woKprServ != null) {
 					// если существует услуга "без проживающих"
