@@ -45,7 +45,6 @@ public class testDist {
 	// проверка корректности работы hibernate (если SIZE>2 то плохо))
 	@Test
 	public void testSomething() {
-
 		MLogs ml = em.find(MeterLog.class, 485158);
 		if (ml.getId()==485158) {
 			log.info("сч");
@@ -54,7 +53,7 @@ public class testDist {
 		}    
 	}
 
-	@Test
+/*	@Test
 	public void testSomething2() {
 
 		Expression e = new Expression("(2.2839+1.001)/6.04*2.89");
@@ -70,5 +69,5 @@ public class testDist {
 		repMng.getPeriodsByCD("RptPayDocList", 1).stream().forEach(t -> System.out.println("Reports:"+t.getId()+" "+t.getPeriod())
 				);
 		
-	}
+	}*/
 }

@@ -2,8 +2,8 @@ package com.ric.bill.mm;
 
 import java.util.List;
 
+import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.model.fn.Payord;
-import com.ric.web.PayordDTO;
 
 public interface PayordMng {
 

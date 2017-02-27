@@ -2,7 +2,7 @@ package com.ric.bill.mm;
 
 import java.util.List;
 
-import com.ric.web.PeriodReportsDTO;
+import com.ric.bill.dto.PeriodReportsDTO;
 
 public interface ReportMng {
 	

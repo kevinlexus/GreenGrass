@@ -16,6 +16,7 @@ import com.ric.bill.dao.HouseDAO;
 import com.ric.bill.dao.LstDAO;
 import com.ric.bill.dao.ReportDAO;
 import com.ric.bill.dao.ServDAO;
+import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.excp.WrongGetMethod;
 import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.LstMng;
@@ -27,7 +28,6 @@ import com.ric.bill.model.ar.Kw;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.tr.Serv;
-import com.ric.web.PeriodReportsDTO;
 
 @Service
 public class ReportMngImpl implements ReportMng {

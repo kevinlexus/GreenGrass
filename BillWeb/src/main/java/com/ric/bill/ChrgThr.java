@@ -139,14 +139,14 @@ public class ChrgThr {
 		
 		//Объект, временно хранящий записи начисления
 		chStore = new ChrgStore(); 
-		if (serv.getId()==20) {
+		/*if (serv.getId()==20) {
 			log.trace("Serv");
-		}
+		}*/
 		
 		log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
-		if (serv.getId()==72) {
+		/*if (serv.getId()==72) {
 			log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
-		}
+		}*/
 		
 		//}
 		Calendar c = Calendar.getInstance();

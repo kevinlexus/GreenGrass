@@ -358,13 +358,6 @@ public class ChrgServ {
 			log.trace("ChrgServ: Loading servs for threads");
 			//получить следующие N услуг, рассчитать их в потоке
 			List<Serv> servWork = getNextServ(10);
-			//log.info("******** УБРАТЬ *********");
-
-			//for (Serv serv: servWork) {
-				//log.info("ПРОВЕРКА!!! ChrgServ: serv.cd="+serv.getCd()+" serv.id="+serv.getId());
-			//}
-
-			
 
 			if (servWork.size()==0) {
 				//выйти, если все услуги обработаны

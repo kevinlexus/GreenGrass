@@ -14,9 +14,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ric.bill.dao.LstDAO;
 import com.ric.bill.dao.ReportDAO;
+import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.PeriodReports;
-import com.ric.web.PeriodReportsDTO;
 
 
 @Repository

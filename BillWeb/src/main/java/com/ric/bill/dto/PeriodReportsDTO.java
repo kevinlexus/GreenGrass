@@ -1,4 +1,4 @@
-package com.ric.web;
+package com.ric.bill.dto;
 
 /**
  * DTO - Периоды отчета для отображения в элементах форм Web-интерфейса

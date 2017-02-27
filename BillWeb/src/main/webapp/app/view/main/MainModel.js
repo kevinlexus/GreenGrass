@@ -10,7 +10,8 @@ Ext.define('BillWebApp.view.main.MainModel', {
         name: 'BillWebApp',
         loremIpsum: 'Редактирование платежек',
         periodId1: '',
-        periodId2: ''
+        periodId2: '',
+        payordId1: ''
     },
 
     stores: {

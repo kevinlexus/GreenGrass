@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ric.bill.dao.LstDAO;
 import com.ric.bill.dao.PayordDAO;
 import com.ric.bill.dao.ReportDAO;
+import com.ric.bill.dto.PayordDTO;
+import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.PeriodReports;
 import com.ric.bill.model.fn.Payord;
-import com.ric.web.PayordDTO;
-import com.ric.web.PeriodReportsDTO;
 
 
 @Repository

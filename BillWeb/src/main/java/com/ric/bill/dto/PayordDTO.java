@@ -1,4 +1,4 @@
-package com.ric.web;
+package com.ric.bill.dto;
 
 import java.util.Date;
 

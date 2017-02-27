@@ -193,7 +193,7 @@ public class DistGen {
 								// добавить объем в объект объема
 								// умножить объем на процент существования счетчика и на долю дня действия объема 
 								if (Utl.between(genDt, e.getDt1(), e.getDt2())) {
-									vl=vl+v.getVol1() * /*Utl.nvl(m.getTrRatio(), 0d) **/ e.getPrc() * Utl.getPartDays(v.getDt1(), v.getDt2());
+									vl=vl+Utl.nvl(v.getVol1(), 0d) * Utl.nvl(e.getPrc(), 0d) * Utl.getPartDays(v.getDt1(), v.getDt2());
 								}
 							}
 						}
@@ -206,7 +206,7 @@ public class DistGen {
 						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
 						.flatMap(t -> t.getChngVal().parallelStream().filter(d -> ml.equals(d.getMeter().getMeterLog()) // фильтр по getChngVal() 
 																	&& Utl.between(genDt, d.getDtVal1(), d.getDtVal2())))
-						.mapToDouble(d -> d.getVal() * Utl.getPartDays(d.getDtVal1(), d.getDtVal2()) ) // преобразовать в массив Double
+						.mapToDouble(d -> Utl.nvl(d.getVal(), 0d) * Utl.getPartDays(d.getDtVal1(), d.getDtVal2()) ) // преобразовать в массив Double
 						.sum(); // просуммировать
 
 						vl = vl + vlChng; 
@@ -409,7 +409,7 @@ public class DistGen {
 							//добавить объемы от дочерних узлов
 							nv.addPartArea(nvChld.getPartArea());
 							nv.addPartPers(nvChld.getPartPers());
-							nv.addVol(nvChld.getVol() * g.getPrc());
+							nv.addVol(nvChld.getVol() * Utl.nvl(g.getPrc(), 0d));
 						}
 				}
 			}

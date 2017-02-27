@@ -14,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.ChrgServThr;
 import com.ric.bill.dao.PayordDAO;
+import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Payord;
-import com.ric.web.PayordDTO;
 
 @Service
 @Slf4j

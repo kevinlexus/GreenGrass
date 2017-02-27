@@ -2,8 +2,8 @@ package com.ric.bill.dao;
 
 import java.util.List;
 
+import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.model.bs.PeriodReports;
-import com.ric.web.PeriodReportsDTO;
 
 
 public interface ReportDAO {

@@ -83,10 +83,13 @@ listeners: {
                 items: [
                     {
                         xtype: 'combobox',
-                        reference: 'states',
-                        publishes: 'value',
                         fieldLabel: 'Платежные поручения',
-                        displayField: 'state'
+                        displayField: 'name',
+                        valueField: 'id',
+                        bind: {
+                            store: '{payordstore}',
+                            value: '{payordId1}'
+                        }
                     },
                     {
                         xtype: 'combobox',
