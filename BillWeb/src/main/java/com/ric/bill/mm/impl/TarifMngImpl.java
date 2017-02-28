@@ -53,8 +53,7 @@ public class TarifMngImpl implements TarifMng {
 			//if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
-					
-					if (Utl.between(genDt, t.getDt1(), k.getDt2())) {
+					if (Utl.between(genDt, t.getDt1(), t.getDt2())) {
 						if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
 							return t.getN1();
 						}

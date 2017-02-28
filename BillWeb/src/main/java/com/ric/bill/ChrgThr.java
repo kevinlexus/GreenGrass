@@ -449,7 +449,7 @@ public class ChrgThr {
 			vol = vol / calc.getReqConfig().getCntCurDays();
 			//проверить по капремонту, чтобы не была квартира муниципальной
 			if (serv.getCd().equals("Взносы на кап.рем.")) {
-				if (!(tpOwn.equals("Подсобное помещение") || tpOwn.equals("Приватизированная") || tpOwn.equals("Собственная"))) {
+				if (tpOwn != null && !(tpOwn.equals("Подсобное помещение") || tpOwn.equals("Приватизированная") || tpOwn.equals("Собственная"))) {
 					//не начислять, выход
 					return;
 				} else {

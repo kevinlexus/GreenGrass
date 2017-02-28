@@ -65,6 +65,7 @@ public class Config {
 	
 	@PostConstruct
 	private void setUp() throws EmptyStorable {
+		log.info("Версия модуля начисления - {}", 1.3);
 		//Объект приложения, получить даты текущего периода
 		// TODO проверить RQN!
 		Obj obj = objMng.getByCD(-1, "Модуль начисления");

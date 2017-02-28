@@ -147,6 +147,10 @@ public class DistGen {
 	 */
 	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar, WrongValue {
 		// номер текущего запроса
+		if (ml.getId()==510555 && tp==0) {
+			log.trace("счетчик!");
+		}
+
 		int rqn = calc.getReqConfig().getRqn();
 		
 		NodeVol nv = findLstCheck(ml.getId(), tp, genDt); 
@@ -181,8 +185,11 @@ public class DistGen {
 
 		
 		if (tp==0) {
-			//по расчетной связи
-			if (mLogTp.equals("ЛИПУ") || mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
+			//log.info("Наличие услуги={} услуга={}",kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt), ml.getServ().getServOrg().getId()); 
+			// по расчетной связи
+			// только там, где существует услуга в данном дне (по услуге, содержащей Поставщика) (для ЛИПУ)
+			if (mLogTp.equals("ЛИПУ") && kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt) || 
+			   mLogTp.equals("ЛОДПУ") || mLogTp.equals("ЛГрупп")) {
 				// посчитать объемы, по физическим счетчикам, прикрепленным к узлу
 			    // (если такие есть) в пропорции на кол-во дней объема
 				for (Meter m : ml.getMeter()) { 		// физ.сч
@@ -215,178 +222,187 @@ public class DistGen {
 					
 				}
 			} else if (mLogTp.equals("ЛНрм")){
-				// по нормативу, если не существует физического счетчика
-				if (!metMng.checkExsKartMet(rqn, kart, ml.getServ(), genDt)) {
+				// по нормативу, только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
+				// и если не существует физического счетчика
+				if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt) && !metMng.checkExsKartMet(rqn, kart, ml.getServ(), genDt)) {
 					vl = kartMng.getStandartVol(rqn, calc, ml.getServ(), null, genDt, 0).partVol;
 				}
 			}
 				
 		} else if (tp==1 && (mLogTp.equals("ЛНрм") || mLogTp.equals("ЛИПУ") || mLogTp.equals("Лсчетчик"))) {
-			//по связи по площади и кол.прож. (только по Лнрм, ЛИПУ) в доле 1 дня
-			//площадь
-			partArea = Utl.nvl(parMng.getDbl(rqn, kart, "Площадь.Общая", genDt), 0d) / calc.getReqConfig().getCntCurDays(); 
-			//проживающие
-			CntPers cntPers= new CntPers();
-			kartMng.getCntPers(rqn, calc, kart, servChrg, cntPers, genDt, 0); // здесь сделал tp = 0 (т.е. если кол-во прож.=0, то будет попытка поискать кол-во собств.
-			partPers = cntPers.cnt / calc.getReqConfig().getCntCurDays();
+			//только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
+			if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt)) {
+				//по связи по площади и кол.прож. (только по Лнрм, ЛИПУ) в доле 1 дня
+				//площадь
+				partArea = Utl.nvl(parMng.getDbl(rqn, kart, "Площадь.Общая", genDt), 0d) / calc.getReqConfig().getCntCurDays(); 
+				//проживающие
+				CntPers cntPers= new CntPers();
+				kartMng.getCntPers(rqn, calc, kart, servChrg, cntPers, genDt, 0); // здесь сделал tp = 0 (т.е. если кол-во прож.=0, то будет попытка поискать кол-во собств.
+				partPers = cntPers.cnt / calc.getReqConfig().getCntCurDays();
+			}
 		} else if (tp==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)
 			//получить дельту ОДН, площадь, кол-во людей, для расчета пропорции в последствии
 			//сохранить счетчик ЛОДН
-			SumNodeVol lnkODNVol = null;
-			MLogs lnkLODN = null;
-			MLogs lnkSumODPU = null;
-			MLogs lnkODPU = null;
-			//поиск счетчика ЛОДН
-			lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
-			//параметр Доначисление по ОДН
-			Double parAddODN = Utl.nvl(parMng.getDbl(rqn, (Storable)lnkLODN, "Доначисление по ОДН", genDt), 0d);
-			Double parLimitODN = parMng.getDbl(rqn, (Storable)lnkLODN, "Лимит по ОДН", genDt);
-			
-			if (lnkLODN == null) {
-				// не найден счетчик
-		        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+ml.getId());  
-			}
-			//поиск счетчика ЛСумОдпу
-			lnkSumODPU = metMng.getLinkedNode(rqn, lnkLODN, "ЛСумОДПУ", genDt);
-			if (lnkSumODPU == null) {
-				// не найден счетчик
-		        throw new NotFoundNode("Не найден счетчик ЛСумОДПУ, связанный со счетчиком id="+lnkLODN.getId());  
-			}
-			//поиск счетчика Ф/Л ОДПУ
-			lnkODPU = metMng.getLinkedNode(rqn, lnkSumODPU, "ЛОДПУ", genDt);
-			SumNodeVol lnkODPUVol = new SumNodeVol();  
-			if (lnkODPU == null) {
-				// не найден счетчик (лог.счетчик должен быть обязательно, а физ.сч. к нему привязанных, может и не быть!)
-			    //переделал из ошибки в Warning:
-				//log.info("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(), 2);
-				//return null;
-			} else {
-				lnkODPUVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkODPU, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
-			}
-
-			//получить объем за период по счетчику ЛОДН и наличие ОДПУ
-			lnkODNVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkLODN, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
-
-			//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
-			SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
-			
-			if (lnkODPU != null && metMng.checkExsMet(rqn, lnkODPU, genDt) && lnkODPUVol.getVol() >= 0d) {
-				//при наличии физ.счетчика(ков) ОДПУ и объема по нему
-				if (lnkODNVol.getVol() > 0 && lnkODNVol.getArea() > 0) {
-					//ПЕРЕРАСХОД
-					if (lnkODNVol.getArea()==0d) {
-						vl = 0d;
+			//только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
+			if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt)) {
+				SumNodeVol lnkODNVol = null;
+				MLogs lnkLODN = null;
+				MLogs lnkSumODPU = null;
+				MLogs lnkODPU = null;
+				//поиск счетчика ЛОДН
+				lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
+				//параметр Доначисление по ОДН
+				Double parAddODN = Utl.nvl(parMng.getDbl(rqn, (Storable)lnkLODN, "Доначисление по ОДН", genDt), 0d);
+				Double parLimitODN = parMng.getDbl(rqn, (Storable)lnkLODN, "Лимит по ОДН", genDt);
+				
+				if (lnkLODN == null) {
+					// не найден счетчик
+			        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+ml.getId());  
+				}
+				//поиск счетчика ЛСумОдпу
+				lnkSumODPU = metMng.getLinkedNode(rqn, lnkLODN, "ЛСумОДПУ", genDt);
+				if (lnkSumODPU == null) {
+					// не найден счетчик
+			        throw new NotFoundNode("Не найден счетчик ЛСумОДПУ, связанный со счетчиком id="+lnkLODN.getId());  
+				}
+				//поиск счетчика Ф/Л ОДПУ
+				lnkODPU = metMng.getLinkedNode(rqn, lnkSumODPU, "ЛОДПУ", genDt);
+				SumNodeVol lnkODPUVol = new SumNodeVol();  
+				if (lnkODPU == null) {
+					// не найден счетчик (лог.счетчик должен быть обязательно, а физ.сч. к нему привязанных, может и не быть!)
+				    //переделал из ошибки в Warning:
+					//log.info("Warning: Не найден счетчик ЛОДПУ, связанный со счетчиком id="+lnkSumODPU.getId(), 2);
+					//return null;
+				} else {
+					lnkODPUVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkODPU, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
+				}
+	
+				//получить объем за период по счетчику ЛОДН и наличие ОДПУ
+				lnkODNVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkLODN, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
+	
+				//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
+				SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
+				
+				if (lnkODPU != null && metMng.checkExsMet(rqn, lnkODPU, genDt) && lnkODPUVol.getVol() >= 0d) {
+					//при наличии физ.счетчика(ков) ОДПУ и объема по нему
+					if (lnkODNVol.getVol() > 0 && lnkODNVol.getArea() > 0) {
+						//ПЕРЕРАСХОД
+						if (lnkODNVol.getArea()==0d) {
+							vl = 0d;
+						} else {
+							vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+						}
+						//применить лимит по ОДН
+						Double limitVol = lnkODNVol.getLimit();
+						if (parLimitODN == null) {
+							throw new NotFoundODNLimit("Не найден параметр рассчитываемый программно - лимит по ОДН в счетчике="+lnkLODN.getId());
+						} else if (parLimitODN == 1 && limitVol > 0) {
+							//если больше лимита - ограничить лимит * площадь
+							if (vl > limitVol * sumVol.getArea()) {
+								vl = limitVol * sumVol.getArea();
+							}
+						}
 					} else {
-						vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
-					}
-					//применить лимит по ОДН
-					Double limitVol = lnkODNVol.getLimit();
-					if (parLimitODN == null) {
-						throw new NotFoundODNLimit("Не найден параметр рассчитываемый программно - лимит по ОДН в счетчике="+lnkLODN.getId());
-					} else if (parLimitODN == 1 && limitVol > 0) {
-						//если больше лимита - ограничить лимит * площадь
-						if (vl > limitVol * sumVol.getArea()) {
-							vl = limitVol * sumVol.getArea();
+						//ЭКОНОМИЯ
+						//экономия, но в пределах потреблённого по основной услуге объема. Внимание! в квартплате решили так не учитывать, а учитывать в контексте услуги ОДН!
+	
+						//получить основную услугу
+						Serv mainServ = servMng.findMain(servChrg);
+						//получить счетчик основной услуги
+						log.trace("check serv="+mainServ.getServMet().getId());
+						double tmpVol=0d;
+						SumNodeVol sumMainVol;
+						List<MLogs> lstMain = metMng.getAllMetLogByServTp(rqn, kart, mainServ.getServMet(), null);
+						for (MLogs mLog2 : lstMain) {
+							//получить объем за период, по лог счетчику основной услуги, если найден
+							sumMainVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), mLog2, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
+							tmpVol = tmpVol + sumMainVol.getVol();
+						}
+						
+						//если есть проживающие по узлу ОДН
+						if (lnkODNVol.getPers() > 0 ) {
+							vl = lnkODNVol.getVol() * sumVol.getPers() / lnkODNVol.getPers();  
+							//округлить до 4 знаков
+							vl = (double)Math.round(vl * 10000d) / 10000d;
+						}
+						//ограничить экономию текущим потреблением по основному счетчику
+						if (Math.abs(vl) > tmpVol) {
+							vl = -1 * tmpVol;
 						}
 					}
-				} else {
-					//ЭКОНОМИЯ
-					//экономия, но в пределах потреблённого по основной услуге объема. Внимание! в квартплате решили так не учитывать, а учитывать в контексте услуги ОДН!
-
-					//получить основную услугу
-					Serv mainServ = servMng.findMain(servChrg);
-					//получить счетчик основной услуги
-					log.trace("check serv="+mainServ.getServMet().getId());
-					double tmpVol=0d;
-					SumNodeVol sumMainVol;
-					List<MLogs> lstMain = metMng.getAllMetLogByServTp(rqn, kart, mainServ.getServMet(), null);
-					for (MLogs mLog2 : lstMain) {
-						//получить объем за период, по лог счетчику основной услуги, если найден
-						sumMainVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), mLog2, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
-						tmpVol = tmpVol + sumMainVol.getVol();
-					}
 					
-					//если есть проживающие по узлу ОДН
-					if (lnkODNVol.getPers() > 0 ) {
-						vl = lnkODNVol.getVol() * sumVol.getPers() / lnkODNVol.getPers();  
-						//округлить до 4 знаков
-						vl = (double)Math.round(vl * 10000d) / 10000d;
-					}
-					//ограничить экономию текущим потреблением по основному счетчику
-					if (Math.abs(vl) > tmpVol) {
-						vl = -1 * tmpVol;
+				} else if (parAddODN > 0d) {
+					//если есть объем дораспределения ОДН на м2 - то использовать его
+					vl = parAddODN * sumVol.getArea();
+				} else {
+					//не найден счётчик ОДПУ (должно начислиться по лимиту ОДН (Нормативу) * площадь л.с.)
+					//или нет объема по ОДПУ
+					Double limit = parLimitODN;
+					if (limit == null) {
+						log.warn("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
+						//throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
+					} else if (limit == 1) {
+						//если больше лимита - ограничить лимит * площадь
+						Double limitVol = lnkODNVol.getLimit();
+						vl = limitVol * sumVol.getArea();
 					}
 				}
 				
-			} else if (parAddODN > 0d) {
-				//если есть объем дораспределения ОДН на м2 - то использовать его
-				vl = parAddODN * sumVol.getArea();
-			} else {
-				//не найден счётчик ОДПУ (должно начислиться по лимиту ОДН (Нормативу) * площадь л.с.)
-				//или нет объема по ОДПУ
-				Double limit = parLimitODN;
-				if (limit == null) {
-					log.warn("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
-					//throw new NotFoundODNLimit("Не найден обязательный параметр - лимит по ОДН в счетчике="+lnkLODN.getId());
-				} else if (limit == 1) {
-					//если больше лимита - ограничить лимит * площадь
-					Double limitVol = lnkODNVol.getLimit();
-					vl = limitVol * sumVol.getArea();
-				}
 			}
-			
-			
 		} else if (tp==3 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи пропорц.площади (Отопление например)
-			MLogs lnkLODN = null;
-			MLogs lnkSumODPU = null;
-			MLogs lnkODPU = null;
-
-			//поиск счетчика ЛОДН
-			lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
-			//поиск счетчика ЛСумОдпу
-			lnkSumODPU = metMng.getLinkedNode(rqn, lnkLODN, "ЛСумОДПУ", genDt);
-			// поиск установленного физ.счетчика ОДПУ
-			lnkODPU = metMng.getLinkedNode(rqn, lnkSumODPU, "ЛОДПУ", genDt);
-			
-			if (lnkLODN == null) {
-				// не найден счетчик
-		        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+ml.getId());  
-			}
-			
-			if (lnkODPU != null) {
-				// если существует физ.счетчик ОДПУ
-				//получить объем за период по счетчику ЛОДН и наличие ОДПУ
-				SumNodeVol lnkODNVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkLODN, tp, genDt, genDt);
-				//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
-				SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, genDt, genDt);
-				//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
-				Double tmp =parMng.getDbl(rqn, lnkLODN, "VOL_SQ_MT", genDt);
-				if (tmp != null) {
-					//установлено значение "Введено гкал." 
-					vl = tmp * sumVol.getArea();
-				} else {
-					//НЕ установлено значение "Введено гкал.", распределить по объему счетчика пропорционально площадей квартир
-					if (lnkODNVol.getArea()==0d) {
-						vl = 0d;
-					} else {
-						vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
-					}
+			//только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
+			if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt)) {
+				MLogs lnkLODN = null;
+				MLogs lnkSumODPU = null;
+				MLogs lnkODPU = null;
+	
+				//поиск счетчика ЛОДН
+				lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
+				//поиск счетчика ЛСумОдпу
+				lnkSumODPU = metMng.getLinkedNode(rqn, lnkLODN, "ЛСумОДПУ", genDt);
+				// поиск установленного физ.счетчика ОДПУ
+				lnkODPU = metMng.getLinkedNode(rqn, lnkSumODPU, "ЛОДПУ", genDt);
+				
+				if (lnkLODN == null) {
+					// не найден счетчик
+			        throw new NotFoundNode("Не найден счетчик ЛОДН, связанный со счетчиком id="+ml.getId());  
 				}
-			} else {
-				// если НЕ существует физ.счетчик ОДПУ
-				// начислить по "Введённое значение объёма на м2"
-				Double tmp =parMng.getDbl(rqn, lnkLODN, "VOL_SQ_MT", genDt);
-				//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
-				SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, genDt, genDt);
-
-				if (tmp != null) {
-					//установлено значение "Введено гкал." 
-					vl = tmp * sumVol.getArea();
+				
+				if (lnkODPU != null) {
+					// если существует физ.счетчик ОДПУ
+					//получить объем за период по счетчику ЛОДН и наличие ОДПУ
+					SumNodeVol lnkODNVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), lnkLODN, tp, genDt, genDt);
+					//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
+					SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, genDt, genDt);
+					//узнать наличие "Введено гкал." для расчета по значению, рассчитанному экономистом
+					Double tmp =parMng.getDbl(rqn, lnkLODN, "VOL_SQ_MT", genDt);
+					if (tmp != null) {
+						//установлено значение "Введено гкал." 
+						vl = tmp * sumVol.getArea();
+					} else {
+						//НЕ установлено значение "Введено гкал.", распределить по объему счетчика пропорционально площадей квартир
+						if (lnkODNVol.getArea()==0d) {
+							vl = 0d;
+						} else {
+							vl = lnkODNVol.getVol() * sumVol.getArea() / lnkODNVol.getArea();
+						}
+					}
 				} else {
-					//НЕ установлено значение "Введено гкал."
-					// TODO сделать ветку если нет параметра "Введённое значение объёма на м2", рассчитать по строительному объему!
+					// если НЕ существует физ.счетчик ОДПУ
+					// начислить по "Введённое значение объёма на м2"
+					Double tmp =parMng.getDbl(rqn, lnkLODN, "VOL_SQ_MT", genDt);
+					//получить проживающих и площадь за период по счетчику данного лиц.счета (основываясь на meter_vol)
+					SumNodeVol sumVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), ml, tp, genDt, genDt);
+	
+					if (tmp != null) {
+						//установлено значение "Введено гкал." 
+						vl = tmp * sumVol.getArea();
+					} else {
+						//НЕ установлено значение "Введено гкал."
+						// TODO сделать ветку если нет параметра "Введённое значение объёма на м2", рассчитать по строительному объему!
+					}
 				}
 			}
 		}
@@ -418,10 +434,6 @@ public class DistGen {
 			log.trace("}");
 		}
 		
-		if (ml.getId()==3625218 && tp==0) {
-			log.trace("счетчик!");
-		}
-
 		//после рекурсивного расчета дочерних узлов, и только по последней дате, выполнить расчет Лимита ОДН
 		if (tp==1 && mLogTp.equals("ЛОДН") && genDt.getTime() == calc.getReqConfig().getCurDt2().getTime() /*genDt.equals(Calc.getCurDt2()*/) {
 			SumNodeVol lnkODNVol = null;
