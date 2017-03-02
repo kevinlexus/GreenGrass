@@ -1,11 +1,5 @@
 package com.ric.bill;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import com.ric.bill.model.ps.Reg;
-import com.ric.bill.model.ps.RegState;
-import com.ric.bill.model.ps.Registrable;
 
 /**
  * Хранение кол-ва проживающих, записи о их регистрациях
@@ -14,6 +8,7 @@ import com.ric.bill.model.ps.Registrable;
  */
 public class CntPers implements java.io.Serializable {
 	
-	public int cnt; //кол-во проживающих
-	public int cntEmpt; //кол-во проживающих для анализа пустых квартир
+	public int cnt; // кол-во проживающих для определения соцнормы/свыше
+	public int cntVol; // кол-во проживающих для определения объема
+	public int cntEmpt; // кол-во проживающих для анализа пустых квартир
 }

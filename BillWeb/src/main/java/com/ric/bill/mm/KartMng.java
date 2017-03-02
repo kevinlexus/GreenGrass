@@ -21,7 +21,7 @@ import com.ric.bill.model.tr.TarifKlsk;
 
 public interface KartMng  {
 
-	public abstract void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, Date genDt, int tp) throws EmptyStorable;
+	public abstract void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable;
 	public abstract Double getServPropByCD(int rqn, Calc calc, Serv serv, String string, Date genDt);
 	public abstract Standart getStandartVol(int rqn, Calc calc, Serv serv, CntPers cntPers, Date genDt, int tp) throws EmptyStorable;
 	public Org getOrg(int rqn, Calc calc, Serv serv, Date genDt);

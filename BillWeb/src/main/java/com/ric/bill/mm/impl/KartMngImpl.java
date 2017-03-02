@@ -170,14 +170,14 @@ public class KartMngImpl implements KartMng {
 	 * @param serv - Рассчитываемая услуга 
 	 * @param rc - Список дат регистрации
 	 * @param cntPers - объект для заполнения
-	 * @param tp - 0 - для определения объема по нормативу, 1 - для определения доли соц.нормы
 	 * @return
 	 * @throws EmptyStorable 
 	 */
-	@Cacheable(cacheNames="rrr1", key="{#rqn, #rc.getKlsk(), #serv.getId(), #cntPers, #genDt, #tp }") 
-	public void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, Date genDt, int tp) throws EmptyStorable{
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #rc.getKlsk(), #serv.getId(), #cntPers, #genDt}") 
+	public void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable{
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек
+		cntPers.cntVol=0; //кол-во чел. для определения объема
 		cntPers.cntEmpt=0; //кол-во чел. для анализа пустая ли квартира
 		//поиск сперва по постоянной регистрации 
 		for (Registrable p : rc.getReg()) {
@@ -188,10 +188,12 @@ public class KartMngImpl implements KartMng {
 						if (!checkPersStatus(rqn, calc, rc, p.getPers(), "Временное отсутствие", 1, genDt)) {
 							//временного отсутствия нет, считать проживающего
 							cntPers.cnt++;
+							cntPers.cntVol++;
 						}
 					} else {
 						//не проверять временное отсутствие, считать проживающего
 						cntPers.cnt++;
+						cntPers.cntVol++;
 					}
 					cntPers.cntEmpt++;
 				} else {
@@ -200,6 +202,7 @@ public class KartMngImpl implements KartMng {
 						//временное присутствие есть, считать проживающего
 						if (serv.getInclPrsn()) {
 							cntPers.cnt++;
+							cntPers.cntVol++;
 						}
 						cntPers.cntEmpt++;
 					}
@@ -214,14 +217,15 @@ public class KartMngImpl implements KartMng {
 				if (checkPersNullStatus(rqn, calc, p, genDt)){
 					if (serv.getInclPrsn()) {
 						cntPers.cnt++;
+						cntPers.cntVol++;
 					}
 				}
 			}		
 		}
 		
-		// если кол-во проживающих установить невозможно, установить по кол-ву собственников
-		if (tp==0 && cntPers.cnt == 0) {
-			cntPers.cnt = Utl.nvl(parMng.getDbl(rqn, calc.getKart(), "Количество собственников на ЛС", genDt), 0d).intValue();
+		// если кол-во проживающих для объема установить невозможно, установить по кол-ву собственников
+		if (cntPers.cntVol == 0) {
+			cntPers.cntVol = Utl.nvl(parMng.getDbl(rqn, calc.getKart(), "Количество собственников на ЛС", genDt), 0d).intValue();
 		}
 	}
 	
@@ -231,6 +235,7 @@ public class KartMngImpl implements KartMng {
 	 * @param serv - Рассчитываемая услуга 
 	 * @param cnt - Переданное кол-во проживающих
 	 * @param calcCd - CD Варианта расчета начисления 
+	 * @param tp - тип норматива, 0 - для определения нормы и свыше, 1 - для определения объема
 	 * @throws EmptyServ 
 	 */
 	@Cacheable(cacheNames="rrr4", key="{#rqn, #calc.getKart().getLsk(), #serv.getId(), #genDt }") // сделал отдельный кэш, иначе валится с Cannot Cast Standart to Boolean! 
@@ -248,21 +253,29 @@ public class KartMngImpl implements KartMng {
 			//если кол-во проживающих не передано, получить его
 			cntPers= new CntPers();
 			log.trace("STANDART2="+serv.getId()+" dt="+genDt);	
-			getCntPers(rqn, calc, calc.getKart(), servChrg, cntPers, genDt, tp);
+			getCntPers(rqn, calc, calc.getKart(), servChrg, cntPers, genDt);
 			log.trace("STANDART3="+serv.getId()+" dt="+genDt);	
 		}
-		//log.trace("===="+calc.getServMng().getDbl(servChrg.getDw(), "Вариант расчета по объему-1"));
+		
+		int cnt;
+		if (tp==0) {
+			// для определения нормы и свыше
+			cnt=cntPers.cnt;
+		} else {
+			// для определения объема
+			cnt=cntPers.cntVol;
+		}
 		
 		log.trace("STANDART4="+serv.getId()+" dt="+genDt);	
 		log.trace("===="+Utl.nvl(parMng.getDbl(rqn, servChrg, "Вариант расчета по общей площади-1"), 0d));
 		
 		if (Utl.nvl(parMng.getDbl(rqn, servChrg, "Вариант расчета по общей площади-1"), 0d)==1d
 				|| Utl.nvl(parMng.getDbl(rqn, servChrg, "Вариант расчета по объему-2"), 0d)==1d) {
-			if (cntPers.cnt==1) {
+			if (cnt==1) {
 				stVol = getServPropByCD(rqn, calc, servSt, "Норматив-1 чел.", genDt);
-			} else if (cntPers.cnt==2) {
+			} else if (cnt==2) {
 				stVol = getServPropByCD(rqn, calc, servSt, "Норматив-2 чел.", genDt);
-			} else if (cntPers.cnt >= 3) {
+			} else if (cnt >= 3) {
 				stVol = getServPropByCD(rqn, calc, servSt, "Норматив-3 и более чел.", genDt);
 			} else {
 				stVol = 0d;
@@ -279,7 +292,7 @@ public class KartMngImpl implements KartMng {
 			kitchElStv = parMng.getDbl(rqn, calc.getKart(), "Электроплита. основное количество", genDt);
 			if (Utl.nvl(kitchElStv, 0d) != 0d) {
 				//с эл.плитой
-				switch (cntPers.cnt) {
+				switch (cnt) {
 					case 0 : 
 						s2 = null;
 						break;
@@ -304,7 +317,7 @@ public class KartMngImpl implements KartMng {
 				}
 			} else {
 				//без эл.плиты
-				switch (cntPers.cnt) {
+				switch (cnt) {
 				case 0 : 
 					s2 = null;
 					break;
@@ -334,7 +347,7 @@ public class KartMngImpl implements KartMng {
 		}
 		if (stVol!=null) {	
 			st.vol = stVol;
-			st.partVol=cntPers.cnt * stVol/calc.getReqConfig().getCntCurDays();
+			st.partVol=cnt * stVol/calc.getReqConfig().getCntCurDays();
 		} else {
 			st.vol = 0d;
 			st.partVol= 0d;

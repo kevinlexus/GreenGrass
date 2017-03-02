@@ -147,7 +147,7 @@ public class DistGen {
 	 */
 	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar, WrongValue {
 		// номер текущего запроса
-		if (ml.getId()==510555 && tp==0) {
+		if (ml.getId()==518451 && tp==0) {
 			log.trace("счетчик!");
 		}
 
@@ -224,8 +224,12 @@ public class DistGen {
 			} else if (mLogTp.equals("ЛНрм")){
 				// по нормативу, только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
 				// и если не существует физического счетчика
+/*				if (ml.getServ().getId() == 71) {
+					log.info("ttttt dt={}", genDt);
+				}*/
+				
 				if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt) && !metMng.checkExsKartMet(rqn, kart, ml.getServ(), genDt)) {
-					vl = kartMng.getStandartVol(rqn, calc, ml.getServ(), null, genDt, 0).partVol;
+					vl = kartMng.getStandartVol(rqn, calc, ml.getServ(), null, genDt, 1).partVol; // здесь tp=1, для определения объема
 				}
 			}
 				
@@ -237,8 +241,8 @@ public class DistGen {
 				partArea = Utl.nvl(parMng.getDbl(rqn, kart, "Площадь.Общая", genDt), 0d) / calc.getReqConfig().getCntCurDays(); 
 				//проживающие
 				CntPers cntPers= new CntPers();
-				kartMng.getCntPers(rqn, calc, kart, servChrg, cntPers, genDt, 0); // здесь сделал tp = 0 (т.е. если кол-во прож.=0, то будет попытка поискать кол-во собств.
-				partPers = cntPers.cnt / calc.getReqConfig().getCntCurDays();
+				kartMng.getCntPers(rqn, calc, kart, servChrg, cntPers, genDt);
+				partPers = cntPers.cntVol / calc.getReqConfig().getCntCurDays();
 			}
 		} else if (tp==2 && mLogTp.equals("Лсчетчик")) {
 			//по расчетной связи ОДН (только у лог.счетчиков, при наличии расчетной связи ОДН)

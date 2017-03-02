@@ -3,26 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1ab6b1df-caef-4bd0-8e7c-9ae034c355c4" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/SrvThr.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/web/DTOBuilder.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dto/DTOBuilder.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/web/LstDTO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dto/LstDTO.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/web/PayordDTO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dto/PayordDTO.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/web/PeriodReportsDTO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dto/PeriodReportsDTO.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/DistGen.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/DistGen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/PayordDAO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/PayordDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/ReportDAO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/ReportDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/PayordDAOImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/PayordDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/ReportDAOImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/ReportDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/PayordMng.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/PayordMng.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/ReportMng.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/ReportMng.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/PayordMngImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/PayordMngImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/ReportMngImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/ReportMngImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/web/BillingController.java" afterPath="$PROJECT_DIR$/java/com/ric/web/BillingController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../pom.xml" afterPath="$PROJECT_DIR$/../../pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/application.properties" afterPath="$PROJECT_DIR$/resources/application.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/spring.xml" afterPath="$PROJECT_DIR$/resources/spring.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/MainModel.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/MainModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel1.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel1.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../test/java/testDist.java" afterPath="$PROJECT_DIR$/../test/java/testDist.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" afterPath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" />
@@ -177,7 +161,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -348,6 +331,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -432,8 +416,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="7" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24739583" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -472,6 +456,46 @@
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Grid1.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/model/Payord.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/model/Lst.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="40" selection-start-line="7" selection-start-column="40" selection-end-line="7" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Grid1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
           <folding />
         </state>
@@ -481,7 +505,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -497,7 +520,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -541,7 +563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -669,7 +690,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.36598492">
           <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -677,7 +697,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -685,7 +704,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.12809473">
           <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -693,7 +711,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
