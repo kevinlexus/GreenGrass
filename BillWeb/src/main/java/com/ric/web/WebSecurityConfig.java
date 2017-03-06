@@ -36,9 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-	  Md5PasswordEncoder encoder = passwordEncoder();
-	  String pass = encoder.encodePassword("1", null);
-	  System.out.println("Password:"+pass);
 	  
 	  auth.jdbcAuthentication().dataSource(dataSource)
 	  	.passwordEncoder(passwordEncoder())
