@@ -16,6 +16,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -109,7 +111,12 @@ public class BillingController {
 	@RequestMapping("/getLst") 
     @ResponseBody
     public List<LstDTO> getLst(@RequestParam(value="tp") String tp) {
-
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String name = auth.getName(); //get logged in username
+	    log.info("Logged user={}", name);
+	      
+		
 		log.info("GOT /getLst with tp={}", tp);
 		return dtoBuilder.getLstDTOLst(lstMng.getByTp(tp));
 		
