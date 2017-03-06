@@ -5,11 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Immutable;
-
-import com.ric.bill.Simple;
 
 /**
  * Представление с правами пользователей
@@ -20,32 +19,24 @@ import com.ric.bill.Simple;
 @Entity
 @Immutable
 @Table(name = "V_SEC", schema="SEC")
+@IdClass(VsecId.class)
 public class Vsec implements java.io.Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", updatable = false, nullable = false)
-	private Long id;
-	
-    @Column(name = "USER_CD")
+    @Id
+	@Column(name = "USERCD")
 	private String userCd; // CD пользователя 
 
+    @Id
     @Column(name = "KLSK")
 	private Integer klsk; // Klsk объекта
     
+    @Id
     @Column(name = "ROLECD")
 	private String roleCd; // CD роли 
     
+    @Id
     @Column(name = "ACTCD")
 	private String actCd; // CD действия 
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getUserCd() {
 		return userCd;
@@ -77,29 +68,6 @@ public class Vsec implements java.io.Serializable {
 
 	public void setActCd(String actCd) {
 		this.actCd = actCd;
-	}
-
-    
-	public boolean equals(Object o) {
-	    if (this == o) return true;
-	    if (o == null || !(o instanceof Vsec))
-	        return false;
-
-	    Vsec other = (Vsec)o;
-
-	    if (id == other.getId()) return true;
-	    if (id == null) return false;
-
-	    // equivalence by id
-	    return id.equals(other.getId());
-	}
-
-	public int hashCode() {
-	    if (id != null) {
-	        return id.hashCode();
-	    } else {
-	        return super.hashCode();
-	    }
 	}
 
     

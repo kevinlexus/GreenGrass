@@ -42,61 +42,70 @@ public class Act implements java.io.Serializable, Simple {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_OBJTP_CD", referencedColumnName="CD")
 	private AddrTp addrTp;  // тип адреса
-	
-	public AddrTp getAddrTp() {
-		return addrTp;
-	}
-
-	public void setAddrTp(AddrTp addrTp) {
-		this.addrTp = addrTp;
-	}
-
-	public Lst getTp() {
-		return tp;
-	}
-
-	public void setTp(Lst tp) {
-		this.tp = tp;
-	}
-
-	public String getFkObjTp() {
-		return fkObjTp;
-	}
-
-	public void setFkObjTp(String fkObjTp) {
-		this.fkObjTp = fkObjTp;
-	}
-
-	@Column(name = "FK_OBJTP_CD")
-	private String fkObjTp; // тип объекта в роли
     
 	public Act() {
 		super();
 	}
 
+	
 	public Integer getId() {
 		return id;
 	}
+
+
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+
+
 	public String getName() {
 		return name;
 	}
+
+
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
+
+
 	public String getCd() {
 		return cd;
 	}
 
+
+
 	public void setCd(String cd) {
 		this.cd = cd;
 	}
+
+
+
+	public Lst getTp() {
+		return tp;
+	}
+
+
+
+	public void setTp(Lst tp) {
+		this.tp = tp;
+	}
+
+
+
+	public AddrTp getAddrTp() {
+		return addrTp;
+	}
+
+
+
+	public void setAddrTp(AddrTp addrTp) {
+		this.addrTp = addrTp;
+	}
+
 
 	public boolean equals(Object o) {
 	    if (this == o) return true;

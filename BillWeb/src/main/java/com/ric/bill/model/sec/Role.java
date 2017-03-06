@@ -39,18 +39,6 @@ public class Role implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_TP", referencedColumnName="ID")
 	private Lst tp;  // тип роли
     
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_OBJTP_CD", referencedColumnName="CD")
-	private AddrTp addrTp;  // тип адреса
-	
-	public AddrTp getAddrTp() {
-		return addrTp;
-	}
-
-	public void setAddrTp(AddrTp addrTp) {
-		this.addrTp = addrTp;
-	}
-
 	public Lst getTp() {
 		return tp;
 	}

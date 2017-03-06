@@ -36,6 +36,7 @@ import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.mm.ReportMng;
+import com.ric.bill.mm.SecMng;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Payord;
 
@@ -65,6 +66,8 @@ public class BillingController {
     private PayordMng payordMng;
 	@Autowired
     private DTOBuilder dtoBuilder;
+	@Autowired
+    private SecMng secMng;
 
     /**
      * Получить периоды для элементов интерфейса
@@ -112,11 +115,13 @@ public class BillingController {
     @ResponseBody
     public List<LstDTO> getLst(@RequestParam(value="tp") String tp) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+/*		Удалить этот коммент!
+ * 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    String name = auth.getName(); //get logged in username
 	    log.info("Logged user={}", name);
-	      
-		
+
+	    secMng.getPrivByUserRoleAct("KIV", "Общие отчеты.Фонд", "Загрузить в контрол").stream().forEach(t -> log.info("klsk={}",t.getKlsk()));
+	    */
 		log.info("GOT /getLst with tp={}", tp);
 		return dtoBuilder.getLstDTOLst(lstMng.getByTp(tp));
 		

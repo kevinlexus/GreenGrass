@@ -1,0 +1,43 @@
+package com.ric.bill.dao.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ric.bill.dao.VolDAO;
+import com.ric.bill.dao.VsecDAO;
+import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.sec.Vsec;
+import com.ric.bill.model.tr.Prop;
+
+
+	@Repository
+	public class VsecDAOImpl implements VsecDAO {
+	
+		//EntityManager - EM нужен на каждый DAO или сервис свой!
+	    @PersistenceContext
+	    private EntityManager em;
+	
+	    /*
+	     * Проверить доступна ли пользователю привилегия по объекту, роли, действию 
+	     * @param vol - объект объема
+	     */
+		@Cacheable(cacheNames="neverWipe") // пока сделал neverWipe
+	    public List<Vsec> getPrivByUserRoleAct(String userCd, String roleCd, String actCd) {
+	    	
+			Query query =em.createQuery("from Vsec t where t.userCd=:usercd and t.roleCd=:rolecd and t.actCd=:actcd");
+			query.setParameter("usercd", userCd);
+			query.setParameter("rolecd", roleCd);
+			query.setParameter("actcd", actCd);
+			
+			return query.getResultList();
+		}
+	    	    
+	}
