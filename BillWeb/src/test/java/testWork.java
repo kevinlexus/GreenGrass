@@ -30,6 +30,7 @@ import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.WrongSetMethod;
 import com.ric.bill.mm.ObjMng;
 import com.ric.bill.mm.ParMng;
+import com.ric.bill.mm.SecMng;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Obj;
 import com.ric.bill.model.fn.Chng;
@@ -54,11 +55,18 @@ public class testWork {
 	@Autowired
     private BillServ billServ;
 
-    @PersistenceContext
+	@Autowired
+    private SecMng secMng;
+
+	@PersistenceContext
     private EntityManager em;
 
     private Calendar calendar;
 
+    @Test
+   	public void mainWork() {
+   	}
+    
 /*    @Test
 	public void mainWork() {
     	try {

@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +21,7 @@ import com.ric.bill.model.tr.Prop;
 
 
 	@Repository
+	@Slf4j
 	public class VsecDAOImpl implements VsecDAO {
 	
 		//EntityManager - EM нужен на каждый DAO или сервис свой!
@@ -31,7 +34,7 @@ import com.ric.bill.model.tr.Prop;
 	     */
 		@Cacheable(cacheNames="neverWipe") // пока сделал neverWipe
 	    public List<Vsec> getPrivByUserRoleAct(String userCd, String roleCd, String actCd) {
-	    	
+	    	log.info("roleCd={}, actCd={}", roleCd, actCd);
 			Query query =em.createQuery("from Vsec t where t.userCd=:usercd and t.roleCd=:rolecd and t.actCd=:actcd");
 			query.setParameter("usercd", userCd);
 			query.setParameter("rolecd", roleCd);

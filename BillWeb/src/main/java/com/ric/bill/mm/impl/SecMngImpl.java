@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.ric.bill.Config;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.sec.Vsec;
 import com.ric.bill.dao.OrgDAO;
@@ -24,6 +25,8 @@ public class SecMngImpl implements SecMng {
 	private VsecDAO vDao;
     @Autowired
 	private OrgDAO orgDao;
+    @Autowired
+	private Config config;
 
 	/**
 	 * Получить список объектов по которым доступна привилегия по параметрам
@@ -39,16 +42,26 @@ public class SecMngImpl implements SecMng {
 
 	
 	/**
-	 * Получить список организаций, доступных текущему пользователю о определенной роли, действию
+	 * Получить список организаций, доступных текущему пользователю по определенной роли, действию
 	 * @param roleCd - роль
 	 * @param actCd - действие
 	 */
 	@Override
 	public List<Org> getOrgCurUser(String roleCd, String actCd) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String userCd = auth.getName();
+		//Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		//return auth.getName();
+
+		//String userCd = auth.getName();
+		String userCd = config.getCurUserCd();
 		List<Org> lst = new ArrayList <Org>(); 
-		vDao.getPrivByUserRoleAct(userCd, roleCd, actCd).stream().forEach(t -> lst.add(orgDao.getByKlsk(t.getKlsk())));
+		vDao.getPrivByUserRoleAct(userCd, roleCd, actCd).stream().forEach(t -> 
+				{
+					Org org = orgDao.getByKlsk(t.getKlsk());
+					if (org != null) {
+						lst.add(org);
+					}
+				}
+				);
 		return lst;
 	}
 

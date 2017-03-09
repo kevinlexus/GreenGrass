@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1ab6b1df-caef-4bd0-8e7c-9ae034c355c4" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/SrvThr.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/DistGen.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/DistGen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../pom.xml" afterPath="$PROJECT_DIR$/../../pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/Config.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/Config.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/application.properties" afterPath="$PROJECT_DIR$/resources/application.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/spring.xml" afterPath="$PROJECT_DIR$/resources/spring.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" />
@@ -416,7 +416,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="7" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24739583" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />

@@ -212,7 +212,8 @@ public class DistGen {
 						vlChng=calc.getReqConfig().getChng().getChngLsk().parallelStream()
 						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
 						.flatMap(t -> t.getChngVal().parallelStream().filter(d -> ml.equals(d.getMeter().getMeterLog()) // фильтр по getChngVal() 
-																	&& Utl.between(genDt, d.getDtVal1(), d.getDtVal2())))
+																	&& Utl.between(genDt, d.getDtVal1(), d.getDtVal2()))
+																	.filter(d -> d.getDtVal1() != null && d.getDtVal2() != null ))
 						.mapToDouble(d -> Utl.nvl(d.getVal(), 0d) * Utl.getPartDays(d.getDtVal1(), d.getDtVal2()) ) // преобразовать в массив Double
 						.sum(); // просуммировать
 

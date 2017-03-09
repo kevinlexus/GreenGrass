@@ -114,6 +114,9 @@ public class BillingController {
 	@RequestMapping("/getLst") 
     @ResponseBody
     public List<LstDTO> getLst(@RequestParam(value="tp") String tp) {
+
+    	System.out.println("mainWork");
+    	secMng.getOrgCurUser("MainReports.ArmBuhg", "Загрузить в контрол").stream().forEach(t-> log.info("Org:"+t.getCd()+" "+t.getName()));
 		
 /*		Удалить этот коммент!
  * 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
