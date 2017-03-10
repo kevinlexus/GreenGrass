@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
+import com.ric.bill.model.fn.PayordGrp;
 
 /**
  * Построитель DTO объектов
@@ -31,6 +33,19 @@ public List<PayordDTO> getPayordDTOLst(List<Payord> lst) {
 }
 
 /**
+ * Построить коллекцию DTO групп платежек	
+ * @param lst
+ * @return
+ */
+public List<PayordGrpDTO> getPayordDTOGrpLst(List<PayordGrp> lst) {
+	List<PayordGrpDTO> lst2 = new ArrayList<PayordGrpDTO>(0);
+	lst.stream().forEach(t-> lst2.add(
+				new PayordGrpDTO(t.getId(), t.getName(), t.getUsername(), t.getDtf())
+				));
+	return lst2;
+}
+
+/**
  * Построить коллекцию DTO списка (Lst)
  * @param lst
  * @return
@@ -43,5 +58,17 @@ public List<LstDTO> getLstDTOLst(List<Lst> lst) {
 	return lst2;
 }
 
+/**
+ * Построить коллекцию DTO Организаций (Org)
+ * @param lst
+ * @return
+ */
+public List<OrgDTO> getOrgDTOLst(List<Org> lst) {
+	List<OrgDTO> lst2 = new ArrayList<OrgDTO>(0);
+	lst.stream().forEach(t-> lst2.add(
+				new OrgDTO(t.getId(), t.getCd(), t.getName())
+				));
+	return lst2;
+}
 	
 }

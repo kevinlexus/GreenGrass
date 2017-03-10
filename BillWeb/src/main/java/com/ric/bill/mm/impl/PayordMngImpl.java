@@ -14,11 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.ChrgServThr;
 import com.ric.bill.dao.PayordDAO;
+import com.ric.bill.dao.PayordGrpDAO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Payord;
+import com.ric.bill.model.fn.PayordGrp;
 
 @Service
 @Slf4j
@@ -29,6 +31,8 @@ public class PayordMngImpl implements PayordMng {
 	@Autowired
 	private PayordDAO payordDao;
 	@Autowired
+	private PayordGrpDAO payordGrpDao;
+	@Autowired
 	private LstMng lstMng;
 	
 	/**
@@ -38,6 +42,16 @@ public class PayordMngImpl implements PayordMng {
 	public List<Payord> getPayordAll() {
 		
 		return payordDao.getPayordAll();
+		
+	}
+
+	/**
+	 * Получить все группы платежек
+	 * @return
+	 */
+	public List<PayordGrp> getPayordGrpAll() {
+		
+		return payordGrpDao.getPayordGrpAll();
 		
 	}
 

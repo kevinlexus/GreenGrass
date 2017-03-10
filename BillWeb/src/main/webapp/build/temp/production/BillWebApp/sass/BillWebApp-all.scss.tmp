@@ -3,12 +3,16 @@ $image-search-path: 'C:/work/git/BillWeb/src/main/webapp/build/production/BillWe
 $theme-name:  dynamic( 'theme-triton' );
 $include-billwebapp-application: dynamic(true);;
 $include-billwebapp-model-lst: dynamic(true);;
+$include-billwebapp-model-org: dynamic(true);;
 $include-billwebapp-model-payord: dynamic(true);;
+$include-billwebapp-model-payordgrp: dynamic(true);;
 $include-billwebapp-model-period: dynamic(true);;
 $include-billwebapp-store-lststore: dynamic(true);;
+$include-billwebapp-store-orgcuruserstore: dynamic(true);;
+$include-billwebapp-store-orgstore: dynamic(false);;
+$include-billwebapp-store-payordgrpstore: dynamic(true);;
 $include-billwebapp-store-payordstore: dynamic(true);;
 $include-billwebapp-store-periodstore1: dynamic(true);;
-$include-billwebapp-store-personnel: dynamic(false);;
 $include-billwebapp-view-main-grid1: dynamic(true);;
 $include-billwebapp-view-main-list: dynamic(true);;
 $include-billwebapp-view-main-main: dynamic(true);;

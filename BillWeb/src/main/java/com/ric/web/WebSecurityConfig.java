@@ -40,9 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	  auth.jdbcAuthentication().dataSource(dataSource)
 	  	.passwordEncoder(passwordEncoder())
 		.usersByUsernameQuery(
-			"select cd as username, lower(hash) as password, 1 as enabled from sec.t_user where cd=?")
+			"select lower(cd) as username, lower(hash) as password, 1 as enabled from sec.t_user where lower(cd)=?")
 		.authoritiesByUsernameQuery(
-			"select cd as username, 'no' as role from sec.t_user where cd=?");
+			"select lower(cd) as username, 'no' as role from sec.t_user where lower(cd)=?");
 	}
 	
 	@Bean

@@ -31,7 +31,9 @@ import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
 import com.ric.bill.dto.DTOBuilder;
 import com.ric.bill.dto.LstDTO;
+import com.ric.bill.dto.OrgDTO;
 import com.ric.bill.dto.PayordDTO;
+import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
@@ -106,7 +108,22 @@ public class BillingController {
 	   lst.stream().forEach(t -> payordMng.savePayordDto(t));
 	   return null;
    }
+
 	/**
+	 * Получить все группы платежек
+	 * @return
+	 */
+   @RequestMapping("/getPayordGrp") 
+   @ResponseBody
+   public List<PayordGrpDTO> getPayordGrp() {
+
+		log.info("GOT /getPayordGrp");
+		return dtoBuilder.getPayordDTOGrpLst(payordMng.getPayordGrpAll());
+		
+   }
+
+
+  /**
 	 * Получить список по типу
 	 * @param tp - тип списка
 	 * @return
@@ -114,20 +131,19 @@ public class BillingController {
 	@RequestMapping("/getLst") 
     @ResponseBody
     public List<LstDTO> getLst(@RequestParam(value="tp") String tp) {
-
-    	System.out.println("mainWork");
-    	secMng.getOrgCurUser("MainReports.ArmBuhg", "Загрузить в контрол").stream().forEach(t-> log.info("Org:"+t.getCd()+" "+t.getName()));
-		
-/*		Удалить этот коммент!
- * 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    String name = auth.getName(); //get logged in username
-	    log.info("Logged user={}", name);
-
-	    secMng.getPrivByUserRoleAct("KIV", "Общие отчеты.Фонд", "Загрузить в контрол").stream().forEach(t -> log.info("klsk={}",t.getKlsk()));
-	    */
-		log.info("GOT /getLst with tp={}", tp);
 		return dtoBuilder.getLstDTOLst(lstMng.getByTp(tp));
-		
+    }
+
+   /**
+	 * Получить список организаций, доступных текущему пользователю по роли и действию
+	 * @return
+	 */
+	@RequestMapping("/getOrgCurUser") 
+    @ResponseBody
+    public List<OrgDTO> getOrgCurUser(@RequestParam(value="roleCd") String roleCd, 
+    								  @RequestParam(value="actCd") String actCd) {
+    	log.info("GOT /getOrgCurUser with: roleCd={}, actCd={}", roleCd, actCd);
+    	return dtoBuilder.getOrgDTOLst(secMng.getOrgCurUser(roleCd, actCd));
     }
 
 	@RequestMapping("/chrglsk") 

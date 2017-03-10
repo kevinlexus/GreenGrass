@@ -27,7 +27,7 @@ public class OrgDAOImpl implements OrgDAO {
 	@Cacheable(cacheNames="rrr1", key="{#klsk }")
 	public Org getByKlsk(int klsk) {
 		
-		log.info("Org klsk={}", klsk);
+		log.trace("Org klsk={}", klsk);
 		
 		Query query =em.createQuery("from Org t where t.klsk = :klsk");
 		query.setParameter("klsk", klsk);

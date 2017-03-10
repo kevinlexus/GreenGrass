@@ -5,29 +5,25 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
-import com.ric.bill.model.bs.Lst;
 
 /**
- * Платежное поручение
+ * Группа платежного поручения
  * @author lev
  *
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "PAYORD", schema="FN")
-public class Payord implements java.io.Serializable, Simple {
+@Table(name = "PAYORD_GRP", schema="FN")
+public class PayordGrp implements java.io.Serializable, Simple {
 
 
-	public Payord() {
+	public PayordGrp() {
 		
 	}
 
@@ -40,10 +36,6 @@ public class Payord implements java.io.Serializable, Simple {
 	@Column(name = "NAME")
 	private String name;
 
-	// Выбранные дни
-	@Column(name = "SEL_DAYS")
-	private String selDays;
-
 	// Пользователь
 	@Column(name = "USERNAME")
 	private String username;
@@ -51,12 +43,7 @@ public class Payord implements java.io.Serializable, Simple {
 	// Дата создания
 	@Column(name = "DTF")
 	private Date dtf;
-
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_PERIODTP", referencedColumnName="ID")
-	private Lst periodTp; 
-
 	public Integer getId() {
 		return id;
 	}
@@ -71,22 +58,6 @@ public class Payord implements java.io.Serializable, Simple {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Lst getPeriodTp() {
-		return periodTp;
-	}
-
-	public void setPeriodTp(Lst periodTp) {
-		this.periodTp = periodTp;
-	}
-
-	public String getSelDays() {
-		return selDays;
-	}
-
-	public void setSelDays(String selDays) {
-		this.selDays = selDays;
 	}
 
 	public String getUsername() {
@@ -107,10 +78,10 @@ public class Payord implements java.io.Serializable, Simple {
 
 	public boolean equals(Object o) {
 	    if (this == o) return true;
-	    if (o == null || !(o instanceof Payord))
+	    if (o == null || !(o instanceof PayordGrp))
 	        return false;
 
-	    Payord other = (Payord)o;
+	    PayordGrp other = (PayordGrp)o;
 
 	    if (getId() == other.getId()) return true;
 	    if (getId() == null) return false;

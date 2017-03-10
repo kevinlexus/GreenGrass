@@ -48,10 +48,6 @@ public class SecMngImpl implements SecMng {
 	 */
 	@Override
 	public List<Org> getOrgCurUser(String roleCd, String actCd) {
-		//Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		//return auth.getName();
-
-		//String userCd = auth.getName();
 		String userCd = config.getCurUserCd();
 		List<Org> lst = new ArrayList <Org>(); 
 		vDao.getPrivByUserRoleAct(userCd, roleCd, actCd).stream().forEach(t -> 

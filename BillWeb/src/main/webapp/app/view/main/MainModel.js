@@ -11,7 +11,8 @@ Ext.define('BillWebApp.view.main.MainModel', {
         loremIpsum: 'Редактирование платежек',
         periodId1: '',
         periodId2: '',
-        payordId1: ''
+        payordgrpId1: '',
+        orgId: ''
     },
 
     stores: {
@@ -24,8 +25,14 @@ Ext.define('BillWebApp.view.main.MainModel', {
         payordstore: {
             type: 'payordstore'
         },
+        payordgrpstore: {
+            type: 'payordgrpstore'
+        },
         lststore: {
             type: 'lststore'
+        },
+        orgcuruserstore: {
+            type: 'orgcuruserstore'
         }
     }
 

@@ -1,3 +1,51 @@
+/*var combostore=Ext.create('Ext.data.Store', {
+    config:{
+        autoLoad: true,
+        autoSync: true
+    },
+    proxy: {
+        autoSave: false,
+        type: 'ajax',
+        api: {
+            create  : '',
+            read    : 'http://192.168.100.21:8083/getOrgCurUser',
+            update  : '',
+            destroy : ''
+        },
+        reader: {
+            type: 'json'
+        },
+        extraParams :{
+            roleCd : 'MainReports.ArmBuhg',
+            actCd : 'Загрузить в контрол'
+        }
+    }
+});
+var combostore=Ext.create('Ext.data.Store', {
+    model: 'BillWebApp.model.Org',
+    config:{
+        autoLoad: true,
+        autoSync: true
+    },
+    proxy: {
+        autoSave: false,
+        type: 'ajax',
+        api: {
+            create  : '',
+            read    : 'http://192.168.100.21:8083/getOrgCurUser',
+            update  : '',
+            destroy : ''
+        },
+        reader: {
+            type: 'json'
+        },
+        extraParams :{
+            roleCd : 'MainReports.ArmBuhg',
+            actCd : 'Загрузить в контрол'
+        }
+    }
+});
+*/
 Ext.define('BillWebApp.view.main.Panel1', {
     extend: 'Ext.tab.Panel',
     xtype: 'panel1',
@@ -87,8 +135,8 @@ listeners: {
                         displayField: 'name',
                         valueField: 'id',
                         bind: {
-                            store: '{payordstore}',
-                            value: '{payordId1}'
+                            store: '{payordgrpstore}',
+                            value: '{payordgrpId1}'
                         }
                     },
                     {
@@ -96,7 +144,21 @@ listeners: {
                         reference: 'states',
                         publishes: 'value',
                         fieldLabel: 'УК',
-                        displayField: 'state'
+                        displayField: 'name',
+                        valueField: 'id',
+                        store: {type: 'orgcuruserstore'},
+                        listeners: {
+                            beforequery: function(queryEvent, eOpts) {
+                                queryEvent.combo.store.proxy.extraParams = {
+                                    roleCd : 'MainReports.ArmBuhg',
+                                    actCd : 'Загрузить в контрол'
+                                }
+                            }
+                        },
+                        bind: {
+                            //store: combostore,
+                            value: '{orgId}'
+                        }
                     }, {
                         xtype: 'checkboxfield',
                         name: 'checkbox1',

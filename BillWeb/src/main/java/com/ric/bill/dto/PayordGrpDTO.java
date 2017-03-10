@@ -7,21 +7,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * DTO - Платежный документ в элементах форм Web-интерфейса
+ * DTO - Группа платежных документов в элементах форм Web-интерфейса
  * @author lev
  *
  */
 @Slf4j
-public class PayordDTO {
+public class PayordGrpDTO {
 
 	// Id
 	private Integer id;
 	// Наименование
 	private String name;
-	// Fk на тип периода
-	private Integer periodTpFk;
-	// Выбранные дни
-	private String selDays;
 	// Пользователь
 	private String username;
 	// Дата создания
@@ -30,19 +26,16 @@ public class PayordDTO {
 	
 
 	// конструктор
-	public PayordDTO(Integer id, String name, Integer periodTpFk,
-			String selDays, String username, Date dtf) {
+	public PayordGrpDTO(Integer id, String name, String username, Date dtf) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.periodTpFk = periodTpFk;
-		this.selDays = selDays;
 		this.username = username;
 		this.dtf = dtf;
 	}
 
 	// Здесь важен default конструктор (иначе не примет обратно данные, методом POST)
-	public PayordDTO() {
+	public PayordGrpDTO() {
 		
 	}
 	
@@ -54,34 +47,12 @@ public class PayordDTO {
 		this.id = id;
 	}
 
-
 	public String getName() {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
-	}
-
-
-	public Integer getPeriodTpFk() {
-		return periodTpFk;
-	}
-
-
-	public void setPeriodTpFk(Integer periodTpFk) {
-		this.periodTpFk = periodTpFk;
-	}
-
-
-	public String getSelDays() {
-		return selDays;
-	}
-
-
-	public void setSelDays(String selDays) {
-		this.selDays = selDays;
 	}
 
 
@@ -89,16 +60,13 @@ public class PayordDTO {
 		return username;
 	}
 
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
-
 	public Date getDtf() {
 		return dtf;
 	}
-
 
 	public void setDtf(Date dtf) {
 		this.dtf = dtf;
