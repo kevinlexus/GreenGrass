@@ -1,4 +1,4 @@
-Ext.define('BillWebApp.view.main.Grid1', {
+Ext.define('BillWebApp.view.main.Panel3', {
     extend: 'Ext.panel.Panel',
     xtype: 'panel3',
     title: 'Настройки платежек',

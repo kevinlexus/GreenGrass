@@ -93,7 +93,7 @@ Ext.define('BillWebApp.view.main.Main', {
         title: 'Настройки',
         iconCls: 'fa-cog',
         items: [{
-            xtype: 'grid1'
+            xtype: 'panel3'
         }]
     }]
 });
