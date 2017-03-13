@@ -52,7 +52,12 @@ public class Payord implements java.io.Serializable, Simple {
 	@Column(name = "DTF")
 	private Date dtf;
 
-	
+	// Группа платежки
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_PAYORD_GRP", referencedColumnName="ID")
+	private PayordGrp payordGrp; 
+
+	// Тип периода
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_PERIODTP", referencedColumnName="ID")
 	private Lst periodTp; 
@@ -103,6 +108,15 @@ public class Payord implements java.io.Serializable, Simple {
 
 	public void setDtf(Date dtf) {
 		this.dtf = dtf;
+	}
+
+
+	public PayordGrp getPayordGrp() {
+		return payordGrp;
+	}
+
+	public void setPayordGrp(PayordGrp payordGrp) {
+		this.payordGrp = payordGrp;
 	}
 
 	public boolean equals(Object o) {

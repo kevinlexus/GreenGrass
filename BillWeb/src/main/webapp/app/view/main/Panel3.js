@@ -53,6 +53,18 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     editor: {
                         allowBlank: false
                     }
+                },
+                { text: 'Создано',  dataIndex: 'dtf', width: 170,
+                    formatter: 'date("d-m-Y H:i:s")',
+                    editor: {
+                        readOnly:true, //только для чтения
+                        allowBlank: false
+                    }
+                },
+                { text: 'Пользователь',  dataIndex: 'username', width: 150,
+                    editor: {
+                        readOnly:true //только для чтения
+                    }
                 }]
 
 

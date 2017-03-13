@@ -32,6 +32,7 @@ import com.ric.bill.Result;
 import com.ric.bill.dto.DTOBuilder;
 import com.ric.bill.dto.LstDTO;
 import com.ric.bill.dto.OrgDTO;
+import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.dto.PeriodReportsDTO;
@@ -122,6 +123,18 @@ public class BillingController {
 		
    }
 
+	/**
+	 * Получить все компоненты платежки по её ID
+	 * @return
+	 */
+  @RequestMapping("/getPayordCmp") 
+  @ResponseBody
+  public List<PayordCmpDTO> getPayordCmp(@RequestParam(value="payordId") Integer payordId) {
+
+		log.info("GOT /getPayordCmp with payordId={}", payordId);
+		return dtoBuilder.getPayordDTOCmpLst(payordMng.getPayordCmpByPayordId(payordId));
+		
+  }
 
   /**
 	 * Получить список по типу

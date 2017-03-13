@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.ChrgServThr;
+import com.ric.bill.dao.PayordCmpDAO;
 import com.ric.bill.dao.PayordDAO;
 import com.ric.bill.dao.PayordGrpDAO;
 import com.ric.bill.dto.PayordDTO;
@@ -20,6 +21,7 @@ import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Payord;
+import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
 
 @Service
@@ -32,6 +34,8 @@ public class PayordMngImpl implements PayordMng {
 	private PayordDAO payordDao;
 	@Autowired
 	private PayordGrpDAO payordGrpDao;
+	@Autowired
+	private PayordCmpDAO payordCmpDao;
 	@Autowired
 	private LstMng lstMng;
 	
@@ -67,6 +71,16 @@ public class PayordMngImpl implements PayordMng {
     	} else {
         	payord.setPeriodTp(null);
     	}
+	}
+
+	/**
+	 * Получить компоненты платежки по её ID
+	 * @return
+	 */
+	public List<PayordCmp> getPayordCmpByPayordId(Integer payordId) {
+
+		return payordCmpDao.getPayordCmpByPayordId(payordId);
+		
 	}
 	
 }

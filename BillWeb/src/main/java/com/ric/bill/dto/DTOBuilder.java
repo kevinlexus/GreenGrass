@@ -1,6 +1,7 @@
 package com.ric.bill.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
+import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
 
 /**
@@ -41,6 +43,21 @@ public List<PayordGrpDTO> getPayordDTOGrpLst(List<PayordGrp> lst) {
 	List<PayordGrpDTO> lst2 = new ArrayList<PayordGrpDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
 				new PayordGrpDTO(t.getId(), t.getName(), t.getUsername(), t.getDtf())
+				));
+	return lst2;
+}
+
+/**
+ * Построить коллекцию DTO компонентов платежек	
+ * @param lst
+ * @return
+ */
+public List<PayordCmpDTO> getPayordDTOCmpLst(List<PayordCmp> lst) {
+	List<PayordCmpDTO> lst2 = new ArrayList<PayordCmpDTO>(0);
+
+	lst.stream().forEach(t-> lst2.add(
+				new PayordCmpDTO(t.getId(), t.getUsername(), t.getDtf(), t.getPayord().getId(), t.getVar().getId(),
+						(t.getServ()!=null ? t.getServ().getId() : null) , (t.getOrg()!=null ? t.getOrg().getId() : null), t.getArea().getId(), t.getMark())
 				));
 	return lst2;
 }
