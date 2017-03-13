@@ -11,6 +11,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
     minWidth: 1000,
     minHeight: 800,
     bodyPadding: 10,
+    viewModel: {
+        type: 'main'
+    },
 
     defaults: {
         frame: true,
@@ -95,7 +98,22 @@ Ext.define('BillWebApp.view.main.Panel3', {
 
 
         store: { type: 'payordstore' },
-
+        listeners: {
+            rowclick: function(grid, rec) {
+                console.log("begin");
+                var viewModel = this.lookupViewModel();
+                var store = viewModel.getStore('payordcmpstore');
+                //var rec = sel[0];
+                console.log("rec="+rec);
+                console.log("id="+rec.get('id'));
+                store.load({
+                    params : {
+                        'payordId': rec.get('id')
+                    }
+                });
+                console.log("get");
+            }
+        },
         columns: [
             { text: 'Id',  dataIndex: 'id', width: 50,
                 editor: {
@@ -126,8 +144,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     var store = Ext.getStore('LstStore');
                     var index = store.findExact('id', value);
-                    console.log('value:'+value);
-                    console.log('index:'+index);
+                    //console.log('value:'+value);
+                    //console.log('index:'+index);
                     if (index != -1){
                         var rs = store.getAt(index);
                         console.log('rs.display:'+rs.get('name'));
@@ -154,8 +172,55 @@ Ext.define('BillWebApp.view.main.Panel3', {
             }
 
         ]
+    },
+        {
+            xtype: 'gridpanel',
+            iconCls: 'framing-buttons-grid',
 
-    }
+            width: 1000,
+            margin: '0 0 10 0',
+            header: false,
+            layout: 'fit',
+
+            requires: [
+                'Ext.selection.CellModel'
+            ],
+            plugins: {
+                ptype: 'cellediting',
+                clicksToEdit: 1
+            },
+
+            autoLoad: true,
+            frame: true,
+            selModel: {
+                type: 'cellmodel'
+            },
+
+            bind: {
+                store: '{payordcmpstore}',
+            },
+            columns: [
+                { text: 'Id',  dataIndex: 'id', width: 50,
+                    editor: {
+                        readOnly:true //только для чтения
+                    }
+                },
+                { text: 'Создано',  dataIndex: 'dtf', width: 170,
+                    formatter: 'date("d-m-Y H:i:s")',
+                    editor: {
+                        readOnly:true, //только для чтения
+                        allowBlank: false
+                    }
+                },
+                { text: 'Пользователь',  dataIndex: 'username', width: 150,
+                    editor: {
+                        readOnly:true //только для чтения
+                    }
+                }
+
+            ]
+        }
+
     ]
 
 });

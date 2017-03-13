@@ -19,8 +19,8 @@ public class PayordCmpDTO {
 	}
 
 	public PayordCmpDTO(Integer id, String username, Date dtf,
-			Integer payordFk, Integer varFk, Integer servFk, Integer org,
-			Integer area, String mark) {
+			Integer payordFk, Integer varFk, Integer servFk, Integer orgFk,
+			Integer areaFk, String mark) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -28,8 +28,8 @@ public class PayordCmpDTO {
 		this.payordFk = payordFk;
 		this.varFk = varFk;
 		this.servFk = servFk;
-		this.org = org;
-		this.area = area;
+		this.orgFk = orgFk;
+		this.areaFk = areaFk;
 		this.mark = mark;
 	}
 
@@ -52,10 +52,10 @@ public class PayordCmpDTO {
 	private Integer servFk; 
 
 	// Организация
-	private Integer org; 
+	private Integer orgFk; 
 	
 	// Объект (область действия) Город, дом, УК
-	private Integer area; 
+	private Integer areaFk; 
 
 	// Маркер
 	private String mark;
@@ -109,19 +109,19 @@ public class PayordCmpDTO {
 	}
 
 	public Integer getOrg() {
-		return org;
+		return orgFk;
 	}
 
 	public void setOrg(Integer org) {
-		this.org = org;
+		this.orgFk = org;
 	}
 
 	public Integer getArea() {
-		return area;
+		return areaFk;
 	}
 
 	public void setArea(Integer area) {
-		this.area = area;
+		this.areaFk = area;
 	}
 
 	public String getMark() {

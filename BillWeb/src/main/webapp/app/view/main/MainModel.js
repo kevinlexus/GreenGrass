@@ -28,6 +28,9 @@ Ext.define('BillWebApp.view.main.MainModel', {
         payordgrpstore: {
             type: 'payordgrpstore'
         },
+        payordcmpstore: {
+            type: 'payordcmpstore'
+        },
         lststore: {
             type: 'lststore'
         },

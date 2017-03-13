@@ -1,21 +1,20 @@
 /**
- * Created by lev on 09.03.2017.
+ * Created by lev on 13.02.2017.
  */
-Ext.define('BillWebApp.store.OrgCurUserStore', {
+Ext.define('BillWebApp.store.PayordCmpStore', {
     extend: 'Ext.data.Store',
-    alias  : 'store.orgcuruserstore',
-    storeId: 'OrgCurUserStore',
-    model: 'BillWebApp.model.Org',
+    alias  : 'store.payordcmpstore',
+    model: 'BillWebApp.model.PayordCmp',
     config:{
         autoLoad: false,
-        autoSync: false
+        autoSync: true
     },
-    proxy: { // используется совместно с параметрами roleCd, actCd
+    proxy: {
         autoSave: false,
         type: 'ajax',
         api: {
             create  : '',
-            read    : 'http://192.168.100.21:8083/getOrgCurUser',
+            read    : 'http://192.168.100.21:8083/getPayordCmp',
             update  : '',
             destroy : ''
         },
@@ -25,8 +24,11 @@ Ext.define('BillWebApp.store.OrgCurUserStore', {
         writer: {
             type: 'json',
             allowSingle: false //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
-            ,
-            writeAllFields: true  //писать весь объект в json - не имеет смысла
+                ,
+             writeAllFields: true  //писать весь объект в json - не имеет смысла
+        },
+        extraParams :{
+            payordId: 1
         }
     }
 });
