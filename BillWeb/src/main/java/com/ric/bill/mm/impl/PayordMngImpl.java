@@ -50,6 +50,16 @@ public class PayordMngImpl implements PayordMng {
 	}
 
 	/**
+	 * Получить платежки по Id группы
+	 * @return
+	 */
+	public List<Payord> getPayordByPayordGrpId(Integer payordGrpId) {
+		
+		return payordDao.getPayordByPayordGrpId(payordGrpId);
+		
+	}
+
+	/**
 	 * Получить все группы платежек
 	 * @return
 	 */

@@ -4,6 +4,7 @@
 Ext.define('BillWebApp.store.PayordCmpStore', {
     extend: 'Ext.data.Store',
     alias  : 'store.payordcmpstore',
+    storeId: 'payordcmpstore',
     model: 'BillWebApp.model.PayordCmp',
     config:{
         autoLoad: false,
@@ -28,7 +29,7 @@ Ext.define('BillWebApp.store.PayordCmpStore', {
              writeAllFields: true  //писать весь объект в json - не имеет смысла
         },
         extraParams :{
-            payordId: 1
+            payordId: -1
         }
     }
 });

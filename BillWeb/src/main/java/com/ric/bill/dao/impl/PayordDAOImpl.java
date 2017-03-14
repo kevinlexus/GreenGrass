@@ -24,6 +24,7 @@ import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.bs.PeriodReports;
 import com.ric.bill.model.fn.Payord;
+import com.ric.bill.model.fn.PayordCmp;
 
 
 @Repository
@@ -33,11 +34,26 @@ public class PayordDAOImpl implements PayordDAO {
     @PersistenceContext
     private EntityManager em;
 
-	// получить все платежки
-    public List<Payord> getPayordAll() {
-		Query query =em.createQuery("from Payord t");
+    /**
+     * Получить платежки по Id группы
+     */
+    @Override
+	public List<Payord> getPayordByPayordGrpId(Integer payordGrpId) {
+    	
+		Query query =em.createQuery("select t from Payord t join t.payordGrp p where p.id = :payordGrpId");
+		query.setParameter("payordGrpId", payordGrpId);
 		return query.getResultList();
-	}
+    
+    }
 
+    /**
+     * Получить все платежки
+     */
+	@Override
+	public List<Payord> getPayordAll() {
+		Query query =em.createQuery("select t from Payord t");
+		return query.getResultList();
+
+	}
 
 }

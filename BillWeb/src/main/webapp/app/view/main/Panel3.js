@@ -44,7 +44,32 @@ Ext.define('BillWebApp.view.main.Panel3', {
             selModel: {
                 type: 'cellmodel'
             },
-            store: { type: 'payordgrpstore' },
+            bind: {
+                store: '{payordgrpstore}'
+            },
+            //store: { type: 'payordgrpstore' },
+            listeners: {
+                // клик по строчке платежки, отобразить в дочернем гриде формулы
+                rowclick: function(grid, rec) {
+                    var viewModel = this.lookupViewModel();
+                    var store1 = viewModel.getStore('payordstore');
+                    store1.load({
+                        params : {
+                            'payordGrpId': rec.get('id')
+                        }
+                    });
+
+                    /* вызвается асинхронно var rec2 = store1.getAt(0);
+                    var store2 = viewModel.getStore('payordcmpstore');
+                    console.log("ID="+rec2.get('id'))
+                    store2.load({
+                        params : {
+                            'payordId': rec2.get('id')
+                        }
+                    });*/
+
+                }
+            },
 
             columns: [
                 { text: 'Id',  dataIndex: 'id', width: 50,
@@ -95,23 +120,19 @@ Ext.define('BillWebApp.view.main.Panel3', {
         selModel: {
             type: 'cellmodel'
         },
-
-
-        store: { type: 'payordstore' },
+        bind: {
+            store: '{payordstore}'
+        },
         listeners: {
+            // клик по строчке платежки, отобразить в дочернем гриде формулы
             rowclick: function(grid, rec) {
-                console.log("begin");
                 var viewModel = this.lookupViewModel();
                 var store = viewModel.getStore('payordcmpstore');
-                //var rec = sel[0];
-                console.log("rec="+rec);
-                console.log("id="+rec.get('id'));
                 store.load({
                     params : {
                         'payordId': rec.get('id')
                     }
                 });
-                console.log("get");
             }
         },
         columns: [

@@ -8,6 +8,8 @@ import com.ric.bill.model.fn.Payord;
 
 public interface PayordDAO {
 
+	public List<Payord> getPayordByPayordGrpId(Integer payordGrpId);
+	
 	public List<Payord> getPayordAll();
 	
 }

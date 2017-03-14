@@ -92,15 +92,28 @@ public class BillingController {
 	 * Получить все платежки
 	 * @return
 	 */
-	@RequestMapping("/getPayord") 
+	@RequestMapping("/getPayordAll") 
     @ResponseBody
-    public List<PayordDTO> getPayord() {
+    public List<PayordDTO> getPayordAll() {
 
-		log.info("GOT /getPayord");
+		log.info("GOT /getPayordAll");
 		return dtoBuilder.getPayordDTOLst(payordMng.getPayordAll());
 		
     }
 
+	/**
+	 * Получить платежки по Id группы
+	 * @return
+	 */
+	@RequestMapping("/getPayord") 
+    @ResponseBody
+    public List<PayordDTO> getPayord(@RequestParam(value="payordGrpId") Integer payordGrpId) {
+
+		log.info("GOT /getPayord with payordGrpId={}", payordGrpId);
+		return dtoBuilder.getPayordDTOLst(payordMng.getPayordByPayordGrpId(payordGrpId));
+		
+    }
+	
    @RequestMapping(value = "/setPayord", method = RequestMethod.POST, produces="application/json", consumes="application/json")
    @ResponseBody
    public String setPayord(@RequestBody List<PayordDTO> lst) {
@@ -114,11 +127,11 @@ public class BillingController {
 	 * Получить все группы платежек
 	 * @return
 	 */
-   @RequestMapping("/getPayordGrp") 
+   @RequestMapping("/getPayordGrpAll") 
    @ResponseBody
    public List<PayordGrpDTO> getPayordGrp() {
 
-		log.info("GOT /getPayordGrp");
+		log.info("GOT /getPayordGrpAll");
 		return dtoBuilder.getPayordDTOGrpLst(payordMng.getPayordGrpAll());
 		
    }

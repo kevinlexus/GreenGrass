@@ -11,6 +11,7 @@ public interface PayordMng {
 
 	public List<PayordGrp> getPayordGrpAll();
 	public List<Payord> getPayordAll();
+	public List<Payord> getPayordByPayordGrpId(Integer payordGrpId);
 	public void savePayordDto(PayordDTO payordDTO);
 	public List<PayordCmp> getPayordCmpByPayordId(Integer payordId);
 }
