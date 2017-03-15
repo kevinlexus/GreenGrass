@@ -29,6 +29,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             iconCls: 'framing-buttons-grid',
 
             width: 1200,
+            height: 300,
             margin: '0 0 10 0',
             header: false,
             layout: 'fit',
@@ -138,8 +139,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 }
             }
             ,
-           // { text: 'Сумма',  dataIndex: 'summa', width: 100
-           // },
+            { text: 'Сумма',  dataIndex: 'summa', width: 100
+            },
             { text: 'Создано',  dataIndex: 'dtf', width: 170,
                 formatter: 'date("d-m-Y H:i:s")'
             },

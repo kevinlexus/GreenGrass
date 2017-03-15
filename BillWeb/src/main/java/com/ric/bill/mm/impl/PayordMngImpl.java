@@ -96,9 +96,9 @@ public class PayordMngImpl implements PayordMng {
 
 	// сохранить группу платежки из DTO
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void savePayordGrpDto(PayordGrpDTO payorGrpdDTO) {
-		//PayordGrp payordGrp = em.find(PayordGrp.class, payorGrpdDTO.getId())
-		// TODO написать код!
+	public void savePayordGrpDto(PayordGrpDTO p) {
+		PayordGrp payordGrp = em.find(PayordGrp.class, p.getId());
+		payordGrp.setName(p.getName());
 	}
 	
 }
