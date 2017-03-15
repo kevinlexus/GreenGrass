@@ -17,6 +17,7 @@ import com.ric.bill.dao.PayordCmpDAO;
 import com.ric.bill.dao.PayordDAO;
 import com.ric.bill.dao.PayordGrpDAO;
 import com.ric.bill.dto.PayordDTO;
+import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.model.bs.Lst;
@@ -91,6 +92,13 @@ public class PayordMngImpl implements PayordMng {
 
 		return payordCmpDao.getPayordCmpByPayordId(payordId);
 		
+	}
+
+	// сохранить группу платежки из DTO
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void savePayordGrpDto(PayordGrpDTO payorGrpdDTO) {
+		//PayordGrp payordGrp = em.find(PayordGrp.class, payorGrpdDTO.getId())
+		// TODO написать код!
 	}
 	
 }

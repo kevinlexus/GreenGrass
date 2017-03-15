@@ -15,15 +15,18 @@ Ext.define('BillWebApp.store.LstStore', {
         type: 'ajax',
         api: {
             create  : '',
-            read    : 'http://192.168.100.21:8083/getLst',
+            read    : 'http://192.168.100.21:8083/getLstByTp',
             update  : '',
             destroy : ''
         },
         reader: {
             type: 'json'
-        },
+        }/*,
         extraParams :{
-            tp : 'PAYORD_PERIODTP'
-        }
+            //tp : 'PAYORD_PERIODTP'
+            //tp : '{tp}'
+            property:'tp',
+            value:'{tp}'
+        }*/
     }
 });

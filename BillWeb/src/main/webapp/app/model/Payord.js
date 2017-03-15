@@ -8,10 +8,10 @@ Ext.define('BillWebApp.model.Payord', {
         { name: 'name', type: 'string' },
         { name: 'periodFk', type: 'int', convert: null},
         { name: 'selDays', type: 'string' },
-        { name: 'dtf', dateFormat: 'Y-m-d H:i:s', type: 'date' },
         { name: 'username', type: 'string' },
-        { name: 'formula', type: 'string' },
-        { name: 'summa', type: 'float' }
+        { name: 'dtf', dateFormat: 'Y-m-d H:i:s', type: 'date' },
+        { name: 'formula', type: 'string' }//,
+        //{ name: 'summa', type: 'float' }
 
     ]
 });

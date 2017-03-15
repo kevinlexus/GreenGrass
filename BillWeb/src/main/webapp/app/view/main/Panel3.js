@@ -125,17 +125,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         store: '{lststore}'
                     }
                 },
-
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    var store = Ext.getStore('LstStore');
-                    var index = store.findExact('id', value);
-                    //console.log('value:'+value);
-                    //console.log('index:'+index);
-                    if (index != -1){
-                        var rs = store.getAt(index);
-                        return rs.get('name');
-                    }
-                }
+                  renderer: 'onGridPayordPeriodRender'
             },
             { text: 'Дни формир.',  dataIndex: 'selDays', width: 100,
                 editor: {
@@ -148,14 +138,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 }
             }
             ,
-            { text: 'Сумма',  dataIndex: 'summa', width: 100
-            },
+           // { text: 'Сумма',  dataIndex: 'summa', width: 100
+           // },
             { text: 'Создано',  dataIndex: 'dtf', width: 170,
                 formatter: 'date("d-m-Y H:i:s")'
             },
             { text: 'Пользователь',  dataIndex: 'username', width: 150
             }
-
         ]
     },
         {
@@ -167,7 +156,6 @@ Ext.define('BillWebApp.view.main.Panel3', {
             width: 1000,
             margin: '0 0 10 0',
             header: false,
-            //layout: 'fit',
             requires: [
                 'Ext.selection.CellModel'
             ],
@@ -189,6 +177,23 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 { text: 'Id',  dataIndex: 'id', width: 50
                 },
                 {
+                    header: 'Вар.сбора',
+                    dataIndex: 'varFk',
+                    width: 200,
+                    editor: {
+                        xtype: 'combo',
+                        typeAhead: true,
+                        forceSelection: true,
+                        displayField: 'name',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        bind: {
+                            store: '{varstore}'
+                        }
+                    },
+                    renderer: 'onGridPayordCmpVarRender'
+                },
+                {
                     header: 'Услуга',
                     dataIndex: 'servFk',
                     width: 200,
@@ -203,14 +208,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                             store: '{servstore}'
                         }
                     },
-                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        var store = Ext.getStore('ServStore');
-                        var index = store.findExact('id', value);
-                        if (index != -1){
-                            var rs = store.getAt(index);
-                            return rs.get('name');
-                        }
-                    }
+                    renderer: 'onGridPayordCmpServRender'
                 },
                 {
                     header: 'Организация',
@@ -227,16 +225,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                             store: '{orgstore}'
                         }
                     },
-                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        var store = Ext.getStore('OrgStore');
-                        var index = store.findExact('id', value);
-                        if (index != -1){
-                            var rs = store.getAt(index);
-                            return rs.get('name');
-                        }
-                    }
-
-
+                    renderer: 'onGridPayordCmpOrgRender'
                 },
 
                 { text: 'Маркер',  dataIndex: 'mark', width: 150
@@ -248,36 +237,6 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 },
                 { text: 'Пользователь',  dataIndex: 'username', width: 150
                 }
-
-                /*
-
-                 header: 'Периодичность',
-                 dataIndex: 'periodTpFk',
-                 width: 170,
-                 editor: {
-                 xtype: 'combo',
-                 typeAhead: true,
-                 forceSelection: true,
-                 displayField: 'name',
-                 valueField: 'id',
-                 triggerAction: 'all',
-                 bind: {
-                 store: '{lststore}'
-                 }
-                 },
-
-                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                 var store = Ext.getStore('LstStore');
-                 var index = store.findExact('id', value);
-                 //console.log('value:'+value);
-                 //console.log('index:'+index);
-                 if (index != -1){
-                 var rs = store.getAt(index);
-                 return rs.get('name');
-                 }
-                 }
-                 */
-
             ]
         }
 

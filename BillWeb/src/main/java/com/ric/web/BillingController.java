@@ -121,6 +121,7 @@ public class BillingController {
 		
     }
 	
+	// сохранить платежку
    @RequestMapping(value = "/setPayord", method = RequestMethod.POST, produces="application/json", consumes="application/json")
    @ResponseBody
    public String setPayord(@RequestBody List<PayordDTO> lst) {
@@ -130,7 +131,17 @@ public class BillingController {
 	   return null;
    }
 
-	/**
+	// сохранить группу платежки
+   @RequestMapping(value = "/setPayordGrp", method = RequestMethod.POST, produces="application/json", consumes="application/json")
+   @ResponseBody
+   public String setPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
+
+	   log.info("GOT /setPayordGrp");
+	   lst.stream().forEach(t -> payordMng.savePayordGrpDto(t));
+	   return null;
+   }
+
+   /**
 	 * Получить все группы платежек
 	 * @return
 	 */
@@ -161,9 +172,9 @@ public class BillingController {
 	 * @param tp - тип списка
 	 * @return
 	 */
-	@RequestMapping("/getLst") 
+	@RequestMapping("/getLstByTp") 
     @ResponseBody
-    public List<LstDTO> getLst(@RequestParam(value="tp") String tp) {
+    public List<LstDTO> getLstByTp(@RequestParam(value="tp") String tp) {
 		return dtoBuilder.getLstDTOLst(lstMng.getByTp(tp));
     }
 

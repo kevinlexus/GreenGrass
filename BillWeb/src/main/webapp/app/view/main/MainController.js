@@ -81,6 +81,46 @@ Ext.define('BillWebApp.view.main.MainController', {
         });
     },
 
+    // выбор периодичности платежки
+    onGridPayordPeriodRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var store = this.getViewModel().getStore('lststore');
+        var index = store.findExact('id', value);
+        if (index != -1){
+            var rs = store.getAt(index);
+            return rs.get('name');
+        }
+    },
+
+    // выбор варианта сбора формулы платежки
+    onGridPayordCmpVarRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var store = this.getViewModel().getStore('varstore');
+        var index = store.findExact('id', value);
+        if (index != -1){
+            var rs = store.getAt(index);
+            return rs.get('name');
+        }
+    },
+
+    // выбор услуги формулы платежки
+    onGridPayordCmpServRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var store = this.getViewModel().getStore('servstore');
+        var index = store.findExact('id', value);
+        if (index != -1){
+            var rs = store.getAt(index);
+            return rs.get('name');
+        }
+    },
+
+    // выбор организации формулы платежки
+    onGridPayordCmpOrgRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var store = this.getViewModel().getStore('orgstore');
+        var index = store.findExact('id', value);
+        if (index != -1){
+            var rs = store.getAt(index);
+            return rs.get('name');
+        }
+    },
+
     // может быть удалить эти события:
     onItemSelected: function (sender, record) {
         Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
