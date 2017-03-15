@@ -25,7 +25,7 @@ public interface KartMng  {
 	public abstract Double getServPropByCD(int rqn, Calc calc, Serv serv, String string, Date genDt);
 	public abstract Standart getStandartVol(int rqn, Calc calc, Serv serv, CntPers cntPers, Date genDt, int tp) throws EmptyStorable;
 	public Org getOrg(int rqn, Calc calc, Serv serv, Date genDt);
-	public List<Serv> getAllServ(int rqn, Calc calc);
+	public List<Serv> getServAll(int rqn, Calc calc);
 	public double getCapPrivs(int rqn, Calc calc, RegContains rc, Date genDt);
 	public boolean getServ(int rqn, Calc calc, Serv serv, Date genDt);
 	public List<Kart> findAll(Integer houseId, Integer areaId);

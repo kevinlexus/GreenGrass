@@ -73,4 +73,13 @@ public class ServDAOImpl implements ServDAO {
 		return (Serv) query.getSingleResult();
 	}
 
+	/*
+	 * Получить все услуги
+	 * 
+	 */
+	public List<Serv> getServAll() {
+		Query query =em.createQuery("from Serv t");
+		return query.getResultList();
+	}
+
 }

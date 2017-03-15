@@ -2,6 +2,8 @@ package com.ric.bill.dto;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -24,11 +26,16 @@ public class PayordDTO {
 	// Дата создания
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Krasnoyarsk")
 	private Date dtf;
+	// Формула
+	private String formula;
+	// Сумма
+	private Double summa;
 	
 
 	// конструктор
 	public PayordDTO(Integer id, String name, Integer periodTpFk,
-			String selDays, String username, Date dtf) {
+			String selDays, String username, Date dtf, String formula,
+			Double summa) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -36,6 +43,8 @@ public class PayordDTO {
 		this.selDays = selDays;
 		this.username = username;
 		this.dtf = dtf;
+		this.formula = formula;
+		this.summa = summa;
 	}
 
 	// Здесь важен default конструктор (иначе не примет обратно данные, методом POST)
@@ -99,6 +108,22 @@ public class PayordDTO {
 
 	public void setDtf(Date dtf) {
 		this.dtf = dtf;
+	}
+
+	public String getFormula() {
+		return formula;
+	}
+
+	public void setFormula(String formula) {
+		this.formula = formula;
+	}
+
+	public Double getSumma() {
+		return summa;
+	}
+
+	public void setSumma(Double summa) {
+		this.summa = summa;
 	}
 
 	

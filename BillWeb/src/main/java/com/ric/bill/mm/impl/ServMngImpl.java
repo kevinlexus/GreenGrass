@@ -110,5 +110,13 @@ public class ServMngImpl implements ServMng {
 		//не найдено, продолжить поиск
 		return getUpperTree(st, tp, itr);
 	}
+
+	/*
+	 * Получить все услуги
+	 * 
+	 */
+	public List<Serv> getServAll() {
+		return sDao.getServAll();
+	}
 	
 }

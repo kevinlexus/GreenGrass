@@ -12,7 +12,8 @@ Ext.define('BillWebApp.model.PayordCmp', {
         { name: 'servFk', type: 'int', convert: null},
         { name: 'orgFk', type: 'int', convert: null},
         { name: 'areaFk', type: 'int', convert: null},
-        { name: 'mark', type: 'string' }
+        { name: 'mark', type: 'string' },
+        { name: 'summa', type: 'float' }
 
     ]
 });

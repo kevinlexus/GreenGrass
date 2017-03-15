@@ -1,5 +1,7 @@
 package com.ric.bill.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import com.ric.bill.dao.OrgDAO;
 import com.ric.bill.model.bs.Org;
-import com.ric.web.BillingController;
 
 
 @Repository
@@ -38,4 +39,12 @@ public class OrgDAOImpl implements OrgDAO {
 		}
 	}
 	
+	/**
+	 * Получить все организации
+	 */
+	public List<Org> getOrgAll() {
+		
+		Query query =em.createQuery("from Org t");
+		return query.getResultList();
+	}
 }

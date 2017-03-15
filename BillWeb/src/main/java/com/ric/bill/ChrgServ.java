@@ -346,7 +346,7 @@ public class ChrgServ {
 		
 		Kart kart = calc.getKart();
 		//загрузить все услуги по данному л.с.
-		servThr = kartMng.getAllServ(calc.getReqConfig().getRqn(), calc);
+		servThr = kartMng.getServAll(calc.getReqConfig().getRqn(), calc);
 		// сбросить уровень
 		servLevel=0;
 		// создать список обрабатываемых услуг, с очередями

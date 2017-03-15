@@ -76,6 +76,10 @@ public class PayordCmp implements java.io.Serializable, Simple {
 	@Column(name = "MARK")
 	private String mark;
 	
+	// Сумма
+	@Column(name = "SUMMA")
+	private Double summa;
+
 	
 	public Lst getVar() {
 		return var;
@@ -147,6 +151,14 @@ public class PayordCmp implements java.io.Serializable, Simple {
 
 	public void setPayord(Payord payord) {
 		this.payord = payord;
+	}
+
+	public Double getSumma() {
+		return summa;
+	}
+
+	public void setSumma(Double summa) {
+		this.summa = summa;
 	}
 
 	public boolean equals(Object o) {

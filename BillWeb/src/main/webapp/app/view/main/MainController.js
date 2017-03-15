@@ -8,7 +8,6 @@ Ext.define('BillWebApp.view.main.MainController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main',
 
-
     // Проверка при включении чекбокса
     onChangePeriodType: function (chk , newValue , oldValue , eOpts) {
         //получить выбранные id
@@ -28,6 +27,58 @@ Ext.define('BillWebApp.view.main.MainController', {
         } else {
             store.load({params: {'tp': 0}});
         }
+
+    },
+
+    onGridPayordGrpRowClick: function(grid, rec) {
+        var store = this.getViewModel().getStore('payordstore');
+        var store1 = this.getViewModel().getStore('payordcmpstore');
+        var payordGrid = this.lookupReference('payordGrid');
+        var payordCmpGrid = this.lookupReference('payordCmpGrid');
+        store.load({
+            params : {
+            'payordGrpId': rec.get('id')
+            },
+            callback: function(records, operation, success) {
+                if (success) {
+                    payordGrid.getSelectionModel().select(0);
+                    payordGrid.getSelectionModel().select(0);
+                    payordGrid.getSelectionModel().select(0);
+                    var rec1 = records[0];
+                    var id = -1;
+                    if (records.length > 0) {
+                        id =records[0].get('id')
+                    }
+                        store1.load({
+                            params: {
+                                'payordId': id
+                            },
+                            callback: function(records, operation, success) {
+                                payordCmpGrid.getSelectionModel().select(0);
+                                payordCmpGrid.getSelectionModel().select(0);
+                                payordCmpGrid.getSelectionModel().select(0);
+                            }
+                        });
+                } else {
+                    console.log('onGridPayordGrpRowClick: NOT SUCCESS');
+                }
+            }
+
+        });
+    },
+
+    onGridPayordClick: function(grid, rec) {
+        var store = this.getViewModel().getStore('payordcmpstore');
+        var payordCmpGrid = this.lookupReference('payordCmpGrid');
+        store.load({
+            params : {
+                'payordId': rec.get('id')
+            },
+            callback: function(records, operation, success) {
+                payordCmpGrid.getSelectionModel().select(0);
+
+            }
+        });
     },
 
     // может быть удалить эти события:

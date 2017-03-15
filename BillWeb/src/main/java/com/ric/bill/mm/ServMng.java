@@ -14,5 +14,6 @@ public interface ServMng {
 	public List<Serv> findForDistVolForKart();
 	public Serv getByCD(String cd);
 	public Serv getUpper(Serv serv, String tp) throws TooManyRecursiveCalls, NotFoundUpperLevel;
-	public ServTree getUpperTree(ServTree servTree, String tp, int itr) throws TooManyRecursiveCalls;	
+	public ServTree getUpperTree(ServTree servTree, String tp, int itr) throws TooManyRecursiveCalls;
+	public List<Serv> getServAll();	
 }

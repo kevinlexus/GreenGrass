@@ -3,6 +3,8 @@ package com.ric.bill.dto;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -18,9 +20,12 @@ public class PayordCmpDTO {
 		
 	}
 
+	private Integer id;
+
+	// конструктор
 	public PayordCmpDTO(Integer id, String username, Date dtf,
 			Integer payordFk, Integer varFk, Integer servFk, Integer orgFk,
-			Integer areaFk, String mark) {
+			Integer areaFk, String mark, Double summa) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -31,9 +36,8 @@ public class PayordCmpDTO {
 		this.orgFk = orgFk;
 		this.areaFk = areaFk;
 		this.mark = mark;
+		this.summa = summa;
 	}
-
-	private Integer id;
 
 	// Пользователь
 	private String username;
@@ -60,6 +64,10 @@ public class PayordCmpDTO {
 	// Маркер
 	private String mark;
 
+	// Сумма
+	private Double summa;
+
+	
 	public Integer getId() {
 		return id;
 	}
@@ -108,22 +116,6 @@ public class PayordCmpDTO {
 		this.servFk = servFk;
 	}
 
-	public Integer getOrg() {
-		return orgFk;
-	}
-
-	public void setOrg(Integer org) {
-		this.orgFk = org;
-	}
-
-	public Integer getArea() {
-		return areaFk;
-	}
-
-	public void setArea(Integer area) {
-		this.areaFk = area;
-	}
-
 	public String getMark() {
 		return mark;
 	}
@@ -131,7 +123,30 @@ public class PayordCmpDTO {
 	public void setMark(String mark) {
 		this.mark = mark;
 	}
-	
+
+	public Integer getOrgFk() {
+		return orgFk;
+	}
+
+	public void setOrgFk(Integer orgFk) {
+		this.orgFk = orgFk;
+	}
+
+	public Integer getAreaFk() {
+		return areaFk;
+	}
+
+	public void setAreaFk(Integer areaFk) {
+		this.areaFk = areaFk;
+	}
+
+	public Double getSumma() {
+		return summa;
+	}
+
+	public void setSumma(Double summa) {
+		this.summa = summa;
+	}
 	
 }
 

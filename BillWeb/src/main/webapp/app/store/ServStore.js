@@ -1,11 +1,11 @@
 /**
  * Created by lev on 09.03.2017.
  */
-Ext.define('BillWebApp.store.OrgStore', {
+Ext.define('BillWebApp.store.ServStore', {
     extend: 'Ext.data.Store',
-    alias  : 'store.orgstore',
-    storeId: 'OrgStore',
-    model: 'BillWebApp.model.Org',
+    alias  : 'store.servstore',
+    storeId: 'ServStore',
+    model: 'BillWebApp.model.Serv',
     config:{
         autoLoad: true,
         autoSync: true
@@ -15,7 +15,7 @@ Ext.define('BillWebApp.store.OrgStore', {
         type: 'ajax',
         api: {
             create  : '',
-            read    : 'http://192.168.100.21:8083/getOrgAll',
+            read    : 'http://192.168.100.21:8083/getServAll',
             update  : '',
             destroy : ''
         },

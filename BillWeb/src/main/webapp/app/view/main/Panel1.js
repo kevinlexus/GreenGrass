@@ -10,6 +10,8 @@ Ext.define('BillWebApp.view.main.Panel1', {
     layout: 'fit',
     plain: true,
 
+    controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
+
     items: [{
         xtype: 'form',
 

@@ -15,6 +15,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
         type: 'main'
     },
 
+    controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
+
     defaults: {
         frame: true,
         bodyPadding: 10
@@ -22,7 +24,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
 
     items: [
         {
-
+            // ГРУППЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
             iconCls: 'framing-buttons-grid',
 
@@ -47,35 +49,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
             bind: {
                 store: '{payordgrpstore}'
             },
-            //store: { type: 'payordgrpstore' },
             listeners: {
                 // клик по строчке платежки, отобразить в дочернем гриде формулы
-                rowclick: function(grid, rec) {
-                    var viewModel = this.lookupViewModel();
-                    var store1 = viewModel.getStore('payordstore');
-                    store1.load({
-                        params : {
-                            'payordGrpId': rec.get('id')
-                        }
-                    });
-
-                    /* вызвается асинхронно var rec2 = store1.getAt(0);
-                    var store2 = viewModel.getStore('payordcmpstore');
-                    console.log("ID="+rec2.get('id'))
-                    store2.load({
-                        params : {
-                            'payordId': rec2.get('id')
-                        }
-                    });*/
-
-                }
+                rowclick: 'onGridPayordGrpRowClick'
             },
 
             columns: [
-                { text: 'Id',  dataIndex: 'id', width: 50,
-                    editor: {
-                        readOnly:true //только для чтения
-                    }
+                { text: 'Id',  dataIndex: 'id', width: 50
                 },
                 { text: 'Наименование',  dataIndex: 'name', width: 400,
                     editor: {
@@ -83,24 +63,19 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     }
                 },
                 { text: 'Создано',  dataIndex: 'dtf', width: 170,
-                    formatter: 'date("d-m-Y H:i:s")',
-                    editor: {
-                        readOnly:true, //только для чтения
-                        allowBlank: false
-                    }
+                    formatter: 'date("d-m-Y H:i:s")'
                 },
-                { text: 'Пользователь',  dataIndex: 'username', width: 150,
-                    editor: {
-                        readOnly:true //только для чтения
-                    }
+                { text: 'Пользователь',  dataIndex: 'username', width: 150
                 }]
 
 
 
         },
         {
+            // ПЛАТЕЖКИ
         xtype: 'gridpanel',
         iconCls: 'framing-buttons-grid',
+        reference: 'payordGrid',
 
         width: 1000,
         margin: '0 0 10 0',
@@ -125,21 +100,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
         },
         listeners: {
             // клик по строчке платежки, отобразить в дочернем гриде формулы
-            rowclick: function(grid, rec) {
-                var viewModel = this.lookupViewModel();
-                var store = viewModel.getStore('payordcmpstore');
-                store.load({
-                    params : {
-                        'payordId': rec.get('id')
-                    }
-                });
-            }
+            rowclick: 'onGridPayordClick'
         },
         columns: [
-            { text: 'Id',  dataIndex: 'id', width: 50,
-                editor: {
-                    readOnly:true //только для чтения
-                }
+            { text: 'Id',  dataIndex: 'id', width: 50
             },
             { text: 'Наименование',  dataIndex: 'name', width: 400,
                 editor: {
@@ -169,40 +133,41 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     //console.log('index:'+index);
                     if (index != -1){
                         var rs = store.getAt(index);
-                        console.log('rs.display:'+rs.get('name'));
                         return rs.get('name');
                     }
                 }
             },
-            { text: 'Дни формир.',  dataIndex: 'selDays', width: 150,
+            { text: 'Дни формир.',  dataIndex: 'selDays', width: 100,
                 editor: {
                     allowBlank: true
                 }
             },
-            { text: 'Создано',  dataIndex: 'dtf', width: 170,
-                formatter: 'date("d-m-Y H:i:s")',
+            { text: 'Формула',  dataIndex: 'formula', width: 100,
                 editor: {
-                    readOnly:true, //только для чтения
-                    allowBlank: false
+                    allowBlank: true
                 }
+            }
+            ,
+            { text: 'Сумма',  dataIndex: 'summa', width: 100
             },
-            { text: 'Пользователь',  dataIndex: 'username', width: 150,
-                editor: {
-                    readOnly:true //только для чтения
-                }
+            { text: 'Создано',  dataIndex: 'dtf', width: 170,
+                formatter: 'date("d-m-Y H:i:s")'
+            },
+            { text: 'Пользователь',  dataIndex: 'username', width: 150
             }
 
         ]
     },
         {
+            // ФОРМУЛЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
             iconCls: 'framing-buttons-grid',
+            reference: 'payordCmpGrid',
 
             width: 1000,
             margin: '0 0 10 0',
             header: false,
-            layout: 'fit',
-
+            //layout: 'fit',
             requires: [
                 'Ext.selection.CellModel'
             ],
@@ -221,23 +186,97 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 store: '{payordcmpstore}',
             },
             columns: [
-                { text: 'Id',  dataIndex: 'id', width: 50,
+                { text: 'Id',  dataIndex: 'id', width: 50
+                },
+                {
+                    header: 'Услуга',
+                    dataIndex: 'servFk',
+                    width: 200,
                     editor: {
-                        readOnly:true //только для чтения
+                        xtype: 'combo',
+                        typeAhead: true,
+                        forceSelection: true,
+                        displayField: 'name',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        bind: {
+                            store: '{servstore}'
+                        }
+                    },
+                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                        var store = Ext.getStore('ServStore');
+                        var index = store.findExact('id', value);
+                        if (index != -1){
+                            var rs = store.getAt(index);
+                            return rs.get('name');
+                        }
                     }
+                },
+                {
+                    header: 'Организация',
+                    dataIndex: 'orgFk',
+                    width: 200,
+                    editor: {
+                        xtype: 'combo',
+                        typeAhead: true,
+                        forceSelection: true,
+                        displayField: 'name',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        bind: {
+                            store: '{orgstore}'
+                        }
+                    },
+                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                        var store = Ext.getStore('OrgStore');
+                        var index = store.findExact('id', value);
+                        if (index != -1){
+                            var rs = store.getAt(index);
+                            return rs.get('name');
+                        }
+                    }
+
+
+                },
+
+                { text: 'Маркер',  dataIndex: 'mark', width: 150
+                },
+                { text: 'Сумма',  dataIndex: 'summa', width: 150
                 },
                 { text: 'Создано',  dataIndex: 'dtf', width: 170,
-                    formatter: 'date("d-m-Y H:i:s")',
-                    editor: {
-                        readOnly:true, //только для чтения
-                        allowBlank: false
-                    }
+                    formatter: 'date("d-m-Y H:i:s")'
                 },
-                { text: 'Пользователь',  dataIndex: 'username', width: 150,
-                    editor: {
-                        readOnly:true //только для чтения
-                    }
+                { text: 'Пользователь',  dataIndex: 'username', width: 150
                 }
+
+                /*
+
+                 header: 'Периодичность',
+                 dataIndex: 'periodTpFk',
+                 width: 170,
+                 editor: {
+                 xtype: 'combo',
+                 typeAhead: true,
+                 forceSelection: true,
+                 displayField: 'name',
+                 valueField: 'id',
+                 triggerAction: 'all',
+                 bind: {
+                 store: '{lststore}'
+                 }
+                 },
+
+                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                 var store = Ext.getStore('LstStore');
+                 var index = store.findExact('id', value);
+                 //console.log('value:'+value);
+                 //console.log('index:'+index);
+                 if (index != -1){
+                 var rs = store.getAt(index);
+                 return rs.get('name');
+                 }
+                 }
+                 */
 
             ]
         }

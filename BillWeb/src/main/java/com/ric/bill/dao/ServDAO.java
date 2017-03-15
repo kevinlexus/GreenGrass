@@ -12,4 +12,5 @@ public interface ServDAO {
 	public List<Serv> findForDistVol();
 	public List<Serv> findForDistVolForKart();
 	public Serv getByCD(String cd);	
+	public List<Serv> getServAll();
 }

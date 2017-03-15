@@ -2,18 +2,18 @@ package com.ric.bill.dto;
 
 
 /**
- * DTO - Организация
+ * DTO - Услуга
  * @author lev
  *
  */
-public class OrgDTO {
+public class ServDTO {
 
 	private Integer id; //id
 	private String cd; //cd 
 	private String name; //Наименование 
 	
 	// конструктор
-	public OrgDTO(Integer id, String cd, String name) {
+	public ServDTO(Integer id, String cd, String name) {
 		super();
 		this.id = id;
 		this.cd = cd;

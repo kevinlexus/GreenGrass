@@ -11,6 +11,7 @@ import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
+import com.ric.bill.model.tr.Serv;
 
 /**
  * Построитель DTO объектов
@@ -29,7 +30,9 @@ public class DTOBuilder {
 public List<PayordDTO> getPayordDTOLst(List<Payord> lst) {
 	List<PayordDTO> lst2 = new ArrayList<PayordDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
-				new PayordDTO(t.getId(), t.getName(), (t.getPeriodTp()!=null) ? t.getPeriodTp().getId() : null, t.getSelDays(), t.getUsername(), t.getDtf())
+				new PayordDTO(t.getId(), t.getName(), (t.getPeriodTp()!=null) ? t.getPeriodTp().getId() : null, t.getSelDays(), t.getUsername(), t.getDtf(),
+						t.getFormula(), t.getSumma()
+						)
 				));
 	return lst2;
 }
@@ -57,7 +60,7 @@ public List<PayordCmpDTO> getPayordDTOCmpLst(List<PayordCmp> lst) {
 
 	lst.stream().forEach(t-> lst2.add(
 				new PayordCmpDTO(t.getId(), t.getUsername(), t.getDtf(), t.getPayord().getId(), t.getVar().getId(),
-						(t.getServ()!=null ? t.getServ().getId() : null) , (t.getOrg()!=null ? t.getOrg().getId() : null), t.getArea().getId(), t.getMark())
+						(t.getServ()!=null ? t.getServ().getId() : null) , (t.getOrg()!=null ? t.getOrg().getId() : null), t.getArea().getId(), t.getMark(), t.getSumma())
 				));
 	return lst2;
 }
@@ -88,4 +91,17 @@ public List<OrgDTO> getOrgDTOLst(List<Org> lst) {
 	return lst2;
 }
 	
+/**
+ * Построить коллекцию DTO Услуг (Serv)
+ * @param lst
+ * @return
+ */
+public List<ServDTO> getServDTOLst(List<Serv> lst) {
+	List<ServDTO> lst2 = new ArrayList<ServDTO>(0);
+	lst.stream().forEach(t-> lst2.add(
+				new ServDTO(t.getId(), t.getCd(), t.getName())
+				));
+	return lst2;
+}
+
 }

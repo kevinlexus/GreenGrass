@@ -36,10 +36,13 @@ import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.dto.PeriodReportsDTO;
+import com.ric.bill.dto.ServDTO;
 import com.ric.bill.mm.LstMng;
+import com.ric.bill.mm.OrgMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.mm.ReportMng;
 import com.ric.bill.mm.SecMng;
+import com.ric.bill.mm.ServMng;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Payord;
 
@@ -65,6 +68,10 @@ public class BillingController {
     private ReportMng repMng;
 	@Autowired
     private LstMng lstMng;
+	@Autowired
+    private OrgMng orgMng;
+	@Autowired
+    private ServMng servMng;
 	@Autowired
     private PayordMng payordMng;
 	@Autowired
@@ -170,6 +177,28 @@ public class BillingController {
     								  @RequestParam(value="actCd") String actCd) {
     	log.info("GOT /getOrgCurUser with: roleCd={}, actCd={}", roleCd, actCd);
     	return dtoBuilder.getOrgDTOLst(secMng.getOrgCurUser(roleCd, actCd));
+    }
+
+   /**
+	 * Получить список всех организаций
+	 * @return
+	 */
+	@RequestMapping("/getOrgAll") 
+    @ResponseBody
+    public List<OrgDTO> getOrgAll() {
+    	log.info("GOT /getOrgAll");
+    	return dtoBuilder.getOrgDTOLst(orgMng.getOrgAll());
+    }
+	
+   /**
+	 * Получить список всех услуг
+	 * @return
+	 */
+	@RequestMapping("/getServAll") 
+    @ResponseBody
+    public List<ServDTO> getServAll() {
+    	log.info("GOT /getServAll");
+    	return dtoBuilder.getServDTOLst(servMng.getServAll());
     }
 
 	@RequestMapping("/chrglsk") 
