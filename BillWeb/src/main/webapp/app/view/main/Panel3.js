@@ -23,7 +23,78 @@ Ext.define('BillWebApp.view.main.Panel3', {
     },
 
     items: [
-        {
+       /* {
+
+            extend: 'Ext.grid.Panel',
+            xtype: 'array-grid',
+            controller: 'main',
+
+            requires: [
+                'Ext.grid.column.Action'
+            ],
+
+            title: 'Basic Grid',
+            width: 750,
+            height: 350,
+
+            bind: {
+                store: '{payordgrpstore}'
+            },
+            stateful: true,
+            collapsible: true,
+            multiSelect: true,
+            stateId: 'stateGrid',
+            headerBorders: false,
+            signTpl: '<span style="' +
+            'color:{value:sign(\'"#cf4c35"\',\'"#73b51e"\')}"' +
+            '>{text}</span>',
+
+            viewConfig: {
+                enableTextSelection: true
+            },
+
+            // Reusable actions
+            actions: {
+                sell: {
+                    iconCls: 'array-grid-sell-col',
+                    tooltip: 'Sell stock',
+                    handler: 'onSellClick'
+                },
+                buy: {
+                    getClass: 'getBuyClass',
+                    getTip: 'getBuyTip',
+                    handler: 'onBuyClick'
+                },
+                suspendTrading: {
+                    tooltip: 'Toggles enabled status of all buy and sell actions anywhere in this view',
+                    text: 'Suspend Trading',
+                    glyph: 'xf256@FontAwesome',
+                    toggleHandler: 'onToggleTrading',
+                    enableToggle: true
+                }
+            },
+
+            columns: [{
+                text: 'Name',
+                flex: 1,
+                sortable: false,
+                dataIndex: 'name'
+            }, {
+                menuDisabled: true,
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                items: ['@sell', '@buy']
+            }],
+
+            bbar: [
+                '@suspendTrading'
+            ]
+
+        }
+
+        ,*/
+                {
             // ГРУППЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
             iconCls: 'framing-buttons-grid',
@@ -31,22 +102,35 @@ Ext.define('BillWebApp.view.main.Panel3', {
             width: 1200,
             height: 300,
             margin: '0 0 10 0',
-            header: false,
+            //header: false,
             layout: 'fit',
+
+            stateful: true,
+            stateId: 'stateGrid',
+            collapsible: true,
+            headerBorders: false,
+            signTpl: '<span style="' +
+            'color:{value:sign(\'"#cf4c35"\',\'"#73b51e"\')}"' +
+            '>{text}</span>',
             requires: [
-                'Ext.selection.CellModel'
+                'Ext.selection.CellModel',
+                'Ext.grid.column.Action'
             ],
             plugins: {
                 ptype: 'cellediting',
                 clicksToEdit: 1
             },
 
+            viewConfig: {
+                enableTextSelection: true
+            },
 
             autoLoad: true,
             frame: true,
             selModel: {
                 type: 'cellmodel'
             },
+
             bind: {
                 store: '{payordgrpstore}'
             },
@@ -55,6 +139,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 rowclick: 'onGridPayordGrpRowClick'
             },
 
+            actions: {
+                sell: {
+                    iconCls: 'array-grid-sell-col',
+                    tooltip: 'Sell stock',
+                    handler: 'onConfirm'
+                }
+            },
             columns: [
                 { text: 'Id',  dataIndex: 'id', width: 50
                 },
@@ -67,10 +158,15 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     formatter: 'date("d-m-Y H:i:s")'
                 },
                 { text: 'Пользователь',  dataIndex: 'username', width: 150
-                }]
-
-
-
+                },
+                 {
+                    menuDisabled: true,
+                    sortable: false,
+                    xtype: 'actioncolumn',
+                    width: 50,
+                    items: ['@sell']
+                }
+            ]
         },
         {
             // ПЛАТЕЖКИ

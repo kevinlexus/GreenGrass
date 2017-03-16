@@ -46,322 +46,368 @@ import com.ric.bill.mm.ServMng;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Payord;
 
-
 @EnableCaching
 @RestController
-@ComponentScan({"com.ric.bill"}) //-если убрать - не найдёт бины, например billServ
+@ComponentScan({ "com.ric.bill" })
+// -если убрать - не найдёт бины, например billServ
 @EntityScan(basePackages = "com.ric.bill")
 @EnableAutoConfiguration
 @Scope("prototype")
 @Slf4j
 public class BillingController {
 
-    @PersistenceContext
-    private EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 	@Autowired
 	private ApplicationContext ctx;
 	@Autowired
 	private Config config;
-    @Autowired
-    private BillServ billServ;
 	@Autowired
-    private ReportMng repMng;
+	private BillServ billServ;
 	@Autowired
-    private LstMng lstMng;
+	private ReportMng repMng;
 	@Autowired
-    private OrgMng orgMng;
+	private LstMng lstMng;
 	@Autowired
-    private ServMng servMng;
+	private OrgMng orgMng;
 	@Autowired
-    private PayordMng payordMng;
+	private ServMng servMng;
 	@Autowired
-    private DTOBuilder dtoBuilder;
+	private PayordMng payordMng;
 	@Autowired
-    private SecMng secMng;
+	private DTOBuilder dtoBuilder;
+	@Autowired
+	private SecMng secMng;
 
-    /**
-     * Получить периоды для элементов интерфейса
-     * @param repCd - CD отчета
-     * @param tp - тип периода 0 - по месяцам, 1 - по дням
-     * @return
-     */
-	@RequestMapping("/getPeriodReports") 
-    @ResponseBody
-    public List<PeriodReportsDTO> getPeriodReports(@RequestParam(value="repCd") String repCd,
- 			    		  @RequestParam(value="tp", defaultValue="0") Integer tp) {
-    	
-    	log.info("GOT /getPeriodReports repCd={}, tp={}", repCd, tp);
-    	return repMng.getPeriodsByCD(repCd, tp);
-    	
-    }
+	/**
+	 * Получить периоды для элементов интерфейса
+	 * 
+	 * @param repCd
+	 *            - CD отчета
+	 * @param tp
+	 *            - тип периода 0 - по месяцам, 1 - по дням
+	 * @return
+	 */
+	@RequestMapping("/getPeriodReports")
+	@ResponseBody
+	public List<PeriodReportsDTO> getPeriodReports(
+			@RequestParam(value = "repCd") String repCd,
+			@RequestParam(value = "tp", defaultValue = "0") Integer tp) {
+
+		log.info("GOT /getPeriodReports repCd={}, tp={}", repCd, tp);
+		return repMng.getPeriodsByCD(repCd, tp);
+
+	}
 
 	/**
 	 * Получить все платежки
+	 * 
 	 * @return
 	 */
-	@RequestMapping("/getPayordAll") 
-    @ResponseBody
-    public List<PayordDTO> getPayordAll() {
+	@RequestMapping("/getPayordAll")
+	@ResponseBody
+	public List<PayordDTO> getPayordAll() {
 
 		log.info("GOT /getPayordAll");
 		return dtoBuilder.getPayordDTOLst(payordMng.getPayordAll());
-		
-    }
+
+	}
 
 	/**
 	 * Получить платежки по Id группы
+	 * 
 	 * @return
 	 */
-	@RequestMapping("/getPayord") 
-    @ResponseBody
-    public List<PayordDTO> getPayord(@RequestParam(value="payordGrpId") Integer payordGrpId) {
+	@RequestMapping("/getPayord")
+	@ResponseBody
+	public List<PayordDTO> getPayord(
+			@RequestParam(value = "payordGrpId") Integer payordGrpId) {
 
 		log.info("GOT /getPayord with payordGrpId={}", payordGrpId);
-		return dtoBuilder.getPayordDTOLst(payordMng.getPayordByPayordGrpId(payordGrpId));
-		
-    }
-	
-	// сохранить платежку
-   @RequestMapping(value = "/setPayord", method = RequestMethod.POST, produces="application/json", consumes="application/json")
-   @ResponseBody
-   public String setPayord(@RequestBody List<PayordDTO> lst) {
+		return dtoBuilder.getPayordDTOLst(payordMng
+				.getPayordByPayordGrpId(payordGrpId));
 
-	   log.info("GOT /setPayord");
-	   lst.stream().forEach(t -> payordMng.savePayordDto(t));
-	   return null;
-   }
+	}
 
-	// сохранить группу платежки
-   @RequestMapping(value = "/setPayordGrp", method = RequestMethod.POST, produces="application/json", consumes="application/json")
-   @ResponseBody
-   public String setPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
+	/*
+	 * Сохранить платежку
+	 */
+	@RequestMapping(value = "/setPayord", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String setPayord(@RequestBody List<PayordDTO> lst) {
 
-	   log.info("GOT /setPayordGrp");
-	   lst.stream().forEach(t -> payordMng.savePayordGrpDto(t));
-	   return null;
-   }
+		log.info("GOT /setPayord");
+		lst.stream().forEach(t -> payordMng.savePayordDto(t));
+		return null;
+	}
 
-   /**
+	/**
 	 * Получить все группы платежек
+	 * 
 	 * @return
 	 */
-   @RequestMapping("/getPayordGrpAll") 
-   @ResponseBody
-   public List<PayordGrpDTO> getPayordGrp() {
+	@RequestMapping("/getPayordGrpAll")
+	@ResponseBody
+	public List<PayordGrpDTO> getPayordGrp() {
 
 		log.info("GOT /getPayordGrpAll");
 		return dtoBuilder.getPayordDTOGrpLst(payordMng.getPayordGrpAll());
-		
-   }
+
+	}
+
+	// сохранить группу платежки
+	@RequestMapping(value = "/setPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String setPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
+
+		log.info("GOT /setPayordGrp");
+		lst.stream().forEach(t -> payordMng.savePayordGrpDto(t));
+		return null;
+	}
 
 	/**
 	 * Получить все компоненты платежки по её ID
+	 * 
 	 * @return
 	 */
-  @RequestMapping("/getPayordCmp") 
-  @ResponseBody
-  public List<PayordCmpDTO> getPayordCmp(@RequestParam(value="payordId") Integer payordId) {
+	@RequestMapping("/getPayordCmp")
+	@ResponseBody
+	public List<PayordCmpDTO> getPayordCmp(
+			@RequestParam(value = "payordId") Integer payordId) {
 
 		log.info("GOT /getPayordCmp with payordId={}", payordId);
-		return dtoBuilder.getPayordDTOCmpLst(payordMng.getPayordCmpByPayordId(payordId));
-		
-  }
+		return dtoBuilder.getPayordDTOCmpLst(payordMng
+				.getPayordCmpByPayordId(payordId));
 
-  /**
-	 * Получить список по типу
-	 * @param tp - тип списка
-	 * @return
-	 */
-	@RequestMapping("/getLstByTp") 
-    @ResponseBody
-    public List<LstDTO> getLstByTp(@RequestParam(value="tp") String tp) {
-		return dtoBuilder.getLstDTOLst(lstMng.getByTp(tp));
-    }
+	}
 
-   /**
-	 * Получить список организаций, доступных текущему пользователю по роли и действию
-	 * @return
-	 */
-	@RequestMapping("/getOrgCurUser") 
-    @ResponseBody
-    public List<OrgDTO> getOrgCurUser(@RequestParam(value="roleCd") String roleCd, 
-    								  @RequestParam(value="actCd") String actCd) {
-    	log.info("GOT /getOrgCurUser with: roleCd={}, actCd={}", roleCd, actCd);
-    	return dtoBuilder.getOrgDTOLst(secMng.getOrgCurUser(roleCd, actCd));
-    }
+	// сохранить компонент платежки
+	@RequestMapping(value = "/setPayordCmp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String setPayordCmp(@RequestBody List<PayordCmpDTO> lst) {
 
-   /**
-	 * Получить список всех организаций
-	 * @return
-	 */
-	@RequestMapping("/getOrgAll") 
-    @ResponseBody
-    public List<OrgDTO> getOrgAll() {
-    	log.info("GOT /getOrgAll");
-    	return dtoBuilder.getOrgDTOLst(orgMng.getOrgAll());
-    }
+		log.info("GOT /setPayordCmp");
+		lst.stream().forEach(t -> payordMng.savePayordCmpDto(t));
+		return null;
+	}
 	
-   /**
-	 * Получить список всех услуг
+	
+	
+	/**
+	 * Получить список по типу
+	 * 
+	 * @param tp - тип списка
+	 *            
 	 * @return
 	 */
-	@RequestMapping("/getServAll") 
-    @ResponseBody
-    public List<ServDTO> getServAll() {
-    	log.info("GOT /getServAll");
-    	return dtoBuilder.getServDTOLst(servMng.getServAll());
-    }
+	@RequestMapping("/getLstByTp")
+	@ResponseBody
+	public List<LstDTO> getLstByTp(@RequestParam(value = "tp") String tp) {
+		return dtoBuilder.getLstDTOLst(lstMng.getByTp(tp));
+	}
 
-	@RequestMapping("/chrglsk") 
-    public String chrgLsk(@RequestParam(value="lsk", defaultValue="00000000") Integer lsk, 
-    					  @RequestParam(value="dist", defaultValue="0") String dist,
-    					  @RequestParam(value="tp", defaultValue="0") String tp,
-    					  @RequestParam(value="chngId", defaultValue="") String chngId
-    		) {
-    	log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
-		
-    	// получить уникальный номер запроса
-    	int rqn = config.incNextReqNum();
-    	
-    	log.info("RQN={}", rqn);
+	/**
+	 * Получить список организаций, доступных текущему пользователю по роли и
+	 * действию
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/getOrgCurUser")
+	@ResponseBody
+	public List<OrgDTO> getOrgCurUser(
+			@RequestParam(value = "roleCd") String roleCd,
+			@RequestParam(value = "actCd") String actCd) {
+		log.info("GOT /getOrgCurUser with: roleCd={}, actCd={}", roleCd, actCd);
+		return dtoBuilder.getOrgDTOLst(secMng.getOrgCurUser(roleCd, actCd));
+	}
+
+	/**
+	 * Получить список всех организаций
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/getOrgAll")
+	@ResponseBody
+	public List<OrgDTO> getOrgAll() {
+		log.info("GOT /getOrgAll");
+		return dtoBuilder.getOrgDTOLst(orgMng.getOrgAll());
+	}
+
+	/**
+	 * Получить список всех услуг
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/getServAll")
+	@ResponseBody
+	public List<ServDTO> getServAll() {
+		log.info("GOT /getServAll");
+		return dtoBuilder.getServDTOLst(servMng.getServAll());
+	}
+
+	@RequestMapping("/chrglsk")
+	public String chrgLsk(
+			@RequestParam(value = "lsk", defaultValue = "00000000") Integer lsk,
+			@RequestParam(value = "dist", defaultValue = "0") String dist,
+			@RequestParam(value = "tp", defaultValue = "0") String tp,
+			@RequestParam(value = "chngId", defaultValue = "") String chngId) {
+		log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk,
+				dist, tp, chngId);
+
+		// получить уникальный номер запроса
+		int rqn = config.incNextReqNum();
+
+		log.info("RQN={}", rqn);
 		long beginTime = System.currentTimeMillis();
-		
+
 		// получить доступ к лиц.счету
 		int i = 0;
 		while (!config.checkLsk(lsk)) {
 			i++;
 			if (i > 100) {
-		    	log.info("********ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ! /chrglsk with: lsk={}", lsk);
-		    	log.info("********НЕ ВОЗМОЖНО РАЗБЛОКИРОВАТЬ ЛС В ТЕЧЕНИИ 10 сек! /chrglsk with: lsk={}", lsk);
-				i=0;
+				log.info(
+						"********ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ!ВНИМАНИЕ! /chrglsk with: lsk={}",
+						lsk);
+				log.info(
+						"********НЕ ВОЗМОЖНО РАЗБЛОКИРОВАТЬ ЛС В ТЕЧЕНИИ 10 сек! /chrglsk with: lsk={}",
+						lsk);
+				i = 0;
 			}
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return "ERROR";
-			} 
+			}
 		}
-		
-    	Future<Result> fut = null;
 
-    	// если пустой ID перерасчета
-    	Integer chId = null;
-    	if (chngId.length()!=0 && chngId!= null) {
-    		log.info("chngId={}", chngId);
-    		chId=Integer.valueOf(chngId);
-    	}
+		Future<Result> fut = null;
 
-    	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
-		long endTime1=System.currentTimeMillis()-beginTime;
-		beginTime = System.currentTimeMillis();
-    	
-    	reqConfig.setUp(config, dist, tp, chId, rqn); 
+		// если пустой ID перерасчета
+		Integer chId = null;
+		if (chngId.length() != 0 && chngId != null) {
+			log.info("chngId={}", chngId);
+			chId = Integer.valueOf(chngId);
+		}
 
-		long endTime2=System.currentTimeMillis()-beginTime;
-		beginTime = System.currentTimeMillis();
-    	
-    	fut = billServ.chrgLsk(reqConfig, null, lsk);
-
-    	long endTime3=System.currentTimeMillis()-beginTime; // время инициализации billServ bean
+		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
+		long endTime1 = System.currentTimeMillis() - beginTime;
 		beginTime = System.currentTimeMillis();
 
-		//ждать окончание потока 
+		reqConfig.setUp(config, dist, tp, chId, rqn);
+
+		long endTime2 = System.currentTimeMillis() - beginTime;
+		beginTime = System.currentTimeMillis();
+
+		fut = billServ.chrgLsk(reqConfig, null, lsk);
+
+		long endTime3 = System.currentTimeMillis() - beginTime; // время
+																// инициализации
+																// billServ bean
+		beginTime = System.currentTimeMillis();
+
+		// ждать окончание потока
 		try {
 			fut.get();
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
-	    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
+			log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 			config.unCheckLsk(lsk); // снять лицевой с обработки
-	    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
+			log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
 			return "ERROR";
 		} catch (ExecutionException e1) {
 			e1.printStackTrace();
-	    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
+			log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 			config.unCheckLsk(lsk); // снять лицевой с обработки
-	    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
+			log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
 			return "ERROR";
 		}
-		
-		long endTime4=System.currentTimeMillis()-beginTime;
 
-	    log.info("TIMING: доступ.к л.с.={}, конфиг={}, инит. bean={}, расчет={}", endTime1, endTime2, endTime3, endTime4);
+		long endTime4 = System.currentTimeMillis() - beginTime;
 
-	    try {
-			if (fut.get().err ==0) {
-		    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
+		log.info(
+				"TIMING: доступ.к л.с.={}, конфиг={}, инит. bean={}, расчет={}",
+				endTime1, endTime2, endTime3, endTime4);
+
+		try {
+			if (fut.get().err == 0) {
+				log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 				config.unCheckLsk(lsk); // снять лицевой с обработки
-		    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
-		    	log.info("OK /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+				log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
+				log.info("OK /chrglsk with: lsk={}, dist={}, tp={}, chngId={}",
+						lsk, dist, tp, chngId);
 				return "OK";
 			} else {
-		    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
+				log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 				config.unCheckLsk(lsk); // снять лицевой с обработки
-		    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
-		    	log.info("ERROR /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk, dist, tp, chngId);
+				log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
+				log.info(
+						"ERROR /chrglsk with: lsk={}, dist={}, tp={}, chngId={}",
+						lsk, dist, tp, chngId);
 				return "ERROR";
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-	    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
+			log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 			config.unCheckLsk(lsk); // снять лицевой с обработки
-	    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
+			log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
 			return "ERROR";
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-	    	log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
+			log.info("BEGINING UNLOCK /chrglsk with: lsk={}", lsk);
 			config.unCheckLsk(lsk); // снять лицевой с обработки
-	    	log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
+			log.info("ENDING UNLOCK /chrglsk with: lsk={}", lsk);
 			return "ERROR";
 		}
 
+	}
 
-    } 
-    
-    @RequestMapping("/chrgall")
-    public String chrgAll(@RequestParam(value="dist", defaultValue="0", required=true) String dist,
-    					  @RequestParam(value="houseId", defaultValue="", required=false) Integer houseId, 
-    					  @RequestParam(value="areaId", defaultValue="", required=false) Integer areaId) {
-    	log.info("got /chrgall with: dist={}, houseId={}, areaId={} ", dist, houseId, areaId);
+	@RequestMapping("/chrgall")
+	public String chrgAll(
+			@RequestParam(value = "dist", defaultValue = "0", required = true) String dist,
+			@RequestParam(value = "houseId", defaultValue = "", required = false) Integer houseId,
+			@RequestParam(value = "areaId", defaultValue = "", required = false) Integer areaId) {
+		log.info("got /chrgall with: dist={}, houseId={}, areaId={} ", dist,
+				houseId, areaId);
 
-    	// получить уникальный номер запроса
-    	int rqn = config.incNextReqNum();
-    	log.info("RQN={}", rqn);
+		// получить уникальный номер запроса
+		int rqn = config.incNextReqNum();
+		log.info("RQN={}", rqn);
 
-    	Future<Result> fut = null;
-    	
-    	RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
-    	reqConfig.setUp(config, dist, "0", null, rqn); 
-    	
-    	fut = billServ.chrgAll(reqConfig, houseId, areaId);
-    	
-		 while (!fut.isDone()) {
-	         try {
+		Future<Result> fut = null;
+
+		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
+		reqConfig.setUp(config, dist, "0", null, rqn);
+
+		fut = billServ.chrgAll(reqConfig, houseId, areaId);
+
+		while (!fut.isDone()) {
+			try {
 				Thread.sleep(100);
-				//100-millisecond Задержка
+				// 100-millisecond Задержка
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
-	     }
-
-		 try {
-				if (fut.get().err ==0) {
-					return "OK";
-				} else {
-					return "ERROR";
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return "ERROR";
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return "ERROR";
+			}
 		}
-    }
-   
+
+		try {
+			if (fut.get().err == 0) {
+				return "OK";
+			} else {
+				return "ERROR";
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "ERROR";
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "ERROR";
+		}
+	}
+
 }

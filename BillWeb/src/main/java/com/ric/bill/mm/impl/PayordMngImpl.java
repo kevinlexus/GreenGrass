@@ -13,17 +13,22 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.ChrgServThr;
+import com.ric.bill.Utl;
 import com.ric.bill.dao.PayordCmpDAO;
 import com.ric.bill.dao.PayordDAO;
 import com.ric.bill.dao.PayordGrpDAO;
+import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
+import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
+import com.ric.bill.model.tr.Serv;
 
 @Service
 @Slf4j
@@ -76,12 +81,47 @@ public class PayordMngImpl implements PayordMng {
 		Payord payord = em.find(Payord.class, payordDTO.getId());
     	payord.setName(payordDTO.getName());		
     	payord.setSelDays(payordDTO.getSelDays());
+    	
     	if (payordDTO.getPeriodTpFk() != null) {
         	Lst periodTp = em.find(Lst.class, payordDTO.getPeriodTpFk());
         	payord.setPeriodTp(periodTp);
     	} else {
         	payord.setPeriodTp(null);
     	}
+	}
+
+	// сохранить группу платежки из DTO
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void savePayordGrpDto(PayordGrpDTO p) {
+		PayordGrp payordGrp = em.find(PayordGrp.class, p.getId());
+		payordGrp.setName(p.getName());
+	}
+
+	// сохранить компонент платежки из DTO
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void savePayordCmpDto(PayordCmpDTO p) {
+		PayordCmp pCmp = em.find(PayordCmp.class, p.getId());
+		if (p.getAreaFk() != null) {
+			Area area = em.find(Area.class, p.getAreaFk());	
+			pCmp.setArea(area);
+		} else {
+			pCmp.setArea(null);
+		}
+
+		if (p.getOrgFk() != null) {
+			Org org = em.find(Org.class, p.getOrgFk());	
+			pCmp.setOrg(org);
+		} else {
+			pCmp.setOrg(null);
+		}
+		
+		if (p.getServFk() != null) {
+			Serv serv = em.find(Serv.class, p.getServFk());	
+			pCmp.setServ(serv);
+		} else {
+			pCmp.setServ(null);
+		}
+		
 	}
 
 	/**
@@ -94,11 +134,5 @@ public class PayordMngImpl implements PayordMng {
 		
 	}
 
-	// сохранить группу платежки из DTO
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void savePayordGrpDto(PayordGrpDTO p) {
-		PayordGrp payordGrp = em.find(PayordGrp.class, p.getId());
-		payordGrp.setName(p.getName());
-	}
 	
 }

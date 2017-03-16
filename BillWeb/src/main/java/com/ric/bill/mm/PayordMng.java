@@ -2,6 +2,7 @@ package com.ric.bill.mm;
 
 import java.util.List;
 
+import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.model.fn.Payord;
@@ -16,4 +17,5 @@ public interface PayordMng {
 	public void savePayordDto(PayordDTO payordDTO);
 	public void savePayordGrpDto(PayordGrpDTO payorGrpdDTO);
 	public List<PayordCmp> getPayordCmpByPayordId(Integer payordId);
+	public void savePayordCmpDto(PayordCmpDTO t);
 }
