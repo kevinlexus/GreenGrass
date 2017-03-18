@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
@@ -27,9 +28,15 @@ public class PayordGrp implements java.io.Serializable, Simple {
 		
 	}
 
+	public PayordGrp(String name) {
+		super();
+		this.name = name;
+	}
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", updatable = false, nullable = false)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PAYORD_GRP")
+	@SequenceGenerator(name="SEQ_PAYORD_GRP", sequenceName="FN.SEQ_PAYORD_GRP", allocationSize=1) 	
+    @Column(name = "ID", unique=true, updatable = false, nullable = false)					
 	private Integer id;
 
 	// Наименование
@@ -37,11 +44,11 @@ public class PayordGrp implements java.io.Serializable, Simple {
 	private String name;
 
 	// Пользователь
-	@Column(name = "USERNAME")
+	@Column(name = "USERNAME", insertable = false, updatable = false)
 	private String username;
 	
 	// Дата создания
-	@Column(name = "DTF")
+	@Column(name = "DTF", insertable = false, updatable = false)
 	private Date dtf;
 	
 	public Integer getId() {

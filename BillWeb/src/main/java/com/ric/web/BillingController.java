@@ -1,5 +1,6 @@
 package com.ric.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -16,8 +17,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,8 +42,7 @@ import com.ric.bill.mm.PayordMng;
 import com.ric.bill.mm.ReportMng;
 import com.ric.bill.mm.SecMng;
 import com.ric.bill.mm.ServMng;
-import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.fn.Payord;
+import com.ric.bill.model.fn.PayordGrp;
 
 @EnableCaching
 @RestController
@@ -141,11 +139,7 @@ public class BillingController {
 		return null;
 	}
 
-	/**
-	 * Получить все группы платежек
-	 * 
-	 * @return
-	 */
+	// Получить все группы платежек
 	@RequestMapping("/getPayordGrpAll")
 	@ResponseBody
 	public List<PayordGrpDTO> getPayordGrp() {
@@ -155,13 +149,37 @@ public class BillingController {
 
 	}
 
-	// сохранить группу платежки
+	// Сохранить группу платежки
 	@RequestMapping(value = "/setPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public String setPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
 
 		log.info("GOT /setPayordGrp");
 		lst.stream().forEach(t -> payordMng.savePayordGrpDto(t));
+		return null;
+	}
+
+	// Сохранить группу платежки
+	@RequestMapping(value = "/addPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public List<PayordGrpDTO> addPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
+		
+		log.info("GOT /addPayordGrp");
+		List<PayordGrp> lst2 = new ArrayList<PayordGrp>();
+		
+		lst.stream().forEach(t -> lst2.add( payordMng.addPayordGrpDto(t)) );
+		
+		return dtoBuilder.getPayordDTOGrpLst(lst2);
+		//return null;
+	}
+	
+	// Удалить группу платежки
+	@RequestMapping(value = "/delPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String delPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
+
+		log.info("GOT /delPayordGrp");
+		lst.stream().forEach(t -> payordMng.delPayordGrpDto(t));
 		return null;
 	}
 

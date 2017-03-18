@@ -75,7 +75,7 @@ public class PayordMngImpl implements PayordMng {
 		
 	}
 
-	// сохранить платежку из DTO
+	// Сохранить платежку из DTO
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void savePayordDto(PayordDTO payordDTO) {
 		Payord payord = em.find(Payord.class, payordDTO.getId());
@@ -90,11 +90,26 @@ public class PayordMngImpl implements PayordMng {
     	}
 	}
 
-	// сохранить группу платежки из DTO
+	// Удалить группу платежек из DTO
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void delPayordGrpDto(PayordGrpDTO p) {
+		PayordGrp pg = em.find(PayordGrp.class, p.getId());
+		em.remove(pg);
+	}
+
+    // сохранить группу платежки из DTO
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void savePayordGrpDto(PayordGrpDTO p) {
 		PayordGrp payordGrp = em.find(PayordGrp.class, p.getId());
 		payordGrp.setName(p.getName());
+	}
+
+    // добавить группу платежки из DTO
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public PayordGrp addPayordGrpDto(PayordGrpDTO p) {
+		PayordGrp payordGrp = new PayordGrp(p.getName());
+		em.persist(payordGrp);
+		return payordGrp;
 	}
 
 	// сохранить компонент платежки из DTO
@@ -134,5 +149,14 @@ public class PayordMngImpl implements PayordMng {
 		
 	}
 
+	/**
+	 * Получить группу платежек по её ID
+	 * @return
+	 */
+	public PayordGrp getPayordGrpById(Integer id) {
+
+		return payordGrpDao.getPayordGrpById(id);
+		
+	}
 	
 }

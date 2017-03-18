@@ -23,114 +23,35 @@ Ext.define('BillWebApp.view.main.Panel3', {
     },
 
     items: [
-       /* {
-
-            extend: 'Ext.grid.Panel',
-            xtype: 'array-grid',
-            controller: 'main',
-
-            requires: [
-                'Ext.grid.column.Action'
-            ],
-
-            title: 'Basic Grid',
-            width: 750,
-            height: 350,
-
-            bind: {
-                store: '{payordgrpstore}'
-            },
-            stateful: true,
-            collapsible: true,
-            multiSelect: true,
-            stateId: 'stateGrid',
-            headerBorders: false,
-            signTpl: '<span style="' +
-            'color:{value:sign(\'"#cf4c35"\',\'"#73b51e"\')}"' +
-            '>{text}</span>',
-
-            viewConfig: {
-                enableTextSelection: true
-            },
-
-            // Reusable actions
-            actions: {
-                sell: {
-                    iconCls: 'array-grid-sell-col',
-                    tooltip: 'Sell stock',
-                    handler: 'onSellClick'
-                },
-                buy: {
-                    getClass: 'getBuyClass',
-                    getTip: 'getBuyTip',
-                    handler: 'onBuyClick'
-                },
-                suspendTrading: {
-                    tooltip: 'Toggles enabled status of all buy and sell actions anywhere in this view',
-                    text: 'Suspend Trading',
-                    glyph: 'xf256@FontAwesome',
-                    toggleHandler: 'onToggleTrading',
-                    enableToggle: true
-                }
-            },
-
-            columns: [{
-                text: 'Name',
-                flex: 1,
-                sortable: false,
-                dataIndex: 'name'
-            }, {
-                menuDisabled: true,
-                sortable: false,
-                xtype: 'actioncolumn',
-                width: 50,
-                items: ['@sell', '@buy']
-            }],
-
-            bbar: [
-                '@suspendTrading'
-            ]
-
-        }
-
-        ,*/
                 {
             // ГРУППЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
-            iconCls: 'framing-buttons-grid',
+            controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
 
-            width: 1200,
-            height: 300,
-            margin: '0 0 10 0',
-            //header: false,
-            layout: 'fit',
-
-            stateful: true,
-            stateId: 'stateGrid',
-            collapsible: true,
-            headerBorders: false,
-            signTpl: '<span style="' +
-            'color:{value:sign(\'"#cf4c35"\',\'"#73b51e"\')}"' +
-            '>{text}</span>',
             requires: [
                 'Ext.selection.CellModel',
                 'Ext.grid.column.Action'
             ],
-            plugins: {
-                ptype: 'cellediting',
-                clicksToEdit: 1
-            },
-
-            viewConfig: {
-                enableTextSelection: true
-            },
+            width: 1200,
+            height: 300,
+            margin: '0 0 10 0',
 
             autoLoad: true,
             frame: true,
             selModel: {
                 type: 'cellmodel'
             },
-
+            tbar: [{
+                text: 'Добавить группу',
+                handler: 'onGridPayordGrpAdd'
+            }],
+            plugins: {
+                ptype: 'cellediting',
+                clicksToEdit: 1,
+                //listeners: { edit: function(editor, e){console.log('gggggggggggggggggg')} }
+                //listeners: { edit: 'onGridPayordGrpEdit'
+                //            }
+            },
             bind: {
                 store: '{payordgrpstore}'
             },
@@ -138,22 +59,24 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 // клик по строчке платежки, отобразить в дочернем гриде формулы
                 rowclick: 'onGridPayordGrpRowClick'
             },
-
             actions: {
-                sell: {
-                    iconCls: 'array-grid-sell-col',
-                    tooltip: 'Sell stock',
-                    handler: 'onConfirm'
+                del: {
+                    glyph: 'xf147@FontAwesome',
+                    tooltip: 'Удалить',
+                    handler: 'onGridPayordGrpDel'
                 }
             },
             columns: [
-                { text: 'Id',  dataIndex: 'id', width: 50
+                { text: 'Id',  dataIndex: 'id', width: 50,
+                    editor: {
+                        allowBlank: true
+                    }
                 },
                 { text: 'Наименование',  dataIndex: 'name', width: 400,
                     editor: {
                         allowBlank: false
                     }
-                },
+                }/*,
                 { text: 'Создано',  dataIndex: 'dtf', width: 170,
                     formatter: 'date("d-m-Y H:i:s")'
                 },
@@ -164,12 +87,12 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     sortable: false,
                     xtype: 'actioncolumn',
                     width: 50,
-                    items: ['@sell']
-                }
+                    items: ['@del']
+                }*/
             ]
         },
         {
-            // ПЛАТЕЖКИ
+        // ПЛАТЕЖКИ
         xtype: 'gridpanel',
         iconCls: 'framing-buttons-grid',
         reference: 'payordGrid',
