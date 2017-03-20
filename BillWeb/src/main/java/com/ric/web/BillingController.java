@@ -163,14 +163,15 @@ public class BillingController {
 	@RequestMapping(value = "/addPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public List<PayordGrpDTO> addPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
-		
 		log.info("GOT /addPayordGrp");
 		List<PayordGrp> lst2 = new ArrayList<PayordGrp>();
 		
+		// добавить созданные группы платежек в коллекцию
 		lst.stream().forEach(t -> lst2.add( payordMng.addPayordGrpDto(t)) );
+		// обновить группы платежки из базы
+		lst2.stream().forEach(t -> payordMng.refreshPayordGrp(t) );
 		
 		return dtoBuilder.getPayordDTOGrpLst(lst2);
-		//return null;
 	}
 	
 	// Удалить группу платежки

@@ -33,20 +33,12 @@ Ext.define('BillWebApp.view.main.MainController', {
     // Добавить группу платежек
     onGridPayordGrpAdd: function() {
             rec = new BillWebApp.model.PayordGrp({
-                //id: null,
                 name: 'Заполнить наименование!'
             });
         var store = this.getViewModel().getStore('payordgrpstore');
-        //var store = Ext.getStore('payordgrpstore');
-        console.log("Store:"+store)
-
         store.insert(0, rec);
-        //store.add(rec);
-        //store.commitChanges;
-        //store.sync;
-
-        //var view = this.getView();
-        //view.findPlugin('cellediting').startEdit(rec, 1);
+        var view = this.getView();
+        view.findPlugin('cellediting').startEdit(rec, 1);
         console.log("Add!")
     },
 
@@ -87,7 +79,7 @@ Ext.define('BillWebApp.view.main.MainController', {
     },
 
     onGridPayordGrpRowClick: function(grid, rec) {
-    /*    var store = this.getViewModel().getStore('payordstore');
+        var store = this.getViewModel().getStore('payordstore');
         var store1 = this.getViewModel().getStore('payordcmpstore');
         var payordGrid = this.lookupReference('payordGrid');
         var payordCmpGrid = this.lookupReference('payordCmpGrid');
@@ -120,7 +112,7 @@ Ext.define('BillWebApp.view.main.MainController', {
                 }
             }
 
-        });*/
+        });
     },
 
     onGridPayordClick: function(grid, rec) {

@@ -109,9 +109,16 @@ public class PayordMngImpl implements PayordMng {
 	public PayordGrp addPayordGrpDto(PayordGrpDTO p) {
 		PayordGrp payordGrp = new PayordGrp(p.getName());
 		em.persist(payordGrp);
+		
 		return payordGrp;
 	}
 
+	// обновить группы платежки из базы (чтобы перечитались все поля)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void refreshPayordGrp(PayordGrp p) {
+		em.refresh(p);
+	}	
+	
 	// сохранить компонент платежки из DTO
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void savePayordCmpDto(PayordCmpDTO p) {

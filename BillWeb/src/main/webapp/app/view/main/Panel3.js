@@ -76,7 +76,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     editor: {
                         allowBlank: false
                     }
-                }/*,
+                },
                 { text: 'Создано',  dataIndex: 'dtf', width: 170,
                     formatter: 'date("d-m-Y H:i:s")'
                 },
@@ -88,7 +88,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     xtype: 'actioncolumn',
                     width: 50,
                     items: ['@del']
-                }*/
+                }
             ]
         },
         {
