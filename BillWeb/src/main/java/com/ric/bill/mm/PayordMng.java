@@ -12,14 +12,19 @@ import com.ric.bill.model.fn.PayordGrp;
 public interface PayordMng {
 
 	public List<PayordGrp> getPayordGrpAll();
-	public List<Payord> getPayordAll();
-	public List<Payord> getPayordByPayordGrpId(Integer payordGrpId);
-	public void savePayordDto(PayordDTO payordDTO);
-	public void savePayordGrpDto(PayordGrpDTO payorGrpdDTO);
-	public List<PayordCmp> getPayordCmpByPayordId(Integer payordId);
-	public void savePayordCmpDto(PayordCmpDTO t);
-	public void refreshPayordGrp(PayordGrp p);
+	public void setPayordGrpDto(PayordGrpDTO payorGrpdDTO);
 	public void delPayordGrpDto(PayordGrpDTO t);
 	public PayordGrp addPayordGrpDto(PayordGrpDTO t);
 	public PayordGrp getPayordGrpById(Integer id);
+	public void refreshPayordGrp(PayordGrp p);
+
+	public List<Payord> getPayordAll();
+	public List<Payord> getPayordByPayordGrpId(Integer payordGrpId);
+	public void setPayordDto(PayordDTO payordDTO);
+	public Payord addPayordDto(PayordDTO t);
+	public void refreshPayord(Payord t);
+
+	public List<PayordCmp> getPayordCmpByPayordId(Integer payordId);
+	public void setPayordCmpDto(PayordCmpDTO t);
+	
 }

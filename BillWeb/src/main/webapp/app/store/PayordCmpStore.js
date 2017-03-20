@@ -6,17 +6,13 @@ Ext.define('BillWebApp.store.PayordCmpStore', {
     alias  : 'store.payordcmpstore',
     storeId: 'payordcmpstore',
     model: 'BillWebApp.model.PayordCmp',
-    config:{
-        autoLoad: false,
-        autoSync: true
-    },
     proxy: {
         autoSave: false,
         type: 'ajax',
         api: {
             create  : '',
-            read    : 'http://192.168.100.21:8083/getPayordCmp',
-            update  : 'http://192.168.100.21:8083/setPayordCmp',
+            read    : 'http://192.168.100.21:8083/payord/getPayordCmp',
+            update  : 'http://192.168.100.21:8083/payord/setPayordCmp',
             destroy : ''
         },
         reader: {
@@ -31,5 +27,10 @@ Ext.define('BillWebApp.store.PayordCmpStore', {
         extraParams :{
             payordId: -1
         }
+    },
+    config:{// перенести в модель, если нужно autoSync = false
+        autoLoad: false,
+        autoSync: true
     }
+
 });

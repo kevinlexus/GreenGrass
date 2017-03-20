@@ -36,11 +36,11 @@ Ext.define('BillWebApp.view.main.Panel3', {
             height: 300,
             margin: '0 0 10 0',
 
-            autoLoad: true,
+           /* autoLoad: true,
             frame: true,
             selModel: {
                 type: 'cellmodel'
-            },
+            },*/
             tbar: [{
                 text: 'Добавить группу',
                 handler: 'onGridPayordGrpAdd'
@@ -98,22 +98,24 @@ Ext.define('BillWebApp.view.main.Panel3', {
         reference: 'payordGrid',
 
         width: 1000,
+        height: 250,
+
         margin: '0 0 10 0',
-        header: false,
-        layout: 'fit',
-
         requires: [
-            'Ext.selection.CellModel'
+            'Ext.selection.CellModel',
+            'Ext.grid.column.Action'
         ],
+        tbar: [{
+            text: 'Добавить платежку',
+            handler: 'onGridPayordAdd'
+        }],
+        selModel: 'cellmodel',
         plugins: {
-            ptype: 'cellediting',
+            ptype: 'rowediting',
+            listeners: {
+                edit: 'onGridPayordUpd'
+                },
             clicksToEdit: 1
-        },
-
-        autoLoad: true,
-        frame: true,
-        selModel: {
-            type: 'cellmodel'
         },
         bind: {
             store: '{payordstore}'
@@ -121,6 +123,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
         listeners: {
             // клик по строчке платежки, отобразить в дочернем гриде формулы
             rowclick: 'onGridPayordClick'
+        },
+        actions: {
+            del: {
+                glyph: 'xf147@FontAwesome',
+                tooltip: 'Удалить',
+                handler: 'onGridPayordDel'
+            }
         },
         columns: [
             { text: 'Id',  dataIndex: 'id', width: 50
@@ -143,7 +152,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     triggerAction: 'all',
                     bind: {
                         store: '{lststore}'
-                    }
+                    },
+                    allowBlank: false
                 },
                   renderer: 'onGridPayordPeriodRender'
             },
@@ -164,6 +174,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 formatter: 'date("d-m-Y H:i:s")'
             },
             { text: 'Пользователь',  dataIndex: 'username', width: 150
+            },
+            {
+                menuDisabled: true,
+                sortable: false,
+                xtype: 'actioncolumn',
+                width: 50,
+                items: ['@del']
             }
         ]
     },

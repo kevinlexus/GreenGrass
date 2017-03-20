@@ -42,7 +42,7 @@ public List<PayordDTO> getPayordDTOLst(List<Payord> lst) {
  * @param lst
  * @return
  */
-public List<PayordGrpDTO> getPayordDTOGrpLst(List<PayordGrp> lst) {
+public List<PayordGrpDTO> getPayordGrpDTOLst(List<PayordGrp> lst) {
 	List<PayordGrpDTO> lst2 = new ArrayList<PayordGrpDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
 				new PayordGrpDTO(t.getId(), t.getName(), t.getUsername(), t.getDtf())

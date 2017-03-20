@@ -39,19 +39,14 @@ Ext.define('BillWebApp.view.main.MainController', {
         store.insert(0, rec);
         var view = this.getView();
         view.findPlugin('cellediting').startEdit(rec, 1);
-        console.log("Add!")
     },
 
     onGridPayordGrpEdit: function() {
 
         var store = this.getViewModel().getStore('payordgrpstore');
-
         store.load;
         var view = this.getView();
         view.refresh();
-
-        console.log('CCCCCCCCCCCCCCCCCc')
-
     },
 
     // Удалить группу платежек
@@ -113,6 +108,27 @@ Ext.define('BillWebApp.view.main.MainController', {
             }
 
         });
+    },
+
+    // Добавить платежку
+    onGridPayordAdd: function() {
+        rec = new BillWebApp.model.Payord({
+            name: 'Заполнить наименование!'
+        });
+        var store = this.getViewModel().getStore('payordstore');
+        store.insert(0, rec);
+        var view = this.getView();
+        var plug = view.findPlugin('rowediting')
+
+        console.log('plug:'+plug);
+        plug.startEdit(rec, 1);
+    },
+
+    // Сохранить отредактированную платежку
+    onGridPayordUpd: function() {
+        var store = this.getViewModel().getStore('payordstore');
+        store.sync;
+        console.log('Check Upd')
     },
 
     onGridPayordClick: function(grid, rec) {

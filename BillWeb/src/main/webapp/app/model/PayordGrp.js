@@ -16,10 +16,10 @@ Ext.define('BillWebApp.model.PayordGrp', {
         autoSave: true,
         type: 'ajax',
         api: {
-            create  : 'http://192.168.100.21:8083/addPayordGrp',
-            read    : 'http://192.168.100.21:8083/getPayordGrpAll',
-            update  : 'http://192.168.100.21:8083/setPayordGrp',
-            destroy : 'http://192.168.100.21:8083/delPayordGrp'
+            create  : 'http://192.168.100.21:8083/payord/addPayordGrp',
+            read    : 'http://192.168.100.21:8083/payord/getPayordGrpAll',
+            update  : 'http://192.168.100.21:8083/payord/setPayordGrp',
+            destroy : 'http://192.168.100.21:8083/payord/delPayordGrp'
         },
         reader: {
             type: 'json'
