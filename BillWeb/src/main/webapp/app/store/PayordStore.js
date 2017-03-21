@@ -4,6 +4,8 @@
 Ext.define('BillWebApp.store.PayordStore', {
     extend: 'Ext.data.Store',
     alias  : 'store.payordstore',
-    model: 'BillWebApp.model.Payord'
+    model: 'BillWebApp.model.Payord',
+    autoLoad: true,
+    autoSync: true
 
 });

@@ -31,7 +31,5 @@ Ext.define('BillWebApp.model.Payord', {
             type: 'json',
             allowSingle: false //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
         }
-    },
-    autoLoad: true,
-    autoSync: false
+    }
 });

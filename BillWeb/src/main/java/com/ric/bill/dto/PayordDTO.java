@@ -19,8 +19,6 @@ public class PayordDTO {
 	private String name;
 	// Fk на тип периода
 	private Integer periodTpFk;
-	// Fk на группу платежки
-	private Integer payordGrpFk;
 	// Выбранные дни
 	private String selDays;
 	// Пользователь
@@ -83,14 +81,6 @@ public class PayordDTO {
 	}
 
 
-	public Integer getPayordGrpFk() {
-		return payordGrpFk;
-	}
-
-	public void setPayordGrpFk(Integer payordGrpFk) {
-		this.payordGrpFk = payordGrpFk;
-	}
-
 	public String getSelDays() {
 		return selDays;
 	}
@@ -135,6 +125,7 @@ public class PayordDTO {
 	public void setSumma(Double summa) {
 		this.summa = summa;
 	}
+
 	
 	
 }

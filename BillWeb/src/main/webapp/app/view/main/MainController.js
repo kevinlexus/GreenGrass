@@ -118,16 +118,13 @@ Ext.define('BillWebApp.view.main.MainController', {
         var store = this.getViewModel().getStore('payordstore');
         store.insert(0, rec);
         var view = this.getView();
-        var plug = view.findPlugin('rowediting')
-
-        console.log('plug:'+plug);
-        plug.startEdit(rec, 1);
+        view.findPlugin('rowediting').startEdit(rec, 1);
     },
 
     // Сохранить отредактированную платежку
     onGridPayordUpd: function() {
         var store = this.getViewModel().getStore('payordstore');
-        store.sync;
+        store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
         console.log('Check Upd')
     },
 

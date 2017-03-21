@@ -94,35 +94,25 @@ Ext.define('BillWebApp.view.main.Panel3', {
         {
         // ПЛАТЕЖКИ
         xtype: 'gridpanel',
+        controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
         iconCls: 'framing-buttons-grid',
         reference: 'payordGrid',
 
         width: 1000,
-        height: 250,
+        height: 300,
 
         margin: '0 0 10 0',
         requires: [
             'Ext.selection.CellModel',
             'Ext.grid.column.Action'
         ],
-        tbar: [{
-            text: 'Добавить платежку',
-            handler: 'onGridPayordAdd'
-        }],
         selModel: 'cellmodel',
         plugins: {
             ptype: 'rowediting',
-            listeners: {
-                edit: 'onGridPayordUpd'
-                },
             clicksToEdit: 1
         },
         bind: {
             store: '{payordstore}'
-        },
-        listeners: {
-            // клик по строчке платежки, отобразить в дочернем гриде формулы
-            rowclick: 'onGridPayordClick'
         },
         actions: {
             del: {
