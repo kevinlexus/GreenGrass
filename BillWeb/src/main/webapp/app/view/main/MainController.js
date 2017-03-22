@@ -85,8 +85,6 @@ Ext.define('BillWebApp.view.main.MainController', {
             callback: function(records, operation, success) {
                 if (success) {
                     payordGrid.getSelectionModel().select(0);
-                    payordGrid.getSelectionModel().select(0);
-                    payordGrid.getSelectionModel().select(0);
                     var rec1 = records[0];
                     var id = -1;
                     if (records.length > 0) {
@@ -97,8 +95,6 @@ Ext.define('BillWebApp.view.main.MainController', {
                                 'payordId': id
                             },
                             callback: function(records, operation, success) {
-                                payordCmpGrid.getSelectionModel().select(0);
-                                payordCmpGrid.getSelectionModel().select(0);
                                 payordCmpGrid.getSelectionModel().select(0);
                             }
                         });
@@ -112,20 +108,28 @@ Ext.define('BillWebApp.view.main.MainController', {
 
     // Добавить платежку
     onGridPayordAdd: function() {
-        rec = new BillWebApp.model.Payord({
+        console.log('CHECK1:')
+        var payordGrpGrid = this.lookupReference('payordGrpGrid');
+        var view = this.getViewModel();
+        //console.log('data='+view.data.tp); - работает
+        console.log('formulas='+view.data.formulas.currentRecord.id); //
+
+        console.log('CHECK2:'+payordGrpGrid)
+
+/*        rec = new BillWebApp.model.Payord({
             name: 'Заполнить наименование!'
         });
         var store = this.getViewModel().getStore('payordstore');
         store.insert(0, rec);
         var view = this.getView();
-        view.findPlugin('rowediting').startEdit(rec, 1);
+        view.findPlugin('rowediting').startEdit(rec, 1);*/
     },
 
     // Сохранить отредактированную платежку
     onGridPayordUpd: function() {
         var store = this.getViewModel().getStore('payordstore');
         store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
-        console.log('Check Upd')
+        console.log('Upd')
     },
 
     onGridPayordClick: function(grid, rec) {

@@ -8,7 +8,7 @@ Ext.define('BillWebApp.model.Payord', {
         { name: 'id', type: 'int' , persist: false,// persist = false, иначе будет пытаться сохранить ID
             defaultValue: 0, convert: null},
         { name: 'name', type: 'string' },
-        { name: 'periodFk', type: 'int', convert: null},
+        { name: 'periodTpFk', type: 'int', convert: null},
         { name: 'selDays', type: 'string' },
         { name: 'username', type: 'string', persist: false },
         { name: 'dtf', dateFormat: 'Y-m-d H:i:s', type: 'date', persist: false },

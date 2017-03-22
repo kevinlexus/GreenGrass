@@ -27,7 +27,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             // ГРУППЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
             controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
-
+            reference: 'payordGrpGrid',
             requires: [
                 'Ext.selection.CellModel',
                 'Ext.grid.column.Action'
@@ -102,6 +102,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
         height: 300,
 
         margin: '0 0 10 0',
+        tbar: [{
+            text: 'Добавить платежку',
+            handler: 'onGridPayordAdd'
+        }],
         requires: [
             'Ext.selection.CellModel',
             'Ext.grid.column.Action'
@@ -109,10 +113,14 @@ Ext.define('BillWebApp.view.main.Panel3', {
         selModel: 'cellmodel',
         plugins: {
             ptype: 'rowediting',
-            clicksToEdit: 1
+            clicksToEdit: 1,
+            saveBtnText: 'Сохранить',
+            cancelBtnText: 'Отмена'
         },
         bind: {
-            store: '{payordstore}'
+            title: '{currentRecord.id}',
+            store: '{payordstore}',
+            listeners: { edit: 'onGridPayordUpd' }
         },
         actions: {
             del: {
@@ -130,7 +138,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 }
             },
             {
-                header: 'Периодичность',
+                text: 'Периодичность',
                 dataIndex: 'periodTpFk',
                 width: 170,
                 editor: {
@@ -147,6 +155,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 },
                   renderer: 'onGridPayordPeriodRender'
             },
+
             { text: 'Дни формир.',  dataIndex: 'selDays', width: 100,
                 editor: {
                     allowBlank: true

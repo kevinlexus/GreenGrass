@@ -47,7 +47,7 @@ public class ChngLsk implements java.io.Serializable, Simple {
 	private Integer id;
 
     // лиц.счет
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="LSK", referencedColumnName="LSK", updatable = false)
 	private Kart kart;
 	
@@ -61,7 +61,7 @@ public class ChngLsk implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_SERV", referencedColumnName="ID", updatable = false)
 	private Serv serv;
 	
-	// начисление (?? Разобраться, зачем это? TODO)
+	// начисление 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHRG", referencedColumnName="ID", updatable = false)
 	private Chrg chrg;

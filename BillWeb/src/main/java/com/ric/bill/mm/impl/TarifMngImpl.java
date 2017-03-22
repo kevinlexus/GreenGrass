@@ -1,6 +1,7 @@
 package com.ric.bill.mm.impl;
 
 import java.util.Date;
+import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +16,9 @@ import com.ric.bill.dao.TarifDAO;
 import com.ric.bill.dao.impl.HouseDAOImpl;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.bs.Org;
+import com.ric.bill.model.fn.Chng;
+import com.ric.bill.model.fn.ChngLsk;
+import com.ric.bill.model.fn.ChngVal;
 import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 import com.ric.bill.model.tr.TarifServProp;
@@ -145,5 +149,64 @@ public class TarifMngImpl implements TarifMng {
 		return 0;
 	}
 */	
+	
+	
+	// получить подмененную расценку по перерасчету
+	public Double getChngPrice(Calc calc, Serv serv, Date genDt) {  // убрать synchronized??
+		// получить расценку
+		Double price = null;
+		Chng chng = calc.getReqConfig().getChng();	
+/*      Пока не удалять, проверенный код 		
+		if (chng.getTp()!= null && chng.getChngLsk()!=null && chng.getTp().getCd().equals("Изменение расценки (тарифа)") ) {
+			
+			for (ChngLsk t : chng.getChngLsk()) {
+				
+				if (t.getKart() != null && t.getChngVal() !=null && t.getServ() != null) {
+					if (t.getKart().getLsk().equals(calc.getKart().getLsk()) && t.getServ().equals(serv) ) {
+						for (ChngVal d : t.getChngVal() ) {
+							if (Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) {
+								price = d.getVal();
+								return price;
+							}
+						}
+					}
+					
+				}
+				
+			}
+			
+		}*/
+		
+		if (chng.getTp().getCd().equals("Изменение расценки (тарифа)")) {
+			Optional<ChngVal> chngVal;
+			chngVal = calc.getReqConfig().getChng().getChngLsk().stream()
+			.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
+			.filter(t -> t.getServ().equals(serv) ) // фильтр по услуге
+			.flatMap(t -> t.getChngVal().stream() // преобразовать в другую коллекцию
+						.filter(d -> Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) // и фильтр по дате
+					).findFirst();
+			if (chngVal.isPresent()) {
+				price = chngVal.get().getVal(); 
+			}
+		}
+
+/*		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.info("lsk={}",calc.getKart().getLsk());
+			log.info("serv={}",serv.getId());
+			log.info("dt={}",genDt);
+			
+			calc.getReqConfig().getChng().getChngLsk().stream()
+						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
+						.forEach(t->
+								log.info("{} {} {} {}", t.getKart(), t.getChngVal(), t.getServ(), t.getId())
+								);
+			
+			
+		}*/
+
+		return price;
+	}
 	
 }

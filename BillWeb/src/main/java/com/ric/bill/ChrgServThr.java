@@ -18,6 +18,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.ChrgServ;
 import com.ric.bill.Result;
 import com.ric.bill.excp.ErrorWhileChrg;
+import com.ric.bill.model.fn.ChngLsk;
 import com.ric.bill.model.tr.TarifKlsk;
 
 /**
@@ -54,13 +55,19 @@ public class ChrgServThr {
 		for (TarifKlsk k : calc.getHouse().getTarifklsk()) {
 			k.getTarprop().size();
 		}
-		//log.info(" House.id={}", calc.getHouse().getId());
-		//log.info(" Area.id={}", calc.getArea().getId());
-		//log.info(" Tar={}", calc.getArea().getTarifklsk());
+
 		calc.getArea().getTarifklsk().size();
 		for (TarifKlsk k : calc.getArea().getTarifklsk()) {
 			k.getTarprop().size();
 		}
+		
+		if (calc.getReqConfig().getChng() != null) {
+			calc.getReqConfig().getChng().getChngLsk().size();
+			for (ChngLsk a : calc.getReqConfig().getChng().getChngLsk()) {
+				a.getChngVal().size();
+			}
+		}
+		
 		//Выполнить начисление
 		Result res = chrgServ.chrgLsk(calc);
 		//Сохранить результат

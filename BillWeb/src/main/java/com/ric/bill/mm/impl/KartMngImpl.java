@@ -563,7 +563,7 @@ public class KartMngImpl implements KartMng {
 					//постоянная регистрация есть
 					if (Utl.getDiffYears(dtBrn, genDt) >= 70) {
 						//если 70 летний
-						if (ps.kinShip.equals("Собственник") || ps.kinShip.equals("Наниматель")) {
+						if (ps.kinShip != null && (ps.kinShip.equals("Собственник") || ps.kinShip.equals("Наниматель"))) {
 							//да еще и Наниматель (Собственник)
 							above70owner = true;
 						} else {

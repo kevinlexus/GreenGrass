@@ -29,10 +29,11 @@ import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.mm.ParMng;
+import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.fn.ChngVal;
+import com.ric.bill.model.fn.ChngLsk;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.tr.Serv;
 
@@ -54,6 +55,8 @@ public class ChrgThr {
 	private Config config;
 	@Autowired
 	private ParMng parMng;
+	@Autowired
+	private TarifMng tarMng;
 	
 	@Autowired
 	private KartMng kartMng;
@@ -253,22 +256,6 @@ public class ChrgThr {
 		return org;
 	}
 	
-	// получить подмененную организацию по перерасчету
-	private Double getChngPrice(Serv serv, Date genDt) {
-		// получить расценку
-		Double price = null;
-		Optional<ChngVal> chngVal = calc.getReqConfig().getChng().getChngLsk().parallelStream()
-		.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
-		.filter(t -> t.getServ().equals(serv) ) // фильтр по услуге
-		.flatMap(t -> t.getChngVal().parallelStream() // преобразовать в другую коллекцию
-					.filter(d -> Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) // и фильтр по дате
-				).findFirst();
-
-		if (chngVal.isPresent()) {
-			price = chngVal.get().getVal(); 
-		}
-		return price;
-	}
 	
 	/**
 	 * РАСЧЕТ начисления по услуге
@@ -393,19 +380,19 @@ public class ChrgThr {
 			}
 
 			// расценка по норме
-			Double chngPrice = getChngPrice(stServ, genDt);
+			Double chngPrice = tarMng.getChngPrice(calc,  stServ, genDt);
 			if (chngPrice != null) {
 				stPrice = chngPrice; 
 			}
 			
 			// расценка св.нормы
-			chngPrice = getChngPrice(upStServ, genDt);
+			chngPrice = tarMng.getChngPrice(calc, upStServ, genDt);
 			if (chngPrice != null) {
 				upStPrice = chngPrice; 
 			}
 				
 			// расценка без проживающих
-			chngPrice = getChngPrice(woKprServ, genDt);
+			chngPrice = tarMng.getChngPrice(calc, woKprServ, genDt);
 			if (chngPrice != null) {
 				woKprPrice = chngPrice; 
 			}

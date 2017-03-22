@@ -387,10 +387,11 @@ public class ChrgServ {
 					} else {
 						try {
 							if (fut.get().err==1) {
-								errThread=true;
+								//errThread=true; - сюда не заходит при ошибке, разобраться потом TODO!
 							}
 						} catch (InterruptedException | ExecutionException e1) {
 							// TODO Auto-generated catch block
+							errThread=true;
 							e1.printStackTrace();
 						}
 					}

@@ -42,6 +42,7 @@ import com.ric.bill.mm.PayordMng;
 import com.ric.bill.mm.ReportMng;
 import com.ric.bill.mm.SecMng;
 import com.ric.bill.mm.ServMng;
+import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordGrp;
 
 @EnableCaching
@@ -60,8 +61,8 @@ public class BillingController {
 	private ApplicationContext ctx;
 	@Autowired
 	private Config config;
-	@Autowired
-	private BillServ billServ;
+//	@Autowired
+//	private BillServ billServ;
 	@Autowired
 	private ReportMng repMng;
 	@Autowired
@@ -86,84 +87,42 @@ public class BillingController {
 	 *            - тип периода 0 - по месяцам, 1 - по дням
 	 * @return
 	 */
-	@RequestMapping("/getPeriodReports")
+	@RequestMapping("/rep/getPeriodReports")
 	@ResponseBody
 	public List<PeriodReportsDTO> getPeriodReports(
 			@RequestParam(value = "repCd") String repCd,
 			@RequestParam(value = "tp", defaultValue = "0") Integer tp) {
 
-		log.info("GOT /getPeriodReports repCd={}, tp={}", repCd, tp);
+		log.info("GOT /rep/getPeriodReports repCd={}, tp={}", repCd, tp);
 		return repMng.getPeriodsByCD(repCd, tp);
 
 	}
 
-	/**
-	 * Получить все платежки
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/getPayordAll")
-	@ResponseBody
-	public List<PayordDTO> getPayordAll() {
-
-		log.info("GOT /getPayordAll");
-		return dtoBuilder.getPayordDTOLst(payordMng.getPayordAll());
-
-	}
-
-	/**
-	 * Получить платежки по Id группы
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/getPayord")
-	@ResponseBody
-	public List<PayordDTO> getPayord(
-			@RequestParam(value = "payordGrpId") Integer payordGrpId) {
-
-		log.info("GOT /getPayord with payordGrpId={}", payordGrpId);
-		return dtoBuilder.getPayordDTOLst(payordMng
-				.getPayordByPayordGrpId(payordGrpId));
-
-	}
-
-	/*
-	 * Сохранить платежку
-	 */
-	@RequestMapping(value = "/setPayord", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	@ResponseBody
-	public String setPayord(@RequestBody List<PayordDTO> lst) {
-
-		log.info("GOT /setPayord");
-		lst.stream().forEach(t -> payordMng.savePayordDto(t));
-		return null;
-	}
-
 	// Получить все группы платежек
-	@RequestMapping("/getPayordGrpAll")
+	@RequestMapping("/payord/getPayordGrpAll")
 	@ResponseBody
 	public List<PayordGrpDTO> getPayordGrp() {
 
-		log.info("GOT /getPayordGrpAll");
-		return dtoBuilder.getPayordDTOGrpLst(payordMng.getPayordGrpAll());
+		log.info("GOT /payord/getPayordGrpAll");
+		return dtoBuilder.getPayordGrpDTOLst(payordMng.getPayordGrpAll());
 
 	}
 
 	// Сохранить группу платежки
-	@RequestMapping(value = "/setPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/payord/setPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public String setPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
 
-		log.info("GOT /setPayordGrp");
-		lst.stream().forEach(t -> payordMng.savePayordGrpDto(t));
+		log.info("GOT /payord/setPayordGrp");
+		lst.stream().forEach(t -> payordMng.setPayordGrpDto(t));
 		return null;
 	}
 
-	// Сохранить группу платежки
-	@RequestMapping(value = "/addPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	// Добавить группу платежки
+	@RequestMapping(value = "/payord/addPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public List<PayordGrpDTO> addPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
-		log.info("GOT /addPayordGrp");
+		log.info("GOT /payord/addPayordGrp");
 		List<PayordGrp> lst2 = new ArrayList<PayordGrp>();
 		
 		// добавить созданные группы платежек в коллекцию
@@ -171,15 +130,15 @@ public class BillingController {
 		// обновить группы платежки из базы
 		lst2.stream().forEach(t -> payordMng.refreshPayordGrp(t) );
 		
-		return dtoBuilder.getPayordDTOGrpLst(lst2);
+		return dtoBuilder.getPayordGrpDTOLst(lst2);
 	}
 	
 	// Удалить группу платежки
-	@RequestMapping(value = "/delPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/payord/delPayordGrp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public String delPayordGrp(@RequestBody List<PayordGrpDTO> lst) {
 
-		log.info("GOT /delPayordGrp");
+		log.info("GOT /payord/delPayordGrp");
 		lst.stream().forEach(t -> payordMng.delPayordGrpDto(t));
 		return null;
 	}
@@ -189,28 +148,86 @@ public class BillingController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/getPayordCmp")
+	@RequestMapping("/payord/getPayordCmp")
 	@ResponseBody
 	public List<PayordCmpDTO> getPayordCmp(
 			@RequestParam(value = "payordId") Integer payordId) {
 
-		log.info("GOT /getPayordCmp with payordId={}", payordId);
+		log.info("GOT /payord/getPayordCmp with payordId={}", payordId);
 		return dtoBuilder.getPayordDTOCmpLst(payordMng
 				.getPayordCmpByPayordId(payordId));
 
 	}
 
 	// сохранить компонент платежки
-	@RequestMapping(value = "/setPayordCmp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/payord/setPayordCmp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public String setPayordCmp(@RequestBody List<PayordCmpDTO> lst) {
 
-		log.info("GOT /setPayordCmp");
-		lst.stream().forEach(t -> payordMng.savePayordCmpDto(t));
+		log.info("GOT /payord/setPayordCmp");
+		lst.stream().forEach(t -> payordMng.setPayordCmpDto(t));
 		return null;
 	}
 	
 	
+	/**
+	 * Получить все платежки
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/payord/getPayordAll")
+	@ResponseBody
+	public List<PayordDTO> getPayordAll() {
+
+		log.info("GOT /payord/getPayordAll");
+		return dtoBuilder.getPayordDTOLst(payordMng.getPayordAll());
+
+	}
+
+	/**
+	 * Получить платежки по Id группы
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/payord/getPayord")
+	@ResponseBody
+	public List<PayordDTO> getPayord(
+			@RequestParam(value = "payordGrpId") Integer payordGrpId) {
+
+		log.info("GOT /payord/getPayord with payordGrpId={}", payordGrpId);
+		return dtoBuilder.getPayordDTOLst(payordMng
+				.getPayordByPayordGrpId(payordGrpId));
+
+	}
+
+	/*
+	 * Сохранить платежку
+	 */
+	@RequestMapping(value = "/payord/setPayord", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String setPayord(@RequestBody List<PayordDTO> lst) {
+
+		log.info("GOT /payord/setPayord");
+		lst.stream().forEach(t -> payordMng.setPayordDto(t));
+		return null;
+	}
+
+	// Добавить платежку
+	@RequestMapping(value = "/payord/addPayord", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public List<PayordDTO> addPayord(@RequestBody List<PayordDTO> lst) {
+		log.info("GOT /payord/addPayord");
+		List<Payord> lst2 = new ArrayList<Payord>();
+		
+		// добавить созданные группы платежек в коллекцию
+		lst.stream().forEach(t -> lst2.add( payordMng.addPayordDto(t)) );
+		// обновить группы платежки из базы
+		lst2.stream().forEach(t -> payordMng.refreshPayord(t) );
+		
+		return dtoBuilder.getPayordDTOLst(lst2);
+	}
+	
+
 	
 	/**
 	 * Получить список по типу
@@ -219,9 +236,10 @@ public class BillingController {
 	 *            
 	 * @return
 	 */
-	@RequestMapping("/getLstByTp")
+	@RequestMapping("/base/getLstByTp")
 	@ResponseBody
 	public List<LstDTO> getLstByTp(@RequestParam(value = "tp") String tp) {
+		log.info("GOT /base/getLstByTp with tp={}", tp);
 		return dtoBuilder.getLstDTOLst(lstMng.getByTp(tp));
 	}
 
@@ -231,12 +249,12 @@ public class BillingController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/getOrgCurUser")
+	@RequestMapping("/sec/getOrgCurUser")
 	@ResponseBody
 	public List<OrgDTO> getOrgCurUser(
 			@RequestParam(value = "roleCd") String roleCd,
 			@RequestParam(value = "actCd") String actCd) {
-		log.info("GOT /getOrgCurUser with: roleCd={}, actCd={}", roleCd, actCd);
+		log.info("GOT /sec/getOrgCurUser with: roleCd={}, actCd={}", roleCd, actCd);
 		return dtoBuilder.getOrgDTOLst(secMng.getOrgCurUser(roleCd, actCd));
 	}
 
@@ -245,10 +263,10 @@ public class BillingController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/getOrgAll")
+	@RequestMapping("/base/getOrgAll")
 	@ResponseBody
 	public List<OrgDTO> getOrgAll() {
-		log.info("GOT /getOrgAll");
+		log.info("GOT /base/getOrgAll");
 		return dtoBuilder.getOrgDTOLst(orgMng.getOrgAll());
 	}
 
@@ -257,10 +275,10 @@ public class BillingController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/getServAll")
+	@RequestMapping("/base/getServAll")
 	@ResponseBody
 	public List<ServDTO> getServAll() {
-		log.info("GOT /getServAll");
+		log.info("GOT /base/getServAll");
 		return dtoBuilder.getServDTOLst(servMng.getServAll());
 	}
 
@@ -318,6 +336,7 @@ public class BillingController {
 		long endTime2 = System.currentTimeMillis() - beginTime;
 		beginTime = System.currentTimeMillis();
 
+		BillServ billServ = ctx.getBean(BillServ.class); // добавил, было Autowired
 		fut = billServ.chrgLsk(reqConfig, null, lsk);
 
 		long endTime3 = System.currentTimeMillis() - beginTime; // время
@@ -400,6 +419,7 @@ public class BillingController {
 		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
 		reqConfig.setUp(config, dist, "0", null, rqn);
 
+		BillServ billServ = ctx.getBean(BillServ.class); // добавил, было Autowired
 		fut = billServ.chrgAll(reqConfig, houseId, areaId);
 
 		while (!fut.isDone()) {

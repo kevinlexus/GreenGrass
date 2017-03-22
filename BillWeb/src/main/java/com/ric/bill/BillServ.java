@@ -41,7 +41,7 @@ import com.ric.bill.model.bs.Obj;
  *
  */
 @Service
-@Scope("prototype")
+@Scope("prototype") // странно что стоит prototype, а вызвается как Autowired в BillingController - поменял это, но проверить! TODO!  
 @Slf4j
 public class BillServ {
 
@@ -119,7 +119,7 @@ public class BillServ {
 		Result res = new Result();
 		res.err = 0;
 		// кол-во потоков
-		int cntThreads = 10;
+		int cntThreads = 20;
 		// кол-во обраб.лиц.сч.
 		int cntLsk = 0;
 

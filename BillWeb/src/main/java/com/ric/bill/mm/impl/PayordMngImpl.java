@@ -77,7 +77,7 @@ public class PayordMngImpl implements PayordMng {
 
 	// Сохранить платежку из DTO
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void savePayordDto(PayordDTO payordDTO) {
+	public void setPayordDto(PayordDTO payordDTO) {
 		Payord payord = em.find(Payord.class, payordDTO.getId());
     	payord.setName(payordDTO.getName());		
     	payord.setSelDays(payordDTO.getSelDays());
@@ -99,7 +99,7 @@ public class PayordMngImpl implements PayordMng {
 
     // сохранить группу платежки из DTO
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void savePayordGrpDto(PayordGrpDTO p) {
+	public void setPayordGrpDto(PayordGrpDTO p) {
 		PayordGrp payordGrp = em.find(PayordGrp.class, p.getId());
 		payordGrp.setName(p.getName());
 	}
@@ -121,7 +121,7 @@ public class PayordMngImpl implements PayordMng {
 	
 	// сохранить компонент платежки из DTO
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void savePayordCmpDto(PayordCmpDTO p) {
+	public void setPayordCmpDto(PayordCmpDTO p) {
 		PayordCmp pCmp = em.find(PayordCmp.class, p.getId());
 		if (p.getAreaFk() != null) {
 			Area area = em.find(Area.class, p.getAreaFk());	
@@ -165,5 +165,23 @@ public class PayordMngImpl implements PayordMng {
 		return payordGrpDao.getPayordGrpById(id);
 		
 	}
+
+    // добавить платежку из DTO
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public Payord addPayordDto(PayordDTO p) {
+		
+		PayordGrp grp = em.find(PayordGrp.class, p.getPayordGrpFk());
+		Lst period =  em.find(Lst.class, p.getPeriodTpFk()); 
+		Payord payord = new Payord(p.getName(), p.getSelDays(), p.getFormula(), grp, period);
+		em.persist(payord);
+		
+		return payord;
+	}
+
+	// обновить платежку из базы (чтобы перечитались все поля)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void refreshPayord(Payord p) {
+		em.refresh(p);
+	}	
 	
 }

@@ -31,6 +31,16 @@ public class Payord implements java.io.Serializable, Simple {
 		
 	}
 
+	public Payord(String name, String selDays, String formula,
+			PayordGrp payordGrp, Lst periodTp) {
+		super();
+		this.name = name;
+		this.selDays = selDays;
+		this.formula = formula;
+		this.payordGrp = payordGrp;
+		this.periodTp = periodTp;
+	}
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
