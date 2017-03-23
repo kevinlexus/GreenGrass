@@ -30,7 +30,6 @@ Ext.define('BillWebApp.view.main.MainController', {
 
     },
 
-
     onGridPayordGrpEdit: function() {
 
         var store = this.getViewModel().getStore('payordgrpstore');

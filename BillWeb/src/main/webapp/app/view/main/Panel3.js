@@ -131,7 +131,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
             ptype: 'rowediting',
             clicksToEdit: 1,
             saveBtnText: 'Сохранить',
-            cancelBtnText: 'Отмена'
+            cancelBtnText: 'Отмена',
+            errorSummary: false // погасить сообщение валидации
         },
         bind: {
             title: '{currentRecord.id}',
@@ -172,6 +173,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     displayField: 'name',
                     valueField: 'id',
                     triggerAction: 'all',
+                    validator: function(value) {
+                        if (value != '') {
+                            return true;
+                        } else {
+                            return 'Необходимо заполнить поле!';
+                        }
+                    },
                     bind: {
                         store: '{lststore}'
                     },
