@@ -15,6 +15,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
         type: 'main'
     },
 
+    referenceHolder: true, // Важно! Эта панель является держателем ссылок (reference)
+                           // и поэтому в контроллере можно будет искать по lookupReference
+
     controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
 
     defaults: {
@@ -23,10 +26,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
     },
 
     items: [
-                {
+            {
             // ГРУППЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
-            controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
             reference: 'payordGrpGrid',
             requires: [
                 'Ext.selection.CellModel',
@@ -35,7 +37,6 @@ Ext.define('BillWebApp.view.main.Panel3', {
             width: 1200,
             height: 300,
             margin: '0 0 10 0',
-
            /* autoLoad: true,
             frame: true,
             selModel: {
@@ -56,7 +57,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 store: '{payordgrpstore}'
             },
             listeners: {
-                // клик по строчке платежки, отобразить в дочернем гриде формулы
+                // клик по строчке группы платежки, отобразить в дочернем гриде формулы
                 rowclick: 'onGridPayordGrpRowClick'
             },
             actions: {
@@ -92,12 +93,27 @@ Ext.define('BillWebApp.view.main.Panel3', {
             ]
         },
         {
+            xtype: 'form',
+            title: 'Details',
+            bodyPadding: 15,
+            minWidth: 300,
+            split: true,
+            defaults: {
+                xtype: 'textfield',
+                anchor: '100%',
+                allowBlank: false,
+                enforceMaxLength: true
+            },
+            items: [{
+                fieldLabel: 'Name'
+            }]
+        },
+        {
         // ПЛАТЕЖКИ
         xtype: 'gridpanel',
-        controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
+        //controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
         iconCls: 'framing-buttons-grid',
         reference: 'payordGrid',
-
         width: 1000,
         height: 300,
 
@@ -120,7 +136,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
         bind: {
             title: '{currentRecord.id}',
             store: '{payordstore}',
-            listeners: { edit: 'onGridPayordUpd' }
+            listeners: {
+                edit: 'onGridPayordUpd',
+                cancelEdit: 'onGridPayordCancel'
+            }
         },
         actions: {
             del: {
@@ -128,6 +147,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 tooltip: 'Удалить',
                 handler: 'onGridPayordDel'
             }
+        },
+        listeners: {
+            // клик по строчке платежки, отобразить в дочернем гриде формулы
+            rowclick: 'onGridPayordRowClick'
         },
         columns: [
             { text: 'Id',  dataIndex: 'id', width: 50
@@ -141,6 +164,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 text: 'Периодичность',
                 dataIndex: 'periodTpFk',
                 width: 170,
+                queryMode: 'local',
                 editor: {
                     xtype: 'combo',
                     typeAhead: true,

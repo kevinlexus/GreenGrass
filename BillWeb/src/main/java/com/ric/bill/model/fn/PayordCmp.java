@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.ric.bill.Simple;
@@ -35,16 +36,17 @@ public class PayordCmp implements java.io.Serializable, Simple {
 	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", updatable = false, nullable = false)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PAYORD_CMP")
+	@SequenceGenerator(name="SEQ_PAYORD_CMP", sequenceName="FN.SEQ_PAYORD_CMP", allocationSize=1) 	
+    @Column(name = "ID", unique=true, updatable = false, nullable = false)					
 	private Integer id;
 
 	// Пользователь
-	@Column(name = "USERNAME")
+	@Column(name = "USERNAME", insertable = false, updatable = false)
 	private String username;
 	
 	// Дата создания
-	@Column(name = "DTF")
+	@Column(name = "DTF", insertable = false, updatable = false)
 	private Date dtf;
 	
 	// Платежка

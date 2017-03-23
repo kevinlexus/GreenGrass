@@ -30,16 +30,6 @@ Ext.define('BillWebApp.view.main.MainController', {
 
     },
 
-    // Добавить группу платежек
-    onGridPayordGrpAdd: function() {
-            rec = new BillWebApp.model.PayordGrp({
-                name: 'Заполнить наименование!'
-            });
-        var store = this.getViewModel().getStore('payordgrpstore');
-        store.insert(0, rec);
-        var view = this.getView();
-        view.findPlugin('cellediting').startEdit(rec, 1);
-    },
 
     onGridPayordGrpEdit: function() {
 
@@ -84,20 +74,24 @@ Ext.define('BillWebApp.view.main.MainController', {
             },
             callback: function(records, operation, success) {
                 if (success) {
-                    payordGrid.getSelectionModel().select(0);
                     var rec1 = records[0];
                     var id = -1;
                     if (records.length > 0) {
                         id =records[0].get('id')
-                    }
+                        payordGrid.getSelectionModel().select(0); // если включить и будет 0 записей - вызовет model is null
+                        // загрузить формулы платежки
                         store1.load({
                             params: {
                                 'payordId': id
                             },
                             callback: function(records, operation, success) {
-                                payordCmpGrid.getSelectionModel().select(0);
+                                if (records.length > 0) {
+                                     payordCmpGrid.getSelectionModel().select(0); // если включить и будет 0 записей - вызовет model is null
+                                }
                             }
                         });
+                    }
+
                 } else {
                     console.log('onGridPayordGrpRowClick: NOT SUCCESS');
                 }
@@ -106,23 +100,36 @@ Ext.define('BillWebApp.view.main.MainController', {
         });
     },
 
-    // Добавить платежку
-    onGridPayordAdd: function() {
-        console.log('CHECK1:')
-        var payordGrpGrid = this.lookupReference('payordGrpGrid');
-        var view = this.getViewModel();
-        //console.log('data='+view.data.tp); - работает
-        console.log('formulas='+view.data.formulas.currentRecord.id); //
-
-        console.log('CHECK2:'+payordGrpGrid)
-
-/*        rec = new BillWebApp.model.Payord({
+    // Добавить группу платежек
+    onGridPayordGrpAdd: function() {
+        rec = new BillWebApp.model.PayordGrp({
             name: 'Заполнить наименование!'
         });
-        var store = this.getViewModel().getStore('payordstore');
+        var store = this.getViewModel().getStore('payordgrpstore');
         store.insert(0, rec);
-        var view = this.getView();
-        view.findPlugin('rowediting').startEdit(rec, 1);*/
+        var payordGrpGrid = this.lookupReference('payordGrpGrid');
+        payordGrpGrid.findPlugin('cellediting').startEdit(rec, 1);
+    },
+
+    // Добавить платежку
+    onGridPayordAdd: function() {
+        var store = this.getViewModel().getStore('payordstore');
+        var grid1 = this.lookupReference('payordGrid');
+        //grid1.getSelectionModel().clearSelections();
+
+        console.log('Add2 =');
+        /*var rec = new BillWebApp.model.Payord({
+         name: 'Заполнить наименование!',
+         payordGrpFk : grid.selection.id
+         });*/
+        var rec = new BillWebApp.model.Payord({
+            name: 'Заполнить наименование!',
+            payordGrpFk : 2
+        });
+        console.log('rec='+rec);
+        store.insert(0, rec);
+        grid1.findPlugin('rowediting').startEdit(rec, 1);
+        console.log('Add')
     },
 
     // Сохранить отредактированную платежку
@@ -132,9 +139,20 @@ Ext.define('BillWebApp.view.main.MainController', {
         console.log('Upd')
     },
 
-    onGridPayordClick: function(grid, rec) {
+    // Отменить отредактированную платежку
+    onGridPayordCancel: function(rowEditing, context) {
+        //var store = this.getViewModel().getStore('payordstore');
+        //store.remove(context.record);
+        if (context.record.phantom) {
+            context.store.remove(context.record);
+        }
+        console.log('Cancel')
+    },
+
+    onGridPayordRowClick: function(grid, rec) {
         var store = this.getViewModel().getStore('payordcmpstore');
         var payordCmpGrid = this.lookupReference('payordCmpGrid');
+        console.log('grid2='+payordCmpGrid);
         store.load({
             params : {
                 'payordId': rec.get('id')

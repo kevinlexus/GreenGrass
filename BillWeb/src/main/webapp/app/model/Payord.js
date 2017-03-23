@@ -9,11 +9,12 @@ Ext.define('BillWebApp.model.Payord', {
             defaultValue: 0, convert: null},
         { name: 'name', type: 'string' },
         { name: 'periodTpFk', type: 'int', convert: null},
+        { name: 'payordGrpFk', type: 'int', convert: null},
         { name: 'selDays', type: 'string' },
-        { name: 'username', type: 'string', persist: false },
+        { name: 'username', type: 'string', persist: false},
         { name: 'dtf', dateFormat: 'Y-m-d H:i:s', type: 'date', persist: false },
         { name: 'formula', type: 'string' },
-        { name: 'summa', type: 'float', persist: false }
+        { name: 'summa', type: 'float', persist: false}
 
     ],
     proxy: { // прокси должна находиться в модели. иначе ничего не будет работать при type: 'ajax'
@@ -30,6 +31,9 @@ Ext.define('BillWebApp.model.Payord', {
         writer: {
             type: 'json',
             allowSingle: false //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
+        },
+        extraParams : {
+            'payordGrpId' : -1
         }
     }
 });

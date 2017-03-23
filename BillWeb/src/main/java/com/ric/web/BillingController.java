@@ -105,7 +105,6 @@ public class BillingController {
 
 		log.info("GOT /payord/getPayordGrpAll");
 		return dtoBuilder.getPayordGrpDTOLst(payordMng.getPayordGrpAll());
-
 	}
 
 	// Сохранить группу платежки
@@ -199,6 +198,7 @@ public class BillingController {
 				.getPayordByPayordGrpId(payordGrpId));
 
 	}
+
 
 	/*
 	 * Сохранить платежку
