@@ -5,8 +5,6 @@ Ext.define('BillWebApp.store.PayordGrpStore', {
     extend: 'Ext.data.Store',
     alias  : 'store.payordgrpstore',
     model: 'BillWebApp.model.PayordGrp',
-    config:{ // перенести в модель, если нужно autoSync = false
-        autoLoad: true,
-        autoSync: true
-    }
+    autoLoad: true,
+    autoSync: false
 });

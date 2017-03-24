@@ -7,9 +7,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
         align: 'stretch'
     },
     width: 1200,
-    height: 300,
-    minWidth: 1000,
-    minHeight: 800,
+    minHeight: 300,
     bodyPadding: 10,
     viewModel: {
         type: 'main'
@@ -30,35 +28,31 @@ Ext.define('BillWebApp.view.main.Panel3', {
             // ГРУППЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
             reference: 'payordGrpGrid',
-            requires: [
-                'Ext.selection.CellModel',
-                'Ext.grid.column.Action'
-            ],
             width: 1200,
-            height: 300,
+            minHeight: 200,
             margin: '0 0 10 0',
-           /* autoLoad: true,
-            frame: true,
-            selModel: {
-                type: 'cellmodel'
-            },*/
             tbar: [{
                 text: 'Добавить группу',
                 handler: 'onGridPayordGrpAdd'
             }],
+            requires: [
+                'Ext.selection.CellModel',
+                'Ext.grid.column.Action'
+            ],
+            selModel: 'cellmodel',
             plugins: {
-                ptype: 'cellediting',
-                clicksToEdit: 1,
-                //listeners: { edit: function(editor, e){console.log('gggggggggggggggggg')} }
-                //listeners: { edit: 'onGridPayordGrpEdit'
-                //            }
+                ptype: 'rowediting',
+                clicksToEdit: 2,
+                saveBtnText: 'Сохранить',
+                cancelBtnText: 'Отмена',
+                errorSummary: false // погасить сообщение валидации
             },
             bind: {
-                store: '{payordgrpstore}'
-            },
-            listeners: {
-                // клик по строчке группы платежки, отобразить в дочернем гриде формулы
-                rowclick: 'onGridPayordGrpRowClick'
+                store: '{payordgrpstore}',
+                listeners: {
+                    edit: 'onGridPayordGrpUpd',
+                    cancelEdit: 'onGridPayordGrpCancel'
+                }
             },
             actions: {
                 del: {
@@ -66,6 +60,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     tooltip: 'Удалить',
                     handler: 'onGridPayordGrpDel'
                 }
+            },
+            listeners: {
+                // клик по строчке группы платежки, отобразить в дочернем гриде формулы
+                rowclick: 'onGridPayordGrpRowClick'
             },
             columns: [
                 { text: 'Id',  dataIndex: 'id', width: 50,
@@ -78,10 +76,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         allowBlank: false
                     }
                 },
-                { text: 'Создано',  dataIndex: 'dtf', width: 170,
+                { text: 'Создано',  dataIndex: 'dtf', width: 100,
                     formatter: 'date("d-m-Y H:i:s")'
                 },
-                { text: 'Пользователь',  dataIndex: 'username', width: 150
+                { text: 'Пользователь',  dataIndex: 'username', width: 100
                 },
                  {
                     menuDisabled: true,
@@ -93,30 +91,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
             ]
         },
         {
-            xtype: 'form',
-            title: 'Details',
-            bodyPadding: 15,
-            minWidth: 300,
-            split: true,
-            defaults: {
-                xtype: 'textfield',
-                anchor: '100%',
-                allowBlank: false,
-                enforceMaxLength: true
-            },
-            items: [{
-                fieldLabel: 'Name'
-            }]
-        },
-        {
         // ПЛАТЕЖКИ
         xtype: 'gridpanel',
-        //controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
         iconCls: 'framing-buttons-grid',
         reference: 'payordGrid',
         width: 1000,
-        height: 300,
-
+        minHeight: 200,
+        header: true,
         margin: '0 0 10 0',
         tbar: [{
             text: 'Добавить платежку',
@@ -129,13 +110,12 @@ Ext.define('BillWebApp.view.main.Panel3', {
         selModel: 'cellmodel',
         plugins: {
             ptype: 'rowediting',
-            clicksToEdit: 1,
+            clicksToEdit: 2,
             saveBtnText: 'Сохранить',
             cancelBtnText: 'Отмена',
             errorSummary: false // погасить сообщение валидации
         },
         bind: {
-            title: '{currentRecord.id}',
             store: '{payordstore}',
             listeners: {
                 edit: 'onGridPayordUpd',
@@ -199,12 +179,12 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 }
             }
             ,
-            { text: 'Сумма',  dataIndex: 'summa', width: 100
+            { text: 'Сумма',  dataIndex: 'summa', width: 70
             },
-            { text: 'Создано',  dataIndex: 'dtf', width: 170,
+            { text: 'Создано',  dataIndex: 'dtf', width: 100,
                 formatter: 'date("d-m-Y H:i:s")'
             },
-            { text: 'Пользователь',  dataIndex: 'username', width: 150
+            { text: 'Пользователь',  dataIndex: 'username', width: 100
             },
             {
                 menuDisabled: true,
@@ -222,24 +202,39 @@ Ext.define('BillWebApp.view.main.Panel3', {
             reference: 'payordCmpGrid',
 
             width: 1000,
-            margin: '0 0 10 0',
+            minHeight: 200,
             header: false,
+
+            margin: '0 0 10 0',
+            tbar: [{
+                text: 'Добавить формулу',
+                handler: 'onGridPayordCmpAdd'
+            }],
             requires: [
-                'Ext.selection.CellModel'
+                'Ext.selection.CellModel',
+                'Ext.grid.column.Action'
             ],
+            selModel: 'cellmodel',
             plugins: {
-                ptype: 'cellediting',
-                clicksToEdit: 1
+                ptype: 'rowediting',
+                clicksToEdit: 2,
+                saveBtnText: 'Сохранить',
+                cancelBtnText: 'Отмена',
+                errorSummary: false // погасить сообщение валидации
             },
-
-            autoLoad: true,
-            frame: true,
-            selModel: {
-                type: 'cellmodel'
-            },
-
             bind: {
                 store: '{payordcmpstore}',
+                listeners: {
+                    edit: 'onGridPayordCmpUpd',
+                    cancelEdit: 'onGridPayordCmpCancel'
+                }
+            },
+            actions: {
+                del: {
+                    glyph: 'xf147@FontAwesome',
+                    tooltip: 'Удалить',
+                    handler: 'onGridPayordCmpDel'
+                }
             },
             columns: [
                 { text: 'Id',  dataIndex: 'id', width: 50
@@ -248,6 +243,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     header: 'Вар.сбора',
                     dataIndex: 'varFk',
                     width: 200,
+                    queryMode: 'local',
                     editor: {
                         xtype: 'combo',
                         typeAhead: true,
@@ -255,16 +251,24 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         displayField: 'name',
                         valueField: 'id',
                         triggerAction: 'all',
+                        validator: function(value) {
+                            if (value != '') {
+                                return true;
+                            } else {
+                                return 'Необходимо заполнить поле!';
+                            }
+                        },
                         bind: {
                             store: '{varstore}'
-                        }
-                    },
-                    renderer: 'onGridPayordCmpVarRender'
+                        },
+                        allowBlank: false
+                    }
                 },
                 {
                     header: 'Услуга',
                     dataIndex: 'servFk',
                     width: 200,
+                    queryMode: 'local',
                     editor: {
                         xtype: 'combo',
                         typeAhead: true,
@@ -272,9 +276,17 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         displayField: 'name',
                         valueField: 'id',
                         triggerAction: 'all',
+                        validator: function(value) {
+                            if (value != '') {
+                                return true;
+                            } else {
+                                return 'Необходимо заполнить поле!';
+                            }
+                        },
                         bind: {
                             store: '{servstore}'
-                        }
+                        },
+                        allowBlank: false
                     },
                     renderer: 'onGridPayordCmpServRender'
                 },
@@ -282,6 +294,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     header: 'Организация',
                     dataIndex: 'orgFk',
                     width: 200,
+                    queryMode: 'local',
                     editor: {
                         xtype: 'combo',
                         typeAhead: true,
@@ -289,21 +302,36 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         displayField: 'name',
                         valueField: 'id',
                         triggerAction: 'all',
+                        validator: function(value) {
+                            if (value != '') {
+                                return true;
+                            } else {
+                                return 'Необходимо заполнить поле!';
+                            }
+                        },
                         bind: {
                             store: '{orgstore}'
-                        }
+                        },
+                        allowBlank: false
                     },
                     renderer: 'onGridPayordCmpOrgRender'
                 },
 
                 { text: 'Маркер',  dataIndex: 'mark', width: 150
                 },
-                { text: 'Сумма',  dataIndex: 'summa', width: 150
+                { text: 'Сумма',  dataIndex: 'summa', width: 70
                 },
-                { text: 'Создано',  dataIndex: 'dtf', width: 170,
+                { text: 'Создано',  dataIndex: 'dtf', width: 100,
                     formatter: 'date("d-m-Y H:i:s")'
                 },
-                { text: 'Пользователь',  dataIndex: 'username', width: 150
+                { text: 'Пользователь',  dataIndex: 'username', width: 100
+                },
+                {
+                    menuDisabled: true,
+                    sortable: false,
+                    xtype: 'actioncolumn',
+                    width: 50,
+                    items: ['@del']
                 }
             ]
         }

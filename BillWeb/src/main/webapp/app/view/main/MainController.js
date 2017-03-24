@@ -31,7 +31,6 @@ Ext.define('BillWebApp.view.main.MainController', {
     },
 
     onGridPayordGrpEdit: function() {
-
         var store = this.getViewModel().getStore('payordgrpstore');
         store.load;
         var view = this.getView();
@@ -45,6 +44,54 @@ Ext.define('BillWebApp.view.main.MainController', {
         }).show({
             title: 'Удаление записи',
             msg: 'Вы уверены, удалить группу платежек?',
+            closable: false,
+            buttons: Ext.Msg.YESNO,
+            buttonText: {
+                yes: 'Да',
+                no: 'Нет'
+            },
+            fn: function (buttonValue, inputText, showConfig) {
+                if (buttonValue == 'yes') {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    var store = grid.getStore();
+                    store.remove(rec);
+                }
+            },
+            icon: Ext.Msg.QUESTION
+        });
+    },
+
+    // Удалить платежку
+    onGridPayordDel: function(grid, rowIndex, colIndex)  {
+        Ext.create('Ext.window.MessageBox', {
+            multiline: false,
+        }).show({
+            title: 'Удаление записи',
+            msg: 'Вы уверены, удалить платежку?',
+            closable: false,
+            buttons: Ext.Msg.YESNO,
+            buttonText: {
+                yes: 'Да',
+                no: 'Нет'
+            },
+            fn: function (buttonValue, inputText, showConfig) {
+                if (buttonValue == 'yes') {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    var store = grid.getStore();
+                    store.remove(rec);
+                }
+            },
+            icon: Ext.Msg.QUESTION
+        });
+    },
+
+    // Удалить формулу платежки
+    onGridPayordCmpDel: function(grid, rowIndex, colIndex)  {
+        Ext.create('Ext.window.MessageBox', {
+            multiline: false,
+        }).show({
+            title: 'Удаление записи',
+            msg: 'Вы уверены, удалить формулу платежки?',
             closable: false,
             buttons: Ext.Msg.YESNO,
             buttonText: {
@@ -107,45 +154,73 @@ Ext.define('BillWebApp.view.main.MainController', {
         var store = this.getViewModel().getStore('payordgrpstore');
         store.insert(0, rec);
         var payordGrpGrid = this.lookupReference('payordGrpGrid');
-        payordGrpGrid.findPlugin('cellediting').startEdit(rec, 1);
+        payordGrpGrid.findPlugin('rowediting').startEdit(rec, 1);
     },
 
-    // Добавить платежку
+    // Добавить платежку в группу
     onGridPayordAdd: function() {
-        var store = this.getViewModel().getStore('payordstore');
-        var grid1 = this.lookupReference('payordGrid');
-        //grid1.getSelectionModel().clearSelections();
-
-        console.log('Add2 =');
-        /*var rec = new BillWebApp.model.Payord({
-         name: 'Заполнить наименование!',
-         payordGrpFk : grid.selection.id
-         });*/
+        var payordstore = this.getViewModel().getStore('payordstore');
+        var payordGrpGrid = this.lookupReference('payordGrpGrid');
+        var payordGrid = this.lookupReference('payordGrid');
         var rec = new BillWebApp.model.Payord({
             name: 'Заполнить наименование!',
-            payordGrpFk : 2
+            payordGrpFk : payordGrpGrid.selection.id
         });
-        console.log('rec='+rec);
-        store.insert(0, rec);
-        grid1.findPlugin('rowediting').startEdit(rec, 1);
-        console.log('Add')
+        payordstore.insert(0, rec);
+        payordGrid.findPlugin('rowediting').startEdit(rec, 1);
+    },
+
+    // Добавить формулу в платежку
+    onGridPayordCmpAdd: function() {
+        console.log('Add1');
+        var payordcmpstore = this.getViewModel().getStore('payordcmpstore');
+        var payordCmpGrid = this.lookupReference('payordCmpGrid');
+        var payordGrid = this.lookupReference('payordGrid');
+        var rec = new BillWebApp.model.PayordCmp({
+            payordFk : payordGrid.selection.id
+        });
+        payordcmpstore.insert(0, rec);
+        payordCmpGrid.findPlugin('rowediting').startEdit(rec, 1);
+        console.log('Add2');
     },
 
     // Сохранить отредактированную платежку
     onGridPayordUpd: function() {
         var store = this.getViewModel().getStore('payordstore');
         store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
-        console.log('Upd')
     },
 
     // Отменить отредактированную платежку
     onGridPayordCancel: function(rowEditing, context) {
-        //var store = this.getViewModel().getStore('payordstore');
-        //store.remove(context.record);
         if (context.record.phantom) {
             context.store.remove(context.record);
         }
-        console.log('Cancel')
+    },
+
+    // Сохранить отредактированную формулу платежки
+    onGridPayordCmpUpd: function() {
+        var store = this.getViewModel().getStore('payordcmpstore');
+        store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
+    },
+
+    // Отменить отредактированную формулу платежки
+    onGridPayordCmpCancel: function(rowEditing, context) {
+        if (context.record.phantom) {
+            context.store.remove(context.record);
+        }
+    },
+
+    // Сохранить отредактированную группу платежек
+    onGridPayordGrpUpd: function() {
+        var store = this.getViewModel().getStore('payordgrpstore');
+        store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
+    },
+
+    // Отменить отредактированную группу платежек
+    onGridPayordGrpCancel: function(rowEditing, context) {
+        if (context.record.phantom) {
+            context.store.remove(context.record);
+        }
     },
 
     onGridPayordRowClick: function(grid, rec) {
@@ -157,8 +232,9 @@ Ext.define('BillWebApp.view.main.MainController', {
                 'payordId': rec.get('id')
             },
             callback: function(records, operation, success) {
-                payordCmpGrid.getSelectionModel().select(0);
-
+                if (records.length > 0) {
+                    payordCmpGrid.getSelectionModel().select(0);
+                }
             }
         });
     },

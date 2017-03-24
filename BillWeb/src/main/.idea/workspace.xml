@@ -4,6 +4,9 @@
     <list default="true" id="1ab6b1df-caef-4bd0-8e7c-9ae034c355c4" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/SrvThr.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/model/PayordCmp.js" afterPath="$PROJECT_DIR$/webapp/app/model/PayordCmp.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js" afterPath="$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js" afterPath="$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/MainController.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/MainController.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" />
@@ -37,19 +40,17 @@
     <favorites_list name="main" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.48932162">
+    <splitter split-orientation="horizontal" split-proportion="0.52386934">
       <split-first>
         <leaf>
-          <file leaf-file-name="Panel3.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Panel3.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel3.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="154" column="8" selection-start-line="154" selection-start-column="8" selection-end-line="154" selection-end-column="8" />
+                <state vertical-scroll-proportion="0.1492865">
+                  <caret line="284" column="26" selection-start-line="284" selection-start-column="26" selection-end-line="284" selection-end-column="26" />
                   <folding>
-                    <marker date="1490250580288" expanded="true" signature="714:1035" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
-                    <marker date="1490250580288" expanded="true" signature="3326:6693" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
-                    <marker date="1490250580288" expanded="true" signature="4928:6677" placeholder="/*...*/" />
-                    <marker date="1490250580288" expanded="true" signature="6663:6677" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
+                    <marker date="1490348488949" expanded="true" signature="677:867" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
+                    <marker date="1490348488949" expanded="true" signature="6114:6128" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
                   </folding>
                 </state>
               </provider>
@@ -59,8 +60,20 @@
             <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainModel.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="39" column="13" selection-start-line="34" selection-start-column="28" selection-end-line="39" selection-end-column="13" />
+                  <caret line="35" column="21" selection-start-line="35" selection-start-column="21" selection-end-line="35" selection-end-column="21" />
                   <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MainController.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainController.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-17.172413">
+                  <caret line="199" column="51" selection-start-line="199" selection-start-column="51" selection-end-line="199" selection-end-column="51" />
+                  <folding>
+                    <marker date="1490348025523" expanded="true" signature="6831:6836" placeholder="{...}" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -75,33 +88,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="MainController.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainController.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.5011338">
-                  <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-                  <folding>
-                    <marker date="1490250565419" expanded="true" signature="4913:4918" placeholder="{...}" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="PayordStore.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordStore.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="PayordGrp.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordGrp.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+                  <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="69" />
                   <folding />
                 </state>
               </provider>
@@ -117,6 +108,16 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="PayordCmp.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordCmp.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
         </leaf>
       </split-first>
       <split-second>
@@ -124,11 +125,11 @@
           <file leaf-file-name="Panel3.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel3.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6723356">
-                  <caret line="176" column="0" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.61451244">
+                  <caret line="165" column="37" selection-start-line="164" selection-start-column="21" selection-end-line="165" selection-end-column="37" />
                   <folding>
-                    <marker date="1490250580288" expanded="true" signature="714:1035" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
-                    <marker date="1490250580288" expanded="true" signature="6663:6677" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
+                    <marker date="1490348488949" expanded="true" signature="677:867" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
+                    <marker date="1490348488949" expanded="true" signature="6114:6128" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
                   </folding>
                 </state>
               </provider>
@@ -170,12 +171,12 @@
         <option value="$PROJECT_DIR$/webapp/app/store/OrgStore.js" />
         <option value="$PROJECT_DIR$/webapp/app/store/ServStore.js" />
         <option value="$PROJECT_DIR$/webapp/app/model/PayordGrp.js" />
-        <option value="$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js" />
-        <option value="$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js" />
-        <option value="$PROJECT_DIR$/webapp/app/model/PayordCmp.js" />
         <option value="$PROJECT_DIR$/webapp/app/view/main/MainModel.js" />
         <option value="$PROJECT_DIR$/webapp/app/model/Payord.js" />
         <option value="$PROJECT_DIR$/webapp/app/store/PayordStore.js" />
+        <option value="$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js" />
+        <option value="$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js" />
+        <option value="$PROJECT_DIR$/webapp/app/model/PayordCmp.js" />
         <option value="$PROJECT_DIR$/webapp/app/view/main/MainController.js" />
         <option value="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" />
       </list>
@@ -396,6 +397,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -514,8 +517,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1490250580288" expanded="true" signature="714:1035" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
-            <marker date="1490250580288" expanded="true" signature="6663:6677" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
+            <marker date="1490348488949" expanded="true" signature="677:867" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
+            <marker date="1490348488949" expanded="true" signature="6114:6128" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
           </folding>
         </state>
       </provider>
@@ -525,8 +528,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
           <folding>
-            <marker date="1490250580288" expanded="true" signature="714:1035" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
-            <marker date="1490250580288" expanded="true" signature="6663:6677" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
+            <marker date="1490348488949" expanded="true" signature="677:867" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
+            <marker date="1490348488949" expanded="true" signature="6114:6128" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
           </folding>
         </state>
       </provider>
@@ -564,8 +567,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
           <folding>
-            <marker date="1490250580288" expanded="true" signature="714:1035" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
-            <marker date="1490250580288" expanded="true" signature="6663:6677" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
+            <marker date="1490348488949" expanded="true" signature="677:867" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
+            <marker date="1490348488949" expanded="true" signature="6114:6128" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
           </folding>
         </state>
       </provider>
@@ -731,13 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PeriodStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel2.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -801,13 +797,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/model/Lst.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13062568">
@@ -816,18 +805,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordCmp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="64" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/store/LstStore.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordGrp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="19" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PeriodStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48518112">
+          <caret line="26" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordCmp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -843,55 +872,46 @@
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="13" selection-start-line="34" selection-start-column="28" selection-end-line="39" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordGrp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
+          <caret line="35" column="21" selection-start-line="35" selection-start-column="21" selection-end-line="35" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5011338">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        <state vertical-scroll-proportion="-17.172413">
+          <caret line="199" column="51" selection-start-line="199" selection-start-column="51" selection-end-line="199" selection-end-column="51" />
           <folding>
-            <marker date="1490250565419" expanded="true" signature="4913:4918" placeholder="{...}" />
+            <marker date="1490348025523" expanded="true" signature="6831:6836" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel3.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6723356">
-          <caret line="176" column="0" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.1492865">
+          <caret line="284" column="26" selection-start-line="284" selection-start-column="26" selection-end-line="284" selection-end-column="26" />
           <folding>
-            <marker date="1490250580288" expanded="true" signature="714:1035" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
-            <marker date="1490250580288" expanded="true" signature="6663:6677" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
+            <marker date="1490348488949" expanded="true" signature="677:867" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
+            <marker date="1490348488949" expanded="true" signature="6114:6128" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
           </folding>
         </state>
       </provider>
     </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
