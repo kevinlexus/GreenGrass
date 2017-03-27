@@ -84,11 +84,11 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 		this.dw = dw;
 	}
 
-	public Integer getKlsk() { //пришлось сделать что метод getKlsk ссылается на klskObj из за тупости в архитектуре таблиц 
+	public Integer getKlskId() { //пришлось сделать что метод getKlsk ссылается на klskObj из за тупости в архитектуре таблиц 
 		return klskObj;
 	}
 	
-	public void setKlsk(Integer klsk) {
+	public void setKlskId(Integer klsk) {
 		this.klskObj = klsk;
 	}
 	

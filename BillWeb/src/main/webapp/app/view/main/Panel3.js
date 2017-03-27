@@ -29,7 +29,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             xtype: 'gridpanel',
             reference: 'payordGrpGrid',
             width: 1200,
-            minHeight: 200,
+            minHeight: 220,
             margin: '0 0 10 0',
             tbar: [{
                 text: 'Добавить группу',
@@ -96,8 +96,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
         iconCls: 'framing-buttons-grid',
         reference: 'payordGrid',
         width: 1000,
-        minHeight: 200,
-        header: true,
+        minHeight: 220,
+        header: false,
         margin: '0 0 10 0',
         tbar: [{
             text: 'Добавить платежку',
@@ -202,7 +202,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             reference: 'payordCmpGrid',
 
             width: 1000,
-            minHeight: 200,
+            minHeight: 220,
             header: false,
 
             margin: '0 0 10 0',
@@ -315,6 +315,32 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         allowBlank: false
                     },
                     renderer: 'onGridPayordCmpOrgRender'
+                },
+                {
+                    header: 'Объект',
+                    dataIndex: 'areaFk',
+                    width: 200,
+                    queryMode: 'local',
+                    editor: {
+                        xtype: 'combo',
+                        typeAhead: true,
+                        forceSelection: true,
+                        displayField: 'name',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        validator: function(value) {
+                            if (value != '') {
+                                return true;
+                            } else {
+                                return 'Необходимо заполнить поле!';
+                            }
+                        },
+                        bind: {
+                            store: '{areastore}'
+                        },
+                        allowBlank: false
+                    },
+                    renderer: 'onGridPayordCmpAreaRender'
                 },
 
                 { text: 'Маркер',  dataIndex: 'mark', width: 150

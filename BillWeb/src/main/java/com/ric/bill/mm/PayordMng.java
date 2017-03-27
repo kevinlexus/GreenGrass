@@ -26,5 +26,7 @@ public interface PayordMng {
 
 	public List<PayordCmp> getPayordCmpByPayordId(Integer payordId);
 	public void setPayordCmpDto(PayordCmpDTO t);
+	public PayordCmp addPayordCmpDto(PayordCmpDTO t);
+	public void refreshPayordCmp(PayordCmp t);
 	
 }

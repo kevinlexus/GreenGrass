@@ -1,9 +1,7 @@
 package com.ric.bill.model.ar;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -17,16 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.FilterDefs;
-import org.hibernate.annotations.Filters;
-import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
-import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 
 /**
@@ -40,23 +32,18 @@ import com.ric.bill.model.tr.TarifKlsk;
 @AttributeOverride(name = "klsk", column = @Column(name = "FK_K_LSK"))
 public class Area extends Base implements java.io.Serializable, Storable, TarifContains {
 
-	//наименование
-	private String name; 
-	//CD
-	private String cd; 
-
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
 	protected Integer id; //id записи
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	//CD
+    @Column(name = "CD", updatable = false, nullable = false)
+	private String cd; 
 
+    //наименование
+    @Column(name = "name")
+	private String name; 
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
@@ -66,6 +53,13 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="FK_K_LSK")
 	@BatchSize(size = 50)
 	private List<TarifKlsk> tarifklsk = new ArrayList<TarifKlsk>(0);
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -98,6 +92,7 @@ public class Area extends Base implements java.io.Serializable, Storable, TarifC
 	public void setStreet(List<Street> street) {
 		this.street = street;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

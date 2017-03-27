@@ -1,6 +1,7 @@
 package com.ric.bill.mm.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Service;
 import com.ric.bill.Calc;
 import com.ric.bill.TarifContains;
 import com.ric.bill.Utl;
+import com.ric.bill.dao.AreaDAO;
 import com.ric.bill.dao.TarifDAO;
 import com.ric.bill.dao.impl.HouseDAOImpl;
 import com.ric.bill.mm.TarifMng;
+import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Chng;
 import com.ric.bill.model.fn.ChngLsk;
@@ -33,7 +36,9 @@ import com.ric.bill.model.tr.TarifServProp;
 public class TarifMngImpl implements TarifMng {
 	
 	@Autowired
-	private TarifDAO tDao;
+	private TarifDAO tarDao;
+	@Autowired
+	private AreaDAO areaDao;
 
     
 	//получить свойство тарифа по его CD
@@ -207,6 +212,14 @@ public class TarifMngImpl implements TarifMng {
 		}*/
 
 		return price;
+	}
+
+    /*
+     * Получить все типы областей
+     * 
+     */
+	public List<Area> getAreaAll() {
+		return areaDao.getAll();
 	}
 	
 }

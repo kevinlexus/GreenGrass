@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ric.bill.dao.AreaDAO;
+import com.ric.bill.dao.KlskDAO;
+import com.ric.bill.dao.OrgDAO;
+import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
+import com.ric.bill.model.oralv.Klsk;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -20,6 +26,14 @@ import com.ric.bill.model.tr.Serv;
  */
 @Service
 public class DTOBuilder {
+
+	
+@Autowired
+AreaDAO areaDao;
+@Autowired
+OrgDAO orgDao;
+@Autowired
+KlskDAO klskDao;
 
 
 /**
@@ -55,7 +69,7 @@ public List<PayordGrpDTO> getPayordGrpDTOLst(List<PayordGrp> lst) {
  * @param lst
  * @return
  */
-public List<PayordCmpDTO> getPayordDTOCmpLst(List<PayordCmp> lst) {
+public List<PayordCmpDTO> getPayordCmpDTOLst(List<PayordCmp> lst) {
 	List<PayordCmpDTO> lst2 = new ArrayList<PayordCmpDTO>(0);
 
 	lst.stream().forEach(t-> lst2.add(
@@ -83,10 +97,10 @@ public List<LstDTO> getLstDTOLst(List<Lst> lst) {
  * @param lst
  * @return
  */
-public List<OrgDTO> getOrgDTOLst(List<Org> lst) {
-	List<OrgDTO> lst2 = new ArrayList<OrgDTO>(0);
+public List<KoDTO> getOrgDTOLst(List<Org> lst) {
+	List<KoDTO> lst2 = new ArrayList<KoDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
-				new OrgDTO(t.getId(), t.getCd(), t.getName())
+				new KoDTO(t.getId(), t.getCd(), t.getName(), t.getKlsk().getAddrTp().getCd())
 				));
 	return lst2;
 }
@@ -103,5 +117,54 @@ public List<ServDTO> getServDTOLst(List<Serv> lst) {
 				));
 	return lst2;
 }
+
+/**
+ * Построить коллекцию DTO Областей (Area)
+ * @param lst
+ * @return
+ */
+public List<AreaDTO> getAreaDTOLst(List<Area> lst) {
+	List<AreaDTO> lst2 = new ArrayList<AreaDTO>(0);
+	lst.stream().forEach(t-> lst2.add(
+				new AreaDTO(t.getId(), t.getCd(), t.getName())
+				));
+	return lst2;
+}
+
+
+/**
+ * Получить объект типа Ko по klsk
+ * @param klsk
+ * @return
+ */
+public KoDTO getKoByKlsk(Integer klskId) {
+	Klsk klsk = klskDao.getByKlsk(klskId);
+	KoDTO ko = null;
+	if (klsk != null && klsk.getAddrTp() != null) {
+		String cd =klsk.getAddrTp().getCd();
+		if (cd.equals("Area")) {
+
+			Area area = areaDao.getByKlsk(klskId);
+			ko = new KoDTO(klskId, area.getCd(), area.getName(), area.getKlsk().getAddrTp().getCd());
+			
+		} else if (cd.equals("Дом")) {
+		//TODO
+			
+		} else if (cd.equals("Квартира")) {
+			//TODO
+			
+		} else if (cd.equals("ЛС")) {
+			//TODO
+
+		} else if (cd.equals("Организация")) {
+			Org org = orgDao.getByKlsk(klskId);
+			ko = new KoDTO(klskId, org.getCd(), org.getName(), org.getKlsk().getAddrTp().getCd());		
+		}
+		
+	}
+	return ko;
+	
+}
+
 
 }

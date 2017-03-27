@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.ric.bill.Calc;
 import com.ric.bill.TarifContains;
+import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Chng;
 import com.ric.bill.model.tr.Prop;
@@ -19,4 +20,5 @@ public interface TarifMng {
 	//public List<Serv> getAllServ(TarifContains tc);	
 	//public int getServ(TarifContains tc, Serv serv, Date genDt); 	
 	public Double getChngPrice(Calc calc, Serv serv, Date genDt);	
+	public List<Area> getAreaAll();
 }

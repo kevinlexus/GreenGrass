@@ -28,7 +28,9 @@ import com.ric.bill.BillServ;
 import com.ric.bill.Config;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
+import com.ric.bill.dto.AreaDTO;
 import com.ric.bill.dto.DTOBuilder;
+import com.ric.bill.dto.KoDTO;
 import com.ric.bill.dto.LstDTO;
 import com.ric.bill.dto.OrgDTO;
 import com.ric.bill.dto.PayordCmpDTO;
@@ -42,7 +44,9 @@ import com.ric.bill.mm.PayordMng;
 import com.ric.bill.mm.ReportMng;
 import com.ric.bill.mm.SecMng;
 import com.ric.bill.mm.ServMng;
+import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.fn.Payord;
+import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
 
 @EnableCaching
@@ -61,8 +65,6 @@ public class BillingController {
 	private ApplicationContext ctx;
 	@Autowired
 	private Config config;
-//	@Autowired
-//	private BillServ billServ;
 	@Autowired
 	private ReportMng repMng;
 	@Autowired
@@ -71,6 +73,8 @@ public class BillingController {
 	private OrgMng orgMng;
 	@Autowired
 	private ServMng servMng;
+	@Autowired
+	private TarifMng tarMng;
 	@Autowired
 	private PayordMng payordMng;
 	@Autowired
@@ -153,7 +157,7 @@ public class BillingController {
 			@RequestParam(value = "payordId") Integer payordId) {
 
 		log.info("GOT /payord/getPayordCmp with payordId={}", payordId);
-		return dtoBuilder.getPayordDTOCmpLst(payordMng
+		return dtoBuilder.getPayordCmpDTOLst(payordMng
 				.getPayordCmpByPayordId(payordId));
 
 	}
@@ -200,8 +204,10 @@ public class BillingController {
 	}
 
 
-	/*
+	/**
 	 * Сохранить платежку
+	 * @param lst - DTO платежки
+	 * @return
 	 */
 	@RequestMapping(value = "/payord/setPayord", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
@@ -212,7 +218,11 @@ public class BillingController {
 		return null;
 	}
 
-	// Добавить платежку
+	/**
+	 * Добавить платежку
+	 * @param lst - DTO платежки
+	 * @return
+	 */
 	@RequestMapping(value = "/payord/addPayord", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public List<PayordDTO> addPayord(@RequestBody List<PayordDTO> lst) {
@@ -227,6 +237,25 @@ public class BillingController {
 		return dtoBuilder.getPayordDTOLst(lst2);
 	}
 	
+
+	/**
+	 * Создать формулу платежки
+	 * @param lst - DTO формулу платежки
+	 * @return
+	 */
+	@RequestMapping(value = "/payord/addPayordCmp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public List<PayordCmpDTO> addPayordCmp(@RequestBody List<PayordCmpDTO> lst) {
+		log.info("GOT /payord/addPayordCmp");
+		List<PayordCmp> lst2 = new ArrayList<PayordCmp>();
+		
+		// добавить созданные группы платежек в коллекцию
+		lst.stream().forEach(t -> lst2.add( payordMng.addPayordCmpDto(t)) );
+		// обновить группы платежки из базы
+		lst2.stream().forEach(t -> payordMng.refreshPayordCmp(t) );
+		
+		return dtoBuilder.getPayordCmpDTOLst(lst2);
+	}
 
 	
 	/**
@@ -251,11 +280,11 @@ public class BillingController {
 	 */
 	@RequestMapping("/sec/getOrgCurUser")
 	@ResponseBody
-	public List<OrgDTO> getOrgCurUser(
+	public List<KoDTO> getOrgCurUser(
 			@RequestParam(value = "roleCd") String roleCd,
 			@RequestParam(value = "actCd") String actCd) {
 		log.info("GOT /sec/getOrgCurUser with: roleCd={}, actCd={}", roleCd, actCd);
-		return dtoBuilder.getOrgDTOLst(secMng.getOrgCurUser(roleCd, actCd));
+		return secMng.getKoCurUser(roleCd, actCd);
 	}
 
 	/**
@@ -265,7 +294,7 @@ public class BillingController {
 	 */
 	@RequestMapping("/base/getOrgAll")
 	@ResponseBody
-	public List<OrgDTO> getOrgAll() {
+	public List<KoDTO> getOrgAll() {
 		log.info("GOT /base/getOrgAll");
 		return dtoBuilder.getOrgDTOLst(orgMng.getOrgAll());
 	}
@@ -282,6 +311,19 @@ public class BillingController {
 		return dtoBuilder.getServDTOLst(servMng.getServAll());
 	}
 
+	/**
+	 * Получить список всех типов объекта сбора инф.
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/base/getAreaAll")
+	@ResponseBody
+	public List<AreaDTO> getAreaAll() {
+		log.info("GOT /base/getAreaAll");
+		return dtoBuilder.getAreaDTOLst(tarMng.getAreaAll());
+	}
+
+	
 	@RequestMapping("/chrglsk")
 	public String chrgLsk(
 			@RequestParam(value = "lsk", defaultValue = "00000000") Integer lsk,

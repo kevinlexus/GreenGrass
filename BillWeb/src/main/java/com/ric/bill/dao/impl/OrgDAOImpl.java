@@ -30,7 +30,7 @@ public class OrgDAOImpl implements OrgDAO {
 		
 		log.trace("Org klsk={}", klsk);
 		
-		Query query =em.createQuery("from Org t where t.klsk = :klsk");
+		Query query =em.createQuery("from Org t where t.klskId = :klsk");
 		query.setParameter("klsk", klsk);
 		try {
 			return (Org) query.getSingleResult();

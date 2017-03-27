@@ -2,17 +2,10 @@ package com.ric.bill.model.bs;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.ric.bill.Simple;
-import com.ric.bill.model.ar.House;
-import com.ric.bill.model.ar.Kart;
+import com.ric.bill.Storable;
 
 /**
  * Организация
@@ -22,7 +15,7 @@ import com.ric.bill.model.ar.Kart;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "ORG", schema="BS")
-public class Org implements java.io.Serializable {
+public class Org extends Base implements java.io.Serializable, Storable {
 
 	@Id
     @Column(name = "ID", updatable = false, nullable = false)
@@ -31,19 +24,10 @@ public class Org implements java.io.Serializable {
 	@Column(name = "CD", updatable = false, nullable = false)
 	private String cd; //cd 
 
-    @Column(name = "NAME", updatable = false, nullable = false)
+    @Column(name = "NAME")
 	private String name; //Наименование 
 
 
-    @Column(name = "FK_K_LSK", updatable = false, nullable = true)
-	private Integer klsk; // klsk 
-    
-    public Integer getKlsk() {
-		return klsk;
-	}
-	public void setKlsk(Integer klsk) {
-		this.klsk = klsk;
-	}
 	public Integer getId() {
 		return this.id;
 	}
@@ -64,6 +48,7 @@ public class Org implements java.io.Serializable {
 		this.name = name;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof Org))
@@ -78,12 +63,14 @@ public class Org implements java.io.Serializable {
 	    return id.equals(other.getId());
 	}
 
+	@Override
 	public int hashCode() {
 	    if (id != null) {
 	        return id.hashCode();
 	    } else {
 	        return super.hashCode();
 	    }
-	}	
+	}
+
 }
 

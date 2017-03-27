@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
@@ -28,6 +29,8 @@ import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
+import com.ric.bill.model.ar.Kw;
+import com.ric.bill.model.oralv.Klsk;
 
 /**
  * Базовый класс всех сущностей, параметры которых хранятся в dw
@@ -39,7 +42,7 @@ import com.ric.bill.Storable;
 public abstract class Base implements Storable {
 	
     @Column(name = "FK_K_LSK", updatable = false, nullable = false)
-	protected Integer klsk;
+	protected Integer klskId;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="FK_K_LSK")
@@ -47,6 +50,12 @@ public abstract class Base implements Storable {
 	@Fetch(FetchMode.SUBSELECT)
 	protected List<Dw> dw = new ArrayList<Dw>(0);
 
+	// Klsk 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_K_LSK", referencedColumnName="ID", updatable = false, insertable = false)
+	private Klsk klsk;
+
+	
 	public List<Dw> getDw() {
 		return dw;
 	}
@@ -54,11 +63,19 @@ public abstract class Base implements Storable {
 		this.dw = dw;
 	}
 	
-	public Integer getKlsk() {
+	public Integer getKlskId() {
+		return klskId;
+	}
+	
+	public void setKlskId(Integer klsk) {
+		this.klskId = klsk;
+	}
+	
+	public Klsk getKlsk() {
 		return klsk;
 	}
 	
-	public void setKlsk(Integer klsk) {
+	public void setKlsk(Klsk klsk) {
 		this.klsk = klsk;
 	}
 	

@@ -305,7 +305,7 @@ public class DistServ {
 			throw new ErrorWhileDist("Ошибка! По записи house.id="+houseId+", в его street, не заполнено поле area!");
 		}
 		
-		log.info("DistServ.distHouseVol: Очистка объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
+		log.info("DistServ.distHouseVol: Очистка объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlskId(), 2);
 		//почистить коллекцию обработанных счетчиков
 		distGen.clearLstChecks();
 
@@ -315,7 +315,7 @@ public class DistServ {
 				delHouseVolServ(rqn);
 		}
 
-		log.info("DistServ.distHouseVol: Распределение объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlsk(), 2);
+		log.info("DistServ.distHouseVol: Распределение объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlskId(), 2);
 		//найти все необходимые услуги для распределения
 		try {
 			for (Serv s : servMng.findForDistVol()) {

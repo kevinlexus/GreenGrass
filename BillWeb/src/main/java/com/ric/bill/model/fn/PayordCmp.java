@@ -69,7 +69,7 @@ public class PayordCmp implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
 	private Org org; 
 	
-	// Объект (область действия) Город, дом, УК
+	// Тип объекта сбора инф.(Город, дом, УК)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
 	private Area area; 
@@ -161,6 +161,18 @@ public class PayordCmp implements java.io.Serializable, Simple {
 
 	public void setSumma(Double summa) {
 		this.summa = summa;
+	}
+
+	
+	public PayordCmp(Payord payord, Lst var, Serv serv, Org org, Area area,
+			String mark) {
+		super();
+		this.payord = payord;
+		this.var = var;
+		this.serv = serv;
+		this.org = org;
+		this.area = area;
+		this.mark = mark;
 	}
 
 	public boolean equals(Object o) {

@@ -12,8 +12,8 @@ import com.ric.bill.model.bs.Dw;
  */
 public interface Storable  {
 	//klsk объекта (в каждом подклассе переписать методы!)
-	Integer getKlsk();
-	void setKlsk(Integer klsk);
+	Integer getKlskId();
+	void setKlskId(Integer klsk);
 	public List<Dw> getDw();
 	public void setDw(List<Dw> dw);
 	

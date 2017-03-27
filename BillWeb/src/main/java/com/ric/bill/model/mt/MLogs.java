@@ -31,7 +31,7 @@ public interface MLogs extends Storable, Simple {
 
 	public abstract void setServ(Serv serv);
 
-	public void setKlsk(Integer klsk);
+	public void setKlskId(Integer klsk);
 
 	public Integer getKlskObj();
 

@@ -166,7 +166,7 @@ public class PayordMngImpl implements PayordMng {
 		
 	}
 
-    // добавить платежку из DTO
+    // Добавить платежку из DTO
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public Payord addPayordDto(PayordDTO p) {
 		
@@ -178,10 +178,34 @@ public class PayordMngImpl implements PayordMng {
 		return payord;
 	}
 
-	// обновить платежку из базы (чтобы перечитались все поля)
+    // Добавить формулу платежки из DTO
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public PayordCmp addPayordCmpDto(PayordCmpDTO p) {
+		
+		// найти компоненты
+		Lst var = em.find(Lst.class, p.getVarFk());
+		Serv serv = em.find(Serv.class, p.getServFk());
+		Org org = em.find(Org.class, p.getOrgFk());
+		Area area = em.find(Area.class, p.getAreaFk());
+		Payord payord = em.find(Payord.class, p.getPayordFk());
+		// создать формулу
+		PayordCmp cmp = new PayordCmp(payord, var, serv, org, area, p.getMark());
+		em.persist(cmp);
+		
+		return cmp;
+	}
+
+	// Обновить формулу платежки из базы (чтобы перечитались все поля)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void refreshPayordCmp(PayordCmp t) {
+		em.refresh(t);
+	}	
+
+	// Обновить платежку из базы (чтобы перечитались все поля)
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void refreshPayord(Payord p) {
 		em.refresh(p);
-	}	
+	}
+
 	
 }

@@ -3,20 +3,18 @@ package com.ric.bill.mm.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.Config;
-import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.sec.Vsec;
+import com.ric.bill.dao.AreaDAO;
+import com.ric.bill.dao.KlskDAO;
 import com.ric.bill.dao.OrgDAO;
 import com.ric.bill.dao.VsecDAO;
+import com.ric.bill.dto.DTOBuilder;
+import com.ric.bill.dto.KoDTO;
 import com.ric.bill.mm.SecMng;
+import com.ric.bill.model.sec.Vsec;
 
 @Service
 public class SecMngImpl implements SecMng {
@@ -26,8 +24,14 @@ public class SecMngImpl implements SecMng {
     @Autowired
 	private OrgDAO orgDao;
     @Autowired
+	private AreaDAO areaDao;
+    @Autowired
+	private KlskDAO klskDao;
+    @Autowired
 	private Config config;
-
+    @Autowired
+    private DTOBuilder dtoBuilder;
+    
 	/**
 	 * Получить список объектов по которым доступна привилегия по параметрам
 	 * @param userCd - пользователь 
@@ -42,24 +46,25 @@ public class SecMngImpl implements SecMng {
 
 	
 	/**
-	 * Получить список организаций, доступных текущему пользователю по определенной роли, действию
+	 * Получить список объектов типа klsk, доступных текущему пользователю по определенной роли, действию
 	 * @param roleCd - роль
 	 * @param actCd - действие
 	 */
 	@Override
-	public List<Org> getOrgCurUser(String roleCd, String actCd) {
+	public List<KoDTO> getKoCurUser(String roleCd, String actCd) {
 		String userCd = config.getCurUserCd();
-		List<Org> lst = new ArrayList <Org>(); 
+		List<KoDTO> lst = new ArrayList <KoDTO>(); 
 		vDao.getPrivByUserRoleAct(userCd, roleCd, actCd).stream().forEach(t -> 
 				{
-					Org org = orgDao.getByKlsk(t.getKlsk());
-					if (org != null) {
-						lst.add(org);
+					KoDTO ko = dtoBuilder.getKoByKlsk(t.getKlsk());
+					if (ko != null) {
+						lst.add(ko);
 					}
 				}
 				);
 		return lst;
 	}
+	
 
 	
 }

@@ -61,54 +61,6 @@ Ext.define('BillWebApp.view.main.MainController', {
         });
     },
 
-    // Удалить платежку
-    onGridPayordDel: function(grid, rowIndex, colIndex)  {
-        Ext.create('Ext.window.MessageBox', {
-            multiline: false,
-        }).show({
-            title: 'Удаление записи',
-            msg: 'Вы уверены, удалить платежку?',
-            closable: false,
-            buttons: Ext.Msg.YESNO,
-            buttonText: {
-                yes: 'Да',
-                no: 'Нет'
-            },
-            fn: function (buttonValue, inputText, showConfig) {
-                if (buttonValue == 'yes') {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    var store = grid.getStore();
-                    store.remove(rec);
-                }
-            },
-            icon: Ext.Msg.QUESTION
-        });
-    },
-
-    // Удалить формулу платежки
-    onGridPayordCmpDel: function(grid, rowIndex, colIndex)  {
-        Ext.create('Ext.window.MessageBox', {
-            multiline: false,
-        }).show({
-            title: 'Удаление записи',
-            msg: 'Вы уверены, удалить формулу платежки?',
-            closable: false,
-            buttons: Ext.Msg.YESNO,
-            buttonText: {
-                yes: 'Да',
-                no: 'Нет'
-            },
-            fn: function (buttonValue, inputText, showConfig) {
-                if (buttonValue == 'yes') {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    var store = grid.getStore();
-                    store.remove(rec);
-                }
-            },
-            icon: Ext.Msg.QUESTION
-        });
-    },
-
     onGridPayordGrpRowClick: function(grid, rec) {
         var store = this.getViewModel().getStore('payordstore');
         var store1 = this.getViewModel().getStore('payordcmpstore');
@@ -157,6 +109,19 @@ Ext.define('BillWebApp.view.main.MainController', {
         payordGrpGrid.findPlugin('rowediting').startEdit(rec, 1);
     },
 
+    // Отменить отредактированную группу платежек
+    onGridPayordGrpCancel: function(rowEditing, context) {
+        if (context.record.phantom) {
+            context.store.remove(context.record);
+        }
+    },
+
+    // Сохранить отредактированную группу платежек
+    onGridPayordGrpUpd: function() {
+        var store = this.getViewModel().getStore('payordgrpstore');
+        store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
+    },
+
     // Добавить платежку в группу
     onGridPayordAdd: function() {
         var payordstore = this.getViewModel().getStore('payordstore');
@@ -170,18 +135,28 @@ Ext.define('BillWebApp.view.main.MainController', {
         payordGrid.findPlugin('rowediting').startEdit(rec, 1);
     },
 
-    // Добавить формулу в платежку
-    onGridPayordCmpAdd: function() {
-        console.log('Add1');
-        var payordcmpstore = this.getViewModel().getStore('payordcmpstore');
-        var payordCmpGrid = this.lookupReference('payordCmpGrid');
-        var payordGrid = this.lookupReference('payordGrid');
-        var rec = new BillWebApp.model.PayordCmp({
-            payordFk : payordGrid.selection.id
+    // Удалить платежку
+    onGridPayordDel: function(grid, rowIndex, colIndex)  {
+        Ext.create('Ext.window.MessageBox', {
+            multiline: false,
+        }).show({
+            title: 'Удаление записи',
+            msg: 'Вы уверены, удалить платежку?',
+            closable: false,
+            buttons: Ext.Msg.YESNO,
+            buttonText: {
+                yes: 'Да',
+                no: 'Нет'
+            },
+            fn: function (buttonValue, inputText, showConfig) {
+                if (buttonValue == 'yes') {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    var store = grid.getStore();
+                    store.remove(rec);
+                }
+            },
+            icon: Ext.Msg.QUESTION
         });
-        payordcmpstore.insert(0, rec);
-        payordCmpGrid.findPlugin('rowediting').startEdit(rec, 1);
-        console.log('Add2');
     },
 
     // Сохранить отредактированную платежку
@@ -192,32 +167,6 @@ Ext.define('BillWebApp.view.main.MainController', {
 
     // Отменить отредактированную платежку
     onGridPayordCancel: function(rowEditing, context) {
-        if (context.record.phantom) {
-            context.store.remove(context.record);
-        }
-    },
-
-    // Сохранить отредактированную формулу платежки
-    onGridPayordCmpUpd: function() {
-        var store = this.getViewModel().getStore('payordcmpstore');
-        store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
-    },
-
-    // Отменить отредактированную формулу платежки
-    onGridPayordCmpCancel: function(rowEditing, context) {
-        if (context.record.phantom) {
-            context.store.remove(context.record);
-        }
-    },
-
-    // Сохранить отредактированную группу платежек
-    onGridPayordGrpUpd: function() {
-        var store = this.getViewModel().getStore('payordgrpstore');
-        store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
-    },
-
-    // Отменить отредактированную группу платежек
-    onGridPayordGrpCancel: function(rowEditing, context) {
         if (context.record.phantom) {
             context.store.remove(context.record);
         }
@@ -249,6 +198,33 @@ Ext.define('BillWebApp.view.main.MainController', {
         }
     },
 
+    // Сохранить отредактированную формулу платежки
+    onGridPayordCmpUpd: function() {
+        var store = this.getViewModel().getStore('payordcmpstore');
+        store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
+    },
+
+    // Отменить отредактированную формулу платежки
+    onGridPayordCmpCancel: function(rowEditing, context) {
+        if (context.record.phantom) {
+            context.store.remove(context.record);
+        }
+    },
+
+    // Добавить формулу в платежку
+    onGridPayordCmpAdd: function() {
+        console.log('Add1');
+        var payordcmpstore = this.getViewModel().getStore('payordcmpstore');
+        var payordCmpGrid = this.lookupReference('payordCmpGrid');
+        var payordGrid = this.lookupReference('payordGrid');
+        var rec = new BillWebApp.model.PayordCmp({
+            payordFk : payordGrid.selection.id
+        });
+        payordcmpstore.insert(0, rec);
+        payordCmpGrid.findPlugin('rowediting').startEdit(rec, 1);
+        console.log('Add2');
+    },
+
     // выбор варианта сбора формулы платежки
     onGridPayordCmpVarRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
         var store = this.getViewModel().getStore('varstore');
@@ -277,5 +253,41 @@ Ext.define('BillWebApp.view.main.MainController', {
             var rs = store.getAt(index);
             return rs.get('name');
         }
+    },
+
+    // выбор объекта формулы платежки
+    onGridPayordCmpAreaRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var store = this.getViewModel().getStore('areastore');
+        var index = store.findExact('id', value);
+        if (index != -1){
+            var rs = store.getAt(index);
+            return rs.get('name');
+        }
+    },
+
+    // Удалить формулу платежки
+    onGridPayordCmpDel: function(grid, rowIndex, colIndex)  {
+        Ext.create('Ext.window.MessageBox', {
+            multiline: false,
+        }).show({
+            title: 'Удаление записи',
+            msg: 'Вы уверены, удалить формулу платежки?',
+            closable: false,
+            buttons: Ext.Msg.YESNO,
+            buttonText: {
+                yes: 'Да',
+                no: 'Нет'
+            },
+            fn: function (buttonValue, inputText, showConfig) {
+                if (buttonValue == 'yes') {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    var store = grid.getStore();
+                    store.remove(rec);
+                }
+            },
+            icon: Ext.Msg.QUESTION
+        });
     }
+
+
 });
