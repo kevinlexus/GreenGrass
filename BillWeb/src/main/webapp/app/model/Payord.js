@@ -31,9 +31,6 @@ Ext.define('BillWebApp.model.Payord', {
         writer: {
             type: 'json',
             allowSingle: false //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
-        },
-        extraParams : {
-            'payordGrpId' : -1
         }
     }
 });

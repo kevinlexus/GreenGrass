@@ -28,6 +28,7 @@ import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
+import com.ric.bill.model.oralv.Klsk;
 import com.ric.bill.model.tr.Serv;
 
 @Service
@@ -94,6 +95,20 @@ public class PayordMngImpl implements PayordMng {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void delPayordGrpDto(PayordGrpDTO p) {
 		PayordGrp pg = em.find(PayordGrp.class, p.getId());
+		em.remove(pg);
+	}
+
+	// Удалить платежку из DTO
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void delPayordDto(PayordDTO p) {
+		Payord pg = em.find(Payord.class, p.getId());
+		em.remove(pg);
+	}
+
+	// Удалить платежку из DTO
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void delPayordCmpDto(PayordCmpDTO p) {
+		PayordCmp pg = em.find(PayordCmp.class, p.getId());
 		em.remove(pg);
 	}
 
@@ -188,8 +203,9 @@ public class PayordMngImpl implements PayordMng {
 		Org org = em.find(Org.class, p.getOrgFk());
 		Area area = em.find(Area.class, p.getAreaFk());
 		Payord payord = em.find(Payord.class, p.getPayordFk());
+		Klsk klskObj =  em.find(Klsk.class, p.getKlskFk());
 		// создать формулу
-		PayordCmp cmp = new PayordCmp(payord, var, serv, org, area, p.getMark());
+		PayordCmp cmp = new PayordCmp(payord, var, serv, org, area, klskObj, p.getMark());
 		em.persist(cmp);
 		
 		return cmp;

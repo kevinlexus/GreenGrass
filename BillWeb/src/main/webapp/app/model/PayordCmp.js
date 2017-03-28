@@ -12,6 +12,7 @@ Ext.define('BillWebApp.model.PayordCmp', {
         { name: 'servFk', type: 'int', convert: null},
         { name: 'orgFk', type: 'int', convert: null},
         { name: 'areaFk', type: 'int', convert: null},
+        { name: 'klskFk', type: 'int', convert: null},
         { name: 'mark', type: 'string' },
         { name: 'summa', type: 'float', persist: false }],
         proxy: {
@@ -21,7 +22,7 @@ Ext.define('BillWebApp.model.PayordCmp', {
                 create  : 'http://192.168.100.21:8083/payord/addPayordCmp',
                 read    : 'http://192.168.100.21:8083/payord/getPayordCmp',
                 update  : 'http://192.168.100.21:8083/payord/setPayordCmp',
-                destroy : 'http://192.168.100.21:8083/payord/delPayordGrp'
+                destroy : 'http://192.168.100.21:8083/payord/delPayordCmp'
         },
         reader: {
             type: 'json'
@@ -29,8 +30,8 @@ Ext.define('BillWebApp.model.PayordCmp', {
         writer: {
             type: 'json',
                 allowSingle: false //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
-                ,
-                writeAllFields: true  //писать весь объект в json - не имеет смысла
+                //,
+                //writeAllFields: true  //писать весь объект в json - не имеет смысла
         }
     }
 });

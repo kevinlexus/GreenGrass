@@ -173,7 +173,7 @@ public class KartMngImpl implements KartMng {
 	 * @return
 	 * @throws EmptyStorable 
 	 */
-	@Cacheable(cacheNames="rrr1", key="{#rqn, #rc.getKlsk(), #serv.getId(), #cntPers, #genDt}") 
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #rc.getKlskId(), #serv.getId(), #cntPers, #genDt}") 
 	public void getCntPers(int rqn, Calc calc, RegContains rc, Serv serv, CntPers cntPers, Date genDt) throws EmptyStorable{
 		List<Pers> counted = new ArrayList<Pers>();
 		cntPers.cnt=0; //кол-во человек

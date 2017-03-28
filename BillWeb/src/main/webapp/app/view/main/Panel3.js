@@ -236,6 +236,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     handler: 'onGridPayordCmpDel'
                 }
             },
+            listeners: {
+                itemdblclick: 'onGridPayordCmpItemDblClick'
+            },
             columns: [
                 { text: 'Id',  dataIndex: 'id', width: 50
                 },
@@ -317,7 +320,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     renderer: 'onGridPayordCmpOrgRender'
                 },
                 {
-                    header: 'Объект',
+                    header: 'Тип объекта',
                     dataIndex: 'areaFk',
                     width: 200,
                     queryMode: 'local',
@@ -342,7 +345,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     },
                     renderer: 'onGridPayordCmpAreaRender'
                 },
-
+                { text: 'KlskFk',  dataIndex: 'klskFk', width: 150
+                },
                 { text: 'Маркер',  dataIndex: 'mark', width: 150
                 },
                 { text: 'Сумма',  dataIndex: 'summa', width: 70

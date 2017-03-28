@@ -21,11 +21,13 @@ public interface PayordMng {
 	public List<Payord> getPayordAll();
 	public List<Payord> getPayordByPayordGrpId(Integer payordGrpId);
 	public void setPayordDto(PayordDTO payordDTO);
+	public void delPayordDto(PayordDTO t);
 	public Payord addPayordDto(PayordDTO t);
 	public void refreshPayord(Payord t);
 
 	public List<PayordCmp> getPayordCmpByPayordId(Integer payordId);
 	public void setPayordCmpDto(PayordCmpDTO t);
+	public void delPayordCmpDto(PayordCmpDTO t);
 	public PayordCmp addPayordCmpDto(PayordCmpDTO t);
 	public void refreshPayordCmp(PayordCmp t);
 	

@@ -1,6 +1,7 @@
 package com.ric.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -28,6 +29,7 @@ import com.ric.bill.BillServ;
 import com.ric.bill.Config;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
+import com.ric.bill.Utl;
 import com.ric.bill.dto.AreaDTO;
 import com.ric.bill.dto.DTOBuilder;
 import com.ric.bill.dto.KoDTO;
@@ -146,6 +148,26 @@ public class BillingController {
 		return null;
 	}
 
+	// Удалить платежку
+	@RequestMapping(value = "/payord/delPayord", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String delPayord(@RequestBody List<PayordDTO> lst) {
+
+		log.info("GOT /payord/delPayord");
+		lst.stream().forEach(t -> payordMng.delPayordDto(t));
+		return null;
+	}
+
+	// Удалить формулу платежки
+	@RequestMapping(value = "/payord/delPayordCmp", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String delPayordCmp(@RequestBody List<PayordCmpDTO> lst) {
+
+		log.info("GOT /payord/delPayordCmp");
+		lst.stream().forEach(t -> payordMng.delPayordCmpDto(t));
+		return null;
+	}
+	
 	/**
 	 * Получить все компоненты платежки по её ID
 	 * 
@@ -323,16 +345,46 @@ public class BillingController {
 		return dtoBuilder.getAreaDTOLst(tarMng.getAreaAll());
 	}
 
+	private Boolean checkDate(String genDt1, String genDt2) {
+		// проверка на заполненные даты, если указаны
+		if ((genDt1.length() > 0 && genDt2.length() == 0) || (genDt1.length() == 0 && genDt2.length() > 0)) {
+			return false;
+		} else if (genDt1.length() == 0 && genDt2.length() == 0) {
+			return true;
+		}
+		
+		Date dt1 = Utl.getDateFromStr(genDt1);
+		Date dt2 = Utl.getDateFromStr(genDt2);
+		
+		Date firstDt = Utl.getFirstDate(dt1);
+		Date lastDt = Utl.getLastDate(dt1);
+		
+		// проверить, что даты в одном диапазоне
+		if (!(Utl.between(dt1, firstDt, lastDt) && Utl.between(dt2, firstDt, lastDt)))  {
+			return false;
+		}
+			
+		return true;
+	}
 	
 	@RequestMapping("/chrglsk")
 	public String chrgLsk(
 			@RequestParam(value = "lsk", defaultValue = "00000000") Integer lsk,
 			@RequestParam(value = "dist", defaultValue = "0") String dist,
 			@RequestParam(value = "tp", defaultValue = "0") String tp,
-			@RequestParam(value = "chngId", defaultValue = "") String chngId) {
-		log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}", lsk,
-				dist, tp, chngId);
-
+			@RequestParam(value = "chngId", defaultValue = "") String chngId,
+			@RequestParam(value = "dt1", defaultValue = "", required = false) String genDt1,
+			@RequestParam(value = "dt2", defaultValue = "", required = false) String genDt2
+			) {
+		log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}, dt1={}, dt2={}", lsk,
+				dist, tp, chngId, genDt1, genDt2);
+		
+		
+		if (!checkDate(genDt1, genDt2)) {
+			log.info("Заданы некорректные даты dt1={}, dt2={}!", genDt1, genDt2);
+			return "ERROR IN DATES";
+		}
+		
 		// получить уникальный номер запроса
 		int rqn = config.incNextReqNum();
 
@@ -373,7 +425,7 @@ public class BillingController {
 		long endTime1 = System.currentTimeMillis() - beginTime;
 		beginTime = System.currentTimeMillis();
 
-		reqConfig.setUp(config, dist, tp, chId, rqn);
+		reqConfig.setUp(config, dist, tp, chId, rqn, genDt1, genDt2);
 
 		long endTime2 = System.currentTimeMillis() - beginTime;
 		beginTime = System.currentTimeMillis();
@@ -448,9 +500,17 @@ public class BillingController {
 	public String chrgAll(
 			@RequestParam(value = "dist", defaultValue = "0", required = true) String dist,
 			@RequestParam(value = "houseId", defaultValue = "", required = false) Integer houseId,
-			@RequestParam(value = "areaId", defaultValue = "", required = false) Integer areaId) {
-		log.info("got /chrgall with: dist={}, houseId={}, areaId={} ", dist,
-				houseId, areaId);
+			@RequestParam(value = "areaId", defaultValue = "", required = false) Integer areaId,
+			@RequestParam(value = "dt1", defaultValue = "", required = false) String genDt1,
+			@RequestParam(value = "dt2", defaultValue = "", required = false) String genDt2) {
+
+		log.info("GOT /chrglsk with: houseId={}, dist={}, areaId={}, dt1={}, dt2={}", houseId,
+				dist, areaId, genDt1, genDt2);
+		
+		if (!checkDate(genDt1, genDt2)) {
+			log.info("Заданы некорректные даты dt1={}, dt2={}!", genDt1, genDt2);
+			return "ERROR IN DATES";
+		}
 
 		// получить уникальный номер запроса
 		int rqn = config.incNextReqNum();
@@ -459,7 +519,7 @@ public class BillingController {
 		Future<Result> fut = null;
 
 		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
-		reqConfig.setUp(config, dist, "0", null, rqn);
+		reqConfig.setUp(config, dist, "0", null, rqn, genDt1, genDt2);
 
 		BillServ billServ = ctx.getBean(BillServ.class); // добавил, было Autowired
 		fut = billServ.chrgAll(reqConfig, houseId, areaId);

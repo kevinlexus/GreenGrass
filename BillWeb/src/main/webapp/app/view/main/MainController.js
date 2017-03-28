@@ -55,6 +55,7 @@ Ext.define('BillWebApp.view.main.MainController', {
                     var rec = grid.getStore().getAt(rowIndex);
                     var store = grid.getStore();
                     store.remove(rec);
+                    store.sync();
                 }
             },
             icon: Ext.Msg.QUESTION
@@ -153,6 +154,7 @@ Ext.define('BillWebApp.view.main.MainController', {
                     var rec = grid.getStore().getAt(rowIndex);
                     var store = grid.getStore();
                     store.remove(rec);
+                    store.sync();
                 }
             },
             icon: Ext.Msg.QUESTION
@@ -283,11 +285,26 @@ Ext.define('BillWebApp.view.main.MainController', {
                     var rec = grid.getStore().getAt(rowIndex);
                     var store = grid.getStore();
                     store.remove(rec);
+                    store.sync();
                 }
             },
             icon: Ext.Msg.QUESTION
         });
-    }
+    },
 
+    onGridPayordCmpItemDblClick: function() {
+        console.log("CHECK!")
+        var myForm = new Ext.form.Panel({
+            modal: true,
+            width: 500,
+            height: 400,
+            title: 'Foo',
+            floating: true,
+            closable : true,
+            items: [
+                { xtype: 'askobjpanel' }]
+        });
+        myForm.show();
+    }
 
 });

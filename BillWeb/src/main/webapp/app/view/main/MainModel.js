@@ -39,6 +39,14 @@ Ext.define('BillWebApp.view.main.MainModel', {
                 }
             }
         },
+        areastore: {
+            type: 'lststore',
+            proxy : {
+                extraParams : {
+                    tp : 'AREA_TP'
+                }
+            }
+        },
         varstore: {
             type: 'lststore',
             proxy : {

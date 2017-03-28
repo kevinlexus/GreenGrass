@@ -143,6 +143,31 @@ public class Utl {
 	}
 	
 	/**
+	 * Вернуть последнюю дату месяца 
+	 * @param dt
+	 * @return
+	 */
+	public static Date getLastDate(Date dt) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dt);
+		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
+		return calendar.getTime();
+	}
+
+	/**
+	 * Вернуть первую дату месяца 
+	 * @param dt
+	 * @return
+	 */
+	public static Date getFirstDate(Date dt) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dt);
+		calendar.set(Calendar.DATE, calendar.getActualMinimum(Calendar.DATE));
+		return calendar.getTime();
+	}
+
+	
+	/**
 	 * Вернуть дату по формату
 	 * @param dt
 	 * @return

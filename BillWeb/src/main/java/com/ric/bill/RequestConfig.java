@@ -29,8 +29,6 @@ public class RequestConfig {
 	private Boolean isDist;
 	// перерасчет
 	private Chng chng;
-	private Config config;
-	
 	// статус записи объема
 	private Integer statusVol;
 	
@@ -57,9 +55,10 @@ public class RequestConfig {
 	 * @param tp - тип операции
 	 * @param chngId - id перерасчета
 	 * @param rqn - уникальный номер запроса
+	 * @param dt1 - заданная принудительно начальная дата начисления
+	 * @param dt2 - заданная принудительно конечная дата начисления
 	 */
-	public void setUp(Config config, String dist, String tp, Integer chngId, int rqn) {
-		this.config = config;
+	public void setUp(Config config, String dist, String tp, Integer chngId, int rqn, String genDt1, String genDt2) {
 		// установить текущий номер запроса
 		setRqn(rqn);
 		// основные настройки
@@ -102,9 +101,20 @@ public class RequestConfig {
     	// прочие настройки
 		if (operTp==0) {
 			//начисление
-			// установить текущие даты периода
-	    	setCurDt1(config.getCurDt1());
-	    	setCurDt2(config.getCurDt2());
+			if (genDt1.length() > 0 && genDt2.length() > 0) {
+				Date dt1 = Utl.getDateFromStr(genDt1);
+				Date dt2 = Utl.getDateFromStr(genDt2);
+
+				log.info("ВНИМАНИЕ! Для расчета RQN={}, заданы следующие даты расчета: dt1={}, dt2={}", rqn, dt1, dt2);
+
+				// установить даты периода из параметров
+		    	setCurDt1(dt1);
+		    	setCurDt2(dt2);
+			} else {
+				// установить текущие даты периода
+		    	setCurDt1(config.getCurDt1());
+		    	setCurDt2(config.getCurDt2());
+			}
 		} else if (operTp==1) {
 			// установить параметры перерасчета
 			// установить текущие даты, для перерасчета

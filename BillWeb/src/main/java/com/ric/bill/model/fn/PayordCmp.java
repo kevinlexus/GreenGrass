@@ -18,6 +18,7 @@ import com.ric.bill.Simple;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
+import com.ric.bill.model.oralv.Klsk;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -33,6 +34,18 @@ public class PayordCmp implements java.io.Serializable, Simple {
 
 	public PayordCmp() {
 		
+	}
+
+	public PayordCmp(Payord payord, Lst var, Serv serv, Org org, Area area, Klsk klskObj,
+			String mark) {
+		super();
+		this.payord = payord;
+		this.var = var;
+		this.serv = serv;
+		this.org = org;
+		this.area = area;
+		this.mark = mark;
+		this.klskObj = klskObj;
 	}
 
 	@Id
@@ -74,6 +87,11 @@ public class PayordCmp implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
 	private Area area; 
 
+	// Объект сбора инф.
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="ID")
+	private Klsk klskObj; 
+	
 	// Маркер
 	@Column(name = "MARK")
 	private String mark;
@@ -113,6 +131,14 @@ public class PayordCmp implements java.io.Serializable, Simple {
 
 	public void setArea(Area area) {
 		this.area = area;
+	}
+
+	public Klsk getKlskObj() {
+		return klskObj;
+	}
+
+	public void setKlskObj(Klsk klsk) {
+		this.klskObj = klsk;
 	}
 
 	public String getMark() {
@@ -164,17 +190,6 @@ public class PayordCmp implements java.io.Serializable, Simple {
 	}
 
 	
-	public PayordCmp(Payord payord, Lst var, Serv serv, Org org, Area area,
-			String mark) {
-		super();
-		this.payord = payord;
-		this.var = var;
-		this.serv = serv;
-		this.org = org;
-		this.area = area;
-		this.mark = mark;
-	}
-
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof PayordCmp))
