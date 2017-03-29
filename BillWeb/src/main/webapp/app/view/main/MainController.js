@@ -300,6 +300,8 @@ Ext.define('BillWebApp.view.main.MainController', {
             title: 'Поиск объекта',
             floating: true,
             closable : true,
+            resizable : true,
+            layout: 'fit',
             items: [
                 { xtype: 'askobjpanel' }]
         });

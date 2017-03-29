@@ -28,7 +28,7 @@ import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
-import com.ric.bill.model.oralv.Klsk;
+import com.ric.bill.model.oralv.Ko;
 import com.ric.bill.model.tr.Serv;
 
 @Service
@@ -203,7 +203,7 @@ public class PayordMngImpl implements PayordMng {
 		Org org = em.find(Org.class, p.getOrgFk());
 		Area area = em.find(Area.class, p.getAreaFk());
 		Payord payord = em.find(Payord.class, p.getPayordFk());
-		Klsk klskObj =  em.find(Klsk.class, p.getKlskFk());
+		Ko klskObj =  em.find(Ko.class, p.getKlskFk());
 		// создать формулу
 		PayordCmp cmp = new PayordCmp(payord, var, serv, org, area, klskObj, p.getMark());
 		em.persist(cmp);

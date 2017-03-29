@@ -295,6 +295,24 @@ public class BillingController {
 	}
 
 	/**
+	 * Получить список объектов определённого типа, фильтром
+	 * 
+	 * @param addrTp - тип адреса
+	 *            
+	 * @return
+	 */
+	@RequestMapping("/base/getKoByTpFlt")
+	@ResponseBody
+	public List<LstDTO> getKoByTpFlt(@RequestParam(value = "addrTp") Integer addrTp,
+									@RequestParam(value = "flt") String flt
+			) {
+		log.info("GOT /base/getKoByTpFlt with addTp={}, flt={}", addrTp, flt);
+		//return dtoBuilder.getKoDTOLst(lstMng.getKlskByTp(tp));
+		return null;
+	}
+
+	
+	/**
 	 * Получить список организаций, доступных текущему пользователю по роли и
 	 * действию
 	 * 
@@ -342,7 +360,7 @@ public class BillingController {
 	@ResponseBody
 	public List<AreaDTO> getAreaAll() {
 		log.info("GOT /base/getAreaAll");
-		return dtoBuilder.getAreaDTOLst(tarMng.getAreaAll());
+		return dtoBuilder.getAreaDTOLst(lstMng.getAreaAll());
 	}
 
 	private Boolean checkDate(String genDt1, String genDt2) {

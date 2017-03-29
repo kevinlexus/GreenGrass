@@ -31,7 +31,7 @@ public class LstDAOImpl implements LstDAO {
 	}
 
 	public List<Lst> getByTp(String cdTp) {
-		Query query =em.createQuery("select t from Lst t join t.lstTp tp where tp.cd in (:cdTp)");
+		Query query =em.createQuery("select t from Lst t join t.lstTp tp where tp.cd in (:cdTp) order by t.name");
 		query.setParameter("cdTp", cdTp);
 		return query.getResultList();
 	}

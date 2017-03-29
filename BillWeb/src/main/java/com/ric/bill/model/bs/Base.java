@@ -30,7 +30,7 @@ import org.hibernate.annotations.ParamDef;
 
 import com.ric.bill.Storable;
 import com.ric.bill.model.ar.Kw;
-import com.ric.bill.model.oralv.Klsk;
+import com.ric.bill.model.oralv.Ko;
 
 /**
  * Базовый класс всех сущностей, параметры которых хранятся в dw
@@ -53,7 +53,7 @@ public abstract class Base implements Storable {
 	// Klsk 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="ID", updatable = false, insertable = false)
-	private Klsk klsk;
+	private Ko klsk;
 
 	
 	public List<Dw> getDw() {
@@ -71,11 +71,11 @@ public abstract class Base implements Storable {
 		this.klskId = klsk;
 	}
 	
-	public Klsk getKlsk() {
+	public Ko getKlsk() {
 		return klsk;
 	}
 	
-	public void setKlsk(Klsk klsk) {
+	public void setKlsk(Ko klsk) {
 		this.klsk = klsk;
 	}
 	

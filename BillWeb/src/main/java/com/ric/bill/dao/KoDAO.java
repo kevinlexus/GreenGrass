@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.oralv.Klsk;
+import com.ric.bill.model.oralv.Ko;
 import com.ric.bill.model.tr.Serv;
 
 
-public interface KlskDAO {
+public interface KoDAO {
 
-	public Klsk getByKlsk(Integer klsk);
+	public Ko getByKlsk(Integer klsk);
 	
 }

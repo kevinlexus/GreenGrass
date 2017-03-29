@@ -15,14 +15,14 @@ import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.AddrTp;
 
 /**
- * Справочник всех объектов Klsk
+ * Справочник всех объектов Klsk Objects - KO
  * 
  *
  */
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "K_LSK", schema="ORALV")
-public class Klsk implements java.io.Serializable, Simple {
+public class Ko implements java.io.Serializable, Simple {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +34,7 @@ public class Klsk implements java.io.Serializable, Simple {
 	private AddrTp addrTp ; 
 
 	
-    public Klsk() {
+    public Ko() {
 		super();
 	}
     
@@ -55,10 +55,10 @@ public class Klsk implements java.io.Serializable, Simple {
 	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
-	    if (o == null || !(o instanceof Klsk))
+	    if (o == null || !(o instanceof Ko))
 	        return false;
 
-	    Klsk other = (Klsk)o;
+	    Ko other = (Ko)o;
 
 	    if (id == other.getId()) return true;
 	    if (id == null) return false;

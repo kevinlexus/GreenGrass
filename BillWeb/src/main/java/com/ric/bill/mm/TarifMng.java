@@ -17,5 +17,4 @@ public interface TarifMng {
 	public Double getProp(Calc calc, int rqn, TarifContains tc, Serv serv, String cd, Date genDt);	
 	public Org getOrg(Calc calc, int rqn, TarifContains tc, Serv serv, Date genDt);
 	public Double getChngPrice(Calc calc, Serv serv, Date genDt);	
-	public List<Area> getAreaAll();
 }

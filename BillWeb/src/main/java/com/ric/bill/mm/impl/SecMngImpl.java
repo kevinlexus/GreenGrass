@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ric.bill.Config;
 import com.ric.bill.dao.AreaDAO;
-import com.ric.bill.dao.KlskDAO;
+import com.ric.bill.dao.KoDAO;
 import com.ric.bill.dao.OrgDAO;
 import com.ric.bill.dao.VsecDAO;
 import com.ric.bill.dto.DTOBuilder;
@@ -26,7 +26,7 @@ public class SecMngImpl implements SecMng {
     @Autowired
 	private AreaDAO areaDao;
     @Autowired
-	private KlskDAO klskDao;
+	private KoDAO klskDao;
     @Autowired
 	private Config config;
     @Autowired

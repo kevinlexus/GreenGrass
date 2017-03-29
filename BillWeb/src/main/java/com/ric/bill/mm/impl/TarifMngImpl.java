@@ -37,8 +37,6 @@ public class TarifMngImpl implements TarifMng {
 	
 	@Autowired
 	private TarifDAO tarDao;
-	@Autowired
-	private AreaDAO areaDao;
 
     
 	//получить свойство тарифа по его CD
@@ -231,12 +229,4 @@ public class TarifMngImpl implements TarifMng {
 		return price;
 	}
 
-    /*
-     * Получить все типы областей
-     * 
-     */
-	public List<Area> getAreaAll() {
-		return areaDao.getAll();
-	}
-	
 }

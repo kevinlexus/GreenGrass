@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.dao.AreaDAO;
-import com.ric.bill.dao.KlskDAO;
+import com.ric.bill.dao.KoDAO;
 import com.ric.bill.dao.OrgDAO;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Lst;
@@ -16,7 +16,7 @@ import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
-import com.ric.bill.model.oralv.Klsk;
+import com.ric.bill.model.oralv.Ko;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -33,7 +33,7 @@ AreaDAO areaDao;
 @Autowired
 OrgDAO orgDao;
 @Autowired
-KlskDAO klskDao;
+KoDAO klskDao;
 
 
 /**
@@ -140,7 +140,7 @@ public List<AreaDTO> getAreaDTOLst(List<Area> lst) {
  * @return
  */
 public KoDTO getKoByKlsk(Integer klskId) {
-	Klsk klsk = klskDao.getByKlsk(klskId);
+	Ko klsk = klskDao.getByKlsk(klskId);
 	KoDTO ko = null;
 	if (klsk != null && klsk.getAddrTp() != null) {
 		String cd =klsk.getAddrTp().getCd();

@@ -18,7 +18,7 @@ import com.ric.bill.Simple;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.oralv.Klsk;
+import com.ric.bill.model.oralv.Ko;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -36,7 +36,7 @@ public class PayordCmp implements java.io.Serializable, Simple {
 		
 	}
 
-	public PayordCmp(Payord payord, Lst var, Serv serv, Org org, Area area, Klsk klskObj,
+	public PayordCmp(Payord payord, Lst var, Serv serv, Org org, Area area, Ko klskObj,
 			String mark) {
 		super();
 		this.payord = payord;
@@ -90,7 +90,7 @@ public class PayordCmp implements java.io.Serializable, Simple {
 	// Объект сбора инф.
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="ID")
-	private Klsk klskObj; 
+	private Ko klskObj; 
 	
 	// Маркер
 	@Column(name = "MARK")
@@ -133,11 +133,11 @@ public class PayordCmp implements java.io.Serializable, Simple {
 		this.area = area;
 	}
 
-	public Klsk getKlskObj() {
+	public Ko getKlskObj() {
 		return klskObj;
 	}
 
-	public void setKlskObj(Klsk klsk) {
+	public void setKlskObj(Ko klsk) {
 		this.klskObj = klsk;
 	}
 

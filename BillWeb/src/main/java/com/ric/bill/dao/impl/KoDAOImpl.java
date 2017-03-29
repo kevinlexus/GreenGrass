@@ -6,12 +6,12 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
-import com.ric.bill.dao.KlskDAO;
-import com.ric.bill.model.oralv.Klsk;
+import com.ric.bill.dao.KoDAO;
+import com.ric.bill.model.oralv.Ko;
 
 
 @Repository
-public class KlskDAOImpl implements KlskDAO {
+public class KoDAOImpl implements KoDAO {
 
 	//EntityManager - EM нужен на каждый DAO или сервис свой!
     @PersistenceContext
@@ -20,10 +20,10 @@ public class KlskDAOImpl implements KlskDAO {
     /**
      * Получить объект Klsk по klsk 
      */
-	public Klsk getByKlsk(Integer klsk) {
+	public Ko getByKlsk(Integer klsk) {
 		Query query =em.createQuery("select t from Klsk t where t.id = :klsk");
 		query.setParameter("klsk", klsk);
-		return (Klsk)query.getSingleResult();
+		return (Ko)query.getSingleResult();
 	}
 
 }
