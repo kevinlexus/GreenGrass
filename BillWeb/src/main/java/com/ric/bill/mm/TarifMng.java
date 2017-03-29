@@ -14,11 +14,8 @@ import com.ric.bill.model.tr.Serv;
 
 public interface TarifMng {
 
-	//public Prop getPropByCD(String cd);
-	public Double getProp(int rqn, TarifContains tc, Serv serv, String cd, Date genDt);	
-	public Org getOrg(int rqn, TarifContains tc, Serv serv, Date genDt);
-	//public List<Serv> getAllServ(TarifContains tc);	
-	//public int getServ(TarifContains tc, Serv serv, Date genDt); 	
+	public Double getProp(Calc calc, int rqn, TarifContains tc, Serv serv, String cd, Date genDt);	
+	public Org getOrg(Calc calc, int rqn, TarifContains tc, Serv serv, Date genDt);
 	public Double getChngPrice(Calc calc, Serv serv, Date genDt);	
 	public List<Area> getAreaAll();
 }

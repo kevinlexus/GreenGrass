@@ -374,11 +374,12 @@ public class BillingController {
 			@RequestParam(value = "tp", defaultValue = "0") String tp,
 			@RequestParam(value = "chngId", defaultValue = "") String chngId,
 			@RequestParam(value = "dt1", defaultValue = "", required = false) String genDt1,
-			@RequestParam(value = "dt2", defaultValue = "", required = false) String genDt2
+			@RequestParam(value = "dt2", defaultValue = "", required = false) String genDt2,
+			@RequestParam(value = "user", defaultValue = "", required = false) String user
 			) {
+		
 		log.info("GOT /chrglsk with: lsk={}, dist={}, tp={}, chngId={}, dt1={}, dt2={}", lsk,
 				dist, tp, chngId, genDt1, genDt2);
-		
 		
 		if (!checkDate(genDt1, genDt2)) {
 			log.info("Заданы некорректные даты dt1={}, dt2={}!", genDt1, genDt2);
@@ -388,7 +389,7 @@ public class BillingController {
 		// получить уникальный номер запроса
 		int rqn = config.incNextReqNum();
 
-		log.info("RQN={}", rqn);
+		log.info("RQN={}, user={}", rqn, user);
 		long beginTime = System.currentTimeMillis();
 
 		// получить доступ к лиц.счету
@@ -502,7 +503,9 @@ public class BillingController {
 			@RequestParam(value = "houseId", defaultValue = "", required = false) Integer houseId,
 			@RequestParam(value = "areaId", defaultValue = "", required = false) Integer areaId,
 			@RequestParam(value = "dt1", defaultValue = "", required = false) String genDt1,
-			@RequestParam(value = "dt2", defaultValue = "", required = false) String genDt2) {
+			@RequestParam(value = "dt2", defaultValue = "", required = false) String genDt2,
+			@RequestParam(value = "user", defaultValue = "", required = false) String user
+			) {
 
 		log.info("GOT /chrglsk with: houseId={}, dist={}, areaId={}, dt1={}, dt2={}", houseId,
 				dist, areaId, genDt1, genDt2);
@@ -514,7 +517,7 @@ public class BillingController {
 
 		// получить уникальный номер запроса
 		int rqn = config.incNextReqNum();
-		log.info("RQN={}", rqn);
+		log.info("RQN={}, user={}", rqn, user);
 
 		Future<Result> fut = null;
 

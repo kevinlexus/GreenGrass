@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,6 +24,8 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import com.ric.bill.Simple;
+import com.ric.bill.model.fn.Chng;
+import com.ric.bill.model.mt.MeterLog;
 
 
 /**
@@ -48,6 +51,11 @@ public class TarifKlsk implements java.io.Serializable, Simple {
     @Column(name = "FK_TARIF", updatable = false, nullable = false)
 	private Integer fktarif;
 
+    // Перерасчет
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_CHNG", referencedColumnName="ID", updatable = false, nullable = true)
+	private Chng chng; 
+    
     @Column(name = "ACT")
 	private Integer act;
 
@@ -80,6 +88,14 @@ public class TarifKlsk implements java.io.Serializable, Simple {
 
 	public void setFktarif(Integer fktarif) {
 		this.fktarif = fktarif;
+	}
+
+	public Chng getChng() {
+		return chng;
+	}
+
+	public void setChng(Chng chng) {
+		this.chng = chng;
 	}
 
 	public Date getDt1() {

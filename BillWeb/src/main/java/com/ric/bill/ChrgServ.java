@@ -485,10 +485,7 @@ public class ChrgServ {
 			Serv servMain = null;
 			try {
 				servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
-				//преобразовать к объекту текущей сессии (потому что начисление взято из разных потоков, разных сессий)
-				//servMain = em.find(Serv.class, servMain.getId());
 			}catch(Exception e) {
-				//servMain = chrg.getServ();
 			    e.printStackTrace();
 				throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 			}
@@ -499,6 +496,9 @@ public class ChrgServ {
 		long endTime2=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
 
+		MultiKeyMap mapDebLogBefore = new MultiKeyMap(); // логгинг
+		mapDebLogBefore.putAll(mapDeb);
+		
 		//сгруппировать до укрупнённых услуг предыдущий расчет по debt
 		for (Chrg chrg : kart.getChrg()) {
 			//Только необходимые строки
@@ -506,11 +506,8 @@ public class ChrgServ {
 				Serv servMain = null;
 				try {
 					servMain = servMng.getUpper(chrg.getServ(), "serv_tree_kassa");
-					//преобразовать к объекту текущей сессии (потому что начисление взято из таблицы)
-					//servMain = em.find(Serv.class, servMain.getId());
 				} catch(Exception e) {
 				    e.printStackTrace();
-					//servMain = chrg.getServ();
 					throw new ErrorWhileChrg("ChrgServ.save: ChrgThr: ErrorWhileChrg");
 				}
 				//Вычесть сумму по укрупнённой услуге из нового начисления, для расчета дельты для debt
@@ -518,6 +515,9 @@ public class ChrgServ {
 			}
 		}
 		
+		MultiKeyMap mapDebLogAfter = new MultiKeyMap(); // логгинг
+		mapDebLogAfter.putAll(mapDeb);
+
 		long endTime3=System.currentTimeMillis()-beginTime;
 		beginTime = System.currentTimeMillis();
 		
@@ -553,16 +553,17 @@ public class ChrgServ {
 		if (calc.getReqConfig().getOperTp().equals(0)) {
 			Set<Control> ctrlSet = new HashSet();
 			MapIterator it = mapDeb.mapIterator();
+			MultiKey mk;
+			BigDecimal val;
+			Boolean flag = false;
 			while (it.hasNext()) {
 				it.next();
-				MultiKey mk = (MultiKey) it.getKey();
+				mk = (MultiKey) it.getKey();
 				//log.trace("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
-				BigDecimal val = (BigDecimal)it.getValue();
+				val = (BigDecimal)it.getValue();
 				if (!(val.compareTo(BigDecimal.ZERO)==0)) {
-				//if (lsk.equals("14024244")) {
-				  //log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: Lsk="+lsk+", serv="+((Serv) mk.getKey(0)).getId()+" org="+((Org) mk.getKey(1)).getId()+" sum="+it.getValue(),2);
-				  log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: Lsk={} ,serv.id={}, serv.name={}, org.id={}, org.name={}, period={}, sum={}",
-				     lsk, ((Serv) mk.getKey(0)).getId(), ((Serv) mk.getKey(0)).getName(),
+				  log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: RQN={}, Lsk={} ,serv.id={}, serv.name={}, org.id={}, org.name={}, period={}, sum={}",
+						  calc.getReqConfig().getRqn(), lsk, ((Serv) mk.getKey(0)).getId(), ((Serv) mk.getKey(0)).getName(),
 				          ((Org) mk.getKey(1)).getId(), ((Org) mk.getKey(1)).getName(), calc.getReqConfig().getPeriod(), 
 				           val.doubleValue());
 				  //проверка на дубли
@@ -584,11 +585,52 @@ public class ChrgServ {
 				  qr.setParameter("P_PERIOD", calc.getReqConfig().getPeriod());
 				  qr.setParameter("P_SUMMA_CHNG", val.doubleValue());
 				  qr.setParameter("P_TP_CHNG", 1);
-				  qr.setParameter("P_FK_CHNG", 1);
+				  qr.setParameter("P_FK_CHNG", 1); // TODO Передавать Диману итерацию расчета (придумать и сделать)
 				  
 				  qr.execute();
+				  flag = true;
 				}
 			}
+			
+			if (flag) {
+				// ЛОГГИНГ
+				log.info("");
+
+				kart.getChrg().stream().forEach(t -> log.info("*** ЛОГГИНГ kart.getChrg()  ***: RQN={}, serv.id={}, org.id={}, sum={}",
+						calc.getReqConfig().getRqn(), t.getServ().getId(), t.getOrg().getId(), t.getSumAmnt()) 
+						);
+				log.info("");
+				
+				prepChrg.stream().forEach(t -> 		 log.info("*** ЛОГГИНГ prepChrg        ***: RQN={}, serv.id={}, org.id={}, sum={}",
+						calc.getReqConfig().getRqn(), t.getServ().getId(), t.getOrg().getId(), t.getSumAmnt()) 
+						);
+				
+				log.info("");
+				
+				it = mapDebLogBefore.mapIterator();
+				while (it.hasNext()) {
+					it.next();
+					mk = (MultiKey) it.getKey();
+					val = (BigDecimal)it.getValue();
+					log.info("*** ЛОГГИНГ mapDeb Before ***: RQN={}, serv.id={}, org.id={}, sum={}",
+						  calc.getReqConfig().getRqn(), ((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId(),  
+							val.doubleValue());
+				}
+
+				log.info("");
+				
+				it = mapDebLogAfter.mapIterator();
+				while (it.hasNext()) {
+					it.next();
+					mk = (MultiKey) it.getKey();
+					val = (BigDecimal)it.getValue();
+					log.info("*** ЛОГГИНГ mapDeb After  ***: RQN={}, serv.id={}, org.id={}, sum={}",
+						  calc.getReqConfig().getRqn(), ((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId(),  
+							val.doubleValue());
+				}
+				
+			}
+			
 		}
 		
 		long endTime5=System.currentTimeMillis()-beginTime;
@@ -629,7 +671,7 @@ public class ChrgServ {
 		} else {
 		  s = sum;
 		}
-	    //добавить в элемент массива
+	    //записать в элемент массива
 		mkMap.put(serv, org, s);
 	}
 

@@ -53,23 +53,32 @@ public class TarifMngImpl implements TarifMng {
 	 * @param cd - код свойства
 	 * @return - свойство
 	 */
-	@Cacheable(cacheNames="rrr1", key="{ #rqn, #tc.getKlskId(), #serv.getId(), #cd, #genDt }") 
-	public /*synchronized*/ Double getProp(int rqn, TarifContains tc, Serv serv, String cd, Date genDt) {
+	@Cacheable(cacheNames="rrr1", key="{#rqn, #tc.getKlskId(), #serv.getId(), #cd, #genDt }") 
+	public /*synchronized*/ Double getProp(Calc calc, int rqn, TarifContains tc, Serv serv, String cd, Date genDt) {
+		// TODO - переписать на Java 8!
 		//Prop prop = getPropByCD(cd);//так и не понял, как быстрее, искать тариф предварительно getPropByCD, или непосредственно через.getCd()
-		//искать сперва по наборам тарифа объекта 
-		for (TarifKlsk k : tc.getTarifklsk()) {
-			//по соотв.периоду
-			//if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
-				//затем по строкам - составляющим тариф 
-				for (TarifServProp t : k.getTarprop()) {
-					if (Utl.between(genDt, t.getDt1(), t.getDt2())) {
-						if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
-							return t.getN1();
+		//искать сперва по наборам тарифа объекта
+			Boolean isChng = false;
+			Chng chng = null; 
+			// необходимо ли искать привязку тарифа к перерасчету
+			if (calc.getReqConfig().getChng() != null && calc.getReqConfig().getChng().getTp().getCd().equals("Начисление за прошлый период")) {
+				isChng = true;
+				chng = calc.getReqConfig().getChng(); 
+			}
+				
+			for (TarifKlsk k : tc.getTarifklsk()) {
+				// Искать строки тарифа предназначенного для перерасчета (если задано) или не предназначенного
+				if (isChng && k.getChng()!=null && k.getChng().equals(chng) || !isChng && k.getChng()==null) {
+					//затем по строкам - составляющим тариф 
+					for (TarifServProp t : k.getTarprop()) {
+						if (Utl.between(genDt, t.getDt1(), t.getDt2())) {
+							if (t.getServ().equals(serv) && t.getProp().getCd().equals(cd)) {
+								return t.getN1();
+							}
 						}
 					}
 				}
-			//}
-		}
+			}
 		return null;
 		
 	}
@@ -82,11 +91,19 @@ public class TarifMngImpl implements TarifMng {
 	 */
 	//@Cacheable(cacheNames="rrr1") 
 	@Cacheable(cacheNames="rrr3", key="{ #rqn,  #tc.getKlskId(), #serv.getId(), #genDt }") 
-	public /*synchronized*/ Org getOrg(int rqn, TarifContains tc, Serv serv, Date genDt) {
+	public /*synchronized*/ Org getOrg(Calc calc, int rqn, TarifContains tc, Serv serv, Date genDt) {
+
+		Boolean isChng = false;
+		Chng chng = null; 
+		// необходимо ли искать привязку тарифа к перерасчету
+		if (calc.getReqConfig().getChng() != null && calc.getReqConfig().getChng().getTp().getCd().equals("Начисление за прошлый период")) {
+			isChng = true;
+			chng = calc.getReqConfig().getChng(); 
+		}
 
 		for (TarifKlsk k : tc.getTarifklsk()) {
-			//по соотв.периоду
-			//if (Utl.between(genDt, k.getDt1(), k.getDt2())) {
+			// Искать строки тарифа предназначенного для перерасчета (если задано) или не предназначенного
+			if (isChng && k.getChng()!=null && k.getChng().equals(chng) || !isChng && k.getChng()==null) {
 				//затем по строкам - составляющим тариф 
 				for (TarifServProp t : k.getTarprop()) {
 					if (Utl.between(genDt, t.getDt1(), k.getDt2())) {
@@ -95,7 +112,7 @@ public class TarifMngImpl implements TarifMng {
 						}
 					}
 				}
-			//}
+			}
 		}
 		return null;
 		

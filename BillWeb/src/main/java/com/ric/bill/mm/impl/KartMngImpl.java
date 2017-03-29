@@ -389,14 +389,14 @@ public class KartMngImpl implements KartMng {
 	public /*synchronized*/ Double getServPropByCD(int rqn, Calc calc, Serv serv, String cd, Date genDt) { //убрал synchronized, получил - java.util.concurrent.ExecutionException: org.hibernate.exception.GenericJDBCException: could not initialize a collection
 		Double val;
 		//в начале ищем по дому
-		val=tarMng.getProp(rqn, calc.getHouse(), serv, cd, genDt);
+		val=tarMng.getProp(calc, rqn, calc.getHouse(), serv, cd, genDt);
 		if (val==null) {
 			//потом ищем по лиц. счету 
-			val=tarMng.getProp(rqn, calc.getKart(), serv, cd, genDt);
+			val=tarMng.getProp(calc, rqn, calc.getKart(), serv, cd, genDt);
 		}
 		if (val==null) {
 			//потом ищем по городу
-			val=tarMng.getProp(rqn, calc.getArea(), serv, cd, genDt);
+			val=tarMng.getProp(calc, rqn, calc.getArea(), serv, cd, genDt);
 		}
 		return val;
 	}
@@ -413,14 +413,14 @@ public class KartMngImpl implements KartMng {
 	public /*synchronized*/ Org getOrg(int rqn, Calc calc, Serv serv, Date genDt) {
 		Org org;
 		//в начале ищем по дому
-		org=tarMng.getOrg(rqn, calc.getHouse(), serv, genDt);
+		org=tarMng.getOrg(calc, rqn, calc.getHouse(), serv, genDt);
 		if (org==null) {
 			//потом ищем по лиц. счету 
-			org=tarMng.getOrg(rqn, calc.getKart(), serv, genDt);
+			org=tarMng.getOrg(calc, rqn, calc.getKart(), serv, genDt);
 		}
 		if (org==null) {
 			//потом ищем по городу
-			org=tarMng.getOrg(rqn, calc.getArea(), serv, genDt);
+			org=tarMng.getOrg(calc, rqn, calc.getArea(), serv, genDt);
 		}
 		return org;
 	}

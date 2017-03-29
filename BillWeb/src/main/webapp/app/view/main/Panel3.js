@@ -13,6 +13,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
         type: 'main'
     },
 
+    listeners: { //TODO убрать потом!
+        afterrender: 'onGridPayordCmpItemDblClick'
+    },
+
     referenceHolder: true, // Важно! Эта панель является держателем ссылок (reference)
                            // и поэтому в контроллере можно будет искать по lookupReference
 
@@ -237,7 +241,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 }
             },
             listeners: {
-                itemdblclick: 'onGridPayordCmpItemDblClick'
+                //itemdblclick: 'onGridPayordCmpItemDblClick'
+             //   load: 'onGridPayordCmpItemDblClick'
             },
             columns: [
                 { text: 'Id',  dataIndex: 'id', width: 50

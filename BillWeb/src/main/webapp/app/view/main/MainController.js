@@ -293,12 +293,11 @@ Ext.define('BillWebApp.view.main.MainController', {
     },
 
     onGridPayordCmpItemDblClick: function() {
-        console.log("CHECK!")
+        console.log("CHECK!!!!!!!!");
+
         var myForm = new Ext.form.Panel({
             modal: true,
-            width: 500,
-            height: 400,
-            title: 'Foo',
+            title: 'Поиск объекта',
             floating: true,
             closable : true,
             items: [
