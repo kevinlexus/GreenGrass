@@ -31,6 +31,9 @@ public class AddrTp implements java.io.Serializable, Simple {
     @Column(name = "NAME", updatable = false, nullable = false)
 	private String name; //Наименование 
 
+    @Column(name = "NPP", updatable = false, nullable = false)
+	private Integer npp; //№ п.п.
+
     public Integer getId() {
 		return this.id;
 	}
@@ -50,6 +53,15 @@ public class AddrTp implements java.io.Serializable, Simple {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public Integer getNpp() {
+		return npp;
+	}
+	
+	public void setNpp(Integer npp) {
+		this.npp = npp;
+	}
+	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof AddrTp))

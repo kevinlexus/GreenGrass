@@ -1,19 +1,22 @@
 Ext.define('BillWebApp.view.main.AskObjPanel', {
 
 
-
     extend: 'Ext.form.Panel',
     xtype: 'form-hboxlayout',
-
+    alias: 'widget.askobjpanel',
     width: 500,
     height: 300,
     minWidth: 300,
     minHeight: 220,
     layout: 'form',
     plain: true,
-    bodyPadding: 10,
-    frame: true,
+    //bodyPadding: 10,
+    //frame: true,
     resizable : true,
+
+//    viewModel: { - надо или нет?
+//        type: 'main'
+//    },
 
     dockedItems: [{
         xtype: 'toolbar',
@@ -34,34 +37,33 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
         xtype: 'fieldset',
         defaultType: 'textfield',
         layout: 'anchor',
-        defaults: {
-            anchor: '100%'
-        },
         items: [
             {   xtype: 'combo',
                 typeAhead: true,
                 forceSelection: true,
+                fieldLabel: 'Тип',
+                labelWidth: 30,
                 displayField: 'name',
                 valueField: 'id',
                 triggerAction: 'all',
                 bind: {
-                    store: '{areastore}'
+                    store: '{addrtpspecstore}'
                 }
             },
             {
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
+                align: 'stretch',
                 combineErrors: true,
 
                 items: [{
                     xtype: 'textfield',
-                    labelWidth: 50,
-                    //                fieldLabel: 'Объект',
                     name: 'objName',
-                    flex: 4,
+                    flex: 8,
                     emptyText: 'Введите наименование',
                     allowBlank: false
                 }, {
+                    flex: 2,
                     xtype: 'button',
                     text: 'Найти'
                 }]
@@ -70,7 +72,6 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
             xtype: 'container',
             layout: 'hbox',
             defaultType: 'textfield',
-            margin: '0 0 5 0',
 
             items: [
 
@@ -78,7 +79,6 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
                     // ГРУППЫ ПЛАТЕЖЕК
                     xtype: 'gridpanel',
                     reference: 'payordGrpGrid',
-                    margin: '0 0 10 0',
                     selModel: 'cellmodel',
                     flex: 1,
                     height: 170,

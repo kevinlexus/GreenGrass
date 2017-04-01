@@ -64,7 +64,12 @@ public class TarifMngImpl implements TarifMng {
 				chng = calc.getReqConfig().getChng(); 
 			}
 				
+			//log.info("TC.id={}", tc.getKlskId());
+
 			for (TarifKlsk k : tc.getTarifklsk()) {
+				//if (k.getChng() != null) {
+				//	log.info("TarKlsk.id={}", k.getId());
+				//}
 				// Искать строки тарифа предназначенного для перерасчета (если задано) или не предназначенного
 				if (isChng && k.getChng()!=null && k.getChng().equals(chng) || !isChng && k.getChng()==null) {
 					//затем по строкам - составляющим тариф 

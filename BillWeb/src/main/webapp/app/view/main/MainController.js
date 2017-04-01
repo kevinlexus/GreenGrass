@@ -303,7 +303,8 @@ Ext.define('BillWebApp.view.main.MainController', {
             resizable : true,
             layout: 'fit',
             items: [
-                { xtype: 'askobjpanel' }]
+                { xtype: 'askobjpanel' }
+            ]
         });
         myForm.show();
     }

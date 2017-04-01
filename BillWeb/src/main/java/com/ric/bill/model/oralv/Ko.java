@@ -8,11 +8,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.AddrTp;
+import com.ric.bill.model.bs.Org;
 
 /**
  * Справочник всех объектов Klsk Objects - KO
@@ -33,8 +38,19 @@ public class Ko implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_ADDRTP", referencedColumnName="ID")
 	private AddrTp addrTp ; 
 
+	// Организация (На самом деле, здесь OneToOne, но не смог реализовать, оставил так)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="ID", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
+	private Org org; 
 	
-    public Ko() {
+	// Дом (На самом деле, здесь OneToOne, но не смог реализовать, оставил так)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="ID", referencedColumnName="FK_K_LSK", updatable = false, insertable = false)
+	private House house; 
+
+	// TODO можно добавить счетчик, и т.п.
+	
+	public Ko() {
 		super();
 	}
     
@@ -53,6 +69,23 @@ public class Ko implements java.io.Serializable, Simple {
 		this.addrTp = addrTp;
 	}
 	
+	
+	public Org getOrg() {
+		return org;
+	}
+
+	public void setOrg(Org org) {
+		this.org = org;
+	}
+
+	public House getHouse() {
+		return house;
+	}
+
+	public void setHouse(House house) {
+		this.house = house;
+	}
+
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof Ko))

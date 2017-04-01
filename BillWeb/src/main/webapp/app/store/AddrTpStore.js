@@ -1,11 +1,11 @@
 /**
- * Created by lev on 13.02.2017.
+ * Created by lev on 30.03.2017.
  */
-Ext.define('BillWebApp.store.LstStore', {
+Ext.define('BillWebApp.store.AddrTpSpec', {
     extend: 'Ext.data.Store',
-    alias  : 'store.lststore',
-    storeId: 'LstStore',
-    model: 'BillWebApp.model.Lst',
+    alias  : 'store.addrtpstore',
+    storeId: 'AddrTpStore',
+    model: 'BillWebApp.model.AddrTp',
     config:{
         autoLoad: true,
         autoSync: true
@@ -15,7 +15,7 @@ Ext.define('BillWebApp.store.LstStore', {
         type: 'ajax',
         api: {
             create  : '',
-            read    : 'http://192.168.100.21:8083/base/getLstByTp',
+            read    : 'http://192.168.100.21:8083/base/getAddrTp',
             update  : '',
             destroy : ''
         },

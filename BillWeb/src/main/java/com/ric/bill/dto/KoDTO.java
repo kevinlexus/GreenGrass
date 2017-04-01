@@ -8,47 +8,22 @@ package com.ric.bill.dto;
  * @author lev
  *
  */
-public class KoDTO {
+public class KoDTO extends BaseDTO {
 
-	private Integer id; //id
-	private String cd; //cd 
-	private String name; //Наименование 
-	private String addrTpCD; // Cd типа адреса 
+	private String addrTpCd; // Cd типа адреса 
 	
 	// конструктор
 	public KoDTO(Integer id, String cd, String name, String addrTpCd) {
-		super();
-		this.id = id;
-		this.cd = cd;
-		this.name = name;
-		this.addrTpCD = addrTpCD;
+		super(id, cd, name);
+		this.addrTpCd = addrTpCd;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public String getCd() {
-		return cd;
-	}
-	public void setCd(String cd) {
-		this.cd = cd;
-	}
 	public String getAddrTpCD() {
-		return addrTpCD;
+		return addrTpCd;
 	}
-	public void setAddrTpCD(String addrTpCD) {
-		this.addrTpCD = addrTpCD;
+	public void setAddrTpCD(String addrTpCd) {
+		this.addrTpCd = addrTpCd;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	
 	
 }

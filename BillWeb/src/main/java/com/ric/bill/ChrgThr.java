@@ -145,7 +145,9 @@ public class ChrgThr {
 		/*if (serv.getId()==20) {
 			log.trace("Serv");
 		}*/
-		
+		if (serv.getId()==35) {
+			log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
+		}
 		log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());
 		/*if (serv.getId()==72) {
 			log.trace("ChrThr.run1: "+thrName+", Услуга:"+serv.getCd()+" Id="+serv.getId());

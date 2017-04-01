@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.EqualsAndHashCode;
 
@@ -50,11 +51,10 @@ public abstract class Base implements Storable {
 	@Fetch(FetchMode.SUBSELECT)
 	protected List<Dw> dw = new ArrayList<Dw>(0);
 
-	// Klsk 
+	// Ko (На самом деле, здесь OneToOne, но не смог реализовать, оставил так)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_K_LSK", referencedColumnName="ID", updatable = false, insertable = false)
-	private Ko klsk;
-
+	private Ko ko;
 	
 	public List<Dw> getDw() {
 		return dw;
@@ -71,12 +71,12 @@ public abstract class Base implements Storable {
 		this.klskId = klsk;
 	}
 	
-	public Ko getKlsk() {
-		return klsk;
+	public Ko getKo() {
+		return ko;
 	}
 	
-	public void setKlsk(Ko klsk) {
-		this.klsk = klsk;
+	public void setKo(Ko klsk) {
+		this.ko = klsk;
 	}
 	
 	

@@ -562,10 +562,6 @@ public class ChrgServ {
 				//log.trace("Проверка дельты: serv="+mk.getKey(0)+" org="+mk.getKey(1)+" sum="+it.getValue(),2);
 				val = (BigDecimal)it.getValue();
 				if (!(val.compareTo(BigDecimal.ZERO)==0)) {
-				  log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: RQN={}, Lsk={} ,serv.id={}, serv.name={}, org.id={}, org.name={}, period={}, sum={}",
-						  calc.getReqConfig().getRqn(), lsk, ((Serv) mk.getKey(0)).getId(), ((Serv) mk.getKey(0)).getName(),
-				          ((Org) mk.getKey(1)).getId(), ((Org) mk.getKey(1)).getName(), calc.getReqConfig().getPeriod(), 
-				           val.doubleValue());
 				  //проверка на дубли
 				  if (ctrlSet.contains(new Control(((Serv) mk.getKey(0)).getId(), ((Org) mk.getKey(1)).getId()))) {
 						throw new ErrorWhileChrg("ChrgServ.save: Found dublicate elements while sending delta");
@@ -588,6 +584,12 @@ public class ChrgServ {
 				  qr.setParameter("P_FK_CHNG", 1); // TODO Передавать Диману итерацию расчета (придумать и сделать)
 				  
 				  qr.execute();
+
+				  log.info("*** ОТПРАВКА ДЕЛЬТЫ ***: RQN={}, Lsk={} ,serv.id={}, serv.name={}, org.id={}, org.name={}, period={}, sum={}",
+						  calc.getReqConfig().getRqn(), lsk, ((Serv) mk.getKey(0)).getId(), ((Serv) mk.getKey(0)).getName(),
+				          ((Org) mk.getKey(1)).getId(), ((Org) mk.getKey(1)).getName(), calc.getReqConfig().getPeriod(), 
+				           val.doubleValue());
+
 				  flag = true;
 				}
 			}

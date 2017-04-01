@@ -105,6 +105,10 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_STREET", referencedColumnName="ID", updatable = false)
 	private Street street;
+
+	// Номер дома
+	@Column(name = "ND")
+	private String nd;  
 	
 	public List<Kw> getKw() {
 		return kw;
@@ -136,6 +140,14 @@ public class House extends Base implements java.io.Serializable, MeterContains, 
 
 	public void setStreet(Street street) {
 		this.street = street;
+	}
+
+	public String getNd() {
+		return nd;
+	}
+
+	public void setNd(String nd) {
+		this.nd = nd;
 	}
 
 	public boolean equals(Object o) {

@@ -3,11 +3,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
     xtype: 'panel3',
     title: 'Настройки платежек',
     layout: {
-        type: 'vbox',
-        align: 'stretch'
+        type: 'vbox' // после смены vbox, проверить, как открываются комбо-боксы (могут не работать)
     },
     width: 1200,
-    minHeight: 300,
+    minHeight: 500,
     bodyPadding: 10,
     viewModel: {
         type: 'main'
@@ -33,7 +32,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             xtype: 'gridpanel',
             reference: 'payordGrpGrid',
             width: 1200,
-            minHeight: 220,
+            minHeight: 120,
             margin: '0 0 10 0',
             tbar: [{
                 text: 'Добавить группу',

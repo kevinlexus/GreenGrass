@@ -3,6 +3,9 @@ package com.ric.bill.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +13,9 @@ import org.springframework.stereotype.Service;
 import com.ric.bill.dao.AreaDAO;
 import com.ric.bill.dao.KoDAO;
 import com.ric.bill.dao.OrgDAO;
+import com.ric.bill.dao.impl.KoDAOImpl;
 import com.ric.bill.model.ar.Area;
+import com.ric.bill.model.bs.AddrTp;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
@@ -24,6 +29,7 @@ import com.ric.bill.model.tr.Serv;
  * @author lev
  *
  */
+@Slf4j
 @Service
 public class DTOBuilder {
 
@@ -102,7 +108,7 @@ public List<LstDTO> getLstDTOLst(List<Lst> lst) {
 public List<KoDTO> getOrgDTOLst(List<Org> lst) {
 	List<KoDTO> lst2 = new ArrayList<KoDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
-				new KoDTO(t.getId(), t.getCd(), t.getName(), t.getKlsk().getAddrTp().getCd())
+				new KoDTO(t.getId(), t.getCd(), t.getName(), t.getKo().getAddrTp().getCd())
 				));
 	return lst2;
 }
@@ -121,6 +127,45 @@ public List<ServDTO> getServDTOLst(List<Serv> lst) {
 }
 
 /**
+ * Построить коллекцию DTO Объектов Ko
+ * @param lst
+ * @return
+ */
+public List<KoDTO> getKoDTOLst(List<Ko> lst) {
+	List<KoDTO> lko = new ArrayList<KoDTO>(0);
+
+	// Добавить РКЦ, ЖЭО, РЭУ
+	List<KoDTO> lst2 = lst.stream().filter(t -> (t.getAddrTp().getCd().equals("РКЦ") || t.getAddrTp().getCd().equals("ЖЭО")
+			 																	  	 || t.getAddrTp().getCd().equals("РЭУ")
+			) )
+		.map(t -> new KoDTO(t.getId(), t.getOrg().getCd(), t.getOrg().getName(), t.getAddrTp().getCd()) )
+		.collect(Collectors.toList());
+	lko.addAll(lst2);
+	
+	log.info("size={}", lst.size());
+	//lst.stream().filter(t -> (t.getAddrTp().getCd().equals("Дом")))
+			//.forEach(t-> log.info("Дом= id={}, house={}", t.getId(), t.getHouse() ));
+	for (Ko k: lst) {
+		log.info("id={}", k.getId());
+		log.info("houseId={}", k.getHouse().getId());
+		
+	}
+	
+	
+	// Добавить Дом
+	lst2 = lst.stream().filter(t -> (t.getAddrTp().getCd().equals("Дом")
+			) )
+			.map(t -> new KoDTO(t.getId(), String.valueOf(t.getId()), 
+										   t.getHouse().getStreet().getArea().getName()+", "+
+												   t.getHouse().getStreet().getName()+", "+
+												   t.getHouse().getNd(), 
+										   t.getAddrTp().getCd()) )
+			.collect(Collectors.toList());
+	lko.addAll(lst2);
+	return lko;
+}
+
+/**
  * Построить коллекцию DTO Областей (Area)
  * @param lst
  * @return
@@ -129,6 +174,19 @@ public List<AreaDTO> getAreaDTOLst(List<Area> lst) {
 	List<AreaDTO> lst2 = new ArrayList<AreaDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
 				new AreaDTO(t.getId(), t.getCd(), t.getName())
+				));
+	return lst2;
+}
+
+/**
+ * Построить коллекцию DTO Типов адресов (AddrTp)
+ * @param lst
+ * @return
+ */
+public List<AddrTpDTO> getAddrTpDTOLst(List<AddrTp> lst) {
+	List<AddrTpDTO> lst2 = new ArrayList<AddrTpDTO>(0);
+	lst.stream().forEach(t-> lst2.add(
+				new AddrTpDTO(t.getId(), t.getCd(), t.getName())
 				));
 	return lst2;
 }
@@ -147,7 +205,7 @@ public KoDTO getKoByKlsk(Integer klskId) {
 		if (cd.equals("Area")) {
 
 			Area area = areaDao.getByKlsk(klskId);
-			ko = new KoDTO(klskId, area.getCd(), area.getName(), area.getKlsk().getAddrTp().getCd());
+			ko = new KoDTO(klskId, area.getCd(), area.getName(), area.getKo().getAddrTp().getCd());
 			
 		} else if (cd.equals("Дом")) {
 		//TODO
@@ -160,7 +218,7 @@ public KoDTO getKoByKlsk(Integer klskId) {
 
 		} else if (cd.equals("Организация")) {
 			Org org = orgDao.getByKlsk(klskId);
-			ko = new KoDTO(klskId, org.getCd(), org.getName(), org.getKlsk().getAddrTp().getCd());		
+			ko = new KoDTO(klskId, org.getCd(), org.getName(), org.getKo().getAddrTp().getCd());		
 		}
 		
 	}

@@ -30,6 +30,7 @@ import com.ric.bill.Config;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
 import com.ric.bill.Utl;
+import com.ric.bill.dto.AddrTpDTO;
 import com.ric.bill.dto.AreaDTO;
 import com.ric.bill.dto.DTOBuilder;
 import com.ric.bill.dto.KoDTO;
@@ -47,9 +48,11 @@ import com.ric.bill.mm.ReportMng;
 import com.ric.bill.mm.SecMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
+import com.ric.bill.model.bs.AddrTp;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
+import com.ric.bill.model.oralv.Ko;
 
 @EnableCaching
 @RestController
@@ -281,6 +284,18 @@ public class BillingController {
 
 	
 	/**
+	 * Получить список типов адресов
+	 * @param tp - 0 - весь список, 1 - ограниченный основными типами
+	 * @return
+	 */
+	@RequestMapping("/base/getAddrTp")
+	@ResponseBody
+	public List<AddrTpDTO> getAddrTp(@RequestParam(value = "tp") Integer tp) {
+		log.info("GOT /base/getAddrTp");
+		return dtoBuilder.getAddrTpDTOLst(lstMng.getAddrTpByTp(tp));
+	}
+
+	/**
 	 * Получить список по типу
 	 * 
 	 * @param tp - тип списка
@@ -295,20 +310,23 @@ public class BillingController {
 	}
 
 	/**
-	 * Получить список объектов определённого типа, фильтром
+	 * Получить список объектов определённого типа, с фильтром
 	 * 
 	 * @param addrTp - тип адреса
 	 *            
 	 * @return
 	 */
-	@RequestMapping("/base/getKoByTpFlt")
+	@RequestMapping("/base/getKoAddrTpFlt")
 	@ResponseBody
-	public List<LstDTO> getKoByTpFlt(@RequestParam(value = "addrTp") Integer addrTp,
-									@RequestParam(value = "flt") String flt
+	public List<KoDTO> getKoAddrTpFlt(@RequestParam(value = "addrTp") String addrTp,
+									 @RequestParam(value = "flt") String flt
 			) {
-		log.info("GOT /base/getKoByTpFlt with addTp={}, flt={}", addrTp, flt);
-		//return dtoBuilder.getKoDTOLst(lstMng.getKlskByTp(tp));
-		return null;
+		log.info("GOT /base/getKoAddrTpFlt with addrTp={}, flt={}", addrTp, flt);
+		
+//		Ko ko = em.find(Ko.class, 769857);
+//		log.info("Org={} cd={}",ko.getOrg(), ko.getAddrTp().getCd());
+		
+		return dtoBuilder.getKoDTOLst(lstMng.getKoByAddrTpFlt(addrTp, flt));
 	}
 
 	
