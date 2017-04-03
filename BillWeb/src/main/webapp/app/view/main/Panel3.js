@@ -74,15 +74,15 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         allowBlank: true
                     }
                 },
-                { text: 'Наименование',  dataIndex: 'name', width: 400,
+                { text: 'Наименование',  dataIndex: 'name', width: 400, align: "left",
                     editor: {
                         allowBlank: false
                     }
                 },
-                { text: 'Создано',  dataIndex: 'dtf', width: 100,
+                { text: 'Создано',  dataIndex: 'dtf', width: 100, align: "left",
                     formatter: 'date("d-m-Y H:i:s")'
                 },
-                { text: 'Пользователь',  dataIndex: 'username', width: 100
+                { text: 'Пользователь',  dataIndex: 'username', width: 100, align: "left"
                 },
                  {
                     menuDisabled: true,
@@ -139,7 +139,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
         columns: [
             { text: 'Id',  dataIndex: 'id', width: 50
             },
-            { text: 'Наименование',  dataIndex: 'name', width: 400,
+            { text: 'Наименование',  dataIndex: 'name', width: 400, align: "left",
                 editor: {
                     allowBlank: false
                 }
@@ -147,7 +147,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             {
                 text: 'Периодичность',
                 dataIndex: 'periodTpFk',
-                width: 170,
+                width: 170, align: "left",
                 queryMode: 'local',
                 editor: {
                     xtype: 'combo',
@@ -171,23 +171,23 @@ Ext.define('BillWebApp.view.main.Panel3', {
                   renderer: 'onGridPayordPeriodRender'
             },
 
-            { text: 'Дни формир.',  dataIndex: 'selDays', width: 100,
+            { text: 'Дни формир.',  dataIndex: 'selDays', width: 100, align: "left",
                 editor: {
                     allowBlank: true
                 }
             },
-            { text: 'Формула',  dataIndex: 'formula', width: 100,
+            { text: 'Формула',  dataIndex: 'formula', width: 100, align: "left",
                 editor: {
                     allowBlank: true
                 }
             }
             ,
-            { text: 'Сумма',  dataIndex: 'summa', width: 70
+            { text: 'Сумма',  dataIndex: 'summa', width: 70, align: "left"
             },
-            { text: 'Создано',  dataIndex: 'dtf', width: 100,
+            { text: 'Создано',  dataIndex: 'dtf', width: 100, align: "left",
                 formatter: 'date("d-m-Y H:i:s")'
             },
-            { text: 'Пользователь',  dataIndex: 'username', width: 100
+            { text: 'Пользователь',  dataIndex: 'username', width: 100, align: "left"
             },
             {
                 menuDisabled: true,
@@ -351,14 +351,14 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 },
                 { text: 'KlskFk',  dataIndex: 'klskFk', width: 150
                 },
-                { text: 'Маркер',  dataIndex: 'mark', width: 150
+                { text: 'Маркер',  dataIndex: 'mark', width: 150, align: "left"
                 },
-                { text: 'Сумма',  dataIndex: 'summa', width: 70
+                { text: 'Сумма',  dataIndex: 'summa', width: 70, align: "left"
                 },
-                { text: 'Создано',  dataIndex: 'dtf', width: 100,
+                { text: 'Создано',  dataIndex: 'dtf', width: 100, align: "left",
                     formatter: 'date("d-m-Y H:i:s")'
                 },
-                { text: 'Пользователь',  dataIndex: 'username', width: 100
+                { text: 'Пользователь',  dataIndex: 'username', width: 100, align: "left"
                 },
                 {
                     menuDisabled: true,

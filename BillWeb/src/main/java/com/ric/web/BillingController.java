@@ -318,15 +318,15 @@ public class BillingController {
 	 */
 	@RequestMapping("/base/getKoAddrTpFlt")
 	@ResponseBody
-	public List<KoDTO> getKoAddrTpFlt(@RequestParam(value = "addrTp") String addrTp,
+	public List<KoDTO> getKoAddrTpFlt(@RequestParam(value = "addrTp") Integer addrTpId,
 									 @RequestParam(value = "flt") String flt
 			) {
-		log.info("GOT /base/getKoAddrTpFlt with addrTp={}, flt={}", addrTp, flt);
+		log.info("GOT /base/getKoAddrTpFlt with addrTp={}, flt={}", addrTpId, flt);
 		
 //		Ko ko = em.find(Ko.class, 769857);
 //		log.info("Org={} cd={}",ko.getOrg(), ko.getAddrTp().getCd());
 		
-		return dtoBuilder.getKoDTOLst(lstMng.getKoByAddrTpFlt(addrTp, flt));
+		return dtoBuilder.getKoDTOLst(lstMng.getKoByAddrTpFlt(addrTpId, flt));
 	}
 
 	

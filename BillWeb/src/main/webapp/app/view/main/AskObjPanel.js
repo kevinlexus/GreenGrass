@@ -4,7 +4,7 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
     extend: 'Ext.form.Panel',
     xtype: 'form-hboxlayout',
     alias: 'widget.askobjpanel',
-    width: 500,
+    width: 600,
     height: 300,
     minWidth: 300,
     minHeight: 220,
@@ -46,8 +46,9 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
                 displayField: 'name',
                 valueField: 'id',
                 triggerAction: 'all',
+                reference: 'askObjComboAdrTp',
                 bind: {
-                    store: '{addrtpspecstore}'
+                    store: '{addrMainTpStore}'
                 }
             },
             {
@@ -61,34 +62,35 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
                     name: 'objName',
                     flex: 8,
                     emptyText: 'Введите наименование',
-                    allowBlank: false
+                    allowBlank: false,
+                    reference: 'askObjName'
                 }, {
                     flex: 2,
                     xtype: 'button',
-                    text: 'Найти'
+                    text: 'Найти',
+                    listeners: {
+                        click: 'onAskObjButtonPress'
+                    }
                 }]
             },
             {
             xtype: 'container',
-            layout: 'hbox',
+            layout: 'vbox',
+            layout:'fit',
             defaultType: 'textfield',
 
             items: [
 
                 {
-                    // ГРУППЫ ПЛАТЕЖЕК
+                    // Объекты для выбора
                     xtype: 'gridpanel',
-                    reference: 'payordGrpGrid',
-                    selModel: 'cellmodel',
-                    flex: 1,
+                    reference: 'askObjGrid',
+                    //flex: 1,
+//                    minHeight: 100,
                     height: 170,
                     hideHeaders: true,
                     bind: {
-                        store: '{payordgrpstore}',
-                        listeners: {
-                            edit: 'onGridPayordGrpUpd',
-                            cancelEdit: 'onGridPayordGrpCancel'
-                        }
+                        store: '{koAddrTpStore}'
                     },
                     columns: [
                         { text: 'Id',  dataIndex: 'id', width: 50,
@@ -96,7 +98,7 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
                                 allowBlank: true
                             }
                         },
-                        { text: 'Наименование',  dataIndex: 'name', width: 400,
+                        { text: 'Наименование',  dataIndex: 'name', width: 420, align: "left",
                             editor: {
                                 allowBlank: false
                             }

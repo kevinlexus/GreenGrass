@@ -13,6 +13,7 @@ $include-billwebapp-model-payordgrp: dynamic(true);;
 $include-billwebapp-model-period: dynamic(true);;
 $include-billwebapp-model-serv: dynamic(true);;
 $include-billwebapp-store-addrtpspec: dynamic(true);;
+$include-billwebapp-store-kostore: dynamic(true);;
 $include-billwebapp-store-lststore: dynamic(true);;
 $include-billwebapp-store-orgcuruserstore: dynamic(true);;
 $include-billwebapp-store-orgstore: dynamic(true);;

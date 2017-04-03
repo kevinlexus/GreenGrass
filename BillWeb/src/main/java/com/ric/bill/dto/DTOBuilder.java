@@ -10,10 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ric.bill.Utl;
 import com.ric.bill.dao.AreaDAO;
 import com.ric.bill.dao.KoDAO;
 import com.ric.bill.dao.OrgDAO;
 import com.ric.bill.dao.impl.KoDAOImpl;
+import com.ric.bill.mm.HouseMng;
 import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.AddrTp;
 import com.ric.bill.model.bs.Lst;
@@ -40,6 +42,8 @@ AreaDAO areaDao;
 OrgDAO orgDao;
 @Autowired
 KoDAO klskDao;
+@Autowired
+HouseMng houseMng;
 
 
 /**
@@ -142,22 +146,16 @@ public List<KoDTO> getKoDTOLst(List<Ko> lst) {
 		.collect(Collectors.toList());
 	lko.addAll(lst2);
 	
-	log.info("size={}", lst.size());
-	//lst.stream().filter(t -> (t.getAddrTp().getCd().equals("Дом")))
-			//.forEach(t-> log.info("Дом= id={}, house={}", t.getId(), t.getHouse() ));
-	for (Ko k: lst) {
-		log.info("id={}", k.getId());
-		log.info("houseId={}", k.getHouse().getId());
-		
-	}
-	
+	// Текущая дата
+	Date date = new Date();
 	
 	// Добавить Дом
 	lst2 = lst.stream().filter(t -> (t.getAddrTp().getCd().equals("Дом")
 			) )
 			.map(t -> new KoDTO(t.getId(), String.valueOf(t.getId()), 
-										   t.getHouse().getStreet().getArea().getName()+", "+
-												   t.getHouse().getStreet().getName()+", "+
+										   t.getHouse().getStreet().getArea().getName()+", "
+												   + houseMng.getUkNameByDt(t.getHouse(), date)
+												   +", "+t.getHouse().getStreet().getName()+", "+
 												   t.getHouse().getNd(), 
 										   t.getAddrTp().getCd()) )
 			.collect(Collectors.toList());

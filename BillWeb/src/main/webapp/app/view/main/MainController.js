@@ -293,7 +293,6 @@ Ext.define('BillWebApp.view.main.MainController', {
     },
 
     onGridPayordCmpItemDblClick: function() {
-        console.log("CHECK!!!!!!!!");
 
         var myForm = new Ext.form.Panel({
             modal: true,
@@ -307,6 +306,16 @@ Ext.define('BillWebApp.view.main.MainController', {
             ]
         });
         myForm.show();
-    }
+    },
 
+    // в AskObjPanel: Обновить грид, при нажатии кнопки
+    onAskObjButtonPress: function() {
+        var askObjComboAdrTp = this.lookupReference('askObjComboAdrTp');
+        var koAddrTpStore = this.getViewModel().getStore('koAddrTpStore');
+        var askObjName = this.lookupReference('askObjName');
+        koAddrTpStore.load({params: {
+            'addrTp': askObjComboAdrTp.getValue(),
+            'flt': askObjName.getValue()
+        }});
+    }
 });

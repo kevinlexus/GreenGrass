@@ -68,7 +68,7 @@ public class LstMngImpl implements LstMng {
 	/**
 	 * Получить список типа Ko по типу адреса и фильтру по наименованию
 	 */
-	public List<Ko> getKoByAddrTpFlt(String addrTp, String flt) {
+	public List<Ko> getKoByAddrTpFlt(Integer addrTp, String flt) {
 		return koDao.getKoByAddrTpFlt(addrTp, flt);
 	}
 	

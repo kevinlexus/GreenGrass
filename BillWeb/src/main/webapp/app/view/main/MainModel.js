@@ -55,13 +55,16 @@ Ext.define('BillWebApp.view.main.MainModel', {
                 }
             }
         },
-        addrtpspecstore: { //список типов адресов ограниченный основными типами!
+        addrMainTpStore: { //список типов адресов ограниченный основными типами!
             type: 'addrtpstore',
             proxy : {
                 extraParams : {
                     tp : 1
                 }
             }
+        },
+        koAddrTpStore: {
+            type: 'kostore'
         },
         servstore: {
             type: 'servstore'

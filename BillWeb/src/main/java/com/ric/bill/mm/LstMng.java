@@ -13,7 +13,7 @@ public interface LstMng {
 	public Lst getByCD(String cd);
 	public List<Lst> getByTp(String cdTp);
 	public List<Area> getAreaAll();
-	public List<Ko> getKoByAddrTpFlt(String addrTp, String flt);
+	public List<Ko> getKoByAddrTpFlt(Integer addrTp, String flt);
 	public List<AddrTp> getAddrTpByTp(Integer tp);
 	
 }

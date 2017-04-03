@@ -12,6 +12,6 @@ import com.ric.bill.model.tr.Serv;
 public interface KoDAO {
 
 	public Ko getByKlsk(Integer klsk);
-	public List<Ko> getKoByAddrTpFlt(String addrTp, String flt);
+	public List<Ko> getKoByAddrTpFlt(Integer addrTp, String flt);
 	
 }

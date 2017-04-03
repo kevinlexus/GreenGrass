@@ -40,17 +40,19 @@ public class KoDAOImpl implements KoDAO {
 	/**
 	 * Получить список типа Ko по типу адреса и фильтру по наименованию
 	 */
-	public List<Ko> getKoByAddrTpFlt(String addrTp, String flt) {
+	public List<Ko> getKoByAddrTpFlt(Integer addrTp, String flt) {
 
 		Query query = null;
+		AddrTp atp = em.find(AddrTp.class, addrTp);
+		String addrTpCd = atp.getCd();
 		// Зная тип адреса, выбрать соотв.запрос
-		if (addrTp.equals("РКЦ") || addrTp.equals("ЖЭО") || addrTp.equals("РЭУ")) {
+		if (addrTpCd.equals("РКЦ") || addrTpCd.equals("ЖЭО") || addrTpCd.equals("РЭУ")) {
 			query =em.createQuery("select t from Org o "
-					+ "join o.ko t join t.addrTp tp where tp.cd = :addrTp and upper(o.name) like fn.p_chrg_part.getstrbypart(:flt,  :par) ");
-			query.setParameter("addrTp", addrTp);
+					+ "join o.ko t join t.addrTp tp where tp.id = :addrTpCd and upper(o.name) like fn.p_chrg_part.getstrbypart(:flt,  :par) ");
+			query.setParameter("addrTpCd", addrTpCd);
 			query.setParameter("flt", flt);
 			query.setParameter("par", 1);
-		} else if (addrTp.equals("Дом")) {
+		} else if (addrTpCd.equals("Дом")) {
 
 			query =em.createQuery("select t from House o "
 					+ "join o.ko t join o.street s where upper(o.nd) like fn.p_chrg_part.getstrbypart(:flt,  2) "
