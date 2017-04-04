@@ -9,26 +9,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
     minHeight: 500,
     bodyPadding: 10,
     reference: 'panel3',
-    viewModel: {
-        type: 'main'
-    },
-
-//    listeners: { //TODO убрать потом!
-//        afterrender: 'onGridPayordCmpItemDblClick'
-//    },
-
-    referenceHolder: true, // Важно! Эта панель является держателем ссылок (reference)
-                           // и поэтому в контроллере можно будет искать по lookupReference
-
-    controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
 
     defaults: {
         frame: true,
         bodyPadding: 10
     },
 
-    items: [
-            {
+    items: [{
             // ГРУППЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
             reference: 'payordGrpGrid',

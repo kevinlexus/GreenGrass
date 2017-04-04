@@ -9,6 +9,7 @@ Ext.define('BillWebApp.view.main.MainController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main',
 
+
     // Проверка при включении чекбокса
     onChangePeriodType: function (chk , newValue , oldValue , eOpts) {
         //получить выбранные id
@@ -64,6 +65,8 @@ Ext.define('BillWebApp.view.main.MainController', {
     },
 
     onGridPayordGrpRowClick: function(grid, rec) {
+        console.log('onGridPayordGrpRowClick: click!');
+
         var store = this.getViewModel().getStore('payordstore');
         var store1 = this.getViewModel().getStore('payordcmpstore');
         var payordGrid = this.lookupReference('payordGrid');
@@ -126,6 +129,16 @@ Ext.define('BillWebApp.view.main.MainController', {
 
     // Добавить платежку в группу
     onGridPayordAdd: function() {
+
+        // убрать
+        var ppp = this.lookupReference('payordGrpGrid'); // убрать
+        console.log('Grid='+ppp);
+        var vm = this.getViewModel();
+        console.log('View.id='+vm.id);
+        console.log('View.type='+vm.type);
+        // убрать
+
+
         var payordstore = this.getViewModel().getStore('payordstore');
         var payordGrpGrid = this.lookupReference('payordGrpGrid');
         var payordGrid = this.lookupReference('payordGrid');
@@ -217,6 +230,7 @@ Ext.define('BillWebApp.view.main.MainController', {
     // Добавить формулу в платежку
     onGridPayordCmpAdd: function() {
         console.log('Add1');
+
         var payordcmpstore = this.getViewModel().getStore('payordcmpstore');
         var payordCmpGrid = this.lookupReference('payordCmpGrid');
         var payordGrid = this.lookupReference('payordGrid');
@@ -296,7 +310,6 @@ Ext.define('BillWebApp.view.main.MainController', {
     // Открыть панель выбора объекта
     onGridPayordCmpItemSel: function() {
 
-
         askObjPanel = new Ext.form.Panel({
             modal: true,
             title: 'Поиск объекта',
@@ -316,24 +329,16 @@ Ext.define('BillWebApp.view.main.MainController', {
         });
         askObjPanel.show();
 
-        var ppp = this.lookupReference('payordGrpGrid'); // убрать
+        /*var ppp = this.lookupReference('payordGrpGrid'); // убрать
         console.log('Grid='+ppp);
         var vm = this.getViewModel();
         console.log('View.id='+vm.id);
-        console.log('View.type='+vm.type);
+        console.log('View.type='+vm.type);*/
 
     },
 
     // В AskObjPanel: Обновить грид, при нажатии кнопки поиска
     onAskObjButtonFindPress: function() {
-        var ppp = this.lookupReference('payordGrpGrid'); // убрать
-        console.log('Grid='+ppp);
-        var vm = this.getViewModel();
-        console.log('View.id='+vm.id);
-        console.log('View.type='+vm.type);
-
-
-
         var askObjComboAdrTp = this.lookupReference('askObjComboAdrTp');
         var koAddrTpStore = this.getViewModel().getStore('koAddrTpStore');
         var askObjName = this.lookupReference('askObjName');
@@ -345,16 +350,21 @@ Ext.define('BillWebApp.view.main.MainController', {
 
     // В AskObjPanel: Записать новое значение в поле грида, при нажатии кнопки выбора
     onAskObjButtonSelPress: function() {
-        var payordGrpGrid = this.lookupReference('payordGrpGrid'); // убрать
-        console.log('Grid='+payordGrpGrid);
+//        var payordGrpGrid = this.lookupReference('payordGrpGrid'); // убрать
+//        console.log('Grid='+payordGrpGrid);
 
-//        askObjPanel.destroy();
+//
+      var payordCmpGrid = this.lookupReference('payordCmpGrid');
+        console.log('Grid='+payordCmpGrid);
+        var koAddrTpStore = this.getViewModel().getStore('koAddrTpStore');
+        var models1 = koAddrTpStore.getRange();
+        console.log('id=', models1[0].get('id'));
 
-        //var payordCmpGrid = this.lookupReference('payordCmpGrid');
-//        console.log('Grid='+payordCmpGrid);
-//        var models = payordCmpGrid.getStore().getRange();
-//        models[0].set(klskFk, 222);
+        var models2 = payordCmpGrid.getStore().getRange();
+        models2[0].set('klskFk', models1[0].get('id'));
+        askObjPanel.destroy();
 
-//        panel3.focus();
+        var panel3 = this.lookupReference('panel3'); // убрать
+        panel3.focus();
     }
 });

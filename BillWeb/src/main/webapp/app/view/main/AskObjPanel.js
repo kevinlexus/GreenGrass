@@ -10,19 +10,8 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
     minHeight: 220,
     layout: 'form',
     plain: true,
-    //bodyPadding: 10,
-    //frame: true,
     resizable : true,
     reference: 'askObjPanel',
-
-
-    viewModel: { //- надо или нет?
-        type: 'main'
-    },
-    //referenceHolder: true, // Важно! Эта панель является держателем ссылок (reference)
-                           // и поэтому в контроллере можно будет искать по lookupReference
-    controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
-
 
 
     dockedItems: [{
@@ -120,3 +109,39 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
         }]
     }]
 });
+
+/*
+
+ Ext.define('BillWebApp.view.main.AskObjPanel', {
+
+ extend: 'Ext.form.Panel',
+ xtype: 'form-hboxlayout',
+ alias: 'widget.askobjpanel',
+ layout: 'form',
+ plain: true,
+ reference: 'askObjPanel',
+ //controller: 'main',
+
+ items: [{
+ xtype: 'fieldset',
+ defaultType: 'textfield',
+ layout: 'anchor',
+ items: [{
+ xtype: 'fieldcontainer',
+ layout: 'hbox',
+ align: 'stretch',
+ combineErrors: true,
+
+ items: [{
+ flex: 2,
+ xtype: 'button',
+ text: 'Button3',
+ listeners: {
+ click: 'onPressButton3'
+ }
+ }]
+ }]
+ }]
+
+ });
+ */
