@@ -48,7 +48,7 @@ public class KoDAOImpl implements KoDAO {
 		// Зная тип адреса, выбрать соотв.запрос
 		if (addrTpCd.equals("РКЦ") || addrTpCd.equals("ЖЭО") || addrTpCd.equals("РЭУ")) {
 			query =em.createQuery("select t from Org o "
-					+ "join o.ko t join t.addrTp tp where tp.id = :addrTpCd and upper(o.name) like fn.p_chrg_part.getstrbypart(:flt,  :par) ");
+					+ "join o.ko t join t.addrTp tp where tp.cd = :addrTpCd and upper(o.name) like fn.p_chrg_part.getstrbypart(:flt,  :par) ");
 			query.setParameter("addrTpCd", addrTpCd);
 			query.setParameter("flt", flt);
 			query.setParameter("par", 1);

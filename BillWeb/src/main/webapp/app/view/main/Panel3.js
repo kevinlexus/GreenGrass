@@ -8,13 +8,14 @@ Ext.define('BillWebApp.view.main.Panel3', {
     width: 1200,
     minHeight: 500,
     bodyPadding: 10,
+    reference: 'panel3',
     viewModel: {
         type: 'main'
     },
 
-    listeners: { //TODO убрать потом!
-        afterrender: 'onGridPayordCmpItemDblClick'
-    },
+//    listeners: { //TODO убрать потом!
+//        afterrender: 'onGridPayordCmpItemDblClick'
+//    },
 
     referenceHolder: true, // Важно! Эта панель является держателем ссылок (reference)
                            // и поэтому в контроллере можно будет искать по lookupReference
@@ -224,6 +225,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 saveBtnText: 'Сохранить',
                 cancelBtnText: 'Отмена',
                 errorSummary: false // погасить сообщение валидации
+                /*listeners: {
+                    edit: function(editor,e,opt){
+                        console.log(editor); //Contains the variables that should have been in the e var
+                        console.log(e);
+                        console.log(opt); //undefined
+                    }
+                }*/
             },
             bind: {
                 store: '{payordcmpstore}',
@@ -240,7 +248,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 }
             },
             listeners: {
-                //itemdblclick: 'onGridPayordCmpItemDblClick'
+              //  itemdblclick: 'onGridPayordCmpItemSel'
              //   load: 'onGridPayordCmpItemDblClick'
             },
             columns: [
@@ -309,23 +317,16 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         displayField: 'name',
                         valueField: 'id',
                         triggerAction: 'all',
-                        validator: function(value) {
-                            if (value != '') {
-                                return true;
-                            } else {
-                                return 'Необходимо заполнить поле!';
-                            }
-                        },
+                        allowBlank: false,
                         bind: {
                             store: '{orgstore}'
-                        },
-                        allowBlank: false
+                        }
                     },
                     renderer: 'onGridPayordCmpOrgRender'
                 },
                 {
-                    header: 'Тип объекта',
-                    dataIndex: 'areaFk',
+                    header: 'Объект',
+                    dataIndex: 'klskFk',
                     width: 200,
                     queryMode: 'local',
                     editor: {
@@ -335,21 +336,12 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         displayField: 'name',
                         valueField: 'id',
                         triggerAction: 'all',
-                        validator: function(value) {
-                            if (value != '') {
-                                return true;
-                            } else {
-                                return 'Необходимо заполнить поле!';
-                            }
-                        },
-                        bind: {
-                            store: '{areastore}'
-                        },
-                        allowBlank: false
-                    },
-                    renderer: 'onGridPayordCmpAreaRender'
-                },
-                { text: 'KlskFk',  dataIndex: 'klskFk', width: 150
+                        allowBlank: false,
+                        listeners: {
+                            expand: 'onGridPayordCmpItemSel'
+                            //   load: 'onGridPayordCmpItemDblClick'
+                        }
+                    }
                 },
                 { text: 'Маркер',  dataIndex: 'mark', width: 150, align: "left"
                 },

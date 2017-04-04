@@ -13,10 +13,17 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
     //bodyPadding: 10,
     //frame: true,
     resizable : true,
+    reference: 'askObjPanel',
 
-//    viewModel: { - надо или нет?
-//        type: 'main'
-//    },
+
+    viewModel: { //- надо или нет?
+        type: 'main'
+    },
+    //referenceHolder: true, // Важно! Эта панель является держателем ссылок (reference)
+                           // и поэтому в контроллере можно будет искать по lookupReference
+    controller: 'main', // Обязательно указывать контроллер, иначе не будет привязан нужный store!!!
+
+
 
     dockedItems: [{
         xtype: 'toolbar',
@@ -29,7 +36,10 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
         },
         items: ['->', {
             xtype: 'button',
-            text: 'Выбрать'
+            text: 'Выбрать',
+            listeners: {
+                click: 'onAskObjButtonSelPress'
+            }
         }]
     }],
 
@@ -69,7 +79,7 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
                     xtype: 'button',
                     text: 'Найти',
                     listeners: {
-                        click: 'onAskObjButtonPress'
+                        click: 'onAskObjButtonFindPress'
                     }
                 }]
             },
@@ -108,78 +118,5 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
 
             ]
         }]
-    }]/*,
-        {
-            xtype: 'container',
-            layout: {
-                type: 'hbox'
-            },
-            dock: 'bottom',
-            items:[{
-                xtype: 'button',
-                text: 'blabla'
-            }]
-        }
-
-    ]*/
-
-/*    items: [{
-        xtype: 'form',
-
-        fieldDefaults: {
-            labelWidth: 60
-        },
-
-        layout: 'anchor',
-        defaults: {
-            anchor: '100%'
-        },
-        items: [{
-            xtype: 'textfield',
-            fieldLabel: 'Send To',
-            name: 'to',
-            flex: 2
-        }, {
-            xtype: 'button',
-            text: 'Поиск',
-            flex: 3
-        }, {
-            // ГРУППЫ ПЛАТЕЖЕК
-            xtype: 'gridpanel',
-            reference: 'payordGrpGrid',
-            width: 600,
-            minHeight: 220,
-            flex: 1,
-            margin: '0 0 10 0',
-            selModel: 'cellmodel',
-            bind: {
-                store: '{payordgrpstore}',
-                listeners: {
-                    edit: 'onGridPayordGrpUpd',
-                    cancelEdit: 'onGridPayordGrpCancel'
-                }
-            },
-            columns: [
-                { text: 'Id',  dataIndex: 'id', width: 50,
-                    editor: {
-                        allowBlank: true
-                    }
-                },
-                { text: 'Наименование',  dataIndex: 'name', width: 400,
-                    editor: {
-                        allowBlank: false
-                    }
-                }
-            ]
-        }
-        ]
-    }],
-
-    buttons: [{
-        text: 'Send'
-    },{
-        text: 'Cancel'
     }]
-*/
-
 });

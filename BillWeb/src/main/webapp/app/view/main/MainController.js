@@ -4,6 +4,7 @@
  *
  * TODO - Replace this content of this view to suite the needs of your application.
  */
+var askObjPanel;
 Ext.define('BillWebApp.view.main.MainController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main',
@@ -292,24 +293,47 @@ Ext.define('BillWebApp.view.main.MainController', {
         });
     },
 
-    onGridPayordCmpItemDblClick: function() {
+    // Открыть панель выбора объекта
+    onGridPayordCmpItemSel: function() {
 
-        var myForm = new Ext.form.Panel({
+
+        askObjPanel = new Ext.form.Panel({
             modal: true,
             title: 'Поиск объекта',
             floating: true,
             closable : true,
             resizable : true,
             layout: 'fit',
+
+            //viewModel: { //- надо или нет?
+            //    type: 'main'
+            //},
+            //controller: 'main',
+
             items: [
                 { xtype: 'askobjpanel' }
             ]
         });
-        myForm.show();
+        askObjPanel.show();
+
+        var ppp = this.lookupReference('payordGrpGrid'); // убрать
+        console.log('Grid='+ppp);
+        var vm = this.getViewModel();
+        console.log('View.id='+vm.id);
+        console.log('View.type='+vm.type);
+
     },
 
-    // в AskObjPanel: Обновить грид, при нажатии кнопки
-    onAskObjButtonPress: function() {
+    // В AskObjPanel: Обновить грид, при нажатии кнопки поиска
+    onAskObjButtonFindPress: function() {
+        var ppp = this.lookupReference('payordGrpGrid'); // убрать
+        console.log('Grid='+ppp);
+        var vm = this.getViewModel();
+        console.log('View.id='+vm.id);
+        console.log('View.type='+vm.type);
+
+
+
         var askObjComboAdrTp = this.lookupReference('askObjComboAdrTp');
         var koAddrTpStore = this.getViewModel().getStore('koAddrTpStore');
         var askObjName = this.lookupReference('askObjName');
@@ -317,5 +341,20 @@ Ext.define('BillWebApp.view.main.MainController', {
             'addrTp': askObjComboAdrTp.getValue(),
             'flt': askObjName.getValue()
         }});
+    },
+
+    // В AskObjPanel: Записать новое значение в поле грида, при нажатии кнопки выбора
+    onAskObjButtonSelPress: function() {
+        var payordGrpGrid = this.lookupReference('payordGrpGrid'); // убрать
+        console.log('Grid='+payordGrpGrid);
+
+//        askObjPanel.destroy();
+
+        //var payordCmpGrid = this.lookupReference('payordCmpGrid');
+//        console.log('Grid='+payordCmpGrid);
+//        var models = payordCmpGrid.getStore().getRange();
+//        models[0].set(klskFk, 222);
+
+//        panel3.focus();
     }
 });
