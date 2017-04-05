@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="1ab6b1df-caef-4bd0-8e7c-9ae034c355c4" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/SrvThr.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/ChrgThr.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/ChrgThr.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/AskObjPanel.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/AskObjPanel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/MainController.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/MainController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/Config.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/Config.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" afterPath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" />
@@ -105,8 +104,8 @@
       <file leaf-file-name="MainController.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4217687">
-              <caret line="344" column="37" selection-start-line="344" selection-start-column="37" selection-end-line="344" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.7494331">
+              <caret line="361" column="0" selection-start-line="361" selection-start-column="0" selection-end-line="361" selection-end-column="0" />
               <folding>
                 <marker date="1491296534458" expanded="true" signature="6316:6321" placeholder="{...}" />
               </folding>
@@ -862,8 +861,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4217687">
-          <caret line="344" column="37" selection-start-line="344" selection-start-column="37" selection-end-line="344" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.7494331">
+          <caret line="361" column="0" selection-start-line="361" selection-start-column="0" selection-end-line="361" selection-end-column="0" />
           <folding>
             <marker date="1491296534458" expanded="true" signature="6316:6321" placeholder="{...}" />
           </folding>
