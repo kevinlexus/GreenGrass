@@ -36,16 +36,15 @@ public class PayordCmp implements java.io.Serializable, Simple {
 		
 	}
 
-	public PayordCmp(Payord payord, Lst var, Serv serv, Org org, Area area, Ko klskObj,
+	public PayordCmp(Payord payord, Lst var, Serv serv, Org org, Ko ko,
 			String mark) {
 		super();
 		this.payord = payord;
 		this.var = var;
 		this.serv = serv;
 		this.org = org;
-		this.area = area;
 		this.mark = mark;
-		this.klskObj = klskObj;
+		this.ko = ko;
 	}
 
 	@Id
@@ -82,15 +81,10 @@ public class PayordCmp implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_ORG", referencedColumnName="ID")
 	private Org org; 
 	
-	// Тип объекта сбора инф.(Город, дом, УК)
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_AREA", referencedColumnName="ID")
-	private Area area; 
-
 	// Объект сбора инф.
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_KLSK_OBJ", referencedColumnName="ID")
-	private Ko klskObj; 
+	private Ko ko; 
 	
 	// Маркер
 	@Column(name = "MARK")
@@ -125,20 +119,12 @@ public class PayordCmp implements java.io.Serializable, Simple {
 		this.org = org;
 	}
 
-	public Area getArea() {
-		return area;
+	public Ko getKo() {
+		return ko;
 	}
 
-	public void setArea(Area area) {
-		this.area = area;
-	}
-
-	public Ko getKlskObj() {
-		return klskObj;
-	}
-
-	public void setKlskObj(Ko klsk) {
-		this.klskObj = klsk;
+	public void setKo(Ko ko) {
+		this.ko = ko;
 	}
 
 	public String getMark() {

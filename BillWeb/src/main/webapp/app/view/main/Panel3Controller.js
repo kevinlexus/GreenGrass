@@ -17,14 +17,22 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
     },
 
     // Событие из контроллера AskObjPanelController
-    onSetPayordCmpKlskFk : function(controller, id) {
+    onSetPayordCmpKlskFk : function(controller, id, name) {
         console.log('id check=', id);
 
         var payordCmpGrid = this.lookupReference('payordCmpGrid');
-        var models2 = payordCmpGrid.getStore().getRange();
-        models2[0].set('klskFk', id);
+        var store = payordCmpGrid.getStore();
+        var rec = store.getRange();
+        rec[0].set('klskFk', id);
+        rec[0].set('koName', name);
+        rec[0].commit();  // TODO убрать коммит?
+        //store.sync();
+        payordCmpGrid.reconfigure(store);
 
-        //var panel3 = this.lookupReference('panel3');
+        //var payordCmpGrid = this.lookupReference('payordCmpGrid');
+        //var row = payordCmpGrid.getSelectionModel().getSelection()[0];
+        //row.set('klskFk', id);
+
         var panel3 = this.getView();
         panel3.focus();
     },
@@ -77,20 +85,23 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
                     var rec1 = records[0];
                     var id = -1;
                     if (records.length > 0) {
-                        id =records[0].get('id')
+                        id = records[0].get('id')
                         payordGrid.getSelectionModel().select(0); // если включить и будет 0 записей - вызовет model is null
-                        // загрузить формулы платежки
-                        store1.load({
-                            params: {
-                                'payordId': id
-                            },
-                            callback: function(records, operation, success) {
-                                if (records.length > 0) {
-                                     payordCmpGrid.getSelectionModel().select(0); // если включить и будет 0 записей - вызовет model is null
-                                }
-                            }
-                        });
+                    } else {
+                        id = -1;
                     }
+                    // загрузить формулы платежки
+                    console.log('LOAD CMP');
+                    store1.load({
+                        params: {
+                            'payordId': id
+                        },
+                        callback: function(records, operation, success) {
+                            if (records.length > 0) {
+                                 payordCmpGrid.getSelectionModel().select(0); // если включить и будет 0 записей - вызовет model is null
+                            }
+                        }
+                    });
 
                 } else {
                     console.log('onGridPayordGrpRowClick: NOT SUCCESS');

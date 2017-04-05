@@ -5,8 +5,7 @@ Ext.define('BillWebApp.model.Payord', {
     extend: 'Ext.data.Model',
     idProperty: 'id',
     fields: [
-        { name: 'id', type: 'int' , persist: false,// persist = false, иначе будет пытаться сохранить ID
-            defaultValue: 0, convert: null},
+        { name: 'id', mapping: 'id', type: 'int'},
         { name: 'name', type: 'string' },
         { name: 'periodTpFk', type: 'int', convert: null},
         { name: 'payordGrpFk', type: 'int', convert: null},
@@ -30,7 +29,8 @@ Ext.define('BillWebApp.model.Payord', {
         },
         writer: {
             type: 'json',
-            allowSingle: false //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
+            allowSingle: false, //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
+            writeAllFields: true  //писать весь объект в json
         }
     }
 });

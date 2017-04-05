@@ -85,7 +85,7 @@ public List<PayordCmpDTO> getPayordCmpDTOLst(List<PayordCmp> lst) {
 	lst.stream().forEach(t-> lst2.add(
 				new PayordCmpDTO(t.getId(), t.getUsername(), t.getDtf(), t.getPayord().getId(), t.getVar().getId(),
 						(t.getServ()!=null ? t.getServ().getId() : null) , (t.getOrg()!=null ? t.getOrg().getId() : null), 
-						(t.getArea()!=null ? t.getArea().getId() : null), (t.getKlskObj()!=null ? t.getKlskObj().getId() : null), 
+						(t.getKo()!=null ? t.getKo().getId() : null), 
 						t.getMark(), t.getSumma())
 				));
 	return lst2;

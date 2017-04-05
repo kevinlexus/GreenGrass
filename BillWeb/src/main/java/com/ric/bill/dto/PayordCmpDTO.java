@@ -23,7 +23,7 @@ public class PayordCmpDTO {
 	// конструктор
 	public PayordCmpDTO(Integer id, String username, Date dtf,
 			Integer payordFk, Integer varFk, Integer servFk, Integer orgFk,
-			Integer areaFk, Integer klskFk, String mark, Double summa) {
+			Integer klskFk, String mark, Double summa) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -32,7 +32,6 @@ public class PayordCmpDTO {
 		this.varFk = varFk;
 		this.servFk = servFk;
 		this.orgFk = orgFk;
-		this.areaFk = areaFk;
 		this.klskFk = klskFk;
 		this.mark = mark;
 		this.summa = summa;
@@ -57,9 +56,6 @@ public class PayordCmpDTO {
 	// Организация
 	private Integer orgFk; 
 	
-	// Тип объекта (область действия) Город, дом, УК
-	private Integer areaFk; 
-
 	// Объект (область действия)
 	private Integer klskFk; 
 	
@@ -132,14 +128,6 @@ public class PayordCmpDTO {
 
 	public void setOrgFk(Integer orgFk) {
 		this.orgFk = orgFk;
-	}
-
-	public Integer getAreaFk() {
-		return areaFk;
-	}
-
-	public void setAreaFk(Integer areaFk) {
-		this.areaFk = areaFk;
 	}
 
 	public Integer getKlskFk() {

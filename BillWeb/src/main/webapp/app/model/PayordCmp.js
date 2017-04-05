@@ -3,16 +3,18 @@
  */
 Ext.define('BillWebApp.model.PayordCmp', {
     extend: 'Ext.data.Model',
+    idProperty: 'id',
     fields: [
-        { name: 'id', type: 'int', convert: null, persist: false},
+        { name: 'id', mapping: 'id', type: 'int'/*, persist: false*/},
         { name: 'dtf', dateFormat: 'Y-m-d H:i:s', type: 'date', persist: false},
         { name: 'username', type: 'string', persist: false},
-        { name: 'payordFk', type: 'int', convert: null},
-        { name: 'varFk', type: 'int', convert: null},
-        { name: 'servFk', type: 'int', convert: null},
-        { name: 'orgFk', type: 'int', convert: null},
-        { name: 'areaFk', type: 'int', convert: null},
-        { name: 'klskFk', type: 'int', convert: null},
+        { name: 'payordFk', type: 'int'},
+        { name: 'varFk', type: 'int'},
+        { name: 'servFk', type: 'int'},
+        { name: 'orgFk', type: 'int'},
+        { name: 'areaFk', type: 'int'},
+        { name: 'klskFk', type: 'int'},  // defaultValue: 11111
+        { name: 'koName', type: 'string', persist: false }, // Имя объекта (только для отображения)
         { name: 'mark', type: 'string' },
         { name: 'summa', type: 'float', persist: false }],
         proxy: {
@@ -29,9 +31,8 @@ Ext.define('BillWebApp.model.PayordCmp', {
         },
         writer: {
             type: 'json',
-                allowSingle: false //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
-                //,
-                //writeAllFields: true  //писать весь объект в json - не имеет смысла
+                allowSingle: false, //запретить по одному отправлять отправлять объекты в Json - только массивом![объект] - иначе трудно описывать в Restful
+                writeAllFields: true  //писать весь объект в json
         }
     }
 });

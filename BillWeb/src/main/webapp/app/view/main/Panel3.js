@@ -312,25 +312,30 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     renderer: 'onGridPayordCmpOrgRender'
                 },
                 {
-                    header: 'Объект',
+                    header: 'klskFk',
                     dataIndex: 'klskFk',
+                    width: 200
+                },
+                {
+                    header: 'Объект',
+                    dataIndex: 'koName',
                     width: 200,
                     queryMode: 'local',
                     editor: {
                         xtype: 'combo',
                         typeAhead: true,
                         forceSelection: true,
-                        displayField: 'name',
-                        valueField: 'id',
                         triggerAction: 'all',
-                        allowBlank: false,
+                        allowBlank: true,
                         listeners: {
                             expand: 'onGridPayordCmpItemSel'
-                            //   load: 'onGridPayordCmpItemDblClick'
                         }
                     }
                 },
-                { text: 'Маркер',  dataIndex: 'mark', width: 150, align: "left"
+                { text: 'Маркер',  dataIndex: 'mark', width: 150, align: "left",
+                    editor: {
+                        allowBlank: true
+                    }
                 },
                 { text: 'Сумма',  dataIndex: 'summa', width: 70, align: "left"
                 },

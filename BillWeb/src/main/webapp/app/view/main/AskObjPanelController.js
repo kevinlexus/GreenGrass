@@ -22,10 +22,12 @@ Ext.define('BillWebApp.view.main.AskObjPanelController', {
     // В AskObjPanel: Записать новое значение в поле грида, при нажатии кнопки выбора
     onAskObjButtonSelPress: function() {
         var koAddrTpStore = this.getViewModel().getStore('koAddrTpStore');
-        var models1 = koAddrTpStore.getRange();
-
-        this.fireEvent('something', this, models1[0].get('id'));
+        var askObjGrid = this.lookupReference('askObjGrid');
+        // получить текущую выделенную запись
+        var row = askObjGrid.getSelectionModel().getSelection()[0];
+//        console.log('Ask:Name='+ row.get('id')+' '+row.get('name'));
+        // вызвать событие в контроллере панели Panel3 // TODO Разобраться как это вызывается!
+        this.fireEvent('something', this, row.get('id'), row.get('name'));
         askObjPanel.destroy();
-
     }
 });

@@ -41,7 +41,7 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
                 typeAhead: true,
                 forceSelection: true,
                 fieldLabel: 'Тип',
-                labelWidth: 30,
+                labelWidth: 100,
                 displayField: 'name',
                 valueField: 'id',
                 triggerAction: 'all',
@@ -92,15 +92,9 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
                         store: '{koAddrTpStore}'
                     },
                     columns: [
-                        { text: 'Id',  dataIndex: 'id', width: 50,
-                            editor: {
-                                allowBlank: true
-                            }
+                        { text: 'Id',  dataIndex: 'id', width: 100
                         },
-                        { text: 'Наименование',  dataIndex: 'name', width: 420, align: "left",
-                            editor: {
-                                allowBlank: false
-                            }
+                        { text: 'Наименование',  dataIndex: 'name', width: 420, align: "left"
                         }
                     ]
                 }
