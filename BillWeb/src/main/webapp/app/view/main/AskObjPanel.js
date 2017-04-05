@@ -12,7 +12,7 @@ Ext.define('BillWebApp.view.main.AskObjPanel', {
     plain: true,
     resizable : true,
     reference: 'askObjPanel',
-
+    controller: 'askobjpanelcontroller',
 
     dockedItems: [{
         xtype: 'toolbar',

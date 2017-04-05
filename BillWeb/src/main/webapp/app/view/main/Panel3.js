@@ -9,7 +9,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
     minHeight: 500,
     bodyPadding: 10,
     reference: 'panel3',
-
+    controller: 'panel3controller',
     defaults: {
         frame: true,
         bodyPadding: 10
