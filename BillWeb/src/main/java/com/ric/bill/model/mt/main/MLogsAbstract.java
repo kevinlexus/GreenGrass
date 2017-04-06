@@ -3,12 +3,13 @@ package com.ric.bill.model.mt.main;
 import java.util.List;
 
 import com.ric.bill.Simple;
+import com.ric.bill.Storable;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.tr.Serv;
 
-public interface MLogsAbstract extends Simple {
+public interface MLogsAbstract extends Simple, Storable {
 	public abstract List<Vols> getVolDistilled();
 
 	public abstract String getEntry();

@@ -42,7 +42,6 @@ import com.ric.bill.model.mt.main.MeterLog;
 import com.ric.bill.model.mt.main.MeterLogGraph;
 import com.ric.bill.model.mt.main.Vol;
 import com.ric.bill.model.mt.main.Vols;
-import com.ric.bill.model.mt.main.Vols1;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -148,7 +147,7 @@ public class DistGen {
 	 * @throws EmptyPar 
 	 * @throws WrongValue 
 	 */
-	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar, WrongValue {
+	public NodeVol distNode (Calc calc, MLogsAbstract ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar, WrongValue {
 		// номер текущего запроса
 		if (ml.getId()==518451 && tp==0) {
 			log.trace("счетчик!");
@@ -463,10 +462,10 @@ public class DistGen {
 					lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
 					// TODO для перерасчета!
-					Vols1 vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
+					Vols vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
 							calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 					//saveVol(ml, vol);
-					ml.getVol().add(vol);
+					ml.getVolDistilled().add(vol);
 				}
 				
 			} else if (servChrg.getCd().equals("Электроснабжение")) {
@@ -502,10 +501,10 @@ public class DistGen {
 							}
 							//записать лимит ОДН
 							// TODO для перерасчета!
-							Vols1 vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
+							Vols vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
 											calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 							//saveVol(ml, vol);
-							ml.getVol().add(vol);
+							ml.getVolDistilled().add(vol);
 							//log.warn("ЛИМИТ ОДН по ЭлектроЭнергии="+lmtVol);
 						}
 					}
@@ -520,18 +519,18 @@ public class DistGen {
 			volTp = lstMng.getByCD("Фактический объем");
 
 			// TODO для перерасчета!
-			Vols1 vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
+			Vols vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
 					calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
-			ml.getVol().add(vol);
+			ml.getVolDistilled().add(vol);
 			
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.getByCD("Площадь и проживающие");
 			// TODO для перерасчета!
-			Vols1 vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt,
+			Vols vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt,
 							calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 
-			ml.getVol().add(vol);
+			ml.getVolDistilled().add(vol);
 			//saveVol(ml, vol);
 
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {

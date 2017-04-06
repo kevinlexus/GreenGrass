@@ -228,7 +228,6 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs<Vol> {
 	}
 	@Override
 	public List<Vols> getVolDistilled() {
-		// TODO Auto-generated method stub
 		List<Vols> newList = new ArrayList<>();
 		newList.addAll(vol);
 		

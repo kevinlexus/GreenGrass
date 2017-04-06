@@ -29,6 +29,7 @@ import com.ric.bill.model.mt.main.MLogs;
 import com.ric.bill.model.mt.main.Meter;
 import com.ric.bill.model.mt.main.MeterLogGraph;
 import com.ric.bill.model.mt.main.Vol;
+import com.ric.bill.model.mt.main.Vols;
 import com.ric.bill.model.tr.Serv;
 
 
@@ -230,6 +231,14 @@ public class MeterLogCp extends Base implements java.io.Serializable, MLogs<VolC
 	    } else {
 	        return super.hashCode();
 	    }
+	}
+
+	@Override
+	public List<Vols> getVolDistilled() {
+		List<Vols> newList = new ArrayList<>();
+		newList.addAll(vol);
+		
+		return newList;
 	}
 	
 }

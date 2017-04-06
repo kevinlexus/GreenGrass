@@ -1,9 +1,7 @@
 package com.ric.bill.model.fn;
 
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,19 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import com.ric.bill.Simple;
-import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.mt.main.Meter;
-import com.ric.bill.model.mt.main.MeterLog;
-import com.ric.bill.model.mt.main.Vols1;
+import com.ric.bill.model.mt.main.Vol;
 
 /**
  * Детали перерасчета - объемы по счетчикам
@@ -75,7 +66,7 @@ public class ChngVal implements java.io.Serializable, Simple {
 	// Объем физического счетчика, участвующего в перерасчете
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_VOL", referencedColumnName="ID")
-	private Vols1 vol; 
+	private Vol vol; 
     
 	public Integer getId() {
 		return id;
@@ -113,11 +104,11 @@ public class ChngVal implements java.io.Serializable, Simple {
 		return dtVal1;
 	}
 
-	public Vols1 getVol() {
+	public Vol getVol() {
 		return vol;
 	}
 
-	public void setVol(Vols1 vol) {
+	public void setVol(Vol vol) {
 		this.vol = vol;
 	}
 

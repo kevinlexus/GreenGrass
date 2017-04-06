@@ -2,14 +2,9 @@ package com.ric.bill.dao.impl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ric.bill.dao.VolDAO;
-import com.ric.bill.model.mt.main.Vols1;
-
+import com.ric.bill.model.mt.main.Vols;
 
 	@Repository
 	public class VolDAOImpl implements VolDAO {
@@ -22,7 +17,7 @@ import com.ric.bill.model.mt.main.Vols1;
 	     * Добавить объем
 	     * @param vol - объект объема
 	     */
-	    public synchronized void add(Vols1 vol) {
+	    public synchronized void add(Vols vol) {
 			em.persist(vol);
 		}
 	
