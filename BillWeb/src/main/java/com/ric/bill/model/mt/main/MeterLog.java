@@ -48,7 +48,7 @@ import com.ric.bill.model.tr.Serv;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER_LOG", schema="MT")
-public class MeterLog extends Base implements java.io.Serializable, MLogs {
+public class MeterLog extends Base implements java.io.Serializable, MLogs<Vol> {
 
 	public MeterLog (){
 		
@@ -226,6 +226,15 @@ public class MeterLog extends Base implements java.io.Serializable, MLogs {
 	        return super.hashCode();
 	    }
 	}
+	@Override
+	public List<Vols> getVolDistilled() {
+		// TODO Auto-generated method stub
+		List<Vols> newList = new ArrayList<>();
+		newList.addAll(vol);
+		
+		return newList;
+	}
+	
 	
 }
 

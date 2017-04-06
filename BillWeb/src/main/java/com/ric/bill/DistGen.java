@@ -35,11 +35,14 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Chng;
 import com.ric.bill.model.mt.main.MLogs;
+import com.ric.bill.model.mt.main.MLogsAbstract;
 import com.ric.bill.model.mt.main.Meter;
 import com.ric.bill.model.mt.main.MeterExs;
 import com.ric.bill.model.mt.main.MeterLog;
 import com.ric.bill.model.mt.main.MeterLogGraph;
 import com.ric.bill.model.mt.main.Vol;
+import com.ric.bill.model.mt.main.Vols;
+import com.ric.bill.model.mt.main.Vols1;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -193,7 +196,7 @@ public class DistGen {
 				// посчитать объемы, по физическим счетчикам, прикрепленным к узлу
 			    // (если такие есть) в пропорции на кол-во дней объема
 				for (Meter m : ml.getMeter()) { 		// физ.сч
-					for (Vol v : m.getVol()) {    		// фактические объемы
+					for (Vols v : m.getVol()) {    		// фактические объемы
 						if (v.getTp().getCd().equals("Фактический объем") && Utl.between(genDt, v.getDt1(), v.getDt2()) ) {
 							//log.info("Записано1 genDt={}, {}, {}", genDt, v.getDt1(), v.getDt2());
 							for (MeterExs e : m.getExs()) { // периоды сущ.
@@ -252,9 +255,9 @@ public class DistGen {
 			//только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
 			if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt)) {
 				SumNodeVol lnkODNVol = null;
-				MLogs lnkLODN = null;
-				MLogs lnkSumODPU = null;
-				MLogs lnkODPU = null;
+				MLogsAbstract lnkLODN = null;
+				MLogsAbstract lnkSumODPU = null;
+				MLogsAbstract lnkODPU = null;
 				//поиск счетчика ЛОДН
 				lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
 				//параметр Доначисление по ОДН
@@ -318,8 +321,8 @@ public class DistGen {
 						log.trace("check serv="+mainServ.getServMet().getId());
 						double tmpVol=0d;
 						SumNodeVol sumMainVol;
-						List<MLogs> lstMain = metMng.getAllMetLogByServTp(rqn, kart, mainServ.getServMet(), null);
-						for (MLogs mLog2 : lstMain) {
+						List<MLogsAbstract> lstMain = metMng.getAllMetLogByServTp(rqn, kart, mainServ.getServMet(), null);
+						for (MLogsAbstract mLog2 : lstMain) {
 							//получить объем за период, по лог счетчику основной услуги, если найден
 							sumMainVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), mLog2, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 							tmpVol = tmpVol + sumMainVol.getVol();
@@ -359,9 +362,9 @@ public class DistGen {
 			//по расчетной связи пропорц.площади (Отопление например)
 			//только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
 			if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt)) {
-				MLogs lnkLODN = null;
-				MLogs lnkSumODPU = null;
-				MLogs lnkODPU = null;
+				MLogsAbstract lnkLODN = null;
+				MLogsAbstract lnkSumODPU = null;
+				MLogsAbstract lnkODPU = null;
 	
 				//поиск счетчика ЛОДН
 				lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
@@ -460,7 +463,7 @@ public class DistGen {
 					lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
 					// TODO для перерасчета!
-					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
+					Vols1 vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
 							calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 					//saveVol(ml, vol);
 					ml.getVol().add(vol);
@@ -499,7 +502,7 @@ public class DistGen {
 							}
 							//записать лимит ОДН
 							// TODO для перерасчета!
-							Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
+							Vols1 vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
 											calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 							//saveVol(ml, vol);
 							ml.getVol().add(vol);
@@ -517,7 +520,7 @@ public class DistGen {
 			volTp = lstMng.getByCD("Фактический объем");
 
 			// TODO для перерасчета!
-			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
+			Vols1 vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
 					calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 			ml.getVol().add(vol);
 			
@@ -525,7 +528,7 @@ public class DistGen {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.getByCD("Площадь и проживающие");
 			// TODO для перерасчета!
-			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt,
+			Vols1 vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt,
 							calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 
 			ml.getVol().add(vol);

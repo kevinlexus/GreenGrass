@@ -9,11 +9,12 @@ import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.mt.main.MLogs;
+import com.ric.bill.model.mt.main.MLogsAbstract;
 import com.ric.bill.model.mt.main.MeterLog;
 
 
 public interface MeterLogDAO {
-	public Kart getKart(int rqn, MLogs mLog);
+	public Kart getKart(int rqn, MLogsAbstract mLog);
 	/*public House getHouse(MLogs mLog);*/
 	
 }

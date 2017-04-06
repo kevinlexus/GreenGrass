@@ -40,7 +40,7 @@ import com.ric.bill.model.tr.Serv;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER_LOG_CP", schema="MT")
-public class MeterLogCp extends Base implements java.io.Serializable, MLogs {
+public class MeterLogCp extends Base implements java.io.Serializable, MLogs<VolCp> {
 
 	public MeterLogCp (){
 		
@@ -79,7 +79,7 @@ public class MeterLogCp extends Base implements java.io.Serializable, MLogs {
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID", updatable = false) //внимание! если здесь убрать updatable = false то будет update kmp_meter_vol fk_meter_log!
 	//@BatchSize(size = 50)
 	@Fetch(FetchMode.SUBSELECT) // убрал subselect, так как внезапно начало тормозить  
-	private List<Vol> vol = new ArrayList<Vol>(0);
+	private List<VolCp> vol = new ArrayList<VolCp>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
@@ -145,11 +145,11 @@ public class MeterLogCp extends Base implements java.io.Serializable, MLogs {
 		this.tp = tp;
 	}
 
-	public List<Vol> getVol() {
+	public List<VolCp> getVol() {
 		return vol;
 	}
 
-	public void setVol(List<Vol> vol) {
+	public void setVol(List<VolCp> vol) {
 		this.vol = vol;
 	}
 

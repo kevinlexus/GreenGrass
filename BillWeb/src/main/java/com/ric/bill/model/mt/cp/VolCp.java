@@ -3,7 +3,6 @@ package com.ric.bill.model.mt.cp;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,19 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Chng;
 import com.ric.bill.model.mt.main.MLogs;
 import com.ric.bill.model.mt.main.Meter;
 import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.main.Vols;
 
 /**
  * Копия для перерасчетов - Объемы счетчика 
@@ -36,7 +30,7 @@ import com.ric.bill.model.mt.main.MeterLog;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER_VOL_CP", schema="MT")
-public class VolCp implements java.io.Serializable, Simple {
+public class VolCp implements java.io.Serializable, Simple, Vols {
 
 	public VolCp (){
 		

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.dao.VolDAO;
-import com.ric.bill.model.mt.main.Vol;
+import com.ric.bill.model.mt.main.Vols1;
 
 
 	@Repository
@@ -22,7 +22,7 @@ import com.ric.bill.model.mt.main.Vol;
 	     * Добавить объем
 	     * @param vol - объект объема
 	     */
-	    public synchronized void add(Vol vol) {
+	    public synchronized void add(Vols1 vol) {
 			em.persist(vol);
 		}
 	

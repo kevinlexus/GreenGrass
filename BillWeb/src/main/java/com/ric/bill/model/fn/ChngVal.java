@@ -25,7 +25,7 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.mt.main.Meter;
 import com.ric.bill.model.mt.main.MeterLog;
-import com.ric.bill.model.mt.main.Vol;
+import com.ric.bill.model.mt.main.Vols1;
 
 /**
  * Детали перерасчета - объемы по счетчикам
@@ -75,7 +75,7 @@ public class ChngVal implements java.io.Serializable, Simple {
 	// Объем физического счетчика, участвующего в перерасчете
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_VOL", referencedColumnName="ID")
-	private Vol vol; 
+	private Vols1 vol; 
     
 	public Integer getId() {
 		return id;
@@ -113,11 +113,11 @@ public class ChngVal implements java.io.Serializable, Simple {
 		return dtVal1;
 	}
 
-	public Vol getVol() {
+	public Vols1 getVol() {
 		return vol;
 	}
 
-	public void setVol(Vol vol) {
+	public void setVol(Vols1 vol) {
 		this.vol = vol;
 	}
 

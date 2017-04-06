@@ -20,6 +20,7 @@ import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.mt.main.MLogs;
+import com.ric.bill.model.mt.main.MLogsAbstract;
 import com.ric.bill.model.mt.main.Meter;
 import com.ric.bill.model.mt.main.MeterExs;
 import com.ric.bill.model.mt.main.MeterLog;
@@ -41,7 +42,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 */
 //	@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{#rqn, #mLog.getId() }")
-	public synchronized Kart getKart(int rqn, MLogs mLog) {
+	public synchronized Kart getKart(int rqn, MLogsAbstract mLog) {
 		Query query =em.createQuery("from Kart t where t.klsk =:klsk");
 		query.setParameter("klsk", mLog.getKlskObj());
 		try {
