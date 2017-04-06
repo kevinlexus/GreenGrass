@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.dao.VolDAO;
 import com.ric.bill.dao.VsecDAO;
-import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.mt.main.Vol;
 import com.ric.bill.model.sec.Vsec;
 import com.ric.bill.model.tr.Prop;
 

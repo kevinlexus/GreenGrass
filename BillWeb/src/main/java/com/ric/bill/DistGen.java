@@ -34,12 +34,12 @@ import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Chng;
-import com.ric.bill.model.mt.MLogs;
-import com.ric.bill.model.mt.Meter;
-import com.ric.bill.model.mt.MeterExs;
-import com.ric.bill.model.mt.MeterLog;
-import com.ric.bill.model.mt.MeterLogGraph;
-import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.mt.main.MLogs;
+import com.ric.bill.model.mt.main.Meter;
+import com.ric.bill.model.mt.main.MeterExs;
+import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.main.MeterLogGraph;
+import com.ric.bill.model.mt.main.Vol;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -459,8 +459,9 @@ public class DistGen {
 					}
 					lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
+					// TODO для перерасчета!
 					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
-							calc.getReqConfig().getOperTp(), chng, calc.getReqConfig().getStatusVol());
+							calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 					//saveVol(ml, vol);
 					ml.getVol().add(vol);
 				}
@@ -497,8 +498,9 @@ public class DistGen {
 								}
 							}
 							//записать лимит ОДН
+							// TODO для перерасчета!
 							Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
-											calc.getReqConfig().getOperTp(), chng, calc.getReqConfig().getStatusVol());
+											calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 							//saveVol(ml, vol);
 							ml.getVol().add(vol);
 							//log.warn("ЛИМИТ ОДН по ЭлектроЭнергии="+lmtVol);
@@ -514,15 +516,17 @@ public class DistGen {
 			//расчетная связь, расчетная связь ОДН
 			volTp = lstMng.getByCD("Фактический объем");
 
+			// TODO для перерасчета!
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
-					calc.getReqConfig().getOperTp(), chng, calc.getReqConfig().getStatusVol());
+					calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 			ml.getVol().add(vol);
 			
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.getByCD("Площадь и проживающие");
+			// TODO для перерасчета!
 			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt,
-							calc.getReqConfig().getOperTp(), chng, calc.getReqConfig().getStatusVol());
+							calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 
 			ml.getVol().add(vol);
 			//saveVol(ml, vol);

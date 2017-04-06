@@ -23,9 +23,9 @@ import org.hibernate.annotations.FetchMode;
 import com.ric.bill.Simple;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.mt.Meter;
-import com.ric.bill.model.mt.MeterLog;
-import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.mt.main.Meter;
+import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.main.Vol;
 
 /**
  * Детали перерасчета - объемы по счетчикам

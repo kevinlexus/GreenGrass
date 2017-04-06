@@ -14,8 +14,8 @@ import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Org;
-import com.ric.bill.model.mt.MLogs;
-import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.mt.main.MLogs;
+import com.ric.bill.model.mt.main.MeterLog;
 import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 

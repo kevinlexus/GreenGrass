@@ -1,4 +1,4 @@
-package com.ric.bill.model.mt;
+package com.ric.bill.model.mt.main;
 
 
 import java.util.Date;
@@ -39,7 +39,7 @@ public class Vol implements java.io.Serializable, Simple {
 		
 	}
 
-	public Vol (MeterLog ml, Lst tp, Double vol1, Double vol2, Date date, Date date2, Integer status, Chng chng, Integer statusVol){
+	public Vol (MeterLog ml, Lst tp, Double vol1, Double vol2, Date date, Date date2, Integer status, Integer statusVol){
 		setMLog(ml);
 		setTp(tp);
 		setVol1(vol1);
@@ -47,7 +47,6 @@ public class Vol implements java.io.Serializable, Simple {
 		setDt1(date);
 		setDt2(date2);
 		setStatus(status);
-		setChng(chng);
 		setStatus(statusVol);
 	}
 
@@ -157,14 +156,6 @@ public class Vol implements java.io.Serializable, Simple {
 
 	public void setStatus(Integer status) {
 		this.status = status;
-	}
-
-	public Chng getChng() {
-		return chng;
-	}
-
-	public void setChng(Chng chng) {
-		this.chng = chng;
 	}
 
 	public boolean equals(Object o) {

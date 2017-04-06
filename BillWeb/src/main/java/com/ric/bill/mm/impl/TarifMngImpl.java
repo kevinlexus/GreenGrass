@@ -1,7 +1,6 @@
 package com.ric.bill.mm.impl;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,14 +12,10 @@ import org.springframework.stereotype.Service;
 import com.ric.bill.Calc;
 import com.ric.bill.TarifContains;
 import com.ric.bill.Utl;
-import com.ric.bill.dao.AreaDAO;
 import com.ric.bill.dao.TarifDAO;
-import com.ric.bill.dao.impl.HouseDAOImpl;
 import com.ric.bill.mm.TarifMng;
-import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Chng;
-import com.ric.bill.model.fn.ChngLsk;
 import com.ric.bill.model.fn.ChngVal;
 import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
@@ -177,61 +172,46 @@ public class TarifMngImpl implements TarifMng {
 	
 	
 	// получить подмененную расценку по перерасчету
-	public Double getChngPrice(Calc calc, Serv serv, Date genDt) {  // убрать synchronized??
+	//public Double getChngPrice(Calc calc, Serv serv, Date genDt) {  // убрать synchronized??
 		// получить расценку
-		Double price = null;
+		//return price = getChngVal(calc, serv, genDt, "Изменение расценки (тарифа)");
+	//}
+
+	
+	/**
+	 *  получить значение перерасчета
+	 * @param genDt - при наличии - фильтр по дате
+	 * @param serv - услуга
+	 * @param cd - тип перерасчета
+	 * @return
+	 */
+	public Double getChngVal(Calc calc, Serv serv, Date genDt, String cd) {
 		Chng chng = calc.getReqConfig().getChng();	
-/*      Пока не удалять, проверенный код 		
-		if (chng.getTp()!= null && chng.getChngLsk()!=null && chng.getTp().getCd().equals("Изменение расценки (тарифа)") ) {
-			
-			for (ChngLsk t : chng.getChngLsk()) {
-				
-				if (t.getKart() != null && t.getChngVal() !=null && t.getServ() != null) {
-					if (t.getKart().getLsk().equals(calc.getKart().getLsk()) && t.getServ().equals(serv) ) {
-						for (ChngVal d : t.getChngVal() ) {
-							if (Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) {
-								price = d.getVal();
-								return price;
-							}
-						}
-					}
-					
-				}
-				
-			}
-			
-		}*/
-		
-		if (chng.getTp().getCd().equals("Изменение расценки (тарифа)")) {
+		Double val = null;
+		if (chng.getTp().getCd().equals(cd)) {
 			Optional<ChngVal> chngVal;
-			chngVal = calc.getReqConfig().getChng().getChngLsk().stream()
-			.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
-			.filter(t -> t.getServ().equals(serv) ) // фильтр по услуге
-			.flatMap(t -> t.getChngVal().stream() // преобразовать в другую коллекцию
-						.filter(d -> Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) // и фильтр по дате
-					).findFirst();
+			if (genDt != null) {
+				// по дате
+				chngVal = calc.getReqConfig().getChng().getChngLsk().stream()
+						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
+						.filter(t -> t.getServ().equals(serv) ) // фильтр по услуге
+						.flatMap(t -> t.getChngVal().stream() // преобразовать в другую коллекцию
+									.filter(d -> Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) // и фильтр по дате
+								).findFirst();
+			} else {
+				// без фильтра по дате
+				chngVal = calc.getReqConfig().getChng().getChngLsk().stream()
+						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
+						.filter(t -> t.getServ().equals(serv) ) // фильтр по услуге
+						.flatMap(t -> t.getChngVal().stream() // преобразовать в другую коллекцию
+								).findFirst();
+			}
+	
 			if (chngVal.isPresent()) {
-				price = chngVal.get().getVal(); 
+				val = chngVal.get().getVal();
 			}
 		}
-
-/*		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			log.info("lsk={}",calc.getKart().getLsk());
-			log.info("serv={}",serv.getId());
-			log.info("dt={}",genDt);
-			
-			calc.getReqConfig().getChng().getChngLsk().stream()
-						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
-						.forEach(t->
-								log.info("{} {} {} {}", t.getKart(), t.getChngVal(), t.getServ(), t.getId())
-								);
-			
-			
-		}*/
-
-		return price;
+		return val;
+		
 	}
-
 }

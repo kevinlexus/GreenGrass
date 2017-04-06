@@ -22,7 +22,7 @@ import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.ar.Kw;
 import com.ric.bill.model.bs.Dw;
-import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.mt.main.Vol;
 import com.ric.bill.model.tr.Serv;
 
 @Service

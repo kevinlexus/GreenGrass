@@ -1,4 +1,4 @@
-package com.ric.bill.model.mt;
+package com.ric.bill.model.mt.main;
 
 import java.util.List;
 

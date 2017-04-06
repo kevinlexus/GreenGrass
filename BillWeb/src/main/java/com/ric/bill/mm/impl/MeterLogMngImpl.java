@@ -30,12 +30,12 @@ import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.mt.MLogs;
-import com.ric.bill.model.mt.Meter;
-import com.ric.bill.model.mt.MeterExs;
-import com.ric.bill.model.mt.MeterLog;
-import com.ric.bill.model.mt.MeterLogGraph;
-import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.mt.main.MLogs;
+import com.ric.bill.model.mt.main.Meter;
+import com.ric.bill.model.mt.main.MeterExs;
+import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.main.MeterLogGraph;
+import com.ric.bill.model.mt.main.Vol;
 import com.ric.bill.model.tr.Serv;
 
 //включил кэш - стало хуже, по скорости - 61 сек.

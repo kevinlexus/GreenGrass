@@ -1,4 +1,4 @@
-package com.ric.bill.model.mt;
+package com.ric.bill.model.mt.cp;
 
 
 import java.util.ArrayList;
@@ -29,19 +29,23 @@ import com.ric.bill.Storable;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.bs.Par;
+import com.ric.bill.model.fn.Chng;
+import com.ric.bill.model.mt.main.MeterExs;
+import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.main.Vol;
 
 
 /**
- * Физический счетчик
+ * Копия для перерасчетов - Физический счетчик
  * @author lev
  *
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "METER", schema="MT")
-public class Meter extends Base implements java.io.Serializable, Storable {
+@Table(name = "METER_CP", schema="MT")
+public class MeterCP extends Base implements java.io.Serializable, Storable {
 
-	public Meter (){
+	public MeterCP (){
 		
 	}
 	
@@ -57,13 +61,6 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		this.id = id;
 	}
 
-	/* даты начала и окончания действия счетчика - используются ли?
-    @Column(name = "DT1", updatable = false, nullable = true)
-	private Date dt1;
-
-    @Column(name = "DT2", updatable = false, nullable = true)
-	private Date dt2;*/
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID")
 	private MeterLog meterLog ; 
@@ -81,22 +78,9 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 	@Column(name = "TRANS_RATIO", updatable = true, nullable = true)
 	private Double trRatio; 
 	
-	
-/*	public Date getDt1() {
-		return dt1;
-	}
-
-	public void setDt1(Date dt1) {
-		this.dt1 = dt1;
-	}
-
-	public Date getDt2() {
-		return dt2;
-	}
-
-	public void setDt2(Date dt2) {
-		this.dt2 = dt2;
-	}*/
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
+	private Chng chng; 
 
 	public MeterLog getMeterLog() {
 		return meterLog;
@@ -130,12 +114,20 @@ public class Meter extends Base implements java.io.Serializable, Storable {
 		this.trRatio = trRatio;
 	}
 
+	public Chng getChng() {
+		return chng;
+	}
+
+	public void setChng(Chng chng) {
+		this.chng = chng;
+	}
+	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
-	    if (o == null || !(o instanceof Meter))
+	    if (o == null || !(o instanceof MeterCP))
 	        return false;
 
-	    Meter other = (Meter)o;
+	    MeterCP other = (MeterCP)o;
 
 	    if (id == other.getId()) return true;
 	    if (id == null) return false;

@@ -121,14 +121,6 @@ public class ChrgThr {
 		Thread t = Thread.currentThread();
 	    thrName = t.getName();
 	      
-		long startTime2;
-		long endTime;
-		long totalTime;
-		startTime2 = System.currentTimeMillis();
-
-
-		//log.info(serv.getCd());
-		
 		//необходимый для формирования диапазон дат
 		Date dt1, dt2, genDt;
 		dt1 = calc.getReqConfig().getCurDt1();
@@ -240,8 +232,6 @@ public class ChrgThr {
 			}
 		} 
 
-		endTime   = System.currentTimeMillis();
-		totalTime = endTime - startTime2;
 		return new AsyncResult<Result>(res);
 	}
 
@@ -379,19 +369,19 @@ public class ChrgThr {
 			}
 
 			// расценка по норме
-			Double chngPrice = tarMng.getChngPrice(calc,  stServ, genDt);
+			Double chngPrice = tarMng.getChngVal(calc, stServ, genDt, "Изменение расценки (тарифа)");
 			if (chngPrice != null) {
 				stPrice = chngPrice; 
 			}
 			
 			// расценка св.нормы
-			chngPrice = tarMng.getChngPrice(calc, upStServ, genDt);
+			chngPrice = tarMng.getChngVal(calc, upStServ, genDt, "Изменение расценки (тарифа)");
 			if (chngPrice != null) {
 				upStPrice = chngPrice; 
 			}
 				
 			// расценка без проживающих
-			chngPrice = tarMng.getChngPrice(calc, woKprServ, genDt);
+			chngPrice = tarMng.getChngVal(calc, woKprServ, genDt, "Изменение расценки (тарифа)");
 			if (chngPrice != null) {
 				woKprPrice = chngPrice; 
 			}
@@ -454,23 +444,38 @@ public class ChrgThr {
 		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему-1"), 0d) == 1d ||
 				   Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему-2"), 0d) == 1d) {
 			
-			//Вариант подразумевает объём по лог.счётчику, РАспределённый по дням
+			// Вариант подразумевает объём по лог.счётчику, РАспределённый по дням
 			if (serv.getServMet() == null) {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
 			}
-			//получить объем по лицевому счету и услуге за ДЕНЬ
-			SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), genDt, genDt);
-			vol = tmpNodeVol.getVol();
+			
+			// получить объем по лицевому счету и услуге за ДЕНЬ
+			if (calc.getReqConfig().getOperTp()==1 && calc.getReqConfig().getChng().getTp().getCd().equals("Начисление за прошлый период") ) {
+				// если перерасчет, то разделить на кол-во дней в месяце, так как передаётся объем за месяц
+				vol = tarMng.getChngVal(calc, serv, null, "Начисление за прошлый период") / calc.getReqConfig().getCntCurDays();
+			} else {
+				// обычное начисление
+				SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), genDt, genDt);
+				vol = tmpNodeVol.getVol();
+			}
+			
 		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему без исп.норматива-1"), 0d) == 1d) {
 			// Вариант подразумевает объём по лог.счётчику, НЕ распределённый по дням,
 			// а записанный одной строкой (одним периодом дата нач.-дата кон.)
 			if (serv.getServMet() == null) {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
 			}
-			// получить объем по услуге за период
-			SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), 
-					calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
-			vol = tmpNodeVol.getVol();
+			if (calc.getReqConfig().getOperTp()==1 && calc.getReqConfig().getChng().getTp().getCd().equals("Начисление за прошлый период") ) {
+				// перерасчет
+				vol = tarMng.getChngVal(calc, serv, null, "Начисление за прошлый период") / calc.getReqConfig().getCntCurDays();
+				
+			} else {
+				// получить объем по услуге за период
+				SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), 
+						calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
+				vol = tmpNodeVol.getVol();
+			}
+			// разделить на кол-во дней в месяце, так как получен объем за весь месяц
 			vol = vol / calc.getReqConfig().getCntCurDays();
 		} else if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по готовой сумме"), 0d) == 1d) {
 			vol = 1 / calc.getReqConfig().getCntCurDays();

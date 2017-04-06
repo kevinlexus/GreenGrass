@@ -8,8 +8,8 @@ import com.ric.bill.Storable;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.mt.MLogs;
-import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.mt.main.MLogs;
+import com.ric.bill.model.mt.main.MeterLog;
 
 
 public interface MeterLogDAO {

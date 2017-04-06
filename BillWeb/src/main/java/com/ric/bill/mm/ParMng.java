@@ -9,7 +9,7 @@ import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.WrongSetMethod;
 import com.ric.bill.model.bs.Par;
-import com.ric.bill.model.mt.MLogs;
+import com.ric.bill.model.mt.main.MLogs;
 
 public interface ParMng {
 

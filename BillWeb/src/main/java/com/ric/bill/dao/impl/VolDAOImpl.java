@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.dao.VolDAO;
-import com.ric.bill.model.mt.Vol;
+import com.ric.bill.model.mt.main.Vol;
 
 
 	@Repository

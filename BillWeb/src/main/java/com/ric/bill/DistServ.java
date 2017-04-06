@@ -35,7 +35,7 @@ import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.mt.MLogs;
+import com.ric.bill.model.mt.main.MLogs;
 import com.ric.bill.model.tr.Serv;
 
 /**
