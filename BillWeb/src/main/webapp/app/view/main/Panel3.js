@@ -200,6 +200,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
             tbar: [{
                 text: 'Добавить формулу',
                 handler: 'onGridPayordCmpAdd'
+            }, {
+                text: 'Сохранить',
+                handler: 'onGridPayordCmpSave'
             }],
             requires: [
                 'Ext.selection.CellModel',
@@ -207,19 +210,16 @@ Ext.define('BillWebApp.view.main.Panel3', {
             ],
             selModel: 'cellmodel',
             plugins: {
+                ptype: 'cellediting',
+                clicksToEdit: 1
+            }/*,
+            plugins: {
                 ptype: 'rowediting',
                 clicksToEdit: 2,
                 saveBtnText: 'Сохранить',
                 cancelBtnText: 'Отмена',
                 errorSummary: false // погасить сообщение валидации
-                /*listeners: {
-                    edit: function(editor,e,opt){
-                        console.log(editor); //Contains the variables that should have been in the e var
-                        console.log(e);
-                        console.log(opt); //undefined
-                    }
-                }*/
-            },
+            }*/,
             bind: {
                 store: '{payordcmpstore}',
                 listeners: {

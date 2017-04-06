@@ -227,7 +227,8 @@ public class ChrgThr {
 			if (!rec.getServ().getVrt()) {
 				if (sum.compareTo(BigDecimal.ZERO) != 0) {
 					Chrg chrg = new Chrg(kart, rec.getServ(), rec.getOrg(), 1, calc.getReqConfig().getPeriod(), sum, sum, 
-							vol, rec.getPrice(), rec.getStdt(), rec.getCntPers(), rec.getArea(), chrgTpRnd, rec.getDt1(), rec.getDt2());
+							vol, rec.getPrice(), rec.getStdt(), rec.getCntPers(), rec.getArea(), chrgTpRnd, 
+							calc.getReqConfig().getChng(), rec.getDt1(), rec.getDt2());
 					chrgAppend(chrg);
 				}
 			}
@@ -319,8 +320,8 @@ public class ChrgThr {
 		// получить составляющие перерасчета
 		Chng chng = calc.getReqConfig().getChng();
 		ChngLsk chngLsk = null;
-		if (chng != null) {
-			chngLsk = chng.getChngLsk().stream().filter(t-> t.getKart().equals(kart) && t.getServ().equals(serv))
+		if (chng != null && chng.getServ().equals(serv)) {
+			chngLsk = chng.getChngLsk().stream().filter(t-> t.getKart().equals(kart))
 					.findFirst().orElse(null);
 		}
 		

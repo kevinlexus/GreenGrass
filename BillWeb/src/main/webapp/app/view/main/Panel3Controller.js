@@ -25,9 +25,10 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
         var rec = store.getRange();
         rec[0].set('klskFk', id);
         rec[0].set('koName', name);
-        payordCmpGrid.refreshRow(rec);
-        //rec[0].commit();  // TODO убрать коммит?
-        //store.sync();
+        //payordCmpGrid.refreshRow(rec);
+        rec[0].commit();  // TODO убрать коммит?
+        store.sync();
+        store.load();
         //payordCmpGrid.reconfigure(store);
 
         //var payordCmpGrid = this.lookupReference('payordCmpGrid');

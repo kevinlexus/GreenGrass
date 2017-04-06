@@ -40,7 +40,8 @@ public class Chrg implements java.io.Serializable, Simple {
 	// конструктор для окончательно рассчитанных данных (умноженная расценка на объем)
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			BigDecimal sumFull, BigDecimal sumAmnt, BigDecimal vol,
-			BigDecimal price, BigDecimal stdt, Integer cntPers, BigDecimal area, Lst tp, Date dt1, Date dt2) {
+			BigDecimal price, BigDecimal stdt, Integer cntPers, BigDecimal area, Lst tp, 
+			Chng chng, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -61,6 +62,7 @@ public class Chrg implements java.io.Serializable, Simple {
 		}
 		setDt1(dt1);
 		setDt2(dt2);
+		setChng(chng);
 	}
 
 	// конструктор для подготовительных данных, рассчитанных в потоке
