@@ -2,19 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ab6b1df-caef-4bd0-8e7c-9ae034c355c4" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/cp/MeterCP.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/cp/MeterExsCP.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/cp/MeterLogCp.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/cp/MeterLogGraphCP.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/cp/package-info.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/MLogs.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/Vol.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/Vols.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/SrvThr.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/cp/VolCp.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/mt/Vol.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/MLogsAbstract.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/mt/MLogs.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/Meter.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/mt/Meter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/MeterExs.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/mt/MeterExs.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/MeterLog.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/mt/MeterLog.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/MeterLogGraph.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/mt/MeterLogGraph.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/mt/main/package-info.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/mt/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/ChrgThr.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/ChrgThr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/DistGen.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/DistGen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/DistServ.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/DistServ.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/MeterLogMngImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/MeterLogMngImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dto/DTOBuilder.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dto/DTOBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dto/PayordCmpDTO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dto/PayordCmpDTO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/PayordMngImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/PayordMngImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/fn/PayordCmp.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/fn/PayordCmp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/model/Payord.js" afterPath="$PROJECT_DIR$/webapp/app/model/Payord.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/model/PayordCmp.js" afterPath="$PROJECT_DIR$/webapp/app/model/PayordCmp.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/model/PayordGrp.js" afterPath="$PROJECT_DIR$/webapp/app/model/PayordGrp.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/AskObjPanel.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/AskObjPanel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/AskObjPanelController.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/AskObjPanelController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/MeterContains.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/MeterContains.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/SumNodeVol.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/SumNodeVol.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/MeterLogDAO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/MeterLogDAO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/VolDAO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/VolDAO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/MeterLogDAOImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/MeterLogDAOImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/VolDAOImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/VolDAOImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/VsecDAOImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/VsecDAOImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/KartMng.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/KartMng.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/MeterLogMng.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/MeterLogMng.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/ParMng.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/ParMng.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/TarifMngImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/TarifMngImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/VolMngImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/VolMngImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/ar/House.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/ar/House.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/ar/Kart.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/ar/Kart.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/fn/Chng.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/fn/Chng.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/fn/ChngLsk.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/fn/ChngLsk.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/fn/ChngVal.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/fn/ChngVal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/fn/Chrg.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/fn/Chrg.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/tr/Serv.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/tr/Serv.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/tr/TarifKlsk.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/tr/TarifKlsk.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel3Controller.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel3Controller.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../test/java/testDist.java" afterPath="$PROJECT_DIR$/../test/java/testDist.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../test/resources/logback.xml" afterPath="$PROJECT_DIR$/../test/resources/logback.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" afterPath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" />
@@ -47,11 +78,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Panel3Controller.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Panel3Controller.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel3Controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.448276">
-              <caret line="245" column="0" selection-start-line="245" selection-start-column="0" selection-end-line="245" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.64285713">
+              <caret line="27" column="22" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -67,10 +98,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PayordGrp.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PayordGrp.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordGrp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14285715">
+            <state vertical-scroll-proportion="0.0">
               <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
               <folding />
             </state>
@@ -128,8 +159,8 @@
         <option value="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" />
         <option value="$PROJECT_DIR$/webapp/app/model/PayordCmp.js" />
         <option value="$PROJECT_DIR$/webapp/app/model/Payord.js" />
-        <option value="$PROJECT_DIR$/webapp/app/view/main/Panel3Controller.js" />
         <option value="$PROJECT_DIR$/webapp/app/model/PayordGrp.js" />
+        <option value="$PROJECT_DIR$/webapp/app/view/main/Panel3Controller.js" />
       </list>
     </option>
   </component>
@@ -789,8 +820,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="325" column="40" selection-start-line="325" selection-start-column="40" selection-end-line="325" selection-end-column="40" />
           <folding>
-            <marker date="1491373234586" expanded="true" signature="451:641" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
-            <marker date="1491373234586" expanded="true" signature="6039:6053" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
+            <marker date="1491462650613" expanded="true" signature="451:641" placeholder="{&quot;xtype&quot;: 'gridpanel'...}" />
+            <marker date="1491462650613" expanded="true" signature="6039:6053" placeholder="{&quot;text&quot;: 'Пользователь'...}" />
           </folding>
         </state>
       </provider>
@@ -827,14 +858,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel3Controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.448276">
-          <caret line="245" column="0" selection-start-line="245" selection-start-column="0" selection-end-line="245" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1904762">
@@ -853,8 +876,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordGrp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14285715">
+        <state vertical-scroll-proportion="0.0">
           <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel3Controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.64285713">
+          <caret line="27" column="22" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
           <folding />
         </state>
       </provider>

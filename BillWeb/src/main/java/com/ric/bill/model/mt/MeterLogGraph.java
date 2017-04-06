@@ -1,6 +1,7 @@
-package com.ric.bill.model.mt.cp;
+package com.ric.bill.model.mt;
 
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,22 +16,19 @@ import javax.persistence.Table;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.fn.Chng;
-import com.ric.bill.model.mt.main.MLogs;
-import com.ric.bill.model.mt.main.MeterLog;
 
 
 /**
- * Копия для перерасчета - Связи счетчика
+ * Связи счетчика
  * @author lev
  *
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "METER_LOG_GRAPH_CP", schema="MT")
-public class MeterLogGraphCP implements java.io.Serializable, Simple {
+@Table(name = "METER_LOG_GRAPH", schema="MT")
+public class MeterLogGraph implements java.io.Serializable, Simple {
 
-	public MeterLogGraphCP (){
+	public MeterLogGraph (){
 		
 	}
 	
@@ -62,10 +60,6 @@ public class MeterLogGraphCP implements java.io.Serializable, Simple {
 
     @Column(name = "DT2", updatable = false, nullable = true)
 	private Date dt2;
-    
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
-	private Chng chng; 
 	
     public Integer getId() {
 		return this.id;
@@ -123,20 +117,13 @@ public class MeterLogGraphCP implements java.io.Serializable, Simple {
 		this.dt2 = dt2;
 	}
 
-	public Chng getChng() {
-		return chng;
-	}
-
-	public void setChng(Chng chng) {
-		this.chng = chng;
-	}
-
+	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
-	    if (o == null || !(o instanceof MeterLogGraphCP))
+	    if (o == null || !(o instanceof MeterLogGraph))
 	        return false;
 
-	    MeterLogGraphCP other = (MeterLogGraphCP)o;
+	    MeterLogGraph other = (MeterLogGraph)o;
 
 	    if (id == other.getId()) return true;
 	    if (id == null) return false;

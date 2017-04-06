@@ -1,7 +1,9 @@
 package com.ric.bill.model.fn;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,12 +13,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.ric.bill.Simple;
+import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.mt.main.Meter;
-import com.ric.bill.model.mt.main.Vol;
+import com.ric.bill.model.mt.Meter;
+import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.mt.Vol;
 
 /**
  * Детали перерасчета - объемы по счетчикам

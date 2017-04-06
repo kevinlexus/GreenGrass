@@ -1,4 +1,4 @@
-package com.ric.bill.model.mt.main;
+package com.ric.bill.model.mt;
 
 import java.util.List;
 
@@ -9,8 +9,7 @@ import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.tr.Serv;
 
-public interface MLogsAbstract extends Simple, Storable {
-	public abstract List<Vols> getVolDistilled();
+public interface MLogs extends Storable, Simple {
 
 	public abstract String getEntry();
 
@@ -23,7 +22,11 @@ public interface MLogsAbstract extends Simple, Storable {
 	public abstract Lst getTp();
 
 	public abstract void setTp(Lst tp);
-	
+
+	public abstract List<Vol> getVol();
+
+	public abstract void setVol(List<Vol> vol);
+
 	public abstract Serv getServ();
 
 	public abstract void setServ(Serv serv);
@@ -43,5 +46,6 @@ public interface MLogsAbstract extends Simple, Storable {
 	public abstract List<MeterLogGraph> getInside();
 
 	public abstract List<MeterLogGraph> getOutside();
+
 
 }

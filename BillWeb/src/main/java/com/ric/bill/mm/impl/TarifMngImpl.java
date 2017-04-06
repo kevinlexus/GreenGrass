@@ -186,6 +186,7 @@ public class TarifMngImpl implements TarifMng {
 	 * @return
 	 */
 	public Double getChngVal(Calc calc, Serv serv, Date genDt, String cd) {
+		log.trace("Serv={}", serv.getId());
 		Chng chng = calc.getReqConfig().getChng();	
 		Double val = null;
 		if (chng.getTp().getCd().equals(cd)) {

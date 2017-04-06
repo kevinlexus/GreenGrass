@@ -25,9 +25,10 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
         var rec = store.getRange();
         rec[0].set('klskFk', id);
         rec[0].set('koName', name);
-        rec[0].commit();  // TODO убрать коммит?
+        payordCmpGrid.refreshRow(rec);
+        //rec[0].commit();  // TODO убрать коммит?
         //store.sync();
-        payordCmpGrid.reconfigure(store);
+        //payordCmpGrid.reconfigure(store);
 
         //var payordCmpGrid = this.lookupReference('payordCmpGrid');
         //var row = payordCmpGrid.getSelectionModel().getSelection()[0];
@@ -35,6 +36,7 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
 
         var panel3 = this.getView();
         panel3.focus();
+        //payordCmpGrid.findPlugin('rowediting').startEdit(rec, 0);
     },
 
     onGridPayordGrpEdit: function() {

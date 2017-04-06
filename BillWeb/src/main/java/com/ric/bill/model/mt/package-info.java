@@ -5,4 +5,4 @@
  * @author lev
  *
  */
-package com.ric.bill.model.mt.main;
+package com.ric.bill.model.mt;

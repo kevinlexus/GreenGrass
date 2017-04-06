@@ -24,7 +24,7 @@ import org.hibernate.annotations.Type;
 import com.ric.bill.Calc;
 import com.ric.bill.Storable;
 import com.ric.bill.model.bs.Base;
-import com.ric.bill.model.mt.main.Meter;
+import com.ric.bill.model.mt.Meter;
 
 
 

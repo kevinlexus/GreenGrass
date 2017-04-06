@@ -14,8 +14,8 @@ import com.ric.bill.BillServ;
 import com.ric.bill.dao.ReportDAO;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.ReportMng;
-import com.ric.bill.model.mt.main.MLogs;
-import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.MLogs;
+import com.ric.bill.model.mt.MeterLog;
 import com.ric.web.AppConfig;
 
 import org.mariuszgromada.math.mxparser.*;

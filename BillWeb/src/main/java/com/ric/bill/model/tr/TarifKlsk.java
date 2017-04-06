@@ -25,7 +25,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.fn.Chng;
-import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.MeterLog;
 
 
 /**

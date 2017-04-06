@@ -33,7 +33,7 @@ import org.hibernate.annotations.ParamDef;
 import com.ric.bill.MeterContains;
 import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Base;
-import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.tr.Serv;
 import com.ric.bill.model.tr.TarifKlsk;
 

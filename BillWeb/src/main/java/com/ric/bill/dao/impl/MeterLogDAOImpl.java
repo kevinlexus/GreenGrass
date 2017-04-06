@@ -19,13 +19,12 @@ import com.ric.bill.excp.NotFoundODNLimit;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Par;
-import com.ric.bill.model.mt.main.MLogs;
-import com.ric.bill.model.mt.main.MLogsAbstract;
-import com.ric.bill.model.mt.main.Meter;
-import com.ric.bill.model.mt.main.MeterExs;
-import com.ric.bill.model.mt.main.MeterLog;
-import com.ric.bill.model.mt.main.MeterLogGraph;
-import com.ric.bill.model.mt.main.Vol;
+import com.ric.bill.model.mt.MLogs;
+import com.ric.bill.model.mt.Meter;
+import com.ric.bill.model.mt.MeterExs;
+import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.mt.MeterLogGraph;
+import com.ric.bill.model.mt.Vol;
 
 
 @Repository
@@ -42,7 +41,7 @@ public class MeterLogDAOImpl implements MeterLogDAO {
 	 */
 //	@Cacheable(cacheNames="rrr1")
 	@Cacheable(cacheNames="rrr1", key="{#rqn, #mLog.getId() }")
-	public synchronized Kart getKart(int rqn, MLogsAbstract mLog) {
+	public synchronized Kart getKart(int rqn, MLogs mLog) {
 		Query query =em.createQuery("from Kart t where t.klsk =:klsk");
 		query.setParameter("klsk", mLog.getKlskObj());
 		try {

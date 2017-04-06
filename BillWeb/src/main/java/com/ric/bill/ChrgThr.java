@@ -33,6 +33,7 @@ import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
+import com.ric.bill.model.fn.Chng;
 import com.ric.bill.model.fn.ChngLsk;
 import com.ric.bill.model.fn.Chrg;
 import com.ric.bill.model.tr.Serv;
@@ -315,6 +316,15 @@ public class ChrgThr {
 			stPrice = 0d;
 		}
 
+		// получить составляющие перерасчета
+		Chng chng = calc.getReqConfig().getChng();
+		ChngLsk chngLsk = null;
+		if (chng != null) {
+			chngLsk = chng.getChngLsk().stream().filter(t-> t.getKart().equals(kart) && t.getServ().equals(serv))
+					.findFirst().orElse(null);
+		}
+		
+		
 		//получить долю соц.нормы.свыше (не объем!!!)
 		if (Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по общей площади-1"), 0d) == 1d || 
 				Utl.nvl(parMng.getDbl(rqn, serv, "Вариант расчета по объему-1"), 0d) == 1d ||
@@ -450,7 +460,7 @@ public class ChrgThr {
 			}
 			
 			// получить объем по лицевому счету и услуге за ДЕНЬ
-			if (calc.getReqConfig().getOperTp()==1 && calc.getReqConfig().getChng().getTp().getCd().equals("Начисление за прошлый период") ) {
+			if (calc.getReqConfig().getOperTp()==1 && chng.getTp().getCd().equals("Начисление за прошлый период") && chngLsk != null ) {
 				// если перерасчет, то разделить на кол-во дней в месяце, так как передаётся объем за месяц
 				vol = tarMng.getChngVal(calc, serv, null, "Начисление за прошлый период") / calc.getReqConfig().getCntCurDays();
 			} else {
@@ -465,10 +475,9 @@ public class ChrgThr {
 			if (serv.getServMet() == null) {
 				throw new InvalidServ("По услуге Id="+serv.getId()+" не установлена соответствующая услуга счетчика");
 			}
-			if (calc.getReqConfig().getOperTp()==1 && calc.getReqConfig().getChng().getTp().getCd().equals("Начисление за прошлый период") ) {
+			if (calc.getReqConfig().getOperTp()==1 && chng.getTp().getCd().equals("Начисление за прошлый период") && chngLsk != null ) {
 				// перерасчет
 				vol = tarMng.getChngVal(calc, serv, null, "Начисление за прошлый период") / calc.getReqConfig().getCntCurDays();
-				
 			} else {
 				// получить объем по услуге за период
 				SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), 

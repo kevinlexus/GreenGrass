@@ -1,6 +1,6 @@
 package com.ric.bill;
 
-import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.MeterLog;
 
 /**
  * Объем по связанному узлу за период

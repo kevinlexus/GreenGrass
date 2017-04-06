@@ -35,8 +35,7 @@ import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.mt.main.MLogs;
-import com.ric.bill.model.mt.main.MLogsAbstract;
+import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -134,7 +133,7 @@ public class DistServ {
 		}
 
 		//найти все вводы по дому и по услуге
-		for (MLogsAbstract ml : metMng.getAllMetLogByServTp(rqn, calc.getHouse(), serv, "Ввод")) {
+		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, calc.getHouse(), serv, "Ввод")) {
 			metMng.delNodeVol(rqn, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 		}
 		
@@ -271,7 +270,7 @@ public class DistServ {
 		//найти все счетчики по Лиц.счету, по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			calc.setGenDt(c.getTime());
-			for (MLogsAbstract ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
+			for (MLogs ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
 				metMng.delNodeVol(rqn, ml, calc.getCalcTp(), calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 			}
 			
@@ -286,7 +285,7 @@ public class DistServ {
 	 */
 	private void distKartServTp(int rqn, Kart kart, Serv serv) throws ErrorWhileDist {
 		//найти все начальные узлы расчета по лиц.счету и по услуге
-		for (MLogsAbstract ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
+		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
 				//log.info("Услуга: serv.cd={},  Узел id={}", serv.getCd() , ml.getId());
 				distGraph(ml);
 		}
@@ -359,7 +358,7 @@ public class DistServ {
 	private void distHouseServTp(int rqn, Serv serv) throws ErrorWhileDist {
 		log.trace("Распределение по типу:"+calc.getCalcTp());
 		//найти все вводы по дому и по услуге
-		for (MLogsAbstract ml : metMng.getAllMetLogByServTp(rqn, calc.getHouse(), serv, "Ввод")) {
+		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, calc.getHouse(), serv, "Ввод")) {
 				log.trace("Вызов distGraph c id="+ml.getId());
 				distGraph(ml);
 		}
@@ -370,7 +369,7 @@ public class DistServ {
 	 * @param ml - начальный узел распределения
 	 * @throws ErrorWhileDist 
 	 */
-	private void distGraph (MLogsAbstract ml) throws ErrorWhileDist {
+	private void distGraph (MLogs ml) throws ErrorWhileDist {
 		log.trace("DistServ.distGraph: Распределение счетчика:"+ml.getId());
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();

@@ -1,8 +1,9 @@
-package com.ric.bill.model.mt.main;
+package com.ric.bill.model.mt;
 
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,9 +14,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
+import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Chng;
 
 /**
@@ -26,7 +33,7 @@ import com.ric.bill.model.fn.Chng;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "METER_VOL", schema="MT")
-public class Vol implements java.io.Serializable, Simple, Vols {
+public class Vol implements java.io.Serializable, Simple {
 
 	public Vol (){
 		
@@ -82,151 +89,75 @@ public class Vol implements java.io.Serializable, Simple, Vols {
 	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
 	private Chng chng; 
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getId()
-	 */
-	@Override
 	public Integer getId() {
 		return this.id;
 	}
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setId(java.lang.Integer)
-	 */
-	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getDt1()
-	 */
-	@Override
 	public Date getDt1() {
 		return dt1;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setDt1(java.util.Date)
-	 */
-	@Override
 	public void setDt1(Date dt1) {
 		this.dt1 = dt1;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getDt2()
-	 */
-	@Override
 	public Date getDt2() {
 		return dt2;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setDt2(java.util.Date)
-	 */
-	@Override
 	public void setDt2(Date dt2) {
 		this.dt2 = dt2;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getTp()
-	 */
-	@Override
 	public Lst getTp() {
 		return tp;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setTp(com.ric.bill.model.bs.Lst)
-	 */
-	@Override
 	public void setTp(Lst tp) {
 		this.tp = tp;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getVol1()
-	 */
-	@Override
 	public Double getVol1() {
 		return vol1;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setVol1(java.lang.Double)
-	 */
-	@Override
 	public void setVol1(Double vol1) {
 		this.vol1 = vol1;
 	}
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getVol2()
-	 */
-	@Override
 	public Double getVol2() {
 		return vol2;
 	}
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setVol2(java.lang.Double)
-	 */
-	@Override
 	public void setVol2(Double vol2) {
 		this.vol2 = vol2;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getMLog()
-	 */
-	@Override
 	public MLogs getMLog() {
 		return mLog;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setMLog(com.ric.bill.model.mt.main.MeterLog)
-	 */
-	@Override
 	public void setMLog(MeterLog ml) {
 		this.mLog = ml;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getMet()
-	 */
-	@Override
 	public Meter getMet() {
 		return met;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setMet(com.ric.bill.model.mt.main.Meter)
-	 */
-	@Override
 	public void setMet(Meter met) {
 		this.met = met;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#getStatus()
-	 */
-	@Override
 	public Integer getStatus() {
 		return status;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#setStatus(java.lang.Integer)
-	 */
-	@Override
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#equals(java.lang.Object)
-	 */
-	@Override
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof Vol))
@@ -241,10 +172,6 @@ public class Vol implements java.io.Serializable, Simple, Vols {
 	    return id.equals(other.getId());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.ric.bill.model.mt.main.Vols1#hashCode()
-	 */
-	@Override
 	public int hashCode() {
 	    if (id != null) {
 	        return id.hashCode();

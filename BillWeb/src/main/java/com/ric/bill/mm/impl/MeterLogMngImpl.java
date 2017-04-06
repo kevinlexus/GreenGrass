@@ -2,9 +2,12 @@ package com.ric.bill.mm.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,20 +20,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.Calc;
+import com.ric.bill.ChrgServ;
 import com.ric.bill.Config;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.MeterLogDAO;
 import com.ric.bill.mm.MeterLogMng;
+import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
-import com.ric.bill.model.mt.main.MLogs;
-import com.ric.bill.model.mt.main.MLogsAbstract;
-import com.ric.bill.model.mt.main.Meter;
-import com.ric.bill.model.mt.main.MeterExs;
-import com.ric.bill.model.mt.main.MeterLog;
-import com.ric.bill.model.mt.main.MeterLogGraph;
-import com.ric.bill.model.mt.main.Vols;
+import com.ric.bill.model.mt.MLogs;
+import com.ric.bill.model.mt.Meter;
+import com.ric.bill.model.mt.MeterExs;
+import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.mt.MeterLogGraph;
+import com.ric.bill.model.mt.Vol;
 import com.ric.bill.model.tr.Serv;
 
 //включил кэш - стало хуже, по скорости - 61 сек.
@@ -72,9 +77,9 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - искомый список
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mm.getKlskId(), #serv.getId(), #tp }") 
-	public List<MLogsAbstract> getAllMetLogByServTp(int rqn, MeterContains mm, Serv serv, String tp) {
-		List<MLogsAbstract> lstMlg = new ArrayList<MLogsAbstract>(0); 
-		for (MLogsAbstract ml : mm.getMlog()) {
+	public List<MLogs> getAllMetLogByServTp(int rqn, MeterContains mm, Serv serv, String tp) {
+		List<MLogs> lstMlg = new ArrayList<MLogs>(0); 
+		for (MLogs ml : mm.getMlog()) {
 			//по типу, если указано
 			if (tp == null || ml.getTp().getCd().equals(tp)) {
 				//и услуге
@@ -131,7 +136,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @param mLog
 	 */
 	@Cacheable(cacheNames="rrr1", key="{ #rqn, #mLog.getId(), #genDt}")
-	public boolean checkExsMet(int rqn, MLogsAbstract mLog, Date genDt) {
+	public boolean checkExsMet(int rqn, MLogs mLog, Date genDt) {
     	// проверить существование хотя бы одного из физ счетчиков, по этому лог.сч.
     	for (Meter m: mLog.getMeter()) {
     		for (MeterExs e: m.getExs()) {
@@ -155,16 +160,16 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return - возвращаемый объем
 	 */
 	@Cacheable(cacheNames="rrr3", key="{ #rqn, #statusVol, #mLog.getId(), #tp, #dt1, #dt2}")
-    public  SumNodeVol getVolPeriod(int rqn, Integer statusVol, MLogsAbstract mLog, int tp, Date dt1, Date dt2) {
+    public  SumNodeVol getVolPeriod(int rqn, Integer statusVol, MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
 		/* Java 8 */
-		mLog.getVolDistilled().stream()  // ВАЖНО! ЗДЕСЬ нельзя parallelStream - получается не предсказуемый результат!!!
+		mLog.getVol().stream()  // ВАЖНО! ЗДЕСЬ нельзя parallelStream - получается не предсказуемый результат!!!
 	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(statusVol) && // по статусу
 	            			Utl.between(t.getDt1(), dt1, dt2) && //здесь фильтр берет даты снаружи!
 	        				Utl.between(t.getDt2(), dt1, dt2))
 					.forEach(t -> {
 								if (t.getTp().getCd().equals("Фактический объем")) {
-					    			lnkVol.addVol(t .getVol1());
+					    			lnkVol.addVol(t.getVol1());
 								} else if (t.getTp().getCd().equals("Площадь и проживающие")) {
 					    			lnkVol.addArea(t.getVol1());
 					    			lnkVol.addPers(t.getVol2());
@@ -212,8 +217,8 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 * @return лог.счетчик
 	 */
 	@Cacheable("rrr1") 
-	public MLogsAbstract getLinkedNode(int rqn, MLogsAbstract mLog, String tp, Date genDt) {
-		MLogsAbstract lnkMLog = null;
+	public MLogs getLinkedNode(int rqn, MLogs mLog, String tp, Date genDt) {
+		MLogs lnkMLog = null;
 		//найти прямую связь (направленную внутрь или наружу, не важно) указанного счетчика со счетчиком указанного типа 
     	//сперва направленные внутрь
     	for (MeterLogGraph g : mLog.getInside()) {
@@ -248,11 +253,11 @@ public class MeterLogMngImpl implements MeterLogMng {
      */
 	@Cacheable("rrr1") // пока оставил кэширование, не должно мешать 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
-	public void delNodeVol(int rqn, MLogsAbstract mLog, int tp, Date dt1, Date dt2, Integer status) {
+	public void delNodeVol(int rqn, MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
 
 		//удалять итератором, иначе java.util.ConcurrentModificationException
-		for (Iterator<Vols> iterator = mLog.getVolDistilled().iterator(); iterator.hasNext();) {
-		    Vols vol = iterator.next();
+		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
+		    Vol vol = iterator.next();
 		    if (Utl.nvl(vol.getStatus(),0).equals(status) && //учитывая статус записи (распред/перерасч.) 
 		    		(vol.getTp().getCd().equals("Фактический объем") || vol.getTp().getCd().equals("Площадь и проживающие") || vol.getTp().getCd().equals("Лимит ОДН"))) {
 		    	//проверить период
@@ -289,7 +294,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 //	 НЕ ВЗЛЕТЕЛО, медленно выполняется, чем mLog.getKart()
 	//@Cacheable(cacheNames="rrr1", key="{ #mLog.getId() }")
 	@Cacheable(cacheNames="rrr1") 
-	public /*synchronized*/ Kart getKart(int rqn, MLogsAbstract mLog) {
+	public /*synchronized*/ Kart getKart(int rqn, MLogs mLog) {
 		return mDao.getKart(rqn, mLog);
 	}
 	/**

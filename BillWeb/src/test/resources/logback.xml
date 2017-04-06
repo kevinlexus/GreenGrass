@@ -12,7 +12,7 @@
   <logger name="org.hibernate.type" level="TRACE" /> -->
   
   <logger name="org.hibernate.engine.loading.internal.CollectionLoadContext" level="ERROR"/>
-  <logger name="com.ric" level="TRACE"/>
+  <logger name="com.ric" level="INFO"/>
   <!--<logger name="org.springframework.security" level="TRACE"/>-->
 
   <!-- Setting the root level of logging to INFO - Здесь менять уровни логгинга в Spring Boot-->

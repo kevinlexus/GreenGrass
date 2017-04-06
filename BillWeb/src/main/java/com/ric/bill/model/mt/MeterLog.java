@@ -1,9 +1,10 @@
-package com.ric.bill.model.mt.cp;
+package com.ric.bill.model.mt;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,36 +15,42 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.ParamDef;
 
+import com.ric.bill.Storable;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Base;
 import com.ric.bill.model.bs.Lst;
-import com.ric.bill.model.fn.Chng;
-import com.ric.bill.model.mt.main.MLogs;
-import com.ric.bill.model.mt.main.Meter;
-import com.ric.bill.model.mt.main.MeterLogGraph;
-import com.ric.bill.model.mt.main.Vol;
-import com.ric.bill.model.mt.main.Vols;
+import com.ric.bill.model.bs.Par;
 import com.ric.bill.model.tr.Serv;
 
 
 /**
- * Копия для перерасчета - Логический счетчик
+ * Логический счетчик
  * @author lev
  *
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "METER_LOG_CP", schema="MT")
-public class MeterLogCp extends Base implements java.io.Serializable, MLogs<VolCp> {
+@Table(name = "METER_LOG", schema="MT")
+public class MeterLog extends Base implements java.io.Serializable, MLogs {
 
-	public MeterLogCp (){
+	public MeterLog (){
 		
 	}
 	
@@ -80,7 +87,7 @@ public class MeterLogCp extends Base implements java.io.Serializable, MLogs<VolC
 	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID", updatable = false) //внимание! если здесь убрать updatable = false то будет update kmp_meter_vol fk_meter_log!
 	//@BatchSize(size = 50)
 	@Fetch(FetchMode.SUBSELECT) // убрал subselect, так как внезапно начало тормозить  
-	private List<VolCp> vol = new ArrayList<VolCp>(0);
+	private List<Vol> vol = new ArrayList<Vol>(0);
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="NOD_SRC", referencedColumnName="ID")
@@ -118,10 +125,6 @@ public class MeterLogCp extends Base implements java.io.Serializable, MLogs<VolC
     @Column(name = "ENTRY", updatable = false, nullable = true)
 	private String entry;
     
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_CHNG", referencedColumnName="ID")
-	private Chng chng; 
-	
 	public Integer getKlskObj() {
 		return klskObj;
 	}
@@ -146,11 +149,11 @@ public class MeterLogCp extends Base implements java.io.Serializable, MLogs<VolC
 		this.tp = tp;
 	}
 
-	public List<VolCp> getVol() {
+	public List<Vol> getVol() {
 		return vol;
 	}
 
-	public void setVol(List<VolCp> vol) {
+	public void setVol(List<Vol> vol) {
 		this.vol = vol;
 	}
 
@@ -202,21 +205,12 @@ public class MeterLogCp extends Base implements java.io.Serializable, MLogs<VolC
 		this.entry = entry;
 	}
 
-	
-	public Chng getChng() {
-		return chng;
-	}
-	
-	public void setChng(Chng chng) {
-		this.chng = chng;
-	}
-	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
-	    if (o == null || !(o instanceof MeterLogCp))
+	    if (o == null || !(o instanceof MeterLog))
 	        return false;
 
-	    MeterLogCp other = (MeterLogCp)o;
+	    MeterLog other = (MeterLog)o;
 
 	    if (id == other.getId()) return true;
 	    if (id == null) return false;
@@ -231,14 +225,6 @@ public class MeterLogCp extends Base implements java.io.Serializable, MLogs<VolC
 	    } else {
 	        return super.hashCode();
 	    }
-	}
-
-	@Override
-	public List<Vols> getVolDistilled() {
-		List<Vols> newList = new ArrayList<>();
-		newList.addAll(vol);
-		
-		return newList;
 	}
 	
 }

@@ -34,14 +34,12 @@ import com.ric.bill.mm.VolMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.fn.Chng;
-import com.ric.bill.model.mt.main.MLogs;
-import com.ric.bill.model.mt.main.MLogsAbstract;
-import com.ric.bill.model.mt.main.Meter;
-import com.ric.bill.model.mt.main.MeterExs;
-import com.ric.bill.model.mt.main.MeterLog;
-import com.ric.bill.model.mt.main.MeterLogGraph;
-import com.ric.bill.model.mt.main.Vol;
-import com.ric.bill.model.mt.main.Vols;
+import com.ric.bill.model.mt.MLogs;
+import com.ric.bill.model.mt.Meter;
+import com.ric.bill.model.mt.MeterExs;
+import com.ric.bill.model.mt.MeterLog;
+import com.ric.bill.model.mt.MeterLogGraph;
+import com.ric.bill.model.mt.Vol;
 import com.ric.bill.model.tr.Serv;
 
 /**
@@ -147,7 +145,7 @@ public class DistGen {
 	 * @throws EmptyPar 
 	 * @throws WrongValue 
 	 */
-	public NodeVol distNode (Calc calc, MLogsAbstract ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar, WrongValue {
+	public NodeVol distNode (Calc calc, MLogs ml, int tp, Date genDt) throws WrongGetMethod, EmptyServ, NotFoundODNLimit, NotFoundNode, EmptyStorable, EmptyPar, WrongValue {
 		// номер текущего запроса
 		if (ml.getId()==518451 && tp==0) {
 			log.trace("счетчик!");
@@ -195,7 +193,7 @@ public class DistGen {
 				// посчитать объемы, по физическим счетчикам, прикрепленным к узлу
 			    // (если такие есть) в пропорции на кол-во дней объема
 				for (Meter m : ml.getMeter()) { 		// физ.сч
-					for (Vols v : m.getVol()) {    		// фактические объемы
+					for (Vol v : m.getVol()) {    		// фактические объемы
 						if (v.getTp().getCd().equals("Фактический объем") && Utl.between(genDt, v.getDt1(), v.getDt2()) ) {
 							//log.info("Записано1 genDt={}, {}, {}", genDt, v.getDt1(), v.getDt2());
 							for (MeterExs e : m.getExs()) { // периоды сущ.
@@ -254,9 +252,9 @@ public class DistGen {
 			//только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
 			if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt)) {
 				SumNodeVol lnkODNVol = null;
-				MLogsAbstract lnkLODN = null;
-				MLogsAbstract lnkSumODPU = null;
-				MLogsAbstract lnkODPU = null;
+				MLogs lnkLODN = null;
+				MLogs lnkSumODPU = null;
+				MLogs lnkODPU = null;
 				//поиск счетчика ЛОДН
 				lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
 				//параметр Доначисление по ОДН
@@ -320,8 +318,8 @@ public class DistGen {
 						log.trace("check serv="+mainServ.getServMet().getId());
 						double tmpVol=0d;
 						SumNodeVol sumMainVol;
-						List<MLogsAbstract> lstMain = metMng.getAllMetLogByServTp(rqn, kart, mainServ.getServMet(), null);
-						for (MLogsAbstract mLog2 : lstMain) {
+						List<MLogs> lstMain = metMng.getAllMetLogByServTp(rqn, kart, mainServ.getServMet(), null);
+						for (MLogs mLog2 : lstMain) {
 							//получить объем за период, по лог счетчику основной услуги, если найден
 							sumMainVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), mLog2, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2());
 							tmpVol = tmpVol + sumMainVol.getVol();
@@ -361,9 +359,9 @@ public class DistGen {
 			//по расчетной связи пропорц.площади (Отопление например)
 			//только там, где существует услуга в данном дне (по услуге, содержащей Поставщика)
 			if (kartMng.getServ(rqn, calc, ml.getServ().getServOrg(), genDt)) {
-				MLogsAbstract lnkLODN = null;
-				MLogsAbstract lnkSumODPU = null;
-				MLogsAbstract lnkODPU = null;
+				MLogs lnkLODN = null;
+				MLogs lnkSumODPU = null;
+				MLogs lnkODPU = null;
 	
 				//поиск счетчика ЛОДН
 				lnkLODN = metMng.getLinkedNode(rqn, ml, "ЛОДН", genDt);
@@ -462,10 +460,10 @@ public class DistGen {
 					lmtVol = oplLiter(oplMan)/1000;
 					//записать лимит ОДН
 					// TODO для перерасчета!
-					Vols vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
+					Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 
 							calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 					//saveVol(ml, vol);
-					ml.getVolDistilled().add(vol);
+					ml.getVol().add(vol);
 				}
 				
 			} else if (servChrg.getCd().equals("Электроснабжение")) {
@@ -501,10 +499,10 @@ public class DistGen {
 							}
 							//записать лимит ОДН
 							// TODO для перерасчета!
-							Vols vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
+							Vol vol = new Vol((MeterLog) ml, volTp, lmtVol, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(),
 											calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 							//saveVol(ml, vol);
-							ml.getVolDistilled().add(vol);
+							ml.getVol().add(vol);
 							//log.warn("ЛИМИТ ОДН по ЭлектроЭнергии="+lmtVol);
 						}
 					}
@@ -519,18 +517,18 @@ public class DistGen {
 			volTp = lstMng.getByCD("Фактический объем");
 
 			// TODO для перерасчета!
-			Vols vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
+			Vol vol = new Vol((MeterLog) ml, volTp, nv.getVol(), null, genDt, genDt,
 					calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
-			ml.getVolDistilled().add(vol);
+			ml.getVol().add(vol);
 			
 		} if (tp==1 && (nv.getPartArea() != 0d || nv.getPartPers() !=0d) ) {
 			//связь подсчета площади, кол-во проживающих, сохранять, если только в тестовом режиме TODO 
 			volTp = lstMng.getByCD("Площадь и проживающие");
 			// TODO для перерасчета!
-			Vols vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt,
+			Vol vol = new Vol((MeterLog) ml, volTp, nv.getPartArea(), nv.getPartPers(), genDt, genDt,
 							calc.getReqConfig().getOperTp(), calc.getReqConfig().getStatusVol());
 
-			ml.getVolDistilled().add(vol);
+			ml.getVol().add(vol);
 			//saveVol(ml, vol);
 
 			if (ml.getId()==3625271 && !ml.getTp().getCd().equals("ЛИПУ") && !ml.getTp().getCd().equals("ЛНрм")) {

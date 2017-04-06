@@ -30,7 +30,7 @@ import com.ric.bill.TarifContains;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Chrg;
-import com.ric.bill.model.mt.main.MeterLog;
+import com.ric.bill.model.mt.MeterLog;
 import com.ric.bill.model.ps.Reg;
 import com.ric.bill.model.ps.RegState;
 import com.ric.bill.model.tr.TarifKlsk;
