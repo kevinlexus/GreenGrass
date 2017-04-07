@@ -23,7 +23,7 @@ public class PayordCmpDTO {
 	// конструктор
 	public PayordCmpDTO(Integer id, String username, Date dtf,
 			Integer payordFk, Integer varFk, Integer servFk, Integer orgFk,
-			Integer klskFk, String mark, Double summa) {
+			Integer koFk, String koName, String mark, Double summa) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -32,7 +32,8 @@ public class PayordCmpDTO {
 		this.varFk = varFk;
 		this.servFk = servFk;
 		this.orgFk = orgFk;
-		this.klskFk = klskFk;
+		this.koFk = koFk;
+		this.koName = koName;
 		this.mark = mark;
 		this.summa = summa;
 	}
@@ -57,7 +58,10 @@ public class PayordCmpDTO {
 	private Integer orgFk; 
 	
 	// Объект (область действия)
-	private Integer klskFk; 
+	private Integer koFk; 
+	
+	// Наименование объекта
+	private String koName;
 	
 	// Маркер
 	private String mark;
@@ -130,12 +134,21 @@ public class PayordCmpDTO {
 		this.orgFk = orgFk;
 	}
 
-	public Integer getKlskFk() {
-		return klskFk;
+
+	public Integer getKoFk() {
+		return koFk;
 	}
 
-	public void setKlskFk(Integer klskFk) {
-		this.klskFk = klskFk;
+	public void setKoFk(Integer koFk) {
+		this.koFk = koFk;
+	}
+
+	public String getKoName() {
+		return koName;
+	}
+
+	public void setKoName(String nameKo) {
+		this.koName = nameKo;
 	}
 
 	public Double getSumma() {

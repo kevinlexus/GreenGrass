@@ -16,28 +16,20 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
         }
     },
 
-    // Событие из контроллера AskObjPanelController
+    // Событие из контроллера AskObjPanelController, установить klsk объекта
     onSetPayordCmpKlskFk : function(controller, id, name) {
-        console.log('id check=', id);
 
         var payordCmpGrid = this.lookupReference('payordCmpGrid');
         var store = payordCmpGrid.getStore();
-        var rec = store.getRange();
-        rec[0].set('klskFk', id);
-        rec[0].set('koName', name);
-        //payordCmpGrid.refreshRow(rec);
-        rec[0].commit();  // TODO убрать коммит?
-        store.sync();
-        store.load();
-        //payordCmpGrid.reconfigure(store);
 
-        //var payordCmpGrid = this.lookupReference('payordCmpGrid');
-        //var row = payordCmpGrid.getSelectionModel().getSelection()[0];
-        //row.set('klskFk', id);
+        var row = payordCmpGrid.getSelectionModel().getSelection()[0];
+        var rec = store.findRecord('id', row.get('id'));
+
+        rec.set('koFk', id);
+        rec.set('koName', name);
 
         var panel3 = this.getView();
         panel3.focus();
-        //payordCmpGrid.findPlugin('rowediting').startEdit(rec, 0);
     },
 
     onGridPayordGrpEdit: function() {
@@ -116,13 +108,14 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
 
     // Добавить группу платежек
     onGridPayordGrpAdd: function() {
-        rec = new BillWebApp.model.PayordGrp({
+        var rec = new BillWebApp.model.PayordGrp({
             name: 'Заполнить наименование!'
         });
         var store = this.getViewModel().getStore('payordgrpstore');
         store.insert(0, rec);
         var payordGrpGrid = this.lookupReference('payordGrpGrid');
-        payordGrpGrid.findPlugin('rowediting').startEdit(rec, 1);
+        //payordGrpGrid.findPlugin('rowediting').startEdit(rec, 1);
+        payordGrpGrid.findPlugin('cellediting').startEdit(rec, 1);
     },
 
     // Отменить отредактированную группу платежек
@@ -227,21 +220,25 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
 
     // Сохранить отредактированную формулу платежки
     onGridPayordCmpUpd: function() {
+        console.log('onGridPayordCmpUpd');
         var store = this.getViewModel().getStore('payordcmpstore');
         store.sync(); // ВАЖНЫ ПУСТЫЕ СКОБКИ!!! ()
     },
 
     // Отменить отредактированную формулу платежки
-    onGridPayordCmpCancel: function(rowEditing, context) {
-        if (context.record.phantom) {
-            context.store.remove(context.record);
-        }
+    onGridPayordCmpCancel: function() {
+        var payordGrid = this.lookupReference('payordGrid');
+        var store = this.getViewModel().getStore('payordcmpstore');
+        store.rejectChanges();
+        store.load({
+                params: {
+                    'payordId': payordGrid.selection.id
+                }
+            });
     },
 
     // Добавить формулу в платежку
     onGridPayordCmpAdd: function() {
-        console.log('Add1');
-
         var payordcmpstore = this.getViewModel().getStore('payordcmpstore');
         var payordCmpGrid = this.lookupReference('payordCmpGrid');
         var payordGrid = this.lookupReference('payordGrid');
@@ -249,8 +246,7 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
             payordFk : payordGrid.selection.id
         });
         payordcmpstore.insert(0, rec);
-        payordCmpGrid.findPlugin('rowediting').startEdit(rec, 1);
-        console.log('Add2');
+        payordCmpGrid.findPlugin('cellediting').startEdit(rec, 1);
     },
 
     // выбор варианта сбора формулы платежки

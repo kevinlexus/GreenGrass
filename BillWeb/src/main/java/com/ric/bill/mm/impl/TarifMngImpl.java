@@ -183,30 +183,22 @@ public class TarifMngImpl implements TarifMng {
 	 * @param genDt - при наличии - фильтр по дате
 	 * @param serv - услуга
 	 * @param cd - тип перерасчета
+	 * @param lvlServ - уровень, как фильтровать услугу, 0 - по Chng, 1 - по ChngLsk  
 	 * @return
 	 */
-	public Double getChngVal(Calc calc, Serv serv, Date genDt, String cd) {
+	public Double getChngVal(Calc calc, Serv serv, Date genDt, String cd, int lvlServ) {
 		log.trace("Serv={}", serv.getId());
 		Chng chng = calc.getReqConfig().getChng();	
 		Double val = null;
-		if (chng.getTp().getCd().equals(cd)) {
+		if (chng.getTp().getCd().equals(cd) && (lvlServ == 1 || chng.getServ().equals(serv)) ) {
 			Optional<ChngVal> chngVal;
-			if (genDt != null) {
-				// по дате
-				chngVal = calc.getReqConfig().getChng().getChngLsk().stream()
-						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
-						.filter(t -> t.getServ().equals(serv) ) // фильтр по услуге
-						.flatMap(t -> t.getChngVal().stream() // преобразовать в другую коллекцию
-									.filter(d -> Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) // и фильтр по дате
-								).findFirst();
-			} else {
-				// без фильтра по дате
-				chngVal = calc.getReqConfig().getChng().getChngLsk().stream()
-						.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
-						.filter(t -> t.getServ().equals(serv) ) // фильтр по услуге
-						.flatMap(t -> t.getChngVal().stream() // преобразовать в другую коллекцию
-								).findFirst();
-			}
+			// по дате
+			chngVal = calc.getReqConfig().getChng().getChngLsk().stream()
+					.filter(t -> t.getKart().getLsk().equals(calc.getKart().getLsk())) // фильтр по лиц.счету
+					.filter(t -> lvlServ == 0 || t.getServ().equals(serv) ) // фильтр по услуге по уровню ChngLsk или без этого фильтра
+					.flatMap(t -> t.getChngVal().stream() // преобразовать в другую коллекцию
+								.filter(d -> genDt == null || Utl.between(genDt, d.getDtVal1(), d.getDtVal2())) // и фильтр по дате или без даты
+							).findFirst();
 	
 			if (chngVal.isPresent()) {
 				val = chngVal.get().getVal();

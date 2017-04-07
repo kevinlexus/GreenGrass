@@ -380,19 +380,19 @@ public class ChrgThr {
 			}
 
 			// расценка по норме
-			Double chngPrice = tarMng.getChngVal(calc, stServ, genDt, "Изменение расценки (тарифа)");
+			Double chngPrice = tarMng.getChngVal(calc, stServ, genDt, "Изменение расценки (тарифа)", 1);
 			if (chngPrice != null) {
 				stPrice = chngPrice; 
 			}
 			
 			// расценка св.нормы
-			chngPrice = tarMng.getChngVal(calc, upStServ, genDt, "Изменение расценки (тарифа)");
+			chngPrice = tarMng.getChngVal(calc, upStServ, genDt, "Изменение расценки (тарифа)", 1);
 			if (chngPrice != null) {
 				upStPrice = chngPrice; 
 			}
 				
 			// расценка без проживающих
-			chngPrice = tarMng.getChngVal(calc, woKprServ, genDt, "Изменение расценки (тарифа)");
+			chngPrice = tarMng.getChngVal(calc, woKprServ, genDt, "Изменение расценки (тарифа)", 1);
 			if (chngPrice != null) {
 				woKprPrice = chngPrice; 
 			}
@@ -463,7 +463,7 @@ public class ChrgThr {
 			// получить объем по лицевому счету и услуге за ДЕНЬ
 			if (calc.getReqConfig().getOperTp()==1 && chng.getTp().getCd().equals("Начисление за прошлый период") && chngLsk != null ) {
 				// если перерасчет, то разделить на кол-во дней в месяце, так как передаётся объем за месяц
-				vol = tarMng.getChngVal(calc, serv, null, "Начисление за прошлый период") / calc.getReqConfig().getCntCurDays();
+				vol = tarMng.getChngVal(calc, serv, null, "Начисление за прошлый период", 0) / calc.getReqConfig().getCntCurDays();
 			} else {
 				// обычное начисление
 				SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), genDt, genDt);
@@ -478,7 +478,7 @@ public class ChrgThr {
 			}
 			if (calc.getReqConfig().getOperTp()==1 && chng.getTp().getCd().equals("Начисление за прошлый период") && chngLsk != null ) {
 				// перерасчет
-				vol = tarMng.getChngVal(calc, serv, null, "Начисление за прошлый период") / calc.getReqConfig().getCntCurDays();
+				vol = tarMng.getChngVal(calc, serv, null, "Начисление за прошлый период", 0) / calc.getReqConfig().getCntCurDays();
 			} else {
 				// получить объем по услуге за период
 				SumNodeVol tmpNodeVol = metMng.getVolPeriod(rqn, calc.getReqConfig().getStatusVol(), kart, serv.getServMet(), 

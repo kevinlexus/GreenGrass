@@ -25,24 +25,31 @@ Ext.define('BillWebApp.view.main.Panel3', {
             tbar: [{
                 text: 'Добавить группу',
                 handler: 'onGridPayordGrpAdd'
+            }, {
+                text: 'Сохранить',
+                handler: 'onGridPayordGrpUpd'
             }],
             requires: [
                 'Ext.selection.CellModel',
                 'Ext.grid.column.Action'
             ],
-            selModel: 'cellmodel',
             plugins: {
+                ptype: 'cellediting',
+                clicksToEdit: 1
+            },
+            //selModel: 'cellmodel',
+            /*plugins: {
                 ptype: 'rowediting',
                 clicksToEdit: 2,
                 saveBtnText: 'Сохранить',
                 cancelBtnText: 'Отмена',
                 errorSummary: false // погасить сообщение валидации
-            },
+            },*/
             bind: {
                 store: '{payordgrpstore}',
                 listeners: {
-                    edit: 'onGridPayordGrpUpd',
-                    cancelEdit: 'onGridPayordGrpCancel'
+                   // edit: 'onGridPayordGrpUpd',
+                   // cancelEdit: 'onGridPayordGrpCancel'
                 }
             },
             actions: {
@@ -98,7 +105,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             'Ext.selection.CellModel',
             'Ext.grid.column.Action'
         ],
-        selModel: 'cellmodel',
+        //selModel: 'cellmodel',
         plugins: {
             ptype: 'rowediting',
             clicksToEdit: 2,
@@ -202,13 +209,16 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 handler: 'onGridPayordCmpAdd'
             }, {
                 text: 'Сохранить',
-                handler: 'onGridPayordCmpSave'
+                handler: 'onGridPayordCmpUpd'
+            }, {
+                text: 'Отменить',
+                handler: 'onGridPayordCmpCancel'
             }],
             requires: [
                 'Ext.selection.CellModel',
                 'Ext.grid.column.Action'
             ],
-            selModel: 'cellmodel',
+            //selModel: 'cellmodel',
             plugins: {
                 ptype: 'cellediting',
                 clicksToEdit: 1
@@ -223,8 +233,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
             bind: {
                 store: '{payordcmpstore}',
                 listeners: {
-                    edit: 'onGridPayordCmpUpd',
-                    cancelEdit: 'onGridPayordCmpCancel'
+                    //edit: 'onGridPayordCmpUpd',
+                    //cancelEdit: 'onGridPayordCmpCancel'
                 }
             },
             actions: {
@@ -264,7 +274,8 @@ Ext.define('BillWebApp.view.main.Panel3', {
                             store: '{varstore}'
                         },
                         allowBlank: false
-                    }
+                    },
+                    renderer: 'onGridPayordCmpVarRender'
                 },
                 {
                     header: 'Услуга',
@@ -312,9 +323,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     renderer: 'onGridPayordCmpOrgRender'
                 },
                 {
-                    header: 'klskFk',
-                    dataIndex: 'klskFk',
-                    width: 200
+                    header: 'koFk',
+                    dataIndex: 'koFk',
+                    width: 0// 0 - чтобы не было видно поле, а поле нужно, иначе не отработает сохранение в store (жесть)
                 },
                 {
                     header: 'Объект',
@@ -332,7 +343,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         }
                     }
                 },
-                { text: 'Маркер',  dataIndex: 'mark', width: 150, align: "left",
+                { text: 'Маркер',  dataIndex: 'mark', width: 50, align: "left",
                     editor: {
                         allowBlank: true
                     }

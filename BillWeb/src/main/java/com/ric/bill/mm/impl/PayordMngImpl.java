@@ -138,6 +138,13 @@ public class PayordMngImpl implements PayordMng {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void setPayordCmpDto(PayordCmpDTO p) {
 		PayordCmp pCmp = em.find(PayordCmp.class, p.getId());
+		
+		if (p.getVarFk() != null) {
+			Lst var = em.find(Lst.class, p.getVarFk());	
+			pCmp.setVar(var);
+		} else {
+			pCmp.setVar(null);
+		}
 
 		if (p.getOrgFk() != null) {
 			Org org = em.find(Org.class, p.getOrgFk());	
@@ -146,8 +153,8 @@ public class PayordMngImpl implements PayordMng {
 			pCmp.setOrg(null);
 		}
 		
-		if (p.getKlskFk() != null) {
-			Ko ko = em.find(Ko.class, p.getKlskFk());	
+		if (p.getKoFk() != null) {
+			Ko ko = em.find(Ko.class, p.getKoFk());	
 			pCmp.setKo(ko);
 		} else {
 			pCmp.setKo(null);
@@ -159,6 +166,8 @@ public class PayordMngImpl implements PayordMng {
 		} else {
 			pCmp.setServ(null);
 		}
+	
+		pCmp.setMark(p.getMark());
 		
 	}
 
@@ -203,7 +212,7 @@ public class PayordMngImpl implements PayordMng {
 		Serv serv = em.find(Serv.class, p.getServFk());
 		Org org = em.find(Org.class, p.getOrgFk());
 		Payord payord = em.find(Payord.class, p.getPayordFk());
-		Ko ko =  em.find(Ko.class, p.getKlskFk());
+		Ko ko =  em.find(Ko.class, p.getKoFk());
 		// создать формулу
 		PayordCmp cmp = new PayordCmp(payord, var, serv, org, ko, p.getMark());
 		em.persist(cmp);

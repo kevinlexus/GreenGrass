@@ -81,11 +81,12 @@ public List<PayordGrpDTO> getPayordGrpDTOLst(List<PayordGrp> lst) {
  */
 public List<PayordCmpDTO> getPayordCmpDTOLst(List<PayordCmp> lst) {
 	List<PayordCmpDTO> lst2 = new ArrayList<PayordCmpDTO>(0);
-
+	
 	lst.stream().forEach(t-> lst2.add(
 				new PayordCmpDTO(t.getId(), t.getUsername(), t.getDtf(), t.getPayord().getId(), t.getVar().getId(),
 						(t.getServ()!=null ? t.getServ().getId() : null) , (t.getOrg()!=null ? t.getOrg().getId() : null), 
 						(t.getKo()!=null ? t.getKo().getId() : null), 
+						(getKoDTO(t.getKo())!=null ? getKoDTO(t.getKo()).getName() : null), 
 						t.getMark(), t.getSumma())
 				));
 	return lst2;
@@ -130,16 +131,42 @@ public List<ServDTO> getServDTOLst(List<Serv> lst) {
 	return lst2;
 }
 
+
 /**
- * Построить коллекцию DTO Объектов Ko
+ * Построить один DTO объекта Ko с наименованием
+ * @param ko
+ * @return
+ */
+public KoDTO getKoDTO(Ko ko) {
+	KoDTO koDTO = null;
+	if ((ko.getAddrTp().getCd().equals("РКЦ") || ko.getAddrTp().getCd().equals("ЖЭО")
+		  	 || ko.getAddrTp().getCd().equals("РЭУ"))) {
+		koDTO = new KoDTO(ko.getId(), ko.getOrg().getCd(), ko.getOrg().getName(), ko.getAddrTp().getCd());
+		
+	} else if (ko.getAddrTp().getCd().equals("Дом")) {
+		// Текущая дата
+		Date date = new Date();
+		koDTO = new KoDTO(ko.getId(), String.valueOf(ko.getId()), 
+				   ko.getHouse().getStreet().getArea().getName()+", "
+						   + houseMng.getUkNameByDt(ko.getHouse(), date)
+						   +", "+ko.getHouse().getStreet().getName()+", "+
+						   ko.getHouse().getNd(), 
+				   ko.getAddrTp().getCd());
+		
+	}
+	return koDTO;
+}
+
+/**
+ * Построить коллекцию DTO Объектов Ko с их наименованиями
  * @param lst
  * @return
  */
 public List<KoDTO> getKoDTOLst(List<Ko> lst) {
 	List<KoDTO> lko = new ArrayList<KoDTO>(0);
 
-	// Добавить РКЦ, ЖЭО, РЭУ
-	List<KoDTO> lst2 = lst.stream().filter(t -> (t.getAddrTp().getCd().equals("РКЦ") || t.getAddrTp().getCd().equals("ЖЭО")
+/*	TODO - удалить позже
+ * List<KoDTO> lst2 = lst.stream().filter(t -> (t.getAddrTp().getCd().equals("РКЦ") || t.getAddrTp().getCd().equals("ЖЭО")
 			 																	  	 || t.getAddrTp().getCd().equals("РЭУ")
 			) )
 		.map(t -> new KoDTO(t.getId(), t.getOrg().getCd(), t.getOrg().getName(), t.getAddrTp().getCd()) )
@@ -158,7 +185,10 @@ public List<KoDTO> getKoDTOLst(List<Ko> lst) {
 												   +", "+t.getHouse().getStreet().getName()+", "+
 												   t.getHouse().getNd(), 
 										   t.getAddrTp().getCd()) )
-			.collect(Collectors.toList());
+			.collect(Collectors.toList());*/
+	// Добавить РКЦ, ЖЭО, РЭУ, Дом
+	List<KoDTO> lst2 = lst.stream().map(t -> getKoDTO(t)).collect(Collectors.toList());
+	
 	lko.addAll(lst2);
 	return lko;
 }
