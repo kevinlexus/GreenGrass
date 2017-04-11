@@ -16,7 +16,7 @@ Ext.define('BillWebApp.model.PayordGrp', {
 
     ],
     proxy: { // прокси должна находиться в модели. иначе ничего не будет работать при type: 'ajax'
-        autoSave: true,
+        //autoSave: true,
         type: 'ajax',
         api: {
             create  : 'http://192.168.100.21:8083/payord/addPayordGrp',

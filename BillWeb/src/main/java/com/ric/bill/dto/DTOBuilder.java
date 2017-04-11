@@ -244,7 +244,7 @@ public KoDTO getKoByKlsk(Integer klskId) {
 		} else if (cd.equals("ЛС")) {
 			//TODO
 
-		} else if (cd.equals("Организация")) {
+		} else if (cd.equals("Организация") || cd.equals("ЖЭО")) {
 			Org org = orgDao.getByKlsk(klskId);
 			ko = new KoDTO(klskId, org.getCd(), org.getName(), org.getKo().getAddrTp().getCd());		
 		}

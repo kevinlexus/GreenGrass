@@ -39,7 +39,7 @@ public class ReportDAOImpl implements ReportDAO {
 		if (tp==0) {
 			query = em.createQuery("select t from PeriodReports t join t.report r where r.cd in (:cd) and t.mg is not null");
 			query.setParameter("cd", cd);
-			 lst2 = query.getResultList();
+			lst2 = query.getResultList();
 			lst2.stream().forEach(t -> lst.add(new PeriodReportsDTO(t.getId(), t.getMg().substring(0, 4)+"."+t.getMg().substring(4, 6))));
 				
 		} else if (tp==1) {

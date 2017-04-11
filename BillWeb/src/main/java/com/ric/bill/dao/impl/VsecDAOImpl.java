@@ -35,7 +35,7 @@ import com.ric.bill.model.tr.Prop;
 		@Cacheable(cacheNames="neverWipe") // пока сделал neverWipe
 	    public List<Vsec> getPrivByUserRoleAct(String userCd, String roleCd, String actCd) {
 	    	log.trace("roleCd={}, actCd={}", roleCd, actCd);
-			Query query =em.createQuery("from Vsec t where lower(t.userCd)=:usercd and t.roleCd=:rolecd and t.actCd=:actcd");
+			Query query =em.createQuery("from Vsec t where lower(t.userCd)=lower(:usercd) and t.roleCd=:rolecd and t.actCd=:actcd");
 			query.setParameter("usercd", userCd);
 			query.setParameter("rolecd", roleCd);
 			query.setParameter("actcd", actCd);

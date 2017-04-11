@@ -3,6 +3,8 @@ package com.ric.bill.mm.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import com.ric.bill.mm.SecMng;
 import com.ric.bill.model.sec.Vsec;
 
 @Service
+@Slf4j
 public class SecMngImpl implements SecMng {
 
     @Autowired
@@ -46,7 +49,7 @@ public class SecMngImpl implements SecMng {
 
 	
 	/**
-	 * Получить список объектов типа klsk, доступных текущему пользователю по определенной роли, действию
+	 * Получить список объектов типа KoDTO, доступных текущему пользователю по определенной роли, действию
 	 * @param roleCd - роль
 	 * @param actCd - действие
 	 */
@@ -57,6 +60,8 @@ public class SecMngImpl implements SecMng {
 		vDao.getPrivByUserRoleAct(userCd, roleCd, actCd).stream().forEach(t -> 
 				{
 					KoDTO ko = dtoBuilder.getKoByKlsk(t.getKlsk());
+					log.info("ko={}", ko);
+					
 					if (ko != null) {
 						lst.add(ko);
 					}

@@ -3,6 +3,10 @@
  */
 Ext.define('BillWebApp.model.Payord', {
     extend: 'Ext.data.Model',
+    identifier: {
+        type: 'sequential',
+        id: 'foo'
+    },
     idProperty: 'id',
     fields: [
         { name: 'id', mapping: 'id', type: 'int'},

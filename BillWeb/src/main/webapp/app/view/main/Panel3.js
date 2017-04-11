@@ -28,6 +28,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
             }, {
                 text: 'Сохранить',
                 handler: 'onGridPayordGrpUpd'
+            }, {
+                text: 'Отменить',
+                handler: 'onGridPayordGrpCancel'
             }],
             requires: [
                 'Ext.selection.CellModel',
@@ -100,24 +103,24 @@ Ext.define('BillWebApp.view.main.Panel3', {
         tbar: [{
             text: 'Добавить платежку',
             handler: 'onGridPayordAdd'
+        }, {
+            text: 'Сохранить',
+            handler: 'onGridPayordUpd'
+        }, {
+            text: 'Отменить',
+            handler: 'onGridPayordCancel'
         }],
         requires: [
             'Ext.selection.CellModel',
             'Ext.grid.column.Action'
         ],
-        //selModel: 'cellmodel',
         plugins: {
-            ptype: 'rowediting',
-            clicksToEdit: 2,
-            saveBtnText: 'Сохранить',
-            cancelBtnText: 'Отмена',
-            errorSummary: false // погасить сообщение валидации
+            ptype: 'cellediting',
+            clicksToEdit: 1
         },
         bind: {
             store: '{payordstore}',
             listeners: {
-                edit: 'onGridPayordUpd',
-                cancelEdit: 'onGridPayordCancel'
             }
         },
         actions: {
@@ -171,10 +174,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     allowBlank: true
                 }
             },
-            { text: 'Формула',  dataIndex: 'formula', width: 100, align: "left",
-                editor: {
-                    allowBlank: true
-                }
+            { text: 'Формула',  dataIndex: 'formula', width: 100, align: "left"
             }
             ,
             { text: 'Сумма',  dataIndex: 'summa', width: 70, align: "left"
@@ -222,20 +222,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
             plugins: {
                 ptype: 'cellediting',
                 clicksToEdit: 1
-            }/*,
-            plugins: {
-                ptype: 'rowediting',
-                clicksToEdit: 2,
-                saveBtnText: 'Сохранить',
-                cancelBtnText: 'Отмена',
-                errorSummary: false // погасить сообщение валидации
-            }*/,
+            },
             bind: {
-                store: '{payordcmpstore}',
-                listeners: {
-                    //edit: 'onGridPayordCmpUpd',
-                    //cancelEdit: 'onGridPayordCmpCancel'
-                }
+                store: '{payordcmpstore}'
             },
             actions: {
                 del: {
@@ -245,9 +234,12 @@ Ext.define('BillWebApp.view.main.Panel3', {
                 }
             },
             listeners: {
-              //  itemdblclick: 'onGridPayordCmpItemSel'
-             //   load: 'onGridPayordCmpItemDblClick'
+                //validateedit: function(editor, e, eOpts) { // здесь писать проверку ввода данных!
+                //    check1(editor, e, eOpts);
+                //    console.log('editor:'+editor.name+' field: '+e.field +' = ' + e.value);
+                //}
             },
+
             columns: [
                 { text: 'Id',  dataIndex: 'id', width: 50
                 },
@@ -343,9 +335,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         }
                     }
                 },
-                { text: 'Маркер',  dataIndex: 'mark', width: 50, align: "left",
+                {
+                    header: 'Маркер',  dataIndex: 'mark', width: 50, align: "left",
                     editor: {
-                        allowBlank: true
+                        allowBlank: false
                     }
                 },
                 { text: 'Сумма',  dataIndex: 'summa', width: 70, align: "left"
