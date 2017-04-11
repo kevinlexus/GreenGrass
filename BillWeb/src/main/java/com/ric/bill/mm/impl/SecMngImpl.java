@@ -60,8 +60,6 @@ public class SecMngImpl implements SecMng {
 		vDao.getPrivByUserRoleAct(userCd, roleCd, actCd).stream().forEach(t -> 
 				{
 					KoDTO ko = dtoBuilder.getKoByKlsk(t.getKlsk());
-					log.info("ko={}", ko);
-					
 					if (ko != null) {
 						lst.add(ko);
 					}

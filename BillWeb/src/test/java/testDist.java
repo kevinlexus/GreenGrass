@@ -11,14 +11,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ric.bill.BillServ;
-import com.ric.bill.dao.ReportDAO;
 import com.ric.bill.mm.ParMng;
-import com.ric.bill.mm.ReportMng;
 import com.ric.bill.model.mt.MLogs;
 import com.ric.bill.model.mt.MeterLog;
 import com.ric.web.AppConfig;
-
-import org.mariuszgromada.math.mxparser.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
@@ -35,9 +31,6 @@ public class testDist {
 	
 	@Autowired
     private BillServ billServ;
-
-	@Autowired
-    private ReportMng repMng;
 
 	@PersistenceContext
     private EntityManager em;

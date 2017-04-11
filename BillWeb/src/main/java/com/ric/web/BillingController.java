@@ -35,7 +35,6 @@ import com.ric.bill.dto.AreaDTO;
 import com.ric.bill.dto.DTOBuilder;
 import com.ric.bill.dto.KoDTO;
 import com.ric.bill.dto.LstDTO;
-import com.ric.bill.dto.OrgDTO;
 import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
@@ -44,15 +43,12 @@ import com.ric.bill.dto.ServDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.OrgMng;
 import com.ric.bill.mm.PayordMng;
-import com.ric.bill.mm.ReportMng;
 import com.ric.bill.mm.SecMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
-import com.ric.bill.model.bs.AddrTp;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
-import com.ric.bill.model.oralv.Ko;
 
 @EnableCaching
 @RestController
@@ -71,8 +67,6 @@ public class BillingController {
 	@Autowired
 	private Config config;
 	@Autowired
-	private ReportMng repMng;
-	@Autowired
 	private LstMng lstMng;
 	@Autowired
 	private OrgMng orgMng;
@@ -86,26 +80,6 @@ public class BillingController {
 	private DTOBuilder dtoBuilder;
 	@Autowired
 	private SecMng secMng;
-
-	/**
-	 * Получить периоды для элементов интерфейса
-	 * 
-	 * @param repCd
-	 *            - CD отчета
-	 * @param tp
-	 *            - тип периода 0 - по месяцам, 1 - по дням
-	 * @return
-	 */
-	@RequestMapping("/rep/getPeriodReports")
-	@ResponseBody
-	public List<PeriodReportsDTO> getPeriodReports(
-			@RequestParam(value = "repCd") String repCd,
-			@RequestParam(value = "tp", defaultValue = "0") Integer tp) {
-
-		log.info("GOT /rep/getPeriodReports repCd={}, tp={}", repCd, tp);
-		return repMng.getPeriodsByCD(repCd, tp);
-
-	}
 
 	// Получить все группы платежек
 	@RequestMapping("/payord/getPayordGrpAll")
