@@ -30,6 +30,7 @@ import com.ric.bill.excp.EmptyStorable;
 import com.ric.bill.excp.WrongSetMethod;
 import com.ric.bill.mm.ObjMng;
 import com.ric.bill.mm.ParMng;
+import com.ric.bill.mm.PayordMng;
 import com.ric.bill.mm.SecMng;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Obj;
@@ -61,24 +62,11 @@ public class testWork {
 	@PersistenceContext
     private EntityManager em;
 
-    private Calendar calendar;
-
     @Test
-   	public void mainWork() {
-   	}
-    
-/*    @Test
 	public void mainWork() {
-    	try {
-    		
-        	BillServ billServ = ctx.getBean(BillServ.class);
-			billServ.script1();
-			
-		} catch (EmptyStorable | WrongSetMethod e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
+    		PayordMng pm = ctx.getBean(PayordMng.class);
+			pm.genPayord();
+	}
     
 /*    @Transactional(readOnly=false)
 	public void work1() throws EmptyStorable, WrongSetMethod {

@@ -25,7 +25,7 @@ public class PaymentDetDAOImpl implements PaymentDetDAO {
 	 */
 	public List<PaymentDet> getPaymentDetByPeriod(String period) {
 		Query query =em.createQuery("select t from PaymentDet t where t.period = :period");
-		query.setParameter("payordGrpId", period);
+		query.setParameter("period", period);
 		return query.getResultList();
 	}
 

@@ -1,9 +1,9 @@
 package com.ric.bill.mm.impl;
 
+import org.mariuszgromada.math.mxparser.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ric.bill.ChrgServThr;
-import com.ric.bill.Utl;
 import com.ric.bill.dao.PaymentDetDAO;
 import com.ric.bill.dao.PayordCmpDAO;
 import com.ric.bill.dao.PayordDAO;
@@ -27,7 +25,6 @@ import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
-import com.ric.bill.model.ar.Area;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
@@ -303,10 +300,12 @@ public class PayordMngImpl implements PayordMng {
 	public void genPayord() {
 		String period = "201704";
 		for (Payord p :payordDao.getPayordAll()) {
+			log.info("Payord.id={}", p.getId());
 			AmntSummByUk amntSummByUk = new AmntSummByUk();
  			// distinct список Маркеров
 			List<String> markLst = p.getPayordCmp().stream().distinct().map(t -> t.getMark()).collect(Collectors.toList());
 			p.getPayordCmp().stream().forEach(t -> {
+				//log.info("Payord.id={}", t.getId());
 				if (t.getVar().getCd().equals("PAYORD_SUM_PAY_REP2")) {
 					// собрать сумму по отчету оплаты, сгруппировать по Маркеру и УК
 					paymentDetDao.getPaymentDetByPeriod(period).stream()
@@ -317,21 +316,25 @@ public class PayordMngImpl implements PayordMng {
 				} else {
 					// прочие варианты сбора данных
 				}
-				
- 			String formula = p.getFormula();
- 			// distinct список УК
-			List<Org> uk = amntSummByUk.getAmnt().stream().map(d -> d.getUk()).distinct().collect(Collectors.toList());
-			uk.stream().forEach(d -> {
-				// по каждой УК собираем по каждому маркеру 
 			});
-			
-/*			.getAmnt().stream().filter(e-> e.getMark().equals(d)).forEach(f -> {
-				 // по каждой УК
-			 	 amntSummByUk.getMark().stream().forEach(d-> {
-				 // по каждому маркеру 
-							 
-						 });
-			});*/
+
+ 			// distinct список УК
+			List<Org> ukLst = amntSummByUk.getAmnt().stream().map(d -> d.getUk()).distinct().collect(Collectors.toList());
+			ukLst.stream().forEach(d -> {
+				// по каждой УК
+				String formula = p.getFormula();
+				log.info("Формула до изменений={}", formula);
+				for (String mark: markLst) {
+				//markLst.stream().forEach(f -> {
+					// по каждому маркеру
+					BigDecimal summ = amntSummByUk.getAmnt().stream().filter(e -> e.getUk().equals(d) && e.getMark().equals(mark)).map(e-> e.getSumma())
+					  .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+					log.info("УК={}, Маркер={}, Сумма={}", d.getName(), mark, summ);
+					formula = formula.replaceAll(mark, String.valueOf(summ));
+				}
+				log.info("Формула после изменений={}", formula);
+				Expression e = new Expression(formula);
+				log.info("Расчет формулы={}", e.calculate());
 			});
 			
 		}

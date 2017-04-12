@@ -30,13 +30,14 @@ public class PaymentDet implements java.io.Serializable, Simple {
 	}
 
 	public PaymentDet(Payment payment, Serv serv, Org org, Double summa,
-			Double pen) {
+			Double pen, String period) {
 		super();
 		this.payment = payment;
 		this.serv = serv;
 		this.org = org;
 		this.summa = summa;
 		this.pen = pen;
+		this.period = period;
 	}
 
 	@Id
@@ -66,6 +67,9 @@ public class PaymentDet implements java.io.Serializable, Simple {
 	@Column(name = "PEN")
 	private Double pen;
 	
+	// Период
+	@Column(name = "PERIOD")
+	private String period;
 	
 	public Integer getId() {
 		return id;
@@ -113,6 +117,14 @@ public class PaymentDet implements java.io.Serializable, Simple {
 
 	public void setPen(Double pen) {
 		this.pen = pen;
+	}
+
+	public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
 	}
 
 	public boolean equals(Object o) {
