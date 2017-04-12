@@ -86,6 +86,7 @@ public class PayordMngImpl implements PayordMng {
 		Payord payord = em.find(Payord.class, payordDTO.getId());
     	payord.setName(payordDTO.getName());		
     	payord.setSelDays(payordDTO.getSelDays());
+    	payord.setFormula(payordDTO.getFormula());
     	
     	if (payordDTO.getPeriodTpFk() != null) {
         	Lst periodTp = em.find(Lst.class, payordDTO.getPeriodTpFk());
@@ -318,6 +319,8 @@ public class PayordMngImpl implements PayordMng {
 				}
 			});
 
+			// TODO Сделать КЭШ!!!
+			
  			// distinct список УК
 			List<Org> ukLst = amntSummByUk.getAmnt().stream().map(d -> d.getUk()).distinct().collect(Collectors.toList());
 			ukLst.stream().forEach(d -> {
