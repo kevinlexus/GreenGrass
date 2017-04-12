@@ -78,7 +78,7 @@ public class ServDAOImpl implements ServDAO {
 	 * 
 	 */
 	public List<Serv> getServAll() {
-		Query query =em.createQuery("from Serv t");
+		Query query =em.createQuery("from Serv t order by t.name");
 		return query.getResultList();
 	}
 

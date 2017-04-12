@@ -44,7 +44,7 @@ public class OrgDAOImpl implements OrgDAO {
 	 */
 	public List<Org> getOrgAll() {
 		
-		Query query =em.createQuery("from Org t");
+		Query query =em.createQuery("from Org t order by t.name");
 		return query.getResultList();
 	}
 }

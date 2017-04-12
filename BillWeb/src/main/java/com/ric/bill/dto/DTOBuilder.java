@@ -113,7 +113,7 @@ public List<LstDTO> getLstDTOLst(List<Lst> lst) {
 public List<KoDTO> getOrgDTOLst(List<Org> lst) {
 	List<KoDTO> lst2 = new ArrayList<KoDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
-				new KoDTO(t.getId(), t.getCd(), t.getName(), t.getKo().getAddrTp().getCd())
+				new KoDTO(t.getId(), t.getCd(), String.valueOf(t.getId())+" "+t.getName(), t.getKo().getAddrTp().getCd())
 				));
 	return lst2;
 }
@@ -126,7 +126,7 @@ public List<KoDTO> getOrgDTOLst(List<Org> lst) {
 public List<ServDTO> getServDTOLst(List<Serv> lst) {
 	List<ServDTO> lst2 = new ArrayList<ServDTO>(0);
 	lst.stream().forEach(t-> lst2.add(
-				new ServDTO(t.getId(), t.getCd(), t.getName())
+				new ServDTO(t.getId(), t.getCd(), String.valueOf(t.getId())+" "+t.getName())
 				));
 	return lst2;
 }

@@ -174,7 +174,10 @@ Ext.define('BillWebApp.view.main.Panel3', {
                     allowBlank: true
                 }
             },
-            { text: 'Формула',  dataIndex: 'formula', width: 100, align: "left"
+            { text: 'Формула',  dataIndex: 'formula', width: 100, align: "left",
+                editor: {
+                    allowBlank: true
+                }
             }
             ,
             { text: 'Сумма',  dataIndex: 'summa', width: 70, align: "left"
@@ -262,6 +265,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
                                 return 'Необходимо заполнить поле!';
                             }
                         },
+                        listConfig:{
+                            minWidth:500
+                        },
                         bind: {
                             store: '{varstore}'
                         },
@@ -281,17 +287,13 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         displayField: 'name',
                         valueField: 'id',
                         triggerAction: 'all',
-                        validator: function(value) {
-                            if (value != '') {
-                                return true;
-                            } else {
-                                return 'Необходимо заполнить поле!';
-                            }
+                        listConfig:{
+                            minWidth:500
                         },
                         bind: {
                             store: '{servstore}'
                         },
-                        allowBlank: false
+                        allowBlank: true
                     },
                     renderer: 'onGridPayordCmpServRender'
                 },
@@ -308,6 +310,9 @@ Ext.define('BillWebApp.view.main.Panel3', {
                         valueField: 'id',
                         triggerAction: 'all',
                         allowBlank: false,
+                        listConfig:{
+                            minWidth:500
+                        },
                         bind: {
                             store: '{orgstore}'
                         }
