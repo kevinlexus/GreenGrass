@@ -1,7 +1,9 @@
 package com.ric.bill.model.fn;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +13,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Lst;
@@ -82,6 +88,13 @@ public class Payord implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_PERIODTP", referencedColumnName="ID")
 	private Lst periodTp; 
 
+	// Формулы платежки
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="FK_PAYORD", referencedColumnName="ID")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<PayordCmp> payordCmp = new ArrayList<PayordCmp>(0);
+
+	
 	public Integer getId() {
 		return id;
 	}
@@ -153,6 +166,15 @@ public class Payord implements java.io.Serializable, Simple {
 
 	public void setSumma(Double summa) {
 		this.summa = summa;
+	}
+
+	
+	public List<PayordCmp> getPayordCmp() {
+		return payordCmp;
+	}
+
+	public void setPayordCmp(List<PayordCmp> payordCmp) {
+		this.payordCmp = payordCmp;
 	}
 
 	public boolean equals(Object o) {

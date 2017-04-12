@@ -1,6 +1,10 @@
 package com.ric.bill.mm.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.ChrgServThr;
 import com.ric.bill.Utl;
+import com.ric.bill.dao.PaymentDetDAO;
 import com.ric.bill.dao.PayordCmpDAO;
 import com.ric.bill.dao.PayordDAO;
 import com.ric.bill.dao.PayordGrpDAO;
@@ -45,6 +50,8 @@ public class PayordMngImpl implements PayordMng {
 	private PayordCmpDAO payordCmpDao;
 	@Autowired
 	private LstMng lstMng;
+	@Autowired
+	private PaymentDetDAO paymentDetDao;
 	
 	/**
 	 * Получить все платежки
@@ -232,5 +239,103 @@ public class PayordMngImpl implements PayordMng {
 		em.refresh(p);
 	}
 
+	// Сумматор сумм по УК и маркеру
+	class AmntSummByUk {
+		List<SummByUk> amnt = new ArrayList<SummByUk>(); // сгруппированные суммы по Маркеру и УК
+		public void add(SummByUk s) {
+			SummByUk summ = amnt.stream().filter(t-> t.getUk().equals(s.getUk()) && t.getMark().equals(s.getMark()))
+					.findFirst().orElse(null);
+			if (summ != null) {
+				summ.setSumma(summ.getSumma().add(s.getSumma()) );
+			} else {
+				amnt.add(s);
+			}
+		}
+		
+		public List<SummByUk> getAmnt() {
+			return amnt;
+		}
+
+	}
+		
+	// Одна строчка суммы по УК
+	class SummByUk {
+		String mark;
+		Org uk;
+		BigDecimal summa;
+		
+		public SummByUk(String mark, Org uk, BigDecimal summa) {
+			super();
+			this.mark = mark;
+			this.uk = uk;
+			this.summa = summa;
+		}
+
+		public String getMark() {
+			return mark;
+		}
+
+		public void setMark(String mark) {
+			this.mark = mark;
+		}
+
+		public Org getUk() {
+			return uk;
+		}
+
+		public void setUk(Org uk) {
+			this.uk = uk;
+		}
+
+		public BigDecimal getSumma() {
+			return summa;
+		}
+
+		public void setSumma(BigDecimal summa) {
+			this.summa = summa;
+		}
+
+	}
+	
+	/**
+	 * Сформировать платежки за период
+	 */
+	public void genPayord() {
+		String period = "201704";
+		for (Payord p :payordDao.getPayordAll()) {
+			AmntSummByUk amntSummByUk = new AmntSummByUk();
+ 			// distinct список Маркеров
+			List<String> markLst = p.getPayordCmp().stream().distinct().map(t -> t.getMark()).collect(Collectors.toList());
+			p.getPayordCmp().stream().forEach(t -> {
+				if (t.getVar().getCd().equals("PAYORD_SUM_PAY_REP2")) {
+					// собрать сумму по отчету оплаты, сгруппировать по Маркеру и УК
+					paymentDetDao.getPaymentDetByPeriod(period).stream()
+							.filter(d -> t.getServ() == null || d.getServ().equals(t.getServ()))
+							.filter(d -> t.getOrg() == null || d.getOrg().equals(t.getOrg()))
+							.forEach(d -> amntSummByUk.add(new SummByUk(t.getMark(), 
+									d.getPayment().getKart().getUk(), BigDecimal.valueOf(d.getSumma()) )));
+				} else {
+					// прочие варианты сбора данных
+				}
+				
+ 			String formula = p.getFormula();
+ 			// distinct список УК
+			List<Org> uk = amntSummByUk.getAmnt().stream().map(d -> d.getUk()).distinct().collect(Collectors.toList());
+			uk.stream().forEach(d -> {
+				// по каждой УК собираем по каждому маркеру 
+			});
+			
+/*			.getAmnt().stream().filter(e-> e.getMark().equals(d)).forEach(f -> {
+				 // по каждой УК
+			 	 amntSummByUk.getMark().stream().forEach(d-> {
+				 // по каждому маркеру 
+							 
+						 });
+			});*/
+			});
+			
+		}
+		
+	}
 	
 }

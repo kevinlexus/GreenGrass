@@ -40,5 +40,6 @@ public class PayordDAOImpl implements PayordDAO {
 		return query.getResultList();
 
 	}
+	
 
 }

@@ -30,5 +30,5 @@ public interface PayordMng {
 	public void delPayordCmpDto(PayordCmpDTO t);
 	public PayordCmp addPayordCmpDto(PayordCmpDTO t);
 	public void refreshPayordCmp(PayordCmp t);
-	
+	public void genPayord();
 }
