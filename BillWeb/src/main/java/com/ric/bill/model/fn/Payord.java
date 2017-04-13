@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -94,6 +95,11 @@ public class Payord implements java.io.Serializable, Simple {
 	@Fetch(FetchMode.SUBSELECT)
 	private List<PayordCmp> payordCmp = new ArrayList<PayordCmp>(0);
 
+	// Движение по платежке
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+	@JoinColumn(name="FK_PAYORD", referencedColumnName="ID")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<PayordFlow> payordFlow = new ArrayList<PayordFlow>(0);
 	
 	public Integer getId() {
 		return id;
@@ -175,6 +181,15 @@ public class Payord implements java.io.Serializable, Simple {
 
 	public void setPayordCmp(List<PayordCmp> payordCmp) {
 		this.payordCmp = payordCmp;
+	}
+
+	
+	public List<PayordFlow> getPayordFlow() {
+		return payordFlow;
+	}
+
+	public void setPayordFlow(List<PayordFlow> payordFlow) {
+		this.payordFlow = payordFlow;
 	}
 
 	public boolean equals(Object o) {

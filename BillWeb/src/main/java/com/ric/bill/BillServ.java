@@ -30,6 +30,7 @@ import com.ric.bill.mm.HouseMng;
 import com.ric.bill.mm.KartMng;
 import com.ric.bill.mm.ObjMng;
 import com.ric.bill.mm.ParMng;
+import com.ric.bill.mm.PayordMng;
 import com.ric.bill.model.ar.Kart;
 import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Obj;
@@ -47,19 +48,16 @@ public class BillServ {
 
 	@Autowired
 	private HouseMng houseMng;
-
+	@Autowired
+	private Config config;
 	@Autowired
 	private KartMng kartMng;
-
 	@Autowired
 	private ObjMng objMng; // TODO убрать!
-
 	@Autowired
 	private ParMng parMng;// TODO убрать!
-
 	@Autowired
 	private ApplicationContext ctx;
-
 	@PersistenceContext
 	private EntityManager em;
 
@@ -313,5 +311,4 @@ public class BillServ {
 
 		return fut;
 	}
-
 }

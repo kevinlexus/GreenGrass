@@ -33,12 +33,20 @@ public class PayordFlow implements java.io.Serializable, Simple {
 		
 	}
 
-	public PayordFlow(Payord payord, Serv serv, Org uk, Double summa, Date dt) {
+	public PayordFlow(Payord payord, Org uk, Double summa, Double summa1,
+			Double summa2, Double summa3, Double summa4, Double summa5, Double summa6, Integer tp, String period, Date dt) {
 		super();
 		this.payord = payord;
-		this.serv = serv;
 		this.uk = uk;
 		this.summa = summa;
+		this.summa1 = summa1;
+		this.summa2 = summa2;
+		this.summa3 = summa3;
+		this.summa4 = summa4;
+		this.summa5 = summa5;
+		this.summa6 = summa6;
+		this.tp = tp;
+		this.period = period;
 		this.dt = dt;
 	}
 
@@ -53,25 +61,83 @@ public class PayordFlow implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_PAYORD", referencedColumnName="ID")
 	private Payord payord; 
 	
-	// Услуга
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="FK_SERV", referencedColumnName="ID")
-	private Serv serv; 
-
 	// УК
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_UK", referencedColumnName="ID")
 	private Org uk; 
 	
-	// Сумма
+	// Оплачено по факту (платежка)
 	@Column(name = "SUMMA")
 	private Double summa;
 
-    //дата операции
+	// Сумма сборов, факт на день формир. (платежка)
+	@Column(name = "SUMMA1")
+	private Double summa1;
+
+	// Сумма перечислений, факт на день формир. (платежка)
+	@Column(name = "SUMMA2")
+	private Double summa2;
+
+	// Сумма корректировок, факт на день формир. (платежка)
+	@Column(name = "SUMMA3")
+	private Double summa3;
+
+	// Сумма корректировок перечисл, факт на день формир. (платежка)
+	@Column(name = "SUMMA4")
+	private Double summa4;
+
+	// Сумма удержаний, факт на день формир. (платежка)
+	@Column(name = "SUMMA5")
+	private Double summa5;
+
+	// Сумма рекомендованная к перечислению (платежка)
+	@Column(name = "SUMMA6")
+	private Double summa6;
+
+	// Тип записи:  0-вх.сал., 1-вх.сал.Бух, 2-платежка, 3-корр.сборов, 4-корр.перечисл., 5- удержания
+	@Column(name = "TP")
+	private Integer tp;
+
+	// Период
+	@Column(name = "PERIOD")
+	private String period;
+
+	//дата операции
     @Column(name = "DT", updatable = false, nullable = true)
     private Date dt;
 	
-    
+	public Double getSumma1() {
+		return summa1;
+	}
+
+	public void setSumma1(Double summa1) {
+		this.summa1 = summa1;
+	}
+
+	public Double getSumma2() {
+		return summa2;
+	}
+
+	public void setSumma2(Double summa2) {
+		this.summa2 = summa2;
+	}
+
+	public Double getSumma3() {
+		return summa3;
+	}
+
+	public void setSumma3(Double summa3) {
+		this.summa3 = summa3;
+	}
+
+	public Double getSumma4() {
+		return summa4;
+	}
+
+	public void setSumma4(Double summa4) {
+		this.summa4 = summa4;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -86,14 +152,6 @@ public class PayordFlow implements java.io.Serializable, Simple {
 
 	public void setPayord(Payord payord) {
 		this.payord = payord;
-	}
-
-	public Serv getServ() {
-		return serv;
-	}
-
-	public void setServ(Serv serv) {
-		this.serv = serv;
 	}
 
 	public Org getUk() {
@@ -118,6 +176,39 @@ public class PayordFlow implements java.io.Serializable, Simple {
 
 	public void setDt(Date dt) {
 		this.dt = dt;
+	}
+
+	public Integer getTp() {
+		return tp;
+	}
+
+	public void setTp(Integer tp) {
+		this.tp = tp;
+	}
+	
+	public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
+
+	public Double getSumma5() {
+		return summa5;
+	}
+
+	public void setSumma5(Double summa5) {
+		this.summa5 = summa5;
+	}
+
+	public Double getSumma6() {
+		return summa6;
+	}
+
+	public void setSumma6(Double summa6) {
+		this.summa6 = summa6;
 	}
 
 	public boolean equals(Object o) {

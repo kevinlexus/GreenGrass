@@ -36,6 +36,7 @@ import com.ric.bill.model.bs.Dw;
 import com.ric.bill.model.bs.Obj;
 import com.ric.bill.model.fn.Chng;
 import com.ric.web.AppConfig;
+import com.ric.web.BillingController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
@@ -47,25 +48,28 @@ public class testWork {
 
 	@Autowired
 	private ApplicationContext ctx;
-
 	@Autowired
     private ParMng parMng;
 	@Autowired
     private ObjMng objMng;
-	
 	@Autowired
     private BillServ billServ;
-
 	@Autowired
     private SecMng secMng;
-
 	@PersistenceContext
     private EntityManager em;
+	@Autowired
+	private Config config;
+	
 
     @Test
 	public void mainWork() {
-    		PayordMng pm = ctx.getBean(PayordMng.class);
-			pm.genPayord();
+		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
+		reqConfig.setUp(config, "0", "0", null, 1, "", "");
+		Calc calc = new Calc(reqConfig);
+
+		PayordMng pm = ctx.getBean(PayordMng.class);
+		pm.genPayord(calc, reqConfig.getCurDt1());
 	}
     
 /*    @Transactional(readOnly=false)

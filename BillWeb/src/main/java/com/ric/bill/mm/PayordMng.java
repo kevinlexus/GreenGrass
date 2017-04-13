@@ -1,7 +1,9 @@
 package com.ric.bill.mm;
 
+import java.util.Date;
 import java.util.List;
 
+import com.ric.bill.Calc;
 import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
@@ -30,5 +32,5 @@ public interface PayordMng {
 	public void delPayordCmpDto(PayordCmpDTO t);
 	public PayordCmp addPayordCmpDto(PayordCmpDTO t);
 	public void refreshPayordCmp(PayordCmp t);
-	public void genPayord();
+	public void genPayord(Calc calc, Date genDt);
 }

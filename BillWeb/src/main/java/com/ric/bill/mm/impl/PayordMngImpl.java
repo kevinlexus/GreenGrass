@@ -1,8 +1,10 @@
 package com.ric.bill.mm.impl;
 
 import org.mariuszgromada.math.mxparser.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,10 +14,13 @@ import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.Calc;
+import com.ric.bill.Utl;
 import com.ric.bill.dao.PaymentDetDAO;
 import com.ric.bill.dao.PayordCmpDAO;
 import com.ric.bill.dao.PayordDAO;
@@ -29,6 +34,7 @@ import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
+import com.ric.bill.model.fn.PayordFlow;
 import com.ric.bill.model.fn.PayordGrp;
 import com.ric.bill.model.oralv.Ko;
 import com.ric.bill.model.tr.Serv;
@@ -295,13 +301,66 @@ public class PayordMngImpl implements PayordMng {
 
 	}
 	
+
+	// Итоговые суммы по PayordFlow
+	class AmntFlow {
+		BigDecimal summa =BigDecimal.ZERO;
+	}
+	
+	/**
+	 * Подсчет итоговых сумм по PayordFlow
+	 * @param p - платежка
+	 * @param uk - УК
+	 * @param dt1 - дата нач.
+	 * @param dt2 - дата кон.
+	 * @param tp - Тип записи:  0-вх.сал., 1-вх.сал.Бух, 2-платежка, 3-корр.перечисл., 4-корр.сборов, 5- корр.удерж
+	 * @return
+	 */
+	private AmntFlow calcFlow(Payord p, Org uk, String period, Date dt1, Date dt2, Integer tp) {
+		AmntFlow amntFlow = new AmntFlow();
+		p.getPayordFlow().stream()
+				.filter(t-> (period==null || (t.getPeriod()!= null && t.getPeriod().equals(period)) ) && (dt1==null || Utl.between(t.getDt(), dt1, dt2)) && t.getUk().equals(uk)
+				&& t.getPayord().equals(p) && t.getTp().equals(tp))
+				.forEach(t-> {
+			amntFlow.summa=amntFlow.summa.add(BigDecimal.valueOf(Utl.nvl(t.getSumma(), 0D)));
+		});
+		return amntFlow;
+	}
+	
+	/**
+	 * Подсчет сборов по параметрам
+	 * @param markLst - список маркеров
+	 * @param amntSummByUk - сгруппированные суммы по УК и Маркерам
+	 * @param p - платежка
+	 * @param uk - УК
+	 * @return
+	 */
+	private BigDecimal calcMark(List<String> markLst, AmntSummByUk amntSummByUk, Payord p, Org uk) {
+		BigDecimal summa = BigDecimal.ZERO; 
+			// Подсчет сборов
+			String formula = p.getFormula();
+			log.info("Формула до изменений={}", formula);
+			for (String mark: markLst) {
+				// по каждому маркеру
+				BigDecimal summ = amntSummByUk.getAmnt().stream()
+						.filter(e -> e.getUk().equals(uk) && e.getMark().equals(mark)).map(e-> e.getSumma())
+						.reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+				formula = formula.replaceAll(mark, String.valueOf(summ));
+			}
+			log.info("Формула после изменений={}", formula);
+			Expression e = new Expression(formula);
+			summa = BigDecimal.valueOf(e.calculate());
+			summa = summa.setScale(2, BigDecimal.ROUND_HALF_UP);
+		return summa;
+	}
+	
 	/**
 	 * Сформировать платежки за период
 	 */
-	public void genPayord() {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void genPayord(Calc calc, Date genDt) {
 		String period = "201704";
 		for (Payord p :payordDao.getPayordAll()) {
-			log.info("Payord.id={}", p.getId());
 			AmntSummByUk amntSummByUk = new AmntSummByUk();
  			// distinct список Маркеров
 			List<String> markLst = p.getPayordCmp().stream().distinct().map(t -> t.getMark()).collect(Collectors.toList());
@@ -319,25 +378,35 @@ public class PayordMngImpl implements PayordMng {
 				}
 			});
 
-			// TODO Сделать КЭШ!!!
-			
  			// distinct список УК
 			List<Org> ukLst = amntSummByUk.getAmnt().stream().map(d -> d.getUk()).distinct().collect(Collectors.toList());
-			ukLst.stream().forEach(d -> {
-				// по каждой УК
-				String formula = p.getFormula();
-				log.info("Формула до изменений={}", formula);
-				for (String mark: markLst) {
-				//markLst.stream().forEach(f -> {
-					// по каждому маркеру
-					BigDecimal summ = amntSummByUk.getAmnt().stream().filter(e -> e.getUk().equals(d) && e.getMark().equals(mark)).map(e-> e.getSumma())
-					  .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
-					log.info("УК={}, Маркер={}, Сумма={}", d.getName(), mark, summ);
-					formula = formula.replaceAll(mark, String.valueOf(summ));
-				}
-				log.info("Формула после изменений={}", formula);
-				Expression e = new Expression(formula);
-				log.info("Расчет формулы={}", e.calculate());
+			ukLst.stream().forEach(uk -> {
+				// По каждой УК, за период:
+				// получить сборы по всем маркерам
+				BigDecimal summa1 = calcMark(markLst, amntSummByUk, p, uk);
+				log.info("По УК.id={} и по Платежке id={}, сумма={}", uk.getId(), p.getId(), summa1);
+				// получить сумму перечислений
+				AmntFlow amntFlow = calcFlow(p, uk, calc.getReqConfig().getPeriod(), null, null, 2);
+				BigDecimal summa2 = amntFlow.summa;
+				// получить сумму корректировок сборов
+				amntFlow = calcFlow(p, uk, calc.getReqConfig().getPeriod(), null, null, 3);
+				BigDecimal summa3 = amntFlow.summa;
+				// получить сумму корректировок перечислений
+				amntFlow = calcFlow(p, uk, calc.getReqConfig().getPeriod(), null, null, 4);
+				BigDecimal summa4 = amntFlow.summa;
+				// получить сумму удержаний
+				amntFlow = calcFlow(p, uk, calc.getReqConfig().getPeriod(), null, null, 5);
+				BigDecimal summa5 = amntFlow.summa;
+				
+				log.info("Сумма {}, ", amntFlow.summa);
+				// рассчитать сумму, рекомендованную к перечислению
+				BigDecimal summa6 = summa1.subtract(summa2).add(summa3).add(summa4).subtract(summa5);
+				
+				PayordFlow flow = new PayordFlow(p, uk, 
+							summa6.doubleValue(), summa1.doubleValue(), 
+							summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 
+							summa5.doubleValue(), summa6.doubleValue(), 2, period, genDt);  
+				p.getPayordFlow().add(flow);
 			});
 			
 		}
