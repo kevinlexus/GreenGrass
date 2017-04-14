@@ -219,5 +219,56 @@ public class Utl {
 	public static int daysBetween(Date dt1, Date dt2){
        return (int)( (dt2.getTime() - dt1.getTime()) / (1000 * 60 * 60 * 24)+1);
 	}
+	
+	/**
+	 * Конвертировать дату в ГГГГММ
+	 * @param dt - дата вх.
+	 * @return
+	 */
+	public static String getPeriodByDate(Date dt) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.clear(Calendar.ZONE_OFFSET);
+		calendar.setTime(dt);
+		String yy = String.valueOf(calendar.get(Calendar.YEAR));
+		String mm = String.valueOf(calendar.get(Calendar.MONTH)+1);
+		mm = "0"+mm;
+		mm = mm.substring(mm.length()-2, mm.length());
+		return yy+mm;
+	}
+
+	/**
+	 * Конвертировать период ГГГГММ в дату
+	 * @param period
+	 * @return
+	 */
+	public static Date getDateByPeriod(String period) {
+		String str = "01"+"."+period.substring(4, 6)+"."+period.substring(0, 4);
+		return getDateFromStr(str);
+	}
+	
+	/**
+	 * Получить кол-во дней в месяце по дате
+	 * @param dt - дата вх.
+	 * @return
+	 */
+	public static double getCntDaysByDate(Date dt) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.clear(Calendar.ZONE_OFFSET);
+		calendar.setTime(dt);
+		return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+	
+	/**
+	 * Получить в виде ГГГГММ месяц + - N мес.
+	 * @param period
+	 */
+	public static String addMonth(String period, int n) {
+		Date dt = getDateByPeriod(period);
+		Calendar calendar = new GregorianCalendar();
+		calendar.clear(Calendar.ZONE_OFFSET);
+		calendar.setTime(dt);
+		calendar.add(Calendar.MONTH, n);
+		return getPeriodByDate(calendar.getTime());
+	}
 }
 

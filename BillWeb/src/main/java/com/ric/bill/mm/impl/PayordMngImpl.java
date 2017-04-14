@@ -24,6 +24,7 @@ import com.ric.bill.Utl;
 import com.ric.bill.dao.PaymentDetDAO;
 import com.ric.bill.dao.PayordCmpDAO;
 import com.ric.bill.dao.PayordDAO;
+import com.ric.bill.dao.PayordFlowDAO;
 import com.ric.bill.dao.PayordGrpDAO;
 import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
@@ -51,6 +52,8 @@ public class PayordMngImpl implements PayordMng {
 	private PayordGrpDAO payordGrpDao;
 	@Autowired
 	private PayordCmpDAO payordCmpDao;
+	@Autowired
+	private PayordFlowDAO payordFlowDao;
 	@Autowired
 	private LstMng lstMng;
 	@Autowired
@@ -355,6 +358,15 @@ public class PayordMngImpl implements PayordMng {
 	}
 	
 	/**
+	 * Получить входящее сальдо на дату
+	 * @return
+	 */
+	public BigDecimal getInsal(Payord p, Date dt) {
+		PayordFlow payordFlow = payordFlowDao.getPayordFlowBeforeDt(p.getId(), 0, dt).stream().findFirst().orElse(null);
+		return BigDecimal.valueOf(payordFlow.getSumma());
+	}
+	
+	/**
 	 * Сформировать платежки за период
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
@@ -397,16 +409,25 @@ public class PayordMngImpl implements PayordMng {
 				// получить сумму удержаний
 				amntFlow = calcFlow(p, uk, calc.getReqConfig().getPeriod(), null, null, 5);
 				BigDecimal summa5 = amntFlow.summa;
-				
 				log.info("Сумма {}, ", amntFlow.summa);
-				// рассчитать сумму, рекомендованную к перечислению
-				BigDecimal summa6 = summa1.subtract(summa2).add(summa3).add(summa4).subtract(summa5);
+				// получить вх. сальдо
+				BigDecimal insal =getInsal(p, calc.getReqConfig().getCurDt1());
+				log.info("Сальдо={}", insal);
+
+				// рассчитать сумму, рекомендованную к перечислению, округлить, если не итоговая плат. по концу мес. TODO!
+				BigDecimal summa6 = insal.add(summa1).subtract(summa2).add(summa3).add(summa4).subtract(summa5).setScale(2, BigDecimal.ROUND_HALF_UP);
+				// занулить, если отрицательная
+				if (summa6.floatValue() < 0) {
+					summa6 = BigDecimal.ZERO; 
+				}
 				
-				PayordFlow flow = new PayordFlow(p, uk, 
-							summa6.doubleValue(), summa1.doubleValue(), 
-							summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 
-							summa5.doubleValue(), summa6.doubleValue(), 2, period, genDt);  
-				p.getPayordFlow().add(flow);
+				if (summa6 != BigDecimal.ZERO) {
+					PayordFlow flow = new PayordFlow(p, uk, 
+								summa6.doubleValue(), summa1.doubleValue(), 
+								summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 
+								summa5.doubleValue(), summa6.doubleValue(), 2, period, genDt);  
+					p.getPayordFlow().add(flow);
+				}
 			});
 			
 		}

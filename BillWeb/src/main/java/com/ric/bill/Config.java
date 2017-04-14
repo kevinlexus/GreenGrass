@@ -90,6 +90,7 @@ public class Config {
 		setCurDt1(calendar.getTime());
 		calendar.setTime(parMng.getDate(-1, obj, "Конец расчетного периода"));
 		setCurDt2(calendar.getTime());
+		
 		log.info("Начало расчетного периода = {}", getCurDt1());
 		log.info("Конец расчетного периода = {}", getCurDt2());
 	}

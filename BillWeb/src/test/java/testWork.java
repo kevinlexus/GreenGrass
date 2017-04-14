@@ -1,11 +1,3 @@
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -15,34 +7,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.BillServ;
 import com.ric.bill.Calc;
 import com.ric.bill.Config;
-import com.ric.bill.DistServ;
 import com.ric.bill.RequestConfig;
-import com.ric.bill.Result;
-import com.ric.bill.excp.EmptyStorable;
-import com.ric.bill.excp.WrongSetMethod;
+import com.ric.bill.Utl;
 import com.ric.bill.mm.ObjMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.mm.SecMng;
-import com.ric.bill.model.bs.Dw;
-import com.ric.bill.model.bs.Obj;
-import com.ric.bill.model.fn.Chng;
 import com.ric.web.AppConfig;
-import com.ric.web.BillingController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
-//@ContextConfiguration(locations = { "classpath:spring.xml" }) //defines class-level metadata that is used to determine how to load and configure an ApplicationContext for integration tests.
 @Slf4j
-//@Service
 public class testWork {
 
 
@@ -61,15 +42,22 @@ public class testWork {
 	@Autowired
 	private Config config;
 	
-
     @Test
 	public void mainWork() {
+		log.error("Check conf");
+
 		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
 		reqConfig.setUp(config, "0", "0", null, 1, "", "");
 		Calc calc = new Calc(reqConfig);
 
+		log.error("check date={}", Utl.getDateByPeriod("201704"));
+		log.error("check period+1={}, period-1={}", Utl.addMonth(Utl.getPeriodByDate(Utl.getDateByPeriod("201704")),5),
+				Utl.addMonth(Utl.getPeriodByDate(Utl.getDateByPeriod("201704")),-5)
+				);
+		
 		PayordMng pm = ctx.getBean(PayordMng.class);
-		pm.genPayord(calc, reqConfig.getCurDt1());
+		
+		//pm.genPayord(calc, reqConfig.getCurDt1());
 	}
     
 /*    @Transactional(readOnly=false)

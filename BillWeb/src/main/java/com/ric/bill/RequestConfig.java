@@ -39,8 +39,13 @@ public class RequestConfig {
 	double partDays;
 	// кол-во дней в периоде
 	double cntCurDays;
-	// период для партицирования
+	// Текущий период (для партицирования и проч.) 
 	String period;
+	// Период +1 месяц 
+	String periodNext;
+	// Период -1 месяц 
+	String periodBack;
+	
 	// номер запроса
 	private int rqn;
 		
@@ -122,24 +127,24 @@ public class RequestConfig {
 	    	setCurDt2(chng.getDt2());
 		}
 		
-		Calendar calendar = new GregorianCalendar();
-		calendar.clear(Calendar.ZONE_OFFSET);
-		calendar.setTime(getCurDt1());
-		
-		//задать период для партицирования
-		String yy = String.valueOf(calendar.get(Calendar.YEAR));
-		String mm = String.valueOf(calendar.get(Calendar.MONTH)+1);
-		mm = "0"+mm;
-		mm = mm.substring(mm.length()-2, mm.length());
-		setPeriod(yy+mm);
+		//задать текущий период в виде ГГГГММ
+		setPeriod(Utl.getPeriodByDate(config.getCurDt1()));
+
 		//кол-во дней в месяце
-		setCntCurDays(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		setCntCurDays(Utl.getCntDaysByDate(config.getCurDt1()));
+		
 		//доля одного дня в периоде
 		setPartDays(1/getCntCurDays());
 		
-    	
+    	// период на 1 мес.вперед
+		setPeriodNext(Utl.addMonth(getPeriod(), 1));
+    	// период на 1 мес.назад
+		setPeriodBack(Utl.addMonth(getPeriod(), -1));
+		
+		log.info("Установлены периоды:");
+		log.info("Текущий:{}, предыдущий:{}, будущий:{}", getPeriod(), getPeriodBack(), getPeriodNext());
 	}
-	
+
 	public Integer getOperTp() {
 		return operTp;
 	}
@@ -220,6 +225,22 @@ public class RequestConfig {
 
 	public void setRqn(int rqn) {
 		this.rqn = rqn;
+	}
+
+	public String getPeriodNext() {
+		return periodNext;
+	}
+
+	public void setPeriodNext(String periodNext) {
+		this.periodNext = periodNext;
+	}
+
+	public String getPeriodBack() {
+		return periodBack;
+	}
+
+	public void setPeriodBack(String periodBack) {
+		this.periodBack = periodBack;
 	}
 	
 }

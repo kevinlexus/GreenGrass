@@ -269,7 +269,7 @@ public class DistServ {
 
 		//найти все счетчики по Лиц.счету, по услуге
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
-			calc.setGenDt(c.getTime());
+			//calc.setGenDt(c.getTime());
 			for (MLogs ml : metMng.getAllMetLogByServTp(rqn, kart, serv, null)) {
 				metMng.delNodeVol(rqn, ml, calc.getCalcTp(), calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 			}
