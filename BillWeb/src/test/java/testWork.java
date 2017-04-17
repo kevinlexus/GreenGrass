@@ -1,3 +1,8 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -15,6 +20,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.Config;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Utl;
+import com.ric.bill.excp.WrongDate;
 import com.ric.bill.mm.ObjMng;
 import com.ric.bill.mm.ParMng;
 import com.ric.bill.mm.PayordMng;
@@ -57,7 +63,21 @@ public class testWork {
 		
 		PayordMng pm = ctx.getBean(PayordMng.class);
 		
-		//pm.genPayord(calc, reqConfig.getCurDt1());
+		Date dt = null;
+		DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); 
+		try {
+			dt = df.parse("01.05.2017");
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			pm.genPayord(calc, dt, true, true);
+		} catch (WrongDate e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
     
 /*    @Transactional(readOnly=false)

@@ -1,5 +1,6 @@
 package com.ric.bill.mm;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -33,5 +34,6 @@ public interface PayordMng {
 	public void delPayordCmpDto(PayordCmpDTO t);
 	public PayordCmp addPayordCmpDto(PayordCmpDTO t);
 	public void refreshPayordCmp(PayordCmp t);
-	public void genPayord(Calc calc, Date genDt, Boolean isEndMonth) throws WrongDate;
+	public void genPayord(Calc calc, Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate;
+	public BigDecimal getInsal(Payord p, String period, Integer tp);
 }

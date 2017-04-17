@@ -221,7 +221,6 @@ public class ChrgThr {
 			// записать, сумму по виртуальной услуге
 			if (rec.getServ().getVrt()) {
 					putMapVrtVal(rec.getServ(), sum);
-					
 			}
 
 			if (!rec.getServ().getVrt()) {
@@ -249,7 +248,7 @@ public class ChrgThr {
 	
 	
 	/**
-	 * РАСЧЕТ начисления по услуге
+	 * РАСЧЕТ начисления по дню
 	 * @param serv - услуга
 	 * @throws InvalidServ 
 	 */

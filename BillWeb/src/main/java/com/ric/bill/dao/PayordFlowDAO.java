@@ -9,5 +9,6 @@ import com.ric.bill.model.fn.PayordFlow;
 public interface PayordFlowDAO {
 
 	public List<PayordFlow> getPayordFlowBeforeDt(Integer payordId, Integer tp, Date dt);
+	public List<PayordFlow> getPayordFlowBeforePeriod(Integer payordId, Integer tp, String period);
 	
 }

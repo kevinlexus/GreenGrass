@@ -21,10 +21,9 @@ public class PayordFlowDAOImpl implements PayordFlowDAO {
     private EntityManager em;
 
     /**
-     * Получить движение по платежке, до определенной даты (напр.для вычисления сальдо)
+     * Получить движение по платежке, до определенной даты
      */
     public List<PayordFlow> getPayordFlowBeforeDt(Integer payordId, Integer tp, Date dt) {
-
 		Query query =em.createQuery("select t from PayordFlow t join t.payord p where p.id = :payordId "
 				+ "and t.dt <= :dt and t.tp = :tp "
 				+ "order by t.dt desc");
@@ -32,10 +31,20 @@ public class PayordFlowDAOImpl implements PayordFlowDAO {
 		query.setParameter("dt", dt);
 		query.setParameter("tp", tp);
 		return query.getResultList();
-    	
-    	
 	}
 
+    /**
+     * Получить движение по платежке, до определенного периода даты (напр.для вычисления сальдо)
+     */
+    public List<PayordFlow> getPayordFlowBeforePeriod(Integer payordId, Integer tp, String period) {
+		Query query =em.createQuery("select t from PayordFlow t join t.payord p where p.id = :payordId "
+				+ "and t.period <= :period and t.tp = :tp "
+				+ "order by t.dt desc");
+		query.setParameter("payordId", payordId);
+		query.setParameter("period", period);
+		query.setParameter("tp", tp);
+		return query.getResultList();
+	}
 
     
 }

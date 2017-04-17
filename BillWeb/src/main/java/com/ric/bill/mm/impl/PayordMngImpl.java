@@ -359,28 +359,32 @@ public class PayordMngImpl implements PayordMng {
 	}
 	
 	/**
-	 * Получить входящее сальдо на дату
+	 * Получить входящее сальдо на период
 	 * @param p - платежка
-	 * @param dt - дата выборки
+	 * @param period - период выборки
 	 * @return
 	 */
-	public BigDecimal getInsal(Payord p, Date dt) {
-		PayordFlow payordFlow = payordFlowDao.getPayordFlowBeforeDt(p.getId(), 0, dt).stream().findFirst().orElse(null);
+	public BigDecimal getInsal(Payord p, String period, Integer tp) {
+		PayordFlow payordFlow = payordFlowDao.getPayordFlowBeforePeriod(p.getId(), tp, period).stream().findFirst().orElse(null);
 		return BigDecimal.valueOf(payordFlow.getSumma());
 	}
 	
 	/**
 	 * Сформировать платежки за период
+	 * Внимание!!! итоговое формирование, можно делать, если подписана финальная платёжка!
+	 * 
 	 * @param genDt - обычно текущая дата
-	 * @param isEndMonth - платежка по окончанию месяца
+	 * @param isFinal - финальная платежка
+	 * @param isEndMonth - итоговое формирование сальдо
 	 * @throws WrongDate 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void genPayord(Calc calc, Date genDt, Boolean isEndMonth) throws WrongDate {
-		if (isEndMonth && (genDt.before(calc.getReqConfig().getCurDt2()) || genDt.equals(calc.getReqConfig().getCurDt2()))) {
-			// если итоговая платежка и дата формирования меньше последней даты текущего периода 
+	public void genPayord(Calc calc, Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate {
+		if (isFinal && (genDt.before(calc.getReqConfig().getCurDt2()) || genDt.equals(calc.getReqConfig().getCurDt2()))) {
+			// если финальная платежка и дата формирования меньше последней даты текущего периода 
 			throw new WrongDate("Некорректная дата при итоговом формировании платежки");
 		}
+		
 		String period = calc.getReqConfig().getPeriod();
 		// Перебрать все платежки
 		for (Payord p :payordDao.getPayordAll()) {
@@ -422,21 +426,46 @@ public class PayordMngImpl implements PayordMng {
 				BigDecimal summa5 = amntFlow.summa;
 				log.info("Сумма {}, ", amntFlow.summa);
 				// получить вх. сальдо
-				BigDecimal insal =getInsal(p, calc.getReqConfig().getCurDt1());
+				BigDecimal insal =getInsal(p, calc.getReqConfig().getPeriod(), 0);
 				log.info("Сальдо={}", insal);
 
 				// рассчитать сумму, рекомендованную к перечислению
 				BigDecimal summa6 = insal.add(summa1).subtract(summa2).add(summa3).add(summa4).subtract(summa5);
 
+
 				if (isEndMonth) {
-					// рассчитать суммы для сальдо по бухгалтерии
+					PayordFlow flow;
+					// добавить сальдо, если изменилось
+					if (!summa6.equals(insal)) {
+						 flow = new PayordFlow(p, uk, 
+								summa6.doubleValue(), null, 
+								null, null, null, 
+								null, null, 0, calc.getReqConfig().getPeriodNext(), null);  
+						p.getPayordFlow().add(flow);
+					}
 					
-					
+					// получить вх. сальдо для бухг.
+					insal =getInsal(p, calc.getReqConfig().getPeriod(), 1);
+					log.info("Сальдо бухг.={}", insal);
+
+					// рассчитать сумму сальдо по бухгалтерии
+					// получить сумму перечислений для сальдо по бухгалтерии (взять по фактическим датам)
+					amntFlow = calcFlow(p, uk, null, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), 2);
+					summa2 = amntFlow.summa;
+					summa6 = insal.add(summa1).subtract(summa2).add(summa3).add(summa4).subtract(summa5);
+					// добавить сальдо, если изменилось
+					if (!summa6.equals(insal)) {
+						 flow = new PayordFlow(p, uk, 
+								summa6.doubleValue(), null, 
+								null, null, null, 
+								null, null, 1, calc.getReqConfig().getPeriodNext(), null);  
+						p.getPayordFlow().add(flow);
+					}
 					
 				}
 				
 				
-				if (!isEndMonth) {
+				if (!isFinal) {
 					// округлить, если не итоговая плат. по концу мес.
 					summa6=summa6.setScale(2, BigDecimal.ROUND_HALF_UP);
 				}
@@ -445,8 +474,8 @@ public class PayordMngImpl implements PayordMng {
 					summa6 = BigDecimal.ZERO; 
 				}
 				
-				if (summa6 != BigDecimal.ZERO) {
-					// создать движение по платежке
+				if (!isEndMonth && summa6 != BigDecimal.ZERO) {
+					// создать движение по платежке если не итоговое формир
 					PayordFlow flow = new PayordFlow(p, uk, 
 								summa6.doubleValue(), summa1.doubleValue(), 
 								summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 
