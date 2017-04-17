@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ric.bill.excp.CyclicMeter;
 import com.ric.bill.excp.EmptyPar;
 import com.ric.bill.excp.EmptyServ;
 import com.ric.bill.excp.EmptyStorable;
@@ -98,8 +99,9 @@ public class DistServ {
 	 * Удалить объем по вводам дома
 	 * 
 	 * @param serv - заданная услуга
+	 * @throws CyclicMeter 
 	 */
-    private void delHouseVolServ(int rqn) {
+    private void delHouseVolServ(int rqn) throws CyclicMeter {
 
     	log.info("Удаление объемов по Дому: id="+calc.getHouse().getId()+" по услуге cd="+calc.getServ().getCd(), 2);
 
@@ -116,8 +118,9 @@ public class DistServ {
 	/**
 	 * Удалить объем по вводу, определённой услуге
 	 * @param serv - услуга
+	 * @throws CyclicMeter 
 	 */
-	private void delHouseServVolTp(int rqn, Serv serv, int tp) {
+	private void delHouseServVolTp(int rqn, Serv serv, int tp) throws CyclicMeter {
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
 		//необходимый для формирования диапазон дат
@@ -132,7 +135,7 @@ public class DistServ {
 			dt2 = calc.getReqConfig().getCurDt2();
 		}
 
-		//найти все вводы по дому и по услуге
+		// удалить объемы по всем вводам по дому и по услуге
 		for (MLogs ml : metMng.getAllMetLogByServTp(rqn, calc.getHouse(), serv, "Ввод")) {
 			metMng.delNodeVol(rqn, ml, tp, calc.getReqConfig().getCurDt1(), calc.getReqConfig().getCurDt2(), getStatusVol());
 		}
@@ -210,15 +213,20 @@ public class DistServ {
 		// найти все необходимые услуги для удаления объемов, здесь только по типу 0,1,2 и только те услуги, которые надо удалить для ЛС 
 		for (Serv serv : servMng.findForDistVolForKart()) {
 				log.trace("Удаление объема по услуге"+serv.getCd());
-				// тип обработки = 0 - расход
-				calc.setCalcTp(0);
-				delKartServVolTp(rqn, kart, serv);
-				// тип обработки = 1 - площадь и кол-во прож.
-				calc.setCalcTp(1);
-				delKartServVolTp(rqn, kart, serv);
-				// тип обработки = 3 - пропорц.площади (отопление)
-				calc.setCalcTp(3);
-				delKartServVolTp(rqn, kart, serv);
+				try {
+					// тип обработки = 0 - расход
+					calc.setCalcTp(0);
+						delKartServVolTp(rqn, kart, serv);
+					// тип обработки = 1 - площадь и кол-во прож.
+					calc.setCalcTp(1);
+					delKartServVolTp(rqn, kart, serv);
+					// тип обработки = 3 - пропорц.площади (отопление)
+					calc.setCalcTp(3);
+					delKartServVolTp(rqn, kart, serv);
+				} catch (CyclicMeter e) {
+					e.printStackTrace();
+					throw new ErrorWhileDist("Ошибка при распределении счетчиков в лс="+calc.getKart().getLsk());
+				}
 		}
 		
 		log.trace("Распределение объемов");
@@ -250,8 +258,9 @@ public class DistServ {
 	 * @param Kart - лиц.счет
 	 * @param serv - услуга
 	 * @param tp - тип расчета
+	 * @throws CyclicMeter 
 	 */
-	private void delKartServVolTp(int rqn, Kart kart, Serv serv) {
+	private void delKartServVolTp(int rqn, Kart kart, Serv serv) throws CyclicMeter {
 		log.trace("delKartServVolTp: kart.lsk="+kart.getLsk()+", serv.cd="+serv.getCd()+" tp="+calc.getCalcTp());
 		//перебрать все необходимые даты, за период
 		Calendar c = Calendar.getInstance();
@@ -312,7 +321,12 @@ public class DistServ {
 		//найти все необходимые услуги для удаления объемов
 		for (Serv s : servMng.findForDistVol()) {
 				calc.setServ(s);
-				delHouseVolServ(rqn);
+				try {
+					delHouseVolServ(rqn);
+				} catch (CyclicMeter e) {
+					e.printStackTrace();
+					throw new ErrorWhileDist("Ошибка при распределении счетчиков в доме id="+houseId);
+				}
 		}
 
 		log.info("DistServ.distHouseVol: Распределение объемов по дому id="+calc.getHouse().getId()+" klsk="+calc.getHouse().getKlskId(), 2);

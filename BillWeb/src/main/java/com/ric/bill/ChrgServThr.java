@@ -51,6 +51,8 @@ public class ChrgServThr {
 		calc.getKart().getReg().size();
 		calc.getKart().getRegState().size();
 
+		calc.getKart().getMlog().size();
+
 		calc.getHouse().getTarifklsk().size();
 		for (TarifKlsk k : calc.getHouse().getTarifklsk()) {
 			k.getTarprop().size();

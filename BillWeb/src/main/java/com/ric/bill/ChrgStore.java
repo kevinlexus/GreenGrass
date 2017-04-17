@@ -38,9 +38,14 @@ public class ChrgStore {
      * @param stdt - норматив
 	 * @param serv - услуга
 	 * @param org - организация
+	 * @param exsMet - наличие счетчика: false - нет, true - есть
 	 * @param dt - дата
 	 */
-	public void addChrg (BigDecimal vol, BigDecimal price, BigDecimal stdt, Integer cntPers, BigDecimal area, Serv serv, Org org, Date dt) {
+	public void addChrg (BigDecimal vol, BigDecimal price, BigDecimal stdt, Integer cntPers, BigDecimal area, Serv serv, Org org, Boolean exsMet, Date dt) {
+		Integer met = 0;
+		if (exsMet) {
+			met = 1;
+		}
 		
 		// СГРУППИРОВАТЬ по основной услуге TODO! Это нужно не по всем услугам, а только по тем, где есть дочерние услуги, зависимые от суммы начисления -  поправить использование TODO!
 		Serv mainServ = serv.getServChrg();
@@ -82,7 +87,7 @@ public class ChrgStore {
 		// СГРУППИРОВАТЬ по услуге, организации, расценке, дате
 		if (getStore().size() == 0) {
 			//завести новую строку
-			getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt, dt));
+			getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, met, dt, dt));
 		} else {
 			ChrgRec lastRec = null;
 			//получить последний добавленный элемент по данной услуге
@@ -93,7 +98,7 @@ public class ChrgStore {
 			}
 			if (lastRec == null) {
 				//последний элемент с данной услугой не найден, - создать
-				getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt, dt));
+				getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, met, dt, dt));
 			} else {
 				//последний элемент найден
 				//сравнить по-элементно
@@ -103,7 +108,9 @@ public class ChrgStore {
 						(lastRec.getStdt() == null && stdt == null ||
 						 lastRec.getStdt().equals(stdt)) &&
 							(lastRec.getCntPers() == null && cntPers == null ||
-							 lastRec.getCntPers().equals(cntPers))
+							 lastRec.getCntPers().equals(cntPers)) &&
+								(lastRec.getMet() == null && met == null ||
+								 lastRec.getMet().equals(met))
 					) {
 						//добавить данные в последнюю строку, прибавить объем и площадь 
 						if (lastRec.getVol() != null) {
@@ -122,7 +129,7 @@ public class ChrgStore {
 						lastRec.setDt2(dt);
 					} else {
 						//завести новую строку, если отличается расценкой или организацией
-						getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, dt, dt));
+						getStore().add(new ChrgRec(vol, price, stdt, cntPers, area, serv, org, met, dt, dt));
 					}
 			}
 		}

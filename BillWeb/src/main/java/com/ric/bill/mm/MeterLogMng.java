@@ -8,6 +8,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Storable;
+import com.ric.bill.excp.CyclicMeter;
 import com.ric.bill.excp.NotFoundNode;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
@@ -23,7 +24,7 @@ public interface MeterLogMng {
     public SumNodeVol getVolPeriod (int rqn, Integer statusVol, MLogs mLog, int tp, Date dt1, Date dt2);
 	public SumNodeVol getVolPeriod (int rqn, Integer statusVol, MeterContains mc, Serv serv, Date dt1, Date dt2);
 	public MLogs getLinkedNode(int rqn, MLogs lnkMLog, String string, Date genDt);
-	public void delNodeVol(int rqn, MLogs ml, int tp, Date dt1, Date dt2, Integer status);
+	public void delNodeVol(int rqn, MLogs ml, int tp, Date dt1, Date dt2, Integer status) throws CyclicMeter;
 	public Kart getKart(int rqn, MLogs mLog);
 
 }

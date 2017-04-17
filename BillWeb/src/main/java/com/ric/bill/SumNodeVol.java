@@ -1,6 +1,5 @@
 package com.ric.bill;
 
-import com.ric.bill.model.mt.MeterLog;
 
 /**
  * Объем по связанному узлу за период
@@ -10,10 +9,10 @@ import com.ric.bill.model.mt.MeterLog;
 public class SumNodeVol implements java.io.Serializable {
 
 	//значения за расчетный период:
-	private Double vol;//объем
-	private Double area;//площадь
-	private Double pers;//проживающие
-	private Double limit;//лимит ОДН (где есть)
+	private Double vol; // объем
+	private Double area; // площадь
+	private Double pers; // проживающие
+	private Double limit; // лимит ОДН (где есть)
 	
 	public SumNodeVol(){
 		setVol(new Double(0));

@@ -41,7 +41,7 @@ public class Chrg implements java.io.Serializable, Simple {
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			BigDecimal sumFull, BigDecimal sumAmnt, BigDecimal vol,
 			BigDecimal price, BigDecimal stdt, Integer cntPers, BigDecimal area, Lst tp, 
-			Chng chng, Date dt1, Date dt2) {
+			Chng chng, Integer met, Date dt1, Date dt2) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -63,12 +63,13 @@ public class Chrg implements java.io.Serializable, Simple {
 		setDt1(dt1);
 		setDt2(dt2);
 		setChng(chng);
+		setMet(met);
 	}
 
 	// конструктор для подготовительных данных, рассчитанных в потоке
 	public Chrg(Kart kart, Serv serv, Org org, int status, String period,
 			Double sumFull, Double sumAmnt, Double vol,
-			Double price, Double stdt, Integer cntPers, Double area, Lst tp, Date dt1, Date dt2, Chng chng) {
+			Double price, Double stdt, Integer cntPers, Double area, Lst tp, Date dt1, Date dt2, Integer met, Chng chng) {
 		
 		setKart(kart);
 		setOrg(org);
@@ -86,6 +87,7 @@ public class Chrg implements java.io.Serializable, Simple {
 		setDt1(dt1);
 		setDt2(dt2);
 		setChng(chng);
+		setMet(met);
 	}
 
 	@Id
@@ -130,12 +132,18 @@ public class Chrg implements java.io.Serializable, Simple {
 	@Column(name = "STDT")
 	private Double stdt;
 	
+	// Кол-во проживающих на дату расчета
 	@Column(name = "CNTPERS")
 	private Integer cntPers; 
 
+	// Площадь на дату расчета
 	@Column(name = "AREA")
 	private Double area;
 
+	// Наличие счетчика на дату расчета: 1 - имеется, null, 0 - нет
+	@Column(name = "MET")
+	private Integer met;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_CHRG_TP", referencedColumnName="ID")
 	private Lst tp; 
@@ -295,6 +303,37 @@ public class Chrg implements java.io.Serializable, Simple {
 	public void setArea(Double area) {
 		this.area = area;
 	}
+
+	public Integer getMet() {
+		return met;
+	}
+
+	public void setMet(Integer met) {
+		this.met = met;
+	}
+
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || !(o instanceof Chrg))
+	        return false;
+
+	    Chrg other = (Chrg)o;
+
+	    if (id == other.getId()) return true;
+	    if (id == null) return false;
+
+	    // equivalence by id
+	    return id.equals(other.getId());
+	}
+
+	public int hashCode() {
+	    if (id != null) {
+	        return id.hashCode();
+	    } else {
+	        return super.hashCode();
+	    }
+	}
+	
 	
 }
 

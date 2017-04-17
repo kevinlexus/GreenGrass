@@ -1,6 +1,7 @@
 package com.ric.bill.mm.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,6 +28,7 @@ import com.ric.bill.MeterContains;
 import com.ric.bill.SumNodeVol;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.MeterLogDAO;
+import com.ric.bill.excp.CyclicMeter;
 import com.ric.bill.mm.MeterLogMng;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.ar.Kart;
@@ -123,10 +125,18 @@ public class MeterLogMngImpl implements MeterLogMng {
 	 */
 	@Cacheable(cacheNames="rrr2", key="{ #rqn, #kart.getLsk(), #serv.getId(), #genDt}")
 	public boolean checkExsKartMet(int rqn, Kart kart, Serv serv, Date genDt) {
-		Optional<MeterLog> mLog = kart.getMlog().stream().filter(t -> t.getServ().equals(serv))
-		                       .filter(t -> t.getMeter().stream()
-		                    		   .anyMatch(d -> d.getExs().stream()
-		                    				   .anyMatch(v -> Utl.between(genDt, v.getDt1(), v.getDt2()) && v.getPrc() > 0d ) ) ).findAny();
+		Optional<MeterLog> mLog;
+			mLog = kart.getMlog().stream().filter(t -> t.getServ().equals(serv))
+			                       .filter(t -> t.getMeter().stream()
+			                    		   .anyMatch(d -> d.getExs().stream()
+			                    				   .anyMatch(v -> Utl.between(genDt, v.getDt1(), v.getDt2()) && v.getPrc() > 0d ) ) ).findAny();
+/*		} catch (Exception e) {
+			log.info("check={}", serv.getCd());
+			log.info(Arrays.toString(kart.getMlog().toArray()) );
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		//log.info("CHECK2! = {}", mLog.isPresent());
 		return mLog.isPresent();
 	}
@@ -163,7 +173,7 @@ public class MeterLogMngImpl implements MeterLogMng {
     public  SumNodeVol getVolPeriod(int rqn, Integer statusVol, MLogs mLog, int tp, Date dt1, Date dt2) {
 		SumNodeVol lnkVol = new SumNodeVol();
 		/* Java 8 */
-		mLog.getVol().stream()  // ВАЖНО! ЗДЕСЬ нельзя parallelStream - получается не предсказуемый результат!!!
+		mLog.getVol().stream()  // ВАЖНО! ЗДЕСЬ нельзя parallelStream - получается непредсказуемый результат!!!
 	                .filter(t -> Utl.nvl(t.getStatus(), 0).equals(statusVol) && // по статусу
 	            			Utl.between(t.getDt1(), dt1, dt2) && //здесь фильтр берет даты снаружи!
 	        				Utl.between(t.getDt2(), dt1, dt2))
@@ -195,6 +205,7 @@ public class MeterLogMngImpl implements MeterLogMng {
 		SumNodeVol amntSum = new SumNodeVol();
 		//перебрать все лог.счетчики, доступные по объекту, сложить объемы
 		for (MeterLog mLog: mc.getMlog()) {
+			//log.info("check2 = {}", mLog.getServ());
 			//по заданной услуге
 			if (mLog.getServ().equals(serv)) {
 				SumNodeVol tmp = getVolPeriod(rqn, statusVol, mLog, 0, dt1, dt2);
@@ -250,10 +261,11 @@ public class MeterLogMngImpl implements MeterLogMng {
      * @param mLog - начальный счетчик
      * @param tp - тип расчета
      * @return 
+     * @throws CyclicMeter 
      */
 	@Cacheable("rrr1") // пока оставил кэширование, не должно мешать 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED) //  ПРИМЕНЯТЬ ТОЛЬКО НА PUBLIC МЕТОДЕ!!! http://stackoverflow.com/questions/4396284/does-spring-transactional-attribute-work-on-a-private-method
-	public void delNodeVol(int rqn, MLogs mLog, int tp, Date dt1, Date dt2, Integer status) {
+	public void delNodeVol(int rqn, MLogs mLog, int tp, Date dt1, Date dt2, Integer status) throws CyclicMeter {
 
 		//удалять итератором, иначе java.util.ConcurrentModificationException
 		for (Iterator<Vol> iterator = mLog.getVol().iterator(); iterator.hasNext();) {
@@ -273,11 +285,17 @@ public class MeterLogMngImpl implements MeterLogMng {
 				dt2.getTime() >= g.getDt1().getTime() && dt2.getTime() <= g.getDt2().getTime()	
 					) { //здесь диапазон дат "внутри" (чтобы хотя бы одна из заданных дат была внутри диапазона
 				
-				if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 
-						 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
-						 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
-						 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
-							delNodeVol(rqn, g.getSrc(), tp, dt1, dt2, status);
+				try {
+					if (tp==0 && g.getTp().getCd().equals("Расчетная связь") 
+							 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
+							 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
+							 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
+								log.info("Check id={}", g.getSrc().getId());
+								delNodeVol(rqn, g.getSrc(), tp, dt1, dt2, status);
+					}
+				} catch (StackOverflowError e) {
+					e.printStackTrace();
+					throw new CyclicMeter("Возможно зациклен в графе счетчик MeterLog.id="+g.getSrc().getId());
 				}
 			}
 		}

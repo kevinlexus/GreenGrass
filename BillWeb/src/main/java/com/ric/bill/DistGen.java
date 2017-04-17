@@ -425,6 +425,7 @@ public class DistGen {
 				 || tp==1 && g.getTp().getCd().equals("Связь по площади и кол-во прож.")
 				 || tp==2 && g.getTp().getCd().equals("Расчетная связь ОДН")
 				 || tp==3 && g.getTp().getCd().equals("Расчетная связь пропорц.площади")) {
+						
 						NodeVol nvChld = distNode(calc, g.getSrc(), tp, genDt);
 						if (nvChld != null){
 							//добавить объемы от дочерних узлов
