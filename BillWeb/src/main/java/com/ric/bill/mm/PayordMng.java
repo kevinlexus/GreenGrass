@@ -7,6 +7,7 @@ import com.ric.bill.Calc;
 import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
+import com.ric.bill.excp.WrongDate;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordGrp;
@@ -32,5 +33,5 @@ public interface PayordMng {
 	public void delPayordCmpDto(PayordCmpDTO t);
 	public PayordCmp addPayordCmpDto(PayordCmpDTO t);
 	public void refreshPayordCmp(PayordCmp t);
-	public void genPayord(Calc calc, Date genDt);
+	public void genPayord(Calc calc, Date genDt, Boolean isEndMonth) throws WrongDate;
 }

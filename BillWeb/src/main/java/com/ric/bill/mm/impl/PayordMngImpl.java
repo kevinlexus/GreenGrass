@@ -29,6 +29,7 @@ import com.ric.bill.dao.PayordGrpDAO;
 import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordGrpDTO;
+import com.ric.bill.excp.WrongDate;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.model.bs.Lst;
@@ -359,6 +360,8 @@ public class PayordMngImpl implements PayordMng {
 	
 	/**
 	 * Получить входящее сальдо на дату
+	 * @param p - платежка
+	 * @param dt - дата выборки
 	 * @return
 	 */
 	public BigDecimal getInsal(Payord p, Date dt) {
@@ -368,10 +371,18 @@ public class PayordMngImpl implements PayordMng {
 	
 	/**
 	 * Сформировать платежки за период
+	 * @param genDt - обычно текущая дата
+	 * @param isEndMonth - платежка по окончанию месяца
+	 * @throws WrongDate 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void genPayord(Calc calc, Date genDt) {
-		String period = "201704";
+	public void genPayord(Calc calc, Date genDt, Boolean isEndMonth) throws WrongDate {
+		if (isEndMonth && (genDt.before(calc.getReqConfig().getCurDt2()) || genDt.equals(calc.getReqConfig().getCurDt2()))) {
+			// если итоговая платежка и дата формирования меньше последней даты текущего периода 
+			throw new WrongDate("Некорректная дата при итоговом формировании платежки");
+		}
+		String period = calc.getReqConfig().getPeriod();
+		// Перебрать все платежки
 		for (Payord p :payordDao.getPayordAll()) {
 			AmntSummByUk amntSummByUk = new AmntSummByUk();
  			// distinct список Маркеров
@@ -414,14 +425,28 @@ public class PayordMngImpl implements PayordMng {
 				BigDecimal insal =getInsal(p, calc.getReqConfig().getCurDt1());
 				log.info("Сальдо={}", insal);
 
-				// рассчитать сумму, рекомендованную к перечислению, округлить, если не итоговая плат. по концу мес. TODO!
-				BigDecimal summa6 = insal.add(summa1).subtract(summa2).add(summa3).add(summa4).subtract(summa5).setScale(2, BigDecimal.ROUND_HALF_UP);
+				// рассчитать сумму, рекомендованную к перечислению
+				BigDecimal summa6 = insal.add(summa1).subtract(summa2).add(summa3).add(summa4).subtract(summa5);
+
+				if (isEndMonth) {
+					// рассчитать суммы для сальдо по бухгалтерии
+					
+					
+					
+				}
+				
+				
+				if (!isEndMonth) {
+					// округлить, если не итоговая плат. по концу мес.
+					summa6=summa6.setScale(2, BigDecimal.ROUND_HALF_UP);
+				}
 				// занулить, если отрицательная
 				if (summa6.floatValue() < 0) {
 					summa6 = BigDecimal.ZERO; 
 				}
 				
 				if (summa6 != BigDecimal.ZERO) {
+					// создать движение по платежке
 					PayordFlow flow = new PayordFlow(p, uk, 
 								summa6.doubleValue(), summa1.doubleValue(), 
 								summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 
