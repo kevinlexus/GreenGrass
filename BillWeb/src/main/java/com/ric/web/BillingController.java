@@ -38,6 +38,7 @@ import com.ric.bill.dto.KoDTO;
 import com.ric.bill.dto.LstDTO;
 import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
+import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.dto.ServDTO;
@@ -82,10 +83,21 @@ public class BillingController {
 	@Autowired
 	private SecMng secMng;
 
+	// Получить все движения по платежкам
+	@RequestMapping("/payord/getPayordFlowByTpPeriod")
+	@ResponseBody
+	public List<PayordFlowDTO> getPayordFlowByTpPeriod(
+			@RequestParam(value = "tp") Integer tp,
+			@RequestParam(value = "period") String period) {
+
+		log.info("GOT /payord/getPayordByTpPeriod");
+		return dtoBuilder.getPayordFlowDTOLst(payordMng.getPayordFlowByTpPeriod(tp, period));
+	}
+
 	// Получить все группы платежек
 	@RequestMapping("/payord/getPayordGrpAll")
 	@ResponseBody
-	public List<PayordGrpDTO> getPayordGrp() {
+	public List<PayordGrpDTO> getPayordGrpAll() {
 
 		log.info("GOT /payord/getPayordGrpAll");
 		return dtoBuilder.getPayordGrpDTOLst(payordMng.getPayordGrpAll());

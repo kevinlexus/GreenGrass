@@ -16,6 +16,8 @@ import com.ric.bill.model.fn.PayordGrp;
 
 public interface PayordMng {
 
+	public List<PayordFlow> getPayordFlowByTpPeriod(Integer tp, String period);
+
 	public List<PayordGrp> getPayordGrpAll();
 	public void setPayordGrpDto(PayordGrpDTO payorGrpdDTO);
 	public void delPayordGrpDto(PayordGrpDTO t);

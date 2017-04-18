@@ -18,8 +18,6 @@ public class PayordCmpDTO {
 		
 	}
 
-	private Integer id;
-
 	// конструктор
 	public PayordCmpDTO(Integer id, String username, Date dtf,
 			Integer payordFk, Integer varFk, Integer servFk, Integer orgFk,
@@ -37,6 +35,8 @@ public class PayordCmpDTO {
 		this.mark = mark;
 		this.summa = summa;
 	}
+
+	private Integer id;
 
 	// Пользователь
 	private String username;

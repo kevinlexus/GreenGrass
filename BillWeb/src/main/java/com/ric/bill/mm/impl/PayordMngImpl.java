@@ -252,6 +252,16 @@ public class PayordMngImpl implements PayordMng {
 		em.refresh(p);
 	}
 
+    /**
+     * Получить движения по всем платежкам по типу и периоду
+     * @param tp
+     * @param dt
+     * @return
+     */
+    public List<PayordFlow> getPayordFlowByTpPeriod(Integer tp, String period) {
+    	return payordFlowDao.getPayordFlowByTpPeriod(tp, period);
+    }	
+	
 	// Сумматор сумм по УК и маркеру
 	class AmntSummByUk {
 		List<SummByUk> amnt = new ArrayList<SummByUk>(); // сгруппированные суммы по Маркеру и УК

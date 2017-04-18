@@ -22,6 +22,7 @@ import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
+import com.ric.bill.model.fn.PayordFlow;
 import com.ric.bill.model.fn.PayordGrp;
 import com.ric.bill.model.oralv.Ko;
 import com.ric.bill.model.tr.Serv;
@@ -88,6 +89,23 @@ public List<PayordCmpDTO> getPayordCmpDTOLst(List<PayordCmp> lst) {
 						(t.getKo()!=null ? t.getKo().getId() : null), 
 						(getKoDTO(t.getKo())!=null ? getKoDTO(t.getKo()).getName() : null), 
 						t.getMark(), t.getSumma())
+				));
+	return lst2;
+}
+
+
+/**
+ * Построить коллекцию DTO Движений по платежкам	
+ * @param lst
+ * @return
+ */
+public List<PayordFlowDTO> getPayordFlowDTOLst(List<PayordFlow> lst) {
+	List<PayordFlowDTO> lst2 = new ArrayList<PayordFlowDTO>(0);
+	lst.stream().forEach(t-> lst2.add(
+				new PayordFlowDTO(t.getId(), t.getTp(), t.getPayord().getId(),
+						t.getUk().getId(), t.getSumma(), t.getSumma1(), t.getSumma2(), t.getSumma3(), t.getSumma4(), 
+						t.getSumma5(), t.getSumma6(), t.getDt(), t.getPeriod()
+						)
 				));
 	return lst2;
 }
