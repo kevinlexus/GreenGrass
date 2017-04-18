@@ -39,7 +39,7 @@ public class PayordFlowDAOImpl implements PayordFlowDAO {
     public List<PayordFlow> getPayordFlowBeforePeriod(Integer payordId, Integer tp, String period) {
 		Query query =em.createQuery("select t from PayordFlow t join t.payord p where p.id = :payordId "
 				+ "and t.period <= :period and t.tp = :tp "
-				+ "order by t.dt desc");
+				+ "order by t.period desc");
 		query.setParameter("payordId", payordId);
 		query.setParameter("period", period);
 		query.setParameter("tp", tp);

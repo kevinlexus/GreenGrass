@@ -56,11 +56,6 @@ public class testWork {
 		reqConfig.setUp(config, "0", "0", null, 1, "", "");
 		Calc calc = new Calc(reqConfig);
 
-		log.error("check date={}", Utl.getDateByPeriod("201704"));
-		log.error("check period+1={}, period-1={}", Utl.addMonth(Utl.getPeriodByDate(Utl.getDateByPeriod("201704")),5),
-				Utl.addMonth(Utl.getPeriodByDate(Utl.getDateByPeriod("201704")),-5)
-				);
-		
 		PayordMng pm = ctx.getBean(PayordMng.class);
 		
 		Date dt = null;
@@ -73,8 +68,11 @@ public class testWork {
 		}
 		
 		try {
-			pm.genPayord(calc, dt, true, true);
+			pm.genPayord(calc, dt, false, true);
 		} catch (WrongDate e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -95,10 +95,14 @@ public class Payord implements java.io.Serializable, Simple {
 	@Fetch(FetchMode.SUBSELECT)
 	private List<PayordCmp> payordCmp = new ArrayList<PayordCmp>(0);
 
+	
+//	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+//	@JoinColumn(name="FK_METER_LOG", referencedColumnName="ID", updatable = false) //внимание! если здесь убрать updatable = false то будет update kmp_meter_vol fk_meter_log!
+	
 	// Движение по платежке
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
-	@JoinColumn(name="FK_PAYORD", referencedColumnName="ID")
-	@Fetch(FetchMode.SUBSELECT)
+	@JoinColumn(name="FK_PAYORD", referencedColumnName="ID", updatable = false)
+	//@Fetch(FetchMode.SUBSELECT)
 	private List<PayordFlow> payordFlow = new ArrayList<PayordFlow>(0);
 	
 	public Integer getId() {

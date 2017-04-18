@@ -1,6 +1,6 @@
 package com.ric.bill.mm;
 
-import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +11,7 @@ import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.excp.WrongDate;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
+import com.ric.bill.model.fn.PayordFlow;
 import com.ric.bill.model.fn.PayordGrp;
 
 public interface PayordMng {
@@ -34,6 +35,6 @@ public interface PayordMng {
 	public void delPayordCmpDto(PayordCmpDTO t);
 	public PayordCmp addPayordCmpDto(PayordCmpDTO t);
 	public void refreshPayordCmp(PayordCmp t);
-	public void genPayord(Calc calc, Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate;
-	public BigDecimal getInsal(Payord p, String period, Integer tp);
+	public void genPayord(Calc calc, Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate, ParseException;
+	public PayordFlow getInsal(Payord p, String period, Integer tp);
 }
