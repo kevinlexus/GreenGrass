@@ -14,8 +14,8 @@ import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.ric.bill.excp.EmptyStorable;
@@ -69,8 +69,9 @@ public class Config {
 	 * Получить CD текущего пользователя
 	 */
 	public String getCurUserCd () {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return auth.getName();
+		//Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		//return auth.getName();
+		return "ttt";
 	}
 	
 	@PostConstruct

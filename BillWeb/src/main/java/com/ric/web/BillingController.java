@@ -18,12 +18,14 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ric.bill.BillServ;
 import com.ric.bill.Calc;
@@ -82,6 +84,15 @@ public class BillingController {
 	private DTOBuilder dtoBuilder;
 	@Autowired
 	private SecMng secMng;
+	
+	
+	@RequestMapping(value = "/helloReport4", method = RequestMethod.GET)
+	public ModelAndView getRpt4(ModelMap modelMap, ModelAndView modelAndView) {
+	  //modelMap.put("datasource", getWidgets());
+	  modelMap.put("format", "pdf");
+	  modelAndView = new ModelAndView("rpt_A", modelMap);
+	  return modelAndView;
+	}
 
 	// Получить все движения по платежкам
 	@RequestMapping("/payord/getPayordFlowByTpPeriod")
