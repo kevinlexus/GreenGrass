@@ -175,11 +175,13 @@
 		    <systemPath>${project.basedir}/src/main/resources/mxparser.jar</systemPath>
 		</dependency>
   				
-<!--         <dependency>
+		<!-- Безопасность spring-boot START -->
+         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
- -->          				
+		<!-- Безопасность spring-boot END -->
+           				
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -203,9 +205,22 @@
 			<artifactId>poi</artifactId>
 			<version>3.10.1</version>
 		</dependency>
+		<!-- Jasper Report Specific Jars END -->
+		
+		<!-- https://mvnrepository.com/artifact/com.lowagie/itext -->
+		<dependency>
+		    <groupId>com.lowagie</groupId>
+		    <artifactId>itext</artifactId>
+		    <version>2.1.7</version>
+		</dependency>
 
-
-		<!-- Jasper Report Specific Jars END -->          				
+		<!-- Шрифты для Jasper -->
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports-fonts</artifactId>
+		    <version>6.0.0</version>
+		</dependency>
+		          				
 	</dependencies>
 
 

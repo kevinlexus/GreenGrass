@@ -8,8 +8,11 @@ import java.util.concurrent.Future;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -88,10 +91,13 @@ public class BillingController {
 	
 	@RequestMapping(value = "/helloReport4", method = RequestMethod.GET)
 	public ModelAndView getRpt4(ModelMap modelMap, ModelAndView modelAndView) {
-	  //modelMap.put("datasource", getWidgets());
-	  modelMap.put("format", "pdf");
-	  modelAndView = new ModelAndView("rpt_A", modelMap);
-	  return modelAndView;
+		List<String> lst = new ArrayList<String>();
+		lst.add("Ondreyka");
+		JRDataSource datasource = new JRBeanCollectionDataSource(lst);   	
+		modelMap.put("datasource", datasource);
+		modelMap.put("format", "pdf");
+		modelAndView = new ModelAndView("Blank_A4", modelMap);
+		return modelAndView;
 	}
 
 	// Получить все движения по платежкам

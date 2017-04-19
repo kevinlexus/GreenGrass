@@ -128,10 +128,10 @@ public class RequestConfig {
 		}
 		
 		//задать текущий период в виде ГГГГММ
-		setPeriod(Utl.getPeriodByDate(config.getCurDt1()));
+		setPeriod(Utl.getPeriodByDate(getCurDt1()));
 
 		//кол-во дней в месяце
-		setCntCurDays(Utl.getCntDaysByDate(config.getCurDt1()));
+		setCntCurDays(Utl.getCntDaysByDate(getCurDt1()));
 		
 		//доля одного дня в периоде
 		setPartDays(1/getCntCurDays());
