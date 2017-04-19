@@ -7,7 +7,7 @@ Ext.define('BillWebApp.store.PayordFlowStore', {
     storeId: 'payordflowstore',
     model: 'BillWebApp.model.PayordFlow',
     config:{// перенести в модель, если нужно autoSync = false
-        autoLoad: false,
+        autoLoad: true,
         autoSync: false
     }
 

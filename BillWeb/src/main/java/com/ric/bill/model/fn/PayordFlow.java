@@ -34,7 +34,7 @@ public class PayordFlow implements java.io.Serializable, Simple {
 	}
 
 	public PayordFlow(Payord payord, Org uk, Double summa, Double summa1,
-			Double summa2, Double summa3, Double summa4, Double summa5, Double summa6, Integer tp, String period, Date dt) {
+			Double summa2, Double summa3, Double summa4, Double summa5, Double summa6, Integer npp, Integer tp, String period, Date dt) {
 		super();
 		this.payord = payord;
 		this.uk = uk;
@@ -48,6 +48,7 @@ public class PayordFlow implements java.io.Serializable, Simple {
 		this.tp = tp;
 		this.period = period;
 		this.dt = dt;
+		this.npp = npp;
 	}
 
 	@Id
@@ -93,6 +94,10 @@ public class PayordFlow implements java.io.Serializable, Simple {
 	// Сумма рекомендованная к перечислению (платежка)
 	@Column(name = "SUMMA6")
 	private Double summa6;
+
+	// № п.п.
+	@Column(name = "npp")
+	private Integer npp;
 
 	// Тип записи:  0-вх.сал., 1-вх.сал.Бух, 2-платежка, 3-корр.сборов, 4-корр.перечисл., 5- удержания
 	@Column(name = "TP")
@@ -209,6 +214,14 @@ public class PayordFlow implements java.io.Serializable, Simple {
 
 	public void setSumma6(Double summa6) {
 		this.summa6 = summa6;
+	}
+
+	public Integer getNpp() {
+		return npp;
+	}
+
+	public void setNpp(Integer npp) {
+		this.npp = npp;
 	}
 
 	public boolean equals(Object o) {

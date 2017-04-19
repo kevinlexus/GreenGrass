@@ -104,7 +104,7 @@ public List<PayordFlowDTO> getPayordFlowDTOLst(List<PayordFlow> lst) {
 	lst.stream().forEach(t-> lst2.add(
 				new PayordFlowDTO(t.getId(), t.getTp(), t.getPayord().getId(),
 						t.getUk().getId(), t.getSumma(), t.getSumma1(), t.getSumma2(), t.getSumma3(), t.getSumma4(), 
-						t.getSumma5(), t.getSumma6(), t.getDt(), t.getPeriod()
+						t.getSumma5(), t.getSumma6(), t.getNpp(), t.getDt(), t.getPeriod()
 						)
 				));
 	return lst2;

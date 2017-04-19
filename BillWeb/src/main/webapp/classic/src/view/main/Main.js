@@ -87,7 +87,7 @@ Ext.define('BillWebApp.view.main.Main', {
         title: 'Редактирование',
         iconCls: 'fa-edit',
         items: [{
-
+            xtype: 'panel2'
         }]
     }, {
         title: 'Настройки',

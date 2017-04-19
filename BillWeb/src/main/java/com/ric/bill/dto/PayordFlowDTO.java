@@ -34,6 +34,8 @@ public class PayordFlowDTO {
 	// Сумма рекомендованная к перечислению (платежка)
 	private Double summa6;
 
+	// № п.п.
+	private Integer npp;
 	// Дата события, Дата платежного поручения (платежка)
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Krasnoyarsk")
 	private Date dt;
@@ -48,7 +50,7 @@ public class PayordFlowDTO {
 	// конструктор
 	public PayordFlowDTO(Integer id, Integer tp, Integer payordFk,
 			Integer ukFk, Double summa, Double summa1, Double summa2,
-			Double summa3, Double summa4, Double summa5, Double summa6,
+			Double summa3, Double summa4, Double summa5, Double summa6, Integer npp,
 			Date dt, String period) {
 		super();
 		this.id = id;
@@ -62,6 +64,7 @@ public class PayordFlowDTO {
 		this.summa4 = summa4;
 		this.summa5 = summa5;
 		this.summa6 = summa6;
+		this.npp = npp;
 		this.dt = dt;
 		this.period = period;
 	}
@@ -169,5 +172,14 @@ public class PayordFlowDTO {
 	public void setPeriod(String period) {
 		this.period = period;
 	}
+
+	public Integer getNpp() {
+		return npp;
+	}
+
+	public void setNpp(Integer npp) {
+		this.npp = npp;
+	}
+
 	
 }

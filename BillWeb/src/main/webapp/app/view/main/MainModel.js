@@ -32,13 +32,7 @@ Ext.define('BillWebApp.view.main.MainModel', {
             type: 'payordcmpstore'
         },
         payordflowstore: {
-            type: 'payordflowstore',
-            proxy : {
-                extraParams : {
-                    tp : '2',
-                    period: '201704'
-                }
-            }
+            type: 'payordflowstore'
         },
         lststore: {
             type: 'lststore',

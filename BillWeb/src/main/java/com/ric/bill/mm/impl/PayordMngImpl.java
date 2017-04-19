@@ -489,7 +489,7 @@ public class PayordMngImpl implements PayordMng {
 						flow = new PayordFlow(p, uk, 
 							summa6.doubleValue(), null, 
 							null, null, null, 
-							null, null, 0, periodNext, null);  
+							null, null, null, 0, periodNext, null);  
 						p.getPayordFlow().add(flow);
 					}
 					
@@ -515,7 +515,7 @@ public class PayordMngImpl implements PayordMng {
 						flow = new PayordFlow(p, uk, 
 								summa6.doubleValue(), null, 
 								null, null, null, 
-								null, null, 1, periodNext, null);  
+								null, null, null, 1, periodNext, null);  
 						p.getPayordFlow().add(flow);
 					}
 				} else {
@@ -534,7 +534,7 @@ public class PayordMngImpl implements PayordMng {
 						PayordFlow flow = new PayordFlow(p, uk, 
 									summa6.doubleValue(), summa1.doubleValue(), 
 									summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 
-									summa5.doubleValue(), summa6.doubleValue(), 2, period, genDt);  
+									summa5.doubleValue(), summa6.doubleValue(), null, 2, period, genDt);  
 						p.getPayordFlow().add(flow);
 					}
 				}
