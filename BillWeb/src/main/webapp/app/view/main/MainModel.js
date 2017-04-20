@@ -26,7 +26,7 @@ Ext.define('BillWebApp.view.main.MainModel', {
             type: 'payordstore',
             proxy : {
                 extraParams : {
-                    payordGrpId : 0
+                    payordGrpId : 0 // по умолчанию - все платежки
                 }
             }
         },

@@ -22,5 +22,9 @@ Ext.define('BillWebApp.store.OrgStore', {
         reader: {
             type: 'json'
         }
+    }, listeners: {
+        load: function() {
+            console.log("OrgStore loaded!");
+        }
     }
 });

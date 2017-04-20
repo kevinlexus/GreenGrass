@@ -22,6 +22,7 @@ Ext.define('BillWebApp.view.main.Main', {
 
     controller: 'main',
     viewModel: 'main',
+    alias: 'widget.main',
 
     ui: 'navigation',
 

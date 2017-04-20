@@ -1,7 +1,7 @@
 Ext.define('BillWebApp.view.main.Panel2', {
     extend: 'Ext.panel.Panel',
     xtype: 'panel2',
-    title: 'Редактирование платежек',
+    title: 'Редактирование поручений',
     layout: {
         type: 'vbox' // после смены vbox, проверить, как открываются комбо-боксы (могут не работать)
     },
@@ -12,7 +12,10 @@ Ext.define('BillWebApp.view.main.Panel2', {
     controller: 'panel2controller',
     defaults: {
         frame: true,
-        bodyPadding: 10
+        bodyPadding: 10,
+        listeners:{
+            //beforerender: 'onPanel2BeforeRenderer'
+        }
     },
     items: [{
             // Платежные поручения в банк
@@ -22,7 +25,7 @@ Ext.define('BillWebApp.view.main.Panel2', {
             minHeight: 120,
             margin: '0 0 10 0',
             tbar: [{
-                text: 'Добавить платежку',
+                text: 'Добавить поручение',
                 handler: 'onGridPayordFlowAdd'
             }, {
                 text: 'Сохранить',
@@ -60,17 +63,13 @@ Ext.define('BillWebApp.view.main.Panel2', {
                     handler: 'onGridPayordFlowDel'
                 }
             },
-            listeners: {            },
             columns: [
-                { text: 'Id',  dataIndex: 'id', width: 50,
-                    editor: {
-                        allowBlank: true
-                    }
+                { text: 'Id',  dataIndex: 'id', width: 50
                 },
                 {
                     text: 'Платежка',
                     dataIndex: 'payordFk',
-                    width: 200, align: "left",
+                    width: 250, align: "left",
                     queryMode: 'local',
                     editor: {
                         xtype: 'combo',
@@ -89,9 +88,41 @@ Ext.define('BillWebApp.view.main.Panel2', {
                         bind: {
                             store: '{payordstore}'
                         },
+                        listConfig:{
+                            minWidth:500
+                        },
                         allowBlank: false
-                    }//,
-                    //renderer: 'onGridPayordFlowPayordRender'
+                    },
+                    renderer: 'onGridPayordFlowPayordRender'
+                },
+                {
+                    text: 'УК',
+                    dataIndex: 'ukFk',
+                    width: 200, align: "left",
+                    queryMode: 'local',
+                    editor: {
+                        xtype: 'combo',
+                        typeAhead: true,
+                        forceSelection: true,
+                        displayField: 'name',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        validator: function(value) {
+                            if (value != '') {
+                                return true;
+                            } else {
+                                return 'Необходимо заполнить поле!';
+                            }
+                        },
+                        bind: {
+                            store: '{orgstore}'
+                        },
+                        listConfig:{
+                            minWidth:500
+                        },
+                        allowBlank: false
+                    },
+                    renderer: 'onGridPayordFlowUkRender'
                 },
                 { text: 'Сумма к перечисл.',  dataIndex: 'summa', width: 150,
                     editor: {
@@ -103,12 +134,9 @@ Ext.define('BillWebApp.view.main.Panel2', {
                         allowBlank: true
                     }
                 },
-                { text: 'Расчет.сумма',  dataIndex: 'summa6', width: 150,
-                    editor: {
-                        allowBlank: true
-                    }
+                { text: 'Расчет.сумма',  dataIndex: 'summa6', width: 150
                 },
-                { xtype: 'checkcolumn', text: 'Active', dataIndex: 'signed' }
+                { xtype: 'checkcolumn', text: 'Подпись', dataIndex: 'signed' }
                 ,
                  {
                     menuDisabled: true,
@@ -121,3 +149,4 @@ Ext.define('BillWebApp.view.main.Panel2', {
         }]
 
 });
+

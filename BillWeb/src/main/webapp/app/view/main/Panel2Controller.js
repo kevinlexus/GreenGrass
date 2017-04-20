@@ -28,7 +28,9 @@ Ext.define('BillWebApp.view.main.Panel2Controller', {
             payordGrpFk : payordGrpGrid.selection.id
         });*/
         var rec = new BillWebApp.model.Payord({
-            summa: 1111
+            summa: 1111,
+            tp: 2,
+            period: '201704'
         });
         var payordFlowGrid = this.lookupReference('payordFlowGrid');
         var payordflowstore = this.getViewModel().getStore('payordflowstore');
@@ -59,7 +61,27 @@ Ext.define('BillWebApp.view.main.Panel2Controller', {
             },
             icon: Ext.Msg.QUESTION
         });
+    },
+    // выбор платежки
+    onGridPayordFlowPayordRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var store = this.getViewModel().getStore('payordstore');
+        var index = store.findExact('id', value);
+        if (index != -1){
+            var rs = store.getAt(index);
+            return rs.get('name');
+        }
+    },
+    // выбор УК
+    onGridPayordFlowUkRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        var store = this.getViewModel().getStore('orgstore');
+        var index = store.findExact('id', value);
+        if (index != -1){
+            var rs = store.getAt(index);
+            return rs.get('name');
+        } else {
+            console.log('Возможно не загружен OrgStore');
+        }
     }
 
 
-});
+    });

@@ -5,7 +5,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
     layout: {
         type: 'vbox' // после смены vbox, проверить, как открываются комбо-боксы (могут не работать)
     },
-    width: 1200,
+    width: 1010,
     minHeight: 500,
     bodyPadding: 10,
     reference: 'panel3',
@@ -19,7 +19,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             // ГРУППЫ ПЛАТЕЖЕК
             xtype: 'gridpanel',
             reference: 'payordGrpGrid',
-            width: 1200,
+            width: 1000,
             minHeight: 120,
             margin: '0 0 10 0',
             tbar: [{

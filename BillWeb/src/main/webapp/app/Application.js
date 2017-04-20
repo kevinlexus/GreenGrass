@@ -8,11 +8,14 @@ Ext.define('BillWebApp.Application', {
     
     name: 'BillWebApp',
 
+    views: ['main.Main'],
+
     stores: {
     },
     
     launch: function () {
         // TODO - Launch the application
+        console.log('Launch');
     },
 
     onAppUpdate: function () {
