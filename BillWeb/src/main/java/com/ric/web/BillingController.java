@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ric.bill.BillServ;
-import com.ric.bill.Calc;
 import com.ric.bill.Config;
 import com.ric.bill.RequestConfig;
 import com.ric.bill.Result;
@@ -45,7 +44,6 @@ import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
-import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.dto.ServDTO;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.OrgMng;
@@ -55,6 +53,7 @@ import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
+import com.ric.bill.model.fn.PayordFlow;
 import com.ric.bill.model.fn.PayordGrp;
 
 @EnableCaching
@@ -88,19 +87,22 @@ public class BillingController {
 	@Autowired
 	private SecMng secMng;
 	
+	@Autowired
+    private DataSource dataSource;
 	
-	@RequestMapping(value = "/helloReport4", method = RequestMethod.GET)
-	public ModelAndView getRpt4(ModelMap modelMap, ModelAndView modelAndView) {
-		List<String> lst = new ArrayList<String>();
-		lst.add("Ondreyka");
-		JRDataSource datasource = new JRBeanCollectionDataSource(lst);   	
+	@RequestMapping(value = "/testReport4_2", method = RequestMethod.GET)
+	public ModelAndView helloReport(ModelMap modelMap, ModelAndView modelAndView) {
+		JRDataSource datasource = new JRBeanCollectionDataSource(payordMng.getPayordGrpAll(), true);
+		
 		modelMap.put("datasource", datasource);
 		modelMap.put("format", "pdf");
-		modelAndView = new ModelAndView("Blank_A4", modelMap);
+		//modelMap.put("blabla", 125);
+		modelAndView = new ModelAndView("Blank_A4_2", modelMap);
 		return modelAndView;
 	}
 
-	// Получить все движения по платежкам
+
+	// Получить все движения по платежкам по Типу и Периоду
 	@RequestMapping("/payord/getPayordFlowByTpPeriod")
 	@ResponseBody
 	public List<PayordFlowDTO> getPayordFlowByTpPeriod(
@@ -109,6 +111,41 @@ public class BillingController {
 
 		log.info("GOT /payord/getPayordByTpPeriod");
 		return dtoBuilder.getPayordFlowDTOLst(payordMng.getPayordFlowByTpPeriod(tp, period));
+	}
+
+	// Сохранить движение по платежкам
+	@RequestMapping(value = "/payord/setPayordFlow", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String setPayordFlow(@RequestBody List<PayordFlowDTO> lst) {
+
+		log.info("GOT /payord/setPayordFlow");
+		lst.stream().forEach(t -> payordMng.setPayordFlowDto(t));
+		return null;
+	}
+
+	// Удалить движение платежки
+	@RequestMapping(value = "/payord/delPayordFlow", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String delPayordFlow(@RequestBody List<PayordFlowDTO> lst) {
+
+		log.info("GOT /payord/delPayordFlow");
+		lst.stream().forEach(t -> payordMng.delPayordFlowDto(t));
+		return null;
+	}
+	
+	// Добавить движение платежки
+	@RequestMapping(value = "/payord/addPayordFlow", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public List<PayordFlowDTO> addPayordFlow(@RequestBody List<PayordFlowDTO> lst) {
+		log.info("GOT /payord/addPayordFlow");
+		List<PayordFlow> lst2 = new ArrayList<PayordFlow>();
+		
+		// добавить созданные группы платежек в коллекцию
+		lst.stream().forEach(t -> lst2.add( payordMng.addPayordFlowDto(t)) );
+		// обновить группы платежки из базы
+		lst2.stream().forEach(t -> payordMng.refreshPayordFlow(t) );
+		
+		return dtoBuilder.getPayordFlowDTOLst(lst2);
 	}
 
 	// Получить все группы платежек
@@ -207,7 +244,7 @@ public class BillingController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/payord/getPayordAll")
+	/*@RequestMapping("/payord/getPayordAll")
 	@ResponseBody
 	public List<PayordDTO> getPayordAll() {
 
@@ -227,9 +264,12 @@ public class BillingController {
 			@RequestParam(value = "payordGrpId") Integer payordGrpId) {
 
 		log.info("GOT /payord/getPayord with payordGrpId={}", payordGrpId);
-		return dtoBuilder.getPayordDTOLst(payordMng
-				.getPayordByPayordGrpId(payordGrpId));
-
+		if (payordGrpId==0) {
+			return dtoBuilder.getPayordDTOLst(payordMng.getPayordAll());
+		} else {
+			return dtoBuilder.getPayordDTOLst(payordMng
+					.getPayordByPayordGrpId(payordGrpId));
+		}
 	}
 
 

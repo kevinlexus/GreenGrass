@@ -32,6 +32,7 @@ import com.ric.bill.dao.PayordFlowDAO;
 import com.ric.bill.dao.PayordGrpDAO;
 import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
+import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.excp.WrongDate;
 import com.ric.bill.mm.LstMng;
@@ -148,6 +149,21 @@ public class PayordMngImpl implements PayordMng {
 		return payordGrp;
 	}
 
+    // Добавить движение по платежке из DTO
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public PayordFlow addPayordFlowDto(PayordFlowDTO p) {
+		
+		//PayordGrp grp = em.find(PayordGrp.class, p.getPayordGrpFk());
+		//Lst period =  em.find(Lst.class, p.getPeriodTpFk());
+		Payord payord = em.find(Payord.class, p.getPayordFk());
+		Org uk = em.find(Org.class, p.getUkFk());
+		PayordFlow payordFlow = new PayordFlow(payord, uk, p.getSumma(), p.getSumma1(), p.getSumma2(), 
+				p.getSumma3(), p.getSumma4(), p.getSumma5(), p.getSumma6(), p.getNpp(), p.getTp(), p.getPeriod(), p.getSigned(), p.getDt());
+		em.persist(payordFlow);
+		
+		return payordFlow;
+	}
+
 	// обновить группы платежки из базы (чтобы перечитались все поля)
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void refreshPayordGrp(PayordGrp p) {
@@ -252,7 +268,13 @@ public class PayordMngImpl implements PayordMng {
 		em.refresh(p);
 	}
 
-    /**
+	// Обновить платежку из базы (чтобы перечитались все поля)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void refreshPayordFlow(PayordFlow p) {
+		em.refresh(p);
+	}
+
+	/**
      * Получить движения по всем платежкам по типу и периоду
      * @param tp
      * @param dt
@@ -262,6 +284,36 @@ public class PayordMngImpl implements PayordMng {
     	return payordFlowDao.getPayordFlowByTpPeriod(tp, period);
     }	
 	
+    // сохранить движение по платежке из DTO
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void setPayordFlowDto(PayordFlowDTO p) {
+		PayordFlow payordFlow = em.find(PayordFlow.class, p.getId());
+		if (p.getPayordFk() != null) {
+			Payord payord = em.find(Payord.class, p.getPayordFk());
+			payordFlow.setPayord(payord);
+		} else {
+			payordFlow.setPayord(null);
+		}
+		if (p.getUkFk()!= null) {
+			Org uk = em.find(Org.class, p.getUkFk());
+			payordFlow.setUk(uk);
+		} else {
+			payordFlow.setUk(null);
+		}
+		payordFlow.setSumma(p.getSumma());
+		payordFlow.setNpp(p.getNpp());
+		payordFlow.setDt(p.getDt());
+		payordFlow.setSigned(p.getSigned());
+		
+	}
+ 
+	// Удалить группу платежек из DTO
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void delPayordFlowDto(PayordFlowDTO p) {
+		PayordFlow pf = em.find(PayordFlow.class, p.getId());
+		em.remove(pf);
+	}
+
 	// Сумматор сумм по УК и маркеру
 	class AmntSummByUk {
 		List<SummByUk> amnt = new ArrayList<SummByUk>(); // сгруппированные суммы по Маркеру и УК
@@ -341,7 +393,8 @@ public class PayordMngImpl implements PayordMng {
 				.filter(t-> (period==null || (t.getPeriod()!= null && t.getPeriod().equals(period)) ) 
 						&& (dt1==null || (t.getDt()!=null && Utl.between(t.getDt(), dt1, dt2))) 
 						&& t.getUk().equals(uk)
-						&& t.getPayord().equals(p) && t.getTp().equals(tp))
+						&& t.getPayord().equals(p) && t.getTp().equals(tp)
+						&& t.getSigned())
 				.forEach(t-> {
 			amntFlow.summa=amntFlow.summa.add(BigDecimal.valueOf(Utl.nvl(t.getSumma(), 0D)));
 		});
@@ -489,7 +542,7 @@ public class PayordMngImpl implements PayordMng {
 						flow = new PayordFlow(p, uk, 
 							summa6.doubleValue(), null, 
 							null, null, null, 
-							null, null, null, 0, periodNext, null);  
+							null, null, null, 0, periodNext, false, null);  
 						p.getPayordFlow().add(flow);
 					}
 					
@@ -515,7 +568,7 @@ public class PayordMngImpl implements PayordMng {
 						flow = new PayordFlow(p, uk, 
 								summa6.doubleValue(), null, 
 								null, null, null, 
-								null, null, null, 1, periodNext, null);  
+								null, null, null, 1, periodNext, false, null);  
 						p.getPayordFlow().add(flow);
 					}
 				} else {
@@ -534,7 +587,7 @@ public class PayordMngImpl implements PayordMng {
 						PayordFlow flow = new PayordFlow(p, uk, 
 									summa6.doubleValue(), summa1.doubleValue(), 
 									summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 
-									summa5.doubleValue(), summa6.doubleValue(), null, 2, period, genDt);  
+									summa5.doubleValue(), summa6.doubleValue(), null, 2, period, false, genDt);  
 						p.getPayordFlow().add(flow);
 					}
 				}

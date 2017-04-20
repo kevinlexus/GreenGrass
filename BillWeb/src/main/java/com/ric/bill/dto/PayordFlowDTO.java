@@ -36,6 +36,8 @@ public class PayordFlowDTO {
 
 	// № п.п.
 	private Integer npp;
+	// Подпись (платежка)
+	private Boolean signed;
 	// Дата события, Дата платежного поручения (платежка)
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Krasnoyarsk")
 	private Date dt;
@@ -50,7 +52,7 @@ public class PayordFlowDTO {
 	// конструктор
 	public PayordFlowDTO(Integer id, Integer tp, Integer payordFk,
 			Integer ukFk, Double summa, Double summa1, Double summa2,
-			Double summa3, Double summa4, Double summa5, Double summa6, Integer npp,
+			Double summa3, Double summa4, Double summa5, Double summa6, Integer npp, Boolean signed,
 			Date dt, String period) {
 		super();
 		this.id = id;
@@ -65,6 +67,7 @@ public class PayordFlowDTO {
 		this.summa5 = summa5;
 		this.summa6 = summa6;
 		this.npp = npp;
+		this.signed = signed;
 		this.dt = dt;
 		this.period = period;
 	}
@@ -181,5 +184,13 @@ public class PayordFlowDTO {
 		this.npp = npp;
 	}
 
+	public Boolean getSigned() {
+		return signed;
+	}
+
+	public void setSigned(Boolean signed) {
+		this.signed = signed;
+	}
+	
 	
 }

@@ -9,12 +9,11 @@ Ext.define('BillWebApp.view.main.Panel2', {
     minHeight: 500,
     bodyPadding: 10,
     reference: 'panel2',
-    //controller: 'panel2controller',
+    controller: 'panel2controller',
     defaults: {
         frame: true,
         bodyPadding: 10
     },
-
     items: [{
             // Платежные поручения в банк
             xtype: 'gridpanel',
@@ -22,23 +21,30 @@ Ext.define('BillWebApp.view.main.Panel2', {
             width: 1200,
             minHeight: 120,
             margin: '0 0 10 0',
-            /*tbar: [{
-                text: 'Добавить группу',
-                handler: 'onGridPayordGrpAdd'
+            tbar: [{
+                text: 'Добавить платежку',
+                handler: 'onGridPayordFlowAdd'
             }, {
                 text: 'Сохранить',
-                handler: 'onGridPayordGrpUpd'
+                handler: 'onGridPayordFlowUpd'
             }, {
                 text: 'Отменить',
-                handler: 'onGridPayordGrpCancel'
-            }],*/
+                handler: 'onGridPayordFlowCancel'
+            }],
             requires: [
                 'Ext.selection.CellModel',
                 'Ext.grid.column.Action'
             ],
             plugins: {
                 ptype: 'cellediting',
-                clicksToEdit: 1
+                clicksToEdit: 1,
+                listeners: {
+                    beforeedit: function(editor, context, eOpts){
+                        // workaround for error at clicking a widgetcolumn
+                        if (context.column.widget)
+                            return false;
+                    }
+                }
             },
             bind: {
                 store: '{payordflowstore}',
@@ -51,20 +57,43 @@ Ext.define('BillWebApp.view.main.Panel2', {
                 del: {
                     glyph: 'xf147@FontAwesome',
                     tooltip: 'Удалить',
-                    handler: 'onGridPayordGrpDel'
+                    handler: 'onGridPayordFlowDel'
                 }
             },
-            /*listeners: {
-                // клик по строчке группы платежки, отобразить в дочернем гриде формулы
-                rowclick: 'onGridPayordGrpRowClick'
-            },*/
+            listeners: {            },
             columns: [
                 { text: 'Id',  dataIndex: 'id', width: 50,
                     editor: {
                         allowBlank: true
                     }
                 },
-                { text: 'Сумма к перечисл.',  dataIndex: 'summa1', width: 150,
+                {
+                    text: 'Платежка',
+                    dataIndex: 'payordFk',
+                    width: 200, align: "left",
+                    queryMode: 'local',
+                    editor: {
+                        xtype: 'combo',
+                        typeAhead: true,
+                        forceSelection: true,
+                        displayField: 'name',
+                        valueField: 'id',
+                        triggerAction: 'all',
+                        validator: function(value) {
+                            if (value != '') {
+                                return true;
+                            } else {
+                                return 'Необходимо заполнить поле!';
+                            }
+                        },
+                        bind: {
+                            store: '{payordstore}'
+                        },
+                        allowBlank: false
+                    }//,
+                    //renderer: 'onGridPayordFlowPayordRender'
+                },
+                { text: 'Сумма к перечисл.',  dataIndex: 'summa', width: 150,
                     editor: {
                         allowBlank: true
                     }
@@ -79,6 +108,8 @@ Ext.define('BillWebApp.view.main.Panel2', {
                         allowBlank: true
                     }
                 },
+                { xtype: 'checkcolumn', text: 'Active', dataIndex: 'signed' }
+                ,
                  {
                     menuDisabled: true,
                     sortable: false,

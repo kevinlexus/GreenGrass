@@ -33,6 +33,7 @@ $include-billwebapp-view-main-mainmodel: dynamic(true);;
 $include-billwebapp-view-main-panel1: dynamic(true);;
 $include-billwebapp-view-main-panel1controller: dynamic(true);;
 $include-billwebapp-view-main-panel2: dynamic(true);;
+$include-billwebapp-view-main-panel2controller: dynamic(true);;
 $include-billwebapp-view-main-panel3: dynamic(true);;
 $include-billwebapp-view-main-panel3controller: dynamic(true);;
 $include-ext-abstractcomponent: dynamic(true);;

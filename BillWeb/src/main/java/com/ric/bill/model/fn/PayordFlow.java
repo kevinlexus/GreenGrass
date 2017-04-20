@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import com.ric.bill.Simple;
 import com.ric.bill.model.bs.Org;
 import com.ric.bill.model.tr.Serv;
@@ -34,7 +36,7 @@ public class PayordFlow implements java.io.Serializable, Simple {
 	}
 
 	public PayordFlow(Payord payord, Org uk, Double summa, Double summa1,
-			Double summa2, Double summa3, Double summa4, Double summa5, Double summa6, Integer npp, Integer tp, String period, Date dt) {
+			Double summa2, Double summa3, Double summa4, Double summa5, Double summa6, Integer npp, Integer tp, String period, Boolean signed, Date dt) {
 		super();
 		this.payord = payord;
 		this.uk = uk;
@@ -47,8 +49,9 @@ public class PayordFlow implements java.io.Serializable, Simple {
 		this.summa6 = summa6;
 		this.tp = tp;
 		this.period = period;
-		this.dt = dt;
 		this.npp = npp;
+		this.signed = signed;
+		this.dt = dt;
 	}
 
 	@Id
@@ -107,7 +110,12 @@ public class PayordFlow implements java.io.Serializable, Simple {
 	@Column(name = "PERIOD")
 	private String period;
 
-	//дата операции
+	// Подпись платежки
+	@Type(type= "org.hibernate.type.NumericBooleanType")
+	@Column(name = "SIGNED", nullable = true)
+	private Boolean signed;
+
+	//дата операции, Дата платежного поручения (платежка)
     @Column(name = "DT", updatable = false, nullable = true)
     private Date dt;
 	
@@ -222,6 +230,18 @@ public class PayordFlow implements java.io.Serializable, Simple {
 
 	public void setNpp(Integer npp) {
 		this.npp = npp;
+	}
+
+	public Boolean getSigned() {
+		if (signed==null) {
+			return false;
+		} else {
+			return signed;
+		}
+	}
+
+	public void setSigned(Boolean signed) {
+		this.signed = signed;
 	}
 
 	public boolean equals(Object o) {

@@ -127,6 +127,11 @@ listeners: {
     }],
 
     buttons: [{
-        text: 'Получить отчет'
+        text: 'Получить отчет',
+        listeners: {
+            click: function() {
+                window.location.assign('/helloReport4_1');
+            }
+        }
     }]
 });

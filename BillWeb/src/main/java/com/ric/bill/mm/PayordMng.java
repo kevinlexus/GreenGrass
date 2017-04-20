@@ -7,6 +7,7 @@ import java.util.List;
 import com.ric.bill.Calc;
 import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
+import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.excp.WrongDate;
 import com.ric.bill.model.fn.Payord;
@@ -15,8 +16,6 @@ import com.ric.bill.model.fn.PayordFlow;
 import com.ric.bill.model.fn.PayordGrp;
 
 public interface PayordMng {
-
-	public List<PayordFlow> getPayordFlowByTpPeriod(Integer tp, String period);
 
 	public List<PayordGrp> getPayordGrpAll();
 	public void setPayordGrpDto(PayordGrpDTO payorGrpdDTO);
@@ -37,6 +36,13 @@ public interface PayordMng {
 	public void delPayordCmpDto(PayordCmpDTO t);
 	public PayordCmp addPayordCmpDto(PayordCmpDTO t);
 	public void refreshPayordCmp(PayordCmp t);
+
+	public List<PayordFlow> getPayordFlowByTpPeriod(Integer tp, String period);
+	public void setPayordFlowDto(PayordFlowDTO p);
+
 	public void genPayord(Calc calc, Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate, ParseException;
 	public PayordFlow getInsal(Payord p, String period, Integer tp);
+	public void delPayordFlowDto(PayordFlowDTO t);
+	public PayordFlow addPayordFlowDto(PayordFlowDTO t);
+	public void refreshPayordFlow(PayordFlow t);
 }

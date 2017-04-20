@@ -23,7 +23,12 @@ Ext.define('BillWebApp.view.main.MainModel', {
             type: 'periodstore1'
         },
         payordstore: {
-            type: 'payordstore'
+            type: 'payordstore',
+            proxy : {
+                extraParams : {
+                    payordGrpId : 0
+                }
+            }
         },
         payordgrpstore: {
             type: 'payordgrpstore'
