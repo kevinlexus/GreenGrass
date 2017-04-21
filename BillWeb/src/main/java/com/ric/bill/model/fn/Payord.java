@@ -75,10 +75,6 @@ public class Payord implements java.io.Serializable, Simple {
 	@Column(name = "FORMULA")
 	private String formula;
 
-	// Сумма
-	@Column(name = "SUMMA", insertable = false, updatable = false)
-	private Double summa;
-
 	// Группа платежки
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_PAYORD_GRP", referencedColumnName="ID")
@@ -170,15 +166,6 @@ public class Payord implements java.io.Serializable, Simple {
 		this.formula = formula;
 	}
 
-	public Double getSumma() {
-		return summa;
-	}
-
-	public void setSumma(Double summa) {
-		this.summa = summa;
-	}
-
-	
 	public List<PayordCmp> getPayordCmp() {
 		return payordCmp;
 	}

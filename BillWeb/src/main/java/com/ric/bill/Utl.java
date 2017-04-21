@@ -270,5 +270,19 @@ public class Utl {
 		calendar.add(Calendar.MONTH, n);
 		return getPeriodByDate(calendar.getTime());
 	}
+	
+	
+	/**
+	 * Добавить или отнять N дней к дате
+	 * @param dt - базовая дата
+	 * @param nDays - кол-во дней + -
+	 * @return
+	 */
+	public static Date addDays(Date dt, int nDays) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dt);
+        calendar.add(Calendar.DAY_OF_YEAR, nDays);
+        return calendar.getTime();
+    }
 }
 

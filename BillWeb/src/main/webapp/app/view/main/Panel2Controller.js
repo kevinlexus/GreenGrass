@@ -62,6 +62,12 @@ Ext.define('BillWebApp.view.main.Panel2Controller', {
             icon: Ext.Msg.QUESTION
         });
     },
+    // Отменить отредактированное платежное поручение
+    onGridPayordFlowCancel: function() {
+        var store = this.getViewModel().getStore('payordflowstore');
+        store.rejectChanges();
+    },
+
     // выбор платежки
     onGridPayordFlowPayordRender: function (value, metaData, record, rowIndex, colIndex, store, view) {
         var store = this.getViewModel().getStore('payordstore');
@@ -81,6 +87,18 @@ Ext.define('BillWebApp.view.main.Panel2Controller', {
         } else {
             console.log('Возможно не загружен OrgStore');
         }
+    },
+    // Обновить грид платежных поручений
+    onGridPayordFlowRefresh: function () {
+        var store = this.getViewModel().getStore('payordflowstore');
+        console.log("test");
+        var genDt2 = this.lookupReference('genDt2');
+
+        store.load({
+            params : {
+                dt: Ext.Date.format(genDt2.getValue(), 'd.m.Y')
+            }
+        });
     }
 
 

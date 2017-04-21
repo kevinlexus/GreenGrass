@@ -5,7 +5,7 @@ Ext.define('BillWebApp.view.main.Panel2', {
     layout: {
         type: 'vbox' // после смены vbox, проверить, как открываются комбо-боксы (могут не работать)
     },
-    width: 1200,
+    width: 1010,
     minHeight: 500,
     bodyPadding: 10,
     reference: 'panel2',
@@ -21,7 +21,7 @@ Ext.define('BillWebApp.view.main.Panel2', {
             // Платежные поручения в банк
             xtype: 'gridpanel',
             reference: 'payordFlowGrid',
-            width: 1200,
+            width: 1000,
             minHeight: 120,
             margin: '0 0 10 0',
             tbar: [{
@@ -33,6 +33,17 @@ Ext.define('BillWebApp.view.main.Panel2', {
             }, {
                 text: 'Отменить',
                 handler: 'onGridPayordFlowCancel'
+            }, {
+                text: 'Обновить',
+                handler: 'onGridPayordFlowRefresh'
+            },{
+                xtype: 'datefield',
+                name: 'genDt',
+                reference: 'genDt2',
+                fieldLabel: 'Дата',
+                margin: '0 5 0 0',
+                allowBlank: false,
+                format: 'd.m.Y'
             }],
             requires: [
                 'Ext.selection.CellModel',
@@ -98,7 +109,7 @@ Ext.define('BillWebApp.view.main.Panel2', {
                 {
                     text: 'УК',
                     dataIndex: 'ukFk',
-                    width: 200, align: "left",
+                    width: 150, align: "left",
                     queryMode: 'local',
                     editor: {
                         xtype: 'combo',
@@ -134,7 +145,18 @@ Ext.define('BillWebApp.view.main.Panel2', {
                         allowBlank: true
                     }
                 },
-                { text: 'Расчет.сумма',  dataIndex: 'summa6', width: 150
+                { xtype: 'datecolumn',
+                    header: 'Дата',
+                    dataIndex: 'dt',
+
+                    width: 95,
+                    format: 'd m Y',
+                    editor: {
+                        xtype: 'datefield',
+                        format: 'd.m.y'
+                    }
+                },
+                { text: 'Расчет.сумма',  dataIndex: 'summa6', width: 100
                 },
                 { xtype: 'checkcolumn', text: 'Подпись', dataIndex: 'signed' }
                 ,

@@ -80,7 +80,7 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
     onGridPayordGrpCancel: function() {
         var store = this.getViewModel().getStore('payordgrpstore');
         store.rejectChanges();
-        store.load();
+        //store.load(); // временно убрал
     },
 
     // Отменить отредактированную платежку
@@ -88,11 +88,11 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
         var payordGrpGrid = this.lookupReference('payordGrpGrid');
         var store = this.getViewModel().getStore('payordstore');
         store.rejectChanges();
-        store.load({
+        /*store.load({// временно убрал
             params : {
                 'payordGrpId': payordGrpGrid.selection.id
             }
-        });
+        });*/
     },
 
     // Отменить отредактированную формулу платежки
@@ -100,11 +100,11 @@ Ext.define('BillWebApp.view.main.Panel3Controller', {
         var payordGrid = this.lookupReference('payordGrid');
         var store = this.getViewModel().getStore('payordcmpstore');
         store.rejectChanges();
-        store.load({
+        /*store.load({ // временно убрал
             params: {
                 'payordId': payordGrid.selection.id
             }
-        });
+        });*/
     },
 
     // Сохранить отредактированную группу платежек

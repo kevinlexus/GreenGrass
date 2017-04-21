@@ -38,9 +38,10 @@ public interface PayordMng {
 	public void refreshPayordCmp(PayordCmp t);
 
 	public List<PayordFlow> getPayordFlowByTpPeriod(Integer tp, String period);
+	public List<PayordFlow> getPayordFlowByTpDt(Integer tp, Date dt);
 	public void setPayordFlowDto(PayordFlowDTO p);
 
-	public void genPayord(Calc calc, Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate, ParseException;
+	public void genPayord(Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate, ParseException;
 	public PayordFlow getInsal(Payord p, String period, Integer tp);
 	public void delPayordFlowDto(PayordFlowDTO t);
 	public PayordFlow addPayordFlowDto(PayordFlowDTO t);

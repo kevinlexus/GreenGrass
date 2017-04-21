@@ -21,20 +21,44 @@ public class PayordFlowDAOImpl implements PayordFlowDAO {
     private EntityManager em;
 
     /**
-     * Получить движения по всем платежкам по типу и периоду
-     * @param tp
-     * @param dt
+     * Получить движения по всем платежкам по типу и периоду (используется ли?)
+     * @param tp - тип 
+     * @param period - период
      * @return
      */
     public List<PayordFlow> getPayordFlowByTpPeriod(Integer tp, String period) {
 		Query query =em.createQuery("select t from PayordFlow t where "
 				+ "t.period = :period and t.tp = :tp "
-				+ "order by t.dt desc");
+				+ "order by t.dt");
 		query.setParameter("period", period);
 		query.setParameter("tp", tp);
 		return query.getResultList();
 	}
 
+    /**
+     * Получить движения по всем платежкам по типу и дате
+     * @param tp - тип
+     * @param dt - дата
+     * @return
+     */
+    public List<PayordFlow> getPayordFlowByTpDt(Integer tp, Date dt) {
+    	Query query = null;
+    	if (dt != null) {
+    		query =em.createQuery("select t from PayordFlow t where "
+    				+ "t.dt = :dt and t.tp = :tp "
+    				+ "order by t.id");
+    		query.setParameter("dt", dt);
+    		query.setParameter("tp", tp);
+    	} else {
+    		query =em.createQuery("select t from PayordFlow t where "
+    				+ "t.tp = :tp "
+    				+ "order by t.id");
+    		query.setParameter("tp", tp);
+    	}
+		return query.getResultList();
+	}
+
+    
     /**
      * Получить движение по платежке, до определенной даты
      */

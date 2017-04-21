@@ -15,7 +15,7 @@ Ext.define('BillWebApp.store.PayordFlowStore', {
         api: {
             create  : '',
             create  : 'http://192.168.100.21:8083/payord/addPayordFlow',
-            read    : 'http://192.168.100.21:8083/payord/getPayordFlowByTpPeriod',
+            read    : 'http://192.168.100.21:8083/payord/getPayordFlowByTpDt',
             update  : 'http://192.168.100.21:8083/payord/setPayordFlow',
             destroy : 'http://192.168.100.21:8083/payord/delPayordFlow'
         },
@@ -29,7 +29,7 @@ Ext.define('BillWebApp.store.PayordFlowStore', {
         },
         extraParams : {
             tp : '2',
-            period: '201704'
+            dt: null
         }
     }
 

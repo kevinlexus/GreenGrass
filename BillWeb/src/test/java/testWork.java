@@ -54,21 +54,20 @@ public class testWork {
 
 		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
 		reqConfig.setUp(config, "0", "0", null, 1, "", "");
-		Calc calc = new Calc(reqConfig);
 
 		PayordMng pm = ctx.getBean(PayordMng.class);
 		
 		Date dt = null;
 		DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); 
 		try {
-			dt = df.parse("01.05.2017");
+			dt = df.parse("10.04.2017");
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		try {
-			pm.genPayord(calc, dt, false, true);
+			pm.genPayord(dt, false, false);
 		} catch (WrongDate e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

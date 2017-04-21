@@ -21,8 +21,9 @@ public class AppConfig {
 	public JasperReportsViewResolver getJasperReportsViewResolver() {
 	  JasperReportsViewResolver resolver = new JasperReportsViewResolver();
 	  //resolver.setPrefix("classpath:/resources/");
-	  resolver.setPrefix("classpath:");
-	  resolver.setSuffix(".jasper");
+	  resolver.setPrefix("classpath:/reports/");
+	  //resolver.setSuffix(".jasper");
+	  resolver.setSuffix(".jrxml");
 	  resolver.setReportDataKey("datasource");
 	  resolver.setViewNames("Blank_*");
 	  resolver.setViewClass(JasperReportsMultiFormatView.class);

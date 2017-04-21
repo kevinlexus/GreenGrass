@@ -1,5 +1,6 @@
 package com.ric.web;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,7 @@ import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.dto.ServDTO;
+import com.ric.bill.excp.WrongDate;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.OrgMng;
 import com.ric.bill.mm.PayordMng;
@@ -90,7 +92,7 @@ public class BillingController {
 	@Autowired
     private DataSource dataSource;
 	
-	@RequestMapping(value = "/testReport4_2", method = RequestMethod.GET)
+	@RequestMapping(value = "/testReport4_2", method = RequestMethod.GET, produces = "application/pdf;charset=UTF-8")
 	public ModelAndView helloReport(ModelMap modelMap, ModelAndView modelAndView) {
 		JRDataSource datasource = new JRBeanCollectionDataSource(payordMng.getPayordGrpAll(), true);
 		
@@ -102,15 +104,18 @@ public class BillingController {
 	}
 
 
-	// Получить все движения по платежкам по Типу и Периоду
-	@RequestMapping("/payord/getPayordFlowByTpPeriod")
+	// Получить все движения по платежкам по Типу и Дате
+	@RequestMapping("/payord/getPayordFlowByTpDt")
 	@ResponseBody
-	public List<PayordFlowDTO> getPayordFlowByTpPeriod(
+	public List<PayordFlowDTO> getPayordFlowByTpDt(
 			@RequestParam(value = "tp") Integer tp,
-			@RequestParam(value = "period") String period) {
-
-		log.info("GOT /payord/getPayordByTpPeriod");
-		return dtoBuilder.getPayordFlowDTOLst(payordMng.getPayordFlowByTpPeriod(tp, period));
+			@RequestParam(value = "dt") String dt) {
+		log.info("GOT /payord/getPayordByTpDt with tp={}, dt={}", tp, dt);
+		Date genDt = null;
+		if (dt != null && dt.length()!=0) {
+			genDt = Utl.getDateFromStr(dt);
+		}
+		return dtoBuilder.getPayordFlowDTOLst(payordMng.getPayordFlowByTpDt(tp, genDt));
 	}
 
 	// Сохранить движение по платежкам
@@ -445,6 +450,31 @@ public class BillingController {
 		}
 			
 		return true;
+	}
+	
+	/**
+	 * Сформировать платежки
+	 * @param genDt - дата формирования
+	 * @param isFinal - финальная платежка 
+	 * @param isEndMonth - итоговое формирование сальдо
+	 * @return
+	 */
+	@RequestMapping("/genPayord")
+	public String genPayord(
+			@RequestParam(value = "genDt", required = false) String genDt,
+			@RequestParam(value = "isFinal") Boolean isFinal,
+			@RequestParam(value = "isEndMonth") Boolean isEndMonth
+			) {
+		
+		log.info("GOT /genPayord with: genDt={}, isFinal={}, isEndMonth={}", genDt, isFinal, isEndMonth);
+		Date dt = Utl.getDateFromStr(genDt);
+		try {
+			payordMng.genPayord(dt, isFinal, isEndMonth);
+		} catch (WrongDate | ParseException e) {
+			e.printStackTrace();
+			// TODO сделать возврат ошибки!
+		}
+		return null;
 	}
 	
 	@RequestMapping("/chrglsk")

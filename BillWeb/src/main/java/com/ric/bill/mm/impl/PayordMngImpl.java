@@ -19,11 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ric.bill.Calc;
+import com.ric.bill.Config;
+import com.ric.bill.RequestConfig;
 import com.ric.bill.Utl;
 import com.ric.bill.dao.PaymentDetDAO;
 import com.ric.bill.dao.PayordCmpDAO;
@@ -65,6 +68,10 @@ public class PayordMngImpl implements PayordMng {
 	private LstMng lstMng;
 	@Autowired
 	private PaymentDetDAO paymentDetDao;
+	@Autowired
+	private ApplicationContext ctx;
+	@Autowired
+	private Config config;
 	
 	/**
 	 * Получить все платежки
@@ -276,14 +283,24 @@ public class PayordMngImpl implements PayordMng {
 
 	/**
      * Получить движения по всем платежкам по типу и периоду
-     * @param tp
-     * @param dt
+     * @param tp - тип движение
+     * @param period - период
      * @return
      */
     public List<PayordFlow> getPayordFlowByTpPeriod(Integer tp, String period) {
     	return payordFlowDao.getPayordFlowByTpPeriod(tp, period);
     }	
 	
+	/**
+     * Получить движения по всем платежкам по типу и периоду
+     * @param tp - тип движение
+     * @param dt - дата
+     * @return
+     */
+    public List<PayordFlow> getPayordFlowByTpDt(Integer tp, Date dt) {
+    	return payordFlowDao.getPayordFlowByTpDt(tp, dt);
+    }	
+
     // сохранить движение по платежке из DTO
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void setPayordFlowDto(PayordFlowDTO p) {
@@ -455,7 +472,7 @@ public class PayordMngImpl implements PayordMng {
 	 * @throws ParseException 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void genPayord(Calc calc, Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate, ParseException {
+	public void genPayord(Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate, ParseException {
 /*		DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); // для проверки, пока не удалять
 		Date dt;
 		dt = df.parse("01.04.2017");
@@ -466,11 +483,14 @@ public class PayordMngImpl implements PayordMng {
 		String period = "201704";//calc.getReqConfig().getPeriod();
 		String periodNext = "201705";//calc.getReqConfig().getPeriodNext();*/
 
-		Date curDt1 = calc.getReqConfig().getCurDt1(); 
-		Date curDt2 = calc.getReqConfig().getCurDt2();
+		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
+		reqConfig.setUp(config, "0", "0", null, -1, "", "");
+		
+		Date curDt1 = reqConfig.getCurDt1(); 
+		Date curDt2 = reqConfig.getCurDt2();
 
-		String period = calc.getReqConfig().getPeriod();
-		String periodNext = calc.getReqConfig().getPeriodNext();
+		String period = reqConfig.getPeriod();
+		String periodNext = reqConfig.getPeriodNext();
 		
 		if (isFinal && isEndMonth) {
 			throw new WrongDate("Заданы некорректные параметры, при формировании платежки");

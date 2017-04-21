@@ -130,7 +130,7 @@ listeners: {
         text: 'Получить отчет',
         listeners: {
             click: function() {
-                window.location.assign('/helloReport4_1');
+                window.location.assign('/testReport4_2');
             }
         }
     }]

@@ -30,9 +30,6 @@ public class PayordDTO {
 	private Date dtf;
 	// Формула
 	private String formula;
-	// Сумма
-	private Double summa;
-	
 
 	// Здесь важен default конструктор (иначе не примет обратно данные, методом POST)
 	public PayordDTO() {
@@ -41,8 +38,7 @@ public class PayordDTO {
 	
 	// конструктор
 	public PayordDTO(Integer id, String name, Integer periodTpFk,
-			String selDays, String username, Date dtf, String formula,
-			Double summa) {
+			String selDays, String username, Date dtf, String formula) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -51,7 +47,6 @@ public class PayordDTO {
 		this.username = username;
 		this.dtf = dtf;
 		this.formula = formula;
-		this.summa = summa;
 	}
 
 	public Integer getId() {
@@ -127,14 +122,5 @@ public class PayordDTO {
 	public void setFormula(String formula) {
 		this.formula = formula;
 	}
-
-	public Double getSumma() {
-		return summa;
-	}
-
-	public void setSumma(Double summa) {
-		this.summa = summa;
-	}
-	
 	
 }
