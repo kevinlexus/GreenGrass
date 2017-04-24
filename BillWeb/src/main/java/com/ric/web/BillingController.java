@@ -45,11 +45,13 @@ import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
+import com.ric.bill.dto.PeriodReportsDTO;
 import com.ric.bill.dto.ServDTO;
 import com.ric.bill.excp.WrongDate;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.OrgMng;
 import com.ric.bill.mm.PayordMng;
+import com.ric.bill.mm.ReportMng;
 import com.ric.bill.mm.SecMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
@@ -88,7 +90,8 @@ public class BillingController {
 	private DTOBuilder dtoBuilder;
 	@Autowired
 	private SecMng secMng;
-	
+	@Autowired
+	private ReportMng repMng;	
 	@Autowired
     private DataSource dataSource;
 	
@@ -104,6 +107,24 @@ public class BillingController {
 	}
 
 
+	/**
+ 	 * Получить периоды для элементов интерфейса
+ 	 * 
+ 	 * @param repCd - CD отчета
+ 	 * @param tp    - тип периода 0 - по месяцам, 1 - по дням
+ 	 * @return
+ 	 */
+ 	@RequestMapping("/rep/getPeriodReports")
+ 	@ResponseBody
+ 	public List<PeriodReportsDTO> getPeriodReports(
+ 			@RequestParam(value = "repCd") String repCd,
+ 			@RequestParam(value = "tp", defaultValue = "0") Integer tp) {
+ 
+ 		log.info("GOT /rep/getPeriodReports repCd={}, tp={}", repCd, tp);
+ 		return repMng.getPeriodsByCD(repCd, tp);
+ 
+ 	}
+	 
 	// Получить все движения по платежкам по Типу и Дате
 	@RequestMapping("/payord/getPayordFlowByTpDt")
 	@ResponseBody
