@@ -94,7 +94,7 @@ Ext.define('BillWebApp.view.main.Main', {
         title: 'Настройки',
         iconCls: 'fa-cog',
         items: [{
-            xtype: 'panel3'
+            xtype: 'panel5'
         }]
     }, {
         title: 'Формирование',

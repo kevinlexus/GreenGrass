@@ -33,17 +33,17 @@ Ext.define('BillWebApp.view.main.Panel2', {
             }, {
                 text: 'Отменить',
                 handler: 'onGridPayordFlowCancel'
-            }, {
-                text: 'Обновить',
-                handler: 'onGridPayordFlowRefresh'
             },{
                 xtype: 'datefield',
                 name: 'genDt',
                 reference: 'genDt2',
                 fieldLabel: 'Дата',
-                margin: '0 5 0 0',
-                allowBlank: false,
+                allowBlank: true,
                 format: 'd.m.Y'
+            },
+            {
+                text: 'Обновить',
+                handler: 'onGridPayordFlowRefresh'
             }],
             requires: [
                 'Ext.selection.CellModel',
@@ -168,7 +168,21 @@ Ext.define('BillWebApp.view.main.Panel2', {
                     items: ['@del']
                 }
             ]
-        }]
+        },
+        {
+            // Управление
+            xtype: 'panel',
+            width: 1000,
+            minHeight: 20,
+            tbar: [{
+                text: 'Подписать все',
+                handler: 'onGridPayordFlowSignAll'
+            }, {
+                text: 'Снять подпись',
+                handler: 'onGridPayordFlowUnSignAll'
+            }]
+        }
+    ]
 
 });
 

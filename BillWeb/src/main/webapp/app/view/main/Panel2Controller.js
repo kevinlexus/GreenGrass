@@ -91,12 +91,53 @@ Ext.define('BillWebApp.view.main.Panel2Controller', {
     // Обновить грид платежных поручений
     onGridPayordFlowRefresh: function () {
         var store = this.getViewModel().getStore('payordflowstore');
-        console.log("test");
         var genDt2 = this.lookupReference('genDt2');
 
         store.load({
             params : {
                 dt: Ext.Date.format(genDt2.getValue(), 'd.m.Y')
+            }
+        });
+    },
+    // Подписать все платежки
+    onGridPayordFlowSignAll: function () {
+        console.log("onGridPayordFlowSignAll");
+        var store = this.getViewModel().getStore('payordflowstore');
+        var genDt2 = this.lookupReference('genDt2');
+        store.each(function(record){
+            record.set('signed', true);
+        });
+        store.sync({
+            failure: function (batch, options) {
+                alert("Ошибка подписи платежек!");
+            },
+            success: function() {
+                store.load({
+                    params : {
+                        dt: Ext.Date.format(genDt2.getValue(), 'd.m.Y')
+                    }
+                });
+            }
+        });
+    },
+    // Снять подпись со всех платежек
+    onGridPayordFlowUnSignAll: function () {
+        console.log("onGridPayordFlowSignAll");
+        var store = this.getViewModel().getStore('payordflowstore');
+        var genDt2 = this.lookupReference('genDt2');
+        store.each(function(record){
+            record.set('signed', false);
+        });
+        store.sync({
+            failure: function (batch, options) {
+                alert("Ошибка снятия подписи платежек!");
+            },
+            success: function() {
+                store.load({
+                    params : {
+                        dt: Ext.Date.format(genDt2.getValue(), 'd.m.Y')
+                    }
+                });
             }
         });
     }

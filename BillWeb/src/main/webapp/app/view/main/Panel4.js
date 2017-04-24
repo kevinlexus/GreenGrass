@@ -2,9 +2,7 @@ Ext.define('BillWebApp.view.main.Panel4', {
     extend: 'Ext.panel.Panel',
     xtype: 'panel4',
     title: 'Формирование платежек',
-    layout: {
-        type: 'hbox'
-    },
+    layout: 'form',
     width: 500,
     minHeight: 300,
     bodyPadding: 10,
@@ -19,6 +17,23 @@ Ext.define('BillWebApp.view.main.Panel4', {
         margin: '0 5 0 0',
         allowBlank: false,
         format: 'd.m.Y'
+        },
+        {
+            xtype: 'radiofield',
+            name: 'radio1',
+            reference: 'isFinalValue',
+            value: 'isFinalValue',
+            fieldLabel: '',
+            boxLabel: 'Итоговая платежка'
+        }, {
+            xtype: 'radiofield',
+            name: 'radio1',
+            reference: 'isEndMonthValue',
+            value: 'isEndMonthValue',
+            fieldLabel: '',
+            labelSeparator: '',
+            hideEmptyLabel: false,
+            boxLabel: 'Итоговое формирование'
         }
     ],
 

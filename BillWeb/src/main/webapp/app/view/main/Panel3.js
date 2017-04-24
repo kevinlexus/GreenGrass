@@ -3,10 +3,12 @@ Ext.define('BillWebApp.view.main.Panel3', {
     xtype: 'panel3',
     title: 'Настройки платежек',
     layout: {
-        type: 'vbox' // после смены vbox, проверить, как открываются комбо-боксы (могут не работать)
+        type: 'vbox',
+        pack: 'start',
+        align: 'stretch'
     },
     width: 1010,
-    minHeight: 500,
+    minHeight: 900,
     bodyPadding: 10,
     reference: 'panel3',
     controller: 'panel3controller',
@@ -20,7 +22,6 @@ Ext.define('BillWebApp.view.main.Panel3', {
             xtype: 'gridpanel',
             reference: 'payordGrpGrid',
             width: 1000,
-            minHeight: 120,
             margin: '0 0 10 0',
             tbar: [{
                 text: 'Добавить группу',
@@ -97,7 +98,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
         iconCls: 'framing-buttons-grid',
         reference: 'payordGrid',
         width: 1000,
-        minHeight: 220,
+        //maxHeight:400,
         header: false,
         margin: '0 0 10 0',
         tbar: [{
@@ -203,9 +204,7 @@ Ext.define('BillWebApp.view.main.Panel3', {
             reference: 'payordCmpGrid',
 
             width: 1000,
-            minHeight: 220,
             header: false,
-
             margin: '0 0 10 0',
             tbar: [{
                 text: 'Добавить формулу',
