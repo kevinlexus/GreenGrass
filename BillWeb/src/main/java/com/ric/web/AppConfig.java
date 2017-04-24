@@ -25,7 +25,7 @@ public class AppConfig {
 	  //resolver.setSuffix(".jasper");
 	  resolver.setSuffix(".jrxml");
 	  resolver.setReportDataKey("datasource");
-	  resolver.setViewNames("Blank_*");
+	  resolver.setViewNames("rep*");
 	  resolver.setViewClass(JasperReportsMultiFormatView.class);
 	  resolver.setOrder(0);
 	  return resolver;

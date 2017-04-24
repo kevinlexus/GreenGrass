@@ -43,6 +43,7 @@ Ext.define('BillWebApp.view.main.Panel1', {
                         fieldLabel: 'С',
                         displayField: 'period',
                         valueField: 'id',
+                        reference: 'period1',
                         bind: {
                             store: '{periodstore1}',
                             value: '{periodId1}'
@@ -129,9 +130,7 @@ listeners: {
     buttons: [{
         text: 'Получить отчет',
         listeners: {
-            click: function() {
-                window.location.assign('/testReport4_2');
-            }
+            click: 'onPrintClick'
         }
     }]
 });

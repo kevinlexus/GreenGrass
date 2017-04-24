@@ -186,6 +186,18 @@ public class Utl {
 	}
 
 	/**
+	 * Вернуть строку по формату
+	 * @param dt
+	 * @return
+	 */
+	public static String getStrFromDate(Date dt) {
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+		String str = formatter.format(dt);
+		return str;
+	}
+
+	/**
 	 * Конвертировать XMLGregorianCalendar в Date
 	 * @param cal
 	 * @return

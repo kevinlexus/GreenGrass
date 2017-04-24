@@ -21,6 +21,13 @@ Ext.define('BillWebApp.view.main.Panel4', {
         {
             xtype: 'radiofield',
             name: 'radio1',
+            value: 'isDay',
+            fieldLabel: '',
+            boxLabel: 'За дату'
+        },
+        {
+            xtype: 'radiofield',
+            name: 'radio1',
             reference: 'isFinalValue',
             value: 'isFinalValue',
             fieldLabel: '',

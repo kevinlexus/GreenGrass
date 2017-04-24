@@ -28,4 +28,13 @@ Ext.define('BillWebApp.view.main.Panel1Controller', {
         } else {
             store.load({params: {'tp': 0}});
         }
-}});
+    },
+    // Печать отчета платежек
+    onPrintClick: function () {
+        console.log('onPrintClick');
+        var period1 = this.lookupReference('period1');
+        console.log('period1='+period1.getValue());
+        window.location.assign('/rep/payordFlow1?periodId='+period1.getValue());
+    }
+
+});

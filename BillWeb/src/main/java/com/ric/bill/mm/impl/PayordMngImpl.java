@@ -446,7 +446,7 @@ public class PayordMngImpl implements PayordMng {
 	}
 	
 	/**
-	 * Получить входящее сальдо на период
+	 * Получить входящее сальдо на период (саму запись)
 	 * @param p - платежка
 	 * @param period - период выборки
 	 * @return
@@ -456,6 +456,21 @@ public class PayordMngImpl implements PayordMng {
 		return payordFlow;
 	}
 	
+	/**
+	 * Получить входящее сальдо на период (сумму)
+	 * @param p - платежка
+	 * @param period - период выборки
+	 * @return
+	 */
+	public BigDecimal getInsalSumm(Payord p, String period, Integer tp) {
+		PayordFlow payordFlow = payordFlowDao.getPayordFlowBeforePeriod(p.getId(), tp, period).stream().findFirst().orElse(null);
+		if (payordFlow != null) {
+			return BigDecimal.valueOf(payordFlow.getSumma());
+		} else {
+			return BigDecimal.ZERO;
+		}
+	}
+
 	/**
 	 * Сформировать платежки за период
 	 * Внимание!!! итоговое формирование, можно делать, если подписана финальная платёжка!
@@ -502,6 +517,7 @@ public class PayordMngImpl implements PayordMng {
 		
 		// Перебрать все платежки
 		for (Payord p :payordDao.getPayordAll()) {
+			log.info("Payord.id={}", p.getId());
 			AmntSummByUk amntSummByUk = new AmntSummByUk();
  			// distinct список Маркеров
 			List<String> markLst = p.getPayordCmp().stream().distinct().map(t -> t.getMark()).collect(Collectors.toList());
@@ -540,7 +556,12 @@ public class PayordMngImpl implements PayordMng {
 				BigDecimal summa5 = amntFlow.summa;
 				// получить вх. сальдо
 				PayordFlow salFlow = getInsal(p, period, 0); 
-				BigDecimal insal =BigDecimal.valueOf(salFlow.getSumma());
+				BigDecimal insal = null;
+				if (salFlow != null){
+					insal = BigDecimal.valueOf(salFlow.getSumma());
+				} else {
+					insal = BigDecimal.ZERO;
+				}
 				log.info("insal={}, summa1={}, summa2={}, summa3={}, summa4={}, summa5={}", insal, summa1, summa2, summa3, summa4, summa5);
 
 				// рассчитать сумму, рекомендованную к перечислению

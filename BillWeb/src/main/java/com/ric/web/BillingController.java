@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -46,6 +47,7 @@ import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.dto.PeriodReportsDTO;
+import com.ric.bill.dto.RepItemDTO;
 import com.ric.bill.dto.ServDTO;
 import com.ric.bill.excp.WrongDate;
 import com.ric.bill.mm.LstMng;
@@ -55,6 +57,7 @@ import com.ric.bill.mm.ReportMng;
 import com.ric.bill.mm.SecMng;
 import com.ric.bill.mm.ServMng;
 import com.ric.bill.mm.TarifMng;
+import com.ric.bill.model.bs.PeriodReports;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordFlow;
@@ -95,15 +98,36 @@ public class BillingController {
 	@Autowired
     private DataSource dataSource;
 	
-	@RequestMapping(value = "/testReport4_2", method = RequestMethod.GET, produces = "application/pdf;charset=UTF-8")
-	public ModelAndView helloReport(ModelMap modelMap, ModelAndView modelAndView) {
-		JRDataSource datasource = new JRBeanCollectionDataSource(payordMng.getPayordGrpAll(), true);
+	@RequestMapping(value = "/rep/payordFlow1", method = RequestMethod.GET, produces = "application/pdf;charset=UTF-8")
+	public ModelAndView repPayordFlow1(ModelMap modelMap, ModelAndView modelAndView,
+				@RequestParam(value = "periodId") Integer periodId 
+				) {
+		log.info("GOT /rep/payordFlow1 with periodId={}", periodId);
+		PeriodReports pr = em.find(PeriodReports.class, periodId);
+		if (pr.getDt() !=null) {
+			List<RepItemDTO> items;
+			// получить список платежек на текущую дату, с входящим сальдо
+			items = payordMng.getPayordFlowByTpDt(2, pr.getDt()).stream()
+					//.filter(t -> t.getSigned()) // только подписанные??
+					.map(t-> new RepItemDTO(t.getId(), t.getPayord().getPayordGrp().getName(),
+					t.getPayord().getName(), t.getUk().getName(), 
+					payordMng.getInsalSumm(t.getPayord(), config.getPeriod(), 0).doubleValue(), // вх.сальдо 
+					t.getSumma(), t.getSumma1(), t.getSumma2(), t.getSumma3(), t.getSumma4(), t.getSumma5(), t.getSumma6()))
+					.collect(Collectors.toList());
+			//items = payordMng.getPayordGrpAll().stream().map(t-> new RepItemDTO(t.getId(), t.getName())
+			//JRDataSource datasource = new JRBeanCollectionDataSource(payordMng.getPayordGrpAll(), true);
+			JRDataSource datasource = new JRBeanCollectionDataSource(items, true);
+			
+			modelMap.put("datasource", datasource);
+			modelMap.put("format", "pdf");
+			modelMap.put("strDt", Utl.getStrFromDate(pr.getDt()));
+			modelAndView = new ModelAndView("repPayordFlow1", modelMap);
+			return modelAndView;
+		} else {
+			
+			return null;
+		}
 		
-		modelMap.put("datasource", datasource);
-		modelMap.put("format", "pdf");
-		//modelMap.put("blabla", 125);
-		modelAndView = new ModelAndView("Blank_A4_2", modelMap);
-		return modelAndView;
 	}
 
 
@@ -120,7 +144,7 @@ public class BillingController {
  			@RequestParam(value = "repCd") String repCd,
  			@RequestParam(value = "tp", defaultValue = "0") Integer tp) {
  
- 		log.info("GOT /rep/getPeriodReports repCd={}, tp={}", repCd, tp);
+ 		log.info("GOT /rep/getPeriodReports with repCd={}, tp={}", repCd, tp);
  		return repMng.getPeriodsByCD(repCd, tp);
  
  	}

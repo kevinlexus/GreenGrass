@@ -1,8 +1,6 @@
 package com.ric.bill;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -210,7 +208,6 @@ public class RequestConfig {
 		return this.partDays;
 	}
 
-	
 	public void setPeriod(String period) {
 		this.period = period;
 	}

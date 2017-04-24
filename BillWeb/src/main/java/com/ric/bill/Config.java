@@ -52,6 +52,13 @@ public class Config {
 	private int reqNum = 0; 
 
 	private List<Integer> workLst; // обрабатываемые лицевые счета 
+
+	// Текущий период (для партицирования и проч.) 
+	String period;
+	// Период +1 месяц 
+	String periodNext;
+	// Период -1 месяц 
+	String periodBack;
 	
 	// конструктор
 	public Config() {
@@ -93,6 +100,14 @@ public class Config {
 		setCurDt1(calendar.getTime());
 		calendar.setTime(parMng.getDate(-1, obj, "Конец расчетного периода"));
 		setCurDt2(calendar.getTime());
+		
+		//** здесь задаются периоды которые постоянны на всём времени работы программы!!! **// 
+		//задать текущий период в виде ГГГГММ
+		setPeriod(Utl.getPeriodByDate(getCurDt1()));
+    	// период на 1 мес.вперед
+		setPeriodNext(Utl.addMonth(getPeriod(), 1));
+    	// период на 1 мес.назад
+		setPeriodBack(Utl.addMonth(getPeriod(), -1));
 		
 		log.info("Начало расчетного периода = {}", getCurDt1());
 		log.info("Конец расчетного периода = {}", getCurDt2());
@@ -142,6 +157,30 @@ public class Config {
 	// получить следующий номер запроса
 	public synchronized int incNextReqNum() {
 		return this.reqNum++;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
+	public String getPeriod() {
+		return period;
+	}
+
+	public String getPeriodNext() {
+		return periodNext;
+	}
+
+	public void setPeriodNext(String periodNext) {
+		this.periodNext = periodNext;
+	}
+
+	public String getPeriodBack() {
+		return periodBack;
+	}
+
+	public void setPeriodBack(String periodBack) {
+		this.periodBack = periodBack;
 	}
 	
 }
