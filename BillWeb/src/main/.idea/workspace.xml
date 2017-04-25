@@ -3,15 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="1ab6b1df-caef-4bd0-8e7c-9ae034c355c4" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/SrvThr.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/resources/reports/Blank_A4_2.jrxml" afterPath="$PROJECT_DIR$/resources/reports/repPayordFlow1.jrxml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/web/BillingController.java" afterPath="$PROJECT_DIR$/java/com/ric/web/BillingController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/Config.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/Config.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/RequestConfig.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/RequestConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/web/AppConfig.java" afterPath="$PROJECT_DIR$/java/com/ric/web/AppConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dto/RepItemDTO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dto/RepItemDTO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/reports/repPayordFlow1.jrxml" afterPath="$PROJECT_DIR$/resources/reports/repPayordFlow1.jrxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/store/PeriodStore.js" afterPath="$PROJECT_DIR$/webapp/app/store/PeriodStore.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/MainModel.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/MainModel.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel1.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel1.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel4.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel4.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" afterPath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" />
@@ -44,21 +43,61 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Panel1.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Panel1.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="38.103447">
-              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.7277717">
+              <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Panel1Controller.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Panel1Controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6904501">
-              <caret line="37" column="5" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainModel.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainModel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PeriodStore.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/app/store/PeriodStore.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PayordCmpStore.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PayordGrpStore.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -84,61 +123,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Panel3Controller.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel3Controller.js">
+      <file leaf-file-name="PayordFlowStore.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordFlowStore.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Panel2.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel2.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="33" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Panel3.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel3.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/classic/src/view/main/Main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Panel4.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel4.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Panel5.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel5.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+              <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -168,7 +157,6 @@
         <option value="$PROJECT_DIR$/webapp/app/model/Org.js" />
         <option value="$PROJECT_DIR$/webapp/app/view/main/Grid1.js" />
         <option value="$PROJECT_DIR$/webapp/app/model/Serv.js" />
-        <option value="$PROJECT_DIR$/webapp/app/store/PeriodStore.js" />
         <option value="$PROJECT_DIR$/webapp/app/store/OrgCurUserStore.js" />
         <option value="$PROJECT_DIR$/webapp/app/store/ServStore.js" />
         <option value="$PROJECT_DIR$/webapp/app/model/Area.js" />
@@ -187,7 +175,6 @@
         <option value="$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js" />
         <option value="$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js" />
         <option value="$PROJECT_DIR$/webapp/app/model/PayordGrp.js" />
-        <option value="$PROJECT_DIR$/webapp/app/view/main/MainModel.js" />
         <option value="$PROJECT_DIR$/webapp/app/Application.js" />
         <option value="$PROJECT_DIR$/webapp/app.js" />
         <option value="$PROJECT_DIR$/webapp/app/store/OrgStore.js" />
@@ -202,8 +189,10 @@
         <option value="$PROJECT_DIR$/webapp/app/view/main/Panel3.js" />
         <option value="$PROJECT_DIR$/webapp/app/view/main/Panel5.js" />
         <option value="$PROJECT_DIR$/webapp/app/view/main/Panel4.js" />
-        <option value="$PROJECT_DIR$/webapp/app/view/main/Panel1.js" />
+        <option value="$PROJECT_DIR$/webapp/app/store/PeriodStore.js" />
+        <option value="$PROJECT_DIR$/webapp/app/view/main/MainModel.js" />
         <option value="$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js" />
+        <option value="$PROJECT_DIR$/webapp/app/view/main/Panel1.js" />
       </list>
     </option>
   </component>
@@ -700,30 +689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.54116356">
-          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48518112">
-          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordCmp.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.41053787">
@@ -744,14 +709,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PeriodStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -804,14 +761,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordFlowStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/model/PayordFlow.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -832,14 +781,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainModel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25356752">
-          <caret line="54" column="17" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -908,18 +849,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1.js">
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordFlowStore.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="38.103447">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordCmpStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordGrpStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PayordStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.111964874">
+          <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/store/PeriodStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/MainModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6904501">
-          <caret line="37" column="5" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7277717">
+          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
           <folding />
         </state>
       </provider>

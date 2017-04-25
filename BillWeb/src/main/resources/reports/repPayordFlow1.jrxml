@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-24T14:19:05 -->
+<!-- 2017-04-25T09:55:09 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="repPayordFlow1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0d6c7770-f10d-4dc4-befe-aac83bc180d0">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="strDt" class="java.lang.String"/>
@@ -11,40 +11,41 @@
 	<field name="payordGrpName" class="java.lang.String"/>
 	<field name="payordName" class="java.lang.String"/>
 	<field name="ukName" class="java.lang.String"/>
-	<field name="insal" class="java.lang.Double"/>
-	<field name="summa" class="java.lang.Double"/>
-	<field name="summa1" class="java.lang.Double"/>
-	<field name="summa2" class="java.lang.Double"/>
-	<field name="summa3" class="java.lang.Double"/>
-	<field name="summa4" class="java.lang.Double"/>
-	<field name="summa5" class="java.lang.Double"/>
-	<field name="summa6" class="java.lang.Double"/>
+	<field name="insal" class="java.math.BigDecimal"/>
+	<field name="summa" class="java.math.BigDecimal"/>
+	<field name="summa1" class="java.math.BigDecimal"/>
+	<field name="summa2" class="java.math.BigDecimal"/>
+	<field name="summa3" class="java.math.BigDecimal"/>
+	<field name="summa4" class="java.math.BigDecimal"/>
+	<field name="summa5" class="java.math.BigDecimal"/>
+	<field name="summa6" class="java.math.BigDecimal"/>
 	<variable name="InsalGrp" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{insal}]]></variableExpression>
 	</variable>
-	<variable name="SummaGrp" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="SummaGrp" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupByPayordName" calculation="Sum">
 		<variableExpression><![CDATA[$F{summa}]]></variableExpression>
 	</variable>
-	<variable name="Summa1Grp" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Summa1Grp" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupByPayordName" calculation="Sum">
 		<variableExpression><![CDATA[$F{summa1}]]></variableExpression>
 	</variable>
-	<variable name="Summa2Grp" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Summa2Grp" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupByPayordName" calculation="Sum">
 		<variableExpression><![CDATA[$F{summa2}]]></variableExpression>
 	</variable>
-	<variable name="Summa3Grp" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Summa3Grp" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupByPayordName" calculation="Sum">
 		<variableExpression><![CDATA[$F{summa3}]]></variableExpression>
 	</variable>
-	<variable name="Summa4Grp" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Summa4Grp" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupByPayordName" calculation="Sum">
 		<variableExpression><![CDATA[$F{summa4}]]></variableExpression>
 	</variable>
-	<variable name="Summa5Grp" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Summa5Grp" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupByPayordName" calculation="Sum">
 		<variableExpression><![CDATA[$F{summa5}]]></variableExpression>
 	</variable>
-	<variable name="Summa6Grp" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="Summa6Grp" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupByPayordName" calculation="Sum">
 		<variableExpression><![CDATA[$F{summa6}]]></variableExpression>
 	</variable>
-	<variable name="OutsalGrp" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{insal}-$F{summa}+$F{summa1}-$F{summa2}+$F{summa3}-$F{summa4}-$F{summa5}]]></variableExpression>
+	<variable name="OutsalGrp" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupByPayordName" calculation="Sum">
+		<variableExpression><![CDATA[//$F{insal}-$F{summa}+$F{summa1}-$F{summa2}+$F{summa3}-$F{summa4}-$F{summa5}
+$F{insal}.subtract($F{summa}).add($F{summa1}).subtract($F{summa2}).add($F{summa3}).subtract($F{summa4}).subtract($F{summa5})]]></variableExpression>
 	</variable>
 	<group name="GroupByPayordName">
 		<groupExpression><![CDATA[$F{payordName}]]></groupExpression>
@@ -64,10 +65,10 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="40">
+			<band height="20">
 				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				<textField isBlankWhenNull="true">
-					<reportElement x="234" y="0" width="52" height="21" uuid="e2e3caf2-53eb-46d0-ac3e-b77649a554a1"/>
+					<reportElement x="234" y="0" width="52" height="20" uuid="e2e3caf2-53eb-46d0-ac3e-b77649a554a1"/>
 					<box>
 						<pen lineWidth="0.25"/>
 					</box>
@@ -77,7 +78,7 @@
 					<textFieldExpression><![CDATA[$V{Summa3Grp}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="436" y="0" width="50" height="21" uuid="07b25c4d-6ca9-406b-bfb8-367d0161f3c8"/>
+					<reportElement x="436" y="0" width="50" height="20" uuid="07b25c4d-6ca9-406b-bfb8-367d0161f3c8"/>
 					<box>
 						<pen lineWidth="0.25"/>
 					</box>
@@ -87,7 +88,7 @@
 					<textFieldExpression><![CDATA[$V{SummaGrp}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="286" y="0" width="50" height="21" uuid="a556fa4f-e287-474f-8d25-744455db9757"/>
+					<reportElement x="286" y="0" width="50" height="20" uuid="a556fa4f-e287-474f-8d25-744455db9757"/>
 					<box>
 						<pen lineWidth="0.25"/>
 					</box>
@@ -97,7 +98,7 @@
 					<textFieldExpression><![CDATA[$V{Summa2Grp}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="336" y="0" width="50" height="21" uuid="c6bec681-972c-4576-857c-a645744e4058"/>
+					<reportElement x="336" y="0" width="50" height="20" uuid="c6bec681-972c-4576-857c-a645744e4058"/>
 					<box>
 						<pen lineWidth="0.25"/>
 					</box>
@@ -107,7 +108,7 @@
 					<textFieldExpression><![CDATA[$V{Summa4Grp}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="386" y="0" width="50" height="21" uuid="83ba29bd-8114-45af-85f5-a623e3b822f7"/>
+					<reportElement x="386" y="0" width="50" height="20" uuid="83ba29bd-8114-45af-85f5-a623e3b822f7"/>
 					<box>
 						<pen lineWidth="0.25"/>
 					</box>
@@ -117,7 +118,7 @@
 					<textFieldExpression><![CDATA[$V{Summa5Grp}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="486" y="0" width="49" height="21" uuid="59f34b3e-2706-4357-b702-d30515f559a2"/>
+					<reportElement x="486" y="0" width="49" height="20" uuid="59f34b3e-2706-4357-b702-d30515f559a2"/>
 					<box>
 						<pen lineWidth="0.25"/>
 					</box>
@@ -127,7 +128,7 @@
 					<textFieldExpression><![CDATA[$V{OutsalGrp}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="184" y="0" width="50" height="21" uuid="81bdb099-d0d0-4f2f-8cd9-28f9be834442"/>
+					<reportElement x="184" y="0" width="50" height="20" uuid="81bdb099-d0d0-4f2f-8cd9-28f9be834442"/>
 					<box>
 						<pen lineWidth="0.25"/>
 					</box>
@@ -139,10 +140,7 @@
 				<staticText>
 					<reportElement x="0" y="0" width="130" height="20" uuid="ecc9ffa8-ca80-4301-8c0c-e480158de614"/>
 					<box>
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<pen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans"/>
@@ -150,7 +148,7 @@
 					<text><![CDATA[Итого:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="130" y="0" width="54" height="21" uuid="c3b191b1-dbd2-4a4c-8533-7736edda9ef9"/>
+					<reportElement x="130" y="0" width="54" height="20" uuid="c3b191b1-dbd2-4a4c-8533-7736edda9ef9"/>
 					<box>
 						<pen lineWidth="0.25"/>
 					</box>
@@ -166,13 +164,13 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="38" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="20" width="340" height="16" uuid="a29cf624-3d87-4c9d-a440-8302fc19b28d"/>
+				<reportElement x="0" y="10" width="340" height="16" uuid="a29cf624-3d87-4c9d-a440-8302fc19b28d"/>
 				<textElement>
 					<font fontName="DejaVu Sans"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Список платежей МП 'РИЦ' на дату:  "+$P{strDt}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["1.3 Список платежей МП 'РИЦ' на дату:  "+$P{strDt}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -379,7 +377,7 @@
 				<textElement>
 					<font fontName="DejaVu Sans" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{insal}-$F{summa}+$F{summa1}-$F{summa2}+$F{summa3}-$F{summa4}-$F{summa5}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{insal}.subtract($F{summa}).add($F{summa1}).subtract($F{summa2}).add($F{summa3}).subtract($F{summa4}).subtract($F{summa5})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="130" y="0" width="54" height="21" uuid="d13b6eae-8efd-43b5-886c-b831b0e2094a"/>

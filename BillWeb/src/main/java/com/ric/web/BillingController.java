@@ -1,5 +1,6 @@
 package com.ric.web;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,8 +112,9 @@ public class BillingController {
 					//.filter(t -> t.getSigned()) // только подписанные??
 					.map(t-> new RepItemDTO(t.getId(), t.getPayord().getPayordGrp().getName(),
 					t.getPayord().getName(), t.getUk().getName(), 
-					payordMng.getInsalSumm(t.getPayord(), config.getPeriod(), 0).doubleValue(), // вх.сальдо 
-					t.getSumma(), t.getSumma1(), t.getSumma2(), t.getSumma3(), t.getSumma4(), t.getSumma5(), t.getSumma6()))
+					payordMng.getInsalSumm(t.getPayord(), config.getPeriod(), 0), // вх.сальдо 
+					BigDecimal.valueOf(t.getSumma()), BigDecimal.valueOf(t.getSumma1()), BigDecimal.valueOf(t.getSumma2()), BigDecimal.valueOf(t.getSumma3()), 
+							BigDecimal.valueOf(t.getSumma4()), BigDecimal.valueOf(t.getSumma5()), BigDecimal.valueOf(t.getSumma6())))
 					.collect(Collectors.toList());
 			//items = payordMng.getPayordGrpAll().stream().map(t-> new RepItemDTO(t.getId(), t.getName())
 			//JRDataSource datasource = new JRBeanCollectionDataSource(payordMng.getPayordGrpAll(), true);

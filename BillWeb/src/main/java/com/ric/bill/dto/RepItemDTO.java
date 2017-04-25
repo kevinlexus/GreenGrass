@@ -1,5 +1,7 @@
 package com.ric.bill.dto;
 
+import java.math.BigDecimal;
+
 /**
  * DTO - предназначен для заполнения отчета данными
  * @author lev
@@ -10,18 +12,18 @@ public class RepItemDTO {
 	String payordGrpName;
 	String payordName;
 	String ukName;
-	Double insal;
-	Double summa;
-	Double summa1;
-	Double summa2;
-	Double summa3;
-	Double summa4;
-	Double summa5;
-	Double summa6;
+	BigDecimal insal;
+	BigDecimal summa;
+	BigDecimal summa1;
+	BigDecimal summa2;
+	BigDecimal summa3;
+	BigDecimal summa4;
+	BigDecimal summa5;
+	BigDecimal summa6;
 	
 	public RepItemDTO(Integer id, String payordGrpName, String payordName,
-			String ukName, Double insal, Double summa, Double summa1, Double summa2,
-			Double summa3, Double summa4, Double summa5, Double summa6) {
+			String ukName, BigDecimal insal, BigDecimal summa, BigDecimal summa1, BigDecimal summa2,
+			BigDecimal summa3, BigDecimal summa4, BigDecimal summa5, BigDecimal summa6) {
 		super();
 		this.id = id;
 		this.payordGrpName = payordGrpName;
@@ -61,54 +63,54 @@ public class RepItemDTO {
 	public void setUkName(String ukName) {
 		this.ukName = ukName;
 	}
-	public Double getSumma() {
+	public BigDecimal getSumma() {
 		return summa;
 	}
-	public void setSumma(Double summa) {
+	public void setSumma(BigDecimal summa) {
 		this.summa = summa;
 	}
-	public Double getSumma1() {
+	public BigDecimal getSumma1() {
 		return summa1;
 	}
-	public void setSumma1(Double summa1) {
+	public void setSumma1(BigDecimal summa1) {
 		this.summa1 = summa1;
 	}
-	public Double getSumma2() {
+	public BigDecimal getSumma2() {
 		return summa2;
 	}
-	public void setSumma2(Double summa2) {
+	public void setSumma2(BigDecimal summa2) {
 		this.summa2 = summa2;
 	}
-	public Double getSumma3() {
+	public BigDecimal getSumma3() {
 		return summa3;
 	}
-	public void setSumma3(Double summa3) {
+	public void setSumma3(BigDecimal summa3) {
 		this.summa3 = summa3;
 	}
-	public Double getSumma4() {
+	public BigDecimal getSumma4() {
 		return summa4;
 	}
-	public void setSumma4(Double summa4) {
+	public void setSumma4(BigDecimal summa4) {
 		this.summa4 = summa4;
 	}
-	public Double getSumma5() {
+	public BigDecimal getSumma5() {
 		return summa5;
 	}
-	public void setSumma5(Double summa5) {
+	public void setSumma5(BigDecimal summa5) {
 		this.summa5 = summa5;
 	}
-	public Double getSumma6() {
+	public BigDecimal getSumma6() {
 		return summa6;
 	}
-	public void setSumma6(Double summa6) {
+	public void setSumma6(BigDecimal summa6) {
 		this.summa6 = summa6;
 	}
 
-	public Double getInsal() {
+	public BigDecimal getInsal() {
 		return insal;
 	}
 
-	public void setInsal(Double insal) {
+	public void setInsal(BigDecimal insal) {
 		this.insal = insal;
 	}
 

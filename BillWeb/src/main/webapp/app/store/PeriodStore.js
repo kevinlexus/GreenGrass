@@ -20,10 +20,10 @@ Ext.define('BillWebApp.store.PeriodStore1', {
         },
         reader: {
             type: 'json'
-        },
+        }/*,
         extraParams :{
             repCd : 'RptPayDocList',
             tp: '0'
-        }
+        }*/
     }
 });

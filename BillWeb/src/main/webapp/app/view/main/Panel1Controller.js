@@ -12,21 +12,21 @@ Ext.define('BillWebApp.view.main.Panel1Controller', {
     // Проверка при включении чекбокса
     onChangePeriodType: function (chk , newValue , oldValue , eOpts) {
         //получить выбранные id
-        //alert('id1:'+this.getViewModel().get('periodId1'));
-        //alert('id2:'+this.getViewModel().get('periodId2'));
-
         var store = this.getViewModel().getStore('periodstore1');
+        var period1 = this.lookupReference('period1');
+        var period2 = this.lookupReference('period2');
         if (newValue) {
-            store.load({params: {'tp': 1}});
+            period1.lastQuery = null;
+            period1.setValue(null);
+            period2.setValue(null);
+            store.proxy.extraParams = { repCd: 'RptPayDocList', tp: 1};
+            period2.hide();
         } else {
-            store.load({params: {'tp': 0}});
-        }
-
-        var store = this.getViewModel().getStore('periodstore2');
-        if (newValue) {
-            store.load({params: {'tp': 1}});
-        } else {
-            store.load({params: {'tp': 0}});
+            period1.lastQuery = null;
+            period1.setValue(null);
+            period2.setValue(null);
+            store.proxy.extraParams = {repCd: 'RptPayDocList',  tp: 0};
+            period2.show();
         }
     },
     // Печать отчета платежек

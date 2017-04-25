@@ -17,10 +17,22 @@ Ext.define('BillWebApp.view.main.MainModel', {
 
     stores: {
         periodstore1: {
-            type: 'periodstore1'
+            type: 'periodstore1',
+            proxy : {
+                extraParams: {
+                    repCd: 'RptPayDocList',
+                    tp: '0'
+                }
+            }
         },
         periodstore2: {
-            type: 'periodstore1'
+            type: 'periodstore1',
+            proxy : {
+                extraParams: {
+                    repCd: 'RptPayDocList',
+                    tp: '0'
+                }
+            }
         },
         payordstore: {
             type: 'payordstore',

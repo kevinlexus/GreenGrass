@@ -44,6 +44,7 @@ Ext.define('BillWebApp.view.main.Panel1', {
                         displayField: 'period',
                         valueField: 'id',
                         reference: 'period1',
+                        maxWidth: 300,
                         bind: {
                             store: '{periodstore1}',
                             value: '{periodId1}'
@@ -54,6 +55,8 @@ Ext.define('BillWebApp.view.main.Panel1', {
                         fieldLabel: 'По',
                         displayField: 'period',
                         valueField: 'id',
+                        reference: 'period2',
+                        maxWidth: 300,
                         bind: {
                             store: '{periodstore2}',
                             value: '{periodId2}'
