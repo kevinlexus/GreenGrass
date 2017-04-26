@@ -1,6 +1,7 @@
 package com.ric.bill.model.ar;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -139,6 +140,13 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 	    @Filter(name = "FILTER_CHRG1")})
 	private List<Chrg> chrg = new ArrayList<Chrg>(0);
 
+    // даты начала и окончания обслуживания лиц.счета
+    @Column(name = "DT1", updatable = false, nullable = true)
+    private Date dt1;
+
+    @Column(name = "DT2", updatable = false, nullable = true)
+    private Date dt2;
+    
 	public Kw getKw() {
 		return kw;
 	}
@@ -234,6 +242,22 @@ public class Kart /*extends Base*/ implements java.io.Serializable, MeterContain
 		this.klskObj = klskObj;
 	}
 
+	public Date getDt1() {
+		return dt1;
+	}
+	
+	public void setDt1(Date dt1) {
+		this.dt1 = dt1;
+	}
+	
+	public Date getDt2() {
+		return dt2;
+	}
+	
+	public void setDt2(Date dt2) {
+		this.dt2 = dt2;
+	}
+	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof Kart))

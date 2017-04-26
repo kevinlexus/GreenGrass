@@ -149,7 +149,7 @@ public class ChrgThr {
 		// РАСЧЕТ по дням
 		for (c.setTime(dt1); !c.getTime().after(dt2); c.add(Calendar.DATE, 1)) {
 			genDt = c.getTime();
-			//только там, где нет статуса "не начислять" за данный день
+			// только там, где нет статуса "не начислять" за данный день
 			try {
 				if (Utl.nvl(parMng.getDbl(rqn, kart, "IS_NOT_CHARGE", genDt), 0d) == 1d) {
 					continue;
@@ -158,9 +158,8 @@ public class ChrgThr {
 				e.printStackTrace();
 				throw new RuntimeException();
 			}
-
-			//только там, где существует услуга в данном дне
-			if (kartMng.getServ(rqn, calc, serv, genDt)) {
+			// только там, где лиц.счет существует в данном дне и существует услуга
+			if (Utl.between(genDt, kart.getDt1(), kart.getDt2()) &&  kartMng.getServ(rqn, calc, serv, genDt)) {
 				String tpOwn = null;
 				try {
 					tpOwn = parMng.getStr(rqn, kart, "FORM_S", genDt);
@@ -172,7 +171,7 @@ public class ChrgThr {
 				if (tpOwn == null) {
 					log.info("ОШИБКА! Не указанна форма собственности! lsk="+kart.getLsk(), 2);
 				}
-				//где лиц.счет является нежилым помещением, не начислять за данный день
+				// где лиц.счет является нежилым помещением, не начислять за данный день
 				if (tpOwn != null && (tpOwn.equals("Нежилое собственное") || tpOwn.equals("Нежилое муниципальное")
 					|| tpOwn.equals("Аренда некоммерч.") || tpOwn.equals("Для внутр. пользования"))) {
 					continue;

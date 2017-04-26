@@ -87,7 +87,7 @@ public class Config {
 	
 	@PostConstruct
 	private void setUp() throws EmptyStorable {
-		log.info("Версия модуля начисления - {}", 1.7);
+		log.info("Версия модуля начисления - {}", 1.8);
 		
 		// Добавить path в Classpath, относительно нахождения Jar
 		try {
