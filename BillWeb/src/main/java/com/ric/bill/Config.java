@@ -1,5 +1,7 @@
 package com.ric.bill;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,7 +88,25 @@ public class Config {
 	@PostConstruct
 	private void setUp() throws EmptyStorable {
 		log.info("Версия модуля начисления - {}", 1.7);
-		//Объект приложения, получить даты текущего периода
+		
+		// Добавить path в Classpath, относительно нахождения Jar
+		try {
+			Utl.addPath("reports");
+			Utl.addPath("config");
+		} catch (Exception e) {
+			log.error("Ошибка добавления path в Classpath");
+		}
+		// Распечатать Classpath
+		ClassLoader cl = ClassLoader.getSystemClassLoader();
+        URL[] urls = ((URLClassLoader)cl).getURLs();
+    	log.info("**** Check Classpath: START ****");
+        for(URL url: urls){
+        	log.info(url.getFile());
+        }
+    	log.info("**** Check Classpath: END ****");
+		
+		
+		// Объект приложения, получить даты текущего периода
 		// TODO проверить RQN!
 		Obj obj = objMng.getByCD(-1, "Модуль начисления");
 		

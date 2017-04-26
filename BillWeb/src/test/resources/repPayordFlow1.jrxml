@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-25T09:55:09 -->
+<!-- 2017-04-26T09:52:33 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="repPayordFlow1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0d6c7770-f10d-4dc4-befe-aac83bc180d0">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="strDt" class="java.lang.String"/>
@@ -170,7 +170,7 @@ $F{insal}.subtract($F{summa}).add($F{summa1}).subtract($F{summa2}).add($F{summa3
 				<textElement>
 					<font fontName="DejaVu Sans"/>
 				</textElement>
-				<textFieldExpression><![CDATA["1.3 Список платежей МП 'РИЦ' на дату:  "+$P{strDt}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["1.0.1 Список платежей МП 'РИЦ' на дату:  "+$P{strDt}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -391,7 +391,29 @@ $F{insal}.subtract($F{summa}).add($F{summa1}).subtract($F{summa2}).add($F{summa3
 			</textField>
 		</band>
 	</detail>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
+	<pageFooter>
+		<band height="69">
+			<textField>
+				<reportElement x="460" y="50" width="100" height="14" uuid="e2957963-257a-420c-a749-4b700126e043"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Страница "+$V{PAGE_NUMBER}+" из "+$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="50" width="70" height="14" uuid="298ee0a2-435a-4430-b453-c09c9251f667"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Дата печати: "]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy h:mm">
+				<reportElement x="70" y="50" width="90" height="14" uuid="d5a21e95-28b7-40a2-b886-51661132a371"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NOW( )]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>

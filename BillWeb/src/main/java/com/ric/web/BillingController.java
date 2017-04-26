@@ -99,6 +99,13 @@ public class BillingController {
 	@Autowired
     private DataSource dataSource;
 	
+	/**
+	 * Получить отчет по платежкам
+	 * @param modelMap - служеб. Spring
+	 * @param modelAndView - служеб. Spring
+	 * @param periodId - Id периода
+	 * @return - служеб. Spring
+	 */
 	@RequestMapping(value = "/rep/payordFlow1", method = RequestMethod.GET, produces = "application/pdf;charset=UTF-8")
 	public ModelAndView repPayordFlow1(ModelMap modelMap, ModelAndView modelAndView,
 				@RequestParam(value = "periodId") Integer periodId 
@@ -106,27 +113,14 @@ public class BillingController {
 		log.info("GOT /rep/payordFlow1 with periodId={}", periodId);
 		PeriodReports pr = em.find(PeriodReports.class, periodId);
 		if (pr.getDt() !=null) {
-			List<RepItemDTO> items;
-			// получить список платежек на текущую дату, с входящим сальдо
-			items = payordMng.getPayordFlowByTpDt(2, pr.getDt()).stream()
-					//.filter(t -> t.getSigned()) // только подписанные??
-					.map(t-> new RepItemDTO(t.getId(), t.getPayord().getPayordGrp().getName(),
-					t.getPayord().getName(), t.getUk().getName(), 
-					payordMng.getInsalSumm(t.getPayord(), config.getPeriod(), 0), // вх.сальдо 
-					BigDecimal.valueOf(t.getSumma()), BigDecimal.valueOf(t.getSumma1()), BigDecimal.valueOf(t.getSumma2()), BigDecimal.valueOf(t.getSumma3()), 
-							BigDecimal.valueOf(t.getSumma4()), BigDecimal.valueOf(t.getSumma5()), BigDecimal.valueOf(t.getSumma6())))
-					.collect(Collectors.toList());
-			//items = payordMng.getPayordGrpAll().stream().map(t-> new RepItemDTO(t.getId(), t.getName())
-			//JRDataSource datasource = new JRBeanCollectionDataSource(payordMng.getPayordGrpAll(), true);
-			JRDataSource datasource = new JRBeanCollectionDataSource(items, true);
-			
+			List<RepItemDTO> lst = payordMng.getPayordRep(pr);
+			JRDataSource datasource = new JRBeanCollectionDataSource(lst, true);
 			modelMap.put("datasource", datasource);
 			modelMap.put("format", "pdf");
 			modelMap.put("strDt", Utl.getStrFromDate(pr.getDt()));
 			modelAndView = new ModelAndView("repPayordFlow1", modelMap);
 			return modelAndView;
 		} else {
-			
 			return null;
 		}
 		

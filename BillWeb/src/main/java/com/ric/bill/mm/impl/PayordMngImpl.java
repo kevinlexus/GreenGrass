@@ -37,11 +37,13 @@ import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
+import com.ric.bill.dto.RepItemDTO;
 import com.ric.bill.excp.WrongDate;
 import com.ric.bill.mm.LstMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
+import com.ric.bill.model.bs.PeriodReports;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordFlow;
@@ -471,6 +473,26 @@ public class PayordMngImpl implements PayordMng {
 		}
 	}
 
+
+	/**
+	 * Получить список DTO платежек со вх.сальдо, для отчета 
+	 * @param pr - Отчетный период
+	 * @return
+	 */
+	public List<RepItemDTO> getPayordRep(PeriodReports pr) {
+		List<RepItemDTO> lst;
+		// получить список платежек на текущую дату, с входящим сальдо
+		lst = getPayordFlowByTpDt(2, pr.getDt()).stream()
+				//.filter(t -> t.getSigned()) // только подписанные??
+				.map(t-> new RepItemDTO(t.getId(), t.getPayord().getPayordGrp().getName(),
+				t.getPayord().getName(), t.getUk().getName(), 
+				getInsalSumm(t.getPayord(), config.getPeriod(), 0), // вх.сальдо 
+				BigDecimal.valueOf(t.getSumma()), BigDecimal.valueOf(t.getSumma1()), BigDecimal.valueOf(t.getSumma2()), BigDecimal.valueOf(t.getSumma3()), 
+						BigDecimal.valueOf(t.getSumma4()), BigDecimal.valueOf(t.getSumma5()), BigDecimal.valueOf(t.getSumma6())))
+				.collect(Collectors.toList());
+		return lst;
+	}
+	
 	/**
 	 * Сформировать платежки за период
 	 * Внимание!!! итоговое формирование, можно делать, если подписана финальная платёжка!

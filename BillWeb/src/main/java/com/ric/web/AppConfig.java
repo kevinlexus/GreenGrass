@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 
@@ -20,8 +19,8 @@ public class AppConfig {
 	@Bean
 	public JasperReportsViewResolver getJasperReportsViewResolver() {
 	  JasperReportsViewResolver resolver = new JasperReportsViewResolver();
-	  //resolver.setPrefix("classpath:/resources/");
-	  resolver.setPrefix("classpath:/reports/");
+	  //resolver.setPrefix("classpath:/reports/");
+	  resolver.setPrefix("classpath:/");
 	  //resolver.setSuffix(".jasper");
 	  resolver.setSuffix(".jrxml");
 	  resolver.setReportDataKey("datasource");

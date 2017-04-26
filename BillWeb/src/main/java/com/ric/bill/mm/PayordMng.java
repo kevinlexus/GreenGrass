@@ -10,7 +10,9 @@ import com.ric.bill.dto.PayordCmpDTO;
 import com.ric.bill.dto.PayordDTO;
 import com.ric.bill.dto.PayordFlowDTO;
 import com.ric.bill.dto.PayordGrpDTO;
+import com.ric.bill.dto.RepItemDTO;
 import com.ric.bill.excp.WrongDate;
+import com.ric.bill.model.bs.PeriodReports;
 import com.ric.bill.model.fn.Payord;
 import com.ric.bill.model.fn.PayordCmp;
 import com.ric.bill.model.fn.PayordFlow;
@@ -45,6 +47,7 @@ public interface PayordMng {
 	public void genPayord(Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate, ParseException;
 	public PayordFlow getInsal(Payord p, String period, Integer tp);
 	public BigDecimal getInsalSumm(Payord p, String period, Integer tp);	
+	List<RepItemDTO> getPayordRep(PeriodReports pr);
 	public void delPayordFlowDto(PayordFlowDTO t);
 	public PayordFlow addPayordFlowDto(PayordFlowDTO t);
 	public void refreshPayordFlow(PayordFlow t);
