@@ -263,6 +263,81 @@ public class Utl {
 	}
 	
 	/**
+	 * Конвертировать период ГГГГММ в наименование периода типа Апрель 2017, со склонением
+	 * @param period
+	 * @param tp - 0 - нач.период, 1 - кон.период  
+	 * @return
+	 */
+	public static String getPeriodName(String period, Integer tp) {
+		String str = getMonthName(Integer.valueOf(period.substring(4, 6)), tp) +" "+period.substring(0, 4);
+		return str;
+	}
+
+	public static String getMonthName(Integer month, Integer tp) {
+		String monthString;
+		if (tp==0) {
+			switch (month) {
+			case 1:  monthString = "Января";
+	        break;
+			case 2:  monthString = "Февраля";
+			        break;
+			case 3:  monthString = "Марта";
+			        break;
+			case 4:  monthString = "Апреля";
+			        break;
+			case 5:  monthString = "Мая";
+			        break;
+			case 6:  monthString = "Июня";
+			        break;
+			case 7:  monthString = "Июля";
+			        break;
+			case 8:  monthString = "Августа";
+			        break;
+			case 9:  monthString = "Сентября";
+			        break;
+			case 10: monthString = "Октября";
+			        break;
+			case 11: monthString = "Ноября";
+			        break;
+			case 12: monthString = "Декабря";
+			        break;
+			default: monthString = null;
+			        break;
+			}
+		} else {
+			switch (month) {
+			case 1:  monthString = "Январь";
+	        break;
+			case 2:  monthString = "Февраль";
+			        break;
+			case 3:  monthString = "Март";
+			        break;
+			case 4:  monthString = "Апрель";
+			        break;
+			case 5:  monthString = "Май";
+			        break;
+			case 6:  monthString = "Июнь";
+			        break;
+			case 7:  monthString = "Июль";
+			        break;
+			case 8:  monthString = "Август";
+			        break;
+			case 9:  monthString = "Сентябрь";
+			        break;
+			case 10: monthString = "Октябрь";
+			        break;
+			case 11: monthString = "Ноябрь";
+			        break;
+			case 12: monthString = "Декабрь";
+			        break;
+			default: monthString = null;
+			        break;
+			}
+		}
+		return monthString;
+	}
+	
+	/**
 	 * Получить кол-во дней в месяце по дате
 	 * @param dt - дата вх.
 	 * @return

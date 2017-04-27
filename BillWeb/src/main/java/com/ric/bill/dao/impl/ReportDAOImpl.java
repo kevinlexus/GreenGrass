@@ -37,13 +37,13 @@ public class ReportDAOImpl implements ReportDAO {
     	List<PeriodReports> lst2 = null;
 		Query query = null;
 		if (tp==0) {
-			query = em.createQuery("select t from PeriodReports t join t.report r where r.cd in (:cd) and t.mg is not null");
+			query = em.createQuery("select t from PeriodReports t join t.report r where r.cd in (:cd) and t.mg is not null order by t.mg");
 			query.setParameter("cd", cd);
 			 lst2 = query.getResultList();
 			lst2.stream().forEach(t -> lst.add(new PeriodReportsDTO(t.getId(), t.getMg().substring(0, 4)+"."+t.getMg().substring(4, 6))));
 				
 		} else if (tp==1) {
-			query = em.createQuery("select t from PeriodReports t join t.report r where r.cd in (:cd) and t.dt is not null");
+			query = em.createQuery("select t from PeriodReports t join t.report r where r.cd in (:cd) and t.dt is not null order by t.dt");
 			query.setParameter("cd", cd);
 			lst2 = query.getResultList();
 			Format formatter = new SimpleDateFormat("dd.MM.yyyy");

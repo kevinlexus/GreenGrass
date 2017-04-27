@@ -126,6 +126,36 @@ public class BillingController {
 		
 	}
 
+	/**
+	 * Получить отчет по платежкам - 2
+	 * @param modelMap - служеб. Spring
+	 * @param modelAndView - служеб. Spring
+	 * @param periodId1 - Id нач. периода
+	 * @param periodId2 - Id кон. периода
+	 * @return - служеб. Spring
+	 */
+	@RequestMapping(value = "/rep/payordFlow2", method = RequestMethod.GET, produces = "application/pdf;charset=UTF-8")
+	public ModelAndView repPayordFlow2(ModelMap modelMap, ModelAndView modelAndView,
+				@RequestParam(value = "periodId1") Integer periodId1,
+				@RequestParam(value = "periodId2") Integer periodId2 
+				) {
+		log.info("GOT /rep/payordFlow2 with periodId1={}, periodId2={}", periodId1, periodId2);
+		PeriodReports pr1 = em.find(PeriodReports.class, periodId1);
+		PeriodReports pr2 = em.find(PeriodReports.class, periodId2);
+		if (pr1.getMg() != null && pr2.getMg() != null ) {
+			if (pr1.getMg().equals(pr2.getMg())) {
+				modelMap.put("period", "за "+Utl.getPeriodName(pr1.getMg(), 1)+" г."  );
+			} else {
+				modelMap.put("period", "c "+Utl.getPeriodName(pr1.getMg(), 0)+" по "+Utl.getPeriodName(pr2.getMg(), 1)+" г." );
+			}
+			modelMap.put("datasource", dataSource);
+			modelMap.put("format", "pdf");
+			modelAndView = new ModelAndView("repPayordFlow2", modelMap);
+			return modelAndView;
+		} else {
+			return null;
+		}
+	}
 
 	/**
  	 * Получить периоды для элементов интерфейса

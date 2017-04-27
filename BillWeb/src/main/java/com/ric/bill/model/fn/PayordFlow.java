@@ -36,7 +36,9 @@ public class PayordFlow implements java.io.Serializable, Simple {
 	}
 
 	public PayordFlow(Payord payord, Org uk, Double summa, Double summa1,
-			Double summa2, Double summa3, Double summa4, Double summa5, Double summa6, Integer npp, Integer tp, String period, Boolean signed, Date dt) {
+			Double summa2, Double summa3, Double summa4, Double summa5, 
+			Double summa6, Integer npp, Integer tp, String period, 
+			Boolean signed, Boolean isFinal, Date dt) {
 		super();
 		this.payord = payord;
 		this.uk = uk;
@@ -51,6 +53,7 @@ public class PayordFlow implements java.io.Serializable, Simple {
 		this.period = period;
 		this.npp = npp;
 		this.signed = signed;
+		this.isFinal = isFinal;
 		this.dt = dt;
 	}
 
@@ -70,7 +73,7 @@ public class PayordFlow implements java.io.Serializable, Simple {
 	@JoinColumn(name="FK_UK", referencedColumnName="ID")
 	private Org uk; 
 	
-	// Оплачено по факту (платежка)
+	// Перечислено по факту (платежка)
 	@Column(name = "SUMMA")
 	private Double summa;
 
@@ -115,6 +118,11 @@ public class PayordFlow implements java.io.Serializable, Simple {
 	@Column(name = "SIGNED", nullable = true)
 	private Boolean signed;
 
+	// Итоговая ли платежка?
+	@Type(type= "org.hibernate.type.NumericBooleanType")
+	@Column(name = "isFinal", nullable = true)
+	private Boolean isFinal;
+	
 	//дата операции, Дата платежного поручения (платежка)
     @Column(name = "DT", updatable = false, nullable = true)
     private Date dt;
@@ -242,6 +250,18 @@ public class PayordFlow implements java.io.Serializable, Simple {
 
 	public void setSigned(Boolean signed) {
 		this.signed = signed;
+	}
+
+	public Boolean getIsFinal() {
+		if (isFinal==null) {
+			return false;
+		} else {
+			return isFinal;
+		}
+	}
+
+	public void setIsFinal(Boolean isFinal) {
+		this.isFinal = isFinal;
 	}
 
 	public boolean equals(Object o) {

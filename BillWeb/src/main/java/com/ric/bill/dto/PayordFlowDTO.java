@@ -19,7 +19,7 @@ public class PayordFlowDTO {
 	private Integer payordFk;
 	// Fk на УК
 	private Integer ukFk;
-	// Оплачено по факту (платежка)
+	// Перечислено по факту (платежка)
 	private Double summa;
 	// Сумма сборов, факт на день формир. (платежка)
 	private Double summa1;

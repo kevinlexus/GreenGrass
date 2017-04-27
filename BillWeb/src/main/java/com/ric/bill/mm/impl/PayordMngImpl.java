@@ -167,7 +167,7 @@ public class PayordMngImpl implements PayordMng {
 		Payord payord = em.find(Payord.class, p.getPayordFk());
 		Org uk = em.find(Org.class, p.getUkFk());
 		PayordFlow payordFlow = new PayordFlow(payord, uk, p.getSumma(), p.getSumma1(), p.getSumma2(), 
-				p.getSumma3(), p.getSumma4(), p.getSumma5(), p.getSumma6(), p.getNpp(), p.getTp(), p.getPeriod(), p.getSigned(), p.getDt());
+				p.getSumma3(), p.getSumma4(), p.getSumma5(), p.getSumma6(), p.getNpp(), p.getTp(), p.getPeriod(), p.getSigned(), false, p.getDt());
 		em.persist(payordFlow);
 		
 		return payordFlow;
@@ -605,7 +605,7 @@ public class PayordMngImpl implements PayordMng {
 						flow = new PayordFlow(p, uk, 
 							summa6.doubleValue(), null, 
 							null, null, null, 
-							null, null, null, 0, periodNext, false, null);  
+							null, null, null, 0, periodNext, false, false, null);  
 						p.getPayordFlow().add(flow);
 					}
 					
@@ -631,10 +631,18 @@ public class PayordMngImpl implements PayordMng {
 						flow = new PayordFlow(p, uk, 
 								summa6.doubleValue(), null, 
 								null, null, null, 
-								null, null, null, 1, periodNext, false, null);  
+								null, null, null, 1, periodNext, false, false, null);  
 						p.getPayordFlow().add(flow);
 					}
 				} else {
+					
+					
+					
+					
+					// TODO! Сделать чтобы Итоговая платежка добавлялась только 1 раз!
+					
+					
+					
 					// добавить платежку
 					if (!isFinal) {
 						// округлить, если не итоговая плат. по концу мес.
@@ -650,7 +658,7 @@ public class PayordMngImpl implements PayordMng {
 						PayordFlow flow = new PayordFlow(p, uk, 
 									summa6.doubleValue(), summa1.doubleValue(), 
 									summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 
-									summa5.doubleValue(), summa6.doubleValue(), null, 2, period, false, genDt);  
+									summa5.doubleValue(), summa6.doubleValue(), null, 2, period, false, isFinal, genDt);  
 						p.getPayordFlow().add(flow);
 					}
 				}

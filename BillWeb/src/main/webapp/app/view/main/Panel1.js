@@ -64,6 +64,7 @@ Ext.define('BillWebApp.view.main.Panel1', {
                     }, {
                         xtype: 'checkboxfield',
                         name: 'checkbox1',
+                        reference: 'checkbox1',
                         fieldLabel: 'Текущие',
                         listeners: {
                             change: 'onChangePeriodType'
