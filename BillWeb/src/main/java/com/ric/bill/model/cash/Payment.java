@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.ric.bill.Simple;
 import com.ric.bill.model.ar.Kart;
+import com.ric.bill.model.mt.MeterLog;
 
 /**
  * Заголовок платежа
@@ -48,7 +49,11 @@ public class Payment implements java.io.Serializable, Simple {
 	@Column(name = "DT_COLLECT", updatable = false, nullable = true)
     private Date dtClct;
 
-	
+	// дата платежа
+    @Column(name = "DTF")
+    private Date dtf;
+    
+
 	public Integer getId() {
 		return id;
 	}
@@ -73,6 +78,14 @@ public class Payment implements java.io.Serializable, Simple {
 		this.dtClct = dtClct;
 	}
 
+	public Date getDtf() {
+		return dtf;
+	}
+
+	public void setDtf(Date dtf) {
+		this.dtf = dtf;
+	}
+	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
 	    if (o == null || !(o instanceof Payment))

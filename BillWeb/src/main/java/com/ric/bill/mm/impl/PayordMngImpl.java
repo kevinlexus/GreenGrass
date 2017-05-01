@@ -1,5 +1,7 @@
 package com.ric.bill.mm.impl;
 
+import oracle.net.aso.e;
+
 import org.mariuszgromada.math.mxparser.*;
 
 import java.math.BigDecimal;
@@ -40,6 +42,7 @@ import com.ric.bill.dto.PayordGrpDTO;
 import com.ric.bill.dto.RepItemDTO;
 import com.ric.bill.excp.WrongDate;
 import com.ric.bill.mm.LstMng;
+import com.ric.bill.mm.OrgMng;
 import com.ric.bill.mm.PayordMng;
 import com.ric.bill.model.bs.Lst;
 import com.ric.bill.model.bs.Org;
@@ -68,6 +71,8 @@ public class PayordMngImpl implements PayordMng {
 	private PayordFlowDAO payordFlowDao;
 	@Autowired
 	private LstMng lstMng;
+	@Autowired
+	private OrgMng orgMng;
 	@Autowired
 	private PaymentDetDAO paymentDetDao;
 	@Autowired
@@ -432,18 +437,24 @@ public class PayordMngImpl implements PayordMng {
 		BigDecimal summa = BigDecimal.ZERO; 
 			// Подсчет сборов
 			String formula = p.getFormula();
-			//log.info("Формула до изменений={}", formula);
-			for (String mark: markLst) {
-				// по каждому маркеру
-				BigDecimal summ = amntSummByUk.getAmnt().stream()
-						.filter(e -> e.getUk().equals(uk) && e.getMark().equals(mark)).map(e-> e.getSumma())
-						.reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
-				formula = formula.replaceAll(mark, String.valueOf(summ));
+			log.info("Формула до изменений={}", formula);
+			if (formula!=null) {
+				for (String mark: markLst) {
+					// по каждому маркеру
+					BigDecimal summ = amntSummByUk.getAmnt().stream()
+							.filter(e -> e.getUk().equals(uk) && e.getMark().equals(mark)).map(e-> e.getSumma())
+							.reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+					if (p.getId()==181) {
+						log.info("amntSummByUk size()={}", amntSummByUk.getAmnt().size());
+						log.info("Сумма={}", summ);
+					}
+					formula = formula.replaceAll(mark, String.valueOf(summ));
+				}
+				log.info("Формула после изменений={}", formula);
+				Expression e = new Expression(formula);
+				summa = BigDecimal.valueOf(e.calculate());
+				summa = summa.setScale(2, BigDecimal.ROUND_HALF_UP);
 			}
-			//log.info("Формула после изменений={}", formula);
-			Expression e = new Expression(formula);
-			summa = BigDecimal.valueOf(e.calculate());
-			summa = summa.setScale(2, BigDecimal.ROUND_HALF_UP);
 		return summa;
 	}
 	
@@ -512,14 +523,14 @@ public class PayordMngImpl implements PayordMng {
 	public void genPayord(Date genDt, Boolean isFinal, Boolean isEndMonth) throws WrongDate, ParseException {
 /*		DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); // для проверки, пока не удалять
 		Date dt;
-		dt = df.parse("01.04.2017");
+		dt = df.parse("01.03.2017");
 		Date curDt1 = dt;
-		dt = df.parse("30.04.2017");
+		dt = df.parse("31.03.2017");
 		Date curDt2 = dt;
 
-		String period = "201704";//calc.getReqConfig().getPeriod();
-		String periodNext = "201705";//calc.getReqConfig().getPeriodNext();*/
-
+		String period = "201703";//calc.getReqConfig().getPeriod();
+		String periodNext = "201704";//calc.getReqConfig().getPeriodNext();
+*/
 		RequestConfig reqConfig = ctx.getBean(RequestConfig.class);
 		reqConfig.setUp(config, "0", "0", null, -1, "", "");
 		
@@ -556,10 +567,14 @@ public class PayordMngImpl implements PayordMng {
 					// прочие варианты сбора данных
 				}
 			});
-
+			
  			// distinct список УК
-			List<Org> ukLst = amntSummByUk.getAmnt().stream().map(d -> d.getUk()).distinct().collect(Collectors.toList());
+			//List<Org> ukLst = amntSummByUk.getAmnt().stream().map(d -> d.getUk()).distinct().collect(Collectors.toList());
+			List<Org> ukLst = orgMng.getOrgUkAll();
 			ukLst.stream().forEach(uk -> {
+				if (p.getId() == 181) {
+					log.info("check");
+				}
 				// По каждой УК, за период:
 				// получить сборы по всем маркерам
 				BigDecimal summa1 = calcMark(markLst, amntSummByUk, p, uk);
@@ -601,7 +616,7 @@ public class PayordMngImpl implements PayordMng {
 						p.getPayordFlow().remove(iterator.next());
 					}
 					// добавить сальдо, если изменилось
-					if (!summa6.equals(insal) && !summa6.equals(BigDecimal.ZERO)) {
+					if (!summa6.equals(insal) && summa6.compareTo(BigDecimal.ZERO)!=0) {
 						flow = new PayordFlow(p, uk, 
 							summa6.doubleValue(), null, 
 							null, null, null, 
@@ -611,15 +626,19 @@ public class PayordMngImpl implements PayordMng {
 					
 					// получить вх. сальдо для бухг.
 					salFlow = getInsal(p, period, 1); 
-					insal = BigDecimal.valueOf(salFlow.getSumma());
+					if (salFlow != null) {
+						insal = BigDecimal.valueOf(salFlow.getSumma());
+					} else {
+						insal = BigDecimal.ZERO;
+					}
 
 					// рассчитать сумму сальдо по бухгалтерии
 					// получить сумму перечислений для сальдо по бухгалтерии (взять по фактическим датам)
 					amntFlow = calcFlow(p, uk, null, curDt1, curDt2, 2);
 					summa2 = amntFlow.summa;
 					summa6 = insal.add(summa1).subtract(summa2).add(summa3).subtract(summa4).subtract(summa5);
-					log.info("Сальдо insal={}, summa1={}, summa2={}, summa3={}, summa4={}, summa5={}", insal, summa1, summa2, summa3, summa4, summa5);
-					log.info("Сальдо summa6={}", summa6);
+					log.info("Сальдо по бух insal={}, summa1={}, summa2={}, summa3={}, summa4={}, summa5={}", insal, summa1, summa2, summa3, summa4, summa5);
+					log.info("Сальдо по бух summa6={}", summa6);
 					// удалить уже сформир.сальдо по бухг.
 					lst = p.getPayordFlow().stream().filter(t-> t.getTp()==1 && 
 						t.getPeriod().equals(periodNext)).collect(Collectors.toList());
@@ -627,7 +646,7 @@ public class PayordMngImpl implements PayordMng {
 						p.getPayordFlow().remove(iterator.next());
 					}
 					// добавить сальдо, если изменилось
-					if (!summa6.equals(insal) && !summa6.equals(BigDecimal.ZERO)) {
+					if (!summa6.equals(insal) && summa6.compareTo(BigDecimal.ZERO)!=0 ) {
 						flow = new PayordFlow(p, uk, 
 								summa6.doubleValue(), null, 
 								null, null, null, 
@@ -653,8 +672,13 @@ public class PayordMngImpl implements PayordMng {
 						summa6 = BigDecimal.ZERO; 
 					}
 					
-					if (!summa6.equals(BigDecimal.ZERO)) {
-						// создать движение по платежке
+					if (summa1.compareTo(BigDecimal.ZERO)!=0 ||
+						summa2.compareTo(BigDecimal.ZERO)!=0 ||
+						summa3.compareTo(BigDecimal.ZERO)!=0 ||
+						summa4.compareTo(BigDecimal.ZERO)!=0 ||
+						summa5.compareTo(BigDecimal.ZERO)!=0 ||
+						summa6.compareTo(BigDecimal.ZERO)!=0) {
+						// создать движение по платежке, если не нулевое
 						PayordFlow flow = new PayordFlow(p, uk, 
 									summa6.doubleValue(), summa1.doubleValue(), 
 									summa2.doubleValue(), summa3.doubleValue(), summa4.doubleValue(), 

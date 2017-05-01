@@ -1,6 +1,8 @@
 package com.ric.bill.model.cash;
 
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,17 +29,6 @@ public class PaymentDet implements java.io.Serializable, Simple {
 
 	public PaymentDet() {
 		
-	}
-
-	public PaymentDet(Payment payment, Serv serv, Org org, Double summa,
-			Double pen, String period) {
-		super();
-		this.payment = payment;
-		this.serv = serv;
-		this.org = org;
-		this.summa = summa;
-		this.pen = pen;
-		this.period = period;
 	}
 
 	@Id
@@ -67,7 +58,7 @@ public class PaymentDet implements java.io.Serializable, Simple {
 	@Column(name = "PEN")
 	private Double pen;
 	
-	// Период
+	// За Период принято
 	@Column(name = "PERIOD")
 	private String period;
 	
@@ -77,14 +68,6 @@ public class PaymentDet implements java.io.Serializable, Simple {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
 	}
 
 	public Serv getServ() {
@@ -125,6 +108,14 @@ public class PaymentDet implements java.io.Serializable, Simple {
 
 	public void setPeriod(String period) {
 		this.period = period;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	public boolean equals(Object o) {

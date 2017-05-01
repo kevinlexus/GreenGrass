@@ -127,7 +127,7 @@ public class BillingController {
 	}
 
 	/**
-	 * Получить отчет по платежкам - 2
+	 * Получить отчет по платежкам - 2,3
 	 * @param modelMap - служеб. Spring
 	 * @param modelAndView - служеб. Spring
 	 * @param periodId1 - Id нач. периода
@@ -137,7 +137,8 @@ public class BillingController {
 	@RequestMapping(value = "/rep/payordFlow2", method = RequestMethod.GET, produces = "application/pdf;charset=UTF-8")
 	public ModelAndView repPayordFlow2(ModelMap modelMap, ModelAndView modelAndView,
 				@RequestParam(value = "periodId1") Integer periodId1,
-				@RequestParam(value = "periodId2") Integer periodId2 
+				@RequestParam(value = "periodId2") Integer periodId2, 
+				@RequestParam(value = "repCd") String repCd 
 				) {
 		log.info("GOT /rep/payordFlow2 with periodId1={}, periodId2={}", periodId1, periodId2);
 		PeriodReports pr1 = em.find(PeriodReports.class, periodId1);
@@ -150,6 +151,7 @@ public class BillingController {
 			}
 			modelMap.put("datasource", dataSource);
 			modelMap.put("format", "pdf");
+			modelMap.put("repCd", repCd);
 			modelAndView = new ModelAndView("repPayordFlow2", modelMap);
 			return modelAndView;
 		} else {

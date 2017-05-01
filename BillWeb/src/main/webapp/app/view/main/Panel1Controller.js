@@ -29,6 +29,15 @@ Ext.define('BillWebApp.view.main.Panel1Controller', {
             period2.show();
         }
     },
+    // Печать отчета по сверке платежек
+    onCompareClick: function () {
+        console.log('onPrintClick');
+        var period1 = this.lookupReference('period1');
+        var period2 = this.lookupReference('period2');
+        var checkbox1 = this.lookupReference('checkbox1');
+        //window.location.assign('/rep/payordFlow2?periodId1='+period1.getValue()+'&periodId2='+period2.getValue());
+        window.open('/rep/payordFlow2?repCd=RptPayInfo3&periodId1='+period1.getValue()+'&periodId2='+period2.getValue(), '_blank');
+    },
     // Печать отчета платежек
     onPrintClick: function () {
         console.log('onPrintClick');
@@ -37,10 +46,10 @@ Ext.define('BillWebApp.view.main.Panel1Controller', {
         var checkbox1 = this.lookupReference('checkbox1');
         if (checkbox1.getValue()){
             //window.location.assign('/rep/payordFlow1?periodId='+period1.getValue());
-            window.open('/rep/payordFlow1?periodId='+period1.getValue(), '_blank');
+            window.open('/rep/payordFlow1?repCd=RptPayInfo2&periodId='+period1.getValue(), '_blank');
         } else {
             //window.location.assign('/rep/payordFlow2?periodId1='+period1.getValue()+'&periodId2='+period2.getValue());
-            window.open('/rep/payordFlow2?periodId1='+period1.getValue()+'&periodId2='+period2.getValue(), '_blank');
+            window.open('/rep/payordFlow2?repCd=RptPayInfo2&periodId1='+period1.getValue()+'&periodId2='+period2.getValue(), '_blank');
         }
     }
 

@@ -2,17 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ab6b1df-caef-4bd0-8e7c-9ae034c355c4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../BAD/WebSecurityConfig.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/SrvThr.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/Utl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/Utl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/PayordMngImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/PayordMngImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/web/BillingController.java" afterPath="$PROJECT_DIR$/java/com/ric/web/BillingController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dto/PayordFlowDTO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dto/PayordFlowDTO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/fn/PayordFlow.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/fn/PayordFlow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/application.properties" afterPath="$PROJECT_DIR$/resources/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/spring.xml" afterPath="$PROJECT_DIR$/resources/spring.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/OrgDAO.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/OrgDAO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/OrgDAOImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/OrgDAOImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/PaymentDetDAOImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/dao/impl/PaymentDetDAOImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/OrgMng.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/OrgMng.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/OrgMngImpl.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/mm/impl/OrgMngImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/bs/Org.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/bs/Org.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/cash/Payment.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/cash/Payment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/cash/PaymentDet.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/cash/PaymentDet.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/com/ric/bill/model/oralv/Ko.java" afterPath="$PROJECT_DIR$/java/com/ric/bill/model/oralv/Ko.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel1.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel1.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js" afterPath="$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../test/java/testWork.java" afterPath="$PROJECT_DIR$/../test/java/testWork.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../test/resources/repPayordFlow2.jrxml" afterPath="$PROJECT_DIR$/../test/resources/repPayordFlow2.jrxml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ExecProc.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" afterPath="$PROJECT_DIR$/../../../Direct/src/main/java/com/direct/webflow/ThrMain.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" afterPath="$PROJECT_DIR$/../../../Direct/src/main/webapp/bootstrap.css" />
@@ -49,7 +55,7 @@
         <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="66" column="36" selection-start-line="66" selection-start-column="36" selection-end-line="66" selection-end-column="45" />
+              <caret line="136" column="20" selection-start-line="136" selection-start-column="20" selection-end-line="136" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -58,8 +64,8 @@
       <file leaf-file-name="Panel1Controller.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.80241495">
-              <caret line="43" column="9" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.597146">
+              <caret line="38" column="56" selection-start-line="38" selection-start-column="56" selection-end-line="38" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -902,15 +908,15 @@
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="66" column="36" selection-start-line="66" selection-start-column="36" selection-end-line="66" selection-end-column="45" />
+          <caret line="136" column="20" selection-start-line="136" selection-start-column="20" selection-end-line="136" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/app/view/main/Panel1Controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80241495">
-          <caret line="43" column="9" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.597146">
+          <caret line="38" column="56" selection-start-line="38" selection-start-column="56" selection-end-line="38" selection-end-column="56" />
           <folding />
         </state>
       </provider>

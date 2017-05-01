@@ -18,6 +18,7 @@ import com.ric.bill.Simple;
 import com.ric.bill.model.ar.House;
 import com.ric.bill.model.bs.AddrTp;
 import com.ric.bill.model.bs.Org;
+import com.ric.bill.model.mt.MeterLog;
 
 /**
  * Справочник всех объектов Klsk Objects - KO
@@ -36,7 +37,7 @@ public class Ko implements java.io.Serializable, Simple {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="FK_ADDRTP", referencedColumnName="ID")
-	private AddrTp addrTp ; 
+	private AddrTp addrTp; 
 
 	// Организация (На самом деле, здесь OneToOne, но не смог реализовать, оставил так)
 	@ManyToOne(fetch = FetchType.LAZY)

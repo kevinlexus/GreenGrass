@@ -21,8 +21,14 @@ public class OrgMngImpl implements OrgMng {
     @PersistenceContext
     private EntityManager em;
 	
-	public List<Org> getOrgAll() {
+	// Список всех организаций
+    public List<Org> getOrgAll() {
 		return orgDao.getOrgAll();
+	}
+
+	// Список всех УК
+	public List<Org> getOrgUkAll() {
+		return orgDao.getOrgUkAll();
 	}
 
 	

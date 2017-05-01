@@ -132,7 +132,12 @@ listeners: {
     }],
 
     buttons: [{
-        text: 'Получить отчет',
+        text: 'Сверка',
+        listeners: {
+            click: 'onCompareClick'
+        }
+    },{
+        text: 'Отчет',
         listeners: {
             click: 'onPrintClick'
         }

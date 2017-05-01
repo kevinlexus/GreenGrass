@@ -10,4 +10,5 @@ public interface OrgDAO {
 	public Org getByKlsk(int klsk);
 
 	public List<Org> getOrgAll();
+	public List<Org> getOrgUkAll();
 }

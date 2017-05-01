@@ -2,10 +2,14 @@ package com.ric.bill.model.bs;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.ric.bill.Storable;
+import com.ric.bill.model.oralv.Ko;
 
 /**
  * Организация
@@ -26,7 +30,6 @@ public class Org extends Base implements java.io.Serializable, Storable {
 
     @Column(name = "NAME")
 	private String name; //Наименование 
-
 
 	public Integer getId() {
 		return this.id;

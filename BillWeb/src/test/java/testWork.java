@@ -60,14 +60,14 @@ public class testWork {
 		Date dt = null;
 		DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); 
 		try {
-			dt = df.parse("10.04.2017");
+			dt = df.parse("01.04.2017");
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		try {
-			pm.genPayord(dt, false, false);
+			pm.genPayord(dt, false, true);
 		} catch (WrongDate e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
